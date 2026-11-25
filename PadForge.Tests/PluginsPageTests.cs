@@ -55,45 +55,38 @@ namespace PadForge.Tests
             }
             int status = At("x:Name=\"PluginsStatusCard\"");
             int cards = At("<StackPanel x:Name=\"PluginsCards\">");
-            int builtIn = At("x:Name=\"PluginsBuiltInCard\"");
+            int builtIn = At("Plugins_Card_BuiltIn, Source");
             int test = At("Plugins_TestController, Source");
             int replay = At("Plugins_Replay, Source");
-            int yours = At("x:Name=\"PluginsYoursCard\"");
+            int yours = At("Plugins_Card_Yours, Source");
             int add = At("AutomationProperties.AutomationId=\"Plugins_Add\"");
             int more = At("x:Name=\"PluginsMore\"");
             int kit = At("AutomationProperties.AutomationId=\"Plugins_SaveKit\"");
             int log = At("AutomationProperties.AutomationId=\"Plugins_LogPlugin\"");
-            int note = At("Extras_Plugins_Note, Source");
             Assert.True(status < cards && cards < builtIn && builtIn < test && test < replay && replay < yours
-                && yours < add && add < more && more < kit && kit < log && log < note);
+                && yours < add && add < more && more < kit && kit < log);
         }
 
         [Fact]
         public void EverySetting_HasItsReset_AndTheResetsPutTheDefaultsBack()
         {
-            var resets = Regex.Matches(Body().Substring(0, Body().IndexOf("Extras_Plugins_Note", StringComparison.Ordinal)),
+            var resets = Regex.Matches(Body().Substring(0, Body().IndexOf("x:Name=\"PluginsMoreList\"", StringComparison.Ordinal)),
                 "CommandParameter=\"(\\w+)\"[^>]*AutomationProperties.AutomationId=\"(Reset_[^\"]+)\"").Select(m => (m.Groups[1].Value, m.Groups[2].Value)).ToList();
-            Assert.Equal(new[] { "EnablePlugins", "TestControllerOn", "TestControllerSpeed", "ReplayOn", "ReplayRepeat" }, resets.Select(r => r.Item1));
+            Assert.Equal(new[] { "EnablePlugins", "TestControllerOn", "ReplayOn", "ReplayRepeat" }, resets.Select(r => r.Item1));
             string bindings = ExtrasPageTests.RepoText("PadForge.Tests", "ResetControlBindings.json");
             foreach (var (property, id) in resets) Assert.Contains("\"Id\": \"" + id + "\"", bindings);
 
             var vm = new DashboardViewModel();
             Assert.False(vm.TestControllerOn);
-            Assert.Equal(1, vm.TestControllerSpeed);
             Assert.False(vm.ReplayOn);
             Assert.False(vm.ReplayRepeat);
             vm.TestControllerOn = true;
-            vm.TestControllerSpeed = 3;
             vm.ReplayOn = true;
             vm.ReplayRepeat = true;
             foreach (var (property, _) in resets) vm.ResetSettingCommand.Execute(property);
             Assert.False(vm.TestControllerOn);
-            Assert.Equal(1, vm.TestControllerSpeed);
             Assert.False(vm.ReplayOn);
             Assert.False(vm.ReplayRepeat);
-            // A speed past the list is the nearest one.
-            vm.TestControllerSpeed = 9;
-            Assert.Equal(3, vm.TestControllerSpeed);
         }
 
         [Fact]
@@ -101,7 +94,7 @@ namespace PadForge.Tests
         {
             var markup = SearchSources.FileNames.ToDictionary(p => p.Key, p => ExtrasPageTests.RepoText("PadForge.App", "Views", p.Value));
             var index = SearchIndexBuilder.Read(markup, PadPage.TabOfGroupName).Entries.Where(e => e.Page == SearchPage.Extras && e.ExtraKey == "Plugins").ToList();
-            foreach (var key in new[] { "Plugins_TestController", "Plugins_Speed", "Plugins_Replay", "Plugins_Replay_Repeat" })
+            foreach (var key in new[] { "Plugins_TestController", "Plugins_Replay", "Plugins_Replay_Repeat" })
                 Assert.True(index.Any(e => e.Kind == SearchKind.Setting && e.Label.Key == key), "no setting " + key);
             foreach (var key in new[] { "Plugins_Add", "Plugins_Kit_Save", "Plugins_Replay_Open" })
                 Assert.True(index.Any(e => e.Kind == SearchKind.Action && e.Label.Key == key), "no action " + key);
@@ -118,12 +111,11 @@ namespace PadForge.Tests
                     || e.Elements().Any(c => c.Name.LocalName.EndsWith(".Style", StringComparison.Ordinal));
                 Assert.True(named, e.Name.LocalName + " " + (string)e.Attribute("AutomationProperties.AutomationId") + " has no name");
             }
-            // The row's switch is named for its plugin, and the log's list
-            // and the speed list for their rows.
+            // The card's switch is named for its plugin, and the log's list
+            // for its row.
             string body = Body();
             Assert.Contains("AutomationProperties.Name=\"{Binding Name, TargetNullValue=''}\"", body);
             Assert.Contains("AutomationProperties.Name=\"{Binding Plugins_Log, Source={x:Static strings:Strings.Instance}}\"", body);
-            Assert.Contains("AutomationProperties.Name=\"{Binding Plugins_Speed, Source={x:Static strings:Strings.Instance}}\"", body);
             // A list item says its plugin's name.
             Assert.Equal("Bridge", NewRow("Bridge").ToString());
         }
@@ -196,20 +188,20 @@ namespace PadForge.Tests
             Pump();
             var row = Assert.Single(rig.Vm.PluginRows);
             Assert.Equal("bridge.exe", row.Name);
-            Assert.Equal(s.Common_Stopped, row.State);
+            Assert.Equal(s.Common_Stopped + ". " + s.Plugins_Row_NotSigned, row.State);
             Assert.True(row.IsOn);
             Assert.Equal(1, rig.Vm.PluginListRevision);
             Assert.Equal("bridge", rig.Vm.PluginRecords.Single().Identity);
 
             rig.Vm.EnablePlugins = true;
             Pump();
-            Assert.Equal(s.Plugins_State_Waiting, row.State);
+            Assert.StartsWith(s.Plugins_State_Waiting, row.State);
             Assert.Equal(s.Extras_Plugins_Status_None, rig.Vm.PluginsStatus);
             Assert.False(rig.Vm.IsPluginsRunning);
 
             rig.Controller.Manager.SetEngine(true);
             Pump();
-            Assert.Equal(s.Common_Running, row.State);
+            Assert.StartsWith(s.Common_Running, row.State);
             Assert.Equal(string.Format(s.Plugins_Status_Format, 1, 0), rig.Vm.PluginsStatus);
             Assert.True(rig.Vm.IsPluginsRunning);
 
@@ -217,15 +209,15 @@ namespace PadForge.Tests
             row.IsOn = false;
             Pump();
             Assert.True(rig.Launcher.Last.Stopped);
-            Assert.Equal(s.Common_Stopped, row.State);
+            Assert.StartsWith(s.Common_Stopped, row.State);
             row.IsOn = true;
             Pump();
-            Assert.Equal(s.Common_Running, row.State);
+            Assert.StartsWith(s.Common_Running, row.State);
 
             // An exit, the pause in words, and Start after five failures.
             rig.Launcher.Last.Exit(4);
             Pump();
-            Assert.Equal(string.Format(s.Plugins_State_Exited_Format, 4, 1), row.State);
+            Assert.StartsWith(string.Format(s.Plugins_State_Exited_Format, 4, 1), row.State);
             Assert.False(row.ShowStart);
 
             // The log of the plugin picked, none picked as the page opens.
@@ -276,8 +268,20 @@ namespace PadForge.Tests
             Pump();
             Assert.True(rig.Controller.BuiltIns.TestControllerLive);
             Assert.Equal(string.Format(s.Plugins_Status_Format, 1, 1), rig.Vm.PluginsStatus);
-            rig.Vm.TestControllerSpeed = 3;
-            Assert.Equal(3, rig.Controller.BuiltIns.TestControllerSpeed);
+            // Its declared settings are drawn from the same host as a
+            // plugin's, and Controllers adds devices.
+            Assert.Same(rig.Controller.TestHost, rig.Vm.TestControllerSettings);
+            Assert.Contains(rig.Vm.TestControllerSettings.Rows, r => r is PluginSettingItem { Key: TestControllerPattern.KeyMove });
+            rig.Controller.BuiltIns.TestSettings.Set(null, TestControllerPattern.KeyControllers, "2");
+            Pump();
+            Assert.Equal(string.Format(s.Plugins_Status_Format, 1, 2), rig.Vm.PluginsStatus);
+            Assert.Equal(s.Plugins_TC_State_Moving, rig.Vm.TestControllerLine);
+            rig.Controller.BuiltIns.TestSettings.Set(null, TestControllerPattern.KeyHand, "true");
+            Pump();
+            Assert.Equal(s.Plugins_TC_State_ByHand, rig.Vm.TestControllerLine);
+            Assert.NotEmpty(rig.Vm.TestControllerValues);
+            rig.Controller.BuiltIns.TestSettings.Set(null, TestControllerPattern.KeyControllers, "1");
+            rig.Controller.BuiltIns.TestSettings.Set(null, TestControllerPattern.KeyHand, "false");
 
             rig.Vm.ReplayOn = true;
             Assert.False(rig.Vm.HasReplayFile);
@@ -303,7 +307,7 @@ namespace PadForge.Tests
             rig.Vm.PluginActions.Add(rig.Vm.PluginActions.Describe(rig.File("one.exe")));
             Pump();
             Assert.Single(rig.Vm.PluginRows);
-            rig.Vm.LoadPluginSettings(null, false, 1, false, false);
+            rig.Vm.LoadPluginSettings(null, false, null, false, false);
             Pump();
             Assert.Empty(rig.Vm.PluginRows);
             Assert.Empty(rig.Controller.Manager.Snapshot());
@@ -358,7 +362,7 @@ namespace PadForge.Tests
             Assert.NotEqual(Environment.CurrentManagedThreadId, actions.Thread);
 
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
-            Assert.Contains("var approval = await DescribePluginAsync(actions, dialog.FileName);", code);
+            Assert.Contains("var approval = await DescribePluginAsync(actions, path);", code);
             Assert.Contains("var approval = await DescribePluginAsync(actions, row.Path);", code);
             Assert.DoesNotContain("actions.Describe(dialog.FileName)", code);
             Assert.DoesNotContain("actions.Describe(row.Path)", code);

@@ -45,7 +45,7 @@ namespace PadForge.ViewModels
     internal sealed record PluginApproval(string Path, string Signer, string Sha256);
 
     /// <summary>
-    /// The Plugins extra (#597): its switch and state, the two built-in
+    /// The Plugins extra (#597, #600): its switch and state, the two built-in
     /// plugins' settings, the rows of the user's plugins, Replay's file and
     /// place, and the log of the plugin the user picked. The switches are
     /// saved for the app, never in a profile, as Automation's is. The
@@ -100,12 +100,12 @@ namespace PadForge.ViewModels
         internal event Action PluginSettingsLoaded;
 
         /// <summary>Takes the plugins' part of PadForge.xml.</summary>
-        internal void LoadPluginSettings(PluginData[] plugins, bool testControllerOn, int testControllerSpeed,
+        internal void LoadPluginSettings(PluginData[] plugins, bool testControllerOn, PluginValueData[] testControllerValues,
             bool replayOn, bool replayRepeat)
         {
             PluginRecords = plugins?.Where(p => p != null).ToArray() ?? Array.Empty<PluginData>();
             TestControllerOn = testControllerOn;
-            TestControllerSpeed = testControllerSpeed is >= 0 and < SpeedCount ? testControllerSpeed : NormalSpeed;
+            TestControllerValues = testControllerValues?.Where(v => v != null).ToArray() ?? Array.Empty<PluginValueData>();
             ReplayOn = replayOn;
             ReplayRepeat = replayRepeat;
             PluginSettingsLoaded?.Invoke();
@@ -117,6 +117,29 @@ namespace PadForge.ViewModels
         {
             PluginRecords = records ?? Array.Empty<PluginData>();
             PluginListRevision++;
+        }
+
+        /// <summary>The Test Controller's values as PadForge.xml holds them
+        /// (#600 item 19).</summary>
+        internal PluginValueData[] TestControllerValues { get; private set; } = Array.Empty<PluginValueData>();
+
+        /// <summary>The plugins' part gives the Test Controller's values
+        /// after a change, which marks the settings to be saved.</summary>
+        internal void SetTestControllerValues(PluginValueData[] values)
+        {
+            TestControllerValues = values ?? Array.Empty<PluginValueData>();
+            PluginValuesRevision++;
+        }
+
+        private int _pluginValuesRevision;
+
+        /// <summary>Counts the changes to the built-ins' declared values. The
+        /// window saves on it. A plugin's own values ride the list of plugins
+        /// and its revision.</summary>
+        public int PluginValuesRevision
+        {
+            get => _pluginValuesRevision;
+            private set => SetProperty(ref _pluginValuesRevision, value);
         }
 
         private int _pluginListRevision;
@@ -132,9 +155,6 @@ namespace PadForge.ViewModels
 
         // ── Built in ──
 
-        internal const int NormalSpeed = 1;
-        private const int SpeedCount = 4;
-
         private bool _testControllerOn;
 
         /// <summary>The Test Controller's switch: a controller that moves by
@@ -145,14 +165,25 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _testControllerOn, value);
         }
 
-        private int _testControllerSpeed = NormalSpeed;
+        private PluginSettingsHost _testControllerSettings;
 
-        /// <summary>How fast the Test Controller moves, by its place in the
-        /// list: Slow, Normal, Fast, Fastest.</summary>
-        public int TestControllerSpeed
+        /// <summary>The Test Controller's declared settings (#600 item 19),
+        /// drawn by the same templates as a plugin's. Set by the plugins'
+        /// part.</summary>
+        public PluginSettingsHost TestControllerSettings
         {
-            get => _testControllerSpeed;
-            set => SetProperty(ref _testControllerSpeed, Math.Clamp(value, 0, SpeedCount - 1));
+            get => _testControllerSettings;
+            internal set => SetProperty(ref _testControllerSettings, value);
+        }
+
+        private string _testControllerLine;
+
+        /// <summary>The Test Controller card's line: off, waiting, moving or
+        /// by hand.</summary>
+        public string TestControllerLine
+        {
+            get => _testControllerLine ?? (_testControllerOn ? Strings.Instance.Plugins_State_Waiting : Strings.Instance.Common_Off);
+            set => SetProperty(ref _testControllerLine, value);
         }
 
         private bool _replayOn;

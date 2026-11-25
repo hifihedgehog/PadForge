@@ -593,15 +593,9 @@
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Run Plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No plugin runs.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>A plugin runs with your rights, not PadForge’s.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Built In</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Test Controller</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>A controller that moves by itself, one control at a time, so a mapping can be tried with no hardware in hand.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Speed</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Slow</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Fast</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Fastest</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Plays a problem recording back as the devices that made it, with the timing they had. They are new devices on this PC, mapped as you or a profile map them.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>
@@ -616,10 +610,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problem recordings|*.zip;*.log|All files|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge cannot play {0}. It is no problem recording, or it holds no device’s input.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Your Plugins</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>A plugin is a program that adds devices to PadForge. PadForge starts it with your ordinary rights whenever the engine runs.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Add a Plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programs and scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|All files|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Approve…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Approve and Restart…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Starts with the engine</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Checking the file before it starts</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Exited with code {0}. Starts again in {1} s.</value></data>
@@ -650,10 +643,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} is on the list already.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge runs up to 16 plugins. Remove one to add another.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins running: {0}. Devices they added: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} stopped after five failures.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} changed since you approved it.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} could not start.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Added {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signed by {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Not signed.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Its settings show here while it runs.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>It declares no settings.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge could not read its settings: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Ended after a minute without a word</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Its file changed while it ran</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Added by {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} Settings</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Pick</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Press a control…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Not picked</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Add a plugin, or drop its file on this page. PadForge shows its path, its signer and its SHA-256 and asks you before it runs. A plugin runs with your rights, not PadForge’s.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Plays a problem recording back as the devices that made it, with their timing.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Running.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Running, by hand.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>What Moves</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Sticks and Triggers</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Triggers</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Pattern</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Sweep</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Circle</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Move Time</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Rest Time</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Press Buttons</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Press Navigation Buttons</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows apps act on a virtual Xbox controller’s A, B, Back, Start and D-pad in the window in front, and Guide opens Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Turn the D-Pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>For the same reason.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Press Time</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Controllers</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>By Hand</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Stops the motion. Set its inputs below with the mouse.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Left Stick</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Right Stick</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Reads per Second</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>The plugin kit, and the log of a plugin you pick</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Save the Plugin Kit…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>A small plugin in C#, and the same plugin for AutoHotkey, Python and PowerShell, each file with how to build or run it.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>A guide to every verb, event and kind of setting, a build script for the C# plugin, and the same plugin for AutoHotkey, Python and PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pick a plugin to see its log.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Nothing is in this plugin’s log yet.</value></data>

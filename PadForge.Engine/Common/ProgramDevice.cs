@@ -49,6 +49,11 @@ namespace PadForge.Engine
         /// program.</summary>
         public bool Rumble { get; init; }
         public bool TriggerRumble { get; init; }
+
+        /// <summary>The device takes adaptive trigger effects (#600 item 18):
+        /// the 11-byte programs a game sends a DualSense's two triggers,
+        /// passed on as <c>e trigfx</c>.</summary>
+        public bool TriggerEffects { get; init; }
         public bool Light { get; init; }
         public bool Player { get; init; }
 
@@ -428,11 +433,17 @@ namespace PadForge.Engine
         /// publishes a whole new state.</summary>
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            var src = Volatile.Read(ref _state);
+            var src = Live?.Invoke() ?? Volatile.Read(ref _state);
             var dst = _pool.Next();
             src.CopyInto(dst);
             return dst;
         }
+
+        /// <summary>The state worked out on the poll thread at each read
+        /// (#600 item 19): the Test Controller's motion, as fine as the
+        /// polling rate. Null reads the state last published. Set before
+        /// the device is registered.</summary>
+        public Func<CustomInputState> Live { get; set; }
 
         /// <summary>The state as published now, for a reader off the poll
         /// thread that only reads it.</summary>
@@ -528,6 +539,40 @@ namespace PadForge.Engine
             long packed = ((long)left << 16) | right;
             if (Interlocked.Exchange(ref _triggerRumble, packed) != packed) TriggerRumbleRequested?.Invoke(left, right);
             return true;
+        }
+
+        /// <summary>The trigger effects, left then right, 11 bytes each, as
+        /// the game wrote them to the slot's DualSense (#600 item 18). Raised
+        /// on the poll thread when they change.</summary>
+        public event Action<byte[], byte[]> TriggerEffectsRequested;
+
+        private byte[] _triggerEffects;
+
+        /// <summary>Takes the slot's trigger effects and passes on a change.
+        /// Called on the poll thread each pass, so an unchanged pair costs a
+        /// compare and nothing more.</summary>
+        public bool SetTriggerEffects(ReadOnlySpan<byte> left, ReadOnlySpan<byte> right)
+        {
+            if (!Shape.TriggerEffects || left.Length < 11 || right.Length < 11) return false;
+            var last = Volatile.Read(ref _triggerEffects);
+            if (last != null && left.Slice(0, 11).SequenceEqual(last.AsSpan(0, 11)) && right.Slice(0, 11).SequenceEqual(last.AsSpan(11, 11)))
+                return true;
+            var both = new byte[22];
+            left.Slice(0, 11).CopyTo(both);
+            right.Slice(0, 11).CopyTo(both.AsSpan(11));
+            Volatile.Write(ref _triggerEffects, both);
+            TriggerEffectsRequested?.Invoke(both.AsSpan(0, 11).ToArray(), both.AsSpan(11, 11).ToArray());
+            return true;
+        }
+
+        /// <summary>The trigger effects last passed on, or null.</summary>
+        public (byte[] Left, byte[] Right)? LastTriggerEffects
+        {
+            get
+            {
+                var both = Volatile.Read(ref _triggerEffects);
+                return both == null ? null : (both.AsSpan(0, 11).ToArray(), both.AsSpan(11, 11).ToArray());
+            }
         }
 
         public bool HasLightbar => Shape.Light;

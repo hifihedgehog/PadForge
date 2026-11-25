@@ -160,7 +160,7 @@ namespace PadForge.Tests
         [InlineData("nameof(DashboardViewModel.EnablePlugins)")]
         [InlineData("nameof(DashboardViewModel.PluginListRevision)")]
         [InlineData("nameof(DashboardViewModel.TestControllerOn)")]
-        [InlineData("nameof(DashboardViewModel.TestControllerSpeed)")]
+        [InlineData("nameof(DashboardViewModel.PluginValuesRevision)")]
         [InlineData("nameof(DashboardViewModel.ReplayOn)")]
         [InlineData("nameof(DashboardViewModel.ReplayRepeat)")]
         [InlineData("nameof(PadViewModel.FlickRotationOffset)")]

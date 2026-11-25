@@ -32,11 +32,15 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Sensitivity: number, free. `pad/Mapping_GyroSensitivity#row~2`
 - Acceleration: number, free. `pad/Pad_Mapping_Accel#row`
 - Sensitivity: number, free. `pad/Mapping_MouseCursorSensitivity#row`
+- Sensitivity: number, free. `pad/Mapping_MouseSpeedSensitivity#row`
+- Back to Center: number, free. `pad/Mapping_MouseBackToCenter#row`
+- This axis moves relatively: switch, free. `pad/Mapping_AxisRelative#row`
 - Travel to Full Lock: number, free. `pad/Mapping_MouseTravelCounts#row`
 - Centering: choice, free. `pad/Mapping_MouseTravelCentering#row`
 - Return Time: number, free. `pad/Mapping_MouseTravelReturnTime#row`
 - Steer: choice, free. `pad/Mapping_MouseTravelSteer#row`
 - Steer Input: choice, free. `pad/Mapping_MouseTravelSteerInput#row`
+- Start Where Steering Began: switch, free. `pad/Mapping_MousePositionAnchor#row`
 - Smoothing: number, free. `pad/Mapping_MouseTravelSmoothing#row`
 - Lock at Speed: number, free. `pad/Mapping_MouseTravelLockAtSpeed#row`
 - Sensitivity: number, free. `pad/Mapping_IrPointerSensitivity#row`
@@ -551,11 +555,12 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Open Folder (Settings File): action, asks (OpensPlace). `settings.action/DataGroup/Settings_OpenFolder`
 - Reset to Defaults (Settings File): action, free. `settings.action/DataGroup/Settings_ResetToDefaults`
 - Diagnostics: card, free. `settings.card/DataGroup/Settings_Diagnostics`
-- Start Recording Record a Problem (Diagnostics): action, free. `settings.action/RecordProblemButton/Settings_RecordProblem_Start#Settings_RecordProblem`
-- Keep a Diagnostics Log (Diagnostics): switch, free. `settings/DataGroup/Settings_DiagnosticsLogging`
-- Save Snapshot (Diagnostics): action, free. `settings.action/DataGroup/Settings_DiagnosticsSnapshot`
+- Start Recording (Diagnostics): action, free. `settings.action/RecordProblemButton/Settings_RecordProblem_Start`
+- Save a Snapshot… (Diagnostics): action, free. `settings.action/SaveSnapshotButton/Settings_DiagnosticsSnapshot`
 - Open Log Folder (Diagnostics): action, free. `settings.action/DataGroup/Settings_DiagnosticsOpenFolder`
-- Save the Last 60 Seconds Keep the Last 60 Seconds (Diagnostics): action, free, under More. `settings.action/DiagnosticsMore/Settings_RecordProblem_SaveLastMinute#Settings_RecordProblem_KeepLastMinute`
+- Keep a Diagnostics Log (Diagnostics): switch, free. `settings/DataGroup/Settings_DiagnosticsLogging`
+- What to Record (Diagnostics): setting, yours-alone, under More. `settings/WhatToRecord/Settings_RecordProblem_WhatToRecord`
+- Save the Last 60 Seconds (Diagnostics): action, free, under More. `settings.action/DiagnosticsMore/Settings_RecordProblem_SaveLastMinute`
 - Keep the Last 60 Seconds (Diagnostics): switch, free, under More. `settings/DiagnosticsMore/Settings_RecordProblem_KeepLastMinute`
 - Write Typed Letters and Numbers as One Key (Diagnostics): switch, free, under More. `settings/DiagnosticsMore/Settings_RecordProblem_HideTypedKeys`
 
@@ -729,27 +734,32 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Allow Outside Programs: switch, yours-alone. `extras/Automation/AutomationPage/Extras_Automation_Switch`
 - What Programs May Do: card, yours-alone. `extras.card/Automation/AutomationLevelCard/Extras_Automation_Card_Level`
 - Level (What Programs May Do): choice, yours-alone. `extras/Automation/AutomationLevelCard/Extras_Automation_Level`
+- Waiting for You: card, yours-alone. `extras.card/Automation/AutomationWaitingCard/Extras_Automation_Card_Waiting`
 - Assistants: card, yours-alone. `extras.card/Automation/AutomationAssistantsCard/Extras_Automation_Card_Assistants`
+- Remove (Assistants): menu item, yours-alone. `extras.menuitem/Automation/AssistantRowsList/Common_Remove`
+- Save the Skill as a ZIP… (Assistants): menu item, yours-alone. `extras.menuitem/Automation/AssistantRowsList/Extras_Automation_SaveZip`
+- Open Its Settings File (Assistants): menu item, yours-alone. `extras.menuitem/Automation/AssistantRowsList/Extras_Automation_OpenSettings`
+- Copy Settings Other Assistants (Assistants): action, yours-alone, under More. `extras.action/Automation/AutomationMore/Extras_Automation_CopySettings#Extras_Automation_OtherAssistants`
+- Copy a Message Other Assistants (Assistants): action, yours-alone, under More. `extras.action/Automation/AutomationMore/Extras_Automation_CopyMessage#Extras_Automation_OtherAssistants`
 - Scripts: card, yours-alone. `extras.card/Automation/AutomationScriptsCard/Extras_Automation_Card_Scripts`
 - Save a Library… Script Library (Scripts): action, yours-alone. `extras.action/Automation/AutomationScriptsCard/Extras_Automation_SaveLibrary#Extras_Automation_Library`
-- Waiting for You: card, yours-alone. `extras.card/Automation/AutomationWaitingCard/Extras_Automation_Card_Waiting`
+- Allowed Programs: card, yours-alone. `extras.card/Automation/AutomationAllowedCard/Extras_Automation_Card_Allowed`
 - Activity: card, yours-alone. `extras.card/Automation/AutomationActivityCard/Extras_Automation_Card_Activity`
-- Copy as TOML Assistants That Read TOML: action, yours-alone, under More. `extras.action/Automation/AutomationMore/Extras_Automation_CopyToml#Extras_Automation_TomlLabel`
-- Save the Skill… Skill for Assistants: action, yours-alone, under More. `extras.action/Automation/AutomationMore/Extras_Automation_SaveSkill#Extras_Automation_SkillLabel`
+- Export… (Activity): action, yours-alone. `extras.action/Automation/AutomationActivityCard/Extras_Automation_Export`
 
 ### Plugins
 
 - Plugins: extra, free. `extras.extra/Plugins/PluginsTile/Extras_Plugins_Title`
-- Run Plugins: switch, yours-alone. `extras/Plugins/PluginsPage/Extras_Plugins_Switch`
-- Built In: card, yours-alone. `extras.card/Plugins/PluginsBuiltInCard/Plugins_Card_BuiltIn`
-- Test Controller (Built In): switch, yours-alone. `extras/Plugins/PluginsBuiltInCard/Plugins_TestController`
-- Speed (Built In): choice, yours-alone. `extras/Plugins/PluginsBuiltInCard/Plugins_Speed`
-- Replay (Built In): switch, yours-alone. `extras/Plugins/PluginsBuiltInCard/Plugins_Replay`
-- Open a Recording… Recording (Built In): action, yours-alone. `extras.action/Plugins/PluginsBuiltInCard/Plugins_Replay_Open#Plugins_Replay_Recording`
-- Play Playback (Built In): action, yours-alone. `extras.action/Plugins/PluginsBuiltInCard/Plugins_Replay_Play#Plugins_Replay_Playback`
-- Repeat (Built In): switch, yours-alone. `extras/Plugins/PluginsBuiltInCard/Plugins_Replay_Repeat`
-- Your Plugins: card, yours-alone. `extras.card/Plugins/PluginsYoursCard/Plugins_Card_Yours`
-- Add a Plugin… (Your Plugins): action, yours-alone. `extras.action/Plugins/PluginsYoursCard/Plugins_Add`
+- Run Plugins: switch, yours-alone. `extras/Plugins/PluginsHead/Extras_Plugins_Switch`
+- Test Controller: card, free. `extras.card/Plugins/PluginsTestController/Plugins_TestController`
+- Test Controller (Test Controller): switch, yours-alone. `extras/Plugins/PluginsTestControllerSwitch/Plugins_TestController`
+- Reset All (Test Controller): action, free. `extras.action/Plugins/PluginsTestController/Pad_ResetAll`
+- Replay: card, yours-alone. `extras.card/Plugins/PluginsReplay/Plugins_Replay`
+- Open a Recording… (Replay): action, yours-alone. `extras.action/Plugins/PluginsReplay/Plugins_Replay_Open`
+- Replay (Replay): switch, yours-alone. `extras/Plugins/PluginsReplay/Plugins_Replay`
+- Play Playback (Replay): action, yours-alone. `extras.action/Plugins/PluginsReplay/Plugins_Replay_Play#Plugins_Replay_Playback`
+- Repeat (Replay): switch, yours-alone. `extras/Plugins/PluginsReplay/Plugins_Replay_Repeat`
+- Add a Plugin…: action, yours-alone. `extras.action/Plugins/PluginsAddCard/Plugins_Add`
 - Save the Plugin Kit… Plugin Kit: action, yours-alone, under More. `extras.action/Plugins/PluginsMore/Plugins_Kit_Save#Plugins_Kit`
 
 ## Devices
@@ -763,6 +773,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Hide from Games (HidHide) (Settings): switch, asks (Drivers). `devices/HidingRows/Devices_HideFromGames`
 - Consume Mapped Inputs (Hooks) (Settings): switch, free. `devices/HidingRows/Devices_ConsumeMapped`
 - Move PadForge to Its Own Folder (Settings): action, free. `devices.action/HidingRows/ExeFolder_Move`
+- Mouse DPI (Settings): setting, free. `devices/MouseDpiRows/Devices_MouseDpi`
 - min (Settings): setting, free. `devices/IdleRow/Common_Min`
 - Disconnect Bluetooth When Plugged In over USB (Settings): switch, free. `devices/PowerRows/Devices_QuickCharge`
 - Read Arrows One by One (Settings): switch, free. `devices/SettingsCard/Devices_NativeArrows`
@@ -784,6 +795,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Restore Controller Pak… (Settings): action, free. `devices.action/DeviceTools/Devices_PakRestore`
 - Controller Screen… (Settings): action, free. `devices.action/DeviceTools/Devices_FlydigiScreen`
 - Calibrate Reach (Settings): action, free. `devices.action/DeviceTools/Falcon_Calibrate`
+- Reset All: action, free. `devices.action/PluginDeviceCard/Pad_ResetAll`
 - Details: card, free. `devices.card/DetailsFold/Devices_Dossier`
 - Force Raw Joystick Mode (Bypass Gamepad Remapping) (Details): switch, free. `devices/DetailsFold/Devices_ForceRaw`
 - Copy Details (Details): action, free. `devices.action/DetailsFold/Devices_CopyDetails`
@@ -1081,6 +1093,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 ### Tray menu
 
 - Show PadForge: menu item, free. `window.menuitem/Tray/Main_ShowPadForge`
+- Mark the Recording: menu item, free. `window.menuitem/Tray/Tray_MarkRecording`
 - Exit: menu item, free. `window.menuitem/Tray/Tray_Exit`
 
 ## Home

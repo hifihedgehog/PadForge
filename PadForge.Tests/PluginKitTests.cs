@@ -46,7 +46,8 @@ namespace PadForge.Tests
                 string first = PluginKit.Save(parent);
                 Assert.Equal(Path.Combine(parent, PluginKit.FolderName), first);
                 var names = Directory.GetFiles(first).Select(Path.GetFileName).OrderBy(n => n, StringComparer.Ordinal).ToArray();
-                Assert.Equal(new[] { "PadForge.ahk", "PadForge.psm1", "PadForgePlugin.cs", "PipeOwner.cs", "padforge.py", "plugin.ahk", "plugin.ps1", "plugin.py" }
+                Assert.Equal(new[] { "PadForge.ahk", "PadForge.psm1", "PadForgePlugin.cs", "PadForgePlugin.csproj", "PipeOwner.cs", "README.md", "build.ps1",
+                        "padforge.py", "plugin.ahk", "plugin.ps1", "plugin.py" }
                     .OrderBy(n => n, StringComparer.Ordinal), names);
                 foreach (var (name, _) in PluginKit.Files)
                 {
@@ -210,7 +211,16 @@ namespace PadForge.Tests
         {
             using var rig = new AutomationPipeRig(AutomationLevel.Commands);
             var logged = new ConcurrentQueue<string>();
-            rig.Host.AcceptPluginToken = (token, pid) => token == "KITKEY" ? new AutomationPluginGrant("Kit " + language, logged.Enqueue) : null;
+            // Its declared settings (#600 item 17) go to a set of the test's
+            // own.
+            var settings = new PluginSettingSet();
+            rig.Host.AcceptPluginToken = (token, pid) =>
+            {
+                if (token != "KITKEY") return null;
+                var grant = new AutomationPluginGrant("Kit " + language, logged.Enqueue);
+                PluginLines.Bind(grant, settings);
+                return grant;
+            };
             string dir = PluginKit.Save(NewFolder());
             try
             {
@@ -231,6 +241,12 @@ namespace PadForge.Tests
                 await AutomationPipeRig.Until(() => logged.Any(l => l.StartsWith("Declared Kit Pad as " + entry.Id, StringComparison.Ordinal)), 10000);
                 int first = entry.Device.PeekState().Axis[0];
                 await AutomationPipeRig.Until(() => entry.Device.PeekState().Axis[0] != first, 10000);
+                // The same four settings in every language, and a change the
+                // user makes reaches the plugin.
+                await AutomationPipeRig.Until(() => settings.Find(null, "turns") != null, 10000);
+                Assert.Equal(new[] { "speed", "fire", "center", "turns" }, settings.Declarations().Select(d => d.Key));
+                Assert.Null(settings.Set(null, "speed", "3"));
+                await AutomationPipeRig.Until(() => logged.Contains("speed is 3."), 10000);
                 if (rumbleIsPrinted)
                 {
                     entry.Device.SetRumble(5, 6);

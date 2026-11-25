@@ -586,8 +586,12 @@ namespace PadForge.Tests
             // The catalog refuses the settings of the Automation and Plugins
             // pages without a question, by their reach class in the markup
             // (#600; ReachClassTests pins the list).
+            // The Test Controller's card and its Reset All are its declared
+            // settings' (#600 items 17 and 19), free as a plugin's are. Its
+            // switch stays the user's alone.
             var index = PadForge.Search.SearchIndexBuilder.Build(PadForge.Search.SearchSources.Load());
-            Assert.All(index.Where(e => e.ExtraKey is "Automation" or "Plugins" && e.Kind != PadForge.Search.SearchKind.Extra),
+            Assert.All(index.Where(e => e.ExtraKey is "Automation" or "Plugins" && e.Kind != PadForge.Search.SearchKind.Extra
+                                        && e.AutomationId is not ("Plugins_TestControllerCard" or "Plugins_TestController_ResetAll")),
                 e => Assert.Equal(PadForge.Common.ReachClass.UsersOwn, AssistantCatalog.ReachOf(e)));
             await Task.CompletedTask;
         }

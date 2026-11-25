@@ -46,7 +46,8 @@ namespace PadForge.Services.Automation
         /// <c>index</c>, <c>name</c> and <c>rest</c>), <c>hats</c> (names),
         /// <c>gyro</c>, <c>accel</c> and <c>battery</c> (true or false),
         /// <c>touchpads</c> (finger counts) and <c>feedback</c> (any of
-        /// <c>rumble</c>, <c>trigrumble</c>, <c>light</c>, <c>player</c>).
+        /// <c>rumble</c>, <c>trigrumble</c>, <c>trigfx</c>, <c>light</c>,
+        /// <c>player</c>).
         /// An axis rests at 32768 and a slider at 0 unless it says otherwise.
         /// Trigger rumble brings rumble with it, as every pad with trigger
         /// motors has. Null and the reason in words when it cannot be read.
@@ -66,7 +67,7 @@ namespace PadForge.Services.Automation
                 var hats = new List<string>();
                 var fingers = new List<int>();
                 bool gyro = false, accel = false, battery = false;
-                bool rumble = false, trig = false, light = false, player = false;
+                bool rumble = false, trig = false, light = false, player = false, fx = false;
 
                 foreach (var property in root.EnumerateObject())
                 {
@@ -115,7 +116,8 @@ namespace PadForge.Services.Automation
                                         case "trigrumble": trig = true; break;
                                         case "light": light = true; break;
                                         case "player": player = true; break;
-                                        default: error = "feedback is rumble, trigrumble, light or player"; return null;
+                                        case "trigfx": fx = true; break;
+                                        default: error = "feedback is rumble, trigrumble, trigfx, light or player"; return null;
                                     }
                                 }
                             }
@@ -130,7 +132,8 @@ namespace PadForge.Services.Automation
                                         case "trigrumble": trig = on; break;
                                         case "light": light = on; break;
                                         case "player": player = on; break;
-                                        default: error = "feedback is rumble, trigrumble, light or player"; return null;
+                                        case "trigfx": fx = on; break;
+                                        default: error = "feedback is rumble, trigrumble, trigfx, light or player"; return null;
                                     }
                                 }
                             }
@@ -153,8 +156,11 @@ namespace PadForge.Services.Automation
                     Accel = accel,
                     TouchpadFingers = fingers,
                     Battery = battery,
-                    Rumble = rumble || trig,
+                    // A pad with trigger motors or adaptive triggers has
+                    // rumble motors too, as every such pad does.
+                    Rumble = rumble || trig || fx,
                     TriggerRumble = trig,
+                    TriggerEffects = fx,
                     Light = light,
                     Player = player,
                 };
@@ -265,7 +271,8 @@ namespace PadForge.Services.Automation
     /// is offline, row and all, so a program that declares and removes
     /// devices in a loop leaves nothing behind in PadForge.xml.
     ///
-    /// <para>Limits: <see cref="MostPerSession"/> devices a session and
+    /// <para>Limits: <see cref="MostPerSession"/> devices a session
+    /// (<see cref="MostPerPlugin"/> for a plugin) and
     /// <see cref="MostInAll"/> online at once, and in one run of PadForge
     /// <see cref="MostMadePerProgram"/> devices for one program's name and
     /// <see cref="MostMadeInAll"/> in all. A device declared again by the
@@ -275,6 +282,11 @@ namespace PadForge.Services.Automation
     internal sealed class ProgramDevices
     {
         internal const int MostPerSession = 8;
+
+        /// <summary>The devices one plugin may add (#600 item 18).</summary>
+        internal const int MostPerPlugin = 16;
+
+        private static int MostFor(AutomationSession session) => session.IsPlugin ? MostPerPlugin : MostPerSession;
         internal const int MostInAll = 32;
         internal const int MostMadePerProgram = 64;
         internal const int MostMadeInAll = 256;
@@ -420,7 +432,7 @@ namespace PadForge.Services.Automation
                     if (owner != null && owner != session) return "busy";
                     if (owner == null)
                     {
-                        if (CountOwned(session) >= MostPerSession) return "too-many";
+                        if (CountOwned(session) >= MostFor(session)) return "too-many";
                         if (e.OfflineAtMs == 0 && CountLive() >= MostInAll) return "too-many";
                     }
                     known = true;
@@ -430,7 +442,7 @@ namespace PadForge.Services.Automation
                 }
                 else
                 {
-                    if (CountOwned(session) >= MostPerSession || CountLive() >= MostInAll) return "too-many";
+                    if (CountOwned(session) >= MostFor(session) || CountLive() >= MostInAll) return "too-many";
                     if (!_made.Contains(guid))
                     {
                         _madeBy.TryGetValue((kind, program), out int byProgram);
@@ -491,7 +503,15 @@ namespace PadForge.Services.Automation
                 e.Owner?.Feedback("e led " + id + " " + Hex(r, g, b));
             e.Device.PlayerChanged += n =>
                 e.Owner?.Feedback("e player " + id + " " + n);
+            e.Device.TriggerEffectsRequested += (left, right) =>
+                e.Owner?.Feedback(TriggerEffectsLine(id, left, right));
         }
+
+        /// <summary><c>e trigfx &lt;id&gt; &lt;left&gt; &lt;right&gt;</c>: each
+        /// trigger's 11-byte effect program as 22 hex digits, its mode first
+        /// (#600 item 18).</summary>
+        internal static string TriggerEffectsLine(string id, byte[] left, byte[] right)
+            => "e trigfx " + id + " " + Convert.ToHexString(left).ToLowerInvariant() + " " + Convert.ToHexString(right).ToLowerInvariant();
 
         internal static string Hex(byte r, byte g, byte b)
             => r.ToString("x2", CultureInfo.InvariantCulture) + g.ToString("x2", CultureInfo.InvariantCulture)
@@ -507,6 +527,7 @@ namespace PadForge.Services.Automation
             if (d.LastTriggerRumble is { } trig) lines.Add("e trigrumble " + e.Id + " " + trig.Left + " " + trig.Right);
             if (d.LastLed is { } led) lines.Add("e led " + e.Id + " " + Hex(led.R, led.G, led.B));
             if (d.LastPlayer is { } player) lines.Add("e player " + e.Id + " " + player);
+            if (d.LastTriggerEffects is { } fx) lines.Add(TriggerEffectsLine(e.Id, fx.Left, fx.Right));
             return lines;
         }
 

@@ -239,7 +239,10 @@ namespace PadForge.Tests
                 var launcher = new PluginManagerTests.FakeLauncher();
                 long now = 1_000_000;
                 var manager = new PadForge.Services.Plugins.PluginManager(launcher, "pipe", () => now,
-                    commandFor: p => new PadForge.Services.Plugins.PluginCommand(p, p, dir), timer: false);
+                    commandFor: p => new PadForge.Services.Plugins.PluginCommand(p, p, dir), timer: false,
+                    // The open and the hash run on this thread, so each start is
+                    // made before the next line reads the launcher.
+                    runCheck: work => work());
                 var dash = new DashboardViewModel
                 {
                     RemoteLink = new SettingsViewModel(),
@@ -263,40 +266,84 @@ namespace PadForge.Tests
                         System.IO.File.WriteAllText(path, name);
                         return path;
                     }
-                    foreach (var name in new[] { "WheelBridge.exe", "leds.py", "pedals.ps1", "Gyro Mouse.exe" })
+                    // The board's plugins: Pedal Box runs and declared its
+                    // settings, Wheel Bridge failed five times, leds.ps1
+                    // changed since it was approved (#600 items 17 and 18).
+                    foreach (var name in new[] { "pedals.exe", "WheelBridge.exe", "leds.ps1" })
                         dash.PluginActions.Add(dash.PluginActions.Describe(File(name)));
                     var runs = manager.Snapshot();
+                    runs[0].Signer = "Example Studio";
                     manager.SetEngine(true);
-                    var bridge = manager.AcceptToken(launcher.Starts[0].Variables[PadForge.Services.Plugins.PluginManager.TokenVariable], launcher.Starts[0].Process.Id);
-                    bridge.Named("Wheel Bridge");
-                    bridge.Log("Found a Fanatec base on COM4.");
-                    bridge.Log("Declared Wheel as 3f2a.");
-                    // leds.py exits again and again until it stops.
+                    var pedals = manager.AcceptToken(launcher.Starts[0].Variables[PadForge.Services.Plugins.PluginManager.TokenVariable], launcher.Starts[0].Process.Id);
+                    pedals.Named("Pedal Box");
+                    pedals.Log("Found the board on COM4.");
+                    var set = runs[0].Settings;
+                    string Declare(string line) => PadForge.Services.Plugins.PluginLines.Answer(set, PadForge.Services.Automation.AutomationLine.Parse(line));
+                    Declare("setting key=curve kind=choice name=\"Brake Curve\" {\"choices\":[\"Linear\",\"Progressive\"],\"default\":\"Progressive\"}");
+                    Declare("setting key=dead kind=number name=\"Dead Zone\" min=0 max=20 unit=% default=3");
+                    Declare("setting key=port kind=status name=Port");
+                    Declare("setting key=port value=COM4");
+                    Declare("setting key=cal kind=button name=Calibrate help=\"Press each pedal fully once.\"");
+                    Declare("setting key=steer kind=pad name=\"Steer by Hand\" stay=1");
+                    set.Set(null, "steer", "24,40");
+                    Declare("setting key=about kind=help device=pedals help=\"Three pedals on one USB serial board. Calibrate from Pedal Box’s settings after a firmware update.\"");
+                    Declare("setting key=clutch kind=switch name=\"Clutch Inverted\" device=pedals");
+                    // Wheel Bridge exits again and again until it stops.
                     for (int i = 0; i < 5; i++)
                     {
                         launcher.Starts.Last(st => st.Command.Program == runs[1].Path).Process.Exit(1);
                         now += runs[1].PauseMs;
                         manager.Tick();
                     }
-                    // pedals.ps1 changed since it was approved.
+                    // leds.ps1 changed since it was approved.
                     manager.SetEnabled(runs[2], false);
                     System.IO.File.WriteAllText(runs[2].Path, "edited");
                     manager.SetEnabled(runs[2], true);
-                    // Gyro Mouse is switched off.
-                    manager.SetEnabled(runs[3], false);
 
                     dash.TestControllerOn = true;
-                    dash.ReplayOn = true;
-                    dash.PluginActions.OpenRecording(PluginBuiltInTests.KeptRecording);
+                    plugins.BuiltIns.TestSettings.Set(null, PadForge.Services.Plugins.TestControllerPattern.KeyHand, "true");
+                    plugins.BuiltIns.TestSettings.Set(null, PadForge.Services.Plugins.TestControllerPattern.KeyLeftStick, "38,-40");
+                    plugins.BuiltIns.TestSettings.Set(null, PadForge.Services.Plugins.TestControllerPattern.KeyRightTrigger, "70");
+                    plugins.BuiltIns.TestSettings.Set(null, "hand-a", "true");
+                    plugins.BuiltIns.TestSettings.PluginSet(null, PadForge.Services.Plugins.TestControllerPattern.KeyRate, "1,000");
                     plugins.Refresh();
-                    drawing.Picture(ground, "plugins-on.png", Board, 1500);
-                    drawing.Picture(ground, "plugins-1100.png", Usual, 1700);
+                    drawing.Picture(ground, "plugins-closed.png", Board, 1300);
+
+                    // Open: the Test Controller's card and Pedal Box's, as the
+                    // board draws them.
+                    void Open(bool open)
+                    {
+                        foreach (var card in Descendants<PadForge.Controls.FoldCard>(page))
+                        {
+                            string id = System.Windows.Automation.AutomationProperties.GetAutomationId(card);
+                            if (id == "Plugins_TestControllerCard" || id == "Plugins_Card_" + dash.PluginRows[0].Number) card.IsExpanded = open;
+                        }
+                    }
+                    drawing.Picture(ground, "plugins-on.png", Board, 2400, () =>
+                    {
+                        Open(true);
+                        plugins.BuiltIns.TestSettings.PluginSet(null, PadForge.Services.Plugins.TestControllerPattern.KeyRate, "1,000");
+                    });
+                    drawing.Picture(ground, "plugins-1100.png", Usual, 2700);
+                    Open(false);
 
                     var more = (Expander)page.FindName("PluginsMore");
                     more.IsExpanded = true;
                     dash.SelectedLogPlugin = dash.PluginRows[0];
-                    drawing.Picture(ground, "plugins-more.png", Board, 1900);
+                    drawing.Picture(ground, "plugins-more.png", Board, 1500);
                     more.IsExpanded = false;
+
+                    // A plugin device's own card on the device panel.
+                    var deviceHost = new PluginSettingsHost(set, "pedals", "Device_Plugin_pedals", drawing.App.Dispatcher);
+                    var deviceCard = new Border { Width = 520, Padding = new Thickness(20, 14, 12, 10) };
+                    deviceCard.SetResourceReference(FrameworkElement.StyleProperty, "CardBorder");
+                    var deviceStack = new StackPanel();
+                    deviceStack.Children.Add(new TextBlock { Text = string.Format(s.Plugins_Device_Settings_Format, "Pedal Box"), FontSize = 15, FontWeight = FontWeights.SemiBold });
+                    deviceStack.Children.Add(new PluginSettingsView { DataContext = deviceHost, LabelWidth = 170, CompactMargin = new Thickness(0) });
+                    deviceCard.Child = deviceStack;
+                    deviceCard.Margin = new Thickness(24);
+                    deviceCard.VerticalAlignment = VerticalAlignment.Top;
+                    drawing.Picture(drawing.Ground(deviceCard), "plugin-device-card.png", 568, 300);
 
                     dash.EnableGameModServer = true;
                     dash.IsGameModServerRunning = true;
@@ -1775,6 +1822,19 @@ namespace PadForge.Tests
                     table.ScrollIntoView(Row("RightThumbAxisY"));
                 });
             });
+        }
+
+        /// <summary>Every element of type <typeparamref name="T"/> drawn
+        /// under <paramref name="root"/>.</summary>
+        private static IEnumerable<T> Descendants<T>(DependencyObject root) where T : DependencyObject
+        {
+            int n = VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < n; i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                if (child is T match) yield return match;
+                foreach (var below in Descendants<T>(child)) yield return below;
+            }
         }
 
         /// <summary>Runs <paramref name="body"/> beside the app's resources

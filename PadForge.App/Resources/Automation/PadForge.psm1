@@ -500,6 +500,7 @@ function Invoke-PadForgeEvent([string]$Line) {
         'player' { $key = "player|$($w[2])"; $value = [int]$w[3] }
         'lease' { $key = 'lease'; $value = $w[2] }
         'error' { $key = 'error'; $value = ($w[2..($w.Length - 1)] -join ' ') }
+        default { $key = "event|$($w[1])"; $value = ,$e.Pairs }
     }
     if ($null -ne $key -and $script:Callbacks.ContainsKey($key)) {
         foreach ($action in $script:Callbacks[$key]) {
@@ -630,6 +631,14 @@ function Register-PadForgeEngine {
     param([Parameter(Mandatory)][scriptblock]$Action)
     Add-PadForgeCallback 'engine' $Action
     if (-not $script:Subscribed.ContainsKey('engine')) { Invoke-PadForgeRequest 'sub engine' | Out-Null; $script:Subscribed['engine'] = $true }
+}
+
+function Register-PadForgeEvent {
+    <# Runs -Action { param($pairs) } for every event of -Kind, with the
+       line's key=value words as a hashtable: setting, press and choices for
+       a plugin's declared settings. #>
+    param([Parameter(Mandatory)][string]$Kind, [Parameter(Mandatory)][scriptblock]$Action)
+    Add-PadForgeCallback "event|$Kind" $Action
 }
 
 function Register-PadForgeLevel {
@@ -797,7 +806,7 @@ function Invoke-PadForgeTool {
 
 Export-ModuleMember -Function Connect-PadForge, Connect-PadForgePlugin, Write-PadForgeLog, Disconnect-PadForge, Wait-PadForge, Invoke-PadForgeRequest,
     Register-PadForgeButton, Register-PadForgeHat, Register-PadForgeAxis, Register-PadForgeDeviceChange,
-    Register-PadForgeProfile, Register-PadForgeEngine, Register-PadForgeLevel, Register-PadForgeRumble, Register-PadForgeLight,
+    Register-PadForgeProfile, Register-PadForgeEngine, Register-PadForgeLevel, Register-PadForgeEvent, Register-PadForgeRumble, Register-PadForgeLight,
     Get-PadForgeDevice, Find-PadForgeDevice, Get-PadForgeCaps, Read-PadForgeDevice, Get-PadForgeOutputs,
     New-PadForgeController, Send-PadForgeControl, Remove-PadForgeController, Set-PadForgeHold, Clear-PadForgeHold,
     Set-PadForgeValue, Switch-PadForgeProfile, Reset-PadForgeProfile, Start-PadForgeEngine, Stop-PadForgeEngine,

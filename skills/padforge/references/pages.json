@@ -242,6 +242,39 @@
     "under_more": false
   },
   {
+    "id": "pad/Mapping_MouseSpeedSensitivity#row",
+    "page": "A controller's page",
+    "place": "Buttons (Keys & Mouse, Notes & Controls or Hands by the controller's type)",
+    "card": null,
+    "words": "Sensitivity",
+    "kind": "number",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "pad/Mapping_MouseBackToCenter#row",
+    "page": "A controller's page",
+    "place": "Buttons (Keys & Mouse, Notes & Controls or Hands by the controller's type)",
+    "card": null,
+    "words": "Back to Center",
+    "kind": "number",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "pad/Mapping_AxisRelative#row",
+    "page": "A controller's page",
+    "place": "Buttons (Keys & Mouse, Notes & Controls or Hands by the controller's type)",
+    "card": null,
+    "words": "This axis moves relatively",
+    "kind": "switch",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
     "id": "pad/Mapping_MouseTravelCounts#row",
     "page": "A controller's page",
     "place": "Buttons (Keys & Mouse, Notes & Controls or Hands by the controller's type)",
@@ -292,6 +325,17 @@
     "card": null,
     "words": "Steer Input",
     "kind": "choice",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "pad/Mapping_MousePositionAnchor#row",
+    "page": "A controller's page",
+    "place": "Buttons (Keys & Mouse, Notes & Controls or Hands by the controller's type)",
+    "card": null,
+    "words": "Start Where Steering Began",
+    "kind": "switch",
     "reach": "free",
     "why": null,
     "under_more": false
@@ -5742,33 +5786,22 @@
     "under_more": false
   },
   {
-    "id": "settings.action/RecordProblemButton/Settings_RecordProblem_Start#Settings_RecordProblem",
+    "id": "settings.action/RecordProblemButton/Settings_RecordProblem_Start",
     "page": "Settings",
     "place": "",
     "card": "Diagnostics",
-    "words": "Start Recording Record a Problem",
+    "words": "Start Recording",
     "kind": "action",
     "reach": "free",
     "why": null,
     "under_more": false
   },
   {
-    "id": "settings/DataGroup/Settings_DiagnosticsLogging",
+    "id": "settings.action/SaveSnapshotButton/Settings_DiagnosticsSnapshot",
     "page": "Settings",
     "place": "",
     "card": "Diagnostics",
-    "words": "Keep a Diagnostics Log",
-    "kind": "switch",
-    "reach": "free",
-    "why": null,
-    "under_more": false
-  },
-  {
-    "id": "settings.action/DataGroup/Settings_DiagnosticsSnapshot",
-    "page": "Settings",
-    "place": "",
-    "card": "Diagnostics",
-    "words": "Save Snapshot",
+    "words": "Save a Snapshot…",
     "kind": "action",
     "reach": "free",
     "why": null,
@@ -5786,11 +5819,33 @@
     "under_more": false
   },
   {
-    "id": "settings.action/DiagnosticsMore/Settings_RecordProblem_SaveLastMinute#Settings_RecordProblem_KeepLastMinute",
+    "id": "settings/DataGroup/Settings_DiagnosticsLogging",
     "page": "Settings",
     "place": "",
     "card": "Diagnostics",
-    "words": "Save the Last 60 Seconds Keep the Last 60 Seconds",
+    "words": "Keep a Diagnostics Log",
+    "kind": "switch",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "settings/WhatToRecord/Settings_RecordProblem_WhatToRecord",
+    "page": "Settings",
+    "place": "",
+    "card": "Diagnostics",
+    "words": "What to Record",
+    "kind": "setting",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": true
+  },
+  {
+    "id": "settings.action/DiagnosticsMore/Settings_RecordProblem_SaveLastMinute",
+    "page": "Settings",
+    "place": "",
+    "card": "Diagnostics",
+    "words": "Save the Last 60 Seconds",
     "kind": "action",
     "reach": "free",
     "why": null,
@@ -7249,6 +7304,17 @@
     "under_more": false
   },
   {
+    "id": "extras.card/Automation/AutomationWaitingCard/Extras_Automation_Card_Waiting",
+    "page": "Extras",
+    "place": "Automation",
+    "card": null,
+    "words": "Waiting for You",
+    "kind": "card",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
     "id": "extras.card/Automation/AutomationAssistantsCard/Extras_Automation_Card_Assistants",
     "page": "Extras",
     "place": "Automation",
@@ -7258,6 +7324,61 @@
     "reach": "yours-alone",
     "why": null,
     "under_more": false
+  },
+  {
+    "id": "extras.menuitem/Automation/AssistantRowsList/Common_Remove",
+    "page": "Extras",
+    "place": "Automation",
+    "card": "Assistants",
+    "words": "Remove",
+    "kind": "menu item",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "extras.menuitem/Automation/AssistantRowsList/Extras_Automation_SaveZip",
+    "page": "Extras",
+    "place": "Automation",
+    "card": "Assistants",
+    "words": "Save the Skill as a ZIP…",
+    "kind": "menu item",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "extras.menuitem/Automation/AssistantRowsList/Extras_Automation_OpenSettings",
+    "page": "Extras",
+    "place": "Automation",
+    "card": "Assistants",
+    "words": "Open Its Settings File",
+    "kind": "menu item",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "extras.action/Automation/AutomationMore/Extras_Automation_CopySettings#Extras_Automation_OtherAssistants",
+    "page": "Extras",
+    "place": "Automation",
+    "card": "Assistants",
+    "words": "Copy Settings Other Assistants",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": true
+  },
+  {
+    "id": "extras.action/Automation/AutomationMore/Extras_Automation_CopyMessage#Extras_Automation_OtherAssistants",
+    "page": "Extras",
+    "place": "Automation",
+    "card": "Assistants",
+    "words": "Copy a Message Other Assistants",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": true
   },
   {
     "id": "extras.card/Automation/AutomationScriptsCard/Extras_Automation_Card_Scripts",
@@ -7282,11 +7403,11 @@
     "under_more": false
   },
   {
-    "id": "extras.card/Automation/AutomationWaitingCard/Extras_Automation_Card_Waiting",
+    "id": "extras.card/Automation/AutomationAllowedCard/Extras_Automation_Card_Allowed",
     "page": "Extras",
     "place": "Automation",
     "card": null,
-    "words": "Waiting for You",
+    "words": "Allowed Programs",
     "kind": "card",
     "reach": "yours-alone",
     "why": null,
@@ -7304,26 +7425,15 @@
     "under_more": false
   },
   {
-    "id": "extras.action/Automation/AutomationMore/Extras_Automation_CopyToml#Extras_Automation_TomlLabel",
+    "id": "extras.action/Automation/AutomationActivityCard/Extras_Automation_Export",
     "page": "Extras",
     "place": "Automation",
-    "card": null,
-    "words": "Copy as TOML Assistants That Read TOML",
+    "card": "Activity",
+    "words": "Export…",
     "kind": "action",
     "reach": "yours-alone",
     "why": null,
-    "under_more": true
-  },
-  {
-    "id": "extras.action/Automation/AutomationMore/Extras_Automation_SaveSkill#Extras_Automation_SkillLabel",
-    "page": "Extras",
-    "place": "Automation",
-    "card": null,
-    "words": "Save the Skill… Skill for Assistants",
-    "kind": "action",
-    "reach": "yours-alone",
-    "why": null,
-    "under_more": true
+    "under_more": false
   },
   {
     "id": "extras.extra/Plugins/PluginsTile/Extras_Plugins_Title",
@@ -7337,7 +7447,7 @@
     "under_more": false
   },
   {
-    "id": "extras/Plugins/PluginsPage/Extras_Plugins_Switch",
+    "id": "extras/Plugins/PluginsHead/Extras_Plugins_Switch",
     "page": "Extras",
     "place": "Plugins",
     "card": null,
@@ -7348,21 +7458,21 @@
     "under_more": false
   },
   {
-    "id": "extras.card/Plugins/PluginsBuiltInCard/Plugins_Card_BuiltIn",
+    "id": "extras.card/Plugins/PluginsTestController/Plugins_TestController",
     "page": "Extras",
     "place": "Plugins",
     "card": null,
-    "words": "Built In",
+    "words": "Test Controller",
     "kind": "card",
-    "reach": "yours-alone",
+    "reach": "free",
     "why": null,
     "under_more": false
   },
   {
-    "id": "extras/Plugins/PluginsBuiltInCard/Plugins_TestController",
+    "id": "extras/Plugins/PluginsTestControllerSwitch/Plugins_TestController",
     "page": "Extras",
     "place": "Plugins",
-    "card": "Built In",
+    "card": "Test Controller",
     "words": "Test Controller",
     "kind": "switch",
     "reach": "yours-alone",
@@ -7370,21 +7480,43 @@
     "under_more": false
   },
   {
-    "id": "extras/Plugins/PluginsBuiltInCard/Plugins_Speed",
+    "id": "extras.action/Plugins/PluginsTestController/Pad_ResetAll",
     "page": "Extras",
     "place": "Plugins",
-    "card": "Built In",
-    "words": "Speed",
-    "kind": "choice",
+    "card": "Test Controller",
+    "words": "Reset All",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "extras.card/Plugins/PluginsReplay/Plugins_Replay",
+    "page": "Extras",
+    "place": "Plugins",
+    "card": null,
+    "words": "Replay",
+    "kind": "card",
     "reach": "yours-alone",
     "why": null,
     "under_more": false
   },
   {
-    "id": "extras/Plugins/PluginsBuiltInCard/Plugins_Replay",
+    "id": "extras.action/Plugins/PluginsReplay/Plugins_Replay_Open",
     "page": "Extras",
     "place": "Plugins",
-    "card": "Built In",
+    "card": "Replay",
+    "words": "Open a Recording…",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "extras/Plugins/PluginsReplay/Plugins_Replay",
+    "page": "Extras",
+    "place": "Plugins",
+    "card": "Replay",
     "words": "Replay",
     "kind": "switch",
     "reach": "yours-alone",
@@ -7392,21 +7524,10 @@
     "under_more": false
   },
   {
-    "id": "extras.action/Plugins/PluginsBuiltInCard/Plugins_Replay_Open#Plugins_Replay_Recording",
+    "id": "extras.action/Plugins/PluginsReplay/Plugins_Replay_Play#Plugins_Replay_Playback",
     "page": "Extras",
     "place": "Plugins",
-    "card": "Built In",
-    "words": "Open a Recording… Recording",
-    "kind": "action",
-    "reach": "yours-alone",
-    "why": null,
-    "under_more": false
-  },
-  {
-    "id": "extras.action/Plugins/PluginsBuiltInCard/Plugins_Replay_Play#Plugins_Replay_Playback",
-    "page": "Extras",
-    "place": "Plugins",
-    "card": "Built In",
+    "card": "Replay",
     "words": "Play Playback",
     "kind": "action",
     "reach": "yours-alone",
@@ -7414,10 +7535,10 @@
     "under_more": false
   },
   {
-    "id": "extras/Plugins/PluginsBuiltInCard/Plugins_Replay_Repeat",
+    "id": "extras/Plugins/PluginsReplay/Plugins_Replay_Repeat",
     "page": "Extras",
     "place": "Plugins",
-    "card": "Built In",
+    "card": "Replay",
     "words": "Repeat",
     "kind": "switch",
     "reach": "yours-alone",
@@ -7425,21 +7546,10 @@
     "under_more": false
   },
   {
-    "id": "extras.card/Plugins/PluginsYoursCard/Plugins_Card_Yours",
+    "id": "extras.action/Plugins/PluginsAddCard/Plugins_Add",
     "page": "Extras",
     "place": "Plugins",
     "card": null,
-    "words": "Your Plugins",
-    "kind": "card",
-    "reach": "yours-alone",
-    "why": null,
-    "under_more": false
-  },
-  {
-    "id": "extras.action/Plugins/PluginsYoursCard/Plugins_Add",
-    "page": "Extras",
-    "place": "Plugins",
-    "card": "Your Plugins",
     "words": "Add a Plugin…",
     "kind": "action",
     "reach": "yours-alone",
@@ -7552,6 +7662,17 @@
     "card": "Settings",
     "words": "Move PadForge to Its Own Folder",
     "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices/MouseDpiRows/Devices_MouseDpi",
+    "page": "Devices",
+    "place": "",
+    "card": "Settings",
+    "words": "Mouse DPI",
+    "kind": "setting",
     "reach": "free",
     "why": null,
     "under_more": false
@@ -7782,6 +7903,17 @@
     "place": "",
     "card": "Settings",
     "words": "Calibrate Reach",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/PluginDeviceCard/Pad_ResetAll",
+    "page": "Devices",
+    "place": "",
+    "card": null,
+    "words": "Reset All",
     "kind": "action",
     "reach": "free",
     "why": null,
@@ -9905,6 +10037,17 @@
     "place": "Tray menu",
     "card": null,
     "words": "Show PadForge",
+    "kind": "menu item",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "window.menuitem/Tray/Tray_MarkRecording",
+    "page": "The window",
+    "place": "Tray menu",
+    "card": null,
+    "words": "Mark the Recording",
     "kind": "menu item",
     "reach": "free",
     "why": null,

@@ -50,6 +50,11 @@ namespace PadForge.Services.Plugins
         Failed,
         /// <summary>A program PadForge did not start offered its key.</summary>
         ForeignKey,
+        /// <summary>It sent nothing for a minute and was ended (#600 item
+        /// 18).</summary>
+        Silent,
+        /// <summary>Its file changed while it ran (#600 item 18).</summary>
+        ChangedWhileRunning,
     }
 
     /// <summary>One line of a plugin's log, kept as facts so the page words
@@ -69,7 +74,21 @@ namespace PadForge.Services.Plugins
             Name = ProgramDeviceDeclaration.Clean(saved.Name, ProgramDeviceDeclaration.LongestName);
             Sha256 = saved.Sha256 ?? string.Empty;
             Enabled = saved.Enabled;
+            Signer = string.IsNullOrWhiteSpace(saved.Signer) ? null : ProgramDeviceDeclaration.Clean(saved.Signer, 128);
+            Settings.Load(saved.Values);
         }
+
+        /// <summary>What it declared and the values the user set for it
+        /// (#600 item 17).</summary>
+        public PluginSettingSet Settings { get; } = new();
+
+        /// <summary>The signer of the approved bytes, as the confirmation
+        /// showed it, or null for a file with none (#600 item 18).</summary>
+        public string Signer { get; internal set; }
+
+        /// <summary>Its file changed while it ran: the row offers Approve and
+        /// Restart (#600 item 18).</summary>
+        public bool FileChanged { get; internal set; }
 
         /// <summary>The file, as the user picked it.</summary>
         public string Path { get; }
@@ -123,6 +142,12 @@ namespace PadForge.Services.Plugins
         internal int CheckNumber;
         internal AutomationPluginGrant Grant;
         internal readonly Queue<PluginLogLine> Log = new();
+        /// <summary>The file's size and write time when it was let go at the
+        /// plugin's hello, which a later look compares.</summary>
+        internal (long Length, DateTime Written)? Stamp;
+        internal bool HashPending;
+        /// <summary>Its devices went offline for its silence.</summary>
+        internal bool SilentOffline;
 
         internal PluginData Save() => new()
         {
@@ -131,6 +156,8 @@ namespace PadForge.Services.Plugins
             Name = Name.Length > 0 ? Name : null,
             Sha256 = Sha256,
             Enabled = Enabled,
+            Signer = Signer,
+            Values = Settings.Save(),
         };
     }
 
@@ -308,6 +335,17 @@ namespace PadForge.Services.Plugins
             }
         }
 
+        /// <summary>The plugin a grant was given to, or null.</summary>
+        public PluginRun RunOf(AutomationPluginGrant grant)
+        {
+            if (grant == null) return null;
+            lock (_sync)
+            {
+                foreach (var run in _runs) if (ReferenceEquals(run.Grant, grant)) return run;
+                return null;
+            }
+        }
+
         /// <summary>Whether a plugin of this file is on the list.</summary>
         public bool Has(string path)
         {
@@ -323,7 +361,7 @@ namespace PadForge.Services.Plugins
         /// for the bytes whose SHA-256 the confirmation showed, switched on.
         /// Null when the list is full or holds the file already.
         /// </summary>
-        public PluginRun Add(string path, string sha256)
+        public PluginRun Add(string path, string sha256, string signer = null)
         {
             if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(sha256)) return null;
             PluginRun run;
@@ -336,6 +374,7 @@ namespace PadForge.Services.Plugins
                     Identity = UniqueIdentity(path),
                     Sha256 = sha256.ToUpperInvariant(),
                     Enabled = true,
+                    Signer = signer,
                 });
                 _runs.Add(run);
                 Evaluate(run);
@@ -383,16 +422,28 @@ namespace PadForge.Services.Plugins
 
         /// <summary>The user approved a changed file again, for the bytes
         /// whose SHA-256 the confirmation showed.</summary>
-        public void Approve(PluginRun run, string sha256)
+        public void Approve(PluginRun run, string sha256, string signer = null)
         {
             if (string.IsNullOrWhiteSpace(sha256)) return;
             lock (_sync)
             {
                 if (!_runs.Contains(run)) return;
                 run.Sha256 = sha256.ToUpperInvariant();
+                run.Signer = signer;
                 run.Failures = 0;
                 if (run.Status == PluginStatus.Changed) run.Status = PluginStatus.Stopped;
-                Evaluate(run);
+                if (run.FileChanged && run.Process != null)
+                {
+                    // Approve and Restart: the run of the old bytes ends, and
+                    // its end starts the new ones (OnExited).
+                    run.FileChanged = false;
+                    StopRun(run);
+                }
+                else
+                {
+                    run.FileChanged = false;
+                    Evaluate(run);
+                }
             }
             RunChecks();
             SavedChanged?.Invoke();
@@ -675,6 +726,10 @@ namespace PadForge.Services.Plugins
                     run.Held = null;
                     run.Token = null;
                     run.Grant = null;
+                    run.Stamp = null;
+                    run.SilentOffline = false;
+                    run.FileChanged = false;
+                    run.Settings.EndRun();
                     run.ExitCode = code;
                     AddLog(run, new PluginLogLine(_clock(), PluginLogKind.Exited, Code: code));
                     bool stopped = run.Stopping;
@@ -767,6 +822,13 @@ namespace PadForge.Services.Plugins
                     var mine = run;
                     grant = new AutomationPluginGrant(run.Identity, line => Wrote(mine, line), name => Named(mine, name));
                     run.Grant = grant;
+                    PluginLines.Bind(grant, run.Settings);
+                    // Held from the hash until this hello, so nothing could
+                    // change the file in between. From here it is free to be
+                    // rebuilt, and a change shows Approve and Restart.
+                    run.Stamp = StampOf(run.Held);
+                    run.Held?.Dispose();
+                    run.Held = null;
                     break;
                 }
                 if (foreign != null) AddLog(foreign, new PluginLogLine(_clock(), PluginLogKind.ForeignKey, Code: processId));
@@ -832,6 +894,99 @@ namespace PadForge.Services.Plugins
             foreach (var run in _runs)
                 if (string.Equals(run.Identity, identity, StringComparison.OrdinalIgnoreCase)) return true;
             return false;
+        }
+
+        // ── After the hello (#600 item 18) ──
+
+        private static (long, DateTime)? StampOf(FileStream held)
+        {
+            if (held == null) return null;
+            try { return (held.Length, File.GetLastWriteTimeUtc(held.Name)); }
+            catch { return null; }
+        }
+
+        /// <summary>The size and write time of a file, or null. A test
+        /// gives its own.</summary>
+        internal Func<string, (long Length, DateTime Written)?> StatFile { get; set; } = path =>
+        {
+            try
+            {
+                var info = new FileInfo(path);
+                return info.Exists ? (info.Length, info.LastWriteTimeUtc) : null;
+            }
+            catch { return null; }
+        };
+
+        /// <summary>
+        /// Looks at the file of each plugin that runs past its hello: when
+        /// its size or write time moved, it is hashed again off the
+        /// interface's thread, and a hash that is not the approved one marks
+        /// the run <see cref="PluginRun.FileChanged"/>. The page's tick calls
+        /// it once a second.
+        /// </summary>
+        public void CheckFiles()
+        {
+            var due = new List<PluginRun>();
+            lock (_sync)
+                foreach (var run in _runs)
+                    if (run.Process != null && run.Held == null && run.Stamp != null && !run.FileChanged && !run.HashPending)
+                        due.Add(run);
+            foreach (var run in due)
+            {
+                var now = StatFile(run.Path);
+                (long, DateTime)? stamp;
+                lock (_sync) stamp = run.Stamp;
+                if (now == stamp) continue;
+                lock (_sync) run.HashPending = true;
+                _runCheck(() =>
+                {
+                    string sha = null;
+                    FileStream held = null;
+                    try { (held, sha) = _openHeld(run.Path); }
+                    catch { sha = null; }
+                    finally { held?.Dispose(); }
+                    bool changed;
+                    lock (_sync)
+                    {
+                        run.HashPending = false;
+                        run.Stamp = now;
+                        changed = run.Process != null && !string.Equals(sha, run.Sha256, StringComparison.OrdinalIgnoreCase);
+                        if (changed)
+                        {
+                            run.FileChanged = true;
+                            AddLog(run, new PluginLogLine(_clock(), PluginLogKind.ChangedWhileRunning));
+                        }
+                    }
+                    if (changed) Changed?.Invoke();
+                });
+            }
+        }
+
+        /// <summary>
+        /// A plugin that sent nothing for a minute is ended and started again
+        /// with the back-off, unless a debugger is attached to it
+        /// (CheckRemoteDebuggerPresent): a plugin stopped at a breakpoint is
+        /// silent by its author's hand. True when it was ended.
+        /// </summary>
+        public bool EndSilent(PluginRun run)
+        {
+            IPluginProcess process;
+            lock (_sync)
+            {
+                if (!_runs.Contains(run) || run.Process == null || run.Stopping) return false;
+                process = run.Process;
+                bool debugged;
+                try { debugged = process.DebuggerAttached; }
+                catch { debugged = false; }
+                if (debugged) return false;
+                AddLog(run, new PluginLogLine(_clock(), PluginLogKind.Silent));
+                run.Token = null;
+            }
+            // Not a stop of PadForge's: its end counts as a failure, so the
+            // back-off starts it again (OnExited).
+            try { process.Stop(); } catch { }
+            Changed?.Invoke();
+            return true;
         }
 
         public void Dispose()

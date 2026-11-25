@@ -63,65 +63,190 @@ namespace PadForge.Tests
 
         public PluginBuiltInTests(ITestOutputHelper output) => _output = output;
 
-        // ── Test Controller ──
+        // ── Test Controller (#600 item 19) ──
 
-        [Fact]
-        public void TheTestControllersPattern_VisitsEveryControl_OneAtATime()
+        private static TestControllerConfig Config(Action<PluginSettingSet> set = null)
         {
-            var pressed = new HashSet<int>();
-            var hats = new HashSet<int>();
-            var low = new int[6];
-            var high = new int[6];
-            Array.Fill(low, int.MaxValue);
-            for (double t = 0; t < TestControllerPattern.PassMs; t += 2)
-            {
-                var s = TestControllerPattern.At(t);
-                int moving = 0;
-                for (int b = 0; b < CustomInputState.MaxButtons; b++)
-                    if (s.Buttons[b]) { pressed.Add(b); moving++; }
-                bool stickL = s.Axis[0] != TestControllerPattern.Center || s.Axis[1] != TestControllerPattern.Center;
-                bool stickR = s.Axis[3] != TestControllerPattern.Center || s.Axis[4] != TestControllerPattern.Center;
-                if (stickL) moving++;
-                if (stickR) moving++;
-                if (s.Axis[2] != 0) moving++;
-                if (s.Axis[5] != 0) moving++;
-                if (s.Povs[0] >= 0) { hats.Add(s.Povs[0]); moving++; }
-                Assert.True(moving <= 1, "two controls move at " + t + " ms");
-                for (int a = 0; a < 6; a++)
-                {
-                    low[a] = Math.Min(low[a], s.Axis[a]);
-                    high[a] = Math.Max(high[a], s.Axis[a]);
-                }
-                Assert.Equal(-1, s.Povs[1]);
-            }
-            Assert.Equal(Enumerable.Range(0, TestControllerPattern.ButtonNames.Length), pressed.OrderBy(b => b));
-            Assert.Equal(Enumerable.Range(0, 8).Select(i => i * 4500), hats.OrderBy(h => h));
-            // Each stick around its full circle, each trigger to full and back.
-            foreach (int a in new[] { 0, 1, 3, 4 })
-            {
-                Assert.InRange(low[a], 0, 10);
-                Assert.InRange(high[a], 65525, 65535);
-            }
-            foreach (int a in new[] { 2, 5 })
-            {
-                Assert.Equal(0, low[a]);
-                Assert.InRange(high[a], 65400, 65535);
-            }
-            // Then again.
-            TestHostAssert.SameState(TestControllerPattern.At(123), TestControllerPattern.At(123 + TestControllerPattern.PassMs));
+            var settings = new PluginSettingSet();
+            TestControllerPattern.Declare(settings);
+            set?.Invoke(settings);
+            return TestControllerPattern.Read(settings);
+        }
+
+        private static CustomInputState At(TestControllerConfig c, long ms)
+        {
+            var s = new CustomInputState();
+            TestControllerPattern.Fill(s, c, ms);
+            return s;
         }
 
         [Fact]
-        public void TheSameSpeed_GivesTheSameSequence_AndFastIsNormalTwiceAsQuick()
+        public void TheTestController_DeclaresEverySettingTheIssueLists_WithItsRangeAndDefault()
         {
-            List<CustomInputState> Sequence(int speed)
-                => Enumerable.Range(0, 400).Select(i => TestControllerPattern.At(i * 40.0 * TestControllerPattern.Factor(speed))).ToList();
-            var a = Sequence(2);
-            var b = Sequence(2);
-            for (int i = 0; i < a.Count; i++) TestHostAssert.SameState(a[i], b[i]);
-            for (int i = 0; i < 200; i++)
-                TestHostAssert.SameState(TestControllerPattern.At(i * 80.0), Sequence(2)[i]);
-            Assert.Equal(new[] { 0.5, 1.0, 2.0, 4.0 }, TestControllerPattern.Speeds);
+            var set = new PluginSettingSet();
+            TestControllerPattern.Declare(set);
+            var d = set.Declarations().ToDictionary(x => x.Key);
+            Assert.Equal(PluginSettingKind.Choice, d[TestControllerPattern.KeyMoves].Kind);
+            Assert.Equal(new[] { "both", "sticks", "triggers" }, d[TestControllerPattern.KeyMoves].Choices.Select(c => c.Value));
+            Assert.Equal(new[] { "sweep", "circle" }, d[TestControllerPattern.KeyPattern].Choices.Select(c => c.Value));
+            Assert.Equal("sweep", d[TestControllerPattern.KeyPattern].Default);
+            var move = d[TestControllerPattern.KeyMove];
+            Assert.Equal((0.5, 20.0, "4", "s"), (move.Min, move.Max, move.Default, move.Unit));
+            var rest = d[TestControllerPattern.KeyRest];
+            Assert.Equal((0.0, 20.0, "2"), (rest.Min, rest.Max, rest.Default));
+            var press = d[TestControllerPattern.KeyPress];
+            Assert.Equal((50.0, 5000.0, "250", "ms"), (press.Min, press.Max, press.Default, press.Unit));
+            Assert.Equal("true", d[TestControllerPattern.KeyButtons].Default);
+            // The navigation buttons and the D-pad start off, with the reason
+            // beside them.
+            Assert.Equal("false", d[TestControllerPattern.KeyNavigation].Default);
+            Assert.Equal("false", d[TestControllerPattern.KeyDpad].Default);
+            Assert.Contains("Xbox Game Bar", d[TestControllerPattern.KeyNavigation].Help);
+            Assert.Equal(new[] { "1", "2", "3", "4" }, d[TestControllerPattern.KeyControllers].Choices.Select(c => c.Value));
+            Assert.Equal("false", d[TestControllerPattern.KeyHand].Default);
+            Assert.Equal(PluginSettingKind.Pad, d[TestControllerPattern.KeyLeftStick].Kind);
+            Assert.Equal(PluginSettingKind.Pad, d[TestControllerPattern.KeyRightStick].Kind);
+            Assert.Equal(PluginSettingKind.Number, d[TestControllerPattern.KeyLeftTrigger].Kind);
+            Assert.All(TestControllerPattern.HandButtons, b => Assert.Equal(PluginSettingKind.Switch, d[b.Key].Kind));
+            Assert.All(d.Values.Where(x => x.Key.StartsWith("hand-", StringComparison.Ordinal)), x =>
+            {
+                Assert.Equal(TestControllerPattern.KeyHand, x.When);
+                Assert.True(x.Compact);
+            });
+            Assert.Equal(PluginSettingKind.Status, d[TestControllerPattern.KeyRate].Kind);
+        }
+
+        [Fact]
+        public void ByDefault_ItPressesNoNavigationButton_TurnsNoDPad_AndMovesThenRests()
+        {
+            var c = Config();
+            var pressed = new HashSet<int>();
+            bool moved = false, rested = false;
+            for (long ms = 0; ms < 60_000; ms += 5)
+            {
+                var s = At(c, ms);
+                for (int b = 0; b < 11; b++) if (s.Buttons[b]) pressed.Add(b);
+                Assert.Equal(-1, s.Povs[0]);
+                long into = ms % 6000;
+                bool sticksCentered = s.Axis[0] == TestControllerPattern.Center && s.Axis[1] == TestControllerPattern.Center
+                                      && s.Axis[3] == TestControllerPattern.Center && s.Axis[4] == TestControllerPattern.Center;
+                if (into >= 4000)
+                {
+                    // The Rest Time: sticks centered, triggers out.
+                    Assert.True(sticksCentered, "a stick moves while resting at " + ms);
+                    Assert.Equal(0, s.Axis[2]);
+                    rested = true;
+                }
+                else if (!sticksCentered) moved = true;
+            }
+            Assert.True(moved && rested);
+            Assert.Equal(TestControllerPattern.PlainButtons.OrderBy(b => b), pressed.OrderBy(b => b));
+            Assert.DoesNotContain(0, pressed);   // A
+            Assert.DoesNotContain(1, pressed);   // B
+            Assert.DoesNotContain(6, pressed);   // Back
+            Assert.DoesNotContain(7, pressed);   // Start
+            Assert.DoesNotContain(10, pressed);  // Guide
+        }
+
+        [Fact]
+        public void TheSettings_ChangeTheMotion_AsTheyAreSet()
+        {
+            // One button at a time, held for the Press Time.
+            var c = Config(s => s.Set(null, TestControllerPattern.KeyPress, "1000"));
+            Assert.Equal(1, At(c, 0).Buttons.Count(b => b));
+            Assert.Equal(At(c, 100).Buttons, At(c, 900).Buttons);
+            Assert.NotEqual(Array.IndexOf(At(c, 900).Buttons, true), Array.IndexOf(At(c, 1100).Buttons, true));
+
+            // Navigation on: every button takes its turn. D-pad on: it turns.
+            c = Config(s =>
+            {
+                s.Set(null, TestControllerPattern.KeyNavigation, "true");
+                s.Set(null, TestControllerPattern.KeyDpad, "true");
+            });
+            var pressed = new HashSet<int>();
+            var hats = new HashSet<int>();
+            for (long ms = 0; ms < 20_000; ms += 10)
+            {
+                var s = At(c, ms);
+                for (int b = 0; b < 11; b++) if (s.Buttons[b]) pressed.Add(b);
+                if (s.Povs[0] >= 0) hats.Add(s.Povs[0]);
+            }
+            Assert.Equal(Enumerable.Range(0, 11), pressed.OrderBy(b => b));
+            Assert.Equal(Enumerable.Range(0, 8).Select(i => i * 4500), hats.OrderBy(h => h));
+
+            // Press Buttons off: none.
+            c = Config(s => s.Set(null, TestControllerPattern.KeyButtons, "false"));
+            for (long ms = 0; ms < 10_000; ms += 50) Assert.DoesNotContain(true, At(c, ms).Buttons);
+
+            // Triggers only: the sticks stay centered, the triggers go to full.
+            c = Config(s => s.Set(null, TestControllerPattern.KeyMoves, "triggers"));
+            int high = 0;
+            for (long ms = 0; ms < 6000; ms += 5)
+            {
+                var s = At(c, ms);
+                Assert.Equal(TestControllerPattern.Center, s.Axis[0]);
+                high = Math.Max(high, s.Axis[5]);
+            }
+            Assert.InRange(high, 65000, 65535);
+
+            // Circle: the left stick goes round, each point a full radius out.
+            c = Config(s => s.Set(null, TestControllerPattern.KeyPattern, "circle"));
+            for (long ms = 0; ms < 4000; ms += 100)
+            {
+                var s = At(c, ms);
+                double x = (s.Axis[0] - 32768) / 32767.0, y = (s.Axis[1] - 32768) / 32767.0;
+                Assert.InRange(Math.Sqrt(x * x + y * y), 0.99, 1.01);
+            }
+
+            // Move Time 10 s and Rest Time 0: still moving at 9 s.
+            c = Config(s =>
+            {
+                s.Set(null, TestControllerPattern.KeyMove, "10");
+                s.Set(null, TestControllerPattern.KeyRest, "0");
+            });
+            Assert.NotEqual(TestControllerPattern.Center, At(c, 9100).Axis[1]);
+            // A value outside a range is refused with the range in words.
+            var set = new PluginSettingSet();
+            TestControllerPattern.Declare(set);
+            Assert.Contains("0.5 to 20", set.Set(null, TestControllerPattern.KeyMove, "30"));
+        }
+
+        [Fact]
+        public void ByHand_StopsTheMotion_AndSetsTheControllersOwnInputs()
+        {
+            var c = Config(s =>
+            {
+                s.Set(null, TestControllerPattern.KeyHand, "true");
+                s.Set(null, TestControllerPattern.KeyLeftStick, "100,-100");
+                s.Set(null, TestControllerPattern.KeyRightTrigger, "50");
+                s.Set(null, "hand-a", "true");
+            });
+            for (long ms = 0; ms < 8000; ms += 250)
+            {
+                var s = At(c, ms);
+                Assert.Equal(65535, s.Axis[0]);
+                Assert.Equal(1, s.Axis[1]);
+                Assert.Equal(TestControllerPattern.Center, s.Axis[3]);
+                Assert.Equal(32768, s.Axis[5]);
+                Assert.True(s.Buttons[0]);
+                Assert.Equal(1, s.Buttons.Count(b => b));
+                Assert.Equal(-1, s.Povs[0]);
+            }
+        }
+
+        [Fact]
+        public void TheMotion_IsWorkedOutAtEachRead_SoItIsAsFineAsThePollingRate()
+        {
+            long now = 0;
+            var c = Config(s => s.Set(null, TestControllerPattern.KeyPattern, "circle"));
+            var motion = new TestControllerMotion(null, () => c, () => now);
+            var seen = new HashSet<int>();
+            // A read every millisecond, as at 1,000 Hz: each read is a new
+            // place on the circle.
+            for (now = 0; now < 50; now++) seen.Add(motion.Read().Axis[0]);
+            Assert.True(seen.Count >= 45, "only " + seen.Count + " places in 50 reads");
+            Assert.Equal(50, motion.TakeReads());
+            Assert.Equal(0, motion.TakeReads());
         }
 
         [Fact]
@@ -129,28 +254,31 @@ namespace PadForge.Tests
         {
             using var rig = new AutomationPipeRig(AutomationLevel.Commands);
             using var builtIns = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n + " (Replay)");
-            builtIns.TestControllerSpeed = 3;
+            builtIns.TestSettings.Set(null, TestControllerPattern.KeyPress, "50");
             builtIns.TestControllerOn = true;
             Assert.Null(builtIns.TestControllerDevice);
             builtIns.SetPluginsOn(true);
             var device = builtIns.TestControllerDevice;
             Assert.NotNull(device);
+            Assert.Equal(BuiltInPlugins.TestControllerGuid, device.InstanceGuid);
             Assert.Contains("register Test Controller", rig.Engine.Calls);
             Assert.Equal(InputDeviceType.Gamepad, device.GetInputDeviceType());
             Assert.Equal(6, device.NumAxes);
             Assert.Equal(11, device.NumButtons);
             Assert.Equal(1, device.NumHats);
 
-            // It moves by itself.
+            // It moves by itself, read by read, and counts its reads.
             var seen = new HashSet<string>();
             var clock = Stopwatch.StartNew();
             while (seen.Count < 3 && clock.ElapsedMilliseconds < 5000)
             {
-                var s = device.PeekState();
+                var s = device.GetCurrentState();
                 seen.Add(string.Join(",", Enumerable.Range(0, 11).Select(i => s.Buttons[i] ? 1 : 0)));
                 Thread.Sleep(20);
             }
             Assert.True(seen.Count >= 3, "the Test Controller did not move");
+            builtIns.CountReads();
+            Assert.False(string.IsNullOrEmpty(builtIns.TestSettings.ValueOf(null, TestControllerPattern.KeyRate)));
 
             // A gamepad's auto-map, one to one.
             var ud = new UserDevice();
@@ -161,10 +289,41 @@ namespace PadForge.Tests
             Assert.Equal("Axis 2", ps.LeftTrigger);
             Assert.Equal("POV 0 Up", ps.DPadUp);
 
+            // Controllers 3: two more, each its own device. Back to 1: the
+            // first stays.
+            builtIns.TestSettings.Set(null, TestControllerPattern.KeyControllers, "3");
+            Assert.Equal(3, builtIns.TestControllerCount);
+            Assert.Contains("register Test Controller 3", rig.Engine.Calls);
+            Assert.Equal(BuiltInPlugins.TestControllerGuidOf(2), builtIns.TestControllerDevices[2].InstanceGuid);
+            builtIns.TestSettings.Set(null, TestControllerPattern.KeyControllers, "1");
+            Assert.Equal(1, builtIns.TestControllerCount);
+            Assert.Contains("unregister Test Controller 3", rig.Engine.Calls);
+            Assert.Same(device, builtIns.TestControllerDevice);
+
             // Off takes it off the list, at rest.
             builtIns.TestControllerOn = false;
             Assert.Contains("unregister Test Controller", rig.Engine.Calls);
             Assert.Null(builtIns.TestControllerDevice);
+        }
+
+        [Fact]
+        public void TheTestControllersValues_AreKept_AndRestore_AcrossARestart()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Commands);
+            PluginValueData[] saved;
+            using (var first = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n))
+            {
+                first.TestSettings.Set(null, TestControllerPattern.KeyHand, "true");
+                first.TestSettings.Set(null, "hand-x", "true");
+                first.TestSettings.Set(null, TestControllerPattern.KeyMove, "4");
+                saved = first.TestSettings.Save();
+            }
+            // Only what differs from its default is kept.
+            Assert.Equal(new[] { TestControllerPattern.KeyHand, "hand-x" }, saved.Select(v => v.Key).OrderBy(k => k, StringComparer.Ordinal));
+            using var second = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n);
+            second.LoadTestValues(saved);
+            Assert.True(second.TestConfig.ByHand);
+            Assert.True(second.TestConfig.Buttons[2]);
         }
 
         // ── Replay ──

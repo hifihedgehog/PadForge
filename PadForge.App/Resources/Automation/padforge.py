@@ -544,6 +544,7 @@ class PadForge:
         self._engine = []
         self._level_callbacks = []
         self._feedback = {}
+        self._events_by_kind = {}
         self.errors = []
         self._closed = threading.Event()
         self._reader = threading.Thread(target=self._read_loop, name="padforge-reader", daemon=True)
@@ -707,6 +708,8 @@ class PadForge:
         elif kind == "player" and len(words) >= 4:
             for cb in self._feedback.get(("player", words[2]), []):
                 cb(int(words[3]))
+        for cb in self._events_by_kind.get(kind, []):
+            cb(pairs)
 
     def on_button(self, device, button, callback):
         """callback(down) on every press and release of a button of any
@@ -767,6 +770,12 @@ class PadForge:
     def on_level(self, callback):
         """callback(level) when the user changes Automation's level."""
         self._level_callbacks.append(callback)
+
+    def on_event(self, kind, callback):
+        """callback(pairs) for every event of this kind, with the line's
+        key=value words as a dict: setting, press and choices for a plugin's
+        declared settings."""
+        self._events_by_kind.setdefault(kind, []).append(callback)
 
     # ── Read ──
 

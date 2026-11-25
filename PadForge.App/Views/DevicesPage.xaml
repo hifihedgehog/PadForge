@@ -1033,6 +1033,12 @@
                                              port and the adapter's firmware. -->
                                         <TextBlock Style="{StaticResource DeviceNotice}" Text="{Binding SelectedDevice.BlissBoxLine}"
                                                    Visibility="{Binding SelectedDevice.BlissBoxLine, Converter={StaticResource StringToVisibility}}"/>
+                                        <!-- A device a plugin added (#600 item 18): which plugin. -->
+                                        <TextBlock x:Name="PluginAddedByLine" xmlns:plugins="clr-namespace:PadForge.Services.Plugins"
+                                                   Style="{StaticResource DeviceNotice}"
+                                                   DataContext="{Binding SelectedDevice.InstanceGuid, Converter={x:Static plugins:PluginDeviceCardConverter.Instance}}"
+                                                   Text="{Binding AddedBy}"
+                                                   Visibility="{Binding AddedBy, Converter={StaticResource StringToVisibility}, FallbackValue=Collapsed}"/>
                                         <!-- Keyboard screen (#519): what draws this screen. -->
                                         <TextBlock Style="{StaticResource DeviceNotice}" Text="{Binding SelectedDevice.KeyboardScreenLine}"
                                                    Visibility="{Binding SelectedDevice.KeyboardScreenLine, Converter={StaticResource StringToVisibility}}"/>
@@ -2632,6 +2638,28 @@
                                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Visibility="{Binding SelectedDevice.ShowFalconCalibrate, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- A plugin device's own settings (#600 items 17 and
+                                 18): the help and the settings its plugin
+                                 declared for it, drawn by PadForge, and Reset
+                                 All. Shown for a device a plugin added once
+                                 the plugin declared something for it. -->
+                            <Border x:Name="PluginDeviceCard" xmlns:plugins="clr-namespace:PadForge.Services.Plugins"
+                                    Style="{StaticResource CardBorder}" Padding="20,14,12,10" Margin="0,0,0,12"
+                                    DataContext="{Binding SelectedDevice.InstanceGuid, Converter={x:Static plugins:PluginDeviceCardConverter.Instance}}"
+                                    Visibility="{Binding Settings.HasRows, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource CardTitle}" FontSize="15"
+                                               LineHeight="21.75" LineStackingStrategy="BlockLineHeight"
+                                               AutomationProperties.HeadingLevel="Level2"
+                                               Text="{Binding Title}"/>
+                                    <local:PluginSettingsView DataContext="{Binding Settings}" LabelWidth="170" CompactMargin="0"/>
+                                    <Button HorizontalAlignment="Right" MinHeight="34" Padding="14,0" Margin="0,8,0,0"
+                                            AutomationProperties.AutomationId="Devices_PluginResetAll"
+                                            Command="{Binding Settings.ResetAllCommand}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Border>
 

@@ -158,9 +158,14 @@ namespace PadForge.Common
             /// A client run of its own, never a line for the running copy.</summary>
             public (string Source, string Target)? RecordSave { get; set; }
 
+            /// <summary><c>--plugin-kit &lt;folder&gt;</c> (#600 item 20): the
+            /// folder to write the plugin kit into, or null. A client run of
+            /// its own, which never starts the app.</summary>
+            public string PluginKit { get; set; }
+
             /// <summary>Whether anything but the update marker was given.</summary>
             public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null && !AssistantRun && !Json
-                && Summarize == null && RecordSave == null;
+                && Summarize == null && RecordSave == null && PluginKit == null;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -293,6 +298,16 @@ namespace PadForge.Common
                         if (string.IsNullOrWhiteSpace(folder) || LooksLikeSwitch(folder))
                             return Fail(r, "--describe needs the folder to write the page description to.");
                         r.Describe = folder.Trim();
+                        break;
+                    }
+
+                    case "--plugin-kit":
+                    {
+                        // (#600 item 20) The kit goes where the user says.
+                        string folder = inline ?? Next(args, ref i);
+                        if (string.IsNullOrWhiteSpace(folder) || (inline == null && LooksLikeSwitch(folder)))
+                            return Fail(r, "--plugin-kit needs the folder to write the plugin kit into: --plugin-kit <folder>.");
+                        r.PluginKit = folder.Trim();
                         break;
                     }
 
@@ -527,6 +542,9 @@ namespace PadForge.Common
             "                            autohotkey, powershell, python [folder or file]\r\n" +
             "                            or assistant <program>. --remove takes it out,\r\n" +
             "                            --check says current (0), older (6) or none (7)\r\n" +
+            "  --plugin-kit <folder>     Write the plugin kit: a guide to every verb and\r\n" +
+            "                            setting, and a plugin in C#, Python, PowerShell\r\n" +
+            "                            and AutoHotkey\r\n" +
             "  --version, --help         Print and exit\r\n" +
             "\r\n" +
             "Switches run in order. --name=value works as --name value does.\r\n" +

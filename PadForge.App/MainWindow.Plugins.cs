@@ -19,10 +19,16 @@ namespace PadForge
         {
             if (_automation == null || _plugins != null) return;
             _plugins = new PluginsController(_automation, _viewModel.Dashboard, Dispatcher);
+            // A plugin device's row the user removes takes its values with it
+            // (#600 item 17).
+            _viewModel.Devices.RemoveDeviceRequested += OnPluginDeviceRemoved;
         }
+
+        private void OnPluginDeviceRemoved(object sender, System.Guid instanceGuid) => _plugins?.DeviceRemoved(instanceGuid);
 
         private void StopPlugins()
         {
+            if (_plugins != null) _viewModel.Devices.RemoveDeviceRequested -= OnPluginDeviceRemoved;
             _plugins?.Dispose();
             _plugins = null;
         }

@@ -2565,7 +2565,7 @@ namespace PadForge.Services
             SettingsManager.EnablePlugins = appSettings.EnablePlugins;
             // The plugins the user added and the two built in (#597).
             _mainVm.Dashboard.LoadPluginSettings(appSettings.Plugins, appSettings.TestControllerOn,
-                appSettings.TestControllerSpeed, appSettings.ReplayOn, appSettings.ReplayRepeat);
+                appSettings.TestControllerValues, appSettings.ReplayOn, appSettings.ReplayRepeat);
             vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
             vm.ShowLegacyWorkshopConfigs = appSettings.ShowLegacyWorkshopConfigs;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -5257,7 +5257,7 @@ namespace PadForge.Services
                 Plugins = _mainVm.Dashboard.PluginRecords is { Length: > 0 } plugins ? plugins : null,
                 AllowedPrograms = Automation.AutomationConsent.Shared.Save(),
                 TestControllerOn = _mainVm.Dashboard.TestControllerOn,
-                TestControllerSpeed = _mainVm.Dashboard.TestControllerSpeed,
+                TestControllerValues = _mainVm.Dashboard.TestControllerValues is { Length: > 0 } testValues ? testValues : null,
                 ReplayOn = _mainVm.Dashboard.ReplayOn,
                 ReplayRepeat = _mainVm.Dashboard.ReplayRepeat,
                 EnableCommunityConfigLookup = vm.EnableCommunityConfigLookup,
@@ -6886,6 +6886,34 @@ namespace PadForge.Services
 
         [XmlAttribute]
         public bool Enabled { get; set; }
+
+        /// <summary>The signer of the bytes the user approved, as the
+        /// confirmation showed it (#600 item 18), or null for a file with
+        /// none.</summary>
+        [XmlAttribute]
+        public string Signer { get; set; }
+
+        /// <summary>The values of the settings it declared that differ from
+        /// their default, its own and each device's (#600 item 17).</summary>
+        [XmlArray("Values")]
+        [XmlArrayItem("Value")]
+        public PluginValueData[] Values { get; set; }
+        public bool ShouldSerializeValues() => Values != null && Values.Length > 0;
+    }
+
+    /// <summary>One value of a setting a plugin declared (#600 item 17):
+    /// the device it belongs to (empty for the plugin's own), its key and
+    /// its value as PadForge keeps it.</summary>
+    public class PluginValueData
+    {
+        [XmlAttribute]
+        public string Device { get; set; }
+
+        [XmlAttribute]
+        public string Key { get; set; }
+
+        [XmlAttribute]
+        public string Value { get; set; }
     }
 
     /// <summary>One registered sound package (issue #83 follow-up).</summary>
@@ -7622,13 +7650,14 @@ namespace PadForge.Services
         public bool TestControllerOn { get; set; }
         public bool ShouldSerializeTestControllerOn() => TestControllerOn;
 
-        /// <summary>The Test Controller's speed, its place in the list Slow,
-        /// Normal, Fast, Fastest. Normal (1), and left out of the file, until
-        /// the user picks another. A number past the list reads as
-        /// Normal.</summary>
-        [XmlElement]
-        public int TestControllerSpeed { get; set; } = 1;
-        public bool ShouldSerializeTestControllerSpeed() => TestControllerSpeed != 1;
+        /// <summary>The Test Controller's settings that differ from their
+        /// default (#600 item 19), kept as a plugin's are. The speed of
+        /// files before it is not read: its settings start at their
+        /// defaults.</summary>
+        [XmlArray("TestControllerValues")]
+        [XmlArrayItem("Value")]
+        public PluginValueData[] TestControllerValues { get; set; }
+        public bool ShouldSerializeTestControllerValues() => TestControllerValues != null && TestControllerValues.Length > 0;
 
         /// <summary>The built-in Replay's switch (#597). The recording it
         /// plays is picked in each session and never saved.</summary>

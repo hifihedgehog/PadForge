@@ -338,7 +338,6 @@ namespace PadForge.ViewModels
             nameof(EnableDeviceConnectedNote) or
             nameof(EnablePlugins) or
             nameof(TestControllerOn) or
-            nameof(TestControllerSpeed) or
             nameof(ReplayOn) or
             nameof(ReplayRepeat);
 
@@ -454,11 +453,6 @@ namespace PadForge.ViewModels
                 case nameof(TestControllerOn):
                 {
                     TestControllerOn = false;
-                    break;
-                }
-                case nameof(TestControllerSpeed):
-                {
-                    TestControllerSpeed = NormalSpeed;
                     break;
                 }
                 case nameof(ReplayOn):

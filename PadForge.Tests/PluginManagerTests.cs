@@ -29,6 +29,9 @@ namespace PadForge.Tests
             public int Id { get; init; }
             public HashSet<int> Children { get; } = new();
             public bool Stopped, Disposed, Ended;
+            /// <summary>A debugger is attached to it (#600 item 18).</summary>
+            public bool Debugged;
+            public bool DebuggerAttached => Debugged;
             public bool Owns(int processId) => processId == Id || Children.Contains(processId);
 
             public event Action<int> Exited
@@ -565,7 +568,18 @@ namespace PadForge.Tests
         {
             var run = AddRunning();
             _manager.SetEnabled(run, false);
-            var settings = new AppSettingsData { Plugins = _manager.Save(), TestControllerOn = true, TestControllerSpeed = 2, ReplayOn = true, ReplayRepeat = true };
+            // A value the plugin declared, and one of a device of its own
+            // (#600 item 17), kept with it.
+            run.Settings.Load(new[]
+            {
+                new PluginValueData { Key = "speed", Value = "2" },
+                new PluginValueData { Device = "pedals", Key = "dead", Value = "5" },
+            });
+            var settings = new AppSettingsData
+            {
+                Plugins = _manager.Save(), TestControllerOn = true, ReplayOn = true, ReplayRepeat = true,
+                TestControllerValues = new[] { new PluginValueData { Key = "by-hand", Value = "true" } },
+            };
             var xml = new XmlSerializer(typeof(AppSettingsData));
             string text;
             using (var write = new StringWriter())
@@ -581,7 +595,9 @@ namespace PadForge.Tests
             Assert.Equal(run.Path, data.Path);
             Assert.False(data.Enabled);
             Assert.True(back.TestControllerOn);
-            Assert.Equal(2, back.TestControllerSpeed);
+            Assert.Equal("by-hand", Assert.Single(back.TestControllerValues).Key);
+            Assert.Equal(new[] { (null as string, "speed", "2"), ("pedals", "dead", "5") },
+                data.Values.Select(v => (string.IsNullOrEmpty(v.Device) ? null : v.Device, v.Key, v.Value)));
             Assert.True(back.ReplayOn && back.ReplayRepeat);
 
             // A file with none writes none of the parts.

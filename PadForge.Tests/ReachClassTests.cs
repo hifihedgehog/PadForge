@@ -150,7 +150,18 @@ namespace PadForge.Tests
                 "Views/AssistantCallout.xaml <UserControl>",              // the guided pointer's callout and its Close (#600)
                 "Views/AutomationRequestCard.xaml <Window>",              // the request card
                 "Views/ExtrasPage.xaml <StackPanel AutomationPage>",      // Automation's own controls, approvals, installs, Activity
-                "Views/ExtrasPage.xaml <StackPanel PluginsPage>",         // Plugins' own controls and plugin approval
+                // The Plugins page's own controls (#600 item 18): its switch, the
+                // built-ins' switches, Replay, each plugin card's Start,
+                // Approve and Restart, Remove and switch, Add a Plugin and More.
+                // A plugin's declared settings are the plugin's, free to a
+                // program at Change Settings (item 17).
+                "Views/ExtrasPage.xaml <HeadRowPanel PluginsHead>",
+                "Views/ExtrasPage.xaml <StackPanel PluginsTestControllerSwitch>",
+                "Views/ExtrasPage.xaml <FoldList PluginsReplay>",
+                "Views/ExtrasPage.xaml <StackPanel PluginRowActions>",
+                "Views/ExtrasPage.xaml <Button {Binding RemoveId}>",
+                "Views/ExtrasPage.xaml <Border PluginsAddCard>",
+                "Views/ExtrasPage.xaml <FoldList PluginsMoreList>",
                 "Views/ExtrasPage.xaml <Button NewWebAccessCodeButton>",  // an access code
                 "Views/ExtrasPage.xaml <TextBox WebControllerAccessCodeBox>",
                 "Views/RecordingReviewView.xaml <UserControl>",           // the review of a recording

@@ -1843,12 +1843,6 @@
   },
   {
     "File": "PadForge.App/Views/ExtrasPage.xaml",
-    "Id": "Reset_DashboardViewModel_TestControllerSpeed_59705",
-    "Owner": "PadForge.ViewModels.DashboardViewModel",
-    "Property": "TestControllerSpeed"
-  },
-  {
-    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_ReplayOn_59706",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "ReplayOn"

@@ -1,0 +1,259 @@
+<UserControl x:Class="PadForge.Views.PluginSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:reset="clr-namespace:PadForge.Controls"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:vm="clr-namespace:PadForge.ViewModels"
+             x:Name="Root">
+    <!-- A plugin's declared settings (#600 item 17), drawn in PadForge's own
+         styles from what the plugin declared: a row for each, under its
+         group's heading, a group's compact declarations side by side in one
+         row. It takes the class of the place that holds it: the Plugins
+         page's plugin cards and the device panel's plugin card, where a
+         plugin's settings are free to a program at Change Settings as they
+         are to the user. The words are the plugin's, cleaned and capped when
+         PadForge read them. -->
+    <UserControl.Resources>
+        <Style x:Key="PluginLabel" TargetType="TextBlock">
+            <Setter Property="Width" Value="{Binding LabelWidth, ElementName=Root}"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}"/>
+        </Style>
+        <Style x:Key="PluginNote" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,14,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </Style>
+        <Style x:Key="PluginButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="MinHeight" Value="36"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <!-- A compact switch: a toggle with its name, lit while on. -->
+        <Style x:Key="PluginToggle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+            <Setter Property="MinWidth" Value="56"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="8,0"/>
+        </Style>
+
+        <!-- Each kind's control, between the label and the reset. -->
+        <DataTemplate x:Key="KindSwitch" DataType="{x:Type vm:PluginSettingItem}">
+            <CheckBox Style="{StaticResource SwitchCheckBox}" VerticalAlignment="Center"
+                      AutomationProperties.AutomationId="{Binding AutomationId}"
+                      AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                      AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                      IsChecked="{Binding IsOn, Mode=TwoWay}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="KindNumber" DataType="{x:Type vm:PluginSettingItem}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Slider Width="200" VerticalAlignment="Center" IsSnapToTickEnabled="True"
+                        Minimum="{Binding Min}" Maximum="{Binding Max}" TickFrequency="{Binding Step}"
+                        SmallChange="{Binding Step}" LargeChange="{Binding Step}"
+                        AutomationProperties.AutomationId="{Binding AutomationId}"
+                        AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                        AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                        Value="{Binding Number, Mode=TwoWay}"/>
+                <TextBlock Text="{Binding NumberText}" Margin="10,0,0,0" FontSize="13" VerticalAlignment="Center"
+                           MinWidth="56" Typography.NumeralAlignment="Tabular"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="KindChoice" DataType="{x:Type vm:PluginSettingItem}">
+            <ComboBox MinWidth="254" MinHeight="34" VerticalAlignment="Center"
+                      ItemsSource="{Binding Choices}" DisplayMemberPath="Words" SelectedValuePath="Value"
+                      SelectedValue="{Binding Choice, Mode=TwoWay}"
+                      DropDownOpened="Choice_DropDownOpened"
+                      AutomationProperties.AutomationId="{Binding AutomationId}"
+                      AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                      AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="KindText" DataType="{x:Type vm:PluginSettingItem}">
+            <ui:TextBox MinWidth="254" MinHeight="34" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                        ClearButtonEnabled="False" Padding="10,0"
+                        AutomationProperties.AutomationId="{Binding AutomationId}"
+                        AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                        AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"
+                        Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="KindStatus" DataType="{x:Type vm:PluginSettingItem}">
+            <TextBlock Text="{Binding StatusText}" FontSize="13" VerticalAlignment="Center" TextWrapping="Wrap"
+                       Typography.NumeralAlignment="Tabular"
+                       AutomationProperties.AutomationId="{Binding AutomationId}"
+                       AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="KindButton" DataType="{x:Type vm:PluginSettingItem}">
+            <Button Style="{StaticResource PluginButton}" Command="{Binding PressCommand}" Content="{Binding Name}"
+                    AutomationProperties.AutomationId="{Binding AutomationId}"
+                    AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="KindPad" DataType="{x:Type vm:PluginSettingItem}">
+            <controls:PluginPad Position="{Binding Pad, Mode=TwoWay}" Stay="{Binding Stay}" Margin="0,4,0,4"
+                                AutomationProperties.AutomationId="{Binding AutomationId}"
+                                AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                                AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="KindInput" DataType="{x:Type vm:PluginSettingItem}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Style="{StaticResource PluginButton}" Command="{Binding PickCommand}"
+                        Content="{Binding Plugins_Input_Pick, Source={x:Static strings:Strings.Instance}}"
+                        AutomationProperties.AutomationId="{Binding AutomationId}"
+                        AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                        AutomationProperties.HelpText="{Binding Help, TargetNullValue=''}"/>
+                <TextBlock Text="{Binding InputText}" Margin="12,0,0,0" FontSize="13" VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- A group's heading. -->
+        <DataTemplate DataType="{x:Type vm:PluginGroupHeading}">
+            <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" Margin="0,12,0,4"
+                       AutomationProperties.HeadingLevel="Level3"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </DataTemplate>
+
+        <!-- One declared setting. -->
+        <DataTemplate DataType="{x:Type vm:PluginSettingItem}">
+            <ContentControl Content="{Binding}" Focusable="False" IsTabStop="False">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <controls:SettingRow MinHeight="50" ToolTip="{Binding HoverHelp}">
+                                        <TextBlock Style="{StaticResource PluginLabel}" Text="{Binding Name}"/>
+                                        <TextBlock Style="{StaticResource PluginNote}" Text="{Binding Help}" controls:SettingRow.Fills="True"
+                                                   Visibility="{Binding HelpInRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <ContentControl Content="{Binding}" Focusable="False" IsTabStop="False" VerticalAlignment="Center">
+                                            <ContentControl.Style>
+                                                <Style TargetType="ContentControl">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="switch">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindSwitch}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="number">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindNumber}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="choice">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindChoice}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="text">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindText}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="status">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindStatus}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="button">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindButton}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="pad">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindPad}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding KindWord}" Value="input">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource KindInput}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
+                                        </ContentControl>
+                                        <reset:SettingResetButton Command="{Binding ResetCommand}" SettingLabel="{Binding Name}"
+                                                                  Visibility="{Binding CanReset, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    </controls:SettingRow>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Visibility" Value="{Binding IsShown, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Style.Triggers>
+                            <!-- A paragraph runs the row's width. -->
+                            <DataTrigger Binding="{Binding KindWord}" Value="help">
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Help}" FontSize="14" TextWrapping="Wrap" Margin="0,8,12,8"
+                                                       LineHeight="20.3" LineStackingStrategy="BlockLineHeight"
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+        </DataTemplate>
+
+        <!-- A group's compact declarations in one row: the pads with their
+             names under them, then the sliders with their names, then the
+             toggles four to a line. -->
+        <DataTemplate DataType="{x:Type vm:PluginCompactRow}">
+            <StackPanel Orientation="Horizontal" Margin="{Binding CompactMargin, ElementName=Root}" Visibility="{Binding IsShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                <ItemsControl ItemsSource="{Binding Pads}" IsTabStop="False" VerticalAlignment="Top">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,8,26,8">
+                                <controls:PluginPad Position="{Binding Pad, Mode=TwoWay}" Stay="{Binding Stay}"
+                                                    AutomationProperties.AutomationId="{Binding AutomationId}"
+                                                    AutomationProperties.Name="{Binding Name, TargetNullValue=''}"/>
+                                <TextBlock Text="{Binding Name}" FontSize="13" HorizontalAlignment="Center" Margin="0,8,0,0"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Margin="0,8,0,8" VerticalAlignment="Top">
+                    <ItemsControl ItemsSource="{Binding Sliders}" IsTabStop="False">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="{Binding Name}" Width="96" FontSize="13" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <Slider Width="140" VerticalAlignment="Center" IsSnapToTickEnabled="True"
+                                            Minimum="{Binding Min}" Maximum="{Binding Max}" TickFrequency="{Binding Step}"
+                                            SmallChange="{Binding Step}" LargeChange="{Binding Step}"
+                                            AutomationProperties.AutomationId="{Binding AutomationId}"
+                                            AutomationProperties.Name="{Binding Name, TargetNullValue=''}"
+                                            Value="{Binding Number, Mode=TwoWay}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Toggles}" IsTabStop="False" Margin="0,4,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ToggleButton Style="{StaticResource PluginToggle}" Content="{Binding Name}" Margin="0,0,6,6"
+                                              AutomationProperties.AutomationId="{Binding AutomationId}"
+                                              IsChecked="{Binding IsOn, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ItemsControl ItemsSource="{Binding Rows}" IsTabStop="False" Focusable="False">
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="Margin" Value="0"/>
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+    </ItemsControl>
+</UserControl>

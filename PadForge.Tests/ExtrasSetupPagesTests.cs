@@ -92,7 +92,11 @@ namespace PadForge.Tests
             {
                 ("x:Name=\"PluginsStatusCard\"", null),
                 ("x:Name=\"PluginsCards\"", null),
-                ("{Binding Extras_Plugins_Note,", null),
+                ("x:Name=\"PluginsTestController\"", null),
+                ("x:Name=\"PluginsReplay\"", null),
+                ("x:Name=\"PluginRowsList\"", null),
+                ("x:Name=\"PluginsAddCard\"", null),
+                ("x:Name=\"PluginsMore\"", null),
             } },
         };
 

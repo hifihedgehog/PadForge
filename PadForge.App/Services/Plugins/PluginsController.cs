@@ -3,31 +3,48 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Threading;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services.Automation;
+using PadForge.Services.Catalog;
 using PadForge.ViewModels;
 using PadForge.Engine.Common;
 
 namespace PadForge.Services.Plugins
 {
     /// <summary>
-    /// The plugins' part of the app (#597), made by the window once the
-    /// Automation host is: it runs the plugin manager and the two built-in
-    /// plugins, gives the host the plugins' key check, starts and stops
-    /// them with the Plugins switch and the engine, and keeps the Plugins
-    /// page's rows, lines and log in step with them on the interface's
-    /// thread. It mirrors the Automation page's part
+    /// The plugins' part of the app (#597, #600 items 17 to 19), made by the
+    /// window once the Automation host is: it runs the plugin manager and
+    /// the two built-in plugins, gives the host the plugins' key check,
+    /// starts and stops them with the Plugins switch and the engine, and
+    /// keeps the Plugins page's cards, lines and log in step with them on
+    /// the interface's thread. It mirrors the Automation page's part
     /// (DashboardViewModel.AttachAutomation): the work happens on any
     /// thread, and the page is drawn on its own.
+    ///
+    /// <para>Once a second while Plugins is on it looks after the plugins
+    /// past their hello: a file that changed shows Approve and Restart, a
+    /// plugin silent for <see cref="OfflineAfterSilenceMs"/> has its devices
+    /// taken offline at rest, and one silent for
+    /// <see cref="EndAfterSilenceMs"/> is ended and started again with the
+    /// back-off unless a debugger is attached to it.</para>
     /// </summary>
     internal sealed class PluginsController : IPluginsPageActions, IDisposable
     {
+        internal const int OfflineAfterSilenceMs = 5000;
+        internal const int EndAfterSilenceMs = 60000;
+
+        /// <summary>The ID of the Test Controller in the catalog.</summary>
+        internal const string TestControllerId = "plugin/test-controller";
+
         private readonly AutomationHost _host;
         private readonly DashboardViewModel _vm;
         private readonly Dispatcher _ui;
         private readonly DispatcherTimer _timer;
         private readonly Dictionary<PluginRun, PluginRowItem> _rows = new();
+        private readonly Func<long> _nowMs;
+        private readonly Func<IReadOnlyList<LiveItem>> _catalog;
         private int _queued;
         private int _nextRow;
         private bool _disposed;
@@ -39,33 +56,52 @@ namespace PadForge.Services.Plugins
         internal int Draws { get; private set; }
         public BuiltInPlugins BuiltIns { get; }
 
-        public PluginsController(AutomationHost host, DashboardViewModel vm, Dispatcher ui, PluginManager manager = null)
+        /// <summary>The Test Controller's settings as its card draws
+        /// them.</summary>
+        internal PluginSettingsHost TestHost { get; }
+
+        /// <summary>The controller the app runs, for the device panel's
+        /// plugin card.</summary>
+        internal static PluginsController Current { get; private set; }
+
+        public PluginsController(AutomationHost host, DashboardViewModel vm, Dispatcher ui, PluginManager manager = null, Func<long> nowMs = null)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
             _vm = vm ?? throw new ArgumentNullException(nameof(vm));
             _ui = ui ?? throw new ArgumentNullException(nameof(ui));
+            _nowMs = nowMs ?? (() => Environment.TickCount64);
             Manager = manager ?? new PluginManager(new PluginLauncher(), host.AutomationPipe.Name);
             BuiltIns = new BuiltInPlugins(host.Sessions.Devices,
                 () => Strings.Instance.Plugins_TestController,
                 BuiltInPlugins.ReplayShownName);
+            TestHost = new PluginSettingsHost(BuiltIns.TestSettings, null, "Plugins_TestController", ui);
+            vm.TestControllerSettings = TestHost;
 
             host.AcceptPluginToken = Manager.AcceptToken;
             host.EngineChanged += OnEngine;
             Manager.Changed += Queue;
             Manager.SavedChanged += OnSaved;
             BuiltIns.ReplayEnded += Queue;
+            BuiltIns.TestSettings.KeptChanged += OnTestValues;
+            BuiltIns.TestSettings.Changed += Queue;
             vm.PluginActions = this;
             vm.PropertyChanged += OnVm;
             vm.PluginSettingsLoaded += OnLoaded;
             vm.SelectedLogPluginChanged += RefreshLog;
             Strings.CultureChanged += Refresh;
-            // The built-ins' devices are named in the language in use.
+            // The built-ins' devices and settings are named in the language
+            // in use.
             Strings.CultureChanged += BuiltIns.RefreshNames;
 
-            // The status line, the restart pauses and Replay's place, once a
-            // second while Plugins is on.
-            _timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, (_, _) => Refresh(), ui);
+            // The status line, the restart pauses, Replay's place, the
+            // files, the silent plugins and Reads per Second, once a second
+            // while Plugins is on.
+            _timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, (_, _) => Second(), ui);
             _timer.Stop();
+
+            _catalog = CatalogItems;
+            LiveCatalog.AddProvider(_catalog);
+            Current = this;
 
             OnLoaded();
             Manager.SetEngine(host.EngineAttached);
@@ -77,7 +113,7 @@ namespace PadForge.Services.Plugins
         private void OnLoaded()
         {
             Manager.Load(_vm.PluginRecords);
-            BuiltIns.TestControllerSpeed = _vm.TestControllerSpeed;
+            BuiltIns.LoadTestValues(_vm.TestControllerValues);
             BuiltIns.TestControllerOn = _vm.TestControllerOn;
             BuiltIns.Repeat = _vm.ReplayRepeat;
             BuiltIns.ReplayOn = _vm.ReplayOn;
@@ -90,7 +126,6 @@ namespace PadForge.Services.Plugins
             {
                 case nameof(DashboardViewModel.EnablePlugins): Apply(); break;
                 case nameof(DashboardViewModel.TestControllerOn): BuiltIns.TestControllerOn = _vm.TestControllerOn; Refresh(); break;
-                case nameof(DashboardViewModel.TestControllerSpeed): BuiltIns.TestControllerSpeed = _vm.TestControllerSpeed; break;
                 case nameof(DashboardViewModel.ReplayOn): BuiltIns.ReplayOn = _vm.ReplayOn; Refresh(); break;
                 case nameof(DashboardViewModel.ReplayRepeat): BuiltIns.Repeat = _vm.ReplayRepeat; break;
             }
@@ -123,6 +158,12 @@ namespace PadForge.Services.Plugins
             else _ui.BeginInvoke(new Action(() => _vm.SetPluginRecords(Manager.Save())));
         }
 
+        private void OnTestValues()
+        {
+            if (_ui.CheckAccess()) _vm.SetTestControllerValues(BuiltIns.TestSettings.Save());
+            else _ui.BeginInvoke(new Action(() => _vm.SetTestControllerValues(BuiltIns.TestSettings.Save())));
+        }
+
         /// <summary>A change from any thread, drawn once on the interface's:
         /// a burst of log lines lands in one update.</summary>
         private void Queue()
@@ -135,9 +176,63 @@ namespace PadForge.Services.Plugins
             }));
         }
 
+        /// <summary>The once-a-second look.</summary>
+        internal void Second()
+        {
+            if (_disposed) return;
+            Manager.CheckFiles();
+            CheckSilence();
+            BuiltIns.CountReads();
+            Refresh();
+        }
+
+        /// <summary>
+        /// Each plugin's session that holds devices or declared settings
+        /// and has said nothing: after <see cref="OfflineAfterSilenceMs"/>
+        /// its devices go offline at rest (the lease has rested them
+        /// already), and after <see cref="EndAfterSilenceMs"/> the plugin is
+        /// ended and started again with the back-off.
+        /// </summary>
+        internal void CheckSilence()
+        {
+            long now = _nowMs();
+            foreach (var session in _host.Sessions.Snapshot())
+            {
+                if (!session.IsPlugin || session.Grant == null) continue;
+                var run = Manager.RunOf(session.Grant);
+                if (run == null) continue;
+                var owned = _host.Sessions.Devices.OwnedBy(session);
+                // A plugin with nothing to answer for is not watched. One
+                // whose devices this look took offline still is.
+                if (owned.Count == 0 && !run.Settings.HasDeclarations && !run.SilentOffline) continue;
+                long silent = now - session.LastHeardMs;
+                if (silent >= OfflineAfterSilenceMs && owned.Count > 0)
+                {
+                    foreach (var entry in owned) _host.Sessions.Devices.Gone(session, entry.Id);
+                    run.SilentOffline = true;
+                }
+                if (silent >= EndAfterSilenceMs) Manager.EndSilent(run);
+            }
+        }
+
+        /// <summary>
+        /// The user removed a device's row on the Devices page: a plugin
+        /// device's values go with it (#600 item 17). A row PadForge lets go
+        /// of by itself, as it does for a device nobody assigned once it is
+        /// offline, keeps them, since the plugin declares the device again
+        /// at its next start.
+        /// </summary>
+        internal void DeviceRemoved(Guid instanceGuid)
+        {
+            foreach (var run in Manager.Snapshot())
+                foreach (string key in run.Settings.Devices(withValues: true))
+                    if (ProgramDeviceDeclaration.InstanceGuid("plugin", run.Identity, key) == instanceGuid)
+                        run.Settings.DropDevice(key);
+        }
+
         // ── The page ──
 
-        /// <summary>Draws the rows, the status line, Replay's lines and the
+        /// <summary>Draws the cards, the status line, Replay's lines and the
         /// picked log. On the interface's thread.</summary>
         internal void Refresh()
         {
@@ -159,18 +254,22 @@ namespace PadForge.Services.Plugins
                 var run = runs[i];
                 if (!_rows.TryGetValue(run, out var row))
                 {
-                    row = new PluginRowItem(run, ++_nextRow, this);
+                    var host = new PluginSettingsHost(run.Settings, null, "Plugins_" + LiveCatalog.ShortId(run.Path), _ui);
+                    run.Settings.KeptChanged += OnSaved;
+                    row = new PluginRowItem(run, ++_nextRow, this, host);
                     _rows[run] = row;
                     _vm.PluginRows.Insert(Math.Min(i, _vm.PluginRows.Count), row);
                 }
-                row.Show(run.ShownName, run.Path, StateOf(run), run.Enabled,
+                row.Show(run.ShownName, run.Path, StateLine(run), run.Enabled,
                     showStart: run.Status is PluginStatus.Failed or PluginStatus.Refused,
-                    showApprove: run.Status == PluginStatus.Changed);
+                    showApprove: run.Status == PluginStatus.Changed || run.FileChanged);
+                row.Settings.MissingLine = MissingLine(run);
             }
             _vm.PluginRowsChanged();
 
             // The status line: how many plugins run and how many devices they
-            // added, the two built in among them.
+            // added, the two built in among them, and each plugin that
+            // stopped. Home's Plugins tile shows the same line.
             if (!_vm.EnablePlugins)
             {
                 _vm.PluginsStatus = null;
@@ -179,12 +278,23 @@ namespace PadForge.Services.Plugins
             else
             {
                 int running = Manager.RunningCount + (BuiltIns.TestControllerLive ? 1 : 0) + (BuiltIns.ReplayDeviceCount > 0 ? 1 : 0);
-                int devices = PluginDevices() + (BuiltIns.TestControllerLive ? 1 : 0) + BuiltIns.ReplayDeviceCount;
-                _vm.PluginsStatus = running == 0
+                int devices = PluginDevices() + BuiltIns.TestControllerCount + BuiltIns.ReplayDeviceCount;
+                string line = running == 0
                     ? s.Extras_Plugins_Status_None
                     : string.Format(CultureInfo.CurrentCulture, s.Plugins_Status_Format, running, devices);
+                foreach (var run in runs)
+                {
+                    string problem = ProblemOf(run);
+                    if (problem != null) line += " " + problem;
+                }
+                _vm.PluginsStatus = line;
                 _vm.IsPluginsRunning = running > 0;
             }
+
+            // The Test Controller's header line.
+            _vm.TestControllerLine = !_vm.TestControllerOn ? s.Common_Off
+                : !_vm.EnablePlugins || !BuiltIns.TestControllerLive ? s.Plugins_State_Waiting
+                : BuiltIns.TestConfig.ByHand ? s.Plugins_TC_State_ByHand : s.Plugins_TC_State_Moving;
 
             // Replay.
             var file = BuiltIns.File;
@@ -195,6 +305,60 @@ namespace PadForge.Services.Plugins
             _vm.IsReplayPlaying = BuiltIns.Playing;
 
             RefreshLog();
+        }
+
+        /// <summary>A plugin that stopped, in a sentence the status line and
+        /// Home's tile carry, or null while it runs or rests as it
+        /// should.</summary>
+        internal static string ProblemOf(PluginRun run)
+        {
+            var s = Strings.Instance;
+            return run.Status switch
+            {
+                PluginStatus.Failed => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Failed_Format, run.ShownName),
+                PluginStatus.Changed => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Changed_Format, run.ShownName),
+                PluginStatus.Refused => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Refused_Format, run.ShownName),
+                _ => null,
+            };
+        }
+
+        /// <summary>The card's line: its state, the devices it added and
+        /// its signer.</summary>
+        internal string StateLine(PluginRun run)
+        {
+            var s = Strings.Instance;
+            var parts = new List<string> { Sentence(StateOf(run)) };
+            if (run.FileChanged) parts.Add(Sentence(s.Plugins_State_Changed));
+            var names = DeviceNames(run);
+            if (names.Count > 0)
+                parts.Add(string.Format(CultureInfo.CurrentCulture, s.Plugins_Row_Added_Format, string.Join(", ", names)));
+            parts.Add(run.Signer != null ? string.Format(CultureInfo.CurrentCulture, s.Plugins_Row_Signed_Format, run.Signer) : s.Plugins_Row_NotSigned);
+            return string.Join(" ", parts);
+        }
+
+        private static string Sentence(string text)
+            => string.IsNullOrEmpty(text) || text.EndsWith('.') ? text : text + ".";
+
+        /// <summary>The names of the devices a plugin added and PadForge
+        /// keeps now, live or waiting.</summary>
+        internal List<string> DeviceNames(PluginRun run)
+        {
+            var names = new List<string>();
+            foreach (var entry in _host.Sessions.Devices.All())
+                if (entry.Kind == "plugin" && string.Equals(entry.Program, run.Identity, StringComparison.OrdinalIgnoreCase))
+                    names.Add(entry.Device.Name);
+            return names;
+        }
+
+        /// <summary>Why a plugin's card shows no settings, or null.</summary>
+        internal static string MissingLine(PluginRun run)
+        {
+            var s = Strings.Instance;
+            if (run.Settings.Refused is { } why)
+                return string.Format(CultureInfo.CurrentCulture, s.Plugins_Missing_Refused_Format, why);
+            var mine = run.Settings.Declarations().FindAll(d => d.Device == null);
+            if (mine.Count > 0) return null;
+            return run.Status == PluginStatus.Running && run.Grant != null ? s.Plugins_Missing_None : s.Plugins_Missing_NotRunning;
         }
 
         /// <summary>The devices plugins' sessions own now.</summary>
@@ -280,6 +444,8 @@ namespace PadForge.Services.Plugins
                 PluginLogKind.Changed => s.Plugins_State_Changed,
                 PluginLogKind.Failed => s.Plugins_State_Failed,
                 PluginLogKind.ForeignKey => string.Format(CultureInfo.CurrentCulture, s.Plugins_Log_ForeignKey_Format, line.Code),
+                PluginLogKind.Silent => s.Plugins_Log_Silent,
+                PluginLogKind.ChangedWhileRunning => s.Plugins_Log_ChangedWhileRunning,
                 _ => line.Text ?? string.Empty,
             };
             return line.Time.ToLocalTime().ToString("T", CultureInfo.CurrentCulture) + "  " + text;
@@ -290,6 +456,96 @@ namespace PadForge.Services.Plugins
         {
             long seconds = Math.Max(0, micros) / 1_000_000;
             return (seconds / 60).ToString(CultureInfo.CurrentCulture) + ":" + (seconds % 60).ToString("00", CultureInfo.CurrentCulture);
+        }
+
+        // ── The device panel's plugin card ──
+
+        /// <summary>
+        /// The card of a device a plugin added, or a built-in's: which plugin
+        /// added it, and its own settings and help. Null for any other
+        /// device. Made each time the panel shows a device.
+        /// </summary>
+        internal PluginDeviceCard CardFor(Guid instanceGuid)
+        {
+            if (instanceGuid == Guid.Empty) return null;
+            var s = Strings.Instance;
+            for (int i = 0; i < TestControllerPattern.MostControllers; i++)
+                if (BuiltInPlugins.TestControllerGuidOf(i) == instanceGuid)
+                    return new PluginDeviceCard(s.Plugins_TestController, null);
+            foreach (var run in Manager.Snapshot())
+            {
+                foreach (string device in DeviceKeys(run))
+                {
+                    if (ProgramDeviceDeclaration.InstanceGuid("plugin", run.Identity, device) != instanceGuid) continue;
+                    var host = new PluginSettingsHost(run.Settings, device, "Device_Plugin_" + device, _ui, instanceGuid);
+                    return new PluginDeviceCard(run.ShownName, host);
+                }
+            }
+            // A device of a plugin whose run declared nothing for it: the
+            // key is read from the registry's entry.
+            foreach (var entry in _host.Sessions.Devices.All())
+            {
+                if (entry.Guid != instanceGuid || entry.Kind != "plugin") continue;
+                foreach (var run in Manager.Snapshot())
+                    if (string.Equals(run.Identity, entry.Program, StringComparison.OrdinalIgnoreCase))
+                        return new PluginDeviceCard(run.ShownName, new PluginSettingsHost(run.Settings, entry.Key, "Device_Plugin_" + entry.Key, _ui, instanceGuid));
+            }
+            return null;
+        }
+
+        private IEnumerable<string> DeviceKeys(PluginRun run)
+        {
+            var keys = run.Settings.Devices();
+            foreach (var entry in _host.Sessions.Devices.All())
+                if (entry.Kind == "plugin" && string.Equals(entry.Program, run.Identity, StringComparison.OrdinalIgnoreCase))
+                    keys.Add(entry.Key);
+            return keys;
+        }
+
+        // ── The catalog ──
+
+        /// <summary>
+        /// Every plugin's declarations, and the Test Controller's, as live
+        /// items (#600 items 1 and 17): <c>plugin/&lt;id&gt;/&lt;key&gt;</c>
+        /// for a plugin's own and <c>plugin/&lt;id&gt;/&lt;device&gt;/&lt;key&gt;</c>
+        /// for a device's. A plugin's declarations are its own, which a
+        /// program at Change Settings sets and presses as the user does.
+        /// The plugin's switch, Remove, Start and Approve are the page's, and
+        /// the user's alone.
+        /// </summary>
+        internal IReadOnlyList<LiveItem> CatalogItems()
+        {
+            var items = new List<LiveItem>();
+            var s = Strings.Instance;
+            AddItems(items, TestControllerId, s.Plugins_TestController, BuiltIns.TestSettings, TestHost);
+            foreach (var run in Manager.Snapshot())
+            {
+                _rows.TryGetValue(run, out var row);
+                AddItems(items, "plugin/" + LiveCatalog.ShortId(run.Path), run.ShownName, run.Settings, row?.Settings);
+            }
+            return items;
+        }
+
+        private static void AddItems(List<LiveItem> items, string id, string where, PluginSettingSet set, PluginSettingsHost host)
+        {
+            foreach (var d in set.Declarations())
+            {
+                if (d.Kind == PluginSettingKind.Help) continue;
+                string device = d.Device, key = d.Key;
+                var item = new LiveItem(id + "/" + (device != null ? device + "/" : string.Empty) + key, LiveKind.PluginDeclaration,
+                    d.Name, ReachClass.Free)
+                {
+                    Where = where,
+                    Read = d.Kind == PluginSettingKind.Button ? null : () => set.ValueOf(device, key),
+                    Write = d.HoldsValue ? value =>
+                    {
+                        string error = set.Set(device, key, value);
+                        if (error != null) throw new ArgumentException(error);
+                    } : null,
+                    Press = d.Kind == PluginSettingKind.Button ? () => set.Press(device, key) : null,
+                };
+                items.Add(item);
+            }
         }
 
         // ── What the page asks ──
@@ -306,11 +562,15 @@ namespace PadForge.Services.Plugins
 
         public bool Has(string path) => Manager.Has(path);
 
-        public bool Add(PluginApproval approved) => approved != null && Manager.Add(approved.Path, approved.Sha256) != null;
+        public bool Add(PluginApproval approved) => approved != null && Manager.Add(approved.Path, approved.Sha256, approved.Signer) != null;
 
         public void Remove(PluginRowItem row)
         {
-            if (row?.Run is PluginRun run) Manager.Remove(run);
+            if (row?.Run is PluginRun run)
+            {
+                run.Settings.KeptChanged -= OnSaved;
+                Manager.Remove(run);
+            }
         }
 
         public void SetEnabled(PluginRowItem row, bool on)
@@ -320,7 +580,7 @@ namespace PadForge.Services.Plugins
 
         public void Approve(PluginRowItem row, PluginApproval approved)
         {
-            if (row?.Run is PluginRun run && approved != null) Manager.Approve(run, approved.Sha256);
+            if (row?.Run is PluginRun run && approved != null) Manager.Approve(run, approved.Sha256, approved.Signer);
         }
 
         public void StartAgain(PluginRowItem row)
@@ -354,16 +614,57 @@ namespace PadForge.Services.Plugins
             if (_disposed) return;
             _disposed = true;
             _timer.Stop();
+            LiveCatalog.RemoveProvider(_catalog);
+            if (ReferenceEquals(Current, this)) Current = null;
             _host.EngineChanged -= OnEngine;
             if (_host.AcceptPluginToken == Manager.AcceptToken) _host.AcceptPluginToken = null;
             _vm.PropertyChanged -= OnVm;
             _vm.PluginSettingsLoaded -= OnLoaded;
             _vm.SelectedLogPluginChanged -= RefreshLog;
+            BuiltIns.TestSettings.KeptChanged -= OnTestValues;
+            BuiltIns.TestSettings.Changed -= Queue;
             Strings.CultureChanged -= Refresh;
             Strings.CultureChanged -= BuiltIns.RefreshNames;
             if (ReferenceEquals(_vm.PluginActions, this)) _vm.PluginActions = null;
+            if (ReferenceEquals(_vm.TestControllerSettings, TestHost)) _vm.TestControllerSettings = null;
             Manager.Dispose();
             BuiltIns.Dispose();
         }
+    }
+
+    /// <summary>
+    /// The device panel's card for a device a plugin added (#600 items 17
+    /// and 18): the plugin that added it, its help, and its own settings
+    /// with Reset All. A built-in's device has no settings of its own.
+    /// </summary>
+    public sealed class PluginDeviceCard
+    {
+        internal PluginDeviceCard(string plugin, PluginSettingsHost settings)
+        {
+            Plugin = plugin;
+            Settings = settings;
+            var s = Strings.Instance;
+            AddedBy = string.Format(CultureInfo.CurrentCulture, s.Plugins_Device_AddedBy_Format, plugin);
+            Title = string.Format(CultureInfo.CurrentCulture, s.Plugins_Device_Settings_Format, plugin);
+        }
+
+        public string Plugin { get; }
+        public string AddedBy { get; }
+        public string Title { get; }
+        public PluginSettingsHost Settings { get; }
+        public bool HasSettings => Settings != null && Settings.HasRows;
+    }
+
+    /// <summary>The device panel's way to its plugin card: the selected
+    /// device's identity in, the card or null out.</summary>
+    public sealed class PluginDeviceCardConverter : System.Windows.Data.IValueConverter
+    {
+        public static readonly PluginDeviceCardConverter Instance = new();
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            => value is Guid guid ? PluginsController.Current?.CardFor(guid) : null;
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotSupportedException();
     }
 }

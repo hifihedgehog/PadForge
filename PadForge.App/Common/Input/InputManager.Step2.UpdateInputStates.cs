@@ -1072,6 +1072,12 @@ namespace PadForge.Common.Input
                     if (centeringPadSetting == null) centeringPadSetting = us.GetPadSetting();
                 }
 
+                // A program's device that takes trigger effects (#600 item 18)
+                // hears the ones the game sent the slot's DualSense.
+                if (ud.Device is ProgramDevice programFx && programFx.Shape.TriggerEffects
+                    && UserEffectsDispatcher.TryGetInboundTriggerEffects(padIndex, atLeftBlock, atRightBlock))
+                    programFx.SetTriggerEffects(atLeftBlock, atRightBlock);
+
                 // If a test rumble targets a specific device in this slot, skip others.
                 Guid targetGuid = TestRumbleTargetGuid[padIndex];
                 if (targetGuid != Guid.Empty && targetGuid != ud.InstanceGuid)

@@ -41,9 +41,6 @@ namespace PadForge.Services.Plugins
         private readonly Func<string> _testControllerName;
         private readonly Func<string, string> _replayName;
         private bool _pluginsOn, _testOn, _replayOn, _repeat;
-        private int _speed = TestControllerPattern.NormalSpeed;
-        private ProgramDevices.Entry _testEntry;
-        private TestControllerFeeder _feeder;
         private ReplayFile _file;
         private readonly List<ProgramDevices.Entry> _replayEntries = new();
         // The name each device is given, read in the language in use, by its
@@ -65,11 +62,22 @@ namespace PadForge.Services.Plugins
             // The Test Controller's identity is fixed, so its row is named in
             // the language in use before it is first switched on in a run.
             Name(TestControllerGuid, _testControllerName);
+            TestControllerPattern.Declare(TestSettings);
+            _testConfig = TestControllerPattern.Read(TestSettings);
+            TestSettings.ValueChanged += OnTestSettings;
         }
 
-        /// <summary>The identity of the Test Controller's device.</summary>
-        internal static Guid TestControllerGuid
-            => ProgramDeviceDeclaration.InstanceGuid(ProgramDevices.BuiltInKind, TestControllerProgram, TestControllerKey);
+        /// <summary>Takes the Test Controller's values PadForge.xml
+        /// holds.</summary>
+        public void LoadTestValues(IEnumerable<PluginValueData> values)
+        {
+            TestSettings.Load(values);
+            _testConfig = TestControllerPattern.Read(TestSettings);
+            ApplyTestController();
+        }
+
+        /// <summary>The identity of the first Test Controller's device.</summary>
+        internal static Guid TestControllerGuid => TestControllerGuidOf(0);
 
         private void Name(Guid instanceGuid, Func<string> name)
         {
@@ -82,7 +90,9 @@ namespace PadForge.Services.Plugins
         /// changed.</summary>
         public void RefreshNames()
         {
-            if (_feeder != null) _testEntry?.Device.Rename(_testControllerName());
+            // The settings' words are PadForge's own, in the language in use.
+            TestControllerPattern.Declare(TestSettings);
+            for (int i = 0; i < _tests.Count; i++) _tests[i].Entry.Device.Rename(TestControllerNameOf(i));
             foreach (var entry in _replayEntries)
                 if (_names.TryGetValue(entry.Guid, out var name)) entry.Device.Rename(name());
         }
@@ -101,6 +111,13 @@ namespace PadForge.Services.Plugins
 
         // ── Test Controller ──
 
+        /// <summary>The Test Controller's declared settings (#600 item 19),
+        /// kept as a plugin's are.</summary>
+        public PluginSettingSet TestSettings { get; } = new();
+
+        private volatile TestControllerConfig _testConfig = new();
+        private readonly List<(ProgramDevices.Entry Entry, TestControllerMotion Motion)> _tests = new();
+
         public bool TestControllerOn
         {
             get => _testOn;
@@ -112,40 +129,87 @@ namespace PadForge.Services.Plugins
             }
         }
 
-        /// <summary>The speed's place in the list: Slow, Normal, Fast,
-        /// Fastest.</summary>
-        public int TestControllerSpeed
+        /// <summary>Whether a Test Controller's device is on the list
+        /// now.</summary>
+        public bool TestControllerLive => _tests.Count > 0;
+
+        /// <summary>How many Test Controllers are on the list now.</summary>
+        public int TestControllerCount => _tests.Count;
+
+        /// <summary>The first Test Controller's device while it is on.</summary>
+        internal ProgramDevice TestControllerDevice => _tests.Count > 0 ? _tests[0].Entry.Device : null;
+
+        /// <summary>The Test Controllers' devices while they are on.</summary>
+        internal IReadOnlyList<ProgramDevice> TestControllerDevices
         {
-            get => _speed;
-            set
+            get
             {
-                _speed = Math.Clamp(value, 0, TestControllerPattern.Speeds.Length - 1);
-                if (_feeder != null) _feeder.Speed = _speed;
+                var list = new List<ProgramDevice>(_tests.Count);
+                foreach (var (entry, _) in _tests) list.Add(entry.Device);
+                return list;
             }
         }
 
-        /// <summary>Whether the Test Controller's device is on the list
-        /// now.</summary>
-        public bool TestControllerLive => _feeder != null;
+        /// <summary>The settings in force, as the poll thread reads
+        /// them.</summary>
+        internal TestControllerConfig TestConfig => _testConfig;
 
-        /// <summary>The Test Controller's device while it is on.</summary>
-        internal ProgramDevice TestControllerDevice => _feeder != null ? _testEntry?.Device : null;
+        /// <summary>The key of Test Controller <paramref name="index"/>,
+        /// from 0. The first keeps the key it always had, so its mappings
+        /// hold.</summary>
+        internal static string TestControllerKeyOf(int index)
+            => index == 0 ? TestControllerKey : TestControllerKey + "-" + (index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+        /// <summary>The identity of Test Controller <paramref name="index"/>'s
+        /// device.</summary>
+        internal static Guid TestControllerGuidOf(int index)
+            => ProgramDeviceDeclaration.InstanceGuid(ProgramDevices.BuiltInKind, TestControllerProgram, TestControllerKeyOf(index));
+
+        private string TestControllerNameOf(int index)
+            => index == 0 ? _testControllerName()
+                : _testControllerName() + " " + (index + 1).ToString(System.Globalization.CultureInfo.CurrentCulture);
+
+        /// <summary>A setting changed: the poll thread reads the new ones,
+        /// and the count of controllers follows.</summary>
+        private void OnTestSettings(string device, string key)
+        {
+            _testConfig = TestControllerPattern.Read(TestSettings);
+            ApplyTestController();
+        }
+
+        /// <summary>Reads per Second: the first controller's reads in the
+        /// last second, as its status line. Called once a second.</summary>
+        public void CountReads()
+        {
+            if (_tests.Count == 0) return;
+            int reads = _tests[0].Motion.TakeReads();
+            for (int i = 1; i < _tests.Count; i++) _tests[i].Motion.TakeReads();
+            TestSettings.PluginSet(null, TestControllerPattern.KeyRate, reads.ToString("N0", System.Globalization.CultureInfo.CurrentCulture));
+        }
 
         private void ApplyTestController()
         {
-            bool want = _pluginsOn && _testOn;
-            if (want && _feeder == null)
+            int want = _pluginsOn && _testOn ? _testConfig.Controllers : 0;
+            while (_tests.Count < want)
             {
-                _testEntry = _devices.DeclareBuiltIn(TestControllerProgram, TestControllerKey, _testControllerName(), TestControllerPattern.Shape());
-                _feeder = new TestControllerFeeder(_testEntry.Device) { Speed = _speed };
-                _feeder.Start();
+                int index = _tests.Count;
+                var entry = _devices.DeclareBuiltIn(TestControllerProgram, TestControllerKeyOf(index), TestControllerNameOf(index),
+                    TestControllerPattern.Shape());
+                var motion = new TestControllerMotion(entry.Device, () => _testConfig);
+                entry.Device.Live = motion.Read;
+                int at = index;
+                Name(entry.Guid, () => TestControllerNameOf(at));
+                _tests.Add((entry, motion));
             }
-            else if (!want && _feeder != null)
+            while (_tests.Count > want)
             {
-                _feeder.Dispose();
-                _feeder = null;
-                _devices.RemoveBuiltIn(_testEntry);
+                var (entry, _) = _tests[_tests.Count - 1];
+                _tests.RemoveAt(_tests.Count - 1);
+                entry.Device.Live = null;
+                entry.Device.Rest();
+                _devices.RemoveBuiltIn(entry);
             }
+            if (want == 0) TestSettings.PluginSet(null, TestControllerPattern.KeyRate, string.Empty);
         }
 
         // ── Replay ──

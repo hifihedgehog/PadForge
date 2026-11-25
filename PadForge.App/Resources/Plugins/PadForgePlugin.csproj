@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The build settings of the PadForge Plugin Kit's C# plugin: a console
+       program for Windows on .NET 10, warnings as errors. build.ps1 beside it
+       builds it into bin\PadForgePlugin.exe. To add the plugin, open
+       PadForge, go to Extras, Plugins, press Add a Plugin… and pick that
+       file. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyName>PadForgePlugin</AssemblyName>
+    <RootNamespace>PadForgePluginKit</RootNamespace>
+    <!-- The kit's files are the whole program: nothing else in the folder
+         is compiled. -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PadForgePlugin.cs" />
+    <Compile Include="PipeOwner.cs" />
+  </ItemGroup>
+</Project>

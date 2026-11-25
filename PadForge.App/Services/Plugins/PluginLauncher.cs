@@ -74,6 +74,11 @@ namespace PadForge.Services.Plugins
         /// <summary>Ends the process and everything it started, by closing
         /// the job it runs in.</summary>
         void Stop();
+
+        /// <summary>Whether a debugger is attached to the process
+        /// (CheckRemoteDebuggerPresent, #600 item 18), so a plugin stopped
+        /// at a breakpoint is not ended for its silence.</summary>
+        bool DebuggerAttached => false;
     }
 
     /// <summary>Starts a plugin's process. The app's is
@@ -317,6 +322,15 @@ namespace PadForge.Services.Plugins
                 remove { lock (_gate) _exitedHandlers -= value; }
             }
 
+            public bool DebuggerAttached
+            {
+                get
+                {
+                    try { return !_process.IsClosed && CheckRemoteDebuggerPresent(_process, out bool present) && present; }
+                    catch (ObjectDisposedException) { return false; }
+                }
+            }
+
             public bool Owns(int processId)
             {
                 if (processId <= 0) return false;
@@ -464,6 +478,9 @@ namespace PadForge.Services.Plugins
 
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CheckRemoteDebuggerPresent(SafeProcessHandle process, out bool present);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern SafeProcessHandle OpenProcess(uint access, bool inherit, uint processId);

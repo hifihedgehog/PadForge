@@ -757,7 +757,7 @@ namespace PadForge
                      or nameof(DashboardViewModel.EnablePlugins)
                      or nameof(DashboardViewModel.PluginListRevision)
                      or nameof(DashboardViewModel.TestControllerOn)
-                     or nameof(DashboardViewModel.TestControllerSpeed)
+                     or nameof(DashboardViewModel.PluginValuesRevision)
                      or nameof(DashboardViewModel.ReplayOn)
                      or nameof(DashboardViewModel.ReplayRepeat))
                     _settingsService.MarkDirty();

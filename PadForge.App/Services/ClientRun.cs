@@ -105,6 +105,10 @@ namespace PadForge.Services
             /// (#600) and gives their exit codes.</summary>
             public Func<string, Action<string>, Action<string>, int> Summarize = PadForge.Common.Recording.RecordingSummaryPrint.Run;
             public Func<string, string, Action<string>, int> RecordSave = PadForge.Common.Recording.RecordingSave.RunForClient;
+
+            /// <summary>Runs <c>--plugin-kit</c> (#600 item 20) and gives its
+            /// exit code.</summary>
+            public Func<string, Action<string>, Action<string>, int> PluginKit = PadForge.Services.Plugins.PluginKit.RunFromCommandLine;
         }
 
         /// <summary>
@@ -154,6 +158,13 @@ namespace PadForge.Services
             {
                 // The review's Save…, run as the user (#600).
                 exitCode = seams.RecordSave(save.Source, save.Target, seams.SayError);
+                return true;
+            }
+            if (request.PluginKit != null)
+            {
+                // The kit is written with the user's rights where the user
+                // said, and needs no running copy.
+                exitCode = seams.PluginKit(request.PluginKit, seams.Say, seams.SayError);
                 return true;
             }
             if (request.Mcp)

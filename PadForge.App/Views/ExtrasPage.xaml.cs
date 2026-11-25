@@ -297,7 +297,7 @@ namespace PadForge.Views
             menu.IsOpen = true;
         }
 
-        // ── Plugins (#597) ──
+        // ── Plugins (#597, #600) ──
 
         // A file being read for a confirmation: a second press waits for it.
         private bool _describingPlugin;
@@ -319,26 +319,62 @@ namespace PadForge.Views
         /// confirmation with the file's path, signer and SHA-256, Cancel the
         /// default. The plugin is added for the bytes the confirmation
         /// showed.</summary>
-        private async void AddPlugin_Click(object sender, RoutedEventArgs e)
+        private void AddPlugin_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is null) return;
             if (_describingPlugin) return;
             var s = PadForge.Resources.Strings.Strings.Instance;
-            var owner = Window.GetWindow(this);
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = s.Plugins_Confirm_Title,
                 Filter = s.Plugins_Add_Filter,
                 CheckFileExists = true,
             };
-            if (dialog.ShowDialog(owner) != true) return;
-            string name = System.IO.Path.GetFileName(dialog.FileName);
-            if (actions.Has(dialog.FileName))
+            if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            AddPluginFile(dialog.FileName);
+        }
+
+        /// <summary>A file dropped on the Plugins page (#600 item 18) is
+        /// offered as a copy, a folder or several files are not.</summary>
+        private void PluginsPage_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DroppedPluginFile(e.Data) != null ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        /// <summary>A dropped file goes through the same confirmation as Add
+        /// a Plugin….</summary>
+        private void PluginsPage_Drop(object sender, DragEventArgs e)
+        {
+            string path = DroppedPluginFile(e.Data);
+            e.Handled = true;
+            if (path == null || _describingPlugin) return;
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is null) return;
+            AddPluginFile(path);
+        }
+
+        /// <summary>The one file a drop carries, or null.</summary>
+        internal static string DroppedPluginFile(IDataObject data)
+        {
+            if (data?.GetDataPresent(DataFormats.FileDrop) != true) return null;
+            if (data.GetData(DataFormats.FileDrop) is not string[] files || files.Length != 1) return null;
+            return System.IO.File.Exists(files[0]) ? files[0] : null;
+        }
+
+        /// <summary>The confirmation for a file the user picked or dropped,
+        /// then the add.</summary>
+        private async void AddPluginFile(string path)
+        {
+            if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var owner = Window.GetWindow(this);
+            string name = System.IO.Path.GetFileName(path);
+            if (actions.Has(path))
             {
                 ConfirmDialog.Notice(owner, s.Plugins_Confirm_Title, string.Format(s.Plugins_Already_Format, name));
                 return;
             }
-            var approval = await DescribePluginAsync(actions, dialog.FileName);
+            var approval = await DescribePluginAsync(actions, path);
             if (approval == null)
             {
                 ConfirmDialog.Notice(owner, s.Plugins_Confirm_Title, string.Format(s.Plugins_NotRead_Format, name));
@@ -349,8 +385,10 @@ namespace PadForge.Views
             if (!actions.Add(approval)) ConfirmDialog.Notice(owner, s.Plugins_Confirm_Title, s.Plugins_Full);
         }
 
-        /// <summary>Approve… on a plugin whose file changed: the same
-        /// confirmation, for the bytes it holds now.</summary>
+        /// <summary>Approve and Restart… on a plugin whose file changed,
+        /// before its start or while it runs: the same confirmation, for the
+        /// bytes it holds now. A running plugin is ended and started again
+        /// on the new bytes.</summary>
         private async void ApprovePlugin_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not ViewModels.DashboardViewModel vm || vm.PluginActions is not { } actions) return;

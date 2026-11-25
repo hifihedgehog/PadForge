@@ -404,8 +404,14 @@ class PadForge {
             case "rumble", "trigrumble": this._Call(w[2] "|" w[3], Integer(w[4]), Integer(w[5]))
             case "led", "player": this._Call(w[2] "|" w[3], w[4])
             case "lease": this._Call("lease", w[3])
+            default: this._Call("event|" w[2], e.Pairs)
         }
     }
+
+    ; callback(pairs) for every event of this kind, with the line's
+    ; key=value words as a Map: setting, press and choices for a plugin's
+    ; declared settings.
+    OnEvent(kind, callback) => this._Add("event|" kind, callback)
 
     _Call(key, args*) {
         if !this.Callbacks.Has(key)

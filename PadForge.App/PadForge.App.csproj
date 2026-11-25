@@ -245,6 +245,10 @@
     <EmbeddedResource Include="Resources\Plugins\plugin.py" LogicalName="PadForge.Plugins.plugin.py" />
     <EmbeddedResource Include="Resources\Plugins\plugin.ps1" LogicalName="PadForge.Plugins.plugin.ps1" />
     <EmbeddedResource Include="Resources\Plugins\plugin.ahk" LogicalName="PadForge.Plugins.plugin.ahk" />
+    <!-- The kit's guide, and the C# plugin's build settings and build script (#600 item 20). -->
+    <EmbeddedResource Include="Resources\Plugins\README.md" LogicalName="PadForge.Plugins.README.md" />
+    <EmbeddedResource Include="Resources\Plugins\PadForgePlugin.csproj" LogicalName="PadForge.Plugins.PadForgePlugin.csproj" />
+    <EmbeddedResource Include="Resources\Plugins\build.ps1" LogicalName="PadForge.Plugins.build.ps1" />
     <!-- PadForge's own skill for assistants (#597), kept at skills/padforge
          where skill installers look (#600): served over the Skills
          extension and written by Save the Skill, so it matches the version

@@ -661,6 +661,12 @@ namespace PadForge.Services.Automation
                     if (!session.IsPlugin) goto default;
                     WriteLog(session, r);
                     return;
+                case "setting":
+                    // A plugin's declared settings (#600 item 17), kept by the
+                    // plugins' part. Every other program is answered as for a
+                    // verb PadForge does not know.
+                    if (session.IsPlugin && PadForge.Services.Plugins.PluginLines.Run(session, r)) return;
+                    goto default;
                 case "beat":
                     if (r.Tag != null) session.Answer(r.Tag, "ok");
                     return;

@@ -468,6 +468,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Umugqa womyalo we-PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Isetha {0} ibe ngu-{1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ilalela kunethiwekhi, ngakho amanye amadivayisi angafinyelela le PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>okokufaka kwe-UDP kokulandelela ikhanda</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Iphrofayela ethi “{0}” ivula {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ishintsha idrayivu noma i-HidHide, ezithenjwa ezinye izinhlelo nemidlalo.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ifayela: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ishintsha ukuthi yiziphi izinhlelo ezingafunda idivayisi, nge-Use Only in PadForge.</value></data>
@@ -3170,7 +3172,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ayikho i-plugin esebenzayo.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Okwakhelwe ngaphakathi</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Isilawuli sokuhlola</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Isilawuli esizihambisa sona, isilawuli esisodwa ngesikhathi, ukuze ukumaphwa kuzanywe ngaphandle kwehadiwe esandleni.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Isilawuli esizihambisa sona, ukuze ukumaphwa kuzanywe ngaphandle kwehadiwe esandleni. Izinduku zaso, izicupho zaso noma kokubili kunyakaza ndawonye bese kuphumula, kanti izinkinobho esizicindezelayo zicindezelwa ngokushintshana.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Ukuphinda udlale</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Idlala futhi okuqoshiwe kwenkinga njengamadivayisi akwenzile, ngesikhathi ayenaso. Angamadivayisi amasha kule PC, amephwe njengoba wena noma iphrofayela niwamapha.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Okuqoshiwe</value></data>

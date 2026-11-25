@@ -2355,6 +2355,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} irratti.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} gara {1} kaa'a</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Neetworkii irratti dhaggeeffata, kanaaf meeshaaleen biroo PC kana ga'uu danda'u.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>galtee UDP Hordoffii mataa</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Piroofaayiliin “{0}” {1} bana</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Sagantaa fe'insaa ykn HidHide jijjiira, kan sagantaaleen biroo fi taphoonni irratti hirkatan.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faayilii: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Karaa Use Only in PadForge sagantaalee meeshaa dubbisuu danda'an jijjiira.</value></data>

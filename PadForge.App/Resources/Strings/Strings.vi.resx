@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Không có plugin nào đang chạy.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Có sẵn</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Tay cầm thử</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Một tay cầm tự chuyển động, từng điều khiển một, để có thể thử một ánh xạ mà không cần phần cứng trong tay.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Một tay cầm tự chuyển động, để có thể thử một ánh xạ mà không cần phần cứng trong tay. Cần điều khiển, cò hoặc cả hai cùng chuyển động rồi nghỉ, còn các nút bấm lần lượt được nhấn.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Phát lại</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Phát lại bản ghi sự cố dưới dạng các thiết bị đã tạo ra nó, với đúng nhịp thời gian của chúng. Đó là các thiết bị mới trên PC này, được ánh xạ như bạn hoặc một hồ sơ ánh xạ.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Bản ghi</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>dòng lệnh của PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Đặt {0} thành {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lắng nghe trên mạng, nên các thiết bị khác có thể truy cập PC này.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>đầu vào UDP của Theo dõi đầu</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Hồ sơ “{0}” bật {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Đổi một trình điều khiển hoặc HidHide, mà các chương trình và trò chơi khác dựa vào.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Tệp: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Đổi những chương trình nào đọc được thiết bị, thông qua Chỉ dùng trong PadForge.</value></data>

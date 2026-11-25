@@ -1510,6 +1510,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} ryepýpe.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Omoĩ {0} {1} ramo</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ohendu red rupive, ambue mba'e'oka ikatu hag̃uáicha og̃uahẽ ko PCpe.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Head Tracking jeike UDP rupive</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Perfil “{0}” omyendy {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Omoambue peteĩ driver térã HidHide, ambue programa ha ñembosarái oikotevẽva.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Archivo: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Omoambue mba'e programapa ikatu olee mba'e'oka, Use Only in PadForge rupive.</value></data>

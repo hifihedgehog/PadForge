@@ -1353,6 +1353,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Ma {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Hoʻonoho iā {0} i {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Hoʻolohe ma ka pūnaewele, no laila hiki i nā hāmeʻa ʻē aʻe ke hōʻea i kēia PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ka hoʻokomo UDP o Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Hoʻā ka profile “{0}” iā {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Hoʻololi i kekahi driver a i ʻole iā HidHide, kahi a nā polokalamu ʻē aʻe a me nā pāʻani e hilinaʻi ai.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faila: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Hoʻololi i nā polokalamu hiki ke heluhelu i ka hāmeʻa, ma o Use Only in PadForge.</value></data>

@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>គ្មានកម្មវិធីបន្ថែមណាកំពុងដំណើរការទេ។</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ភ្ជាប់មកជាមួយ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ឧបករណ៍បញ្ជាសាកល្បង</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ឧបករណ៍បញ្ជាដែលផ្លាស់ទីដោយខ្លួនឯង ម្ដងមួយការបញ្ជា ដូច្នេះអាចសាកល្បងការម៉ាបបាន ដោយគ្មានផ្នែករឹងនៅក្នុងដៃ។</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ឧបករណ៍បញ្ជាដែលផ្លាស់ទីដោយខ្លួនឯង ដូច្នេះអាចសាកល្បងការម៉ាបបាន ដោយគ្មានផ្នែករឹងនៅក្នុងដៃ។ ដងបញ្ជា គន្លឹះបាញ់ ឬទាំងពីររបស់វា ផ្លាស់ទីព្រមគ្នា រួចឈប់សម្រាក ខណៈប៊ូតុងដែលវាចុច ប្ដូរវេនគ្នា។</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ចាក់ឡើងវិញ</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ចាក់ការថតបញ្ហាឡើងវិញ ជាឧបករណ៍ដែលបានបង្កើតវា តាមពេលវេលាដែលពួកវាមាន។ ពួកវាជាឧបករណ៍ថ្មីនៅលើកុំព្យូទ័រនេះ ដែលបានម៉ាបតាមរបៀបដែលអ្នក ឬប្រូហ្វាល់ម៉ាបពួកវា។</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ការថត</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>បន្ទាត់ពាក្យបញ្ជារបស់ PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>កំណត់ {0} ទៅ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ស្ដាប់នៅលើបណ្ដាញ ដូច្នេះឧបករណ៍ផ្សេងអាចភ្ជាប់មកកុំព្យូទ័រនេះបាន។</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ការបញ្ចូល UDP នៃការតាមដានក្បាល</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>ប្រូហ្វាល់ «{0}» បើក {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ប្ដូរដ្រាយវ័រ ឬ HidHide ដែលកម្មវិធី និងហ្គេមផ្សេងទៀតពឹងផ្អែកលើ។</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ឯកសារ៖ {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ប្ដូរថាកម្មវិធីណាអាចអានឧបករណ៍ តាមរយៈ «Use Only in PadForge»។</value></data>

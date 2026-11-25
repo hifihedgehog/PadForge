@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ບໍ່ມີປລັກອິນໃດເຮັດວຽກ.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ມີມາໃນຕົວ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ຕົວຄວບຄຸມທົດສອບ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ຕົວຄວບຄຸມທີ່ເຄື່ອນໄຫວເອງ, ເທື່ອລະການຄວບຄຸມ, ເພື່ອໃຫ້ລອງການແມັບໄດ້ໂດຍບໍ່ຕ້ອງມີຮາດແວຢູ່ໃນມື.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ຕົວຄວບຄຸມທີ່ເຄື່ອນໄຫວເອງ, ເພື່ອໃຫ້ລອງການແມັບໄດ້ໂດຍບໍ່ຕ້ອງມີຮາດແວຢູ່ໃນມື. ສະຕິກ, ທຣິກເກີ ຫຼື ທັງສອງຂອງມັນເຄື່ອນໄຫວພ້ອມກັນແລ້ວຢຸດພັກ, ໃນຂະນະທີ່ປຸ່ມທີ່ມັນກົດຈະຜັດປ່ຽນກັນ.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ຫຼິ້ນຄືນ</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ຫຼິ້ນການບັນທຶກບັນຫາຄືນເປັນອຸປະກອນທີ່ສ້າງມັນ, ດ້ວຍຈັງຫວະເວລາທີ່ພວກມັນມີ. ພວກມັນເປັນອຸປະກອນໃໝ່ໃນ PC ນີ້, ແມັບຕາມທີ່ທ່ານ ຫຼື ໂປຣໄຟລ໌ແມັບມັນ.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ການບັນທຶກ</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>ແຖວຄຳສັ່ງຂອງ PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>ຕັ້ງ {0} ເປັນ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ຮັບຟັງໃນເຄືອຂ່າຍ, ສະນັ້ນອຸປະກອນອື່ນສາມາດເຂົ້າເຖິງ PC ນີ້ໄດ້.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ອິນພຸດ UDP ຂອງການຕິດຕາມຫົວ</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>ໂປຣໄຟລ໌ “{0}” ເປີດ {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ປ່ຽນໄດຣເວີ ຫຼື HidHide, ເຊິ່ງໂປຣແກຣມ ແລະ ເກມອື່ນອາໄສຢູ່.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ໄຟລ໌: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ປ່ຽນວ່າໂປຣແກຣມໃດອ່ານອຸປະກອນໄດ້, ຜ່ານ Use Only in PadForge.</value></data>

@@ -577,7 +577,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ಯಾವುದೇ ಪ್ಲಗಿನ್ ಚಾಲನೆಯಲ್ಲಿಲ್ಲ.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ಅಂತರ್ನಿರ್ಮಿತ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ಪರೀಕ್ಷಾ ಕಂಟ್ರೋಲರ್</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ತಾನಾಗಿ ಚಲಿಸುವ ಕಂಟ್ರೋಲರ್, ಒಂದು ಬಾರಿಗೆ ಒಂದು ನಿಯಂತ್ರಣ, ಹಾಗಾಗಿ ಕೈಯಲ್ಲಿ ಯಾವುದೇ ಹಾರ್ಡ್‌ವೇರ್ ಇಲ್ಲದೆ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಬಹುದು.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ತಾನಾಗಿ ಚಲಿಸುವ ಕಂಟ್ರೋಲರ್, ಹಾಗಾಗಿ ಕೈಯಲ್ಲಿ ಯಾವುದೇ ಹಾರ್ಡ್‌ವೇರ್ ಇಲ್ಲದೆ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಬಹುದು. ಇದರ ಸ್ಟಿಕ್‌ಗಳು, ಟ್ರಿಗರ್‌ಗಳು ಅಥವಾ ಎರಡೂ ಒಟ್ಟಿಗೆ ಚಲಿಸಿ ನಂತರ ವಿಶ್ರಮಿಸುತ್ತವೆ, ಒತ್ತುವ ಬಟನ್‌ಗಳು ಒಂದರ ನಂತರ ಒಂದು ಬರುತ್ತವೆ.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ಮರುಪ್ಲೇ</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ಸಮಸ್ಯೆಯ ರೆಕಾರ್ಡಿಂಗ್ ಅನ್ನು ಅದನ್ನು ಮಾಡಿದ ಸಾಧನಗಳಾಗಿ, ಅವು ಹೊಂದಿದ್ದ ಸಮಯದೊಂದಿಗೆ ಮರಳಿ ಪ್ಲೇ ಮಾಡುತ್ತದೆ. ಅವು ಈ PC ಯಲ್ಲಿ ಹೊಸ ಸಾಧನಗಳು, ನೀವು ಅಥವಾ ಪ್ರೊಫೈಲ್ ಮ್ಯಾಪ್ ಮಾಡಿದಂತೆ ಮ್ಯಾಪ್ ಆಗುತ್ತವೆ.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ರೆಕಾರ್ಡಿಂಗ್</value></data>
@@ -850,6 +850,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge ನ ಕಮಾಂಡ್ ಲೈನ್</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ಅನ್ನು {1} ಗೆ ಹೊಂದಿಸುತ್ತದೆ</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿ ಆಲಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ಇತರ ಸಾಧನಗಳು ಈ PC ಯನ್ನು ತಲುಪಬಹುದು.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ಹೆಡ್ ಟ್ರ್ಯಾಕಿಂಗ್‌ನ UDP ಇನ್‌ಪುಟ್</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” ಪ್ರೊಫೈಲ್ {1} ಅನ್ನು ಆನ್ ಮಾಡುತ್ತದೆ</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ಇತರ ಪ್ರೋಗ್ರಾಂಗಳು ಮತ್ತು ಆಟಗಳು ಅವಲಂಬಿಸಿರುವ ಡ್ರೈವರ್ ಅಥವಾ HidHide ಅನ್ನು ಬದಲಿಸುತ್ತದೆ.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ಫೈಲ್: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge ಮೂಲಕ, ಸಾಧನವನ್ನು ಯಾವ ಪ್ರೋಗ್ರಾಂಗಳು ಓದಬಹುದು ಎಂಬುದನ್ನು ಬದಲಿಸುತ್ತದೆ.</value></data>

@@ -1375,6 +1375,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} pe.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ke {1} pe set kare hai</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Network pe sune hai, jisse dusra device ii PC tak pahunch sake.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Head Tracking ke UDP input</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profile “{0}” {1} On kare hai</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ek driver ya HidHide badle hai, jon pe dusra program aur game bharosa kare hai.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge se badle hai ki kon program device padhe sake.</value></data>

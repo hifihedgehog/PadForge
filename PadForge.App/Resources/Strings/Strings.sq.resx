@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Asnjë shtojcë nuk është në punë.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Të brendshme</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kontrolluesi provë</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Një kontrollues që lëviz vetë, një kontroll në herë, që një hartëzim të provohet pa pajisje në dorë.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Një kontrollues që lëviz vetë, që një hartëzim të provohet pa pajisje në dorë. Levat e tij, këmbëzat e tij ose të dyja lëvizin bashkë e pastaj pushojnë, ndërsa butonat që shtyp ndërrojnë me radhë.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Riluajtja</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>E luan një regjistrim problemi si pajisjet që e bënë, me kohën që kishin. Janë pajisje të reja në këtë PC, të hartëzuara siç i hartëzon ti ose një profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Regjistrimi</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>rreshti i komandës i PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Cakton {0} në {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Dëgjon në rrjet, ndaj pajisje të tjera mund ta arrijnë këtë PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>hyrja UDP e Gjurmimit të kokës</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profili „{0}“ ndez {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ndryshon një drejtues ose HidHide, nga të cilët varen programe dhe lojëra të tjera.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Skedari: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ndryshon cilët programe mund ta lexojnë pajisjen, përmes Use Only in PadForge.</value></data>

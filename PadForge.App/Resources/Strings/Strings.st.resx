@@ -259,6 +259,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Ho {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>E beha {0} ho {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>E mamela marangrang, kahoo disebediswa tse ding di ka fihlela PC ena.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Kenyo ya UDP ya Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profaele “{0}” e bulela {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>E fetola kganni kapa HidHide, tseo mananeo a mang le dipapadi di itshetlehileng ka tsona.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faele: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>E fetola hore na ke mananeo afe a ka balang sesebediswa, ka Use Only in PadForge.</value></data>

@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Geen inpropprogram loop nie.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ingebou</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Toetscontroller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>'n Controller wat self beweeg, een kontrole op 'n slag, sodat 'n toewysing probeer kan word sonder toerusting byderhand.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>'n Controller wat self beweeg, sodat 'n toewysing probeer kan word sonder toerusting byderhand. Sy stokkies, sy snellers of albei beweeg saam en rus dan, terwyl die knoppies wat dit druk beurte maak.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Herspeel</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Speel 'n probleemopname terug as die toestelle wat dit gemaak het, met die tydsberekening wat hulle gehad het. Hulle is nuwe toestelle op hierdie rekenaar, toegewys soos jy of 'n profiel hulle toewys.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opname</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge se opdragreël</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stel {0} op {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Luister op die netwerk, sodat ander toestelle hierdie rekenaar kan bereik.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Kopnasporing se UDP-invoer</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Die profiel “{0}” skakel {1} aan</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Verander 'n drywer of HidHide, waarop ander programme en speletjies staatmaak.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Lêer: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Verander watter programme die toestel kan lees, deur Use Only in PadForge.</value></data>

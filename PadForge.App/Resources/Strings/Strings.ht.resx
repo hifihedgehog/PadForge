@@ -609,6 +609,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Sou {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Mete {0} sou {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Li koute sou rezo a, kidonk lòt aparèy ka rive jwenn PC sa a.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>antre UDP Swivi tèt la</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Pwofil “{0}” aktive {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Li chanje yon drivè oswa HidHide, ke lòt pwogram ak jwèt depann de yo.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fichye: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Li chanje ki pwogram ki ka li aparèy la, atravè Use Only in PadForge.</value></data>
@@ -5073,7 +5075,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Okenn plugin pa ap mache.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Entegre</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kontwolè tès</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yon kontwolè ki bouje pou kont li, yon kontwòl alafwa, pou w ka eseye yon asiyasyon san okenn materyèl nan men w.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yon kontwolè ki bouje pou kont li, pou w ka eseye yon asiyasyon san okenn materyèl nan men w. Joystik li yo, gachèt li yo oswa toule de bouje ansanm epi yo repoze, pandan bouton li peze yo pase youn apre lòt.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Rejwe</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Li rejwe yon anrejistreman pwoblèm kòm aparèy ki te fè l yo, ak menm tan yo te genyen. Se nouvo aparèy sou PC sa a, asiyen jan ou menm oswa yon pwofil asiyen yo.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Anrejistreman</value></data>

@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>la ligne de commande de PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Règle {0} sur {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Écoute sur le réseau, si bien que d'autres appareils peuvent joindre ce PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>l'entrée UDP du Suivi de tête</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Le profil « {0} » active {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Modifie un pilote ou HidHide, dont d'autres programmes et jeux dépendent.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fichier : {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Modifie quels programmes peuvent lire l'appareil, via Utiliser uniquement dans PadForge.</value></data>
@@ -4218,7 +4220,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Aucun plugin en cours.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Intégrés</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Manette de test</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Une manette qui bouge toute seule, une commande à la fois, pour essayer un mappage sans matériel sous la main.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Une manette qui bouge toute seule, pour essayer un mappage sans matériel sous la main. Ses sticks, ses gâchettes ou les deux bougent ensemble puis se reposent, pendant que les boutons qu'elle presse passent chacun leur tour.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Relecture</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Rejoue un enregistrement de problème comme les appareils qui l'ont produit, avec leur cadence d'origine. Ce sont de nouveaux appareils sur ce PC, mappés comme vous ou un profil les mappez.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Enregistrement</value></data>

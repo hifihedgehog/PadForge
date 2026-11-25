@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>कुनै प्लगइन चलिरहेको छैन।</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>भित्रै समावेश</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>परीक्षण कन्ट्रोलर</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>आफैँ चल्ने कन्ट्रोलर, एक पटकमा एउटा नियन्त्रण, ताकि हातमा हार्डवेयर नभई पनि म्यापिङ परीक्षण गर्न सकियोस्।</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>आफैँ चल्ने कन्ट्रोलर, ताकि हातमा हार्डवेयर नभई पनि म्यापिङ परीक्षण गर्न सकियोस्। यसका स्टिकहरू, ट्रिगरहरू वा दुवै सँगै चल्छन् अनि केही बेर स्थिर रहन्छन्, जबकि यसले थिच्ने बटनहरू पालैपालो थिचिन्छन्।</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>रिप्ले</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>समस्या रेकर्डिङलाई त्यसलाई बनाउने यन्त्रहरूकै रूपमा, तिनको समयसहित फेरि बजाउँछ। ती यस PC मा नयाँ यन्त्रहरू हुन्, जसलाई तपाईं वा प्रोफाइलले म्याप गरेअनुसार म्याप गरिन्छ।</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>रेकर्डिङ</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge को कमान्ड लाइन</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} लाई {1} मा सेट गर्छ</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>नेटवर्कमा सुन्छ, ताकि अन्य यन्त्रहरू यो PC सम्म पुग्न सकून्।</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>हेड ट्र्याकिङको UDP इनपुट</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>प्रोफाइल “{0}” ले {1} अन गर्छ</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ड्राइभर वा HidHide बदल्छ, जसमा अन्य प्रोग्राम र खेलहरू निर्भर छन्।</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>फाइल: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>“PadForge मा मात्र प्रयोग गर्नुहोस्” मार्फत यन्त्र कुन प्रोग्रामहरूले पढ्न सक्छन् भन्ने कुरा बदल्छ।</value></data>

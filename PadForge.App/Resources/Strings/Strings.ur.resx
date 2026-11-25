@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>کوئی پلگ اِن نہیں چل رہا۔</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>پہلے سے شامل</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ٹیسٹ کنٹرولر</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ایسا کنٹرولر جو خود ہلتا ہے، ایک وقت میں ایک کنٹرول، تاکہ ہاتھ میں ہارڈ ویئر کے بغیر میپنگ آزمائی جا سکے۔</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ایسا کنٹرولر جو خود ہلتا ہے، تاکہ ہاتھ میں ہارڈ ویئر کے بغیر میپنگ آزمائی جا سکے۔ اس کی اسٹکس، اس کے ٹرگرز یا دونوں ایک ساتھ ہلتے ہیں اور پھر رک جاتے ہیں، جبکہ جو بٹن یہ دباتا ہے وہ باری باری دبتے ہیں۔</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ری پلے</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>کسی مسئلے کی ریکارڈنگ کو انہی آلات کے طور پر اسی وقت کے ساتھ دوبارہ چلاتا ہے جنہوں نے اسے بنایا تھا۔ وہ اس PC پر نئے آلات ہیں، جنہیں آپ یا کوئی پروفائل جیسے میپ کرے ویسے میپ کیا جاتا ہے۔</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ریکارڈنگ</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge کی کمانڈ لائن</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} کو {1} پر مقرر کرتا ہے</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>نیٹ ورک پر سنتا ہے، اس لیے دوسرے آلات اس PC تک پہنچ سکتے ہیں۔</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ہیڈ ٹریکنگ کا UDP ان پٹ</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>پروفائل “{0}” {1} آن کرتا ہے</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ڈرائیور یا HidHide بدلتا ہے، جن پر دوسرے پروگرام اور گیمز انحصار کرتے ہیں۔</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>فائل: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>یہ بدلتا ہے کہ کون سے پروگرام آلے کو پڑھ سکتے ہیں، صرف PadForge میں استعمال کریں کے ذریعے۔</value></data>

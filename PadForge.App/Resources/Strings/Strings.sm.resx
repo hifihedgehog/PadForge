@@ -1423,6 +1423,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>I luga o {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Seti {0} i le {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Faʻalogo i le fesoʻotaʻiga, ina ia mafai e isi masini ona oʻo atu i lenei PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>le faʻaofiga UDP a le Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>E faʻaola e le profile “{0}” {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Sui se driver poʻo HidHide, lea e faʻalagolago i ai isi polokalame ma taʻaloga.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faila: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Sui polokalame e mafai ona faitau le masini, e ala i le Use Only in PadForge.</value></data>

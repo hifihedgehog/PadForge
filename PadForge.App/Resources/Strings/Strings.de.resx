@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>die PadForge-Befehlszeile</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setzt {0} auf {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lauscht im Netzwerk, sodass andere Geräte diesen PC erreichen können.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>die UDP-Eingabe von Head-Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Das Profil „{0}“ schaltet {1} ein</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ändert einen Treiber oder HidHide, auf die andere Programme und Spiele angewiesen sind.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Datei: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ändert über Nur in PadForge verwenden, welche Programme das Gerät lesen können.</value></data>
@@ -4218,7 +4220,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kein Plugin läuft.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integriert</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ein Controller, der sich von selbst bewegt, ein Bedienelement nach dem anderen, damit sich eine Zuordnung ohne Hardware ausprobieren lässt.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ein Controller, der sich von selbst bewegt, damit sich eine Zuordnung ohne Hardware ausprobieren lässt. Seine Sticks, seine Trigger oder beide bewegen sich gemeinsam und ruhen dann, während die gedrückten Tasten abwechselnd an der Reihe sind.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spielt eine Problemaufnahme als die Geräte ab, die sie erzeugt haben, mit deren Timing. Es sind neue Geräte an diesem PC, zugeordnet so, wie Sie oder ein Profil sie zuordnen.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Aufnahme</value></data>

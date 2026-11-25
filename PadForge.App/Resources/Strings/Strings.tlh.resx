@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Qap pagh jan chelwI'.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>PadForge ngaSbogh</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>waHmeH SeHjan</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>nIteb vIHmoH'eghbogh SeHjan. SeHwI'meyDaj wa' wa' vIHmoH, vaj jan Dughajbe'taHvIS neltaHghach DawaHlaH.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>nIteb vIHmoH'eghbogh SeHjan, vaj jan Dughajbe'taHvIS neltaHghach DawaHlaH. naQmeyDaj joq chu'wI'meyDaj nItebHa' vIH 'ej ghIq leS, 'ach leQmeyDaj wa' wa' 'uy.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ta chu'qa'wI'</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Qagh ta chu'qa', ta chenmoHbogh janmey rur, poHmeychaj nIb lo'. De'wI'vamDaq janmey chu' chaH, 'ej chaH DanelDI' ghap tu'qom nelDI' nellu'.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ta</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge ra'meH tlhegh</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{1} moj {0}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>SIr'o' 'Ij, vaj De'wI'vam rarlaH latlh janmey.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>nach ghochtaHghach UDP 'elmoHghach</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>{1} chu' tu'qom “{0}”</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>SeHwI' nIqHom ghap HidHide choH. latlh nIqHommey Qujmey je lulo'.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>'a'baqa': {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForge neH lo'jaj lo'taHvIS, jan laDlaHbogh nIqHommey choH.</value></data>

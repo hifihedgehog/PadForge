@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ingen plugins kører.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Indbygget</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>En controller, der bevæger sig af sig selv, én kontrol ad gangen, så en tildeling kan prøves uden hardware ved hånden.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>En controller, der bevæger sig af sig selv, så en tildeling kan prøves uden hardware ved hånden. Dens sticks, dens triggere eller begge dele bevæger sig sammen og hviler så, mens de knapper, den trykker på, tager tur.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Afspilning</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Afspiller en problemoptagelse igen som de enheder, der lavede den, med den timing, de havde. De er nye enheder på denne pc, tildelt, som du eller en profil tildeler dem.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Optagelse</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>kommandolinjen til PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Sætter {0} til {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lytter på netværket, så andre enheder kan nå denne pc.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP-inputtet til Hovedsporing</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profilen “{0}” slår {1} til</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ændrer en driver eller HidHide, som andre programmer og spil er afhængige af.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fil: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ændrer, hvilke programmer der kan læse enheden, via Brug kun i PadForge.</value></data>

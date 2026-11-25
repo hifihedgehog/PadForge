@@ -1729,6 +1729,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Ha {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ginbubutang an {0} ha {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Namamati ha network, salit maaabot hini nga PC han iba nga mga device.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP input han Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Bubuksan han profile nga “{0}” an {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ginbabag-o an driver o an HidHide, nga ginsasarigan han iba nga mga programa ngan dula.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ginbabag-o kun hain nga mga programa an makakabasa han device, pinaagi han Use Only in PadForge.</value></data>

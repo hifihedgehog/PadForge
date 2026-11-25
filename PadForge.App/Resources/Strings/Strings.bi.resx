@@ -382,6 +382,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Long {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>I setem {0} i kam {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>I lisin long netwok, ale ol narafala divaes oli save kasem PC ia.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP input blong Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profael “{0}” i tanem {1} i on</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>I jenisim wan draeva o HidHide, we ol narafala program mo gem oli dipen long hem.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fael: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>I jenisim wanem program i save ridim divaes, tru long Use Only in PadForge.</value></data>

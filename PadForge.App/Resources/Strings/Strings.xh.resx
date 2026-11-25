@@ -289,6 +289,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Ku-{0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Iseta {0} ku-{1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Imamela kwinethiwekhi, ngoko ezinye izixhobo zingafikelela kule PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>igalelo le-UDP le-Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Iprofayile “{0}” ivula {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Itshintsha idrayiva okanye i-HidHide, ezixhomekeke kuzo ezinye iinkqubo nemidlalo.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ifayile: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Itshintsha ukuba zeziphi iinkqubo ezinokufunda isixhobo, nge-Use Only in PadForge.</value></data>

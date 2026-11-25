@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>لا يعمل أي مكون إضافي.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>المضمّنة</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>وحدة تحكم الاختبار</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>وحدة تحكم تتحرك من تلقاء نفسها، عنصر تحكم بعد آخر، فيمكن تجربة تعيين من دون جهاز في اليد.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>وحدة تحكم تتحرك من تلقاء نفسها، فيمكن تجربة تعيين من دون جهاز في اليد. تتحرك عصياها أو مشغّلاتها أو كلاهما معًا ثم تستقر، بينما تُضغط أزرارها بالتناوب.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>إعادة التشغيل</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>يعيد تشغيل تسجيل مشكلة كما لو كان من الأجهزة التي صنعته، وبالتوقيت نفسه. تظهر كأجهزة جديدة على هذا الكمبيوتر، وتُعيَّن كما تعيّنها أنت أو ملف تعريف.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>التسجيل</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>سطر أوامر PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>يضبط {0} على {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>يستمع على الشبكة، فتستطيع أجهزة أخرى الوصول إلى هذا الكمبيوتر.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>إدخال UDP الخاص بتتبع الرأس</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>ملف التعريف «{0}» يشغّل {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>يغيّر برنامج تشغيل أو HidHide، وتعتمد عليه برامج وألعاب أخرى.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>الملف: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>يغيّر البرامج التي تستطيع قراءة الجهاز، عبر Use Only in PadForge.</value></data>

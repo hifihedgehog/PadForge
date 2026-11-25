@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge のコマンドライン</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} を {1} に設定</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ネットワークで待ち受けるため、他のデバイスからこの PC にアクセスできます。</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ヘッド トラッキングの UDP 入力</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>プロファイル「{0}」は {1} をオンにします</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>他のプログラムやゲームが依存しているドライバーまたは HidHide を変更します。</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ファイル: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>「PadForge でのみ使用する」の設定により、デバイスを読み取れるプログラムを変更します。</value></data>
@@ -4218,7 +4220,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>実行中のプラグインはありません。</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>組み込み</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>テストコントローラー</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>1 つずつコントロールが自動で動くコントローラーです。ハードウェアがなくてもマッピングを試せます。</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>自動で動くコントローラーです。ハードウェアがなくてもマッピングを試せます。スティックやトリガー、またはその両方がまとめて動いて止まり、ボタンは順番に押されます。</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>リプレイ</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>問題の記録を、それを作ったデバイスとして同じタイミングで再生します。これらはこの PC の新しいデバイスで、あなたまたはプロファイルの設定どおりにマッピングされます。</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>記録</value></data>

@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ഒരു പ്ലഗിനും പ്രവർത്തിക്കുന്നില്ല.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയവ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ടെസ്റ്റ് കൺട്രോളർ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>സ്വയം നീങ്ങുന്ന ഒരു കൺട്രോളർ, ഓരോ തവണയും ഒരു നിയന്ത്രണം, അതിനാൽ ഹാർഡ്‌വെയർ കൈയിലില്ലാതെ ഒരു മാപ്പിംഗ് പരീക്ഷിക്കാം.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>സ്വയം നീങ്ങുന്ന ഒരു കൺട്രോളർ, അതിനാൽ ഹാർഡ്‌വെയർ കൈയിലില്ലാതെ ഒരു മാപ്പിംഗ് പരീക്ഷിക്കാം. അതിന്റെ സ്റ്റിക്കുകളോ ട്രിഗറുകളോ രണ്ടുമോ ഒരുമിച്ച് നീങ്ങിയശേഷം നിശ്ചലമാകുന്നു, അമർത്തുന്ന ബട്ടണുകൾ ഓരോന്നായി മാറിമാറി വരുന്നു.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>റീപ്ലേ</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ഒരു പ്രശ്ന റെക്കോർഡിംഗ്, അത് ഉണ്ടാക്കിയ ഉപകരണങ്ങളായി, അവയുടെ സമയക്രമത്തോടെ തിരികെ പ്ലേ ചെയ്യുന്നു. അവ ഈ PC-യിലെ പുതിയ ഉപകരണങ്ങളാണ്, നിങ്ങളോ ഒരു പ്രൊഫൈലോ മാപ്പ് ചെയ്യുന്നതുപോലെ മാപ്പ് ചെയ്യപ്പെടും.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>റെക്കോർഡിംഗ്</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ന്റെ കമാൻഡ് ലൈൻ</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} എന്നത് {1} ആക്കുന്നു</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>നെറ്റ്‌വർക്കിൽ കേൾക്കുന്നു, അതിനാൽ മറ്റ് ഉപകരണങ്ങൾക്ക് ഈ PC-യിൽ എത്താനാകും.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ഹെഡ് ട്രാക്കിംഗിന്റെ UDP ഇൻപുട്ട്</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” എന്ന പ്രൊഫൈൽ {1} ഓണാക്കുന്നു</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>മറ്റ് പ്രോഗ്രാമുകളും ഗെയിമുകളും ആശ്രയിക്കുന്ന ഒരു ഡ്രൈവറോ HidHide-ഓ മാറ്റുന്നു.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ഫയൽ: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForge-ലെ Use Only in PadForge വഴി, ഉപകരണം ഏതൊക്കെ പ്രോഗ്രാമുകൾക്ക് വായിക്കാമെന്നത് മാറ്റുന്നു.</value></data>

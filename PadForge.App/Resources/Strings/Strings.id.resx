@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tidak ada plugin yang berjalan.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Bawaan</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kontroler uji</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontroler yang bergerak sendiri, satu kontrol demi satu, sehingga pemetaan dapat dicoba tanpa perangkat keras di tangan.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kontroler yang bergerak sendiri, sehingga pemetaan dapat dicoba tanpa perangkat keras di tangan. Stik, pemicu, atau keduanya bergerak bersamaan lalu diam, sementara tombol yang ditekannya bergantian.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Putar ulang</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Memutar ulang rekaman masalah sebagai perangkat yang membuatnya, dengan waktu yang sama. Perangkat itu adalah perangkat baru di PC ini, dipetakan seperti yang Anda atau profil petakan.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rekaman</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>baris perintah PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Mengatur {0} ke {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Mendengarkan di jaringan, sehingga perangkat lain dapat menjangkau PC ini.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>input UDP Pelacakan kepala</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profil “{0}” mengaktifkan {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mengubah driver atau HidHide, yang diandalkan program dan game lain.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mengubah program mana yang dapat membaca perangkat, melalui Pakai Hanya di PadForge.</value></data>

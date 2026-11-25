@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Engin viðbót er í gangi.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Innbyggt</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Prófunarstýring</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Stýring sem hreyfist sjálf, eitt stjórntæki í einu, svo hægt sé að prófa vörpun án tækis við höndina.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Stýring sem hreyfist sjálf, svo hægt sé að prófa vörpun án tækis við höndina. Stýripinnar hennar, gikkir eða hvort tveggja hreyfast saman og hvílast svo, en hnapparnir sem hún ýtir á skiptast á.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Endurspilun</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spilar vandamálsupptöku aftur sem tækin sem bjuggu hana til, með sama tímasetningu. Þau eru ný tæki í þessari tölvu og varpað eins og þú eða snið varpar þeim.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Upptaka</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>skipanalínu PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stillir {0} á {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Hlustar á netinu, svo önnur tæki geta náð í þessa tölvu.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP-inntak höfuðrakningar</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Sniðið „{0}“ kveikir á {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Breytir reklum eða HidHide, sem önnur forrit og leikir reiða sig á.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Skrá: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Breytir því hvaða forrit geta lesið tækið, með Nota aðeins í PadForge.</value></data>

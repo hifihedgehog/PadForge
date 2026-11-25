@@ -500,6 +500,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Na {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ta poi {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ta skuta na redi, pur isu otus dispozitivu podi txiga es PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>entrada UDP di Rastreamentu di kabesa</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Perfil “{0}” ta liga {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ta muda un driver o HidHide, ki otus programa i jogu ta dipendi di el.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fixeru: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ta muda kal programa ki podi lé dispozitivu, através di Use Only in PadForge.</value></data>

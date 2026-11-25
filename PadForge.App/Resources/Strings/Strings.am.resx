@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ምንም ተሰኪ እየሄደ አይደለም።</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>አብሮ የተሰሩ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>የሙከራ መቆጣጠሪያ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>በራሱ የሚንቀሳቀስ መቆጣጠሪያ፣ አንድ መቆጣጠሪያ ክፍል በአንድ ጊዜ፣ ስለዚህ ሃርድዌር በእጅ ሳይኖር ማዛመጃ መሞከር ይቻላል።</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>በራሱ የሚንቀሳቀስ መቆጣጠሪያ፣ ስለዚህ ሃርድዌር በእጅ ሳይኖር ማዛመጃ መሞከር ይቻላል። ዱላዎቹ፣ ቀስቅሴዎቹ ወይም ሁለቱም አብረው ይንቀሳቀሳሉ ከዚያም ያርፋሉ፣ የሚጫናቸው አዝራሮች ግን በተራ ይጫናሉ።</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>መልሶ ማጫወት</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>የችግር ቀረጻን እንደሠሩት መሣሪያዎች፣ በነበራቸው ጊዜ አጠባበቅ መልሶ ያጫውታል። በዚህ ፒሲ ላይ አዲስ መሣሪያዎች ናቸው፣ እርስዎ ወይም መገለጫ እንደሚያዛምዷቸው ይዛመዳሉ።</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ቀረጻ</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>የPadForge ትእዛዝ መስመር</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ወደ {1} ያዘጋጃል</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>በአውታረ መረቡ ላይ ያዳምጣል፣ ስለዚህ ሌሎች መሣሪያዎች ይህንን ፒሲ ማግኘት ይችላሉ።</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>የራስ መከታተያ UDP ግብዓት</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>መገለጫው «{0}» {1} ያበራል</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ሌሎች ፕሮግራሞች እና ጨዋታዎች የሚመኩበትን ሾፌር ወይም HidHide ይቀይራል።</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ፋይል፦ {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>በ«Use Only in PadForge» በኩል መሣሪያውን የትኞቹ ፕሮግራሞች ማንበብ እንደሚችሉ ይቀይራል።</value></data>

@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Inget insticksprogram körs.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Inbyggda</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testhandkontroll</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>En handkontroll som rör sig av sig själv, en kontroll i taget, så att en mappning kan prövas utan hårdvara till hands.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>En handkontroll som rör sig av sig själv, så att en mappning kan prövas utan hårdvara till hands. Dess spakar, dess avtryckare eller båda rör sig tillsammans och vilar sedan, medan knapparna den trycker på turas om.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Återuppspelning</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spelar upp en probleminspelning igen som de enheter som gjorde den, med samma tidpunkter. De är nya enheter på den här datorn och mappas som du eller en profil mappar dem.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Inspelning</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Kommandoraden för PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ställer in {0} på {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lyssnar på nätverket, så att andra enheter kan nå den här datorn.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP-inmatningen för Huvudspårning</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profilen ”{0}” slår på {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ändrar en drivrutin eller HidHide, som andra program och spel förlitar sig på.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fil: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ändrar vilka program som kan läsa enheten, genom Använd bara i PadForge.</value></data>

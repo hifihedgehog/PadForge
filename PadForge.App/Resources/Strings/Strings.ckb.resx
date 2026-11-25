@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلەگینێک کار ناکات.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ناوخۆیی</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>کۆنترۆڵەری تاقیکردنەوە</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>کۆنترۆڵەرێک کە خۆی دەجووڵێت، یەک کۆنترۆڵ لە یەک کاتدا، بۆ ئەوەی بەستنەوەیەک بەبێ ئامێری ڕاستەقینە تاقی بکرێتەوە.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>کۆنترۆڵەرێک کە خۆی دەجووڵێت، بۆ ئەوەی بەستنەوەیەک بەبێ ئامێری ڕاستەقینە تاقی بکرێتەوە. جۆیستیکەکانی، پەلەپیتکەکانی یان هەردووکیان پێکەوە دەجووڵێن و پاشان دەوەستن، لە کاتێکدا ئەو دوگمانەی دایاندەگرێت یەک لە دوای یەک کار دەکەن.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>لێدانەوە</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>تۆماری کێشەیەک وەک ئەو ئامێرانەی دروستیان کردووە، بە هەمان کاتبەندی، لێدەداتەوە. ئەوان ئامێری نوێن لەسەر ئەم کۆمپیوتەرە و بەو شێوەیە دەبەسترێنەوە کە تۆ یان پرۆفایلێک دەیانبەستێتەوە.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>تۆمار</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>هێڵی فەرمانی PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} دەکاتە {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>گوێ لە تۆڕ دەگرێت، بۆیە ئامێرەکانی تر دەتوانن بگەنە ئەم کۆمپیوتەرە.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>تێخراوی UDP بۆ شوێنپێهەڵگرتنی سەر</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>پرۆفایلی «{0}» {1} هەڵدەکات</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>درایڤەرێک یان HidHide دەگۆڕێت کە بەرنامە و یارییەکانی تر پشتیان پێدەبەستن.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>فایل: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>ئەوە دەگۆڕێت کە کام بەرنامە دەتوانن ئامێرەکە بخوێننەوە، لە ڕێگەی Use Only in PadForge.</value></data>

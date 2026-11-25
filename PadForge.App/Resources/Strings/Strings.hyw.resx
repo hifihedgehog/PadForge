@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ոչ մէկ փլակին կ՚աշխատի։</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ներկառուցուած</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Փորձնական կառավարիչ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Կառավարիչ մը, որ ինքնիրեն կը շարժի, մէկ կառավարման տարր միանգամայն, որպէսզի համապատասխանեցում մը կարելի ըլլայ փորձել առանց սարքաւորումի։</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Կառավարիչ մը, որ ինքնիրեն կը շարժի, որպէսզի համապատասխանեցում մը կարելի ըլլայ փորձել առանց սարքաւորումի։ Անոր լծակները, ձգանները կամ երկուքը միասին կը շարժին ու ապա կը հանգստանան, իսկ իր սեղմած կոճակները հերթաբար կը սեղմուին։</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Վերարտադրում</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Խնդրի արձանագրումը կը վերարտադրէ իբրեւ զայն ստեղծած սարքերը, անոնց ունեցած ժամանակաչափով։ Անոնք նոր սարքեր են այս համակարգիչին վրայ, համապատասխանեցուած այնպէս, ինչպէս դուք կամ փրոֆիլ մը կը համապատասխանեցնէք զանոնք։</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Արձանագրում</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ի հրամանի տողը</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0}՝ կը դառնայ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Կը լսէ ցանցին վրայ, որպէսզի ուրիշ սարքեր կարենան հասնիլ այս համակարգիչին։</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Գլխու հետեւման UDP մուտքը</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>«{0}» փրոֆիլը կը միացնէ՝ {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Կը փոխէ վարորդ մը կամ HidHide-ը, որոնց վրայ կը յենին ուրիշ ծրագիրներ եւ խաղեր։</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ֆայլ՝ {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Կը փոխէ, թէ որ ծրագիրները կրնան կարդալ սարքը, «Use Only in PadForge»-ի միջոցով։</value></data>

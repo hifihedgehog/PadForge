@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>કોઈ પ્લગઇન ચાલતું નથી.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>અંદર બનેલા</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ટેસ્ટ કંટ્રોલર</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>એક કંટ્રોલર જે પોતાની મેળે, એક સમયે એક કંટ્રોલ, હલે છે, જેથી હાથમાં હાર્ડવેર વિના મેપિંગ અજમાવી શકાય.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>એક કંટ્રોલર જે પોતાની મેળે હલે છે, જેથી હાથમાં હાર્ડવેર વિના મેપિંગ અજમાવી શકાય. તેની સ્ટિક, તેના ટ્રિગર અથવા બંને સાથે હલે છે અને પછી સ્થિર થાય છે, જ્યારે તે દબાવે તે બટનો વારાફરતી દબાય છે.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>રિપ્લે</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>સમસ્યાની રેકોર્ડિંગને તે બનાવનાર ઉપકરણો તરીકે, તેમના મૂળ સમય સાથે પાછી વગાડે છે. તે આ PC પર નવા ઉપકરણો છે, જે તમે અથવા પ્રોફાઇલ મેપ કરે તેમ મેપ થાય છે.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>રેકોર્ડિંગ</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge ની કમાન્ડ લાઇન</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ને {1} પર સેટ કરે છે</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>નેટવર્ક પર સાંભળે છે, તેથી બીજા ઉપકરણો આ PC સુધી પહોંચી શકે.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>હેડ ટ્રૅકિંગનું UDP ઇનપુટ</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>પ્રોફાઇલ “{0}” {1} ચાલુ કરે છે</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ડ્રાઇવર અથવા HidHide બદલે છે, જેના પર બીજા પ્રોગ્રામ અને ગેમ આધાર રાખે છે.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ફાઇલ: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge દ્વારા, કયા પ્રોગ્રામ ઉપકરણ વાંચી શકે તે બદલે છે.</value></data>

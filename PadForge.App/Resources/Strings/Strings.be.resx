@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ніводны плагін не працуе.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Убудаваныя</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Тэставы кантролер</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Кантролер, які рухаецца сам, па адным элеменце кіравання, каб можна было паспрабаваць супастаўленне без прылады пад рукой.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Кантролер, які рухаецца сам, каб можна было паспрабаваць супастаўленне без прылады пад рукой. Яго стойкі, трыгеры або абодва рухаюцца разам, а потым спыняюцца, а кнопкі, якія ён націскае, чаргуюцца.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Прайграванне</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Прайгрывае запіс праблемы так, як быццам яго зрабілі прылады, якія яго запісалі, з тым жа часам. Гэта новыя прылады на гэтым ПК, і яны прызначаюцца так, як прызначаеце вы або профіль.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Запіс</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>камандны радок PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Задае для {0} значэнне {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Праслухоўвае сетку, таму іншыя прылады могуць дасягнуць гэтага ПК.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>увод па UDP для адсочвання галавы</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Профіль «{0}» уключае {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Змяняе драйвер або HidHide, на якія спадзяюцца іншыя праграмы і гульні.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Змяняе, якія праграмы могуць чытаць прыладу, праз параметр «Выкарыстоўваць толькі ў PadForge».</value></data>

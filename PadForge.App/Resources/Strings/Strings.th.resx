@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ไม่มีปลั๊กอินที่กำลังทำงาน</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>มีมาในตัว</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>คอนโทรลเลอร์ทดสอบ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>คอนโทรลเลอร์ที่ขยับเองทีละตัวควบคุม เพื่อให้ลองการแมปได้โดยไม่ต้องมีฮาร์ดแวร์อยู่ในมือ</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>คอนโทรลเลอร์ที่ขยับเอง เพื่อให้ลองการแมปได้โดยไม่ต้องมีฮาร์ดแวร์อยู่ในมือ ก้านอนาล็อก ทริกเกอร์ หรือทั้งสองอย่างจะขยับไปพร้อมกันแล้วหยุดนิ่ง ส่วนปุ่มที่กดจะผลัดกันกดทีละปุ่ม</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>เล่นซ้ำการบันทึก</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>เล่นการบันทึกปัญหากลับเป็นอุปกรณ์ที่สร้างมันขึ้นมา ด้วยจังหวะเวลาเดิม อุปกรณ์เหล่านี้เป็นอุปกรณ์ใหม่บนพีซีเครื่องนี้ และแมปตามที่คุณหรือโปรไฟล์แมปไว้</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>การบันทึก</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>บรรทัดคำสั่งของ PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>ตั้ง {0} เป็น {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>รับฟังบนเครือข่าย อุปกรณ์อื่นจึงเข้าถึงพีซีเครื่องนี้ได้</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>อินพุต UDP ของการติดตามศีรษะ</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>โปรไฟล์ “{0}” เปิด {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>เปลี่ยนไดรเวอร์หรือ HidHide ซึ่งโปรแกรมและเกมอื่นพึ่งพาอยู่</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ไฟล์: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>เปลี่ยนว่าโปรแกรมใดอ่านอุปกรณ์ได้ ผ่านตัวเลือกใช้เฉพาะใน PadForge</value></data>

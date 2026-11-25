@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>කිසිදු ප්ලගිනයක් ධාවනය නොවේ.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ඇතුළත් කර ඇති</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>පරීක්ෂණ පාලකය</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>දෘඪාංග අතේ නොමැතිව සිතියම්ගත කිරීමක් අත්හදා බැලිය හැකි වන සේ, වරකට එක් පාලනයක් බැගින් තනිවම චලනය වන පාලකයක්.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>දෘඪාංග අතේ නොමැතිව සිතියම්ගත කිරීමක් අත්හදා බැලිය හැකි වන සේ, තනිවම චලනය වන පාලකයක්. එහි ස්ටික්, ට්‍රිගර හෝ දෙකම එකවර චලනය වී පසුව නිශ්චලව පවතින අතර, එය ඔබන බොත්තම් වාරයෙන් වාරය ක්‍රියා කරයි.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>නැවත වාදනය</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ගැටලු පටිගත කිරීමක් එය සෑදූ උපාංග ලෙස, ඒවාට තිබූ කාල නියමයෙන්ම නැවත වාදනය කරයි. ඒවා මෙම පරිගණකයේ නව උපාංග වන අතර, ඔබ හෝ පැතිකඩක් සිතියම්ගත කරන ආකාරයට සිතියම්ගත වේ.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>පටිගත කිරීම</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge හි විධාන පේළිය</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} {1} ලෙස සකසයි</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ජාලයට සවන් දෙන බැවින් වෙනත් උපාංගවලට මෙම පරිගණකය වෙත ළඟා විය හැක.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>හිස් ලුහුබැඳීමේ UDP ආදානය</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” පැතිකඩ {1} ක්‍රියාත්මක කරයි</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>වෙනත් වැඩසටහන් සහ ක්‍රීඩා රඳා පවතින ධාවකයක් හෝ HidHide වෙනස් කරයි.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ගොනුව: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge හරහා, උපාංගය කියවිය හැකි වැඩසටහන් වෙනස් කරයි.</value></data>

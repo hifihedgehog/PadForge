@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Goiannas ú-cuia.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Adabannen</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Maethas tastaith</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Maethas i berna im, minnad er bo lû, sui theinas pol tastannen pen carf vi cam.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Maethas i berna im, sui theinas pol tastannen pen carf vi cam. Baing, tais egor i thâd pernar godref a ab hen sedhar, ir i sairn i nista pernar er ab er.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Rinad</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Rina teithad press sui i cerf i teithant hon, adh i lû în. Hain cerf cîr vi PC hen, sestannen sui le egor panu sesta hain.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Teithad</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Lîr pethath PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Sesta {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lasta vi raew, sui cerf egel pol tolo na PC hen.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>minnad UDP Tirith dol</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>I banu “{0}” echuida {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Gwista maeth egor HidHide, i curu egel a telias baurar.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Parlas: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Gwista men curu pol henna i garf, ben Maetho ero mi PadForge.</value></data>

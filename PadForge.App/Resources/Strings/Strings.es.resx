@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>la línea de comandos de PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Establece {0} en {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Escucha en la red, así que otros dispositivos pueden llegar a este PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>la entrada UDP de Seguimiento de cabeza</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>El perfil “{0}” activa {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Cambia un controlador o HidHide, de los que dependen otros programas y juegos.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Archivo: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Cambia qué programas pueden leer el dispositivo, mediante Usar solo en PadForge.</value></data>
@@ -4218,7 +4220,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No se ejecuta ningún complemento.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integrados</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Control de prueba</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un control que se mueve solo, un mando a la vez, para probar una asignación sin tener hardware a mano.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un control que se mueve solo, para probar una asignación sin tener hardware a mano. Sus sticks, sus gatillos o ambos se mueven juntos y luego descansan, mientras los botones que pulsa se turnan.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Repetición</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reproduce una grabación de problema como los dispositivos que la hicieron, con el mismo ritmo. Son dispositivos nuevos en este PC, asignados como tú o un perfil los asignen.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Grabación</value></data>

@@ -2498,6 +2498,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Ao amin'ny {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Mametraka {0} ho {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Mihaino amin'ny tambajotra, ka afaka mahatratra ity PC ity ny fitaovana hafa.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ny fampidirana UDP an'ny Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Mamelona {1} ny profil «{0}»</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Manova pilote na HidHide, izay ianteheran'ny programa sy lalao hafa.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Rakitra: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Manova hoe iza ireo programa afaka mamaky ilay fitaovana, amin'ny alalan'ny Use Only in PadForge.</value></data>

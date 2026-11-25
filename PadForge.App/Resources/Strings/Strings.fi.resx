@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Yksikään laajennus ei ole käynnissä.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Sisäänrakennetut</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testiohjain</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ohjain, joka liikkuu itsestään yksi ohjauselementti kerrallaan, jotta määritystä voi kokeilla ilman laitteistoa.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ohjain, joka liikkuu itsestään, jotta määritystä voi kokeilla ilman laitteistoa. Sen sauvat, liipaisimet tai molemmat liikkuvat yhdessä ja lepäävät sitten, kun taas painikkeet, joita se painaa, vuorottelevat.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Toisto</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Toistaa ongelmatallenteen takaisin niinä laitteina, jotka sen tekivät, samalla ajoituksella. Ne ovat uusia laitteita tässä tietokoneessa, ja ne määritetään niin kuin sinä tai profiili ne määrität.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Tallenne</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-sovelluksen komentorivi</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Asettaa {0} arvoon {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Kuuntelee verkossa, joten muut laitteet voivat tavoittaa tämän tietokoneen.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Päänseurannan UDP-syöte</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profiili ”{0}” kytkee päälle: {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Muuttaa ajuria tai HidHide-ohjelmaa, joihin muut ohjelmat ja pelit tukeutuvat.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Tiedosto: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Muuttaa, mitkä ohjelmat voivat lukea laitetta, asetuksella Käytä vain PadForge-sovelluksessa.</value></data>

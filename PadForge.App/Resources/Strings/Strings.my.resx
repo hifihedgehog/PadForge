@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>မည်သည့်ပလပ်အင်မျှ မလည်ပတ်ပါ။</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ပါဝင်ပြီးသား</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>စမ်းသပ် ကွန်ထရိုလာ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ဟာ့ဒ်ဝဲ မလိုဘဲ မက်ပင်းကို စမ်းကြည့်နိုင်ရန် ထိန်းချုပ်ကိရိယာ တစ်ခုချင်း ၎င်းဘာသာ လှုပ်ရှားသော ကွန်ထရိုလာ။</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>ဟာ့ဒ်ဝဲ မလိုဘဲ မက်ပင်းကို စမ်းကြည့်နိုင်ရန် ၎င်းဘာသာ လှုပ်ရှားသော ကွန်ထရိုလာ။ ၎င်း၏ စတစ်များ၊ ထရစ်ဂါများ သို့မဟုတ် နှစ်မျိုးလုံး အတူတကွ လှုပ်ရှားပြီးနောက် ငြိမ်သွားကာ ၎င်းနှိပ်သော ခလုတ်များကိုမူ တစ်ခုပြီးတစ်ခု အလှည့်ကျ နှိပ်သည်။</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ပြန်ဖွင့်ခြင်း</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ပြဿနာ မှတ်တမ်းတင်ချက်ကို ၎င်းကို ပြုလုပ်ခဲ့သော စက်ပစ္စည်းများအဖြစ် ၎င်းတို့၏ မူလ အချိန်ကိုက်ဖြင့် ပြန်ဖွင့်သည်။ ၎င်းတို့သည် ဤ PC ပေါ်ရှိ စက်ပစ္စည်းအသစ်များ ဖြစ်ပြီး သင် သို့မဟုတ် ပရိုဖိုင်တစ်ခု မက်ပင်းလုပ်သည့်အတိုင်း မက်ပင်းလုပ်သည်။</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>မှတ်တမ်းတင်ချက်</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge ၏ command line</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ကို {1} သို့ သတ်မှတ်သည်</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>ကွန်ရက်ပေါ်တွင် နားထောင်သဖြင့် အခြားစက်ပစ္စည်းများက ဤ PC သို့ ရောက်နိုင်သည်။</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ခေါင်းခြေရာခံခြင်း၏ UDP အဝင်</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>ပရိုဖိုင် “{0}” သည် {1} ကို ဖွင့်သည်</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>အခြားပရိုဂရမ်များနှင့် ဂိမ်းများ မှီခိုသော ဒရိုက်ဗာ သို့မဟုတ် HidHide ကို ပြောင်းသည်။</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>ဖိုင်: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge မှတစ်ဆင့် စက်ပစ္စည်းကို မည်သည့်ပရိုဂရမ်များ ဖတ်နိုင်သည်ကို ပြောင်းသည်။</value></data>

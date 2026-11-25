@@ -577,7 +577,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No s'executa cap complement.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Inclosos</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Comandament de prova</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un comandament que es mou sol, un control cada cop, per poder provar una assignació sense tenir maquinari a mà.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un comandament que es mou sol, per poder provar una assignació sense tenir maquinari a mà. Els seus joysticks, els seus gallets o tots dos es mouen junts i després reposen, mentre que els botons que prem van per torns.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Reproducció</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reprodueix una gravació de problema com els dispositius que la van fer, amb el ritme que tenien. Són dispositius nous en aquest PC, assignats com els assignes tu o un perfil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Gravació</value></data>
@@ -850,6 +850,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>la línia d'ordres de PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Posa {0} a {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Escolta a la xarxa, de manera que altres dispositius poden accedir a aquest PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>l'entrada UDP del Seguiment del cap</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>El perfil «{0}» activa {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Canvia un controlador o HidHide, dels quals depenen altres programes i jocs.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fitxer: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Canvia quins programes poden llegir el dispositiu, mitjançant Use Only in PadForge.</value></data>

@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ажиллаж буй залгаас алга.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Суулгагдсан</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Туршилтын контроллер</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Нэг удаад нэг удирдлагыг өөрөө хөдөлгөдөг контроллер. Ингэснээр гартаа төхөөрөмжгүйгээр оноолтыг туршиж болно.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Өөрөө хөдөлдөг контроллер. Ингэснээр гартаа төхөөрөмжгүйгээр оноолтыг туршиж болно. Түүний савар, гох эсвэл хоёулаа хамт хөдөлж, дараа нь зогсдог. Харин түүний дардаг товчнууд ээлжилнэ.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Дахин тоглуулах</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Асуудлын бичлэгийг түүнийг үүсгэсэн төхөөрөмжүүдийн дүрээр, тэдний цаг хугацааны дагуу дахин тоглуулна. Тэдгээр нь энэ компьютер дээр шинэ төхөөрөмж болж, таны эсвэл профайлын оноосноор оноогдоно.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Бичлэг</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ийн командын мөр</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0}: {1} болгоно</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Сүлжээг сонсох тул бусад төхөөрөмж энэ компьютерт хандах боломжтой болно.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Толгой хянах функцийн UDP оролт</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” профайл асаана: {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Бусад програм болон тоглоомуудын түшиглэдэг драйвер эсвэл HidHide-ийг өөрчилнө.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Use Only in PadForge тохиргоогоор дамжуулан аль програмууд төхөөрөмжийг уншиж болохыг өөрчилнө.</value></data>

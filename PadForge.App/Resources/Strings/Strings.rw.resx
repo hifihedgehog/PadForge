@@ -342,6 +342,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Kuri {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ishyira {0} kuri {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Yumviriza ku murandasi, bityo ibindi bikoresho bishobora kugera kuri iyi PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>iyinjiza rya UDP rya Gukurikirana umutwe</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profili “{0}” ifungura {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ihindura driver cyangwa HidHide, izindi porogaramu n'imikino byishingikirizaho.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Dosiye: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ihindura porogaramu zishobora gusoma igikoresho, binyuze kuri Use Only in PadForge.</value></data>

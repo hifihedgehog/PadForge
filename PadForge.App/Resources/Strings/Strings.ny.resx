@@ -1713,6 +1713,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Pa {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Imakhazikitsa {0} kukhala {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Imamvetsera pa netiweki, kotero zipangizo zina zimatha kufika pa PC iyi.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>kulowetsa kwa UDP kwa Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Mbiri “{0}” imayatsa {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Imasintha dalaivala kapena HidHide, zomwe mapulogalamu ena ndi masewera amadalira.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fayilo: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Imasintha mapulogalamu omwe angawerenge chipangizocho, kudzera mu Use Only in PadForge.</value></data>

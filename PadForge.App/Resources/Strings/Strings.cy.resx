@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nid oes ategyn yn rhedeg.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Adeiledig</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Rheolydd Prawf</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Rheolydd sy'n symud ar ei ben ei hun, un rheolydd ar y tro, fel y gellir rhoi cynnig ar fapiad heb galedwedd wrth law.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Rheolydd sy'n symud ar ei ben ei hun, fel y gellir rhoi cynnig ar fapiad heb galedwedd wrth law. Mae ei ffyn, ei sbardunau neu'r ddau yn symud gyda'i gilydd ac yna'n gorffwys, tra bod y botymau y mae'n eu pwyso yn cymryd eu tro.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Ailchwarae</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Yn chwarae recordiad problem yn ôl fel y dyfeisiau a'i gwnaeth, gyda'r amseru a oedd ganddynt. Dyfeisiau newydd ar y PC hwn ydynt, wedi'u mapio fel y byddwch chi neu broffil yn eu mapio.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recordiad</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>linell orchymyn PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Yn gosod {0} i {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Yn gwrando ar y rhwydwaith, felly gall dyfeisiau eraill gyrraedd y PC hwn.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>mewnbwn UDP Tracio pen</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Mae'r proffil “{0}” yn troi {1} ymlaen</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Yn newid gyrrwr neu HidHide, y mae rhaglenni a gemau eraill yn dibynnu arnynt.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ffeil: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Yn newid pa raglenni all ddarllen y ddyfais, drwy Use Only in PadForge.</value></data>

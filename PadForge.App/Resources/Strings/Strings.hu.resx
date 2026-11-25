@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Egy bővítmény sem fut.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Beépített</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Tesztkontroller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Egy magától mozgó kontroller, egyszerre egy vezérlőelemmel, így egy leképezés hardver nélkül is kipróbálható.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Egy magától mozgó kontroller, így egy leképezés hardver nélkül is kipróbálható. A karjai, a ravaszai vagy mindkettő együtt mozog, majd megpihen, a megnyomott gombok pedig sorban váltják egymást.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Visszajátszás</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Egy problémafelvételt játszik vissza az azt készítő eszközökként, az eredeti időzítéssel. Ezek új eszközök ezen a számítógépen, és úgy vannak leképezve, ahogy Ön vagy egy profil leképezi őket.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Felvétel</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>a PadForge parancssora</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>A(z) {0} értéke ez lesz: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>A hálózaton figyel, így más eszközök elérhetik ezt a számítógépet.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>a Fejkövetés UDP-s bemenete</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>A(z) „{0}” profil bekapcsolja: {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Meghajtót vagy a HidHide-ot módosítja, amelyekre más programok és játékok támaszkodnak.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fájl: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Módosítja, mely programok olvashatják az eszközt, a „Használat csak a PadForge-ban” beállításon keresztül.</value></data>

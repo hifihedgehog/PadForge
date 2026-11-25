@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge의 명령줄</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} 설정: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>네트워크에서 연결을 받으므로 다른 장치가 이 PC에 접근할 수 있습니다.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>헤드 트래킹의 UDP 입력</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>프로필 “{0}”이(가) {1}을(를) 켭니다</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>다른 프로그램과 게임이 의존하는 드라이버나 HidHide를 변경합니다.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>파일: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>PadForge에서만 사용을 통해 어떤 프로그램이 장치를 읽을 수 있는지 변경합니다.</value></data>
@@ -4218,7 +4220,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>실행 중인 플러그인이 없습니다.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>기본 제공</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>테스트 컨트롤러</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>컨트롤 하나씩 스스로 움직이는 컨트롤러로, 하드웨어 없이도 매핑을 시험해 볼 수 있습니다.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>스스로 움직이는 컨트롤러로, 하드웨어 없이도 매핑을 시험해 볼 수 있습니다. 스틱, 트리거 또는 둘 다 함께 움직인 뒤 멈추고, 누르는 버튼은 차례로 바뀝니다.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>리플레이</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>문제 녹화를 그것을 만든 장치로, 당시의 타이밍 그대로 재생합니다. 이 PC의 새 장치이며, 사용자나 프로필이 매핑하는 대로 매핑됩니다.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>녹화</value></data>

@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Méiyǒu chājiàn zài yùnxíng.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Nèizhì</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Cèshì kòngzhìqì</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yí gè zìxíng dòngzuò de kòngzhìqì, měi cì dòng yí gè kòngjiàn, wúxū shǒu chí yìngjiàn jí kě shìyòng yìngshè.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yí gè zìxíng dòngzuò de kòngzhìqì, wúxū shǒu chí yìngjiàn jí kě shìyòng yìngshè. Tā de yáogǎn, bānjī huò liǎngzhě yìqǐ dòngzuò ránhòu tíngxià, ér tā àn xià de ànniǔ zé lúnliú àn xià.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Huífàng</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Àn yuánshǐ shíxù, yǐ zhìzuò gāi lùzhì de shèbèi huífàng wèntí lùzhì. Zhèxiē shèbèi shì cǐ diànnǎo shàng de xīn shèbèi, àn nín huò pèizhì wénjiàn de yìngshè jìnxíng yìngshè.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Lùzhì</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge mìnglìngháng</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Jiāng {0} shèwéi {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Zài wǎngluò shàng jiāntīng, shǐ qítā shèbèi kěyǐ fǎngwèn cǐ diànnǎo.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Tóubù zhuīzōng de UDP shūrù</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Pèizhì wénjiàn “{0}” huì kāiqǐ {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Gēnggǎi qūdòng chéngxù huò HidHide, qítā chéngxù hé yóuxì yīlài tāmen.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Wénjiàn: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Tōngguò Use Only in PadForge gēnggǎi nǎxiē chéngxù kěyǐ dúqǔ gāi shèbèi.</value></data>

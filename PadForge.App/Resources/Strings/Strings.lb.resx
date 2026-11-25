@@ -577,7 +577,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kee Plugin leeft.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Agebaut</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>E Controller, deen sech eleng beweegt, ee Bedienelement nom aneren, fir datt eng Zouuerdnung ouni Hardware ausprobéiert ka ginn.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>E Controller, deen sech eleng beweegt, fir datt eng Zouuerdnung ouni Hardware ausprobéiert ka ginn. Seng Sticks, seng Trigger oder allebéid beweege sech zesummen a raschten dann, während d’Knäpp, déi en dréckt, sech ofwiesselen.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Ofspillen</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Spillt eng Problemopnam als déi Apparater of, déi se gemaach hunn, mam selwechten Timing. Si sinn nei Apparater op dësem PC a ginn zougeuerdnet, wéi Dir oder e Profil se zouuerdnen.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opnam</value></data>
@@ -850,6 +850,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Kommandozeil vu PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setzt {0} op {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lauschtert um Netzwierk, sou datt aner Apparater dëse PC erreeche kënnen.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>d’UDP-Agab vum Head-Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>De Profil „{0}“ schalt {1} un</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ännert en Treiber oder HidHide, op déi aner Programmer a Spiller ugewise sinn.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Datei: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ännert iwwer „Use Only in PadForge“, wéi eng Programmer den Apparat liese kënnen.</value></data>

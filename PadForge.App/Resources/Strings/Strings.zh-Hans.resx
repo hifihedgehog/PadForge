@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge 的命令行</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>把 {0} 设为 {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>会在网络上监听，其他设备因此可以访问这台电脑。</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>头部追踪的 UDP 输入</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>配置文件“{0}”会开启 {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>更改驱动程序或 HidHide，其他程序和游戏依赖它们。</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>文件：{0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>通过“仅在 PadForge 中使用”更改哪些程序可以读取该设备。</value></data>
@@ -4218,7 +4220,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>没有插件在运行。</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>内置</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>测试控制器</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>一个自己动起来的控制器，每次动一个控件，这样没有硬件也能试用映射。</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>一个自己动起来的控制器，这样没有硬件也能试用映射。它的摇杆、扳机或两者会一起移动然后静止，按下的按钮则轮流进行。</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>回放</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>按录制时的时间节奏，把问题录制内容作为原来的设备回放出来。它们是这台电脑上的新设备，按你或配置文件的设定进行映射。</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>录制内容</value></data>

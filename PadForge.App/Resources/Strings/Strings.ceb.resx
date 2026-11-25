@@ -422,6 +422,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>command line sa PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>I-set ang {0} ngadto sa {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Mamati sa network, busa maabot niini nga PC sa ubang mga device.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP input sa Pagsubay sa ulo</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Ang profile nga “{0}” mo-on sa {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mag-usab og driver o sa HidHide, nga gisaligan sa ubang mga programa ug dula.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>File: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mag-usab kung unsang mga programa ang makabasa sa device, pinaagi sa Use Only in PadForge.</value></data>
@@ -4423,7 +4425,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Walay plugin nga nagdagan.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Naa na sulod</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Controller nga pang-test</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Usa ka controller nga molihok sa kaugalingon, usa ka control matag higayon, aron masulayan ang mapping bisan walay hardware nga gikuptan.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Usa ka controller nga molihok sa kaugalingon, aron masulayan ang mapping bisan walay hardware nga gikuptan. Ang mga stick niini, ang mga trigger niini o silang duha dungan nga molihok ug dayon mopahulay, samtang ang mga button nga gipindot niini magpulipuli.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Ipatokar pag-usab ang usa ka recording sa problema isip ang mga device nga naghimo niini, uban sa ilang orihinal nga timing. Bag-ong mga device sila niini nga PC, gi-map sama sa pag-map nimo o sa usa ka profile.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>

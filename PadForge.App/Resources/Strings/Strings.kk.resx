@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ешбір плагин жұмыс істемейді.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Кірістірілген</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Сынақ контроллері</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Өздігінен қозғалатын контроллер, бір уақытта бір басқару элементі, сондықтан тағайындауды құрылғысыз-ақ сынап көруге болады.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Өздігінен қозғалатын контроллер, сондықтан тағайындауды құрылғысыз-ақ сынап көруге болады. Оның таяқшалары, триггерлері немесе екеуі бірге қозғалып, содан кейін тынығады, ал басатын түймелері кезекпен басылады.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Қайта ойнату</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Ақау жазбасын оны жасаған құрылғылар ретінде, олардағы уақыт бойынша қайта ойнатады. Олар осы компьютердегі жаңа құрылғылар, оларды өзіңіз немесе профиль тағайындағандай тағайындалады.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Жазба</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge пәрмен жолы</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} мәнін {1} етіп орнатады</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Желіде тыңдайды, сондықтан басқа құрылғылар осы компьютерге қол жеткізе алады.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Басты бақылаудың UDP кірісі</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” профилі мынаны қосады: {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Басқа бағдарламалар мен ойындар сүйенетін драйверді немесе HidHide өзгертеді.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Құрылғыны қай бағдарламалар оқи алатынын Use Only in PadForge арқылы өзгертеді.</value></data>

@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلاگینی اجرا نمی‌شود.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>داخلی</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>کنترلر آزمایشی</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>کنترلری که خودش حرکت می‌کند، هر بار یک کنترل، تا بتوان نگاشتی را بدون داشتن سخت‌افزار آزمود.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>کنترلری که خودش حرکت می‌کند تا بتوان نگاشتی را بدون داشتن سخت‌افزار آزمود. استیک‌ها، ماشه‌ها یا هر دو با هم حرکت می‌کنند و سپس می‌ایستند، در حالی که دکمه‌هایی که فشار می‌دهد نوبتی هستند.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>پخش مجدد</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ضبط یک مشکل را با همان دستگاه‌هایی که آن را ساخته‌اند و با همان زمان‌بندی دوباره پخش می‌کند. این‌ها دستگاه‌های تازه‌ای روی این رایانه‌اند و همان‌گونه که شما یا یک پروفایل نگاشت می‌کنید نگاشت می‌شوند.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ضبط</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>خط فرمان PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} را روی {1} تنظیم می‌کند</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>در شبکه گوش می‌دهد، پس دستگاه‌های دیگر می‌توانند به این رایانه برسند.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ورودی UDP ردیابی سر</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>پروفایل «{0}» {1} را روشن می‌کند</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>یک درایور یا HidHide را تغییر می‌دهد که برنامه‌ها و بازی‌های دیگر به آن تکیه دارند.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>فایل: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>اینکه کدام برنامه‌ها می‌توانند دستگاه را بخوانند را از راه «استفاده فقط در PadForge» تغییر می‌دهد.</value></data>

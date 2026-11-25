@@ -577,7 +577,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hakuna programu jalizi inayoendesha.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Zilizojengewa Ndani</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kidhibiti cha Majaribio</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kidhibiti kinachosogea chenyewe, kidhibiti kimoja kwa wakati, ili ramani ijaribiwe bila kifaa halisi mkononi.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kidhibiti kinachosogea chenyewe, ili ramani ijaribiwe bila kifaa halisi mkononi. Vijiti vyake, vichochezi vyake au vyote viwili husogea pamoja kisha hutulia, huku vitufe inavyobonyeza vikipokezana.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Cheza Tena</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Hucheza tena rekodi ya tatizo kama vifaa vilivyoitengeneza, kwa muda ule ule. Ni vifaa vipya kwenye kompyuta hii, vilivyoramaniwa kama unavyoviramani wewe au wasifu.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rekodi</value></data>
@@ -850,6 +850,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>programu ya mstari wa amri wa PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Huweka {0} kuwa {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Husikiliza kwenye mtandao, kwa hiyo vifaa vingine vinaweza kufikia kompyuta hii.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ingizo la UDP la Ufuatiliaji wa Kichwa</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Wasifu “{0}” huwasha {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Hubadilisha kiendeshi au HidHide, ambavyo programu na michezo mingine hutegemea.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faili: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Hubadilisha ni programu zipi zinaweza kusoma kifaa, kupitia Use Only in PadForge.</value></data>

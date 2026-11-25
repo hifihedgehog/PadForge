@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>कोई प्लगइन नहीं चल रहा।</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>अंतर्निहित</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>टेस्ट कंट्रोलर</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>एक कंट्रोलर जो अपने-आप, एक बार में एक नियंत्रण चलता है, ताकि हाथ में हार्डवेयर के बिना मैपिंग आज़माई जा सके।</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>एक कंट्रोलर जो अपने-आप चलता है, ताकि हाथ में हार्डवेयर के बिना मैपिंग आज़माई जा सके। इसके स्टिक, इसके ट्रिगर या दोनों साथ चलते हैं और फिर रुक जाते हैं, जबकि दबाए जाने वाले बटन बारी-बारी से दबते हैं।</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>रीप्ले</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>किसी समस्या की रिकॉर्डिंग को उन्हीं डिवाइस के रूप में, उसी समय के साथ दोबारा चलाता है जिन्होंने उसे बनाया था। वे इस PC पर नए डिवाइस होते हैं, जिन्हें आप या कोई प्रोफ़ाइल मैप करती है।</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>रिकॉर्डिंग</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge की कमांड लाइन</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} को {1} पर सेट करता है</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>नेटवर्क पर सुनता है, इसलिए दूसरे डिवाइस इस PC तक पहुँच सकते हैं।</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>हेड ट्रैकिंग का UDP इनपुट</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>प्रोफ़ाइल “{0}” {1} चालू करती है</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>किसी ड्राइवर या HidHide को बदलता है, जिन पर दूसरे प्रोग्राम और गेम निर्भर हैं।</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>फ़ाइल: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>“केवल PadForge में उपयोग करें” के ज़रिए बदलता है कि कौन से प्रोग्राम डिवाइस को पढ़ सकते हैं।</value></data>

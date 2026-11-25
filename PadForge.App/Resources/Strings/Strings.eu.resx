@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ez dago plugin-ik exekutatzen.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integratuak</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Proba-kontrolagailua</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Berez mugitzen den kontrolagailu bat, kontrol bat aldiko, mapaketa bat probatu ahal izateko hardwarerik eskura izan gabe.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Berez mugitzen den kontrolagailu bat, mapaketa bat probatu ahal izateko hardwarerik eskura izan gabe. Bere makilak, abiarazleak edo biak batera mugitzen dira eta gero atseden hartzen dute, botoiak txandaka sakatzen diren bitartean.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Berrerreproduzitu</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Arazo baten grabaketa berriro erreproduzitzen du, hura egin zuten gailuak balira bezala eta zuten denborarekin. PC honetako gailu berriak dira, zuk edo profil batek mapatzen dituen moduan mapatuta.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Grabaketa</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ren komando-lerroa</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ezartzen du honetara: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Sarean entzuten du, beraz beste gailuek PC hau atzitu dezakete.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Buruaren jarraipenaren UDP sarrera</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” profilak aktibatzen du: {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Kontrolatzaile bat edo HidHide aldatzen du, eta beste programek eta jokoek horietan oinarritzen dira.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fitxategia: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Zein programek irakur dezaketen gailua aldatzen du, Use Only in PadForge aukeraren bidez.</value></data>

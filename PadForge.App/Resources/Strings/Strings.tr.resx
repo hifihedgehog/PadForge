@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hiçbir eklenti çalışmıyor.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Yerleşik</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Test kontrolcüsü</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kendi kendine hareket eden, her seferinde tek bir kontrolü oynatan bir kontrolcü, böylece elinizde donanım yokken bir eşleme denenebilir.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kendi kendine hareket eden bir kontrolcü, böylece elinizde donanım yokken bir eşleme denenebilir. Çubukları, tetikleri veya her ikisi birlikte hareket eder ve sonra durur, bastığı düğmeler ise sırayla değişir.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Yeniden oynatma</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Bir sorun kaydını, onu oluşturan cihazlar olarak, sahip oldukları zamanlamayla geri oynatır. Bunlar bu bilgisayarda yeni cihazlardır ve siz veya bir profil nasıl eşlerse öyle eşlenir.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Kayıt</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge'un komut satırı</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ayarını {1} yapar</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ağı dinler, böylece diğer cihazlar bu bilgisayara erişebilir.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Kafa takibinin UDP girişi</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>“{0}” profili şunu açar: {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Diğer programların ve oyunların dayandığı bir sürücüyü veya HidHide'ı değiştirir.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Dosya: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Cihazı hangi programların okuyabileceğini Yalnızca PadForge'da kullan ile değiştirir.</value></data>

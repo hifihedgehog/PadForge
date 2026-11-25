@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Noben vtičnik ne deluje.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Vgrajeni</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Preizkusni krmilnik</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Krmilnik, ki se sam premika, po en krmilni element naenkrat, da lahko preslikavo preizkusite brez naprave pri roki.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Krmilnik, ki se sam premika, da lahko preslikavo preizkusite brez naprave pri roki. Njegove palčke, sprožilca ali oboje se premikajo skupaj in nato mirujejo, gumbi, ki jih pritiska, pa se izmenjujejo.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Ponovno predvajanje</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Predvaja posnetek težave kot naprave, ki so ga ustvarile, z njihovim časovnim potekom. So nove naprave v tem računalniku, preslikane, kot jih preslikate vi ali profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Posnetek</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>ukazna vrstica programa PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastavi {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Posluša v omrežju, zato lahko druge naprave dosežejo ta računalnik.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>vnos UDP za Sledenje glavi</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profil „{0}“ vklopi {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Spremeni gonilnik ali HidHide, na katera se zanašajo drugi programi in igre.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Datoteka: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Spremeni, kateri programi lahko berejo napravo, prek možnosti Uporabljaj samo v programu PadForge.</value></data>

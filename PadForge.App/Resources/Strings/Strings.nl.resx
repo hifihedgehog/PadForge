@@ -537,6 +537,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>de opdrachtregel van PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stelt {0} in op {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Luistert op het netwerk, zodat andere apparaten deze pc kunnen bereiken.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>de UDP-invoer van Hoofdtracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Het profiel “{0}” schakelt {1} in</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Wijzigt een stuurprogramma of HidHide, waar andere programma's en games op vertrouwen.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Bestand: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Wijzigt welke programma's het apparaat kunnen lezen, via Alleen in PadForge gebruiken.</value></data>
@@ -4238,7 +4240,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Er draait geen plugin.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ingebouwd</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Een controller die uit zichzelf beweegt, één besturingselement tegelijk, zodat je een koppeling kunt proberen zonder hardware bij de hand.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Een controller die uit zichzelf beweegt, zodat je een koppeling kunt proberen zonder hardware bij de hand. Zijn sticks, zijn triggers of beide bewegen samen en komen dan tot rust, terwijl de knoppen die hij indrukt om de beurt aan de beurt komen.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Speelt een probleemopname af als de apparaten die haar maakten, met dezelfde timing. Het zijn nieuwe apparaten op deze pc, gekoppeld zoals jij of een profiel ze koppelt.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opname</value></data>

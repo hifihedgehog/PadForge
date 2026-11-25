@@ -1698,6 +1698,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Pa{0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Inogadza {0} kuita {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Inoteerera panetiweki, saka imwe midziyo inogona kusvika paPC ino.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>kuisa kwe-UDP kwe-Head Tracking</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Purofaira “{0}” inobatidza {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Inochinja dhiraivha kana HidHide, zvinovimbwa nazvo nezvimwe zvirongwa nemitambo.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Faira: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Inochinja kuti ndezvipi zvirongwa zvinogona kuverenga mudziyo, kuburikidza ne-Use Only in PadForge.</value></data>

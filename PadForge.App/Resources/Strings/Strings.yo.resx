@@ -334,6 +334,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Lórí {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ó ń ṣètò {0} sí {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ó ń tẹ́tí sí nẹ́tíwọ̀ọ̀kì, kí àwọn ẹ̀rọ míràn lè dé kọ̀ǹpútà yìí.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ìgbéwọlé UDP ti Ìtọpinpin orí</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profaili “{0}” ń tan {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ó ń yí awakọ̀ kan tàbí HidHide padà, èyí tí àwọn ìṣàfilọ́lẹ̀ àti eré míràn gbára lé.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fáìlì: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ó ń yí àwọn ìṣàfilọ́lẹ̀ tí ó lè ka ẹ̀rọ náà padà, nípasẹ̀ Use Only in PadForge.</value></data>

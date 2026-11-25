@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ниједан плагин не ради.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Уграђени</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Пробни контролер</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контролер који се сам креће, једну контролу по једну, па мапирање може да се испроба без уређаја при руци.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контролер који се сам креће, па мапирање може да се испроба без уређаја при руци. Његове осе, окидачи или обоје крећу се заједно и затим мирују, а дугмад које притиска смењују се.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Репризирање</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Пушта снимак проблема као уређаји који су га направили, истим темпом. То су нови уређаји на овом рачунару, мапирани онако како их мапирате ви или профил.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Снимак</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>командна линија програма PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Поставља {0} на {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Слуша на мрежи, па други уређаји могу да досегну овај рачунар.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>UDP улаз за Праћење главе</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Профил „{0}“ укључује {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Мења драјвер или HidHide, на које се ослањају други програми и игре.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Датотека: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Мења који програми могу да читају уређај, преко опције Користи само у PadForge-у.</value></data>

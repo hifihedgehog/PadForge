@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>沒有執行中的外掛程式。</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>內建</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>測試控制器</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>會自己動作的控制器，一次一個控制項，讓您不必手邊有硬體也能試用對應。</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>會自己動作的控制器，讓您不必手邊有硬體也能試用對應。它的搖桿、扳機或兩者會一起移動再靜止，按下的按鈕則輪流進行。</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>重播</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>以原本產生錄製內容的裝置身分，依當時的時間點重播問題錄製檔。它們是這部電腦上的新裝置，會依您或設定檔的設定對應。</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>錄製檔</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge 的命令列</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>將 {0} 設為 {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>會在網路上接聽，因此其他裝置可以連到這部電腦。</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>頭部追蹤的 UDP 輸入</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>設定檔「{0}」會開啟 {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>變更驅動程式或 HidHide，其他程式和遊戲都依賴它們。</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>檔案：{0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>透過「僅供 PadForge 使用」變更哪些程式可以讀取該裝置。</value></data>

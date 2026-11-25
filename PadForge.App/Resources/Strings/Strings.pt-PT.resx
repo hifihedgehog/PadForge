@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nenhum plugin em execução.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integrados</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Comando de teste</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Um comando que se move sozinho, um controlo de cada vez, para que se possa experimentar um mapeamento sem hardware à mão.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Um comando que se move sozinho, para que se possa experimentar um mapeamento sem hardware à mão. Os manípulos, os gatilhos ou ambos movem-se em conjunto e depois param, enquanto os botões que prime se alternam.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Reprodução</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reproduz uma gravação de problema como os dispositivos que a fizeram, com o ritmo que tinham. São dispositivos novos neste PC, mapeados como o utilizador ou um perfil os mapeia.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Gravação</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>a linha de comandos do PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Define {0} como {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Escuta na rede, para que outros dispositivos alcancem este PC.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>a entrada UDP do Rastreio da cabeça</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>O perfil “{0}” ativa {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Altera um driver ou o HidHide, de que outros programas e jogos dependem.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ficheiro: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Altera que programas podem ler o dispositivo, através de Use Only in PadForge.</value></data>

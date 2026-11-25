@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ни один плагин не работает.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Встроенные</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Тестовый контроллер</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контроллер, который двигается сам, по одному элементу управления за раз, чтобы можно было проверить сопоставление без устройства под рукой.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контроллер, который двигается сам, чтобы можно было проверить сопоставление без устройства под рукой. Его стики, его триггеры или и то и другое двигаются вместе, а затем замирают, тогда как нажимаемые им кнопки сменяют друг друга.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Воспроизведение записи</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Воспроизводит запись проблемы как устройства, которые ее сделали, с тем же ритмом. Это новые устройства на этом ПК, назначенные так, как их назначаете вы или профиль.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Запись</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Командная строка PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Задает для {0} значение {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Слушает сеть, поэтому другие устройства могут подключаться к этому ПК.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>ввод отслеживания головы по UDP</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Профиль «{0}» включает {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Меняет драйвер или HidHide, на которые полагаются другие программы и игры.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Файл: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Меняет, какие программы могут читать устройство, через параметр «Использовать только в PadForge».</value></data>

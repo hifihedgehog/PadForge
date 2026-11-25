@@ -583,7 +583,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ոչ մի պլագին չի աշխատում։</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ներկառուցված</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Փորձնական կառավարիչ</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Կառավարիչ, որը շարժվում է ինքնուրույն, մեկ կառավարման տարրով հերթով, որպեսզի կապակցումը կարելի լինի փորձել առանց սարքի։</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Կառավարիչ, որը շարժվում է ինքնուրույն, որպեսզի կապակցումը կարելի լինի փորձել առանց սարքի։ Նրա ձողերը, ձգանները կամ երկուսը միասին շարժվում են, ապա դադարում, իսկ սեղմվող կոճակները հերթով են սեղմվում։</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Վերարտադրում</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Վերարտադրում է խնդրի գրառումը որպես այն ստեղծած սարքեր՝ նույն ժամանակային ընթացքով։ Դրանք նոր սարքեր են այս համակարգչում և կապակցվում են այնպես, ինչպես կապակցում եք դուք կամ պրոֆիլը։</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Գրառում</value></data>
@@ -856,6 +856,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ի հրամանային տողը</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Սահմանում է {0}՝ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Լսում է ցանցը, ուստի այլ սարքեր կարող են հասնել այս համակարգչին։</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Գլխի հետևման UDP մուտքը</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>«{0}» պրոֆիլը միացնում է {1}-ը</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Փոխում է դրայվեր կամ HidHide, որոնց վրա հենվում են այլ ծրագրեր և խաղեր։</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Ֆայլ՝ {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Փոխում է, թե որ ծրագրերը կարող են կարդալ սարքը՝ «Use Only in PadForge» կարգավորմամբ։</value></data>

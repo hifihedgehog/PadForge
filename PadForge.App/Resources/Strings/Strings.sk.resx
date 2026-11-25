@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nebeží žiadny plugin.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Vstavané</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testovací ovládač</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ovládač, ktorý sa hýbe sám, jeden ovládací prvok po druhom, takže mapovanie možno vyskúšať bez hardvéru po ruke.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ovládač, ktorý sa hýbe sám, takže mapovanie možno vyskúšať bez hardvéru po ruke. Jeho páčky, jeho spúšte alebo oboje sa hýbu spolu a potom sa uložia do pokoja, kým tlačidlá, ktoré stláča, sa striedajú.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Prehrávanie</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Prehrá záznam problému ako zariadenia, ktoré ho vytvorili, s ich pôvodným časovaním. Sú to nové zariadenia v tomto počítači, namapované tak, ako ich namapujete vy alebo profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Nahrávka</value></data>
@@ -869,6 +869,8 @@
   <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>príkazový riadok programu PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastaví {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Počúva v sieti, takže tento počítač môžu zastihnúť iné zariadenia.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>vstup UDP funkcie Sledovanie hlavy</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profil „{0}“ zapne {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mení ovládač alebo HidHide, na ktoré sa spoliehajú iné programy a hry.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Súbor: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Mení, ktoré programy môžu zariadenie čítať, cez voľbu Používať iba v programe PadForge.</value></data>

@@ -306,6 +306,8 @@
   <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Na {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Etiaka {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Eyokaka na réseau, yango wana ba appareil mosusu bakoki kokoma na PC oyo.</value></data>
+  <data name="Automation_Ask_HeadTrackingUdp" xml:space="preserve"><value>Entrée UDP ya Suivi ya motó</value></data>
+  <data name="Automation_Ask_ProfileTurnsOn_Format" xml:space="preserve"><value>Profil “{0}” epelisaka {1}</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ebongolaka pilote to HidHide, oyo ba programme mosusu mpe ba masano etyelaka motema.</value></data>
   <data name="Automation_Ask_File_Format" xml:space="preserve"><value>Fichier: {0}</value></data>
   <data name="Automation_Ask_UseOnly" xml:space="preserve"><value>Ebongolaka ba programme nini bakoki kotanga appareil, na nzela ya Use Only in PadForge.</value></data>

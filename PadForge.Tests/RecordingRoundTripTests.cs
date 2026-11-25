@@ -262,6 +262,7 @@ namespace PadForge.Tests
                 }
                 if (!full || checkedFrames++ == 0) { if (full) into.CopyInto(shadow); continue; }
                 shadow.MouseRawDX = shadow.MouseRawDY = 0;
+                shadow.MouseRawWheel = shadow.MouseRawWheelH = 0;
                 shadow.JoyCon2MouseDX = shadow.JoyCon2MouseDY = 0f;
                 RecorderTestKit.AssertSameState(shadow, into, "full frame at " + e.Seconds);
             }

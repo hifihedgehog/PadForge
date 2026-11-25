@@ -5513,6 +5513,24 @@ namespace PadForge.Views
         /// number-row digits, and the numpad digits) — is handled here so it
         /// never reaches the ComboBox.</para>
         /// </summary>
+        /// <summary>A Preview in the Source picker's mouse group (#600): pins
+        /// the entry's family, with the line the picker belongs to, so the
+        /// preview runs that line's own settings where it reads the same
+        /// input. The picker is the one that holds the entry's row.</summary>
+        private void MousePreview_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement button || button.DataContext is not InputChoice choice) return;
+            DependencyObject at = button;
+            while (at != null && at is not ComboBoxItem) at = VisualTreeHelper.GetParent(at);
+            var picker = at is ComboBoxItem item ? ItemsControl.ItemsControlFromItemContainer(item) : null;
+            MouseFamilyPreview.Instance.PinCommand.Execute(new object[] { choice, picker?.DataContext });
+            e.Handled = true;
+        }
+
+        /// <summary>The Source picker closed: a pick, Escape or a click away
+        /// ends a Preview (#600).</summary>
+        private void SourcePicker_DropDownClosed(object sender, EventArgs e) => MouseFamilyPreview.Instance.Stop();
+
         private void MappingComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (sender is not ComboBox cb || cb.IsDropDownOpen) return;

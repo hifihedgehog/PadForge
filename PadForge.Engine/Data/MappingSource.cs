@@ -541,7 +541,7 @@ namespace PadForge.Engine.Data
         // existed, and a file from before it loads with the defaults. ───
 
         public const double DefaultTravelCounts = 2000, MinTravelCounts = 100, MaxTravelCounts = 50000;
-        public const double DefaultTravelReturnTime = 0.75, MinTravelReturnTime = 0.05, MaxTravelReturnTime = 5.0;
+        public const double DefaultTravelReturnTime = 0.75, MinTravelReturnTime = 0, MaxTravelReturnTime = 5.0;
         public const double MaxTravelSmoothingMs = 100;
         public const double DefaultTravelLockAtSpeed = 100, MinTravelLockAtSpeed = 20, MaxTravelLockAtSpeed = 100;
 
@@ -549,8 +549,13 @@ namespace PadForge.Engine.Data
         public const string TravelCenteringOff = "Off", TravelCenteringSpring = "Spring",
             TravelCenteringTelemetry = "Telemetry", TravelCenteringGameForce = "GameForce";
 
-        /// <summary>The values of <see cref="ParamTravelSteer"/>.</summary>
-        public const string TravelSteerAlways = "Always", TravelSteerHeld = "Held", TravelSteerToggle = "Toggle";
+        /// <summary>The values of <see cref="ParamTravelSteer"/>: Always,
+        /// While Held and Center, While Held and Stay, and Toggle (#600).
+        /// <see cref="TravelSteerHeld"/> is the one While Held a build before
+        /// them wrote, which <see cref="EffectiveMouseSteer"/> reads as one of
+        /// the two so a saved mapping keeps what it did.</summary>
+        public const string TravelSteerAlways = "Always", TravelSteerHeld = "Held", TravelSteerToggle = "Toggle",
+            TravelSteerHeldCenter = "HeldCenter", TravelSteerHeldStay = "HeldStay";
 
         /// <summary>Travel to Full Lock: the counts a mouse moves from center
         /// to full lock, <see cref="MinTravelCounts"/> to
@@ -616,9 +621,10 @@ namespace PadForge.Engine.Data
             => stored > 0 ? System.Math.Clamp(stored, MinTravelCounts, MaxTravelCounts) : DefaultTravelCounts;
 
         /// <summary>The Return Time the engine and the editors read for a
-        /// stored value, by the rule of <see cref="EffectiveTravelCounts"/>.</summary>
+        /// stored value. 0 centers at once (#600), and a value under 0 or
+        /// no number at all reads as the default.</summary>
         public static double EffectiveTravelReturnTime(double stored)
-            => stored > 0 ? System.Math.Clamp(stored, MinTravelReturnTime, MaxTravelReturnTime) : DefaultTravelReturnTime;
+            => stored >= 0 ? System.Math.Clamp(stored, MinTravelReturnTime, MaxTravelReturnTime) : DefaultTravelReturnTime;
 
         /// <summary>The Smoothing the engine and the editors read for a
         /// stored value.</summary>
@@ -637,10 +643,85 @@ namespace PadForge.Engine.Data
             => stored is TravelCenteringSpring or TravelCenteringTelemetry or TravelCenteringGameForce
                 ? stored : TravelCenteringOff;
 
-        /// <summary>The Steer the engine and the editors read for a stored
-        /// value: one of the three, Always for anything else.</summary>
+        /// <summary>The Steer as stored, inside the set: one of the five
+        /// names, Always for anything else. The engine and the editors act
+        /// on <see cref="EffectiveMouseSteer"/>, which also settles the old
+        /// While Held.</summary>
         public static string EffectiveTravelSteer(string stored)
-            => stored is TravelSteerHeld or TravelSteerToggle ? stored : TravelSteerAlways;
+            => stored is TravelSteerHeld or TravelSteerToggle or TravelSteerHeldCenter or TravelSteerHeldStay
+                ? stored : TravelSteerAlways;
+
+        /// <summary>The Steer a mouse source acts on (#600): Always, While
+        /// Held and Center, While Held and Stay, or Toggle.
+        /// <para>The old While Held, and an input beside Always, which the
+        /// engine always read as While Held, keep what they did. On a held
+        /// position (<paramref name="holdsPosition"/>, the travel family)
+        /// the wheel stayed where it was let go with Centering Off and came
+        /// back by its Centering otherwise, so they read as Stay with
+        /// Centering Off and as Center with any other. A Mouse Speed or
+        /// Mouse Position source read nothing while its gate was open, which
+        /// is Center. With no input every mode is Always, since nothing
+        /// gates the mouse.</para></summary>
+        public static string EffectiveMouseSteer(string stored, string centering, bool hasInput, bool holdsPosition)
+        {
+            if (!hasInput) return TravelSteerAlways;
+            string steer = EffectiveTravelSteer(stored);
+            if (steer is TravelSteerHeldCenter or TravelSteerHeldStay or TravelSteerToggle) return steer;
+            return holdsPosition && EffectiveTravelCentering(centering) == TravelCenteringOff
+                ? TravelSteerHeldStay : TravelSteerHeldCenter;
+        }
+
+        // ─── The other mouse families (#600). Mouse Speed (a mouse's Axis
+        // 0 and 1) and Mouse Position take the travel family's Steer and
+        // Smoothing, and each has its own settings below. Each is left out
+        // of the file at its default, where a source reads as it did
+        // before them. ───
+
+        public const double DefaultMouseSpeedSensitivity = 1.0, MinMouseSpeedSensitivity = 0.1, MaxMouseSpeedSensitivity = 10.0;
+        public const double MaxMouseBackToCenter = 2.0;
+
+        /// <summary>Mouse Speed's Sensitivity: how much of the stick a speed
+        /// gives, 1 at the speed that has always reached the whole stick
+        /// (16,000 counts a second), <see cref="MinMouseSpeedSensitivity"/>
+        /// to <see cref="MaxMouseSpeedSensitivity"/>.</summary>
+        [XmlAttribute] public double ParamMouseSpeedSensitivity { get => _paramMouseSpeedSensitivity; set => _paramMouseSpeedSensitivity = Finite(value, _paramMouseSpeedSensitivity); }
+        private double _paramMouseSpeedSensitivity = DefaultMouseSpeedSensitivity;
+        public bool ShouldSerializeParamMouseSpeedSensitivity() => _paramMouseSpeedSensitivity != DefaultMouseSpeedSensitivity;
+
+        /// <summary>Mouse Speed's Back to Center in seconds, 0 to
+        /// <see cref="MaxMouseBackToCenter"/>: once the mouse slows or
+        /// stops, the stick falls back no faster than this time constant.
+        /// 0 lets it fall back with the speed.</summary>
+        [XmlAttribute] public double ParamMouseBackToCenter { get => _paramMouseBackToCenter; set => _paramMouseBackToCenter = Finite(value, _paramMouseBackToCenter); }
+        private double _paramMouseBackToCenter;
+        public bool ShouldSerializeParamMouseBackToCenter() => _paramMouseBackToCenter != 0;
+
+        /// <summary>Mouse Position's Start Where Steering Began: with a
+        /// Steer input, the stick measures from where the pointer was when
+        /// steering began, as a stick on a phone's screen starts where the
+        /// finger lands. Off, it measures from the center of the pointer's
+        /// monitor.</summary>
+        [XmlAttribute] public bool ParamMousePositionAnchor { get; set; }
+        public bool ShouldSerializeParamMousePositionAnchor() => ParamMousePositionAnchor;
+
+        /// <summary>This axis moves relatively (#600): a trackball's or a
+        /// spinner's axis on a device that is no mouse, which reports how
+        /// far it turned as a running total. Set, the source holds a
+        /// position from the change between passes as Mouse Travel does,
+        /// with the travel settings. SDL gives no such flag, so the user
+        /// sets it.</summary>
+        [XmlAttribute] public bool ParamAxisRelative { get; set; }
+        public bool ShouldSerializeParamAxisRelative() => ParamAxisRelative;
+
+        /// <summary>The Sensitivity the engine and the editors read for a
+        /// stored value. At or under 0 reads as the default.</summary>
+        public static double EffectiveMouseSpeedSensitivity(double stored)
+            => stored > 0 ? System.Math.Clamp(stored, MinMouseSpeedSensitivity, MaxMouseSpeedSensitivity) : DefaultMouseSpeedSensitivity;
+
+        /// <summary>The Back to Center the engine and the editors read for a
+        /// stored value.</summary>
+        public static double EffectiveMouseBackToCenter(double stored)
+            => double.IsFinite(stored) ? System.Math.Clamp(stored, 0, MaxMouseBackToCenter) : 0;
 
         // ─── Runtime "Menu {id} Item {k}" parse cache (not serialized:
         // XmlSerializer ignores non-public members). The per-tick readers

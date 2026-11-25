@@ -12,12 +12,13 @@ namespace PadForge.Services
     /// <see cref="SourceCoercion.MouseCursorProvider"/> for the "Mouse Position X" /
     /// "Mouse Position Y" sources (issue #107).
     ///
-    /// <para>Primary monitor only. Screen center reads (0, 0); the published value
-    /// is unclamped (the per-source sensitivity + clamp happens in
-    /// <c>SourceCoercion.ReadTunedMouseCursor</c>), so a cursor at the edge or on a
-    /// secondary monitor reads past ±1 and pins at the boundary after clamping.
-    /// Normalized by width/10 on both axes: sensitivity 1.0 reaches full deflection
-    /// at 10% of screen width from center.</para>
+    /// <para>Measured on the monitor the pointer is on (#600). That monitor's
+    /// center reads (0, 0). The published value is unclamped (the per-source
+    /// sensitivity + clamp happens in <c>SourceCoercion.ReadTunedMouseCursor</c>),
+    /// so a cursor at the edge reads past ±1 and pins at the boundary after
+    /// clamping. Normalized by width/10 on both axes: sensitivity 1.0 reaches full
+    /// deflection at 10% of that monitor's width from its center. The same sample
+    /// in pixels goes to <see cref="SourceCoercion.MouseCursorPointProvider"/>.</para>
     ///
     /// <para>Both <c>GetCursorPos</c> and <c>GetMonitorInfo</c> return physical
     /// pixels under the PerMonitorV2 awareness declared in app.manifest, so the math
@@ -64,12 +65,18 @@ namespace PadForge.Services
         private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
 
         private const uint MONITOR_DEFAULTTOPRIMARY = 1;
+        private const uint MONITOR_DEFAULTTONEAREST = 2;
         private const int SampleIntervalMs = 5; // 200 Hz
 
         // Published sample, lock-free. Volatile single floats; a reader that catches
         // a torn (x, y) pair sees at worst one stale axis for one 5 ms tick.
         private volatile float _normX;
         private volatile float _normY;
+
+        // The same sample in pixels (#600): the pointer, its monitor's
+        // center and a tenth of that monitor's width, for Mouse Position's
+        // anchor. Same torn-pair tolerance.
+        private volatile float _pointX, _pointY, _monitorCenterX, _monitorCenterY, _monitorUnit;
 
         private Timer _timer;
         private volatile bool _disposed;
@@ -114,6 +121,13 @@ namespace PadForge.Services
                 System.Threading.Volatile.Write(ref _lastProviderReadMs, Environment.TickCount64);
                 WakeSampler();
                 return (_normX, _normY);
+            };
+            SourceCoercion.MouseCursorPointProvider = () =>
+            {
+                System.Threading.Volatile.Write(ref _lastProviderReadMs, Environment.TickCount64);
+                WakeSampler();
+                float unit = _monitorUnit;
+                return unit > 0 ? (_pointX, _pointY, _monitorCenterX, _monitorCenterY, unit) : null;
             };
             _timer = new Timer(_ => Tick(), null, 0, SampleIntervalMs);
         }
@@ -161,15 +175,38 @@ namespace PadForge.Services
 
             if (!GetCursorPos(out POINT p)) return;
 
-            float w = r.Right - r.Left;
-            if (w <= 0f) return;
+            // Measured on the monitor the pointer is on (#600), the nearest
+            // one as Windows picks it, so a pointer on a second monitor
+            // reads from that monitor's center. The primary's rect stays
+            // the pin's and the clamp's, which act on it.
+            var mon = MonitorFromPoint(p, MONITOR_DEFAULTTONEAREST);
+            var mi = new MONITORINFO { cbSize = Marshal.SizeOf<MONITORINFO>() };
+            if (mon != IntPtr.Zero && GetMonitorInfo(mon, ref mi)) r = mi.rcMonitor;
 
-            float centerX = (r.Left + r.Right) / 2f;
-            float centerY = (r.Top + r.Bottom) / 2f;
-            float div = w / 10f; // width/10 for both axes (recipe convention)
+            var m = Measure(p.X, p.Y, r.Left, r.Top, r.Right, r.Bottom);
+            if (m.unit <= 0f) return;
+            _normX = m.normX;
+            _normY = m.normY;
+            _pointX = p.X;
+            _pointY = p.Y;
+            _monitorCenterX = m.centerX;
+            _monitorCenterY = m.centerY;
+            _monitorUnit = m.unit;
+        }
 
-            _normX = (p.X - centerX) / div;
-            _normY = (p.Y - centerY) / div;
+        /// <summary>Where a pointer is on a monitor, as Mouse Position reads
+        /// it: from the monitor's center over a tenth of its width on both
+        /// axes (the recipe's convention), and that center and tenth in
+        /// pixels. A monitor with no width gives a unit of 0.</summary>
+        internal static (float normX, float normY, float centerX, float centerY, float unit) Measure(
+            int x, int y, int left, int top, int right, int bottom)
+        {
+            float w = right - left;
+            if (w <= 0f) return (0f, 0f, 0f, 0f, 0f);
+            float centerX = (left + right) / 2f;
+            float centerY = (top + bottom) / 2f;
+            float div = w / 10f;
+            return ((x - centerX) / div, (y - centerY) / div, centerX, centerY, div);
         }
 
         /// <summary>Resolves the primary monitor's physical-pixel rect. The primary
@@ -339,6 +376,7 @@ namespace PadForge.Services
             if (Active == this) Active = null;
             // Only unhook our own provider so a re-create can rewire cleanly.
             SourceCoercion.MouseCursorProvider = null;
+            SourceCoercion.MouseCursorPointProvider = null;
             _timer?.Dispose();
             _timer = null;
         }

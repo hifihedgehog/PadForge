@@ -2026,7 +2026,12 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _primarySourceDeviceGuid, value ?? ""))
+                {
                     OnPropertyChanged(nameof(PrimarySourceDeviceLabel));
+                    // Whether Axis 0 and 1 are Mouse Speed follows the
+                    // device (#600).
+                    RaiseMouseTravel();
+                }
             }
         }
 
@@ -2709,8 +2714,26 @@ namespace PadForge.ViewModels
     /// <see cref="DeviceLabel"/> to render device-name headers between
     /// each device's input rows.
     /// </summary>
-    public class InputChoice
+    public class InputChoice : System.ComponentModel.INotifyPropertyChanged
     {
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        private bool _isPreviewing;
+
+        /// <summary>True while the Source picker's Preview shows this input's
+        /// family (#600). The picker's list recycles its rows, so the row
+        /// reads it here, on the entry, rather than keeping it.</summary>
+        public bool IsPreviewing
+        {
+            get => _isPreviewing;
+            set
+            {
+                if (_isPreviewing == value) return;
+                _isPreviewing = value;
+                PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(nameof(IsPreviewing)));
+            }
+        }
+
         /// <summary>Mapping descriptor (e.g., "Button 0", "Axis 1", "POV 0 Up").</summary>
         public string Descriptor { get; set; }
 
@@ -2724,6 +2747,24 @@ namespace PadForge.ViewModels
         /// <summary>Friendly name of the device this choice belongs to.
         /// Used as the GroupStyle header in the picker.</summary>
         public string DeviceLabel { get; set; } = "";
+
+        /// <summary>What the input does, in a line under its name in the
+        /// Source picker (#600): a mouse's families say it. Empty for
+        /// every other input.</summary>
+        public string Description { get; set; } = "";
+
+        /// <summary>True when <see cref="Description"/> holds words.</summary>
+        public bool HasDescription => !string.IsNullOrEmpty(Description);
+
+        /// <summary>The mouse family a Preview in the Source picker shows for
+        /// this input (#600): one of the Preview names below, or null for an
+        /// input with no Preview.</summary>
+        public string PreviewFamily { get; set; }
+
+        /// <summary>True when the input has a Preview.</summary>
+        public bool HasPreview => PreviewFamily != null;
+
+        public const string PreviewSpeed = "Speed", PreviewPosition = "Position", PreviewTravel = "Travel", PreviewWheel = "Wheel";
 
         public override string ToString() => DisplayName;
     }

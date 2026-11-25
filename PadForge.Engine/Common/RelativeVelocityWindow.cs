@@ -33,6 +33,20 @@ namespace PadForge.Engine.Common
     /// reads as its true average velocity over the stall instead of a
     /// one-window spike.
     ///
+    /// Rate independence (#600): a pass's deltas are spread over the pass
+    /// they came in, from the previous add to this one, so the speed is the
+    /// counts that fall inside the last <see cref="WindowMs"/> over the
+    /// window, whatever the passes' length. Counting every entry newer than
+    /// the window whole read a 60 Hz loop's two 16.7 ms passes as 33 ms of
+    /// counts over 25 (1.33 times true). The oldest entry is the only one
+    /// that can stand across the window's start, and only its part inside
+    /// is counted. The ring holds every pass of a window at 10,000 passes a
+    /// second, so none is dropped (a 64-entry ring dropped the oldest past
+    /// 64 non-zero passes, 0.64 times true at 10,000). At 1 ms passes every
+    /// entry lies whole inside, so the numbers are the old ones.
+    /// <see cref="WindowSums"/> keeps whole entries, the impulse lane's
+    /// contract.
+    ///
     /// Single-threaded by contract: the polling thread is the sole caller,
     /// like the wrappers that own instances of this class.
     /// </summary>
@@ -44,12 +58,14 @@ namespace PadForge.Engine.Common
         /// enters the window on the poll it arrives.</summary>
         public const int WindowMs = 25;
 
-        // Ring sized for the window at the fastest polling interval (1 ms)
-        // plus slack. Power of two so the index mask is a single AND.
-        private const int Capacity = 64;
+        // Ring sized for the window at the fastest polling rate, 10,000
+        // passes a second (250 passes), with room to spare. Power of two
+        // so the index mask is a single AND.
+        private const int Capacity = 512;
         private const int Mask = Capacity - 1;
 
         private readonly long[] _ticks = new long[Capacity];
+        private readonly long[] _starts = new long[Capacity];
         private readonly float[] _dx = new float[Capacity];
         private readonly float[] _dy = new float[Capacity];
         private readonly float[] _dz = new float[Capacity];
@@ -85,16 +101,21 @@ namespace PadForge.Engine.Common
             if (dx == 0f && dy == 0f && dz == 0f)
                 return;
 
+            // The pass these deltas came in: from the previous add to now.
+            long start = nowTicks - gap;
+
             // A lump that accumulated across a stall longer than the window
             // is pre-scaled to its average share of one window, so the
             // fixed-window divisor below reads it as the stall's true
-            // average velocity rather than a spike.
+            // average velocity rather than a spike. What is left of it
+            // stands for the window's length.
             if (gap > s_windowTicks)
             {
                 float share = (float)s_windowTicks / gap;
                 dx *= share;
                 dy *= share;
                 dz *= share;
+                start = nowTicks - s_windowTicks;
             }
 
             if (_count == Capacity)
@@ -109,6 +130,7 @@ namespace PadForge.Engine.Common
             }
 
             _ticks[_head] = nowTicks;
+            _starts[_head] = start;
             _dx[_head] = dx;
             _dy[_head] = dy;
             _dz[_head] = dz;
@@ -122,12 +144,29 @@ namespace PadForge.Engine.Common
         private static readonly float s_windowSeconds = WindowMs / 1000f;
 
         /// <summary>Counts per second over the window, computed after
-        /// <see cref="Add"/> for the same tick.</summary>
+        /// <see cref="Add"/> for the same tick: the counts inside the
+        /// window, each entry's spread over its own pass, over the
+        /// window.</summary>
         public void CountsPerSecond(out float x, out float y, out float z)
         {
-            x = _sumX / s_windowSeconds;
-            y = _sumY / s_windowSeconds;
-            z = _sumZ / s_windowSeconds;
+            float sx = _sumX, sy = _sumY, sz = _sumZ;
+            if (_count > 0)
+            {
+                // Only the oldest entry can begin before the window does.
+                int tail = (_head - _count) & Mask;
+                long limit = _prevAddTicks - s_windowTicks;
+                long begin = _starts[tail], end = _ticks[tail];
+                if (begin < limit && end > begin)
+                {
+                    float outside = (float)(limit - begin) / (end - begin);
+                    sx -= _dx[tail] * outside;
+                    sy -= _dy[tail] * outside;
+                    sz -= _dz[tail] * outside;
+                }
+            }
+            x = sx / s_windowSeconds;
+            y = sy / s_windowSeconds;
+            z = sz / s_windowSeconds;
         }
 
         /// <summary>Raw sums over the window, computed after <see cref="Add"/>

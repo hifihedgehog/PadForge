@@ -750,6 +750,64 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!-- An entry of the Source picker (#600): its name, and in the open
+             list a mouse family's line saying what it does and its Preview.
+             Preview pins the family, and its gauge then follows the user's
+             own mouse (MouseFamilyPreview) until a family is picked, Escape
+             is pressed or the list closes. The closed picker shows the name
+             alone: the parts under it bind to the entry's ComboBoxItem,
+             which only the open list has. The row's Value meter stays the
+             one live view of the axis. -->
+        <DataTemplate x:Key="SourceInputChoice" DataType="{x:Type vm:InputChoice}">
+            <DockPanel common:Reach.Class="Free" LastChildFill="True" MaxWidth="460">
+                <Grid DockPanel.Dock="Right" Margin="12,0,0,0" VerticalAlignment="Top"
+                      Visibility="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}">
+                    <Button x:Name="PreviewButton" Visibility="Collapsed" MinHeight="28" Padding="12,2" FontSize="13"
+                            Content="{Binding Mapping_Preview, Source={x:Static strings:Strings.Instance}}"
+                            AutomationProperties.Name="{Binding Mapping_Preview, Source={x:Static strings:Strings.Instance}}"
+                            ToolTip="{Binding Mapping_Preview_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            Click="MousePreview_Click"/>
+                    <Border x:Name="PreviewGauge" Visibility="Collapsed" Width="132" Padding="8" CornerRadius="6" BorderThickness="1"
+                            BorderBrush="{DynamicResource SteelLineSoftBrush}" Background="{DynamicResource SteelGroundBrush}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Mapping_Preview_Moving, Source={x:Static strings:Strings.Instance}}" FontSize="12" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <Canvas Width="114" Height="60" Margin="0,4,0,2" HorizontalAlignment="Left" FlowDirection="LeftToRight">
+                                <Path Data="M 10,52 A 47,47 0 0 1 104,52" Stroke="{DynamicResource SteelLineBrush}" StrokeThickness="6"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                <Path Data="{Binding Arc, Source={x:Static vm:MouseFamilyPreview.Instance}}" Stroke="{DynamicResource EmberBrush}" StrokeThickness="6"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                            </Canvas>
+                            <TextBlock Text="{Binding Caption, Source={x:Static vm:MouseFamilyPreview.Instance}}" FontSize="12" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       AutomationProperties.LiveSetting="Polite"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <StackPanel VerticalAlignment="Top">
+                    <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="DescriptionLine" Visibility="Collapsed" Text="{Binding Description}" FontSize="12" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,1,0,0"/>
+                </StackPanel>
+            </DockPanel>
+            <DataTemplate.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding HasDescription}" Value="True"/>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}" Value="Visible"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="DescriptionLine" Property="Visibility" Value="Visible"/>
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding HasPreview}" Value="True">
+                    <Setter TargetName="PreviewButton" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
+                    <Setter TargetName="PreviewButton" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="PreviewGauge" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
         <!-- The heading over a device's inputs in such a picker. -->
         <DataTemplate x:Key="InputGroupHead">
             <Border common:Reach.Class="Free" Background="{DynamicResource SubtleFillColorSecondaryBrush}" Padding="6,3,6,3">
@@ -932,23 +990,69 @@
                     <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetMouseCursorSensitivityCommand}" SettingLabel="{Binding Mapping_MouseCursorSensitivity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_Mapping_MouseCursorSensitivity"/>
                 </StackPanel>
-                <!-- A mouse's travel held as a wheel (#597). Only for "Mouse
-                     Travel X/Y", and each setting only where it applies:
-                     Return Time for the two kinds of centering that take
-                     the wheel back over it, the Steer Input for the two
-                     modes that read one, and Lock at Speed while Game
-                     Telemetry is on. The Travel to Full Lock slider runs
-                     along a scale that multiplies (MouseTravelLine), and
-                     its box holds the counts. -->
-                <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseTravelCounts_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                <!-- Mouse Speed's own line (#600): a mouse's Axis 0 and 1.
+                     Sensitivity reaches past where the axis clamps, and Back
+                     to Center slows the stick's return. Smoothing, Steer and
+                     the Steer Input follow with the travel family's. -->
+                <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseSpeedSensitivity_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            Visibility="{Binding IsMouseSpeedSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseSpeedSensitivity, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_MouseSpeedSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LineSlider}"
+                            Value="{Binding ParamMouseSpeedSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Minimum="0.1" Maximum="10" SmallChange="0.05" LargeChange="0.5"/>
+                    <TextBox AutomationProperties.Name="{Binding Mapping_MouseSpeedSensitivity, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
+                             Text="{Binding ParamMouseSpeedSensitivity, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
+                    <TextBlock Text="×" Style="{StaticResource DzPercent}"/>
+                    <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamMouseSpeedSensitivity" SettingLabel="{Binding Mapping_MouseSpeedSensitivity, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamMouseSpeedSensitivity"/>
+                </StackPanel>
+                <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseBackToCenter_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            Visibility="{Binding IsMouseSpeedSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseBackToCenter, Source={x:Static strings:Strings.Instance}}"/>
+                    <Slider AutomationProperties.Name="{Binding Mapping_MouseBackToCenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LineSlider}"
+                            Value="{Binding ParamMouseBackToCenter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Minimum="0" Maximum="2" SmallChange="0.05" LargeChange="0.25"/>
+                    <TextBox AutomationProperties.Name="{Binding Mapping_MouseBackToCenter, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
+                             Text="{Binding ParamMouseBackToCenter, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
+                    <TextBlock Text="{Binding Common_Seconds, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                    <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamMouseBackToCenter" SettingLabel="{Binding Mapping_MouseBackToCenter, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamMouseBackToCenter"/>
+                </StackPanel>
+                <!-- An axis of a device that is no mouse (#600): the user marks
+                     one that moves relatively, a trackball's or a spinner's,
+                     since Windows does not say. Marked, it takes the travel
+                     settings below. -->
+                <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_AxisRelative_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            Visibility="{Binding IsAxisRelativeApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_AxisRelative, Source={x:Static strings:Strings.Instance}}"/>
+                    <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Mapping_AxisRelative, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding ParamAxisRelative, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamAxisRelative" SettingLabel="{Binding Mapping_AxisRelative, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamAxisRelative"/>
+                </StackPanel>
+                <!-- A held position (#597, #600): "Mouse Travel X/Y", the two
+                     wheels and an axis marked as moving relatively, and each
+                     setting only where it applies: Return Time for the two
+                     kinds of centering that take the wheel back over it, and
+                     Lock at Speed while Game Telemetry is on. Steer, the
+                     Steer Input and Smoothing show on every mouse source.
+                     The Travel to Full Lock slider runs along a scale that
+                     multiplies (MouseTravelLine), its box holds the counts,
+                     and the centimeters follow once the mouse's DPI is set. -->
+                <StackPanel Style="{StaticResource LineGroup}"
                             Visibility="{Binding IsMouseTravelSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel.ToolTip>
+                        <ToolTip>
+                            <StackPanel MaxWidth="420">
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Mapping_MouseTravelCounts_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                <TextBlock TextWrapping="Wrap" Margin="0,6,0,0" Text="{Binding Mapping_MouseTravelCounts_Tooltip_Dpi, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </StackPanel.ToolTip>
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseTravelCounts, Source={x:Static strings:Strings.Instance}}"/>
                     <Slider AutomationProperties.Name="{Binding Mapping_MouseTravelCounts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LineSlider}"
                             Value="{Binding ParamTravelCountsDial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="0" Maximum="100" SmallChange="1" LargeChange="5"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_MouseTravelCounts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
-                             Text="{Binding ParamTravelCounts, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"/>
-                    <TextBlock Text="{Binding Mapping_MouseTravelCounts_Unit, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
+                             Text="{Binding ParamTravelCountsText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                    <TextBlock Text="{Binding TravelCountsUnit}" Style="{StaticResource DzPercent}"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamTravelCounts" SettingLabel="{Binding Mapping_MouseTravelCounts, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamTravelCounts"/>
                 </StackPanel>
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseTravelCentering_Tooltip, Source={x:Static strings:Strings.Instance}}"
@@ -965,19 +1069,19 @@
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseTravelReturnTime, Source={x:Static strings:Strings.Instance}}"/>
                     <Slider AutomationProperties.Name="{Binding Mapping_MouseTravelReturnTime, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LineSlider}"
                             Value="{Binding ParamTravelReturnTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Minimum="0.05" Maximum="5" SmallChange="0.05" LargeChange="0.25"/>
+                            Minimum="0" Maximum="5" SmallChange="0.05" LargeChange="0.25"/>
                     <TextBox AutomationProperties.Name="{Binding Mapping_MouseTravelReturnTime, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzValueEdit}"
                              Text="{Binding ParamTravelReturnTime, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"/>
                     <TextBlock Text="{Binding Common_Seconds, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzPercent}"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamTravelReturnTime" SettingLabel="{Binding Mapping_MouseTravelReturnTime, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamTravelReturnTime"/>
                 </StackPanel>
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseTravelSteer_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                            Visibility="{Binding IsMouseTravelSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                            Visibility="{Binding IsMouseSteerSource, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseTravelSteer, Source={x:Static strings:Strings.Instance}}"/>
                     <ComboBox AutomationProperties.Name="{Binding Mapping_MouseTravelSteer, Source={x:Static strings:Strings.Instance}}"
                               ItemsSource="{Binding ParamTravelSteerChoices}" SelectedValuePath="Value" DisplayMemberPath="Display"
                               SelectedValue="{Binding ParamTravelSteer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource LinePicker}" MinWidth="120"/>
+                              Style="{StaticResource LinePicker}" MinWidth="180"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamTravelSteer" SettingLabel="{Binding Mapping_MouseTravelSteer, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamTravelSteer"/>
                 </StackPanel>
                 <!-- The input Steer waits on: an on/off input of the source's
@@ -991,8 +1095,18 @@
                               Style="{StaticResource LineInputPicker}" Width="150"/>
                     <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="TravelSteerInputChoice" SettingLabel="{Binding Mapping_MouseTravelSteerInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_TravelSteerInputChoice"/>
                 </StackPanel>
+                <!-- Mouse Position's anchor (#600): with a Steer input, the
+                     stick measures from where the pointer was when steering
+                     began. Shown under a mode that reads one. -->
+                <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MousePositionAnchor_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                            Visibility="{Binding IsMousePositionAnchorShown, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MousePositionAnchor, Source={x:Static strings:Strings.Instance}}"/>
+                    <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Mapping_MousePositionAnchor, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding ParamMousePositionAnchor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <reset:SettingResetButton Margin="6,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="ParamMousePositionAnchor" SettingLabel="{Binding Mapping_MousePositionAnchor, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_ParamMousePositionAnchor"/>
+                </StackPanel>
                 <StackPanel Style="{StaticResource LineGroup}" ToolTip="{Binding Mapping_MouseTravelSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                            Visibility="{Binding IsMouseTravelSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                            Visibility="{Binding IsMouseSteerSource, Converter={StaticResource BoolToVisibilityConverter}}">
                     <TextBlock Style="{StaticResource LineLabel}" Text="{Binding Mapping_MouseTravelSmoothing, Source={x:Static strings:Strings.Instance}}"/>
                     <Slider AutomationProperties.Name="{Binding Mapping_MouseTravelSmoothing, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource LineSlider}"
                             Value="{Binding ParamTravelSmoothingMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -1237,6 +1351,8 @@
                                       ItemsSource="{Binding Row.AvailableInputsView}"
                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource LineInputPicker}" MinWidth="140"
+                                      DisplayMemberPath="" ItemTemplate="{StaticResource SourceInputChoice}"
+                                      DropDownClosed="SourcePicker_DropDownClosed"
                                       ToolTip="{Binding Pad_Mapping_ExtraSourcePickerTooltip, Source={x:Static strings:Strings.Instance}}">
                                 <ComboBox.GroupStyle>
                                     <GroupStyle HeaderTemplate="{StaticResource InputGroupHead}"/>

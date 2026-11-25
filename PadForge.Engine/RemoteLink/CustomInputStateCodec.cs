@@ -107,6 +107,10 @@ namespace PadForge.Engine.RemoteLink
             /// carries it, with no payload, and it means nothing without the
             /// Ir block.</summary>
             IrCalibrated = 1 << 3,
+            /// <summary>A mouse's wheels in Windows' wheel units, two int32
+            /// (#600): Wheel Travel reads them. Presence inferred from the
+            /// state: both 0 omits the block, the neutral it decodes to.</summary>
+            MouseWheel = 1 << 4,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -373,6 +377,7 @@ namespace PadForge.Engine.RemoteLink
             var analogKeys = state.AnalogKeys;
             if (analogKeys != null && analogKeys.Count > 0) ext |= BlockExt.AnalogKeys;
             if (state.Ir.Detected && state.Ir.Calibrated) ext |= BlockExt.IrCalibrated;
+            if (state.MouseRawWheel != 0 || state.MouseRawWheelH != 0) ext |= BlockExt.MouseWheel;
             if (ext != BlockExt.None)
             {
                 destination[o++] = ExtMagic;
@@ -393,6 +398,11 @@ namespace PadForge.Engine.RemoteLink
                         BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(o, 2), (ushort)analogKeys.Codes[i]); o += 2;
                         o += WriteU16(destination, o, (int)MathF.Round(Math.Clamp(analogKeys.Depths[i], 0f, 1f) * 65535f));
                     }
+                }
+                if ((ext & BlockExt.MouseWheel) != 0)
+                {
+                    BinaryPrimitives.WriteInt32LittleEndian(destination.Slice(o, 4), state.MouseRawWheel); o += 4;
+                    BinaryPrimitives.WriteInt32LittleEndian(destination.Slice(o, 4), state.MouseRawWheelH); o += 4;
                 }
                 BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(extAt, 2), (ushort)ext);
             }
@@ -435,6 +445,7 @@ namespace PadForge.Engine.RemoteLink
             if (state?.AnalogKeys != null) size += 3 + 1 + Math.Min(state.AnalogKeys.Count, AnalogKeyInputState.MaxKeys) * 4;
             size += 8 + 4 + 8 + 8 + 1; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32) + CapSense (1 byte)
             size += 1 + (255 / 8 + 1); // NFC: span byte + up to 32 bitmask bytes
+            size += 8; // mouse wheels (2 int32) in the ext tail (#600), whose header is counted above
             return size;
         }
 
@@ -690,6 +701,11 @@ namespace PadForge.Engine.RemoteLink
                     }
                     if ((ext & BlockExt.IrCalibrated) != 0 && target.Ir.Detected)
                         target.Ir.Calibrated = true;
+                    if ((ext & BlockExt.MouseWheel) != 0)
+                    {
+                        target.MouseRawWheel = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
+                        target.MouseRawWheelH = BinaryPrimitives.ReadInt32LittleEndian(payload.Slice(o, 4)); o += 4;
+                    }
                 }
 
                 return o <= payload.Length;
@@ -725,6 +741,8 @@ namespace PadForge.Engine.RemoteLink
             s.JoyCon2MouseDY = 0f;
             s.MouseRawDX = 0;
             s.MouseRawDY = 0;
+            s.MouseRawWheel = 0;
+            s.MouseRawWheelH = 0;
             if (s.CapSense != null) Array.Clear(s.CapSense);
             if (s.NfcTag != null) Array.Clear(s.NfcTag);
             s.AnalogKeys?.ResetForReuse();

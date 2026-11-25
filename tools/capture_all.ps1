@@ -4085,7 +4085,7 @@ try {
             foreach ($tag in @("HidHideEnabled", "ConsumeInputEnabled", "ForceRawJoystickMode",
                                "QuickChargeEnabled", "TouchpadOnlyInPadForge", "TouchpadKeepPending",
                                "HomeOfferPending", "HasAccelAux", "HasGyroAux")) { & $set $tag "false" }
-            foreach ($tag in @("IdleDisconnectSeconds", "PeripheralOutputs", "CapTouchpadCount")) { & $set $tag 0 }
+            foreach ($tag in @("IdleDisconnectSeconds", "PeripheralOutputs", "CapTouchpadCount", "MouseDpi")) { & $set $tag 0 }
             foreach ($tag in @("HidHideInstanceIds", "CapTouchpadFingerCounts")) {
                 $n = $d.SelectSingleNode($tag); if ($n) { $n.RemoveAll() }
             }

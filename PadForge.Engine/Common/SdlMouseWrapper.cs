@@ -143,6 +143,7 @@ namespace PadForge.Engine
             // IntPtr.Zero (Windows' synthetic mouse output at hDevice=0).
             RawInputListener.ConsumeMouseDelta(_rawInputHandle, out int dx, out int dy);
             int scroll = RawInputListener.ConsumeMouseScroll(_rawInputHandle);
+            int scrollH = RawInputListener.ConsumeMouseScrollH(_rawInputHandle);
 
             _velocity.Add(System.Diagnostics.Stopwatch.GetTimestamp(), dx, dy, scroll);
             _velocity.CountsPerSecond(out float vx, out float vy, out _);
@@ -154,6 +155,9 @@ namespace PadForge.Engine
             // count stream.
             state.MouseRawDX = dx;
             state.MouseRawDY = dy;
+            // The wheels' own units, for Wheel Travel (#600).
+            state.MouseRawWheel = scroll;
+            state.MouseRawWheelH = scrollH;
 
             // Scroll is an impulse lane, not a rate lane: a notch is a
             // discrete ±120 event, so the boxcar AVERAGE that is right for

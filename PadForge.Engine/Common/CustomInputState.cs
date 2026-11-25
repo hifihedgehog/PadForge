@@ -174,6 +174,15 @@ namespace PadForge.Engine
         public int MouseRawDX;
         public int MouseRawDY;
 
+        /// <summary>A mouse's scroll wheels in Raw Input's own units,
+        /// accumulated since the previous poll: 120 a notch, and the
+        /// smaller steps of a fine-scrolling wheel kept whole (#600). Up
+        /// and away from the user is positive on the wheel, right on the
+        /// sideways wheel. Set from the same single consume that feeds the
+        /// Mouse Scroll axis. 0 when idle or for a device with no wheel.</summary>
+        public int MouseRawWheel;
+        public int MouseRawWheelH;
+
         /// <summary>Capacitive touch channels from the SDL fork's
         /// SDL_GetGamepadCapSense (SDL_gamepad.h since 3.6.0): index by the
         /// SDL_GAMEPAD_CAPSENSE_* constants (0 = left stick top, 1 = right
@@ -319,6 +328,8 @@ namespace PadForge.Engine
             dst.JoyCon2MouseDY = JoyCon2MouseDY;
             dst.MouseRawDX = MouseRawDX;
             dst.MouseRawDY = MouseRawDY;
+            dst.MouseRawWheel = MouseRawWheel;
+            dst.MouseRawWheelH = MouseRawWheelH;
             dst.BatteryPercent = BatteryPercent;
             dst.BatteryCharging = BatteryCharging;
         }
@@ -359,6 +370,8 @@ namespace PadForge.Engine
             JoyCon2MouseDY = 0f;
             MouseRawDX = 0;
             MouseRawDY = 0;
+            MouseRawWheel = 0;
+            MouseRawWheelH = 0;
             BatteryPercent = -1;
             BatteryCharging = false;
         }

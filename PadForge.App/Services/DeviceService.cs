@@ -275,6 +275,12 @@ namespace PadForge.Services
                     CancelOwedMappingForDevice(instanceGuid);
                 ud.ForceRawJoystickMode = row.ForceRawJoystickMode;
                 ud.IdleDisconnectSeconds = Math.Max(0, row.IdleDisconnectMinutes) * 60;
+                if (ud.MouseDpi != row.MouseDpi)
+                {
+                    ud.MouseDpi = row.MouseDpi;
+                    // A source's line reads its travel in centimeters again.
+                    PadForge.ViewModels.MouseDpiNotice.Instance.Raise();
+                }
                 ud.QuickChargeEnabled = row.QuickChargeEnabled;
                 ud.GunCalibration = row.GunCalibration ?? string.Empty;
                 // A connected gun scales its aim by the new window at once, and

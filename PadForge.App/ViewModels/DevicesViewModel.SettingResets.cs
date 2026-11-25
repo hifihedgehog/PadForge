@@ -50,7 +50,7 @@ namespace PadForge.ViewModels
         /// <summary>Whether the Settings card shows at all: the device has a
         /// setting of its own or a tool.</summary>
         public bool ShowSettingsCard => SelectedDevice is { } d
-            && (d.ShowInputHidingSection || d.ShowPowerSection || d.ShowNativeArrows || d.ShowGunCalibration || ShowDeviceTools);
+            && (d.ShowInputHidingSection || d.ShowPowerSection || d.ShowNativeArrows || d.ShowGunCalibration || d.ShowMouseDpi || ShowDeviceTools);
 
         /// <summary>The settings the Settings card shows for a device, in the
         /// card's order, which its Reset All puts back. Force Raw Joystick
@@ -65,6 +65,7 @@ namespace PadForge.ViewModels
             if (d.ShowPowerSection && d.ShowQuickCharge) names.Add(nameof(DeviceRowViewModel.QuickChargeEnabled));
             if (d.ShowNativeArrows) names.Add(nameof(DeviceRowViewModel.BlissBoxNativeArrows));
             if (d.ShowGunCalibration) names.Add(nameof(DeviceRowViewModel.GunCalibration));
+            if (d.ShowMouseDpi) names.Add(nameof(DeviceRowViewModel.MouseDpi));
             return names;
         }
 

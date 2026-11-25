@@ -474,6 +474,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _deviceTypeKey, value))
                 {
                     OnPropertyChanged(nameof(DeviceType));
+                    OnPropertyChanged(nameof(ShowMouseDpi));
                     OnPropertyChanged(nameof(IsGamepad));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     // Consume Input is offered by device type, and the Input
@@ -655,6 +656,23 @@ namespace PadForge.ViewModels
                 }
             }
         }
+
+        private int _mouseDpi;
+
+        /// <summary>A mouse's DPI (#600), 0 for not set: the counts it
+        /// reports for each inch it moves. Mouse Travel then also shows its
+        /// travel in centimeters. Persisted on UserDevice through the same
+        /// channel as the hiding toggles.</summary>
+        public int MouseDpi
+        {
+            get => _mouseDpi;
+            set => SetProperty(ref _mouseDpi, Math.Clamp(value, 0, PadForge.Engine.Data.UserDevice.MaxMouseDpi));
+        }
+
+        /// <summary>Mouse DPI shows on a mouse's own row: not on All Mice
+        /// (Merged), whose counts come from every mouse, nor on PadForge's
+        /// own virtual devices.</summary>
+        public bool ShowMouseDpi => DeviceTypeKey == "Mouse" && !IsAggregate && !IsInternalVirtual;
 
         private int _idleDisconnectMinutes;
 
@@ -1413,6 +1431,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(IsInternalVirtual));
                     OnPropertyChanged(nameof(IsAggregate));
+                    OnPropertyChanged(nameof(ShowMouseDpi));
                     OnPropertyChanged(nameof(IsPadForgeDriverRow));
                     OnPropertyChanged(nameof(ShowHidHideToggle));
                     OnPropertyChanged(nameof(ShowTabletCaptureStatus));

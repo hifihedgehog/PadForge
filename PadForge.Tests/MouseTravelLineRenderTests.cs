@@ -65,15 +65,25 @@ namespace PadForge.Tests
                 {
                     window.Show();
 
-                    // Mouse Position: its own sensitivity and none of the travel settings.
+                    // Mouse Position: its own sensitivity, the Steer and the
+                    // Smoothing every mouse source takes (#600), and none of
+                    // the held position's settings.
                     var drawn = Drawn();
                     Assert.Contains(s.Mapping_MouseCursorSensitivity, drawn);
+                    Assert.Contains(s.Mapping_MouseTravelSteer, drawn);
+                    Assert.Contains(s.Mapping_MouseTravelSmoothing, drawn);
                     foreach (string label in new[]
                              {
                                  s.Mapping_MouseTravelCounts, s.Mapping_MouseTravelCentering, s.Mapping_MouseTravelReturnTime,
-                                 s.Mapping_MouseTravelSteer, s.Mapping_MouseTravelSteerInput, s.Mapping_MouseTravelSmoothing,
+                                 s.Mapping_MouseTravelSteerInput, s.Mapping_MousePositionAnchor,
                              })
                         Assert.DoesNotContain(label, drawn);
+                    // Under a mode that reads a Steer input, the anchor shows.
+                    source.ParamTravelSteer = MappingSource.TravelSteerHeldCenter;
+                    drawn = Drawn();
+                    Assert.Contains(s.Mapping_MouseTravelSteerInput, drawn);
+                    Assert.Contains(s.Mapping_MousePositionAnchor, drawn);
+                    source.ParamTravelSteer = MappingSource.TravelSteerAlways;
 
                     // Mouse Travel with every setting at its default: the four that always apply.
                     source.Descriptor = "Mouse Travel X";
@@ -97,7 +107,7 @@ namespace PadForge.Tests
                     Assert.Contains(s.Mapping_MouseTravelReturnTime, drawn);
                     Assert.Contains(s.Mapping_MouseTravelSteerInput, drawn);
                     var boxes = Descendants<TextBox>(line).Where(Shows).Select(b => b.Text).ToList();
-                    Assert.Contains("2000", boxes);
+                    Assert.Contains(MouseTravelLine.FormatCounts(2000), boxes);
                     Assert.Contains("0.75", boxes);
                 }
                 finally

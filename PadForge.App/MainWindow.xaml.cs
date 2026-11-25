@@ -7597,7 +7597,11 @@ namespace PadForge
                     or nameof(MappingItem.ParamTravelReturnTime)
                     or nameof(MappingItem.ParamTravelSteer)
                     or nameof(MappingItem.ParamTravelSmoothingMs)
-                    or nameof(MappingItem.ParamTravelLockAtSpeed))
+                    or nameof(MappingItem.ParamTravelLockAtSpeed)
+                    or nameof(MappingItem.ParamMouseSpeedSensitivity)
+                    or nameof(MappingItem.ParamMouseBackToCenter)
+                    or nameof(MappingItem.ParamMousePositionAnchor)
+                    or nameof(MappingItem.ParamAxisRelative))
                 {
                     _settingsService.MarkDirty();
 
@@ -7756,7 +7760,11 @@ namespace PadForge
                         or nameof(MappingSourceItem.ParamTravelReturnTime)
                         or nameof(MappingSourceItem.ParamTravelSteer)
                         or nameof(MappingSourceItem.ParamTravelSmoothingMs)
-                        or nameof(MappingSourceItem.ParamTravelLockAtSpeed))
+                        or nameof(MappingSourceItem.ParamTravelLockAtSpeed)
+                        or nameof(MappingSourceItem.ParamMouseSpeedSensitivity)
+                        or nameof(MappingSourceItem.ParamMouseBackToCenter)
+                        or nameof(MappingSourceItem.ParamMousePositionAnchor)
+                        or nameof(MappingSourceItem.ParamAxisRelative))
                         _settingsService.MarkDirty();
                 };
             }

@@ -130,6 +130,7 @@ namespace PadForge.Tests
                     if (Draws("extras")) DrawExtrasPages(app, dispatcher, dir, scale, Step);
                     if (Draws("devices")) WithBoardLinks(() => DrawDevicesPage(app, dispatcher, dir, scale, Step));
                     if (Draws("sticks")) DrawSticksSection(app, dispatcher, dir, scale, Step);
+                    if (Draws("mouse")) DrawMouseSteering(app, dispatcher, dir, scale, Step);
                     if (!Draws("pad")) return;
 
                     var vm = new PadViewModel(0);
@@ -1153,6 +1154,115 @@ namespace PadForge.Tests
         /// slots' chips are put in after each pick, since a pick builds them again from the slot
         /// statics, which nothing here touches. A picture with a fold open closes it again after,
         /// since its state is the app's.</summary>
+        /// <summary>Mouse steering (#600): a Left Stick X row whose source is
+        /// Mouse Travel X with its line as the Mouse board draws it, the same
+        /// row on Mouse Speed, Mouse Position and a spinner's axis marked as
+        /// moving relatively, and the Source picker's mouse group with its
+        /// words and a pinned Preview.</summary>
+        private static void DrawMouseSteering(App app, Dispatcher dispatcher, string dir, double scale, Action<string> step)
+        {
+            var saved = PadForge.Common.Input.SettingsManager.UserDevices;
+            var mouse = Guid.NewGuid();
+            var spinner = Guid.NewGuid();
+            var devices = new PadForge.Common.Input.DeviceCollection();
+            devices.Items.Add(new PadForge.Engine.Data.UserDevice { InstanceGuid = mouse, ProductGuid = mouse, InstanceName = "G502 HERO", ProductName = "G502 HERO",
+                CapType = PadForge.Engine.InputDeviceType.Mouse, IsOnline = true, IsEnabled = true, MouseDpi = 1600 });
+            devices.Items.Add(new PadForge.Engine.Data.UserDevice { InstanceGuid = spinner, ProductGuid = spinner, InstanceName = "Spinner Arcade Box", ProductName = "Spinner Arcade Box",
+                CapType = PadForge.Engine.InputDeviceType.Joystick, IsOnline = true, IsEnabled = true });
+            PadForge.Common.Input.SettingsManager.UserDevices = devices;
+            bool telemetry = PadForge.Common.Input.Telemetry.GameTelemetryRuntime.Enabled;
+            try
+            {
+                PadForge.Common.Input.Telemetry.GameTelemetryRuntime.Enabled = true;
+                var vm = new PadViewModel(0);
+                var page = new PadPage { DataContext = vm };
+                var row = vm.Mappings.First(m => m.TargetSettingName == "LeftThumbAxisX");
+                var panel = new ContentControl { ContentTemplate = (DataTemplate)page.FindResource("MappingRowPanel"), Content = row };
+                var host = new UserControl { Content = panel, DataContext = vm, Resources = page.Resources };
+                var ground = Ground(app, host);
+
+                void Line(string descriptor, Guid device)
+                {
+                    row.LoadDescriptor(descriptor);
+                    row.PrimarySourceDeviceGuid = device.ToString();
+                    row.PrimarySourceDeviceLabel = device == mouse ? "G502 HERO" : "Spinner Arcade Box";
+                }
+                Shoot(ground, dispatcher, dir, scale, "mouse-travel-row.png", 1360, 420, () =>
+                {
+                    Line("Mouse Travel X", mouse);
+                    row.ParamTravelCentering = PadForge.Engine.Data.MappingSource.TravelCenteringSpring;
+                    row.ParamTravelSteer = PadForge.Engine.Data.MappingSource.TravelSteerHeldCenter;
+                    row.GateDescriptor = "Button 2";
+                }, step);
+                Shoot(ground, dispatcher, dir, scale, "mouse-speed-row.png", 1360, 420, () =>
+                {
+                    row.GateDescriptor = string.Empty;
+                    row.LoadMouseTravel(null);
+                    Line("Axis 0", mouse);
+                    row.ParamTravelSmoothingMs = 8;
+                    row.ParamMouseBackToCenter = 0.2;
+                }, step);
+                Shoot(ground, dispatcher, dir, scale, "mouse-position-row.png", 1360, 420, () =>
+                {
+                    row.LoadMouseTravel(null);
+                    Line("Mouse Position X", mouse);
+                    row.ParamTravelSteer = PadForge.Engine.Data.MappingSource.TravelSteerHeldStay;
+                    row.ParamMousePositionAnchor = true;
+                }, step);
+                Shoot(ground, dispatcher, dir, scale, "mouse-relative-axis-row.png", 1360, 420, () =>
+                {
+                    row.GateDescriptor = string.Empty;
+                    row.LoadMouseTravel(null);
+                    Line("Axis 0", spinner);
+                    row.ParamAxisRelative = true;
+                }, step);
+
+                // The Source picker's mouse group, its entries as the open
+                // list draws them, Mouse Travel X previewing at 38% right.
+                var choices = new List<InputChoice>
+                {
+                    new() { Descriptor = "Axis 0", DisplayName = "Mouse Speed X" },
+                    new() { Descriptor = "Mouse Position X", DisplayName = "Mouse Position X" },
+                    new() { Descriptor = "Mouse Travel X", DisplayName = "Mouse Travel X" },
+                    new() { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelDescriptor, DisplayName = PadForge.Resources.Strings.Strings.Instance.Mapping_WheelTravel },
+                    new() { Descriptor = "Axis 2", DisplayName = "Mouse Scroll" },
+                };
+                PadForge.Common.MappingDisplayResolver.DescribeMouseFamilies(choices);
+                var list = new StackPanel { Width = 470, Margin = new Thickness(8) };
+                var template = (DataTemplate)page.FindResource("SourceInputChoice");
+                foreach (var c in choices)
+                    list.Children.Add(new ComboBoxItem { Content = c, ContentTemplate = template, Padding = new Thickness(10, 8, 10, 8) });
+                var pickerHost = new UserControl { Content = new Border { Child = list, Background = (Brush)app.FindResource("SteelGroundBrush") }, Resources = page.Resources };
+                var pickerGround = Ground(app, pickerHost);
+                long clock = 1;
+                long x = 0;
+                MouseFamilyPreview.ReadSeam = () => new MouseFamilyPreview.Sample(x, 0, 0, 0, new bool[5], null);
+                MouseFamilyPreview.ClockSeam = () => clock;
+                try
+                {
+                    Shoot(pickerGround, dispatcher, dir, scale, "mouse-source-picker.png", 520, 520, null, step);
+                    Shoot(pickerGround, dispatcher, dir, scale, "mouse-source-picker-preview.png", 520, 560, () =>
+                    {
+                        MouseFamilyPreview.Instance.PinCommand.Execute(choices[2]);
+                        x += 760;
+                        clock += System.Diagnostics.Stopwatch.Frequency / 60;
+                        MouseFamilyPreview.Instance.Step();
+                    }, step);
+                }
+                finally
+                {
+                    MouseFamilyPreview.Instance.Stop();
+                    MouseFamilyPreview.ReadSeam = null;
+                    MouseFamilyPreview.ClockSeam = null;
+                }
+            }
+            finally
+            {
+                PadForge.Common.Input.SettingsManager.UserDevices = saved;
+                PadForge.Common.Input.Telemetry.GameTelemetryRuntime.Enabled = telemetry;
+            }
+        }
+
         private static void DrawDevicesPage(App app, Dispatcher dispatcher, string dir, double scale, Action<string> step)
         {
             const double PageWidth = 1016, Narrow = 636;
@@ -1189,7 +1299,7 @@ namespace PadForge.Tests
             var elite = Add("Xbox Elite Wireless Controller Series 2", "Gamepad", PadForge.Engine.InputDeviceType.Gamepad,
                 @"\\?\HID#VID_045E&PID_0B00&IG_00#8&2&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", true, 0x045E, 0x0B00, 64);
             elite.BatteryCharging = true;
-            Add("Logitech G502 HERO Gaming Mouse", "Mouse", PadForge.Engine.InputDeviceType.Mouse,
+            var g502 = Add("Logitech G502 HERO Gaming Mouse", "Mouse", PadForge.Engine.InputDeviceType.Mouse,
                 @"\\?\HID#VID_046D&PID_C08B&MI_00#8&4&0&0000#{378de44c-56ef-11d1-bc8c-00a0c91405dd}", true, 0x046D, 0xC08B);
             var keyboard = Add("Standard PS/2 Keyboard", "Keyboard", PadForge.Engine.InputDeviceType.Keyboard,
                 @"\\?\ACPI#PNP0303#4&1&0#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}", true, 0, 0);
@@ -1318,6 +1428,14 @@ namespace PadForge.Tests
                 ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = true;
             });
             ((System.Windows.Controls.Expander)page.FindName("NotConnectedFold")).IsExpanded = false;
+            // A mouse: its DPI in its Settings card (#600).
+            Shot("devices-1280-mouse-dpi.png", PageWidth, 1088, () =>
+            {
+                g502.IsHidHideAvailable = true;
+                g502.MouseDpi = 1600;
+                Pick(g502);
+                vm.ClearRawState();
+            });
             Shot("devices-1280-keyboard.png", PageWidth, 1088, () =>
             {
                 Pick(keyboard);

@@ -693,6 +693,9 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(DeviceLabel));
                     OnPropertyChanged(nameof(DescriptorDeviceGuid));
+                    // Whether Axis 0 and 1 are Mouse Speed follows the
+                    // device (#600).
+                    RaiseMouseTravel();
                 }
             }
         }
@@ -787,7 +790,7 @@ namespace PadForge.ViewModels
         /// acceleration (#597).</summary>
         public bool IsParamAccelApplicable => IsHalfAxisApplicable
             && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(_descriptor)
-            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseTravelDescriptor(_descriptor);
+            && !IsMouseTravelSource;
 
         /// <summary>True when this source's descriptor is an absolute cursor axis
         /// ("Mouse Position X" / "Mouse Position Y", issue #107). Drives the

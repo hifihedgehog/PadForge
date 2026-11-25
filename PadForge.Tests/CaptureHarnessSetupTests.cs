@@ -2010,6 +2010,7 @@ namespace PadForge.Tests
             // A row the script made owes Home no offer (#574).
             Assert.False(ud.HomeOfferPending, who);
             Assert.Equal(0, ud.IdleDisconnectSeconds);
+            Assert.Equal(0, ud.MouseDpi);
             Assert.Equal(0, ud.PeripheralOutputs);
             Assert.Equal(0, ud.FlydigiApexModel);
             Assert.False(ud.HasAccelAux, who);

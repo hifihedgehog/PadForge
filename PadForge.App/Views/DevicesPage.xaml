@@ -2434,6 +2434,26 @@
                                         </StackPanel>
                                     </StackPanel>
 
+                                    <!-- A mouse's DPI (#600), as its maker's software
+                                         sets it: with it set, Mouse Travel also shows
+                                         its travel in centimeters. A mouse's own row
+                                         only, never All Mice (Merged). -->
+                                    <StackPanel x:Name="MouseDpiRows"
+                                                Visibility="{Binding SelectedDevice.ShowMouseDpi, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <controls:SettingRow MinHeight="44"
+                                                             ToolTip="{Binding Devices_MouseDpi_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <TextBlock Style="{StaticResource DeviceRowLabel}" controls:SettingRow.Fills="True"
+                                                       Text="{Binding Devices_MouseDpi, Source={x:Static strings:Strings.Instance}}"/>
+                                            <TextBox x:Name="MouseDpiBox" Style="{StaticResource DeviceNumberBox}" Margin="0,0,10,0"
+                                                     AutomationProperties.Name="{Binding Devices_MouseDpi, Source={x:Static strings:Strings.Instance}}"
+                                                     Text="{Binding SelectedDevice.MouseDpi, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     LostFocus="MouseDpi_LostFocus"/>
+                                            <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="MouseDpi" SettingLabel="{Binding Devices_MouseDpi, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_MouseDpi"/>
+                                        </controls:SettingRow>
+                                        <TextBlock Text="{Binding Devices_MouseDpi_Note, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceSmall}" TextWrapping="Wrap" Margin="0,0,0,8"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
                                     <!-- Power (#162, wireless controllers only).
                                          The rows show while either control does,
                                          each on its own gate: the idle countdown

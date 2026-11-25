@@ -131,7 +131,38 @@ namespace PadForge.Engine.Common.Mapping
             public double SmoothedStart;     // and when the frame began
             public int ReadCount;            // devices read this frame
             public readonly CustomInputState[] Read = new CustomInputState[MaxTravelReads];
+            // A relative axis's last reading on each device, and the frame
+            // it was read in (#600). Made on the first relative read only.
+            public Dictionary<string, (long reading, bool hid, long seq)> Last;
         }
+
+        /// <summary>One Mouse Speed or Mouse Position source that steers by
+        /// its own settings (#600): the gate's state and what the source
+        /// answered, kept from frame to frame as a travel source's wheel
+        /// is, and replayed to a second read in the same frame.</summary>
+        private sealed class MouseSteerState
+        {
+            public long Seq = -1;            // frame of the last read
+            public bool Held;                // the steer input this frame so far, on any device read
+            public bool PrevHeld;            // and over the last frame
+            public bool Steering;            // whether the mouse steers this frame
+            public bool SteeringStart;       // and over the last frame
+            public double Speed;             // Mouse Speed's smoothed speed, unclamped
+            public double SpeedStart;
+            public double Value;             // the answer, -1 to 1
+            public double ValueStart;
+            public double AnchorX, AnchorY;  // Mouse Position's anchor, in pixels
+            public bool Anchored;
+            // Mouse Speed's own window over the frames' counts, on a clock
+            // the frames' lengths make, so its speed is the same at every
+            // polling rate as the mouse readers' Axis 0 and 1 are.
+            public PadForge.Engine.Common.RelativeVelocityWindow Window;
+            public long Clock;
+            public long WindowSeq = -1;
+            public double CountsX, CountsY;  // the window's speed after this frame's counts
+        }
+
+        private Dictionary<(int slot, string target, int srcIdx), MouseSteerState> _mouseSteerState = new();
 
         /// <summary>The devices one frame folds into a "Mouse Travel"
         /// source. A pinned source reads one. An any-device source reads
@@ -318,6 +349,7 @@ namespace PadForge.Engine.Common.Mapping
             _windingState = new();
             _lockState = new();
             _mouseTravelState = new();
+            _mouseSteerState = new();
             _motionNeutral = new();
             _flickState = new();
             _incrementalReplay = new();
@@ -332,6 +364,7 @@ namespace PadForge.Engine.Common.Mapping
             _windingState = Without(_windingState, slot, null);
             _lockState = Without(_lockState, slot, null);
             _mouseTravelState = Without(_mouseTravelState, slot, null);
+            _mouseSteerState = Without(_mouseSteerState, slot, null);
             _flickState = Without(_flickState, slot, null);
             // The accumulators, not only their frame-replay stamps. Every
             // dictionary here keys on the slot and the row's target, so a
@@ -358,6 +391,7 @@ namespace PadForge.Engine.Common.Mapping
             _windingState = Without(_windingState, slot, target ?? "");
             _lockState = Without(_lockState, slot, target ?? "");
             _mouseTravelState = Without(_mouseTravelState, slot, target ?? "");
+            _mouseSteerState = Without(_mouseSteerState, slot, target ?? "");
             _incrementalAccum = Without(_incrementalAccum, slot, target ?? "");
             _rampedAccum = Without(_rampedAccum, slot, target ?? "");
             _incrementalReplay = Without(_incrementalReplay, slot, target ?? "");
@@ -864,31 +898,43 @@ namespace PadForge.Engine.Common.Mapping
         // came in.
 
         /// <summary>
-        /// Advances one "Mouse Travel" source with one device's state and
-        /// answers its output from -1 to 1, before the row reads it as a
-        /// stick, a trigger or a button.
+        /// Advances one travel source (Mouse Travel X or Y, Wheel Travel,
+        /// Wheel Travel Sideways, or an axis marked as moving relatively)
+        /// with one device's state and answers its output from -1 to 1,
+        /// before the row reads it as a stick, a trigger or a button.
         /// <para>The wheel takes the pass's counts over Travel to Full Lock
-        /// while the mouse steers: always where the source has no Steer
-        /// input, while that input is held, or under Toggle while its
-        /// presses have steering on (<see cref="MappingSource.ParamTravelSteer"/>,
-        /// <paramref name="steerHeld"/>). Centering acts while nothing holds
-        /// the wheel, which is always with no Steer input and only while the
-        /// mouse does not steer with one. Spring takes the wheel back
-        /// by e^(-t/tau) with tau a third of the Return Time, so 5% is left
-        /// after it, and counts that arrive in the same pass are taken as
-        /// arriving evenly through it. From Telemetry is that spring with
-        /// its rate scaled by the tires (<see cref="PadForge.Engine.Steering.TireReturn"/>).
-        /// From the Game's Force moves the wheel at the speed the game's
-        /// force sets. The wheel stops at its locks and keeps nothing past
-        /// them, so a move back steers at once.</para>
+        /// while the mouse steers (<see cref="MappingSource.EffectiveMouseSteer"/>,
+        /// <paramref name="steerHeld"/>): always with no Steer input, while
+        /// it is held under While Held and Center or While Held and Stay,
+        /// or under Toggle while its presses have steering on.</para>
+        /// <para>Let go under While Held and Stay, the wheel stays where it
+        /// is and nothing pulls it. Let go under While Held and Center with
+        /// Centering Off, it is at center at once. Otherwise Centering acts
+        /// while nothing holds the wheel, which is always with no Steer
+        /// input. Spring takes the wheel back by e^(-t/tau) with tau a
+        /// third of the Return Time, so 5% is left after it, a Return Time
+        /// of 0 puts it at center at once, and counts that arrive in the
+        /// same pass are taken as arriving evenly through it. From
+        /// Telemetry is that spring shaped as a car's steering is, steep
+        /// near center and softer further out, firmer with speed and light
+        /// where the tires slide (<see cref="PadForge.Engine.Steering.TireReturn"/>),
+        /// stepped through the pass so its length changes nothing. From the
+        /// Game's Force moves the wheel at the speed the game's force sets.
+        /// The wheel stops at its locks and keeps nothing past them, so a
+        /// move back steers at once.</para>
         /// <para>The output is the wheel's position with Lock at Speed
         /// taken off it and Smoothing after that. A frame with no read (the
         /// row's layer closed, its device offline) puts the wheel back at
         /// center with steering off, so a row that comes back never starts
         /// from a place it held some time ago.</para>
         /// </summary>
+        /// <param name="deviceKey">The device the state belongs to, for an
+        /// axis marked as moving relatively, whose counts are the change in
+        /// its reading since that device's last pass. Null reads it under
+        /// one key.</param>
         public double TickMouseTravel(int slotIndex, string target, int sourceIndex,
-            MappingSource src, CustomInputState state, double deltaSeconds, bool steerHeld)
+            MappingSource src, CustomInputState state, double deltaSeconds, bool steerHeld,
+            string deviceKey = null)
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
@@ -926,33 +972,26 @@ namespace PadForge.Engine.Common.Mapping
             if (fresh)
             {
                 st.Read[st.ReadCount++] = state;
-                st.Counts += SourceCoercion.MouseTravelCounts(state, src.Descriptor);
+                st.Counts += src.ParamAxisRelative
+                    ? RelativeAxisCounts(st, state, src.Descriptor, deviceKey)
+                    : SourceCoercion.MouseTravelCounts(state, src.Descriptor);
                 st.Held |= steerHeld;
             }
 
             double countsToLock = MappingSource.EffectiveTravelCounts(src.ParamTravelCounts);
             // The mouse waits on its Steer input wherever the source holds
-            // one, which is its gate. Toggle flips on each press, and any
-            // other mode steers while the input is held: a gate means what
-            // it means on every source, that this one counts only while
-            // its gate reads pressed. The editor keeps no input under
-            // Always. With none the mouse always steers.
+            // one, which is its gate. Toggle flips on each press, and the
+            // two While Held modes steer while the input is held. With none
+            // the mouse always steers.
             bool waits = !string.IsNullOrEmpty(src.GateDescriptor) || !string.IsNullOrEmpty(src.Gate2Descriptor);
-            bool steering = true;
-            if (waits)
-            {
-                if (MappingSource.EffectiveTravelSteer(src.ParamTravelSteer) == MappingSource.TravelSteerToggle)
-                {
-                    // One flip a frame, on the press's first frame, however
-                    // many devices read it.
-                    st.Steering = st.SteeringStart ^ (st.Held && !st.PrevHeld);
-                    steering = st.Steering;
-                }
-                else steering = st.Held;
-            }
-
             string centering = MappingSource.EffectiveTravelCentering(src.ParamTravelCentering);
-            bool centers = centering != MappingSource.TravelCenteringOff && (!waits || !steering);
+            string steer = MappingSource.EffectiveMouseSteer(src.ParamTravelSteer, centering, waits, holdsPosition: true);
+            bool steering = SteerOn(steer, st.Held, st.PrevHeld, st.SteeringStart, out st.Steering);
+
+            bool letGo = waits && !steering;
+            bool stays = letGo && steer == MappingSource.TravelSteerHeldStay;
+            bool snaps = letGo && steer == MappingSource.TravelSteerHeldCenter && centering == MappingSource.TravelCenteringOff;
+            bool centers = !stays && !snaps && centering != MappingSource.TravelCenteringOff && (!waits || !steering);
             bool telemetry = centers && centering == MappingSource.TravelCenteringTelemetry;
             double lockLeft = MappingSource.EffectiveTravelLockAtSpeed(src.ParamTravelLockAtSpeed) / 100.0;
             if (telemetry || lockLeft < 1.0) ReadTravelRoad();
@@ -960,7 +999,13 @@ namespace PadForge.Engine.Common.Mapping
             double dt = deltaSeconds > 0 ? deltaSeconds : 0;
             double moved = steering ? st.Counts : 0;
             double travel = st.TravelStart;
-            if (!centers)
+            if (stays)
+            {
+                // Let go under While Held and Stay: the wheel stays put.
+            }
+            else if (snaps)
+                travel = 0;
+            else if (!centers)
                 travel += moved;
             else if (centering == MappingSource.TravelCenteringGameForce)
             {
@@ -970,26 +1015,29 @@ namespace PadForge.Engine.Common.Mapping
             }
             else
             {
-                double rate = 3.0 / MappingSource.EffectiveTravelReturnTime(src.ParamTravelReturnTime);
-                if (telemetry)
-                {
-                    // With no game sending, the car is taken at the
-                    // reference, where the tires answer 1 and the spring is
-                    // the plain one. The rate is the one at the place the
-                    // frame began, so a pass can only bring the wheel
-                    // toward center and never past it.
-                    _travelTires ??= new PadForge.Engine.Steering.TireReturn();
-                    rate *= _travelTires.Scale(st.TravelStart / countsToLock,
-                        _travelSpeed >= 0 ? _travelSpeed : PadForge.Engine.Steering.TireReturn.ReferenceSpeed,
-                        _travelGrip > 0 ? _travelGrip : PadForge.Engine.Steering.RoadGrip.Dry);
-                }
-                double decay = rate * dt;
-                if (decay <= 1e-9)
-                    travel += moved;
+                double returnTime = MappingSource.EffectiveTravelReturnTime(src.ParamTravelReturnTime);
+                if (!telemetry)
+                    travel = Spring(travel, moved, returnTime <= 0 ? double.PositiveInfinity : 3.0 / returnTime, dt);
                 else
                 {
-                    double kept = Math.Exp(-decay);
-                    travel = travel * kept + moved * (1.0 - kept) / decay;
+                    // With no game sending, the car is taken at the
+                    // reference speed on a dry road. The tires' answer
+                    // follows the wheel's angle, so the pass is stepped a
+                    // millisecond or less at a time, each step's rate read
+                    // where it begins: a step only brings the wheel toward
+                    // center, and 60 passes a second give the wheel 1,000
+                    // do.
+                    _travelTires ??= new PadForge.Engine.Steering.TireReturn();
+                    double speed = _travelSpeed >= 0 ? _travelSpeed : PadForge.Engine.Steering.TireReturn.ReferenceSpeed;
+                    double grip = _travelGrip > 0 ? _travelGrip : PadForge.Engine.Steering.RoadGrip.Dry;
+                    double baseRate = returnTime <= 0 ? double.PositiveInfinity : 3.0 / returnTime;
+                    int steps = dt > 0 ? Math.Max(1, (int)Math.Ceiling(dt / TelemetryStepSeconds - 1e-9)) : 1;
+                    double stepDt = dt / steps, stepMoved = moved / steps;
+                    for (int i = 0; i < steps; i++)
+                    {
+                        double scale = _travelTires.Scale(travel / countsToLock, speed, grip);
+                        travel = Spring(travel, stepMoved, baseRate * scale, stepDt);
+                    }
                 }
             }
             travel = Math.Clamp(travel, -countsToLock, countsToLock);
@@ -1011,6 +1059,244 @@ namespace PadForge.Engine.Common.Mapping
                 output = st.SmoothedStart + (output - st.SmoothedStart) * (1.0 - Math.Exp(-dt / smoothing));
             st.Smoothed = output;
             return output;
+        }
+
+        /// <summary>The longest step From Telemetry's return is worked in,
+        /// in seconds.</summary>
+        internal const double TelemetryStepSeconds = 0.001;
+
+        /// <summary>A spring at <paramref name="rate"/> a second over
+        /// <paramref name="dt"/>, with <paramref name="moved"/> counts taken
+        /// as arriving evenly through it. An endless rate (a Return Time of
+        /// 0) is the wheel at center, and no rate leaves the counts
+        /// added.</summary>
+        private static double Spring(double travel, double moved, double rate, double dt)
+        {
+            if (double.IsPositiveInfinity(rate)) return dt > 0 ? 0 : travel + moved;
+            double decay = rate * dt;
+            if (!(decay > 1e-9)) return travel + moved;
+            double kept = Math.Exp(-decay);
+            return travel * kept + moved * (1.0 - kept) / decay;
+        }
+
+        /// <summary>Whether the mouse steers this frame under
+        /// <paramref name="steer"/> (#600): always under Always, while held
+        /// under the two While Held modes, and under Toggle by a latch that
+        /// flips once on the frame a press begins, however many devices read
+        /// it.</summary>
+        private static bool SteerOn(string steer, bool held, bool prevHeld, bool latchStart, out bool latch)
+        {
+            latch = latchStart;
+            switch (steer)
+            {
+                case MappingSource.TravelSteerAlways: return true;
+                case MappingSource.TravelSteerToggle:
+                    latch = latchStart ^ (held && !prevHeld);
+                    return latch;
+                default: return held;
+            }
+        }
+
+        /// <summary>The counts an axis marked as moving relatively adds this
+        /// pass on one device: the change in the running total of its HID
+        /// reports' movements where the device's reports carry it
+        /// (<see cref="SourceCoercion.RelativeAxisTotalProvider"/>), and
+        /// otherwise the change in the axis's own reading, taken the short
+        /// way round, for a device whose axis is a running total itself. A
+        /// device's first read, and its first after a frame without one,
+        /// adds nothing, since a running total starts anywhere.</summary>
+        private long RelativeAxisCounts(MouseTravelState st, CustomInputState state, string descriptor, string deviceKey)
+        {
+            if (!SourceCoercion.TryParseRelativeAxis(descriptor, out bool slider, out int index)) return 0;
+            st.Last ??= new Dictionary<string, (long reading, bool hid, long seq)>(StringComparer.OrdinalIgnoreCase);
+            string key = deviceKey ?? string.Empty;
+            long reading;
+            bool hid;
+            if (SourceCoercion.RelativeAxisTotalProvider?.Invoke(key, slider, index) is long total)
+            {
+                reading = total;
+                hid = true;
+            }
+            else
+            {
+                reading = SourceCoercion.RelativeAxisReading(state, descriptor);
+                if (reading < 0) return 0;
+                hid = false;
+            }
+            long counts = 0;
+            if (st.Last.TryGetValue(key, out var last) && FrameSeq - last.seq == 1 && last.hid == hid)
+                counts = hid ? reading - last.reading : SourceCoercion.RelativeAxisChange((int)last.reading, (int)reading);
+            st.Last[key] = (reading, hid, FrameSeq);
+            return counts;
+        }
+
+        /// <summary>
+        /// Advances one Mouse Speed source that steers by its own settings
+        /// (#600) and answers its stick from -1 to 1. The speed is the
+        /// mouse's counts a second over the same 25 ms window the mouse
+        /// readers' Axis 0 and 1 are built on
+        /// (<see cref="PadForge.Engine.Common.RelativeVelocityWindow"/>), fed
+        /// the frame's raw counts on a clock the frames' own lengths make,
+        /// so it is the same at every polling rate and is not clamped where
+        /// the axis is. Times Sensitivity over the speed that has always
+        /// reached the whole stick. Smoothing follows the speed with its
+        /// time constant, and Back to Center then lets the stick fall back
+        /// no faster than its own, while it rises as fast as the speed does
+        /// (the reference's Speed style, MouseStick.cs Value()). The Steer
+        /// input gates it as on a travel source: let go under While Held and
+        /// Stay the stick stays where it was, and otherwise it is at center
+        /// at once.
+        /// </summary>
+        public double TickMouseSpeed(int slotIndex, string target, int sourceIndex,
+            MappingSource src, CustomInputState state, double deltaSeconds, bool steerHeld, bool y)
+        {
+            if (src == null || state == null) return 0;
+            var st = SteerStateFor(slotIndex, target, sourceIndex, steerHeld, out bool replay);
+            if (replay) return st.Value;
+
+            bool waits = !string.IsNullOrEmpty(src.GateDescriptor) || !string.IsNullOrEmpty(src.Gate2Descriptor);
+            string steer = MappingSource.EffectiveMouseSteer(src.ParamTravelSteer, null, waits, holdsPosition: false);
+            st.Steering = SteerOn(steer, st.Held, st.PrevHeld, st.SteeringStart, out _);
+            double dt = deltaSeconds > 0 ? deltaSeconds : 0;
+            if (st.WindowSeq != FrameSeq)
+            {
+                // Once a frame, on its first read, steering or not, so the
+                // window's clock keeps time.
+                st.WindowSeq = FrameSeq;
+                st.Window ??= new PadForge.Engine.Common.RelativeVelocityWindow();
+                st.Clock += Math.Max(1L, (long)Math.Round(dt * System.Diagnostics.Stopwatch.Frequency));
+                st.Window.Add(st.Clock, state.MouseRawDX, state.MouseRawDY, 0);
+                st.Window.CountsPerSecond(out float cx, out float cy, out _);
+                st.CountsX = cx;
+                st.CountsY = cy;
+            }
+            if (!st.Steering)
+            {
+                st.Speed = 0;
+                st.Value = steer == MappingSource.TravelSteerHeldStay ? st.ValueStart : 0;
+                return st.Value;
+            }
+            double sensitivity = MappingSource.EffectiveMouseSpeedSensitivity(src.ParamMouseSpeedSensitivity);
+            double raw = (y ? st.CountsY : st.CountsX) * sensitivity / SourceCoercion.MouseSpeedFullCounts;
+            double smoothing = MappingSource.EffectiveTravelSmoothingMs(src.ParamTravelSmoothingMs) / 1000.0;
+            st.Speed = Follow(st.SpeedStart, raw, smoothing, dt);
+            double speed = Math.Clamp(st.Speed, -1.0, 1.0);
+            double back = MappingSource.EffectiveMouseBackToCenter(src.ParamMouseBackToCenter);
+            st.Value = back > 0 && Math.Abs(speed) < Math.Abs(st.ValueStart)
+                ? Follow(st.ValueStart, speed, back, dt) : speed;
+            return st.Value;
+        }
+
+        /// <summary>
+        /// Advances one Mouse Position source that steers by its own
+        /// settings (#600) and answers its stick from -1 to 1: where the
+        /// pointer is from the center of its own monitor, or under a Steer
+        /// input with Start Where Steering Began from where the pointer was
+        /// when steering began, over a tenth of that monitor's width, times
+        /// the source's Sensitivity. Smoothing follows it with its time
+        /// constant. Let go under While Held and Stay the stick stays where
+        /// it was, and otherwise it is at center at once.
+        /// </summary>
+        /// <param name="pointer">Where the pointer is, for a reader with a
+        /// pointer of its own (the Source picker's Preview). Null reads
+        /// <see cref="SourceCoercion.MouseCursorPointProvider"/>.</param>
+        public double TickMousePosition(int slotIndex, string target, int sourceIndex,
+            MappingSource src, double deltaSeconds, bool steerHeld, bool y,
+            (double x, double y, double centerX, double centerY, double unit)? pointer = null)
+        {
+            if (src == null) return 0;
+            var st = SteerStateFor(slotIndex, target, sourceIndex, steerHeld, out bool replay);
+            if (replay) return st.Value;
+
+            bool waits = !string.IsNullOrEmpty(src.GateDescriptor) || !string.IsNullOrEmpty(src.Gate2Descriptor);
+            string steer = MappingSource.EffectiveMouseSteer(src.ParamTravelSteer, null, waits, holdsPosition: false);
+            st.Steering = SteerOn(steer, st.Held, st.PrevHeld, st.SteeringStart, out _);
+            if (!st.Steering)
+            {
+                st.Anchored = false;
+                st.Value = steer == MappingSource.TravelSteerHeldStay ? st.ValueStart : 0;
+                return st.Value;
+            }
+
+            double target01;
+            var point = pointer ?? SourceCoercion.MouseCursorPointProvider?.Invoke();
+            if (point is { } p && p.unit > 0)
+            {
+                double originX = p.centerX, originY = p.centerY;
+                if (src.ParamMousePositionAnchor && steer != MappingSource.TravelSteerAlways)
+                {
+                    // Anchored on the frame steering begins.
+                    if (!st.Anchored)
+                    {
+                        st.AnchorX = p.x;
+                        st.AnchorY = p.y;
+                        st.Anchored = true;
+                    }
+                    originX = st.AnchorX;
+                    originY = st.AnchorY;
+                }
+                target01 = (y ? p.y - originY : p.x - originX) / p.unit;
+            }
+            else
+            {
+                var cursor = SourceCoercion.MouseCursorProvider?.Invoke() ?? (0f, 0f);
+                target01 = y ? cursor.normY : cursor.normX;
+            }
+            target01 = Math.Clamp(target01 * src.MouseCursorSensitivity, -1.0, 1.0);
+            double smoothing = MappingSource.EffectiveTravelSmoothingMs(src.ParamTravelSmoothingMs) / 1000.0;
+            st.Value = Follow(st.ValueStart, target01, smoothing, deltaSeconds > 0 ? deltaSeconds : 0);
+            return st.Value;
+        }
+
+        /// <summary>The state of a Mouse Speed or Mouse Position source for
+        /// this frame: a new frame starts from the last one's answer, a
+        /// frame after a gap starts at center with steering off, and a
+        /// second read in the same frame folds in its steer input and is
+        /// answered with the frame's value (<paramref name="replay"/>)
+        /// unless the input it adds turns steering on or off.</summary>
+        private MouseSteerState SteerStateFor(int slotIndex, string target, int sourceIndex, bool steerHeld, out bool replay)
+        {
+            var key = (slotIndex, target ?? "", sourceIndex);
+            var states = _mouseSteerState;
+            if (!states.TryGetValue(key, out var st))
+                states[key] = st = new MouseSteerState();
+            replay = false;
+            if (st.Seq != FrameSeq)
+            {
+                bool resumed = st.Seq < 0 || FrameSeq - st.Seq > 1;
+                if (resumed)
+                {
+                    st.Value = 0;
+                    st.Speed = 0;
+                    st.Steering = false;
+                    st.Anchored = false;
+                    st.Window?.Reset();
+                    st.Clock = System.Diagnostics.Stopwatch.Frequency;
+                    st.CountsX = st.CountsY = 0;
+                }
+                st.PrevHeld = resumed || st.Held;
+                st.ValueStart = st.Value;
+                st.SpeedStart = st.Speed;
+                st.SteeringStart = st.Steering;
+                st.Held = steerHeld;
+                st.Seq = FrameSeq;
+                return st;
+            }
+            // A second device's read: its input joins the frame's, and only
+            // a change in it works the frame again.
+            if (!steerHeld || st.Held) replay = true;
+            st.Held |= steerHeld;
+            return st;
+        }
+
+        /// <summary>A value moved toward a target by a one-pole follow with
+        /// time constant <paramref name="seconds"/> over <paramref name="dt"/>.
+        /// No time constant is the target itself.</summary>
+        private static double Follow(double value, double target, double seconds, double dt)
+        {
+            if (!(seconds > 0)) return target;
+            if (!(dt > 0)) return value;
+            return value + (target - value) * (1.0 - Math.Exp(-dt / seconds));
         }
 
         /// <summary>Asks the app for the road once a frame, for every

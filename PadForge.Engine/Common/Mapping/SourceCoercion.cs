@@ -1256,7 +1256,7 @@ namespace PadForge.Engine.Common.Mapping
         /// mouse groups stamp ParamAccel too). 0 (default) = off. A
         /// unipolar caller's value stays in [0, 1] since the clamp is
         /// symmetric.</summary>
-        private static float ApplyPerSourceAccel(MappingSource src, float v)
+        internal static float ApplyPerSourceAccel(MappingSource src, float v)
         {
             double accel = src.ParamAccel;
             if (accel <= 0.0) return v;
@@ -1477,7 +1477,7 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.Gyro;
             if (s.StartsWith("Mouse Position ", StringComparison.Ordinal))
                 return SourceType.MouseCursor;
-            if (s.StartsWith(MouseTravelPrefix, StringComparison.Ordinal))
+            if (IsMouseTravelDescriptor(s))
                 return SourceType.MouseTravel;
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
                 return SourceType.JoyCon2Mouse;
@@ -2274,21 +2274,109 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>The two descriptors of the family.</summary>
         public const string MouseTravelXDescriptor = "Mouse Travel X", MouseTravelYDescriptor = "Mouse Travel Y";
 
-        /// <summary>True for "Mouse Travel X" and "Mouse Travel Y".</summary>
+        /// <summary>The scroll wheels held as a position (#600): Wheel
+        /// Travel reads the wheel, Wheel Travel Sideways the sideways wheel,
+        /// in Windows' wheel units (120 a notch, a fine-scrolling wheel's
+        /// smaller steps kept whole).</summary>
+        public const string WheelTravelDescriptor = "Wheel Travel", WheelTravelSidewaysDescriptor = "Wheel Travel Sideways";
+
+        /// <summary>True for the travel family, whose counts are held as a
+        /// wheel's position: "Mouse Travel X", "Mouse Travel Y", "Wheel
+        /// Travel" and "Wheel Travel Sideways". An axis marked as moving
+        /// relatively joins it by its source's flag
+        /// (<see cref="MappingSource.ParamAxisRelative"/>).</summary>
         public static bool IsMouseTravelDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
-            && descriptor.StartsWith(MouseTravelPrefix, StringComparison.Ordinal);
+            && (descriptor.StartsWith(MouseTravelPrefix, StringComparison.Ordinal)
+                || descriptor == WheelTravelDescriptor || descriptor == WheelTravelSidewaysDescriptor);
 
-        /// <summary>The counts one pass of a mouse adds to a "Mouse Travel"
-        /// source: sideways for X, toward the user for Y, the frame the
-        /// mouse's speed axes have. 0 for any other descriptor.</summary>
+        /// <summary>True for the two wheel descriptors of the family.</summary>
+        public static bool IsWheelTravelDescriptor(string descriptor)
+            => descriptor == WheelTravelDescriptor || descriptor == WheelTravelSidewaysDescriptor;
+
+        /// <summary>The counts one pass of a mouse adds to a travel source:
+        /// sideways for X, toward the user for Y, the frame the mouse's
+        /// speed axes have, and the wheels' own units, up and right
+        /// positive. 0 for any other descriptor.</summary>
         public static int MouseTravelCounts(CustomInputState state, string descriptor)
         {
             if (state == null || descriptor == null) return 0;
+            if (descriptor == WheelTravelDescriptor) return state.MouseRawWheel;
+            if (descriptor == WheelTravelSidewaysDescriptor) return state.MouseRawWheelH;
             if (descriptor.EndsWith(" X", StringComparison.Ordinal)) return state.MouseRawDX;
             if (descriptor.EndsWith(" Y", StringComparison.Ordinal)) return state.MouseRawDY;
             return 0;
         }
+
+        /// <summary>The place of a numbered axis or slider in its state
+        /// array: "Axis 3" is axis 3, "Slider 1" is slider 1. False for any
+        /// other descriptor, a relative axis's only readable forms.</summary>
+        public static bool TryParseRelativeAxis(string descriptor, out bool slider, out int index)
+        {
+            slider = false;
+            index = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string rest;
+            if (descriptor.StartsWith("Axis ", StringComparison.Ordinal)) rest = descriptor.Substring(5);
+            else if (descriptor.StartsWith("Slider ", StringComparison.Ordinal)) { rest = descriptor.Substring(7); slider = true; }
+            else return false;
+            if (!int.TryParse(rest, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out index))
+                return false;
+            return slider ? index < CustomInputState.MaxSliders : index < CustomInputState.MaxAxis;
+        }
+
+        /// <summary>A relative axis's reading, 0 to 65535, or -1 when the
+        /// state has no such axis.</summary>
+        public static int RelativeAxisReading(CustomInputState state, string descriptor)
+        {
+            if (state == null || !TryParseRelativeAxis(descriptor, out bool slider, out int index)) return -1;
+            return slider ? state.Sliders[index] : state.Axis[index];
+        }
+
+        /// <summary>The change between two readings of a running total
+        /// that SDL hands over as a 16-bit axis, taken the short way round:
+        /// DirectInput keeps a relative axis as a running total in its
+        /// absolute mode, and SDL casts it to 16 bits, so a total that
+        /// passes an end comes in at the other.</summary>
+        public static int RelativeAxisChange(int previous, int now)
+        {
+            int change = (now - previous) & 0xFFFF;
+            return change >= 0x8000 ? change - 0x10000 : change;
+        }
+
+        /// <summary>The running total of a relative value of a device's own
+        /// HID reports (#600), for an axis or slider marked as moving
+        /// relatively: the device's GUID, whether the source names a slider,
+        /// and its number. Null where the device's reports give none, and
+        /// then the axis's own reading is taken as a running total. The app
+        /// answers from RelativeHidAxes, which reads the reports through Raw
+        /// Input, since DirectInput hands SDL only a report's last movement.
+        /// Unwired, every device answers null.</summary>
+        public static Func<string, bool, int, long?> RelativeAxisTotalProvider { get; set; }
+
+        /// <summary>The device a mapping reads is a mouse (#600), by its
+        /// GUID: a mouse's Axis 0 and 1 are Mouse Speed X and Y, which take
+        /// their own settings. The app answers from its device list.
+        /// Unwired, no device is a mouse, and Axis 0 and 1 read as plain
+        /// axes.</summary>
+        public static Func<string, bool> IsMouseDeviceProvider { get; set; }
+
+        /// <summary>Where the pointer is and the monitor it is on (#600), in
+        /// pixels: its place, its monitor's center, and the pixels that
+        /// make the whole stick at Sensitivity 1 (a tenth of that monitor's
+        /// width). Mouse Position reads it when it smooths, anchors or
+        /// stays. Unwired, null, and those read from
+        /// <see cref="MouseCursorProvider"/>.</summary>
+        public static Func<(double x, double y, double centerX, double centerY, double unit)?> MouseCursorPointProvider { get; set; }
+
+        /// <summary>The Mouse Speed axes' scale: an axis unit for each
+        /// count a second (SdlMouseWrapper's MotionScale 2,048 over 1,000).
+        /// 16,000 counts a second reach the whole stick.</summary>
+        public const double MouseSpeedAxisScale = 2.048;
+
+        /// <summary>The speed that reaches the whole stick at Sensitivity
+        /// 1, in counts a second.</summary>
+        public const double MouseSpeedFullCounts = 32767 / MouseSpeedAxisScale;
 
         /// <summary>The road a game reports, for a "Mouse Travel" source
         /// whose Centering is From Telemetry or whose Lock at Speed is set:

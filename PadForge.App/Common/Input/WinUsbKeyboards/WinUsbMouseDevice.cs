@@ -60,6 +60,13 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         // Guarded by _sync.
         private int _dx, _dy, _wheel, _wheelResidue, _buttons;
 
+        // The wheel's own counts times a notch's 120, for Wheel Travel
+        // (#600): divided by the Resolution Multiplier at the poll, with
+        // the remainder kept, they are Windows' wheel units at the wheel's
+        // full precision, as Raw Input reports a fine-scrolling wheel.
+        // Guarded by _sync.
+        private int _wheelFine;
+
         /// <param name="start">False leaves the reader off, for a test that
         /// feeds reports itself (<see cref="Feed"/>).</param>
         /// <param name="timestamp">The clock the motion window runs on,
@@ -187,7 +194,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             if (!IsAttached) return null;
-            int dx, dy, wheel, buttons;
+            int dx, dy, wheel, buttons, wheelUnits;
             lock (_sync)
             {
                 dx = _dx;
@@ -195,6 +202,9 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 wheel = _wheel;
                 buttons = _buttons;
                 _dx = _dy = _wheel = 0;
+                int multiplier = Math.Max(1, _channel.WheelMultiplier);
+                wheelUnits = _wheelFine / multiplier;
+                _wheelFine -= wheelUnits * multiplier;
             }
 
             var state = _statePool.Next();
@@ -204,6 +214,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(vy * (MotionScale / 1000f)), 0, 65535);
             state.MouseRawDX = dx;
             state.MouseRawDY = dy;
+            state.MouseRawWheel = wheelUnits;
             _velocity.WindowSums(out _, out _, out float scrollSum);
             state.Axis[2] = Math.Clamp(AxisCenter + (int)(scrollSum * ScrollScale), 0, 65535);
 
@@ -241,6 +252,7 @@ namespace PadForge.Common.Input.WinUsbKeyboards
                 _dy += dy;
                 if (wheel != 0)
                 {
+                    _wheelFine += wheel * WheelDelta;
                     _wheelResidue += wheel * WheelDelta / _channel.WheelMultiplier;
                     int notches = _wheelResidue / WheelDelta;
                     _wheelResidue -= notches * WheelDelta;

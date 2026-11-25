@@ -635,6 +635,17 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public int IdleDisconnectSeconds { get; set; }
 
+        /// <summary>A mouse's DPI as the user sets it on its device panel
+        /// (#600): the counts it reports for each inch it moves. With it
+        /// set, Mouse Travel also shows its travel in centimeters. 0, the
+        /// default, is not set and is left out of the file.</summary>
+        [XmlElement]
+        [DefaultValue(0)]
+        public int MouseDpi { get; set; }
+
+        /// <summary>The largest DPI the panel takes.</summary>
+        public const int MaxMouseDpi = 50000;
+
         /// <summary>Quick Charge (#372, asked in discussion #367): when this
         /// Bluetooth-connected controller reports that it is CHARGING (a
         /// cable arrived, any USB power source), drop the Bluetooth link so

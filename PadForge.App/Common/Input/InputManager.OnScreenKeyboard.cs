@@ -281,6 +281,7 @@ namespace PadForge.Common.Input
             s.Ir = default;
             s.JoyCon2MouseDX = s.JoyCon2MouseDY = 0;
             s.MouseRawDX = s.MouseRawDY = 0;
+            s.MouseRawWheel = s.MouseRawWheelH = 0;
         }
 
         private static void ClearTouch(CustomInputState s)

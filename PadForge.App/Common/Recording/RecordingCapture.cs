@@ -148,7 +148,7 @@ namespace PadForge.Common.Recording
         public readonly int[] AnalogDepth = new int[AnalogKeyInputState.CodeCount];
 
         public int IrX, IrY, IrFlags, JoyConIr, RingCon;
-        public bool MouseMoving, JoyConMouseMoving;
+        public bool MouseMoving, JoyConMouseMoving, WheelMoving;
         public int CapCount, NfcCount;
         public readonly bool[] Cap = new bool[RecordingCodec.MaxCapSense];
         public readonly bool[] Nfc = new bool[RecordingCodec.MaxNfcTags];
@@ -184,7 +184,7 @@ namespace PadForge.Common.Recording
             HasAnalog = false;
             ResetAnalog();
             IrX = IrY = IrFlags = JoyConIr = RingCon = 0;
-            MouseMoving = JoyConMouseMoving = false;
+            MouseMoving = JoyConMouseMoving = WheelMoving = false;
             CapCount = NfcCount = 0;
             Array.Clear(Cap);
             Array.Clear(Nfc);
@@ -472,6 +472,12 @@ namespace PadForge.Common.Recording
             {
                 t.MouseMoving = mouseMoving;
                 ring.Push(Now(ref now), RecordingField.MouseRaw, index, 0, s.MouseRawDX, s.MouseRawDY);
+            }
+            bool wheelMoving = (s.MouseRawWheel | s.MouseRawWheelH) != 0;
+            if (wheelMoving || t.WheelMoving)
+            {
+                t.WheelMoving = wheelMoving;
+                ring.Push(Now(ref now), RecordingField.MouseWheel, index, 0, s.MouseRawWheel, s.MouseRawWheelH);
             }
 
             Flags(ring, ref now, index, RecordingField.CapSense, RecordingCodec.Shape.CapSense, s.CapSense, t.Cap, ref t.CapCount);

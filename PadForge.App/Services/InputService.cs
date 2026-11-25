@@ -1619,6 +1619,14 @@ namespace PadForge.Services
             // slider or an analog key one way, so a released one is no motion.
             PadForge.Engine.Common.Mapping.SourceCoercion.SourceRestsAtZeroProvider =
                 Common.Input.InputManager.SourceRestsAtZero;
+            // A mouse's Axis 0 and 1 are Mouse Speed X and Y, which take their
+            // own settings (#600).
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseDeviceProvider =
+                Common.Input.InputManager.IsMouseDevice;
+            // An axis marked as moving relatively reads the device's own
+            // HID reports where they carry its movements (#600).
+            PadForge.Engine.Common.Mapping.SourceCoercion.RelativeAxisTotalProvider =
+                Common.Input.InputManager.RelativeAxisTotal;
 
             // Simulated pitch and roll (#472), from the polling thread's
             // per-(device, slot) accelerometer estimator.
@@ -2800,6 +2808,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SourceRestsAtZeroProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.IsMouseDeviceProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.RelativeAxisTotalProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SimulatedGyroProvider = null;
                 GyroCalibratorService.UnitIdentityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
@@ -17367,6 +17377,7 @@ namespace PadForge.Services
             // minutes, shown for any disconnect-capable device (Bluetooth HID
             // path, or a wireless XInput-backend pad).
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
+            row.MouseDpi = ud.MouseDpi;
             row.QuickChargeEnabled = ud.QuickChargeEnabled;
             row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber);
             // Quick Charge (#372) has its own, wider gate: the USB cable

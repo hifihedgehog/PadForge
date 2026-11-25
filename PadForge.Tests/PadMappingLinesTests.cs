@@ -400,13 +400,20 @@ namespace PadForge.Tests
                     ("IsGyroLeanSource", "Mapping_GyroSensitivity", "Sensitivity", "Reset_Mapping_LeanSensitivity"),
                     ("IsParamAccelApplicable", "Pad_Mapping_Accel", "ParamAccel", "Reset_Mapping_ParamAccel"),
                     ("IsMouseCursorSource", "Mapping_MouseCursorSensitivity", "MouseCursorSensitivity", "Reset_Mapping_MouseCursorSensitivity"),
-                    // Mouse Travel (#597): each setting only where it applies.
+                    // Mouse Speed (#600): its sensitivity and its way back to center.
+                    ("IsMouseSpeedSource", "Mapping_MouseSpeedSensitivity", "ParamMouseSpeedSensitivity", "Reset_MappingItem_ParamMouseSpeedSensitivity"),
+                    ("IsMouseSpeedSource", "Mapping_MouseBackToCenter", "ParamMouseBackToCenter", "Reset_MappingItem_ParamMouseBackToCenter"),
+                    // A device axis read as a change (#600).
+                    ("IsAxisRelativeApplicable", "Mapping_AxisRelative", "ParamAxisRelative", "Reset_MappingItem_ParamAxisRelative"),
+                    // Mouse Travel (#597): each setting only where it applies. Steer and
+                    // Smoothing also serve Mouse Speed and Mouse Position (#600).
                     ("IsMouseTravelSource", "Mapping_MouseTravelCounts", "ParamTravelCountsDial", "Reset_MappingItem_ParamTravelCounts"),
                     ("IsMouseTravelSource", "Mapping_MouseTravelCentering", "ParamTravelCentering", "Reset_MappingItem_ParamTravelCentering"),
                     ("IsTravelReturnTimeShown", "Mapping_MouseTravelReturnTime", "ParamTravelReturnTime", "Reset_MappingItem_ParamTravelReturnTime"),
-                    ("IsMouseTravelSource", "Mapping_MouseTravelSteer", "ParamTravelSteer", "Reset_MappingItem_ParamTravelSteer"),
+                    ("IsMouseSteerSource", "Mapping_MouseTravelSteer", "ParamTravelSteer", "Reset_MappingItem_ParamTravelSteer"),
                     ("IsTravelSteerInputShown", "Mapping_MouseTravelSteerInput", "TravelSteerInputChoice", "Reset_MappingItem_TravelSteerInputChoice"),
-                    ("IsMouseTravelSource", "Mapping_MouseTravelSmoothing", "ParamTravelSmoothingMs", "Reset_MappingItem_ParamTravelSmoothingMs"),
+                    ("IsMousePositionAnchorShown", "Mapping_MousePositionAnchor", "ParamMousePositionAnchor", "Reset_MappingItem_ParamMousePositionAnchor"),
+                    ("IsMouseSteerSource", "Mapping_MouseTravelSmoothing", "ParamTravelSmoothingMs", "Reset_MappingItem_ParamTravelSmoothingMs"),
                     ("IsTravelLockAtSpeedShown", "Mapping_MouseTravelLockAtSpeed", "ParamTravelLockAtSpeed", "Reset_MappingItem_ParamTravelLockAtSpeed"),
                     ("IsIrPointerSource", "Mapping_IrPointerSensitivity", "IrPointerSensitivity", "Reset_Mapping_IrPointerSensitivity"),
                     ("IsMouseMotionSource", "Mapping_IrPointerSensitivity", "IrPointerSensitivity", "Reset_Mapping_MouseMotionSensitivity"),

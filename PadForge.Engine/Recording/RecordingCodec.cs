@@ -147,7 +147,7 @@ namespace PadForge.Engine.Recording
         /// pass that has any is its own line, a full frame leaves it out, and
         /// a state holds the last one written.</summary>
         public static bool IsPerPass(RecordingField field)
-            => field is RecordingField.JoyCon2Mouse or RecordingField.MouseRaw
+            => field is RecordingField.JoyCon2Mouse or RecordingField.MouseRaw or RecordingField.MouseWheel
                 or RecordingField.KbmFlick or RecordingField.KbmGyro
                 or RecordingField.KbmTouch or RecordingField.KbmCoast;
 
@@ -211,6 +211,7 @@ namespace PadForge.Engine.Recording
             Set(RecordingField.RingCon, "rc", Form.Float1);
             Set(RecordingField.JoyCon2Mouse, "jm", Form.Float2);
             Set(RecordingField.MouseRaw, "mr", Form.Int2);
+            Set(RecordingField.MouseWheel, "mw", Form.Int2);
             Set(RecordingField.CapSense, "cs", Form.Flag, true);
             Set(RecordingField.NfcTag, "nf", Form.Flag, true);
             Set(RecordingField.Battery, "bat", Form.Int2);
@@ -763,6 +764,10 @@ namespace PadForge.Engine.Recording
                 case RecordingField.MouseRaw:
                     s.MouseRawDX = a;
                     s.MouseRawDY = b;
+                    break;
+                case RecordingField.MouseWheel:
+                    s.MouseRawWheel = a;
+                    s.MouseRawWheelH = b;
                     break;
                 case RecordingField.CapSense:
                     if (s.CapSense != null && (uint)index < (uint)s.CapSense.Length) s.CapSense[index] = a != 0;

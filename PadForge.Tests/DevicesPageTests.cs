@@ -812,8 +812,13 @@ namespace PadForge.Tests
             row.ShowQuickCharge = true;
             row.ShowNativeArrows = true;
             row.ShowGunCalibration = true;
-            var covered = DevicesViewModel.SettingsCardResets(row);
+            var covered = DevicesViewModel.SettingsCardResets(row).ToList();
             Assert.Equal(6, covered.Count);
+            // A mouse's own row adds its DPI (#600), which the Reset All of
+            // its card covers too.
+            var mouse = Row("Mouse", "Mouse", @"\\?\HID#VID_046D&PID_C08B&MI_00#8&4&0&0000", true, 0x046D, 0xC08B);
+            Assert.Contains(nameof(DeviceRowViewModel.MouseDpi), DevicesViewModel.SettingsCardResets(mouse));
+            covered.Add(nameof(DeviceRowViewModel.MouseDpi));
 
             var page = Page();
             var inCard = Named(page, "SettingsCard").Descendants().Where(e => e.Name.LocalName == "SettingResetButton")
@@ -1001,6 +1006,7 @@ namespace PadForge.Tests
                 ["Reset_DeviceRowViewModel_BlissBoxNativeArrows_1005"] = "BlissBoxNativeArrows",
                 ["Reset_DeviceRowViewModel_HidHideEnabled_1024"] = "HidHideEnabled",
                 ["Reset_DeviceRowViewModel_ConsumeInputEnabled_1054"] = "ConsumeInputEnabled",
+                ["Reset_DeviceRowViewModel_MouseDpi"] = "MouseDpi",
                 ["Reset_DeviceRowViewModel_IdleDisconnectMinutes_1094"] = "IdleDisconnectMinutes",
                 ["Reset_DeviceRowViewModel_QuickChargeEnabled_1108"] = "QuickChargeEnabled",
                 ["Reset_DeviceRowViewModel_GunCalibration"] = "GunCalibration",

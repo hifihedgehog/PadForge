@@ -656,6 +656,18 @@ namespace PadForge.Views
         /// STALE value, which the next device-list sync then wrote back over
         /// the user's edit (observed: 1 → 0 reverted to 1).
         /// </summary>
+        /// <summary>The Mouse DPI box lost focus (#600): the number goes to the
+        /// row and is saved, as the idle countdown's is.</summary>
+        private void MouseDpi_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            var dev = vm?.SelectedDevice;
+            if (dev == null) return;
+            if (sender is System.Windows.Controls.TextBox tb)
+                tb.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty)?.UpdateSource();
+            vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+        }
+
         private void IdleDisconnect_LostFocus(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;

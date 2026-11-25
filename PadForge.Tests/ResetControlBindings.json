@@ -181,6 +181,24 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamMouseSpeedSensitivity",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamMouseSpeedSensitivity"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamMouseBackToCenter",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamMouseBackToCenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamAxisRelative",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamAxisRelative"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MappingItem_ParamTravelCounts",
     "Owner": "PadForge.ViewModels.MappingItem",
     "Property": "ParamTravelCounts"
@@ -208,6 +226,12 @@
     "Id": "Reset_MappingItem_TravelSteerInputChoice",
     "Owner": "PadForge.ViewModels.MappingItem",
     "Property": "TravelSteerInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_ParamMousePositionAnchor",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "ParamMousePositionAnchor"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",

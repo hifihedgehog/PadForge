@@ -938,8 +938,9 @@ namespace PadForge.Tests
             var doubles = typeof(MappingSource).GetProperties()
                 .Where(p => p.PropertyType == typeof(double) && p.CanWrite).ToList();
             // 34, and the four of a "Mouse Travel" source (#597): its
-            // counts to full lock, return time, smoothing and lock at speed.
-            Assert.Equal(38, doubles.Count);
+            // counts to full lock, return time, smoothing and lock at speed,
+            // and Mouse Speed's Sensitivity and Back to Center (#600).
+            Assert.Equal(40, doubles.Count);
             foreach (var p in doubles)
             {
                 var fresh = new MappingSource();

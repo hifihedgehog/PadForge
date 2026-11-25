@@ -2931,6 +2931,35 @@ namespace PadForge.Engine
         public DeviceObjectItem[] GetDeviceObjects()
         {
             var items = BuildDeviceObjects();
+            // A controller's relative values that SDL's DirectInput left out
+            // (#600) follow SDL's axes as axes of PadForge's own, read from the
+            // device's HID reports (RelativeHidAxes), so a spinner or a
+            // trackball can be marked as moving relatively.
+            if (GameController == IntPtr.Zero && !string.IsNullOrEmpty(SdlDevicePath))
+            {
+                int leftOut = 0;
+                try { leftOut = PadForge.Engine.Common.RelativeHidAxes.LeftOutRelative(SdlDevicePath, RawAxisCount); }
+                catch { }
+                leftOut = Math.Min(leftOut, Math.Max(0, CustomInputState.MaxAxis - RawAxisCount));
+                if (leftOut > 0)
+                {
+                    var grown = new DeviceObjectItem[items.Length + leftOut];
+                    Array.Copy(items, grown, items.Length);
+                    for (int j = 0; j < leftOut; j++)
+                    {
+                        int axis = RawAxisCount + j;
+                        grown[items.Length + j] = new DeviceObjectItem
+                        {
+                            InputIndex = axis,
+                            ObjectTypeGuid = ObjectGuid.ZAxis,
+                            Name = $"Axis {axis}",
+                            ObjectType = DeviceObjectTypeFlags.RelativeAxis,
+                            Offset = axis * 4,
+                        };
+                    }
+                    items = grown;
+                }
+            }
             // A Bliss-Box port read raw carries the names of the controller
             // plugged into it, and its pressure axes and arrow buttons, from
             // the App's API sidecar (issue #469). One seam here keeps every

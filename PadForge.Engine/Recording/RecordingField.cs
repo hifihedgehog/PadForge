@@ -44,6 +44,9 @@ namespace PadForge.Engine.Recording
         /// <summary>A mouse's raw counts of one pass, written like
         /// <see cref="JoyCon2Mouse"/>.</summary>
         MouseRaw,
+        /// <summary>A mouse's wheel units of one pass, the wheel and the
+        /// sideways wheel (#600), written like <see cref="MouseRaw"/>.</summary>
+        MouseWheel,
         CapSense,
         NfcTag,
         Battery,

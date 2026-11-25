@@ -163,6 +163,9 @@ namespace PadForge.ViewModels
 
             // Default to Home.
             _selectedNavTag = "Home";
+
+            // A mapping row's mouse settings join the catalog (#600).
+            PadForge.Services.Catalog.MouseSteeringCatalog.Attach(this);
         }
 
         /// <summary>Leaves every menu editor record button's Recording state,

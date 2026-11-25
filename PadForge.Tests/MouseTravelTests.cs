@@ -387,17 +387,29 @@ namespace PadForge.Tests
                 $"left after a quarter second: {slow:0.000} at 20, {town:0.000} at 50, {road:0.000} at 100 km/h");
         }
 
+        /// <summary>#600 item 41: near center the reference car is the
+        /// spring, so the Return Time is the time there. Further out a car's
+        /// steering pulls softer than a spring would, so the wheel comes back
+        /// more slowly from far out than the spring brings it.</summary>
         [Fact]
-        public void FromTelemetry_At100KmhOnADryRoad_IsTheSpring()
+        public void FromTelemetry_At100KmhOnADryRoad_IsTheSpringNearCenter_AndSofterFurtherOut()
         {
-            // The Return Time is the time at the reference.
             var spring = Travel();
             spring.ParamTravelCentering = MappingSource.TravelCenteringSpring;
             var rt = new SourceKindRuntime();
-            double placed = Tick(rt, spring, 40, 0), plain = placed;
+            double placed = Tick(rt, spring, 1, 0), plain = placed;
             for (int i = 0; i < 250; i++) plain = Tick(rt, spring, 0, 0.001);
 
-            Assert.Equal(plain / placed, TelemetryLeft(kmh: 100, grip: 1.0), 12);
+            // A wheel let go one count from center: the car's pull is the
+            // spring's within a hair.
+            Assert.Equal(plain / placed, TelemetryLeft(kmh: 100, grip: 1.0, start: 1.0 / MappingSource.DefaultTravelCounts), 3);
+            // Half a lock out, more is left after the same time than the
+            // spring leaves: the pull is softer there.
+            Assert.True(TelemetryLeft(kmh: 100, grip: 1.0, start: 0.5) > plain / placed + 0.01);
+
+            // The reference car's own return from 40 counts out.
+            plain = TelemetryLeft(kmh: 100, grip: 1.0, start: 40.0 / MappingSource.DefaultTravelCounts)
+                * Tick(new SourceKindRuntime(), Travel(), 40, 0);
 
             // No game sending: the car is taken at the reference.
             SourceCoercion.MouseTravelRoadProvider = () => (-1, 0, false);
@@ -425,12 +437,29 @@ namespace PadForge.Tests
             Assert.True(ice > dry, $"left after a quarter second: {ice:0.000} on ice, {dry:0.000} on a dry road");
         }
 
+        /// <summary>#600 item 41: the car's shape survives. At the
+        /// reference the answer is 1 at center and falls as the wheel goes
+        /// out, the same either way, a faster car pulls harder at every
+        /// angle, and nothing pulls at rest.</summary>
         [Fact]
-        public void TheTires_AnswerOneAtTheReference_NothingAtRest_AndNeverLessThanNothing()
+        public void TheTires_AnswerOneAtCenterOfTheReference_SofterFurtherOut_NothingAtRest_AndNeverLessThanNothing()
         {
             var tires = new TireReturn();
-            foreach (double position in new[] { 0.0, 0.001, 0.05, 0.3, 1.0, -0.4 })
-                Assert.Equal(1.0, tires.Scale(position, TireReturn.ReferenceSpeed, RoadGrip.Dry));
+            Assert.Equal(1.0, tires.Scale(0.0, TireReturn.ReferenceSpeed, RoadGrip.Dry), 12);
+            double last = 1.0 + 1e-9;
+            foreach (double position in new[] { 0.001, 0.05, 0.3, 0.6, 1.0 })
+            {
+                double scale = tires.Scale(position, TireReturn.ReferenceSpeed, RoadGrip.Dry);
+                Assert.True(scale <= last, $"{scale} at {position} after {last}");
+                Assert.Equal(scale, tires.Scale(-position, TireReturn.ReferenceSpeed, RoadGrip.Dry), 12);
+                last = scale;
+            }
+            Assert.True(tires.Scale(0.6, TireReturn.ReferenceSpeed, RoadGrip.Dry) < 0.9);
+            // Firmer with speed where a car is steered at speed, near
+            // center. Far out a fast car's front tires are past their peak,
+            // where the pull lightens.
+            foreach (double position in new[] { 0.0, 0.01, 0.05 })
+                Assert.True(tires.Scale(position, 40.0, RoadGrip.Dry) > tires.Scale(position, 15.0, RoadGrip.Dry), position.ToString());
             Assert.Equal(0.0, tires.Scale(0.3, 0, RoadGrip.Dry));
             Assert.Equal(0.0, tires.Scale(0.3, double.NaN, RoadGrip.Dry));
             for (double speed = 0.05; speed < 90; speed += 1.7)
@@ -992,7 +1021,10 @@ namespace PadForge.Tests
             Assert.Equal(20, MappingSource.EffectiveTravelLockAtSpeed(odd.ParamTravelLockAtSpeed));
             Assert.Equal(100, MappingSource.EffectiveTravelCounts(1));
             Assert.Equal(50000, MappingSource.EffectiveTravelCounts(1e9));
-            Assert.Equal(0.05, MappingSource.EffectiveTravelReturnTime(0.001));
+            // A Return Time of 0 centers at once (#600), so the floor is 0.
+            Assert.Equal(0.001, MappingSource.EffectiveTravelReturnTime(0.001));
+            Assert.Equal(0, MappingSource.EffectiveTravelReturnTime(0));
+            Assert.Equal(0.75, MappingSource.EffectiveTravelReturnTime(-1));
             Assert.Equal(5, MappingSource.EffectiveTravelReturnTime(60));
             // The engine reads the same: a wheel 100 counts wide, not 1.
             var narrow = Travel();

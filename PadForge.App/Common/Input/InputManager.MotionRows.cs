@@ -130,6 +130,30 @@ namespace PadForge.Common.Input
         internal static bool SourceRestsAtZero(string descriptor, string deviceGuid)
             => IsUnipolarActivatorSource(descriptor, deviceGuid);
 
+        /// <summary>True when the device of <paramref name="deviceGuid"/>
+        /// is a mouse (#600), whose Axis 0 and 1 are Mouse Speed X and Y.
+        /// SourceCoercion.IsMouseDeviceProvider.</summary>
+        internal static bool IsMouseDevice(string deviceGuid)
+            => LookupUserDevice(deviceGuid)?.CapType == InputDeviceType.Mouse;
+
+        /// <summary>The running total of a relative value of a controller's
+        /// own HID reports (#600), for an axis or slider marked as moving
+        /// relatively: SourceCoercion.RelativeAxisTotalProvider. The device's
+        /// Axis N is SDL's joystick axis N and its Slider N is SDL's axis
+        /// MaxAxis + N (SdlDeviceWrapper's raw read), so a device SDL opens
+        /// as a gamepad, whose axes are the gamepad's, answers null, as does
+        /// any device whose reports carry no relative value there.</summary>
+        internal static long? RelativeAxisTotal(string deviceGuid, bool slider, int index)
+        {
+            if (LookupUserDevice(deviceGuid)?.Device is not SdlDeviceWrapper sdl || sdl.GamepadHandle != IntPtr.Zero)
+                return null;
+            int axis = slider ? CustomInputState.MaxAxis + index : index;
+            foreach (string path in new[] { sdl.SdlDevicePath, sdl.DevicePath })
+                if (RelativeHidAxes.TryGetTotal(path, axis, sdl.RawAxisCount, out long total))
+                    return total;
+            return null;
+        }
+
         /// <summary>Step 3: one device's values for the three rows, each
         /// with the row a layer-exit commit gave it, if one did.</summary>
         private static MotionRowValues EvaluateMotionRows(CustomInputState state,

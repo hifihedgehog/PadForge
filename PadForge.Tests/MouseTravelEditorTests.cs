@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using PadForge.Common.Input;
@@ -218,20 +219,48 @@ namespace PadForge.Tests
         [Fact]
         public void AGateBesideAlways_ShowsAsWhileHeld_TheWayTheEngineReadsIt()
         {
+            // With Centering Off the engine leaves the wheel where it was let
+            // go, which is While Held and Stay (#600).
             var saved = new MappingSource
             {
                 Kind = "Direct", Descriptor = "Mouse Travel X", GateDescriptor = "Button 2",
             };
             var source = MappingSourceItem.FromDomain(saved);
-            Assert.Equal(MappingSource.TravelSteerHeld, source.ParamTravelSteer);
+            Assert.Equal(MappingSource.TravelSteerHeldStay, source.ParamTravelSteer);
             Assert.True(source.IsTravelSteerInputShown);
+
+            // With a spring it brings the wheel back, which is While Held and
+            // Center.
+            saved.ParamTravelCentering = MappingSource.TravelCenteringSpring;
+            Assert.Equal(MappingSource.TravelSteerHeldCenter, MappingSourceItem.FromDomain(saved).ParamTravelSteer);
 
             // An input with a gate that becomes Mouse Travel shows the same.
             var row = PrimaryRow("Axis 0");
             row.GateDescriptor = "Button 2";
             Assert.Equal(MappingSource.TravelSteerAlways, row.ParamTravelSteer);
             row.LoadDescriptor("Mouse Travel X");
-            Assert.Equal(MappingSource.TravelSteerHeld, row.ParamTravelSteer);
+            Assert.Equal(MappingSource.TravelSteerHeldStay, row.ParamTravelSteer);
+        }
+
+        /// <summary>#600: a mapping saved with the While Held of a build
+        /// before While Held and Center and While Held and Stay opens in the
+        /// one the engine reads it as, by its Centering, and the picker
+        /// offers the four modes.</summary>
+        [Fact]
+        public void TheOldWhileHeld_OpensAsTheModeTheEngineReadsItIn()
+        {
+            var saved = new MappingSource
+            {
+                Kind = "Direct", Descriptor = "Mouse Travel X", GateDescriptor = "Button 2",
+                ParamTravelSteer = MappingSource.TravelSteerHeld,
+            };
+            Assert.Equal(MappingSource.TravelSteerHeldStay, MappingSourceItem.FromDomain(saved).ParamTravelSteer);
+            saved.ParamTravelCentering = MappingSource.TravelCenteringTelemetry;
+            Assert.Equal(MappingSource.TravelSteerHeldCenter, MappingSourceItem.FromDomain(saved).ParamTravelSteer);
+            var steers = new List<string>();
+            foreach (var c in MouseTravelLine.SteerChoices()) steers.Add(c.Value);
+            Assert.Equal(new[] { MappingSource.TravelSteerAlways, MappingSource.TravelSteerHeldCenter,
+                MappingSource.TravelSteerHeldStay, MappingSource.TravelSteerToggle }, steers);
         }
 
         // ── The line and the saved form ──

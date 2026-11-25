@@ -586,6 +586,10 @@ namespace PadForge.Tests
                 // (BlockExt.AnalogKeys), DecodeInto, ResetToNeutral, and
                 // CopyInto.
                 "AnalogKeys",
+                // #600 mouse wheels: the extension tail after IrCalibrated
+                // (BlockExt.MouseWheel), DecodeInto, ResetToNeutral and
+                // CopyInto.
+                "MouseRawWheel", "MouseRawWheelH",
             };
             var actual = typeof(CustomInputState)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)

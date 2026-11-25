@@ -67,39 +67,131 @@ namespace PadForge.Engine.Common.Mapping
         public static bool UsesUpDownKeys(MappingSource source)
             => source != null && source.Kind is "Incremental" or "Ramped";
 
-        /// <summary>True for a source that reads "Mouse Travel X" or "Mouse
-        /// Travel Y" (#597): its input names the family, and its kind reads
-        /// its own input. Such a source keeps a wheel's position in the
-        /// slot's runtime and reads its gate as its Steer input.</summary>
+        /// <summary>True for a source of the travel family (#597, #600):
+        /// "Mouse Travel X" or "Y", "Wheel Travel", "Wheel Travel Sideways",
+        /// or an axis or slider marked as moving relatively, read by a kind
+        /// that reads its own input. Such a source keeps a wheel's position
+        /// in the slot's runtime and reads its gate as its Steer
+        /// input.</summary>
         public static bool IsMouseTravel(MappingSource source)
             => source != null && IsDescriptorKind(source.Kind)
-               && SourceCoercion.IsMouseTravelDescriptor(source.Descriptor);
+               && (SourceCoercion.IsMouseTravelDescriptor(source.Descriptor)
+                   || (source.ParamAxisRelative && SourceCoercion.TryParseRelativeAxis(source.Descriptor, out _, out _)));
 
-        /// <summary>Advances a "Mouse Travel" source and answers its
-        /// position from -1 to 1 (SourceKindRuntime.TickMouseTravel). The
-        /// source's gate is its Steer input, which only decides whether the
-        /// mouse moves the wheel: let go, the wheel stays where it is or
-        /// comes back, so the gate is read here and handed to the wheel,
-        /// where any other source reads nothing while its gate is open. A
-        /// read with no runtime (a preview) has no wheel and answers
-        /// center.</summary>
+        /// <summary>The mouse families that steer by their own settings
+        /// (#600), apart from travel.</summary>
+        public enum MouseSteerFamily { None, Speed, Position }
+
+        /// <summary>Which of Mouse Speed and Mouse Position a source is,
+        /// when it steers by its own settings (#600), and whether it reads
+        /// Y. Mouse Speed is a mouse's Axis 0 or 1. Either steers by its own
+        /// settings once one of them leaves its default: Mouse Speed's
+        /// Sensitivity, Smoothing or Back to Center, Mouse Position's
+        /// Smoothing or its anchor under a Steer input, or a Steer input
+        /// under While Held and Stay or Toggle. At the defaults, and with a
+        /// Steer input under While Held and Center, a source reads as it
+        /// always has, its gate reading nothing while open, which is that
+        /// mode.</summary>
+        public static MouseSteerFamily MouseSteerOf(MappingSource src, string evaluatedDeviceGuid, out bool y)
+        {
+            y = false;
+            if (src == null || !IsDescriptorKind(src.Kind) || src.ParamAxisRelative) return MouseSteerFamily.None;
+            string d = src.Descriptor;
+            MouseSteerFamily family;
+            if (d == "Mouse Position X" || d == "Mouse Position Y")
+            {
+                family = MouseSteerFamily.Position;
+                y = d[d.Length - 1] == 'Y';
+            }
+            else if (d == "Axis 0" || d == "Axis 1")
+            {
+                family = MouseSteerFamily.Speed;
+                y = d == "Axis 1";
+            }
+            else return MouseSteerFamily.None;
+
+            bool waits = !string.IsNullOrEmpty(src.GateDescriptor) || !string.IsNullOrEmpty(src.Gate2Descriptor);
+            string steer = MappingSource.EffectiveMouseSteer(src.ParamTravelSteer, null, waits, holdsPosition: false);
+            bool own = steer is MappingSource.TravelSteerHeldStay or MappingSource.TravelSteerToggle
+                || MappingSource.EffectiveTravelSmoothingMs(src.ParamTravelSmoothingMs) > 0;
+            if (family == MouseSteerFamily.Speed)
+                own |= MappingSource.EffectiveMouseSpeedSensitivity(src.ParamMouseSpeedSensitivity) != MappingSource.DefaultMouseSpeedSensitivity
+                    || MappingSource.EffectiveMouseBackToCenter(src.ParamMouseBackToCenter) > 0;
+            else
+                own |= src.ParamMousePositionAnchor && waits;
+            if (!own) return MouseSteerFamily.None;
+            // Asked last: an Axis 0 or 1 at its defaults costs no lookup.
+            if (family == MouseSteerFamily.Speed)
+            {
+                var isMouse = SourceCoercion.IsMouseDeviceProvider;
+                if (isMouse == null || !isMouse(SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid)))
+                    return MouseSteerFamily.None;
+            }
+            return family;
+        }
+
+        /// <summary>True for a source that reads its gate as its Steer
+        /// input: the travel family, and Mouse Speed or Mouse Position
+        /// steering by its own settings.</summary>
+        public static bool ReadsOwnGate(MappingSource src, string evaluatedDeviceGuid)
+            => IsMouseTravel(src) || MouseSteerOf(src, evaluatedDeviceGuid, out _) != MouseSteerFamily.None;
+
+        /// <summary>Advances a travel source and answers its position from
+        /// -1 to 1 (SourceKindRuntime.TickMouseTravel). The source's gate is
+        /// its Steer input, which only decides whether the mouse moves the
+        /// wheel: let go, the wheel stays where it is or comes back, so the
+        /// gate is read here and handed to the wheel, where any other source
+        /// reads nothing while its gate is open. A read with no runtime (a
+        /// preview) has no wheel and answers center.</summary>
         private static double MouseTravel(CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
             => runtime == null ? 0
                 : runtime.TickMouseTravel(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds,
-                    GateHeld(state, src, slotIndex, evaluatedDeviceGuid));
+                    GateHeld(state, src, slotIndex, evaluatedDeviceGuid),
+                    SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid));
 
-        /// <summary>The Direct read of a source as a button: the wheel past
-        /// the deadzone for a "Mouse Travel" source, the input's own read
-        /// for any other.</summary>
+        /// <summary>Advances a Mouse Speed or Mouse Position source that
+        /// steers by its own settings and answers its stick from -1 to 1.
+        /// A read with no runtime answers center.</summary>
+        private static double MouseSteer(MouseSteerFamily family, bool y, CustomInputState state, MappingSource src,
+            int slotIndex, string target, int sourceIndex,
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
+        {
+            if (runtime == null) return 0;
+            bool held = GateHeld(state, src, slotIndex, evaluatedDeviceGuid);
+            return family == MouseSteerFamily.Speed
+                ? runtime.TickMouseSpeed(slotIndex, target, sourceIndex, src, state, frameDeltaSeconds, held, y)
+                : runtime.TickMousePosition(slotIndex, target, sourceIndex, src, frameDeltaSeconds, held, y);
+        }
+
+        /// <summary>A mouse source's own answer from -1 to 1 before the row
+        /// reads it, for the travel family and for Mouse Speed and Mouse
+        /// Position steering by their own settings, or null for any other
+        /// source.</summary>
+        private static double? MousePosition(CustomInputState state, MappingSource src,
+            int slotIndex, string target, int sourceIndex,
+            SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
+        {
+            if (IsMouseTravel(src))
+                return MouseTravel(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+            var family = MouseSteerOf(src, evaluatedDeviceGuid, out bool y);
+            if (family == MouseSteerFamily.None) return null;
+            double v = MouseSteer(family, y, state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+            // Mouse Speed is an axis, whose read takes the source's
+            // Acceleration before its curve (SourceCoercion's axis tail), so
+            // it does here too.
+            return family == MouseSteerFamily.Speed ? SourceCoercion.ApplyPerSourceAccel(src, (float)v) : v;
+        }
+
+        /// <summary>The Direct read of a source as a button: a mouse
+        /// source's own answer past the deadzone, the input's own read for
+        /// any other.</summary>
         private static bool DirectButton(CustomInputState state, MappingSource src, int thresholdPercent,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
-            => IsMouseTravel(src)
-                ? SourceCoercion.MouseTravelAsButton(
-                    MouseTravel(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid),
-                    src, thresholdPercent)
+            => MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid) is double v
+                ? SourceCoercion.MouseTravelAsButton(v, src, thresholdPercent)
                 : SourceCoercion.EvaluateForButtonTarget(state, src, thresholdPercent, slotIndex, evaluatedDeviceGuid);
 
         /// <summary>The Direct read of a source as a trigger's pull, by the
@@ -107,10 +199,8 @@ namespace PadForge.Engine.Common.Mapping
         private static float DirectTrigger(CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds, string evaluatedDeviceGuid)
-            => IsMouseTravel(src)
-                ? SourceCoercion.MouseTravelAsTrigger(
-                    MouseTravel(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid),
-                    src)
+            => MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid) is double v
+                ? SourceCoercion.MouseTravelAsTrigger(v, src)
                 : SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
 
         /// <summary>The Rapid Trigger distance as a fraction of full travel.</summary>
@@ -200,8 +290,8 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || IsUnmappedDirect(src)) return false;
             using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
-            // A "Mouse Travel" source reads its gate as its Steer input (MouseTravel).
-            if (!IsMouseTravel(src)
+            // A mouse source that steers reads its gate as its Steer input (MousePosition).
+            if (!ReadsOwnGate(src, evaluatedDeviceGuid)
                 && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
 
             switch (src.Kind ?? "Direct")
@@ -257,8 +347,8 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || IsUnmappedDirect(src)) return 0f;
             using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
-            // A "Mouse Travel" source reads its gate as its Steer input (MouseTravel).
-            if (!IsMouseTravel(src) && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
+            // A mouse source that steers reads its gate as its Steer input (MousePosition).
+            if (!ReadsOwnGate(src, evaluatedDeviceGuid) && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             // The Motion Pitch, Yaw and Roll rows (#475) read a source that
             // rests at zero one way: read centered, a released trigger sits
@@ -323,10 +413,12 @@ namespace PadForge.Engine.Common.Mapping
                 kind = "MotionShake";
             else if (kind == "Direct" && SourceCoercion.IsMotionShakeAuxDescriptor(src.Descriptor))
                 kind = "MotionShakeAux";
-            // "Mouse Travel X" and "Mouse Travel Y" (#597) are inputs too,
-            // and their wheel is the runtime's (IsMouseTravel). An empty
+            // The travel family (#597, #600) is an input too, and its wheel
+            // is the runtime's (IsMouseTravel), and so is a Mouse Speed or
+            // Mouse Position source steering by its own settings. An empty
             // kind reads as Direct there, so it does here.
-            else if ((kind == "Direct" || kind.Length == 0) && IsMouseTravel(src))
+            else if ((kind == "Direct" || kind.Length == 0)
+                     && (IsMouseTravel(src) || MouseSteerOf(src, evaluatedDeviceGuid, out _) != MouseSteerFamily.None))
                 kind = "MouseTravel";
 
             switch (kind)
@@ -334,7 +426,7 @@ namespace PadForge.Engine.Common.Mapping
                 case "MouseTravel":
                     // Invert, Half and Flip Output are read with the wheel.
                     return SourceCoercion.MouseTravelAsBipolar(
-                        MouseTravel(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid),
+                        MousePosition(state, src, slotIndex, target, sourceIndex, runtime, frameDeltaSeconds, evaluatedDeviceGuid) ?? 0,
                         src);
                 case "Incremental":
                 {
@@ -509,8 +601,8 @@ namespace PadForge.Engine.Common.Mapping
         {
             if (src == null || IsUnmappedDirect(src)) return 0f;
             using var placement = SourceCoercion.ReadingDevice(src, evaluatedDeviceGuid);
-            // A "Mouse Travel" source reads its gate as its Steer input (MouseTravel).
-            if (!IsMouseTravel(src) && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
+            // A mouse source that steers reads its gate as its Steer input (MousePosition).
+            if (!ReadsOwnGate(src, evaluatedDeviceGuid) && !GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             switch (src.Kind ?? "Direct")
             {

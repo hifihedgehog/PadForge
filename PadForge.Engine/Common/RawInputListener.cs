@@ -28,6 +28,9 @@ namespace PadForge.Engine
         private const ushort HID_USAGE_PAGE_GENERIC = 0x01;
         private const ushort HID_USAGE_GENERIC_MOUSE = 0x02;
         private const ushort HID_USAGE_GENERIC_KEYBOARD = 0x06;
+        private const ushort HID_USAGE_GENERIC_JOYSTICK = 0x04;
+        private const ushort HID_USAGE_GENERIC_GAMEPAD = 0x05;
+        private const ushort HID_USAGE_GENERIC_MULTI_AXIS = 0x08;
 
         // Consumer Control collection (issue #168): media remotes, headset
         // strips, and keyboard media rows live on page 0x0C usage 0x01,
@@ -58,6 +61,7 @@ namespace PadForge.Engine
         private const ushort RI_MOUSE_BUTTON_5_DOWN = 0x0100;
         private const ushort RI_MOUSE_BUTTON_5_UP = 0x0200;
         private const ushort RI_MOUSE_WHEEL = 0x0400;
+        private const ushort RI_MOUSE_HWHEEL = 0x0800;
 
         private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
 
@@ -389,8 +393,23 @@ namespace PadForge.Engine
             public long DeltaX;
             public long DeltaY;
             public long ScrollDelta;
+            public long ScrollDeltaH;
             public readonly bool[] Buttons = new bool[5];
         }
+
+        /// <summary>Running totals of every mouse's counts and wheel units
+        /// since the listener started, which nothing consumes (#600). The
+        /// Source picker's Preview reads how far they moved between its
+        /// own frames, so it follows the user's mouse while the engine's
+        /// consumes stay the only ones.</summary>
+        private static long _tapX, _tapY, _tapWheel, _tapWheelH;
+
+        /// <summary>The running totals of every mouse's motion (X right, Y
+        /// toward the user) and wheels (up, right), for a reader that must
+        /// take nothing from the engine (#600). Any thread.</summary>
+        public static (long x, long y, long wheel, long wheelH) MouseTotals()
+            => (Interlocked.Read(ref _tapX), Interlocked.Read(ref _tapY),
+                Interlocked.Read(ref _tapWheel), Interlocked.Read(ref _tapWheelH));
 
         /// <summary>Aggregate mouse state. Accumulates from all mice independently.</summary>
         private static readonly MouseDeviceState _aggregateMouseState = new();
@@ -487,6 +506,7 @@ namespace PadForge.Engine
             // HidP_GetUsages with one of these pointers, so freeing would be a
             // use-after-free; leak the few KB to process exit instead (the
             // same join-gated release the Wii speaker and NFC teardowns use).
+            RelativeHidAxes.Clear(freeBuffers: pumpExited);
             if (pumpExited)
             {
                 foreach (var kvp in _consumerPreparsed)
@@ -501,6 +521,7 @@ namespace PadForge.Engine
             Interlocked.Exchange(ref _aggregateMouseState.DeltaX, 0);
             Interlocked.Exchange(ref _aggregateMouseState.DeltaY, 0);
             Interlocked.Exchange(ref _aggregateMouseState.ScrollDelta, 0);
+            Interlocked.Exchange(ref _aggregateMouseState.ScrollDeltaH, 0);
             Array.Clear(_aggregateMouseState.Buttons, 0, _aggregateMouseState.Buttons.Length);
         }
 
@@ -1207,6 +1228,20 @@ namespace PadForge.Engine
         }
 
         /// <summary>
+        /// Atomically consumes the sideways wheel's accumulated units for a
+        /// specific device (RI_MOUSE_HWHEEL, positive to the right), as
+        /// <see cref="ConsumeMouseScroll"/> does the wheel's (#600).
+        /// </summary>
+        public static int ConsumeMouseScrollH(IntPtr hDevice)
+        {
+            if (hDevice == AggregateMouseHandle)
+                return (int)Interlocked.Exchange(ref _aggregateMouseState.ScrollDeltaH, 0);
+            if (_mouseStates.TryGetValue(hDevice, out MouseDeviceState state))
+                return (int)Interlocked.Exchange(ref state.ScrollDeltaH, 0);
+            return 0;
+        }
+
+        /// <summary>
         /// Copies mouse button states for a specific device.
         /// Pass <see cref="AggregateMouseHandle"/> to get OR-merged buttons from all mice.
         /// </summary>
@@ -1317,10 +1352,37 @@ namespace PadForge.Engine
                         usUsage = HID_USAGE_CONSUMER_CONTROL,
                         dwFlags = RIDEV_INPUTSINK,
                         hwndTarget = _hwnd
+                    },
+                    // Joysticks, game pads and multi-axis controllers (#600):
+                    // a trackball's or a spinner's relative values, which
+                    // RelativeHidAxes adds up from the reports themselves.
+                    // DirectInput, through which SDL reads such a device,
+                    // hands only the last report's value. Raw Input reads
+                    // beside DirectInput and takes nothing from it.
+                    new RAWINPUTDEVICE
+                    {
+                        usUsagePage = HID_USAGE_PAGE_GENERIC,
+                        usUsage = HID_USAGE_GENERIC_JOYSTICK,
+                        dwFlags = RIDEV_INPUTSINK,
+                        hwndTarget = _hwnd
+                    },
+                    new RAWINPUTDEVICE
+                    {
+                        usUsagePage = HID_USAGE_PAGE_GENERIC,
+                        usUsage = HID_USAGE_GENERIC_GAMEPAD,
+                        dwFlags = RIDEV_INPUTSINK,
+                        hwndTarget = _hwnd
+                    },
+                    new RAWINPUTDEVICE
+                    {
+                        usUsagePage = HID_USAGE_PAGE_GENERIC,
+                        usUsage = HID_USAGE_GENERIC_MULTI_AXIS,
+                        dwFlags = RIDEV_INPUTSINK,
+                        hwndTarget = _hwnd
                     }
                 };
 
-                if (!RegisterRawInputDevices(devices, 3, (uint)Marshal.SizeOf<RAWINPUTDEVICE>()))
+                if (!RegisterRawInputDevices(devices, (uint)devices.Length, (uint)Marshal.SizeOf<RAWINPUTDEVICE>()))
                 {
                     DestroyWindow(_hwnd);
                     _hwnd = IntPtr.Zero;
@@ -1399,6 +1461,10 @@ namespace PadForge.Engine
                 }
                 else if (header.dwType == RIM_TYPEHID)
                 {
+                    // A game controller's relative values (#600), then a
+                    // Consumer Control's keys. Each passes over a handle
+                    // that is not its kind.
+                    RelativeHidAxes.Process(hDevice, dataPtr);
                     ProcessConsumerInput(hDevice, dataPtr);
                 }
             }
@@ -1450,11 +1516,13 @@ namespace PadForge.Engine
                 {
                     Interlocked.Add(ref state.DeltaX, lastX);
                     Interlocked.Add(ref _aggregateMouseState.DeltaX, lastX);
+                    Interlocked.Add(ref _tapX, lastX);
                 }
                 if (lastY != 0)
                 {
                     Interlocked.Add(ref state.DeltaY, lastY);
                     Interlocked.Add(ref _aggregateMouseState.DeltaY, lastY);
+                    Interlocked.Add(ref _tapY, lastY);
                 }
             }
 
@@ -1470,11 +1538,24 @@ namespace PadForge.Engine
             if ((flags & RI_MOUSE_BUTTON_5_DOWN) != 0) { state.Buttons[4] = true; _aggregateMouseState.Buttons[4] = true; }
             if ((flags & RI_MOUSE_BUTTON_5_UP) != 0) { state.Buttons[4] = false; _aggregateMouseState.Buttons[4] = false; }
 
+            // A wheel's units are kept whole: a fine-scrolling wheel sends
+            // steps smaller than a notch's 120 (WHEEL_DELTA), which add up
+            // to the same total.
             if ((flags & RI_MOUSE_WHEEL) != 0)
             {
                 short delta = (short)buttonData;
                 Interlocked.Add(ref state.ScrollDelta, delta);
                 Interlocked.Add(ref _aggregateMouseState.ScrollDelta, delta);
+                Interlocked.Add(ref _tapWheel, delta);
+            }
+            // The sideways wheel (or a tilted wheel), right positive. The
+            // report's usButtonData holds the delta of the wheel it flags.
+            if ((flags & RI_MOUSE_HWHEEL) != 0)
+            {
+                short delta = (short)buttonData;
+                Interlocked.Add(ref state.ScrollDeltaH, delta);
+                Interlocked.Add(ref _aggregateMouseState.ScrollDeltaH, delta);
+                Interlocked.Add(ref _tapWheelH, delta);
             }
         }
 

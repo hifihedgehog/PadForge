@@ -4,11 +4,9 @@ namespace PadForge.Engine.Steering
 {
     /// <summary>
     /// How fast a car's front tires bring a let-go steering wheel back at a
-    /// speed and a grip, against how fast they do at 100 km/h on a dry road
-    /// (#597). A "Mouse Travel" source whose Centering is From Telemetry
-    /// multiplies its spring's rate by the answer, so its Return Time is
-    /// the time at that reference and the wheel returns sooner or later as
-    /// the game's car goes faster, slower or onto a slippery road.
+    /// speed, a grip and an angle, against the spring that Return Time sets
+    /// (#597, #600). A travel source whose Centering is From Telemetry
+    /// multiplies its spring's rate by the answer.
     ///
     /// <para>The torque is the steering model's
     /// (<see cref="SteeringCurve.Torque"/>) for the default car with no
@@ -16,9 +14,14 @@ namespace PadForge.Engine.Steering
     /// moment comes from the car turning, so it is nothing in a car that
     /// stands still, where the jacking torque would still pull at the
     /// wheel. The answer is the torque at the wheel's angle over the
-    /// reference's torque at the same angle: 1 at the reference whatever
-    /// the angle, more where the tires bite harder than there, and less
-    /// where they slide.</para>
+    /// straight line the reference's torque leaves center on (100 km/h on a
+    /// dry road): a spring's pull grows with the angle along that line, and
+    /// a car's grows as steeply near center and then less, peaks, and
+    /// lightens past the peak as the front tires slide. So at the reference
+    /// the answer is 1 at center and falls further out, a faster car pulls
+    /// harder at every angle, and a slippery road lightens the pull where
+    /// the tires reach their limit. Return Time is the time to come back
+    /// from near center at the reference.</para>
     /// </summary>
     public sealed class TireReturn
     {
@@ -51,10 +54,11 @@ namespace PadForge.Engine.Steering
         private double _curveSpeed = -1, _curveGrip = -1;
 
         /// <summary>The rate of return at a wheel position from -1 to 1, a
-        /// speed in m/s and a grip against dry asphalt's, over the rate at
-        /// the reference. 0 at a standstill. The curve is rebuilt in place
-        /// as the speed or the grip moves a step, so a moving car costs the
-        /// polling thread work and no allocation after the first call.</summary>
+        /// speed in m/s and a grip against dry asphalt's, over the spring's
+        /// rate: the torque there over the reference's slope at center times
+        /// the angle. 0 at a standstill. The curve is rebuilt in place as the
+        /// speed or the grip moves a step, so a moving car costs the polling
+        /// thread work and no allocation after the first call.</summary>
         public double Scale(double position, double speed, double grip)
         {
             if (!(speed > 0) || !double.IsFinite(speed)) return 0.0;
@@ -80,7 +84,9 @@ namespace PadForge.Engine.Steering
             }
             else
             {
-                double against = reference.Torque(angle);
+                // The spring's pull at this angle, on the line the
+                // reference's torque leaves center on.
+                double against = reference.CenterSlope * angle;
                 scale = against > 0 ? _curve.Torque(angle) / against : 1.0;
             }
             // The model runs no slower than its least speed. Under it the

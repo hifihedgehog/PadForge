@@ -482,6 +482,7 @@ namespace PadForge.ViewModels
             nameof(HidHideEnabled) or
             nameof(ConsumeInputEnabled) or
             nameof(IdleDisconnectMinutes) or
+            nameof(MouseDpi) or
             nameof(QuickChargeEnabled) or
             nameof(GunCalibration) or
             nameof(BlissBoxNativeArrows);
@@ -508,6 +509,11 @@ namespace PadForge.ViewModels
                 case nameof(IdleDisconnectMinutes):
                 {
                     IdleDisconnectMinutes = 0;
+                    break;
+                }
+                case nameof(MouseDpi):
+                {
+                    MouseDpi = 0;
                     break;
                 }
                 case nameof(QuickChargeEnabled):
@@ -862,7 +868,11 @@ namespace PadForge.ViewModels
             nameof(ParamTravelSteer) or
             nameof(TravelSteerInputChoice) or
             nameof(ParamTravelSmoothingMs) or
-            nameof(ParamTravelLockAtSpeed);
+            nameof(ParamTravelLockAtSpeed) or
+            nameof(ParamMouseSpeedSensitivity) or
+            nameof(ParamMouseBackToCenter) or
+            nameof(ParamMousePositionAnchor) or
+            nameof(ParamAxisRelative);
 
         private void ResetSetting(string name)
         {
@@ -989,6 +999,26 @@ namespace PadForge.ViewModels
                     ParamTravelLockAtSpeed = Engine.Data.MappingSource.DefaultTravelLockAtSpeed;
                     break;
                 }
+                case nameof(ParamMouseSpeedSensitivity):
+                {
+                    ParamMouseSpeedSensitivity = Engine.Data.MappingSource.DefaultMouseSpeedSensitivity;
+                    break;
+                }
+                case nameof(ParamMouseBackToCenter):
+                {
+                    ParamMouseBackToCenter = 0;
+                    break;
+                }
+                case nameof(ParamMousePositionAnchor):
+                {
+                    ParamMousePositionAnchor = false;
+                    break;
+                }
+                case nameof(ParamAxisRelative):
+                {
+                    ParamAxisRelative = false;
+                    break;
+                }
                 default: return;
             }
             // Refresh pending editor text even when the stored value was already the default.
@@ -1021,7 +1051,11 @@ namespace PadForge.ViewModels
             nameof(ParamTravelSteer) or
             nameof(TravelSteerInputChoice) or
             nameof(ParamTravelSmoothingMs) or
-            nameof(ParamTravelLockAtSpeed);
+            nameof(ParamTravelLockAtSpeed) or
+            nameof(ParamMouseSpeedSensitivity) or
+            nameof(ParamMouseBackToCenter) or
+            nameof(ParamMousePositionAnchor) or
+            nameof(ParamAxisRelative);
 
         private void ResetSetting(string name)
         {
@@ -1126,6 +1160,26 @@ namespace PadForge.ViewModels
                 case nameof(ParamTravelLockAtSpeed):
                 {
                     ParamTravelLockAtSpeed = Engine.Data.MappingSource.DefaultTravelLockAtSpeed;
+                    break;
+                }
+                case nameof(ParamMouseSpeedSensitivity):
+                {
+                    ParamMouseSpeedSensitivity = Engine.Data.MappingSource.DefaultMouseSpeedSensitivity;
+                    break;
+                }
+                case nameof(ParamMouseBackToCenter):
+                {
+                    ParamMouseBackToCenter = 0;
+                    break;
+                }
+                case nameof(ParamMousePositionAnchor):
+                {
+                    ParamMousePositionAnchor = false;
+                    break;
+                }
+                case nameof(ParamAxisRelative):
+                {
+                    ParamAxisRelative = false;
                     break;
                 }
                 default: return;

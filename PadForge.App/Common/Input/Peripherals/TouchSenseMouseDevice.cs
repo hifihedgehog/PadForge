@@ -206,6 +206,7 @@ namespace PadForge.Common.Input.Peripherals
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(vy * (MotionScale / 1000f)), 0, 65535);
             state.MouseRawDX = dx;
             state.MouseRawDY = dy;
+            state.MouseRawWheel = wheel * WheelDelta;
             _velocity.WindowSums(out _, out _, out float scrollSum);
             state.Axis[2] = Math.Clamp(AxisCenter + (int)(scrollSum * ScrollScale), 0, 65535);
 

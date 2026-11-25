@@ -677,6 +677,8 @@ namespace PadForge.Common
             {
                 if (s == PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor) return prefix + Strings.Instance.Mapping_MouseTravelX;
                 if (s == PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelYDescriptor) return prefix + Strings.Instance.Mapping_MouseTravelY;
+                if (s == PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelDescriptor) return prefix + Strings.Instance.Mapping_WheelTravel;
+                if (s == PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelSidewaysDescriptor) return prefix + Strings.Instance.Mapping_WheelTravelSideways;
                 return null;
             }
 
@@ -1757,6 +1759,48 @@ namespace PadForge.Common
                 "0x" + code.ToString("X3", System.Globalization.CultureInfo.InvariantCulture));
         }
 
+        /// <summary>Says under each of a mouse's input families what it does
+        /// (#600), in the Source picker's mouse group, and marks the families
+        /// a Preview can show: Mouse Speed, Mouse Position, the travel
+        /// family and the wheels. Mouse Scroll says what it does and has no
+        /// Preview, since it holds nothing to show.</summary>
+        internal static void DescribeMouseFamilies(System.Collections.Generic.List<InputChoice> list)
+        {
+            var si = Strings.Instance;
+            foreach (var c in list)
+            {
+                switch (c.Descriptor)
+                {
+                    case "Axis 0":
+                    case "Axis 1":
+                        c.Description = si.Mapping_MouseSpeed_Description;
+                        c.PreviewFamily = InputChoice.PreviewSpeed;
+                        break;
+                    case "Axis 2":
+                        c.Description = si.Mapping_MouseScroll_Description;
+                        break;
+                    case "Mouse Position X":
+                    case "Mouse Position Y":
+                        c.Description = si.Mapping_MousePosition_Description;
+                        c.PreviewFamily = InputChoice.PreviewPosition;
+                        break;
+                    case PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor:
+                    case PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelYDescriptor:
+                        c.Description = si.Mapping_MouseTravel_Description;
+                        c.PreviewFamily = InputChoice.PreviewTravel;
+                        break;
+                    case PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelDescriptor:
+                        c.Description = si.Mapping_WheelTravel_Description;
+                        c.PreviewFamily = InputChoice.PreviewWheel;
+                        break;
+                    case PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelSidewaysDescriptor:
+                        c.Description = si.Mapping_WheelTravelSideways_Description;
+                        c.PreviewFamily = InputChoice.PreviewWheel;
+                        break;
+                }
+            }
+        }
+
         internal static InputChoice[] BuildInputChoices(UserDevice ud,
             System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null,
             System.Func<PadForge.Engine.Mouse.MouseGestureSettings> mouseGestureSettings = null)
@@ -2263,6 +2307,12 @@ namespace PadForge.Common
                 // a Remote Link peer's.
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelXDescriptor, DisplayName = si.Mapping_MouseTravelX });
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MouseTravelYDescriptor, DisplayName = si.Mapping_MouseTravelY });
+                // The scroll wheels held as a position (#600), in the wheels'
+                // own units, which every mouse reader carries beside the
+                // counts (CustomInputState.MouseRawWheel and MouseRawWheelH).
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelDescriptor, DisplayName = si.Mapping_WheelTravel });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.WheelTravelSidewaysDescriptor, DisplayName = si.Mapping_WheelTravelSideways });
+                DescribeMouseFamilies(list);
             }
 
             // Wii Remote IR-camera pointer (#146). Absolute aim from the two

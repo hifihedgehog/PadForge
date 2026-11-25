@@ -44,6 +44,11 @@ namespace PadForge.Common.Recording
         public UserDevice Device;
         public string Text, Extra;
         public int A;
+        /// <summary>For a note, the most characters it keeps once it is
+        /// scrubbed, or 0 to keep it whole. Cut first, a path could end
+        /// inside a folder's name, which the scrubber would keep as the
+        /// file's.</summary>
+        public int Cut;
     }
 
     /// <summary>What the recorder's thread knows of the devices and virtual
@@ -466,6 +471,7 @@ namespace PadForge.Common.Recording
                     break;
                 case SideKind.Note:
                     text = _scrubber.Text(e.Text ?? string.Empty);
+                    if (e.Cut > 0 && text.Length > e.Cut) text = text.Substring(0, e.Cut);
                     break;
                 case SideKind.Marker:
                     layer = RecordingCodec.LayerMarker;

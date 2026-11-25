@@ -170,6 +170,27 @@ namespace PadForge.Tests
             Assert.Equal("5 more exceptions past the first 40 were left out", errors[^1]);
         }
 
+        /// <summary>An exception's text is cut at 300 characters once it is
+        /// scrubbed. Cut first, at "Grandma Ro" here (23 characters of its
+        /// type, 240 of message and a space, then 36 of the path), the
+        /// scrubber would keep "Grandma" as the file's name and the rest of
+        /// the folder's words as plain text.</summary>
+        [Fact]
+        public void ALongException_IsScrubbedWhole_BeforeItIsCut()
+        {
+            var (host, recorder, _) = Recording(h => h.Live.Add((PrivateKind.UserName, RecorderTestHost.User)));
+            using var owned = host;
+            string file = @"C:\Users\" + RecorderTestHost.User + @"\Pictures\Grandma Rosa's Ninetieth Birthday Party Photos and Videos From The Lake House\cake.png";
+            recorder.TakeException(new IOException(new string('x', 240) + " " + file), windowThread: false);
+            string path = recorder.Stop(wait: true).Path;
+            string error = Assert.Single(RecorderTestKit.Events(path).Where(e => e.Layer == 'E').Select(e => e.Payload));
+            Assert.StartsWith("exception IOException: ", error);
+            Assert.True(error.Length <= 300, error);
+            Assert.EndsWith(@"\cake.png", error);
+            foreach (string word in new[] { "Grandma", "Rosa", "Ninetieth", "Birthday", "Lake", RecorderTestHost.User })
+                Assert.DoesNotContain(word, error, StringComparison.OrdinalIgnoreCase);
+        }
+
         // ── Force feedback ──
 
         [Fact]

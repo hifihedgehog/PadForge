@@ -27,11 +27,13 @@ namespace PadForge.Services
         /// <summary>A line in the caller's words with free text in it, for a
         /// device or a virtual controller or neither, scrubbed when it is
         /// written: a failed read with SDL's error, a virtual controller not
-        /// fed and why, a force effect that failed.</summary>
-        internal void TakeNote(char layer, int slot, UserDevice device, string text)
+        /// fed and why, a force effect that failed. <paramref name="cut"/>,
+        /// when above 0, is the most characters the line keeps once it is
+        /// scrubbed.</summary>
+        internal void TakeNote(char layer, int slot, UserDevice device, string text, int cut = 0)
         {
             if (Volatile.Read(ref _capture) == null) return;
-            Enqueue(new RecordingSideEvent { Ticks = Ticks(), Kind = SideKind.Note, Layer = layer, Slot = slot, Device = device, Text = text });
+            Enqueue(new RecordingSideEvent { Ticks = Ticks(), Kind = SideKind.Note, Layer = layer, Slot = slot, Device = device, Text = text, Cut = cut });
         }
 
         // A note that repeats every pass (a force effect refused again and
@@ -108,8 +110,9 @@ namespace PadForge.Services
         /// <summary>
         /// An exception thrown anywhere in PadForge while something is
         /// captured, the window thread's among them, with its type and
-        /// message, scrubbed when written. Taken from the first-chance hook,
-        /// so one that is caught and one that ends PadForge both show.
+        /// message, scrubbed whole when written and then cut at 300
+        /// characters. Taken from the first-chance hook, so one that is
+        /// caught and one that ends PadForge both show.
         /// </summary>
         internal void TakeException(Exception ex, bool windowThread)
         {
@@ -124,8 +127,7 @@ namespace PadForge.Services
                 }
                 string text = "exception " + ex.GetType().Name + (windowThread ? " on the window's thread" : string.Empty) + ": "
                     + (ex.Message ?? string.Empty);
-                if (text.Length > 300) text = text.Substring(0, 300);
-                TakeNote(RecordingCodec.LayerError, -1, null, text);
+                TakeNote(RecordingCodec.LayerError, -1, null, text, cut: 300);
             }
             catch
             {

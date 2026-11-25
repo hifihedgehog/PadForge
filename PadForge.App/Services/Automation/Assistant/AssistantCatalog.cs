@@ -2005,8 +2005,14 @@ namespace PadForge.Services.Automation
             }
             if (p.Entry.Kind == SearchKind.Dialog) return Ringable(p.Root);
             if (p.Entry.Kind == SearchKind.Section && _pageOf(SearchPage.Pad) is PadPage pad) return pad.SectionButton(p.Entry.Section);
+            // A part's own button: its words stand in other places too, so it
+            // is never looked up by them.
+            if (p.Entry.Kind == SearchKind.Part && PartOf(p.Entry.Tab) is { } part && _pageOf(SearchPage.Pad) is PadPage parts)
+                return parts.FindName(part.Button) as FrameworkElement;
+            // An extra's tile, or its title while its own page shows, which is
+            // where a plain show lands and where the tile does not stand.
             if (p.Entry.Kind == SearchKind.Extra && _pageOf(SearchPage.Extras) is ExtrasPage extras)
-                return extras.FindName(p.Entry.ExtraKey + "Tile") as FrameworkElement;
+                return extras.FindName(p.Entry.ExtraKey + (extras.CurrentExtra == p.Entry.ExtraKey ? "Title" : "Tile")) as FrameworkElement;
             if (p.Entry.Kind == SearchKind.MenuItem)
                 return MenuOf(p, _pageOf(p.Entry.Page) ?? p.Root).Owner;
             if (p.Entry.RowOptions) return RowOptionElement(p.Entry);

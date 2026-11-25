@@ -2465,6 +2465,9 @@ namespace PadForge.Tests
             public DeviceRowViewModel Online, Offline, Decoy;
             public SdlMappingDialog Dialog;
             public PluginCatalogRig Plugins;
+            /// <summary>The plugin's beat. A plugin silent for five seconds
+            /// has its devices taken offline, and the census takes minutes.</summary>
+            public Timer Beat;
             public List<PadForge.Controls.FoldPart> Folds = new();
             public const string Words = "Census: this one.";
 
@@ -2570,6 +2573,7 @@ namespace PadForge.Tests
                     var added = c.Plugins.Host.Sessions.Devices.Find(declared.Substring(6));
                     Assert.NotNull(added);
                     Assert.StartsWith("ok key=clutch", session.Final("setting key=clutch kind=switch name=\"Clutch Inverted\" device=pedals"));
+                    c.Beat = new Timer(_ => session.Send("beat"), null, 1000, 1000);
                     p.Vm.Devices.Devices.Add(new DeviceRowViewModel { DeviceName = "Pedal Box", InstanceGuid = added.Guid });
                     p.Vm.Devices.RefreshCounts();
                     c.Plugins.Controller.Refresh();
@@ -2670,6 +2674,12 @@ namespace PadForge.Tests
                     c.P?.Pointer?.Clear();
                     foreach (var provider in providers) PadForge.Services.Catalog.LiveCatalog.RemoveProvider(provider);
                     try { c.Dialog?.Close(); } catch (InvalidOperationException) { }
+                    if (c.Beat != null)
+                    {
+                        // The last beat ends before its pipe closes.
+                        using var beaten = new ManualResetEvent(false);
+                        if (c.Beat.Dispose(beaten)) beaten.WaitOne(TimeSpan.FromSeconds(10));
+                    }
                     c.Plugins?.Dispose();
                     c.Database?.Dispose();
                     ControllerDatabaseMine.Current = mineBefore;

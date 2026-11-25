@@ -716,6 +716,30 @@ namespace PadForge.Tests
                     vm.IsUpdateAvailable = false;
                     vm.SetUpdateStatus(() => "PadForge 6.0.0 is up to date.", upToDate: true);
 
+                    // The Controller Database row after a first download, with
+                    // its More open on the user's own rows (#600 item 49), as the
+                    // Database board draws it.
+                    var databaseMore = (Expander)page.FindName("ControllerDatabaseMore");
+                    var savedMine = PadForge.Common.Input.ControllerDatabaseMine.Current;
+                    PadForge.Common.Input.ControllerDatabaseMine.Current = PadForge.Common.Input.ControllerDatabaseMine.FromData(new[]
+                    {
+                        new PadForge.Services.ControllerDatabaseMineData { Added = "2026-11-24T14:17:35Z", Text = "030000004f04000002b4000000000000,T.16000M,a:b0,b:b1,leftx:a0,lefty:a1,platform:Windows," },
+                        new PadForge.Services.ControllerDatabaseMineData { Added = "2026-11-24T14:17:35Z", Text = "030000000d0f00009200000000000000,Arcade Stick,a:b1,b:b2,platform:Windows," },
+                        new PadForge.Services.ControllerDatabaseMineData { Added = "2026-11-24T14:17:35Z", Text = "050000004c050000e60c000000006800,DualSense,a:b1,b:b2,platform:Windows," },
+                    }, out _);
+                    drawing.Picture(ground, "settings-updates-database.png", width, 2300, () =>
+                    {
+                        vm.SetControllerDatabaseStatus(() => "Built in: 602 mappings, community copy of 2026-09-24. Downloaded 2026-11-24: 64 new rows, 0 changed.");
+                        vm.SetControllerDatabaseResult(() => PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_InUseAtOnce);
+                        vm.SetControllerDatabaseMine(() => string.Format(PadForge.Resources.Strings.Strings.Instance.ControllerDatabase_Mine_Format, 3),
+                            () => System.Threading.Tasks.Task.CompletedTask, _ => System.Threading.Tasks.Task.FromResult(0));
+                        databaseMore.IsExpanded = true;
+                    });
+                    databaseMore.IsExpanded = false;
+                    vm.SetControllerDatabaseResult(null);
+                    PadForge.Common.Input.ControllerDatabaseMine.Current = savedMine;
+                    vm.RaiseControllerDatabaseMine();
+
                     // The search, and a search with no match.
                     drawing.Picture(ground, "settings-search-notify.png", width, height, () => vm.SettingsSearchText = "notify");
                     drawing.Picture(ground, "settings-search-none.png", width, height, () => vm.SettingsSearchText = "xyz");
@@ -1063,6 +1087,48 @@ namespace PadForge.Tests
                 drawing.PictureWindow(Make<BlissBoxPlayerDialog>(2, "Bliss-Box 4-Play, port 2"), "dialog-player-number.png");
                 drawing.PictureWindow(RemovalWith(typeof(UninstallHIDMaestroDialog)), "dialog-uninstall-hidmaestro.png");
                 drawing.PictureWindow(RemovalWith(typeof(UninstallBthPS3Dialog)), "dialog-uninstall-bthps3.png");
+
+                // The SDL mapping dialog (#600 items 47 to 49), as the
+                // Database board draws Paste and Find, then Guess and Add
+                // Rows. The clipboard is never read here.
+                var readClipboard = SdlMappingDialog.ReadClipboard;
+                SdlMappingDialog.ReadClipboard = () => null;
+                try
+                {
+                    const string t16000m = "030000004f04000002b4000000000000";
+                    drawing.PictureWindow(new SdlMappingDialog(SdlMappingDialog.Mode.Paste, "T.16000M", "03001a2b4f04000002b4000000000000", new[] { "Xbox #1" },
+                        t16000m + ",T.16000M Gamepad,a:b0,b:b1,x:b2,y:b3,back:b8,start:b9,leftx:a0,lefty:a1,rightx:a5,righty:a2,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Windows,"),
+                        "dialog-sdl-paste.png");
+                    drawing.PictureWindow(new SdlMappingDialog(SdlMappingDialog.Mode.Paste, "T.16000M", "03001a2b4f04000002b4000000000000", new[] { "Xbox #1" },
+                        t16000m + ",T.16000M,a:b0,platform:Linux,"), "dialog-sdl-paste-refused.png");
+                    var find = new SdlMappingDialog(SdlMappingDialog.Mode.Find, "Arcade Stick", "030000000d0f00009900000000000000", new[] { "Xbox #1" });
+                    PadForge.Common.Input.SdlMappingRow FindRow(string text)
+                    {
+                        PadForge.Common.Input.SdlMappingRow.TryParse(text, out var row, out _);
+                        return row;
+                    }
+                    find.SetRows(new List<PadForge.Services.SdlFindRow>
+                    {
+                        new(FindRow("030000000d0f00009200000000000000,HORI Fighting Stick mini 4,a:b1,b:b2,platform:Windows,"), PadForge.Common.Input.SdlMappingSource.Community, false)
+                            { Detail = "The community copy built in, September 24, 2026" },
+                        new(FindRow("030000000d0f00008500000000000000,HORI Fighting Commander,a:b1,b:b2,platform:Windows,"), PadForge.Common.Input.SdlMappingSource.Sdl, false)
+                            { Detail = "SDL" },
+                        new(FindRow("030000000d0f0000a000000000000000,HORI Fighting Stick Alpha,a:b1,b:b2,platform:Windows,"), PadForge.Common.Input.SdlMappingSource.Downloaded, false)
+                            { Detail = "Downloaded November 24, 2026" },
+                    });
+                    drawing.PictureWindow(find, "dialog-sdl-find.png");
+                    drawing.PictureWindow(new SdlMappingDialog(SdlMappingDialog.Mode.Guess, "Pedal Box", null, new[] { "Xbox #1" },
+                        "8f0c1d2e000040008000000000000001,Pedal Box,a:b0,b:b1,leftx:a0,lefty:a1,lefttrigger:a2,righttrigger:a5,platform:Windows,"),
+                        "dialog-sdl-guess.png");
+                    drawing.PictureWindow(new SdlMappingDialog(SdlMappingDialog.Mode.AddRows, null, null, null,
+                        t16000m + ",T.16000M,a:b0,b:b1,platform:Windows,\n030000000d0f00009200000000000000,Arcade Stick,a:b1,platform:Windows,\n030000000d0f00009200000000000000,Arcade Stick,a:b1,platform:Mac OS X,"),
+                        "dialog-sdl-addrows.png");
+                }
+                finally
+                {
+                    SdlMappingDialog.ReadClipboard = readClipboard;
+                }
+
                 drawing.PictureWindow(new CopyFromDialog(new[]
                 {
                     new CopyFromDialog.DeviceEntry { Name = "Xbox #2", Detail = "DualSense Wireless Controller" },

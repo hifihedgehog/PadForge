@@ -212,6 +212,45 @@ namespace PadForge.Tests
             serializer.Serialize(writer, new SettingsFileData { AppSettings = app, ControllerDatabase = section });
         }
 
+        /// <summary>The user's own rows (#600) go into the file beside the
+        /// downloaded ones and come back through the real load, and a section
+        /// another pin stored keeps them while its downloaded rows are judged
+        /// again: a new release does not judge a row of the user's.</summary>
+        [Fact]
+        public void TheUsersRows_SurviveTheLoad_AndAnotherPin()
+        {
+            var savedMine = ControllerDatabaseMine.Current;
+            try
+            {
+                var section = RealSection(out _, out _);
+                var data = section.ToData();
+                data.BaselinePin = new string('9', 40);
+                data.Mine = new[]
+                {
+                    new ControllerDatabaseMineData { Added = "2030-01-02T03:04:05Z", Old = string.Empty, Mapped = Guid.Empty.ToString(),
+                        Text = "050057564c050000e60c000000006800,Mine,a:b1,platform:Windows," },
+                };
+                string path = TempFile();
+                var (_, settings) = Arrange();
+                WriteFile(path, data);
+                PathField.SetValue(settings, path);
+                settings.Reload();
+
+                var mine = Assert.Single(ControllerDatabaseMine.Current.Rows);
+                Assert.Equal("050057564c050000e60c000000006800", mine.Id);
+                Assert.Equal(string.Empty, mine.OldRow);
+                Assert.Equal(new[] { Guid.Empty.ToString() }, mine.Mapped);
+
+                Assert.True(settings.SaveToFile(path));
+                var element = Assert.Single(XDocument.Load(path).Root.Elements(), e => e.Name.LocalName == "ControllerDatabase");
+                Assert.Single(element.Elements(), e => e.Name.LocalName == "Mine");
+            }
+            finally
+            {
+                ControllerDatabaseMine.Current = savedMine;
+            }
+        }
+
         /// <summary>The prune a new version owes, through the real load: a
         /// section another build stored is read against this build's
         /// baseline, and the reload re-arms the save after its own dirty
@@ -257,7 +296,7 @@ namespace PadForge.Tests
             const string rearm = "if (_controllerDatabaseChangedOnLoad) { _controllerDatabaseChangedOnLoad = false; MarkDirty(); }";
             Assert.Contains(rearm, FenceSource.Body(service, "public void Initialize()"), StringComparison.Ordinal);
             Assert.Contains(rearm, FenceSource.Body(service, "public void Reload()"), StringComparison.Ordinal);
-            Assert.Contains("data.ControllerDatabase = SettingsManager.ControllerDatabase?.ToData();",
+            Assert.Contains("data.ControllerDatabase = ControllerDatabaseSection.Compose(SettingsManager.ControllerDatabase, ControllerDatabaseMine.Current);",
                 FenceSource.Body(service, "public bool SaveToFile(string filePath)"), StringComparison.Ordinal);
         }
 

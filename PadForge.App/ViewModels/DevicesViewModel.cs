@@ -22,7 +22,11 @@ namespace PadForge.ViewModels
             // button (#557). The page lives as long as the app.
             PadForge.Common.Input.Peripherals.PeripheralLightMaps.Changed += OnKeyLightsChanged;
             PadForge.Common.Input.Peripherals.PeripheralOutputs.LinksChanged += OnKeyLightsChanged;
+            SdlMapping = new SdlMappingCard(this);
         }
+
+        /// <summary>The SDL Mapping card under Test Inputs (#600 item 45).</summary>
+        public SdlMappingCard SdlMapping { get; }
 
         /// <summary>Raised on a backend's or the link pass's thread.</summary>
         private void OnKeyLightsChanged()

@@ -1333,6 +1333,53 @@ namespace PadForge.ViewModels
         /// <summary>The row's reset: the downloaded rows go.</summary>
         public event EventHandler ControllerDatabaseResetRequested;
 
+        // The user's own rows (#600 item 49), under the row's More.
+        private Func<string> _controllerDatabaseMine;
+        private Func<System.Threading.Tasks.Task> _clearControllerDatabaseMine;
+        private Func<System.Collections.Generic.IReadOnlyList<PadForge.Common.Input.SdlMappingRow>, System.Threading.Tasks.Task<int>> _addControllerDatabaseRows;
+
+        /// <summary>The Your Rows line: how many rows of the user's there are
+        /// and that they win.</summary>
+        public string ControllerDatabaseMineStatus => _controllerDatabaseMine?.Invoke() ?? string.Empty;
+
+        /// <summary>Whether the user has rows of their own, so Clear shows.</summary>
+        public bool HasControllerDatabaseMine => PadForge.Common.Input.ControllerDatabaseMine.Current.Count > 0;
+
+        /// <summary>Sets what the Your Rows line reads and what its buttons
+        /// do.</summary>
+        internal void SetControllerDatabaseMine(Func<string> status, Func<System.Threading.Tasks.Task> clear,
+            Func<System.Collections.Generic.IReadOnlyList<PadForge.Common.Input.SdlMappingRow>, System.Threading.Tasks.Task<int>> add)
+        {
+            _controllerDatabaseMine = status;
+            _clearControllerDatabaseMine = clear;
+            _addControllerDatabaseRows = add;
+            RaiseControllerDatabaseMine();
+        }
+
+        /// <summary>The user's rows changed: the line and Clear are read
+        /// again.</summary>
+        internal void RaiseControllerDatabaseMine()
+        {
+            OnPropertyChanged(nameof(ControllerDatabaseMineStatus));
+            OnPropertyChanged(nameof(HasControllerDatabaseMine));
+            _clearControllerDatabaseMineCommand?.NotifyCanExecuteChanged();
+        }
+
+        private CommunityToolkit.Mvvm.Input.AsyncRelayCommand _clearControllerDatabaseMineCommand;
+
+        /// <summary>Clear: every row of the user's goes, each device getting
+        /// back the reading it had before.</summary>
+        public CommunityToolkit.Mvvm.Input.AsyncRelayCommand ClearControllerDatabaseMineCommand =>
+            _clearControllerDatabaseMineCommand ??= new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(
+                () => _clearControllerDatabaseMine?.Invoke() ?? System.Threading.Tasks.Task.CompletedTask,
+                () => HasControllerDatabaseMine);
+
+        /// <summary>Keeps rows a person added from a file or the clipboard
+        /// as theirs. Answers how many were kept.</summary>
+        internal System.Threading.Tasks.Task<int> AddControllerDatabaseRows(
+            System.Collections.Generic.IReadOnlyList<PadForge.Common.Input.SdlMappingRow> rows) =>
+            _addControllerDatabaseRows?.Invoke(rows) ?? System.Threading.Tasks.Task.FromResult(0);
+
         private bool _batteryNotifyEnabled = true;
 
         /// <summary>Low-battery notification master toggle (#293), default on.</summary>

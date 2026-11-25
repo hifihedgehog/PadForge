@@ -25,10 +25,11 @@ namespace PadForge.Services
     /// the section in memory and marks the settings changed, and the
     /// ordinary save puts it in PadForge.xml.</para>
     /// </summary>
-    internal sealed class ControllerDatabaseController : IDisposable
+    internal sealed partial class ControllerDatabaseController : IDisposable
     {
         private readonly MainViewModel _vm;
         private readonly Action _markDirty;
+        private readonly Action _refreshDevices;
         private readonly CancellationTokenSource _cts = new();
         private bool _disposed;
         /// <summary>The download running now.</summary>
@@ -45,10 +46,11 @@ namespace PadForge.Services
         internal TimeZoneInfo Zone = TimeZoneInfo.Local;
         internal Action<string> Log = line => PadForge.Engine.SdlDiagLog.WriteLine(line);
 
-        public ControllerDatabaseController(MainViewModel vm, Action markDirty)
+        public ControllerDatabaseController(MainViewModel vm, Action markDirty, Action refreshDevices = null)
         {
             _vm = vm ?? throw new ArgumentNullException(nameof(vm));
             _markDirty = markDirty ?? throw new ArgumentNullException(nameof(markDirty));
+            _refreshDevices = refreshDevices ?? (() => { });
         }
 
         private SettingsViewModel Settings => _vm.Settings;
@@ -63,6 +65,7 @@ namespace PadForge.Services
             Settings.UpdateControllerDatabaseRequested += _onUpdate;
             Settings.ControllerDatabaseResetRequested += _onReset;
             Settings.SetControllerDatabaseStatus(StatusText);
+            StartDevices();
         }
 
         private string StatusText()
@@ -162,19 +165,14 @@ namespace PadForge.Services
             Log("MAPPINGS database update stored: " + stored.NewRows + " new, " + stored.ChangedRows + " changed, of "
                 + download.Rows.Count + " accepted rows, SHA-256 " + download.Sha256);
             Settings.RaiseControllerDatabaseStatus();
-            bool anyNew = stored.NewRows > 0, anyChanged = stored.ChangedRows > 0;
-            if (anyNew || anyChanged)
-                Settings.SetControllerDatabaseResult(() => WhenItApplies(anyNew, anyChanged));
-        }
-
-        /// <summary>When the stored rows take effect, a sentence a line for
-        /// each kind stored.</summary>
-        private static string WhenItApplies(bool anyNew, bool anyChanged)
-        {
-            var lines = new List<string>(2);
-            if (anyNew) lines.Add(Strings.Instance.ControllerDatabase_NewApplies);
-            if (anyChanged) lines.Add(Strings.Instance.ControllerDatabase_ChangedApplies);
-            return string.Join(Environment.NewLine, lines);
+            if (stored.NewRows > 0 || stored.ChangedRows > 0)
+            {
+                Settings.SetControllerDatabaseResult(() => Strings.Instance.ControllerDatabase_InUseAtOnce);
+                // In use at once (#600): the changed rows replace the
+                // community copy's in SDL now, and the new rows are offered
+                // to the joysticks SDL reads as joysticks now.
+                _ = ApplyDownloadAsync(stored, baseline);
+            }
         }
 
         /// <summary>The row's reset: empties the section, and ends a
@@ -194,6 +192,7 @@ namespace PadForge.Services
             _disposed = true;
             if (_onUpdate != null) Settings.UpdateControllerDatabaseRequested -= _onUpdate;
             if (_onReset != null) Settings.ControllerDatabaseResetRequested -= _onReset;
+            StopDevices();
             // A running download disposes its own linked source when it ends.
             _cts.Cancel();
             _cts.Dispose();

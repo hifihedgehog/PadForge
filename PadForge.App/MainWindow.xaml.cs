@@ -2744,7 +2744,8 @@ namespace PadForge
             _updateController = new Services.UpdateController(_viewModel, ExitForUpdate);
             _updateController.Start();
             // The Controller Database row of the same card (#597).
-            _controllerDatabaseController = new Services.ControllerDatabaseController(_viewModel, _settingsService.MarkDirty);
+            _controllerDatabaseController = new Services.ControllerDatabaseController(_viewModel, _settingsService.MarkDirty,
+                () => _inputService?.RefreshDeviceList());
             _controllerDatabaseController.Start();
         }
 

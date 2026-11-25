@@ -508,8 +508,9 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Check for Updates Automatically (Updates): switch, free. `settings/GeneralGroup/Settings_CheckForUpdates`
 - Install Updates Automatically (Updates): switch, free. `settings/GeneralGroup/Settings_InstallUpdatesAutomatically`
 - Include Pre-Releases (Updates): switch, free. `settings/GeneralGroup/Settings_IncludePreReleases`
-- Update Now Controller Database (Updates): action, free. `settings.action/GeneralGroup/Settings_ControllerDatabaseUpdateNow#Settings_ControllerDatabase`
+- Update Now Controller Database (Updates): action, asks. `settings.action/GeneralGroup/Settings_ControllerDatabaseUpdateNow#Settings_ControllerDatabase`
 - Controller Database (Updates): setting, free. `settings/GeneralGroup/Settings_ControllerDatabase`
+- Add Rows From a File or the Clipboard… Your Rows (Updates): action, free, under More. `settings.action/ControllerDatabaseMore/ControllerDatabase_AddRows#ControllerDatabase_YourRows`
 - Input Engine: card, free. `settings.card/InputGroup/Settings_InputEngine`
 - Auto-Start Engine on Launch (Input Engine): switch, free. `settings/InputGroup/Settings_AutoStart`
 - Continue Polling When Window Loses Focus (Input Engine): switch, free. `settings/InputGroup/Settings_BackgroundPolling`
@@ -769,6 +770,14 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Test Rumble: action, free. `devices.action/TestRumbleButton/Pad_TestRumble`
 - Clear Mod Effects: action, free. `devices.action/IdentityCard/Devices_ClearModEffects`
 - Test Inputs: card, free. `devices.card/TestCard/Devices_RawInputState`
+- SDL Mapping: card, free. `devices.card/SdlMappingCard/SdlMapping_Title`
+- Copy SDL Mapping (SDL Mapping): action, free. `devices.action/SdlMappingCard/SdlMapping_Copy`
+- Remove Mine (SDL Mapping): action, free. `devices.action/SdlMappingCard/SdlMapping_RemoveMine`
+- Paste SDL Mapping… (SDL Mapping): action, free. `devices.action/SdlMappingCard/SdlMapping_Paste`
+- Find a Mapping… (SDL Mapping): action, free. `devices.action/SdlMappingCard/SdlMapping_Find`
+- Guess a Layout (SDL Mapping): action, free. `devices.action/SdlMappingCard/SdlMapping_Guess`
+- Map Again (SDL Mapping): action, free, under More. `devices.action/SdlMappingMore/SdlMapping_MapAgain`
+- Community Database Page (SDL Mapping): action, asks (OpensPlace), under More. `devices.action/SdlMappingMore/SdlMapping_CommunityLink`
 - Settings: card, free. `devices.card/SettingsCard/Devices_SettingsCard`
 - Hide from Games (HidHide) (Settings): switch, asks (Drivers). `devices/HidingRows/Devices_HideFromGames`
 - Consume Mapped Inputs (Hooks) (Settings): switch, free. `devices/HidingRows/Devices_ConsumeMapped`
@@ -1020,6 +1029,13 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Set a Password: dialog, yours-alone. `dialog.dialog/RemoteLinkPasswordDialog/RemoteLink_PasswordSetTitle`
 - Cancel: action, yours-alone. `dialog.action/RemoteLinkPasswordDialog/CancelButton/Common_Cancel`
 - OK: action, yours-alone. `dialog.action/RemoteLinkPasswordDialog/OkButton/Common_OK`
+
+### SdlMappingDialog
+
+- Paste an SDL Mapping: dialog, free. `dialog.dialog/SdlMappingDialog/SdlMappingDialog_Title`
+- Open a File…: action, free. `dialog.action/SdlMappingDialog/OpenFileButton/SdlMappingDialog_OpenFile`
+- Cancel: action, free. `dialog.action/SdlMappingDialog/Common_Cancel`
+- Paste: action, free. `dialog.action/SdlMappingDialog/PrimaryButton/SdlMappingDialog_Paste`
 
 ### SearchPanel
 

@@ -1499,6 +1499,59 @@ namespace PadForge.Tests
                 vm.ClearRawState();
                 Pick(null);
             });
+
+            // The SDL Mapping card (#600 item 45) in the Device-Panel board's
+            // three states: a gamepad SDL knows, a row of the user's, and a
+            // joystick no database knows. Its More holds the row and the
+            // table beside Xbox #1's rows.
+            var card = vm.SdlMapping;
+            var xboxOne = new[] { new SdlControllerChoice(0, "Xbox #1") };
+            PadForge.Common.Input.SdlMappingRow SdlRow(string text)
+            {
+                PadForge.Common.Input.SdlMappingRow.TryParse(text, out var row, out _);
+                return row;
+            }
+            var held = SdlRow("050057564c050000e60c000000006800,DualSense Wireless Controller,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,"
+                + "guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,misc1:b14,rightshoulder:b5,rightstick:b11,righttrigger:a4,"
+                + "rightx:a2,righty:a5,start:b9,touchpad:b13,x:b0,y:b3,platform:Windows,");
+            var lines = new List<PadForge.Common.Input.SdlPlaceLine>
+            {
+                new("A", "A", "a", "a: b1", false),
+                new("B", "X", "b", "b: b2", true),
+                new("Left Stick X", "Left Stick X", "leftx", "leftx: a0", false),
+                new("Guide", "Guide", "guide", "guide: b12", false),
+            };
+            var gamepadFacts = new PadForge.Services.SdlCardFacts(PadForge.Services.SdlReading.Gamepad, "DualSense Wireless Controller",
+                "050057564c050000e60c000000006800", PadForge.Common.Input.SdlMappingSource.Sdl, null, held,
+                held.With(guid: "050000004c050000e60c000000006800").Text, null,
+                new[] { ("Xbox #1", (IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)lines) }, new[] { "misc1", "touchpad" }, "Xbox #1");
+            Shot("devices-1280-sdl-gamepad.png", PageWidth, 1700, () =>
+            {
+                PickDualSense();
+                card.Show(gamepadFacts, xboxOne);
+            });
+            Shot("devices-1280-sdl-more.png", PageWidth, 2100, () => ((System.Windows.Controls.Expander)page.FindName("SdlMappingMore")).IsExpanded = true);
+            ((System.Windows.Controls.Expander)page.FindName("SdlMappingMore")).IsExpanded = false;
+            var yours = SdlRow("030000004f04000002b4000000000000,T.16000M Gamepad,a:b0,b:b1,x:b2,y:b3,back:b8,start:b9,leftx:a0,lefty:a1,rightx:a5,righty:a2,"
+                + "dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Windows,");
+            var mineRow = new PadForge.Common.Input.ControllerDatabaseMineRow("03001a2b4f04000002b4000000000000", yours.With(guid: "03001a2b4f04000002b4000000000000"),
+                new DateTime(2026, 11, 24, 14, 17, 35, DateTimeKind.Utc), null, Guid.Empty, Array.Empty<PadForge.Common.Input.ControllerDatabaseBefore>());
+            Shot("devices-1280-sdl-yours.png", PageWidth, 1500, () =>
+            {
+                vm.ClearRawState();
+                Pick(vm.Devices.Single(d => d.DeviceName == "T.16000M"));
+                card.Show(new PadForge.Services.SdlCardFacts(PadForge.Services.SdlReading.Gamepad, "T.16000M Gamepad", "03001a2b4f04000002b4000000000000",
+                    PadForge.Common.Input.SdlMappingSource.Yours, "November 24, 2026", yours, yours.Text, mineRow,
+                    Array.Empty<(string, IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)>(), Array.Empty<string>(), "Xbox #1"), xboxOne);
+            });
+            Shot("devices-1280-sdl-joystick.png", PageWidth, 1500, () =>
+            {
+                card.Show(new PadForge.Services.SdlCardFacts(PadForge.Services.SdlReading.Joystick, null, "03001a2b4f04000002b4000000000000",
+                    PadForge.Common.Input.SdlMappingSource.None, null, null, null, null,
+                    Array.Empty<(string, IReadOnlyList<PadForge.Common.Input.SdlPlaceLine>)>(), Array.Empty<string>(), null),
+                    Array.Empty<SdlControllerChoice>());
+            });
+            card.Show(PadForge.Services.SdlCardFacts.Nothing, Array.Empty<SdlControllerChoice>());
         }
 
         /// <summary>The app, for its resources alone. WPF queues an

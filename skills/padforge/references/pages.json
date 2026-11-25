@@ -5275,7 +5275,7 @@
     "card": "Updates",
     "words": "Update Now Controller Database",
     "kind": "action",
-    "reach": "free",
+    "reach": "asks",
     "why": null,
     "under_more": false
   },
@@ -5289,6 +5289,17 @@
     "reach": "free",
     "why": null,
     "under_more": false
+  },
+  {
+    "id": "settings.action/ControllerDatabaseMore/ControllerDatabase_AddRows#ControllerDatabase_YourRows",
+    "page": "Settings",
+    "place": "",
+    "card": "Updates",
+    "words": "Add Rows From a File or the Clipboard… Your Rows",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": true
   },
   {
     "id": "settings.card/InputGroup/Settings_InputEngine",
@@ -7623,6 +7634,94 @@
     "under_more": false
   },
   {
+    "id": "devices.card/SdlMappingCard/SdlMapping_Title",
+    "page": "Devices",
+    "place": "",
+    "card": null,
+    "words": "SDL Mapping",
+    "kind": "card",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/SdlMappingCard/SdlMapping_Copy",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Copy SDL Mapping",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/SdlMappingCard/SdlMapping_RemoveMine",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Remove Mine",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/SdlMappingCard/SdlMapping_Paste",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Paste SDL Mapping…",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/SdlMappingCard/SdlMapping_Find",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Find a Mapping…",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/SdlMappingCard/SdlMapping_Guess",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Guess a Layout",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "devices.action/SdlMappingMore/SdlMapping_MapAgain",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Map Again",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": true
+  },
+  {
+    "id": "devices.action/SdlMappingMore/SdlMapping_CommunityLink",
+    "page": "Devices",
+    "place": "",
+    "card": "SDL Mapping",
+    "words": "Community Database Page",
+    "kind": "action",
+    "reach": "asks",
+    "why": "OpensPlace",
+    "under_more": true
+  },
+  {
     "id": "devices.card/SettingsCard/Devices_SettingsCard",
     "page": "Devices",
     "place": "",
@@ -9500,6 +9599,50 @@
     "words": "OK",
     "kind": "action",
     "reach": "yours-alone",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.dialog/SdlMappingDialog/SdlMappingDialog_Title",
+    "page": "Dialogs",
+    "place": "SdlMappingDialog",
+    "card": null,
+    "words": "Paste an SDL Mapping",
+    "kind": "dialog",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/SdlMappingDialog/OpenFileButton/SdlMappingDialog_OpenFile",
+    "page": "Dialogs",
+    "place": "SdlMappingDialog",
+    "card": null,
+    "words": "Open a File…",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/SdlMappingDialog/Common_Cancel",
+    "page": "Dialogs",
+    "place": "SdlMappingDialog",
+    "card": null,
+    "words": "Cancel",
+    "kind": "action",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
+    "id": "dialog.action/SdlMappingDialog/PrimaryButton/SdlMappingDialog_Paste",
+    "page": "Dialogs",
+    "place": "SdlMappingDialog",
+    "card": null,
+    "words": "Paste",
+    "kind": "action",
+    "reach": "free",
     "why": null,
     "under_more": false
   },

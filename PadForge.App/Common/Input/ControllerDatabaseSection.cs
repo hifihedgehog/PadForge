@@ -184,6 +184,9 @@ namespace PadForge.Common.Input
             changed = false;
             if (data == null) return null;
             if (baseline == null) throw new ArgumentNullException(nameof(baseline));
+            // An element that holds only the user's own rows (#600) holds
+            // no download.
+            if (data.FetchedUtc == null && data.Source == null && (data.Rows == null || data.Rows.Length == 0)) return null;
             if (!DateTime.TryParseExact(data.FetchedUtc, TimeFormat, CultureInfo.InvariantCulture,
                     DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out DateTime fetched))
             {
@@ -232,6 +235,21 @@ namespace PadForge.Common.Input
                 || !string.Equals(appVersion ?? string.Empty, data.AppVersion ?? string.Empty, StringComparison.Ordinal))
                 changed = true;
             return new ControllerDatabaseSection(fetched, etag, sha256, windowsRows, baseline.PinCommit, appVersion, rows);
+        }
+
+        /// <summary>The element the settings file holds for the downloaded
+        /// rows and the user's own (#600), or null, which leaves it out,
+        /// when there are neither.</summary>
+        internal static ControllerDatabaseData Compose(ControllerDatabaseSection section, ControllerDatabaseMine mine)
+        {
+            var data = section?.ToData();
+            var rows = mine?.ToData();
+            var owed = mine?.PutBacksData();
+            if (rows == null && owed == null) return data;
+            data ??= new ControllerDatabaseData();
+            data.Mine = rows;
+            data.PutBack = owed;
+            return data;
         }
 
         /// <summary>The section as the settings file holds it.</summary>

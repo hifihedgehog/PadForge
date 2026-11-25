@@ -664,7 +664,10 @@
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_ControllerDatabase, Source={x:Static strings:Strings.Instance}}"
                                                    ToolTip="{Binding Settings_ControllerDatabaseDesc, Source={x:Static strings:Strings.Instance}}"/>
-                                        <Button Command="{Binding UpdateControllerDatabaseCommand}"
+                                        <!-- The download runs only when the user asks (#600):
+                                             a program's press asks first. -->
+                                        <Button Command="{Binding UpdateControllerDatabaseCommand}" common:Reach.Class="Asks"
+                                                AutomationProperties.AutomationId="Settings_ControllerDatabase_UpdateNow"
                                                 ToolTip="{Binding Settings_ControllerDatabaseDesc, Source={x:Static strings:Strings.Instance}}">
                                             <Button.Style>
                                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -698,6 +701,32 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
+                                    <!-- The user's own rows (#600 item 49), for many devices at
+                                         once: from a file or the clipboard, kept in PadForge.xml
+                                         apart from the download, winning for their devices.
+                                         Clear takes them all away. -->
+                                    <controls:MoreRow x:Name="ControllerDatabaseMore" StateKey="Settings.General.ControllerDatabase.More" Margin="0"
+                                                      AutomationProperties.AutomationId="Settings_More_ControllerDatabase"
+                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                      Hint="{Binding Settings_More_ControllerDatabase, Source={x:Static strings:Strings.Instance}}">
+                                        <StackPanel Margin="-20,-8,-12,-12">
+                                            <controls:SettingItem Rule="{x:Null}">
+                                                <controls:SettingRow MinHeight="44">
+                                                    <TextBlock Style="{StaticResource DzLabel}" Text="{Binding ControllerDatabase_YourRows, Source={x:Static strings:Strings.Instance}}"
+                                                               ToolTip="{Binding ControllerDatabase_YourRowsTip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <Button Content="{Binding ControllerDatabase_AddRows, Source={x:Static strings:Strings.Instance}}"
+                                                            Click="AddDatabaseRows_Click" Margin="0,4,0,4"
+                                                            AutomationProperties.AutomationId="Settings_ControllerDatabase_AddRows"/>
+                                                    <Button Content="{Binding Common_Clear, Source={x:Static strings:Strings.Instance}}"
+                                                            Command="{Binding ClearControllerDatabaseMineCommand}" Margin="12,4,0,4"
+                                                            Visibility="{Binding HasControllerDatabaseMine, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                            AutomationProperties.AutomationId="Settings_ControllerDatabase_ClearMine"/>
+                                                    <TextBlock Style="{StaticResource RowStatus}" common:LiveText.Polite="True" Text="{Binding ControllerDatabaseMineStatus}"
+                                                               Typography.NumeralAlignment="Tabular"/>
+                                                </controls:SettingRow>
+                                            </controls:SettingItem>
+                                        </StackPanel>
+                                    </controls:MoreRow>
                                 </controls:SettingItem>
                             </StackPanel>
                         </Border>

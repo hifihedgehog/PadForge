@@ -1013,7 +1013,7 @@ namespace PadForge.Tests
             }, resets);
 
             var keys = all.Select(e => Attr(e, "StateKey")).Where(v => v != null).OrderBy(v => v, StringComparer.Ordinal);
-            Assert.Equal(new[] { "Devices.Details", "Devices.NotConnected", "Devices.TestInputs.More" }, keys);
+            Assert.Equal(new[] { "Devices.Details", "Devices.NotConnected", "Devices.SdlMapping.More", "Devices.TestInputs.More" }, keys);
 
             foreach (string gone in new[] { "Effect=\"", "Property=\"Effect\"", "DropShadowEffect", "ClickBorder", "UpperConverter", "SectionEyebrow" })
                 Assert.DoesNotContain(gone, text);

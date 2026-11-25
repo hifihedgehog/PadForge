@@ -148,9 +148,8 @@ namespace PadForge.Tests
 
             Assert.Equal(Updated(316, "2026-11-22", 2, 1), h.Settings.ControllerDatabaseStatus);
             Assert.Contains(nameof(SettingsViewModel.ControllerDatabaseStatus), raised);
-            // Both kinds were stored, so the line under the row says when each takes effect.
-            Assert.Equal(Strings.Instance.ControllerDatabase_NewApplies + Environment.NewLine + Strings.Instance.ControllerDatabase_ChangedApplies,
-                h.Settings.ControllerDatabaseResult);
+            // Rows were stored, and they are in use at once (#600).
+            Assert.Equal(Strings.Instance.ControllerDatabase_InUseAtOnce, h.Settings.ControllerDatabaseResult);
             Assert.False(h.Settings.ControllerDatabaseResultIsWarning);
             Assert.False(h.Settings.IsControllerDatabaseUpdating);
             Assert.Contains(h.Log, l => l.Contains("stored: 2 new, 1 changed", StringComparison.Ordinal));
@@ -168,7 +167,7 @@ namespace PadForge.Tests
             await h.Controller.UpdateAsync();
             Assert.Equal(h.Now, SettingsManager.ControllerDatabase.FetchedUtc);
             Assert.Equal(Updated(316, "2026-11-23", 1, 0), h.Settings.ControllerDatabaseStatus);
-            Assert.Equal(Strings.Instance.ControllerDatabase_NewApplies, h.Settings.ControllerDatabaseResult);
+            Assert.Equal(Strings.Instance.ControllerDatabase_InUseAtOnce, h.Settings.ControllerDatabaseResult);
         }
 
         [Fact]
@@ -523,7 +522,7 @@ namespace PadForge.Tests
             }), baseline);
             var section = ControllerDatabaseSection.FromDownload(download, null, new DateTime(2026, 11, 23, 14, 17, 35, DateTimeKind.Utc),
                 baseline, "6.0.1", null);
-            Assert.Equal("Built in: 315 mappings, community copy of 2026-09-24. Updated 2026-11-23: 4 new, 1 changed.",
+            Assert.Equal("Built in: 315 mappings, community copy of 2026-09-24. Downloaded 2026-11-23: 4 new rows, 1 changed.",
                 InEnglish(() => ControllerDatabaseStatus.Facts(baseline, own, section, TimeZoneInfo.Utc)));
             Assert.Equal(string.Empty, ControllerDatabaseStatus.Facts(null, own, section, TimeZoneInfo.Utc));
         }

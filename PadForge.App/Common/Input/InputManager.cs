@@ -1450,7 +1450,7 @@ namespace PadForge.Common.Input
         /// </summary>
         private static void LoadEmbeddedGamepadMappings()
         {
-            int applied = 0, changed = 0;
+            int applied = 0, changed = 0, mine = 0;
             try
             {
                 var own = ControllerDatabaseUse.OwnRows;
@@ -1473,6 +1473,14 @@ namespace PadForge.Common.Input
                     if (i < fromDatabase) changed++;
                     else applied++;
                 }
+                // The user's own rows last (#600), so each stands for its
+                // device over every row PadForge gives SDL. What SDL holds
+                // for a row's ID, PadForge's own rows included, is learned
+                // first for a row added while the engine was stopped.
+                try { ControllerDatabaseEngine.LearnOldRows(); }
+                catch (Exception ex) { Engine.SdlDiagLog.WriteLine("MAPPINGS what SDL held for your rows not read: " + ex.Message); }
+                foreach (string row in ControllerDatabaseMine.Current.SdlRows())
+                    if (SDL_AddGamepadMapping(row) >= 0) mine++;
             }
             catch (Exception ex)
             {
@@ -1491,7 +1499,7 @@ namespace PadForge.Common.Input
             // missing or every line was blank, which is a build
             // misconfiguration worth seeing in a user's log rather than only
             // under a debugger.
-            Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied} database changed applied={changed}");
+            Engine.SdlDiagLog.WriteLine($"MAPPINGS embedded applied={applied} database changed applied={changed} yours applied={mine}");
         }
 
         // ─────────────────────────────────────────────
@@ -2279,6 +2287,7 @@ namespace PadForge.Common.Input
                                     Engine.SdlDiagLog.WriteLine($"STALL idle enum={idleEnumMs}ms");
                             }
                             RetryPendingBlissBoxRows();
+                            RunControllerDatabaseWork();
                             FlydigiReprobeTick();
 
                             // Read input states even in idle mode so the Devices
@@ -2407,6 +2416,7 @@ namespace PadForge.Common.Input
                             enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
                         }
                         RetryPendingBlissBoxRows();
+                        RunControllerDatabaseWork();
                         FlydigiReprobeTick();
                         _pollLoad.Mark(PollStep.Sweep);
 

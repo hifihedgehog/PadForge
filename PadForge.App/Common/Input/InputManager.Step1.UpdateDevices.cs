@@ -247,6 +247,8 @@ namespace PadForge.Common.Input
                     // Track the SDL instance ID with its wrapper.
                     _openedSdlInstanceIds[wrapper.SdlInstanceId] = wrapper;
                     MarkControllerDatabaseRowInUse(databaseRowFirstUsed);
+                    // A row of the user's this device owes a remap for (#600).
+                    NoteUserRowOpened(ud, wrapper);
 
                     MarkChanged(ref changed);
                 }

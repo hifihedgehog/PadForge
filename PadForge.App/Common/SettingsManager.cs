@@ -879,6 +879,10 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
+            // A device SDL does not read, such as a plugin's, laid out by the
+            // user's own SDL row for it (#600).
+            placement ??= Common.Input.ControllerDatabaseMine.PlacementFor(ud);
+
             // SDL3 gamepads (CapType == Gamepad) get auto-mapped using the
             // standardized SDL3 gamepad axis/button order:
             //   Axes: LX(0), LY(1), LT(2), RX(3), RY(4), RT(5)

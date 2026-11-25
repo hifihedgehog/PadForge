@@ -38,6 +38,9 @@ namespace PadForge.Services.Catalog
                 ["RegisterNfcTagDialog"] = (SearchPage.Devices, "RegisterNfcTag_Click"),
                 ["RegisterVoicePhraseDialog"] = (SearchPage.Devices, "ManageVoicePhrases_Click"),
                 ["ShiftActivatorDialog"] = (SearchPage.Pad, "AddShiftLayer_Click"),
+                // Paste, Find and Guess on the SDL Mapping card, and Add Rows on
+                // the Controller Database row, open the one dialog (#600).
+                ["SdlMappingDialog"] = (SearchPage.Devices, "SdlPaste_Click"),
                 // Commands of the page's data, whose button or menu item
                 // names them.
                 ["GetProfilesDialog"] = (SearchPage.Profiles, "GetProfilesCommand"),

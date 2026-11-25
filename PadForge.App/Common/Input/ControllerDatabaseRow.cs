@@ -157,7 +157,7 @@ namespace PadForge.Common.Input
         /// punctuation, symbols and the plain space. No control or format
         /// character, no other kind of space, and no half of a surrogate
         /// pair.</summary>
-        private static bool IsPlainName(string name)
+        internal static bool IsPlainName(string name)
         {
             for (int i = 0; i < name.Length; i++)
             {

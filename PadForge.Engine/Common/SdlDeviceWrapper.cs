@@ -563,8 +563,15 @@ namespace PadForge.Engine
         /// <summary>Whether a device opens through SDL's gamepad mapping:
         /// whenever SDL has one, except for a Bliss-Box port that PadForge
         /// reads raw (<see cref="BlissBoxApi.ReadsRaw"/>, #469).</summary>
-        internal static bool OpensAsGamepad(bool sdlMapsIt, ushort vendorId, ushort productId)
+        public static bool OpensAsGamepad(bool sdlMapsIt, ushort vendorId, ushort productId)
             => sdlMapsIt && !BlissBoxApi.ReadsRaw(vendorId, productId);
+
+        /// <summary>Whether PadForge reads a joystick SDL lists as a joystick
+        /// for the rest of the session, whatever SDL maps (#600): a device
+        /// whose user's row was removed when SDL had read it as a joystick
+        /// before. SDL keeps a mapping once given and has no call that takes
+        /// one away. Null reads none so.</summary>
+        public static Func<uint, bool> ReadsRawThisSession;
 
         /// <summary>
         /// Opens the SDL device with the given instance ID.
@@ -585,7 +592,8 @@ namespace PadForge.Engine
             // Try Gamepad first for better mapping support. A Bliss-Box port
             // opens raw while Read Bliss-Box Adapters is on (#469).
             if (OpensAsGamepad(SDL_IsGamepad(instanceId),
-                    SDL_GetJoystickVendorForID(instanceId), SDL_GetJoystickProductForID(instanceId)))
+                    SDL_GetJoystickVendorForID(instanceId), SDL_GetJoystickProductForID(instanceId))
+                && ReadsRawThisSession?.Invoke(instanceId) != true)
             {
                 GameController = SDL_OpenGamepad(instanceId);
                 Array.Fill(_faceLabels, -1);

@@ -46,12 +46,14 @@ The counts are checked against the ones the fork's generator wrote into the
 community header. A mismatch stops the run.
 
 WHAT IT WRITES: PadForge.App/gamecontrollerdb_baseline.txt, with CRLF line
-endings. The --check and --since-pin modes write nothing.
+endings, and with --drop-own PadForge.App/gamecontrollerdb_padforge.txt. The
+--check and --since-pin modes write nothing else.
 
 Usage:
     python tools/gen_controller_database_baseline.py SDL_FORK COMMUNITY
     python tools/gen_controller_database_baseline.py SDL_FORK COMMUNITY --check
     python tools/gen_controller_database_baseline.py SDL_FORK COMMUNITY --since-pin [REF]
+    python tools/gen_controller_database_baseline.py SDL_FORK COMMUNITY --drop-own [--check]
 
   --fork-commit COMMIT  the fork commit the bundled SDL3.dll files carry
                         (default: the clone's HEAD)
@@ -59,6 +61,8 @@ Usage:
                         run with no community clone at hand (pass "-" for
                         COMMUNITY)
   REF                   what --since-pin compares with (default: origin/master)
+  --drop-own            take out of gamecontrollerdb_padforge.txt each row the
+                        fork now carries word for word (#600), with its comment
 
 Exit status: 0 on success. --check exits 1 when the file differs from what the
 fork gives. --since-pin exits 1 when any Windows row changed since the pin.
@@ -416,6 +420,45 @@ def report(fork, when, rows, entries, usb):
             print("  PadForge's own row %s (%s): SDL maps this ID in its Windows section, and PadForge's row replaces SDL's." % (guid, name))
 
 
+def carried_own_rows(entries):
+    """PadForge's own rows the fork now carries word for word: verdict K and
+    the same hash. Each is a row the release carries twice."""
+    listed = {guid: (digest, verdict) for guid, digest, verdict in entries}
+    carried = []
+    for guid, row in own_rows():
+        digest, verdict = listed.get(guid, (None, None))
+        if verdict == "K" and digest == row_hash(row):
+            carried.append(row)
+    return carried
+
+
+def drop_own_rows(rows):
+    """Takes rows out of gamecontrollerdb_padforge.txt, each with the comment
+    lines right above it and the blank line before them. The file's header
+    and every other row stay as they are. Returns how many went."""
+    if not rows:
+        return 0
+    with open(OWN_ROWS, encoding="utf-8-sig", newline="") as f:
+        text = f.read()
+    newline = "\r\n" if "\r\n" in text else "\n"
+    lines = text.split(newline)
+    drop = set(rows)
+    keep = []
+    gone = 0
+    for line in lines:
+        if line.strip() in drop:
+            gone += 1
+            while keep and keep[-1].startswith("#"):
+                keep.pop()
+            if keep and keep[-1].strip() == "":
+                keep.pop()
+            continue
+        keep.append(line)
+    with open(OWN_ROWS, "w", encoding="utf-8", newline="") as f:
+        f.write(newline.join(keep))
+    return gone
+
+
 def since_pin(fork, community, ref):
     """Counts the Windows rows the community added, changed and removed since
     the pin, and says what Update Now stores for each."""
@@ -477,6 +520,7 @@ def main():
     parser.add_argument("--pin-time")
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--since-pin", nargs="?", const="origin/master", metavar="REF")
+    parser.add_argument("--drop-own", action="store_true")
     args = parser.parse_args()
 
     fork = Fork(args.fork, args.fork_commit)
@@ -485,6 +529,13 @@ def main():
 
     when = pin_time(args.community, fork.pin, args.pin_time)
     rows, entries, usb = fork.entries()
+    if args.drop_own:
+        carried = carried_own_rows(entries)
+        for row in carried:
+            print("dropped from gamecontrollerdb_padforge.txt, the fork carries it: %s" % row.split(",")[1])
+        print("dropped %d rows" % drop_own_rows(carried))
+        # The run goes on to write or check the baseline as it would without
+        # the switch.
     text = baseline_text(fork, when, rows, entries)
     report(fork, when, rows, entries, usb)
     if args.check:

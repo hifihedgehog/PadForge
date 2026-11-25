@@ -1069,7 +1069,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Install and Restart</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Release Notes</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controller Database</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now downloads the community controller database (SDL_GameControllerDB) from GitHub and keeps, in the settings file, the mappings this version of PadForge lacks. A new mapping is used only for a controller that nothing else reads as a gamepad, that is not assigned and that is not in Force Raw Joystick Mode. The reset removes every downloaded mapping.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now downloads the community controller database (SDL_GameControllerDB) from GitHub and keeps, in the settings file, the mappings this version of PadForge lacks. They are in use at once. A new mapping is used only for a controller that nothing else reads as a gamepad, that is not assigned and that is not in Force Raw Joystick Mode. The reset removes every downloaded mapping. Your own rows, under More, stay.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Update Now</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Updating…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Checking for updates…</value></data>
@@ -1098,12 +1098,10 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>The update to PadForge {0} did not finish installing. Install it from Settings to try again.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge was updated to {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built in: {0} mappings, community copy of {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} mappings, community copy of {1}. Updated {2}: {3} new, {4} changed.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built in: {0} mappings, community copy of {1}. Downloaded {2}: {3} new rows, {4} changed.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>The community database has not changed since the last update.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Could not reach GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge refused the download because it is not the controller database it expects. Nothing changed.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A new mapping is used the next time its controller connects.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A changed mapping is used the next time PadForge starts.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Start Minimized</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Start at Login</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -6658,4 +6656,104 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Connected: {0}. Click to open Automation.</value></data>
   <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>On this PC: {0}. From the web: {1}. Click to open Automation.</value></data>
   <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Connected from the web: {0}. Click to open Automation.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL Mapping</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Read as</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>From</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>A gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>A joystick. SDL has no mapping for it.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>A joystick. PadForge reads it raw, so SDL’s mapping is not used.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>A joystick, laid out as a gamepad by your row.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL reads devices while the engine runs.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>The community copy built in, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Downloaded {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge’s own file</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Yours, added {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>The SDL_GAMECONTROLLERCONFIG variable, which SDL holds above any row you add</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Copy SDL Mapping</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Puts the device’s mapping on the clipboard as a row of the community database, under the device’s ID with its checksum and version zeroed.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Paste SDL Mapping…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Takes a row for this device, checks it, keeps it as yours and applies it at once.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Find a Mapping…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Searches every row PadForge carries by name and applies the one you pick to this device, for a clone whose IDs differ.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Guess a Layout</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Guesses a gamepad layout from the device’s axes, buttons and hats, for a device no database knows. Check it in Test Inputs.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Remove Mine</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Remove Mine puts back the row and the controller rows from before.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Map Again</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Makes the device’s rows on each controller it is on again from SDL’s layout, as assigning it does.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Community Database Page</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>The row, and where it differs from {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>The row</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} row</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Its input now</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL’s row says</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>not in SDL’s row</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, differs</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Not used by PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>The row</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Copied.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Copied. SDL’s form cannot hold {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macros</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>curves</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>dead zones</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>keyboard and mouse outputs</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggles and other actions</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} and {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nothing to copy: SDL has no mapping for this device, and it is on no controller.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Another program is using the clipboard. Nothing was copied.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Your row is removed. The device reads as it did before it.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mapped again from SDL’s layout: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>In use now. The row is yours and wins for this device.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kept as yours. It is in use once the engine runs and the device is connected.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kept as yours, but the SDL_GAMECONTROLLERCONFIG variable holds a row for this device, which SDL keeps over yours.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL did not take the row. Nothing changed for this device.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Paste an SDL Mapping</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Paste an SDL Mapping for {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Find a Mapping for {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Guess a Layout for {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Add Rows From a File or the Clipboard</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Paste</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Open a File…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Mapping files (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>The file is over 4 MB. The community’s whole file is about 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Search by name, ID or VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rows PadForge carries</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>No row matches.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>The picked row is applied to {0} under its own ID, through the same check and the same choice as Paste.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL mapping row</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>A row for this device.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>A guessed layout.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} fields, its ID matches this device.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} fields, from the same vendor and product on another bus or version. It is kept under this device’s own ID.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} fields, another device’s row. It is kept under this device’s own ID.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} fields. SDL does not read this device, so PadForge lays out its inputs by the row.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} fields, from the device’s axes, buttons and hats. Check it in Test Inputs, then keep it or change it here.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>This changes how {0} is read. Its rows in {1} are mapped again from the new layout.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>This changes how {0} is read. It is on no controller, so no rows change.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profile shortcuts that read {0} keep the inputs they were set to.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>The row is kept as yours in PadForge.xml and wins over every other source for this device. Remove Mine puts back the old row and the old rows.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>The rows are kept as yours in PadForge.xml and win for their devices over every other source. Clear, under the Controller Database row’s More, removes them.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rows for Windows. {1} for other systems are passed over.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} refused. The first: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Paste a row, or the text of a gamecontrollerdb.txt file.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>The text is no row of SDL’s controller database: an ID of 32 hex digits, a name, then fields such as a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>The rows are for other systems. PadForge reads rows for Windows, or for no system in particular.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>The row’s ID is not a device’s. It needs 32 hex digits.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>The row’s name is empty, over 128 characters, or holds a character SDL reads as a field.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>The row carries a hint or an Android field, which PadForge does not take.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>The row has a field SDL does not know.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>A binding is not in SDL’s form, such as b3, a2, +a2, a2~ or h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>The row gives one field twice.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>The row is over 1,024 characters.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>The row binds no control.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Your Rows</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Your Rows</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rows you add here, or paste on a device’s SDL Mapping card, win for their devices over every other source and stay through the reset.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Add Rows From a File or the Clipboard…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rows, yours over every other source for their devices.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>None yet.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>In use at once.</value></data>
 </root>

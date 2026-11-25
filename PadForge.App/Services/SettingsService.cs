@@ -4838,7 +4838,9 @@ namespace PadForge.Services
                 PadForge.Engine.SdlDiagLog.WriteLine("MAPPINGS database section not read: " + ex.Message);
             }
             SettingsManager.ControllerDatabase = section;
-            if (changed) _controllerDatabaseChangedOnLoad = true;
+            // The user's own rows (#600), read by the paste's own checks.
+            ControllerDatabaseMine.Current = ControllerDatabaseMine.FromData(stored?.Mine, stored?.PutBack, out bool mineChanged);
+            if (changed || mineChanged) _controllerDatabaseChangedOnLoad = true;
             _mainVm.Settings.RaiseControllerDatabaseStatus();
         }
 
@@ -4974,7 +4976,7 @@ namespace PadForge.Services
 
                 // The controller database section (#597). None, and the
                 // element is left out of the file.
-                data.ControllerDatabase = SettingsManager.ControllerDatabase?.ToData();
+                data.ControllerDatabase = ControllerDatabaseSection.Compose(SettingsManager.ControllerDatabase, ControllerDatabaseMine.Current);
 
                 // Serialize to an in-memory buffer first so a serializer
                 // crash mid-write never truncates the on-disk file. The old
@@ -6224,6 +6226,9 @@ namespace PadForge.Services
             // install has none. The section is no part of AppSettingsData,
             // so the rebuild below does not reach it.
             SettingsManager.ControllerDatabase = null;
+            // The user's own rows go too, each giving its device back the
+            // reading it had (#600).
+            ControllerDatabaseController.ForgetAllMine();
             _mainVm.Settings.RaiseControllerDatabaseStatus();
             // Sibling contract from RemoveUserProfile: every _userProfiles
             // mutation reloads the HM catalog, or the Extended profile
@@ -7115,6 +7120,17 @@ namespace PadForge.Services
 
         [XmlElement("Row")]
         public ControllerDatabaseRowData[] Rows { get; set; }
+
+        /// <summary>The user's own rows (#600), apart from the downloaded
+        /// ones: a reset of the download leaves them, and a new release
+        /// does not judge them.</summary>
+        [XmlElement("Mine")]
+        public ControllerDatabaseMineData[] Mine { get; set; }
+
+        /// <summary>Rows from before a removed row of the user's, owed to a
+        /// profile that was not active then (#600).</summary>
+        [XmlElement("PutBack")]
+        public ControllerDatabaseBeforeData[] PutBack { get; set; }
     }
 
     /// <summary>One stored row: its text exactly as the community wrote it,

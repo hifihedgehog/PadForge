@@ -308,6 +308,17 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>Add Rows From a File or the Clipboard (#600 item 49): the
+        /// rows pass the same check a paste does, and are kept as the
+        /// user's.</summary>
+        private async void AddDatabaseRows_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.SettingsViewModel vm) return;
+            var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.AddRows, null, null, null);
+            if (!SdlMappingDialog.Show(dialog, Window.GetWindow(this))) return;
+            await vm.AddControllerDatabaseRows(dialog.PickedRows);
+        }
+
         private void MoveToOwnFolder_Click(object sender, RoutedEventArgs e)
             => PadForge.Services.ExeFolderState.Instance.RequestMove();
 

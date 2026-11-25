@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -809,6 +810,52 @@ namespace PadForge.Views
                 UseShellExecute = true
             });
         }
+
+        // ── SDL Mapping (#600 items 45 to 48) ──
+
+        /// <summary>The card's data, and the host that reaches SDL.</summary>
+        private ViewModels.SdlMappingCard SdlCard => (DataContext as ViewModels.DevicesViewModel)?.SdlMapping;
+
+        private void SdlPaste_Click(object sender, RoutedEventArgs e)
+        {
+            if (SdlCard is not { Host: { } host } card || card.Instance == Guid.Empty) return;
+            var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.Paste, card.DeviceName, SdlGuidOf(card),
+                host.ControllerNames(card.Instance).ToList(), null, PadForge.Services.ControllerDatabaseController.NamedByShortcuts(card.Instance));
+            if (SdlMappingDialog.Show(dialog, Window.GetWindow(this))) _ = card.ApplyAsync(dialog.PickedRow);
+        }
+
+        private async void SdlFind_Click(object sender, RoutedEventArgs e)
+        {
+            if (SdlCard is not { Host: { } host } card || card.Instance == Guid.Empty) return;
+            Guid instance = card.Instance;
+            var rows = await host.AllRowsAsync(instance);
+            if (card.Instance != instance) return;
+            var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.Find, card.DeviceName, SdlGuidOf(card),
+                host.ControllerNames(instance).ToList(), null, PadForge.Services.ControllerDatabaseController.NamedByShortcuts(instance));
+            dialog.SetRows(rows);
+            if (SdlMappingDialog.Show(dialog, Window.GetWindow(this))) await card.ApplyAsync(dialog.PickedRow);
+        }
+
+        private void SdlGuess_Click(object sender, RoutedEventArgs e)
+        {
+            if (SdlCard is not { Host: { } host } card || card.Instance == Guid.Empty) return;
+            var dialog = new SdlMappingDialog(SdlMappingDialog.Mode.Guess, card.DeviceName, SdlGuidOf(card),
+                host.ControllerNames(card.Instance).ToList(), host.GuessRow(card.Instance),
+                PadForge.Services.ControllerDatabaseController.NamedByShortcuts(card.Instance));
+            if (SdlMappingDialog.Show(dialog, Window.GetWindow(this))) _ = card.ApplyAsync(dialog.PickedRow);
+        }
+
+        private void SdlCommunity_Click(object sender, RoutedEventArgs e)
+        {
+            PadForge.Common.ShellLaunch.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = PadForge.Services.ControllerDatabaseController.CommunityPage,
+                UseShellExecute = true
+            });
+        }
+
+        private static string SdlGuidOf(ViewModels.SdlMappingCard card)
+            => PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(card.Instance)?.SdlGuid;
 
         // ── NFC tag registration (issue #150) ──
 

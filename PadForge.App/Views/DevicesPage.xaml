@@ -2285,6 +2285,151 @@
                                 </StackPanel>
                             </Border>
 
+                            <!-- SDL Mapping (#600 item 45), under Test Inputs: how SDL
+                                 reads the device, under what name and ID, and
+                                 where its mapping came from. Copy, Paste, Find
+                                 and Guess act here, and More holds the row and,
+                                 beside each of the picked controller's rows,
+                                 the place SDL's row gives it. A row of the
+                                 user's shows Remove Mine in Paste's place. -->
+                            <Border x:Name="SdlMappingCard" Style="{StaticResource CardBorder}" Padding="20,14,12,12" Margin="0,0,0,12"
+                                    DataContext="{Binding SdlMapping}"
+                                    Visibility="{Binding ShowCard, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource CardTitle}" FontSize="15" Margin="0,0,0,8"
+                                               LineHeight="21.75" LineStackingStrategy="BlockLineHeight"
+                                               Text="{Binding SdlMapping_Title, Source={x:Static strings:Strings.Instance}}"/>
+                                    <DockPanel Margin="0,5">
+                                        <TextBlock Style="{StaticResource DetailKey}" Text="{Binding SdlMapping_ReadAs, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Style="{StaticResource DetailValue}" Text="{Binding ReadAsText, Mode=OneWay}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="0,5" Visibility="{Binding ShowFrom, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Style="{StaticResource DetailKey}" Text="{Binding SdlMapping_From, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Text="{Binding FromText, Mode=OneWay}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource DetailValue}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding FromIsYours}" Value="True">
+                                                            <Setter Property="Foreground" Value="{DynamicResource EmberTextBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DockPanel>
+                                    <!-- The ID is the same token in every language. -->
+                                    <DockPanel Margin="0,5" Visibility="{Binding ShowId, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Style="{StaticResource DetailKey}" Text="{Binding SdlMapping_Id, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBlock Style="{StaticResource DetailValue}" Text="{Binding IdText, Mode=OneWay}"/>
+                                    </DockPanel>
+                                    <controls:FlexLinePanel Gap="8" LineGap="8" Margin="0,10,0,0">
+                                        <Button Content="{Binding SdlMapping_Copy, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                Command="{Binding CopyCommand}"
+                                                ToolTip="{Binding SdlMapping_CopyTip, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding ShowCopy, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                AutomationProperties.AutomationId="Devices_SdlMapping_Copy"/>
+                                        <Button Content="{Binding SdlMapping_RemoveMine, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                Command="{Binding RemoveMineCommand}"
+                                                ToolTip="{Binding SdlMapping_RemoveMineNote, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding HasMine, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                AutomationProperties.AutomationId="Devices_SdlMapping_RemoveMine"/>
+                                        <Button Content="{Binding SdlMapping_Paste, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                Click="SdlPaste_Click"
+                                                ToolTip="{Binding SdlMapping_PasteTip, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding ShowPaste, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                AutomationProperties.AutomationId="Devices_SdlMapping_Paste"/>
+                                        <Button Content="{Binding SdlMapping_Find, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                Click="SdlFind_Click"
+                                                ToolTip="{Binding SdlMapping_FindTip, Source={x:Static strings:Strings.Instance}}"
+                                                AutomationProperties.AutomationId="Devices_SdlMapping_Find"/>
+                                        <Button Content="{Binding SdlMapping_Guess, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                Click="SdlGuess_Click"
+                                                ToolTip="{Binding SdlMapping_GuessTip, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding ShowGuess, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                AutomationProperties.AutomationId="Devices_SdlMapping_Guess"/>
+                                    </controls:FlexLinePanel>
+                                    <TextBlock Style="{StaticResource DeviceSmall}" TextWrapping="Wrap" Margin="0,10,8,0"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Text="{Binding SdlMapping_RemoveMineNote, Source={x:Static strings:Strings.Instance}}"
+                                               Visibility="{Binding HasMine, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <TextBlock common:LiveText.Polite="True" Style="{StaticResource DeviceSmall}" TextWrapping="Wrap" Margin="0,8,8,0"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               Text="{Binding Result, Mode=OneWay}"
+                                               Visibility="{Binding ShowResult, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <controls:MoreRow x:Name="SdlMappingMore" StateKey="Devices.SdlMapping.More"
+                                                      AutomationProperties.AutomationId="Devices_More_SdlMapping"
+                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                                      Hint="{Binding MoreHint}"
+                                                      Visibility="{Binding ShowMore, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Margin="0,4,8,4">
+                                            <ComboBox ItemsSource="{Binding Controllers}" SelectedItem="{Binding PickedController, Mode=TwoWay}"
+                                                      HorizontalAlignment="Left" MinWidth="160" Margin="0,0,0,10"
+                                                      AutomationProperties.Name="{Binding SdlMapping_Controller, Source={x:Static strings:Strings.Instance}}"
+                                                      Visibility="{Binding ShowControllerPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <Grid Visibility="{Binding ShowPlaces, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource DetailKey}" Width="Auto" Text="{Binding PlacesHeader}"/>
+                                                <TextBlock Grid.Column="1" Style="{StaticResource DetailKey}" Width="Auto"
+                                                           Text="{Binding SdlMapping_Col_InputNow, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Grid.Column="2" Style="{StaticResource DetailKey}" Width="Auto"
+                                                           Text="{Binding SdlMapping_Col_RowSays, Source={x:Static strings:Strings.Instance}}"/>
+                                            </Grid>
+                                            <ItemsControl ItemsSource="{Binding Places}" Margin="0,4,0,0" Focusable="False"
+                                                          Visibility="{Binding ShowPlaces, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,3" AutomationProperties.Name="{Binding ReadName}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding Target}"/>
+                                                            <TextBlock Grid.Column="1" Style="{StaticResource DetailValue}" Text="{Binding Input}"/>
+                                                            <TextBlock Grid.Column="2" Text="{Binding RowSays}">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource DetailValue}">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding Differs}" Value="True">
+                                                                                <Setter Property="Foreground" Value="{DynamicResource WaitBrush}"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock Style="{StaticResource DeviceSmall}" TextWrapping="Wrap" Margin="0,8,0,0"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       Text="{Binding UnusedText, Mode=OneWay}"
+                                                       Visibility="{Binding ShowUnused, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <TextBlock Style="{StaticResource DetailKey}" Width="Auto" Margin="0,10,0,4"
+                                                       Text="{Binding SdlMapping_TheRow, Source={x:Static strings:Strings.Instance}}"
+                                                       Visibility="{Binding ShowRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <TextBlock Style="{StaticResource DetailValue}" Text="{Binding RowText, Mode=OneWay}"
+                                                       Visibility="{Binding ShowRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <controls:FlexLinePanel Gap="8" LineGap="8" Margin="0,10,0,0">
+                                                <Button Content="{Binding SdlMapping_MapAgain, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                        Command="{Binding MapAgainCommand}"
+                                                        ToolTip="{Binding SdlMapping_MapAgainTip, Source={x:Static strings:Strings.Instance}}"
+                                                        Visibility="{Binding ShowMapAgain, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                        AutomationProperties.AutomationId="Devices_SdlMapping_MapAgain"/>
+                                                <Button common:Reach.Class="Asks" common:Reach.Why="OpensPlace"
+                                                        Content="{Binding SdlMapping_CommunityLink, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DeviceButton}"
+                                                        Click="SdlCommunity_Click"
+                                                        AutomationProperties.AutomationId="Devices_SdlMapping_Community"/>
+                                            </controls:FlexLinePanel>
+                                        </StackPanel>
+                                    </controls:MoreRow>
+                                </StackPanel>
+                            </Border>
+
                             <!-- The device's own settings, in rows, then the
                                  device's tools. Reset All puts back what the
                                  card shows. Force Raw Joystick Mode is the

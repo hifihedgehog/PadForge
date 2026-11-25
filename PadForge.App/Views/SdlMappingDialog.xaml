@@ -1,0 +1,83 @@
+<views:DialogWindow common:Reach.Class="Free" AutomationProperties.IsDialog="True" x:Class="PadForge.Views.SdlMappingDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:common="clr-namespace:PadForge.Common"
+        xmlns:controls="clr-namespace:PadForge.Controls"
+        xmlns:views="clr-namespace:PadForge.Views"
+        IsWide="True" BodyPadding="24,14,24,18"
+        Title="{Binding SdlMappingDialog_Title, Source={x:Static strings:Strings.Instance}}">
+
+    <!-- Paste SDL Mapping, Find a Mapping, Guess a Layout and Add Rows From
+         a File or the Clipboard (#600 items 47 to 49), as the Database board
+         draws them: one dialog, so a row picked, guessed or added passes the
+         same check. The code-behind shows the part for its mode and sets the
+         title. Under the text or the list, the check's verdict, then what
+         the row changes, then where it is kept. -->
+    <views:DialogWindow.Resources>
+        <Style x:Key="SdlFindRowItem" TargetType="ListBoxItem" BasedOn="{StaticResource DialogPickListItem}">
+            <Setter Property="AutomationProperties.Name" Value="{Binding ReadName, TargetNullValue=''}"/>
+        </Style>
+    </views:DialogWindow.Resources>
+
+    <views:DialogWindow.Foot>
+        <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
+            <Button x:Name="OpenFileButton" Style="{StaticResource DialogQuietButton}" Visibility="Collapsed"
+                    Content="{Binding SdlMappingDialog_OpenFile, Source={x:Static strings:Strings.Instance}}"
+                    Click="OpenFile_Click"/>
+            <Button Style="{StaticResource DialogButton}" IsCancel="True"
+                    Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <Button x:Name="PrimaryButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True" IsEnabled="False"
+                    Content="{Binding SdlMappingDialog_Paste, Source={x:Static strings:Strings.Instance}}"
+                    Click="Primary_Click"/>
+        </controls:FlexLinePanel>
+    </views:DialogWindow.Foot>
+
+    <StackPanel>
+        <!-- Find: every row PadForge carries, the device's own first, by
+             name, ID or VID:PID. -->
+        <StackPanel x:Name="FindPart" Visibility="Collapsed">
+            <ui:TextBox x:Name="SearchBox" Style="{StaticResource DialogTextBox}" common:InitialFocus.First="True"
+                        PlaceholderText="{Binding SdlMappingDialog_Search, Source={x:Static strings:Strings.Instance}}"
+                        AutomationProperties.Name="{Binding SdlMappingDialog_Search, Source={x:Static strings:Strings.Instance}}"
+                        TextChanged="Search_TextChanged"/>
+            <Border Style="{StaticResource DialogList}" Margin="0,12,0,0">
+                <ListBox x:Name="FindList" Style="{StaticResource DialogListBox}" MaxHeight="300" SelectionMode="Single"
+                         ItemContainerStyle="{StaticResource SdlFindRowItem}"
+                         SelectionChanged="FindList_SelectionChanged" MouseDoubleClick="FindList_MouseDoubleClick"
+                         AutomationProperties.Name="{Binding SdlMappingDialog_FindList, Source={x:Static strings:Strings.Instance}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding Detail}" FontSize="13" TextTrimming="CharacterEllipsis"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+            <TextBlock x:Name="FindEmpty" Style="{StaticResource DialogNote}" Margin="0,10,0,0" Visibility="Collapsed"
+                       Text="{Binding SdlMappingDialog_FindNone, Source={x:Static strings:Strings.Instance}}"/>
+        </StackPanel>
+
+        <!-- Paste, Guess and Add Rows: the row or rows as text. -->
+        <ui:TextBox x:Name="RowBox" Style="{StaticResource DialogTextBox}" common:InitialFocus.First="True"
+                    AcceptsReturn="True" TextWrapping="Wrap" MinHeight="64" MaxHeight="220" Padding="10,8"
+                    VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto"
+                    AutomationProperties.Name="{Binding SdlMappingDialog_RowBox, Source={x:Static strings:Strings.Instance}}"
+                    TextChanged="RowBox_TextChanged"/>
+
+        <!-- The check's verdict: what the row is for and its fields, or why
+             it was not taken. -->
+        <TextBlock x:Name="VerdictLine" common:LiveText.Polite="True" Margin="0,12,0,0" TextWrapping="Wrap" FontSize="14"><Run
+            x:Name="VerdictLead"/><Run Text=" "/><Run x:Name="VerdictDetail" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/></TextBlock>
+
+        <!-- What the row changes: how the device is read, and which
+             controllers' rows are mapped again. -->
+        <TextBlock x:Name="ChangeLine" Margin="0,10,0,0" TextWrapping="Wrap" FontSize="14" Visibility="Collapsed"/>
+
+        <TextBlock x:Name="NoteLine" Style="{StaticResource DialogNote}" Margin="0,10,0,0"/>
+    </StackPanel>
+</views:DialogWindow>

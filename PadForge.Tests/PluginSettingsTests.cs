@@ -262,6 +262,21 @@ namespace PadForge.Tests
             host.Item("b").Pad = new System.Windows.Point(50, -25);
             Assert.Equal("e setting key=b value=50,-25", Assert.Single(sent));
             Assert.Equal("Test_b", host.Item("b").AutomationId);
+            // A NaN or an infinity from a box sends nothing and keeps the
+            // value: the number's and each axis of the pad's.
+            sent.Clear();
+            host.Item("a").Number = 40;
+            Assert.Equal("e setting key=a value=40", Assert.Single(sent));
+            sent.Clear();
+            foreach (double bad in new[] { double.NaN, double.PositiveInfinity, double.NegativeInfinity })
+            {
+                host.Item("a").Number = bad;
+                host.Item("b").SetPad(bad, 10);
+                host.Item("b").SetPad(10, bad);
+            }
+            Assert.Empty(sent);
+            Assert.Equal(40, host.Item("a").Number);
+            Assert.Equal(new System.Windows.Point(50, -25), host.Item("b").Pad);
             // The device's own host shows its help.
             var device = new PluginSettingsHost(set, "pedals", "Device", Dispatcher.CurrentDispatcher);
             Assert.Equal("help", ((PluginSettingItem)Assert.Single(device.Rows)).KindWord);

@@ -87,6 +87,12 @@ namespace PadForge.Services
         private Func<IReadOnlyList<LiveItem>> _catalog;
         private System.Threading.SynchronizationContext _ui;
 
+        /// <summary>Where the work after a profile switch runs
+        /// (<see cref="ProfileSettledAsync"/>). Null runs it on the interface
+        /// thread once the switch settles. A test sets it, and runs the work
+        /// itself in its own order.</summary>
+        internal Action<Action> SettleAfterSwitch;
+
         private void StartDevices()
         {
             _ui = System.Threading.SynchronizationContext.Current;
@@ -479,6 +485,11 @@ namespace PadForge.Services
         private void OnActiveProfileChanged()
         {
             if (_disposed) return;
+            if (SettleAfterSwitch != null)
+            {
+                SettleAfterSwitch(() => _ = ProfileSettledAsync());
+                return;
+            }
             var dispatcher = System.Windows.Application.Current?.Dispatcher;
             if (dispatcher != null)
                 dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(() => _ = ProfileSettledAsync()));

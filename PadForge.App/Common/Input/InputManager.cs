@@ -2287,8 +2287,8 @@ namespace PadForge.Common.Input
                                     Engine.SdlDiagLog.WriteLine($"STALL idle enum={idleEnumMs}ms");
                             }
                             RetryPendingBlissBoxRows();
-                            RunControllerDatabaseWork();
                             FlydigiReprobeTick();
+                            RunControllerDatabaseWork();
 
                             // Read input states even in idle mode so the Devices
                             // page preview works for unassigned devices.
@@ -2421,8 +2421,8 @@ namespace PadForge.Common.Input
                             enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
                         }
                         RetryPendingBlissBoxRows();
-                        RunControllerDatabaseWork();
                         FlydigiReprobeTick();
+                        RunControllerDatabaseWork();
                         _pollLoad.Mark(PollStep.Sweep);
 
                         using (EnterMenuPublication())

@@ -354,6 +354,85 @@ namespace PadForge.Tests
             Assert.Single(ControlHolds.Current[pad.InstanceGuid].ClaimedButtons);
         }
 
+        /// <summary>A script's holds and claims come back as one table at
+        /// its next line: no table in between holds the button with the
+        /// claim not back yet, which a pass would give the game as one read
+        /// of the claimed button. The clock seam looks at the table each
+        /// time the steps are timed.</summary>
+        [Fact]
+        public async Task AScriptsHoldsAndClaims_ComeBackInOneTable()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string id = AutomationPipeRig.IdOf(pad);
+            using var client = rig.Open("Hangs");
+            Assert.Equal("ok", client.Final("own " + id + " B=1"));
+            Assert.Equal("ok", client.Final("sub " + id + " A claim"));
+            Assert.Equal("e lease lapsed", client.Event(3000));
+            Assert.Null(ControlHolds.Current);
+            var seen = new System.Collections.Concurrent.ConcurrentQueue<ControlHolds.DeviceHolds>();
+            ControlHolds.ClockForTest = () =>
+            {
+                if (ControlHolds.Current is { } table && table.TryGetValue(pad.InstanceGuid, out var holds)) seen.Enqueue(holds);
+                return Stopwatch.GetTimestamp();
+            };
+            try
+            {
+                client.Send("beat");
+                await AutomationPipeRig.Until(() => ControlHolds.Current != null);
+                // One more look, at the table the line left.
+                ControlHolds.LandDue();
+            }
+            finally
+            {
+                ControlHolds.ClockForTest = null;
+            }
+            Assert.NotEmpty(seen);
+            Assert.All(seen, holds =>
+            {
+                Assert.Single(holds.Buttons);
+                Assert.Single(holds.ClaimedButtons);
+            });
+        }
+
+        /// <summary>The holds and claims are one table for the whole
+        /// process, so a host's sessions own theirs alone: another host's
+        /// session, numbered first as this one is, ends, and that host goes,
+        /// and what this session holds stands.</summary>
+        [Fact]
+        public async Task AnotherHostsSessionAndThatHostGoing_LeaveThisSessionsHoldsAlone()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.SendInputs);
+            var pad = rig.AddDevice(InputDeviceType.Gamepad);
+            string id = AutomationPipeRig.IdOf(pad);
+            using var client = rig.Open("Mine", " lease=10000");
+            Assert.Equal("ok", client.Final("own " + id + " B=1"));
+            Assert.Single(ControlHolds.Current[pad.InstanceGuid].Buttons);
+
+            string otherPipe = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+            var other = TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                "PadForge.Tests.Control." + Guid.NewGuid().ToString("N"), automationPipeName: otherPipe));
+            int mine = 0, theirNumber = 0;
+            try
+            {
+                other.Apply(true, AutomationLevel.SendInputs);
+                using (var theirs = new AutomationTestClient(otherPipe))
+                {
+                    Assert.StartsWith("ok padforge=", theirs.Final("hello name=\"Theirs\" kind=script lease=10000"));
+                    mine = rig.Host.Sessions.Snapshot().Single().Number;
+                    theirNumber = other.Sessions.Snapshot().Single().Number;
+                }
+                await AutomationPipeRig.Until(() => other.Sessions.Snapshot().Count == 0);
+                Assert.Single(ControlHolds.Current[pad.InstanceGuid].Buttons);
+            }
+            finally
+            {
+                other.Dispose();
+            }
+            Assert.Single(ControlHolds.Current[pad.InstanceGuid].Buttons);
+            Assert.NotEqual(mine, theirNumber);
+        }
+
         [Fact]
         public async Task AnAssistantsLapsedHold_GoesForGood_AndItsNextCallDoesNotPressItAgain()
         {
@@ -411,7 +490,9 @@ namespace PadForge.Tests
             using var stop = new CancellationTokenSource();
             var writer = outbox.RunAsync(stop.Token);
             outbox.Line("e b x 0 1");
-            Thread.Sleep(200);
+            // The wakes come every 20 ms on the thread pool's clock, which a
+            // busy pool runs late: the count is waited for, not timed.
+            await AutomationPipeRig.Until(() => Volatile.Read(ref wakes) >= 3);
             int silent = Volatile.Read(ref wakes);
             Assert.InRange(silent, 3, 1 + AutomationOutbox.MostRewakes);
             outbox.Heard();

@@ -1329,21 +1329,39 @@ namespace PadForge.Tests
         /// <summary>On Extras: Tab reaches a Screen Overlay card's or a
         /// crosshair card's Remove before the Reset All at its right, and the
         /// hint to point a game at a port shows for a game that is read from
-        /// one.</summary>
+        /// one. An open plugin card's foot (#600 item 18) holds Remove and
+        /// Reset All too, written in the order they stand, so Tab reaches
+        /// Remove first there without numbers.</summary>
         [Fact]
         public void ExtrasRows_FollowTheEyeAndTheGame()
         {
             var page = Xml("PadForge.App", "Views", "ExtrasPage.xaml");
             var all = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding RemoveId}").ToList();
             var resets = page.Descendants().Where(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}").ToList();
-            // The Screen Overlay card's head and the crosshair card's. The
-            // third Remove is a plugin's row on the Plugins page (#597),
-            // which has no Reset All beside it.
-            var removes = all.Where(r => r.Parent.Elements().Any(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}")).ToList();
+            var beside = all.Where(r => r.Parent.Elements().Any(e => At(e, "AutomationProperties.AutomationId") == "{Binding ResetAllId}")).ToList();
+            Assert.Equal(3, beside.Count);
+            Assert.Equal(3, resets.Count);
+            // The Screen Overlay card's head and the crosshair card's dock
+            // from their end.
+            var removes = beside.Where(r => r.Parent.Name.LocalName == "DockPanel").ToList();
             Assert.Equal(2, removes.Count);
-            Assert.Equal(2, resets.Count);
-            var row = Assert.Single(all.Except(removes));
-            Assert.Contains(row.Parent.Elements(), e => At(e, "AutomationProperties.AutomationId") == "{Binding ApproveId}");
+            // The plugin card's foot: one row of buttons at the right, Remove
+            // written first and so reached first.
+            var foot = Assert.Single(beside.Except(removes));
+            Assert.Equal("StackPanel", foot.Parent.Name.LocalName);
+            Assert.Equal("Horizontal", At(foot.Parent, "Orientation"));
+            Assert.Equal("Right", At(foot.Parent, "HorizontalAlignment"));
+            var footReset = Assert.Single(resets, r => r.Parent == foot.Parent);
+            Assert.Contains(footReset, foot.ElementsAfterSelf());
+            Assert.Null(At(foot, "TabIndex"));
+            Assert.Null(At(footReset, "TabIndex"));
+            // Two Removes stand with no Reset All: a plugin's row on the
+            // Plugins page (#597), beside its Approve, and an allowed
+            // program's row on Automation (#600).
+            var lone = all.Except(beside).ToList();
+            Assert.Equal(2, lone.Count);
+            Assert.Single(lone, r => r.Parent.Elements().Any(e => At(e, "AutomationProperties.AutomationId") == "{Binding ApproveId}"));
+            Assert.Single(lone, r => r.Ancestors().Any(a => At(a, "Name") == "AutomationAllowedCard"));
             foreach (var remove in removes)
             {
                 var resetAll = Assert.Single(resets, r => r.Parent == remove.Parent);

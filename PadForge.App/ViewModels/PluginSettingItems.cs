@@ -62,9 +62,11 @@ namespace PadForge.ViewModels
     /// One setting or control a plugin declared (#600 item 17), as its row
     /// draws it in PadForge's own styles. Its words are the plugin's,
     /// cleaned and capped when they were read. A change the user makes goes
-    /// to the plugin's settings, which keep it and send it on.
+    /// to the plugin's settings, which keep it and send it on. A NaN or an
+    /// infinity from a box leaves the number or the pad as it was, as the
+    /// plugin's settings refuse one a program sends (PluginValues.Normalize).
     /// </summary>
-    public sealed class PluginSettingItem : ObservableObject
+    public sealed class PluginSettingItem : FiniteObservableObject
     {
         private readonly PluginSettingsHost _host;
         private string _value;
@@ -161,7 +163,11 @@ namespace PadForge.ViewModels
         public double Number
         {
             get => PluginDeclarations.TryNumber(_value, out double n) ? n : Declaration.Min;
-            set => Write(PluginValues.FormatNumber(PluginValues.OnStep(Declaration, value)));
+            set
+            {
+                if (!double.IsFinite(value)) return;
+                Write(PluginValues.FormatNumber(PluginValues.OnStep(Declaration, value)));
+            }
         }
 
         /// <summary>The number with the decimals its step has and its
@@ -202,8 +208,11 @@ namespace PadForge.ViewModels
 
         /// <summary>Sets both axes of a pad as one change.</summary>
         internal void SetPad(double x, double y)
-            => Write(PluginValues.FormatNumber(Math.Round(Math.Clamp(x, -100, 100), 1)) + ","
+        {
+            if (!double.IsFinite(x) || !double.IsFinite(y)) return;
+            Write(PluginValues.FormatNumber(Math.Round(Math.Clamp(x, -100, 100), 1)) + ","
                      + PluginValues.FormatNumber(Math.Round(Math.Clamp(y, -100, 100), 1)));
+        }
 
         public string StatusText => _value ?? string.Empty;
 

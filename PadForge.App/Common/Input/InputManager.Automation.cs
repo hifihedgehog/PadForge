@@ -345,7 +345,8 @@ namespace PadForge.Common.Input
 
         /// <summary>With null, lets go of every hold and claim at once and
         /// forgets the steps that wait. With a table, puts that table in
-        /// force alone. Tests use it, and a host that goes.</summary>
+        /// force alone. Tests use it. A host that goes lets go of its own
+        /// sessions' alone (AutomationSessions.Dispose).</summary>
         internal static void Publish(Dictionary<Guid, DeviceHolds> table)
         {
             lock (_passLock)
@@ -371,6 +372,25 @@ namespace PadForge.Common.Input
             Sent.Enqueue(new Step(owner, device, kind, index, value, due, drop: false));
             Interlocked.Increment(ref _sentCount);
             LandDue();
+        }
+
+        /// <summary>Sends steps of one owner, due now, that land together:
+        /// they go into the queue under the lock every landing takes, so no
+        /// pass and no landing finds some of them sent and not the rest, and
+        /// the table is rebuilt once for them all.</summary>
+        internal static void SendAll(int owner, List<(Guid Device, char Kind, int Index, object Value)> steps)
+        {
+            if (steps.Count == 0) return;
+            long now = Now();
+            lock (_passLock)
+            {
+                foreach (var (device, kind, index, value) in steps)
+                {
+                    Sent.Enqueue(new Step(owner, device, kind, index, value, 0, drop: false));
+                    Interlocked.Increment(ref _sentCount);
+                }
+                Advance(now, inPass: false);
+            }
         }
 
         /// <summary>Lets go of everything an owner holds and claims, at once,

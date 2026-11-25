@@ -412,7 +412,10 @@ namespace PadForge.Tests
         ///
         /// <para>The two device notes (#597) are rows of the same card and
         /// joined the family, so they cross the same legs: the view model's
-        /// catalog switch, Home's count and the reset commands too.</para></summary>
+        /// catalog switch, Home's count and the reset commands too. So did
+        /// Controllers On or Off (#600 item 42). A name counts only where it
+        /// ends, so its XmlSerializer companion, EnableControllersNoteSpecified,
+        /// which no sibling needs, is no leg.</para></summary>
         [Fact]
         public void EveryOverlayToggle_CrossesTheSameLegsAsItsSibling()
         {
@@ -430,7 +433,7 @@ namespace PadForge.Tests
             };
 
             int Count(string file, string key) =>
-                Regex.Matches(Src(file), Regex.Escape(key)).Count;
+                Regex.Matches(Src(file), Regex.Escape(key) + "(?![A-Za-z0-9_])").Count;
 
             foreach (var file in files)
             {

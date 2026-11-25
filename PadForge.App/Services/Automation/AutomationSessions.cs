@@ -65,7 +65,12 @@ namespace PadForge.Services.Automation
         private readonly Dictionary<AutomationSession, Owned> _owned = new();
         private readonly AutomationHolds _held = new();
         private readonly Timer _clock;
-        private int _lastNumber;
+
+        /// <summary>The last session's number. A number names its session's
+        /// holds and claims in <see cref="ControlHolds"/> and its values in
+        /// ScriptValues, each one table for the whole process, so it counts
+        /// across every host the process makes and is never given twice.</summary>
+        private static int _lastNumber;
         private int _disposed;
         private bool _clockOn;
         private AutomationEngineState? _engineSeen;
@@ -1921,7 +1926,10 @@ namespace PadForge.Services.Automation
             CloseAll();
             _clock.Dispose();
             Watch.Unhook();
-            lock (_sync) ControlHolds.Publish(null);
+            // What its own sessions hold and claim goes now, and nothing of
+            // another host's.
+            lock (_sync)
+                foreach (var session in new List<AutomationSession>(_owned.Keys)) _held.ReleaseAll(session);
             Devices.Dispose();
         }
     }

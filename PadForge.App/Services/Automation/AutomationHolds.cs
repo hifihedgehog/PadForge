@@ -162,14 +162,18 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>The session spoke again after its lease ran out: what it
-        /// held and claimed is back.</summary>
+        /// held and claimed is back, all of it in one table, as the lapse let
+        /// go of all of it at once. Sent one by one, a pass between two sends
+        /// could give a game one read of a control still claimed.</summary>
         internal void Resume(AutomationSession session)
         {
+            var back = new List<(Guid, char, int, object)>();
             foreach (var pair in _holds)
                 if (pair.Value.Owner == session && !pair.Value.Hold.Moved)
-                    ControlHolds.Send(session.Number, pair.Key.Device, pair.Key.Kind, pair.Key.Index, pair.Value.Hold);
+                    back.Add((pair.Key.Device, pair.Key.Kind, pair.Key.Index, pair.Value.Hold));
             if (_claims.TryGetValue(session, out var list))
-                foreach (var (device, kind, index, value) in list) ControlHolds.Send(session.Number, device, kind, index, value);
+                foreach (var (device, kind, index, value) in list) back.Add((device, kind, index, value));
+            ControlHolds.SendAll(session.Number, back);
         }
 
         /// <summary>The sessions' clock: a set hold the device's own input

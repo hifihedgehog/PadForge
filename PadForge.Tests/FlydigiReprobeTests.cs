@@ -278,6 +278,21 @@ namespace PadForge.Tests
             Assert.True(idlePass > idle);
             Assert.Contains("FlydigiReprobeTick();", im.Substring(idle, idlePass - idle));
             Assert.Contains("FlydigiReprobeTick();", im.Substring(normal, 600));
+            // The controller database's posted work (#600) runs after the
+            // tick and before the input pass in both branches, so the tick
+            // stays next to the sweep and the Bliss-Box retries.
+            int normalPass = im.IndexOf("using (EnterMenuPublication())", normal, System.StringComparison.Ordinal);
+            foreach (var (from, to) in new[] { (idle, idlePass), (normal, normalPass) })
+            {
+                string branch = im.Substring(from, to - from);
+                int retries = branch.IndexOf("RetryPendingBlissBoxRows();", System.StringComparison.Ordinal);
+                int tickCall = branch.IndexOf("FlydigiReprobeTick();", System.StringComparison.Ordinal);
+                int work = branch.IndexOf("RunControllerDatabaseWork();", System.StringComparison.Ordinal);
+                Assert.True(retries > 0 && tickCall > retries && work > tickCall,
+                    "sweep, Bliss-Box retries, Flydigi tick, then the controller database's work");
+                Assert.Equal(string.Empty, branch.Substring(retries + "RetryPendingBlissBoxRows();".Length,
+                    tickCall - retries - "RetryPendingBlissBoxRows();".Length).Trim());
+            }
             string step1 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
             int tick = step1.IndexOf("private void FlydigiReprobeTick()", System.StringComparison.Ordinal);
             Assert.True(tick > 0);

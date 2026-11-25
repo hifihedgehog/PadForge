@@ -325,6 +325,14 @@ namespace PadForge.Tests
                 // Loopback in the app too.
                 ["PadForge.App/Services/DsuMotionServer.cs"] = 2,
                 ["PadForge.App/Services/GameModServer.cs"] = 2,
+                // The web helper (#600 item 11): its HttpListener on a
+                // 127.0.0.1 prefix, past NetworkListenerGate.EnterPrefix, and
+                // the loopback probe that finds it a free port.
+                ["PadForge.App/Services/Automation/Web/WebHelper.cs"] = 2,
+                // No listener: the outbound socket that fetches a web
+                // assistant's client document from a public address, past
+                // OutboundNetworkGate.RefusesHost, which the test host closes.
+                ["PadForge.App/Services/Automation/Web/WebClientDocuments.cs"] = 1,
                 // Every address, and no test builds one.
                 ["PadForge.Engine/RemoteLink/LinkDiscovery.cs"] = 2,
                 ["PadForge.Engine/RemoteLink/Dht/UdpKrpcTransport.cs"] = 2,
@@ -363,6 +371,12 @@ namespace PadForge.Tests
             Assert.Contains("forward.Bind(new IPEndPoint(IPAddress.Loopback, 0));", telemetry);
             Assert.Contains("_socket.Bind(new IPEndPoint(IPAddress.Loopback, port));", At("PadForge.App/Services/DsuMotionServer.cs"));
             Assert.Contains("_socket.Bind(new IPEndPoint(IPAddress.Loopback, port));", At("PadForge.App/Services/GameModServer.cs"));
+            string helper = At("PadForge.App/Services/Automation/Web/WebHelper.cs");
+            Assert.Contains("string prefix = WebAddress.Loopback(port) + \"/\";", helper);
+            Assert.Contains("var probe = new TcpListener(IPAddress.Loopback, 0);", helper);
+            Assert.Contains("internal static string Loopback(int port) => \"http://127.0.0.1:\" + port.ToString(CultureInfo.InvariantCulture);",
+                At("PadForge.App/Services/Automation/Web/WebGrant.cs"));
+            Assert.Contains("if (!IsPublic(address)) continue;", At("PadForge.App/Services/Automation/Web/WebClientDocuments.cs"));
         }
     }
 

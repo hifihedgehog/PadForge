@@ -65,6 +65,11 @@ namespace PadForge.Tests
                     Zone = TimeZoneInfo.Utc,
                     UtcNow = () => new DateTime(2026, 11, 24, 14, 17, 35, 400, DateTimeKind.Utc),
                     Log = _ => { },
+                    // A test settles each profile switch itself
+                    // (ProfileSettledAsync). Posted to the test's context,
+                    // the switch's own run raced the test's on another
+                    // thread.
+                    SettleAfterSwitch = _ => { },
                 };
                 Controller.Start();
             }

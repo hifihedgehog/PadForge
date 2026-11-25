@@ -7986,8 +7986,8 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableControllersNote { get; set; } = true;
 
-        /// <summary>Read by XmlSerializer: set when the file holds
-        /// <see cref="EnableControllersNote"/>. Always written.</summary>
+        /// <summary>Read by XmlSerializer: set when the file holds the
+        /// switch above. Always written.</summary>
         [XmlIgnore]
         public bool EnableControllersNoteSpecified { get => true; set => _controllersNoteRead = value; }
         private bool _controllersNoteRead;
@@ -9163,8 +9163,8 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableControllersNote { get; set; } = true;
 
-        /// <summary>Read by XmlSerializer: set when the profile holds
-        /// <see cref="EnableControllersNote"/>. Always written.</summary>
+        /// <summary>Read by XmlSerializer: set when the profile holds the
+        /// switch above. Always written.</summary>
         [XmlIgnore]
         public bool EnableControllersNoteSpecified { get => true; set => _controllersNoteRead = value; }
         private bool _controllersNoteRead;

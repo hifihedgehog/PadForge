@@ -2788,6 +2788,7 @@
                                                     Background="{DynamicResource SteelFieldBrush}" BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1">
                                                 <Grid>
                                                     <Image Source="{Binding Icon}" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"
+                                                           FlowDirection="LeftToRight"
                                                            AutomationProperties.Name="{Binding Name, TargetNullValue='', FallbackValue=''}"
                                                            Visibility="{Binding HasIcon, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                     <controls:GlyphText Text="&#xE8A7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
@@ -2896,9 +2897,9 @@
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel VerticalAlignment="Center" Margin="0,0,14,0">
                                                     <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
-                                                               Foreground="{StaticResource TextFillColorPrimaryBrush}"/>
+                                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                                                     <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap" common:LiveText.Polite="True"
-                                                               Foreground="{StaticResource TextFillColorSecondaryBrush}"/>
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                 </StackPanel>
                                                 <Button Grid.Column="1" Style="{StaticResource ExtraButton}" Command="{Binding PressCommand}"
                                                         IsEnabled="{Binding IsIdle}"

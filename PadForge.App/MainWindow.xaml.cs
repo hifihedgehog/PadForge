@@ -747,6 +747,7 @@ namespace PadForge
                      or nameof(DashboardViewModel.EnableProfileOverlay)
                      or nameof(DashboardViewModel.EnableDeviceDisconnectedNote)
                      or nameof(DashboardViewModel.EnableDeviceConnectedNote)
+                     or nameof(DashboardViewModel.EnableControllersNote)
                      or nameof(DashboardViewModel.HeadTrackingLastSources)
                      or nameof(DashboardViewModel.OverlaysLastShown)
                      or nameof(DashboardViewModel.ScreenOverlaysLastOn)
@@ -2606,6 +2607,7 @@ namespace PadForge
             var firstWindow = FirstWindowState(App.StartupRequest.Window,
                 _viewModel.Settings.StartMinimized, _viewModel.Settings.MinimizeToTray);
             ShouldStartMinimized = firstWindow == CommandLineSwitches.WindowStart.Minimized;
+            ShouldStartMaximized = firstWindow == CommandLineSwitches.WindowStart.Maximized;
             ShouldStartMinimizedToTray = firstWindow == CommandLineSwitches.WindowStart.Tray;
 
             // If starting minimized to tray, make the tray icon visible now.
@@ -3344,6 +3346,10 @@ namespace PadForge
 
         /// <summary>Whether the app should start minimized (to taskbar).</summary>
         public bool ShouldStartMinimized { get; private set; }
+
+        /// <summary><c>--maximized</c> (#600 item 44): the window first shows
+        /// maximized.</summary>
+        public bool ShouldStartMaximized { get; private set; }
 
         /// <summary>Whether the app should start hidden to the system tray.</summary>
         public bool ShouldStartMinimizedToTray { get; private set; }

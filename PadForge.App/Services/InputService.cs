@@ -3147,7 +3147,10 @@ namespace PadForge.Services
                         if (SettingsManager.SlotCreated[i] && SettingsManager.SlotEnabled[i])
                         { anyEnabled = true; break; }
                     }
-                    ShowVCsToggleOverlay(anyEnabled);
+                    // Display only, behind its own row under Overlays
+                    // (#600 item 42). The controllers turned either way.
+                    if (_mainVm.Dashboard.EnableControllersNote)
+                        ShowVCsToggleOverlay(anyEnabled);
                 }
             }
 
@@ -19480,7 +19483,7 @@ namespace PadForge.Services
             // A telemetry variable is picked from a list (#531), and a
             // program's value is named (#597). A device scan here would
             // rebind either to whatever moved.
-            if (_recordingVariable.Source is MacroTriggerSource.GameTelemetry or MacroTriggerSource.ScriptValue)
+            if (_recordingVariable.Source is MacroTriggerSource.GameTelemetry or MacroTriggerSource.ScriptValue or MacroTriggerSource.DeviceConnection)
             {
                 StopExpressionVariableRecording();
                 return;
@@ -20518,6 +20521,7 @@ namespace PadForge.Services
                 EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay,
                 EnableDeviceDisconnectedNote = _mainVm.Dashboard.EnableDeviceDisconnectedNote,
                 EnableDeviceConnectedNote = _mainVm.Dashboard.EnableDeviceConnectedNote,
+                EnableControllersNote = _mainVm.Dashboard.EnableControllersNote,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -21571,6 +21575,7 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableProfileOverlay = profile.EnableProfileOverlay;
             _mainVm.Dashboard.EnableDeviceDisconnectedNote = profile.EnableDeviceDisconnectedNote;
             _mainVm.Dashboard.EnableDeviceConnectedNote = profile.EnableDeviceConnectedNote;
+            _mainVm.Dashboard.EnableControllersNote = profile.EnableControllersNote;
             _mainVm.Dashboard.TouchpadOverlayOpacity = profile.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = profile.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = profile.TouchpadOverlayLeft;
@@ -21944,6 +21949,7 @@ namespace PadForge.Services
                     profile.EnableProfileOverlay = snapshot.EnableProfileOverlay;
                     profile.EnableDeviceDisconnectedNote = snapshot.EnableDeviceDisconnectedNote;
                     profile.EnableDeviceConnectedNote = snapshot.EnableDeviceConnectedNote;
+                    profile.EnableControllersNote = snapshot.EnableControllersNote;
                     profile.TouchpadOverlayOpacity = snapshot.TouchpadOverlayOpacity;
                     profile.TouchpadOverlayMonitor = snapshot.TouchpadOverlayMonitor;
                     profile.TouchpadOverlayLeft = snapshot.TouchpadOverlayLeft;

@@ -109,6 +109,14 @@ namespace PadForge.Services
             /// <summary>Runs <c>--plugin-kit</c> (#600 item 20) and gives its
             /// exit code.</summary>
             public Func<string, Action<string>, Action<string>, int> PluginKit = PadForge.Services.Plugins.PluginKit.RunFromCommandLine;
+
+            /// <summary>Runs <c>--settings-folder</c> (#600 item 44): Explorer
+            /// on the folder of PadForge.xml, through the desktop shell.</summary>
+            public Func<Action<string>, int> SettingsFolder = SettingsFolderRun.Run;
+
+            /// <summary>The same seams, for a run that says some things
+            /// another way.</summary>
+            internal Seams Copy() => (Seams)MemberwiseClone();
         }
 
         /// <summary>
@@ -167,6 +175,13 @@ namespace PadForge.Services
                 exitCode = seams.PluginKit(request.PluginKit, seams.Say, seams.SayError);
                 return true;
             }
+            if (request.SettingsFolder)
+            {
+                // The settings file's folder, which needs no running copy
+                // (#600 item 44).
+                exitCode = seams.SettingsFolder(seams.SayError);
+                return true;
+            }
             if (request.Mcp)
             {
                 // The assistant's side of the door. It serves whether or not
@@ -198,13 +213,13 @@ namespace PadForge.Services
 
             for (int i = 0; i < request.Steps.Count; i++)
             {
-                int code = RunLine(request.Steps[i].Line, seams, out bool gone);
+                int code = RunLine(request.Steps[i].Line, JsonRefusals(seams, request.Json), out bool gone);
                 if (gone)
                 {
                     // The copy closed before it took a line. With nothing
                     // sent yet this is a start like any other with no copy.
                     if (i == 0) return NoCopy(request, seams, out exitCode);
-                    seams.SayError(NotRunningText);
+                    Refuse(seams, request.Json, "not-running", NotRunningText);
                     exitCode = NotRunning;
                     return true;
                 }
@@ -230,9 +245,58 @@ namespace PadForge.Services
         {
             exitCode = Done;
             if (request.CanStart) return false;
-            seams.SayError(NotRunningText);
+            Refuse(seams, request.Json, "not-running", NotRunningText);
             exitCode = NotRunning;
             return true;
+        }
+
+        /// <summary>A refusal, in words or, with <c>--json</c>, as the one
+        /// line <c>--call</c> gives (#600 item 44):
+        /// <c>{"error":"code","message":"words"}</c>.</summary>
+        private static void Refuse(Seams seams, bool json, string code, string words)
+            => seams.SayError(json ? JsonRefusal(code, words) : words);
+
+        internal static string JsonRefusal(string code, string words)
+            => new System.Text.Json.Nodes.JsonObject { ["error"] = code, ["message"] = words }
+                .ToJsonString(new System.Text.Json.JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+
+        /// <summary>The seams of a run whose refusals are one line of JSON
+        /// each with <c>--json</c>: the words the run would say, under the
+        /// code that names them. A pipe's own refusal (<c>error code
+        /// words</c>) keeps its code.</summary>
+        private static Seams JsonRefusals(Seams seams, bool json)
+        {
+            if (!json) return seams;
+            var copy = seams.Copy();
+            copy.SayError = words => seams.SayError(JsonRefusal(CodeOf(words), MessageOf(words)));
+            return copy;
+        }
+
+        /// <summary>The code of a refusal the run says: the pipe's own after
+        /// <c>error</c>, or the one that names the run's words.</summary>
+        internal static string CodeOf(string words)
+        {
+            if (words != null && words.StartsWith("error ", StringComparison.Ordinal))
+            {
+                string rest = words.Substring(6);
+                int space = rest.IndexOf(' ');
+                return space < 0 ? rest : rest.Substring(0, space);
+            }
+            return words switch
+            {
+                NotRunningText => "not-running",
+                AutomationOffText => "not-allowed",
+                NotPadForgeText => "not-padforge",
+                _ => "no-answer",
+            };
+        }
+
+        private static string MessageOf(string words)
+        {
+            if (words == null || !words.StartsWith("error ", StringComparison.Ordinal)) return words;
+            string rest = words.Substring(6);
+            int space = rest.IndexOf(' ');
+            return space < 0 ? AutomationLine.WordsFor(rest) : rest.Substring(space + 1);
         }
 
         private static int RunLine(string line, Seams seams, out bool gone)
@@ -240,8 +304,8 @@ namespace PadForge.Services
             gone = false;
             // A click on the tray icon shows the window with PadForge's right
             // to the front. A line cannot carry that right, so it is lent
-            // first.
-            if (line == "show") seams.LendForeground();
+            // first. --maximized shows the window too (#600 item 44).
+            if (line is "show" or "maximize") seams.LendForeground();
 
             string reply = seams.Exchange(line);
             if (reply == ControlPipeClient.NotPadForge) return NotPadForge(line, seams);

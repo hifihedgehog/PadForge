@@ -6666,6 +6666,17 @@
     "under_more": false
   },
   {
+    "id": "extras/Overlays/OverlaysPage/Dashboard_ControllersNote",
+    "page": "Extras",
+    "place": "Overlays",
+    "card": "What Shows",
+    "words": "Controllers On or Off",
+    "kind": "switch",
+    "reach": "free",
+    "why": null,
+    "under_more": false
+  },
+  {
     "id": "extras/Overlays/OverlaysPage/Dashboard_DeviceDisconnectedNote",
     "page": "Extras",
     "place": "Overlays",

@@ -111,6 +111,12 @@ namespace PadForge.Services.Automation
         /// <summary>Minimizes the window, as its own button does.</summary>
         void MinimizeWindow();
 
+        /// <summary>Shows the window as <see cref="ShowWindow"/> does and
+        /// maximizes it, as its own button does (#600 item 44). A show that
+        /// does not go ahead maximizes nothing, so the window never comes
+        /// forward by another way.</summary>
+        void MaximizeWindow();
+
         /// <summary>Closes PadForge, as the tray icon's Exit does.</summary>
         void Exit();
 

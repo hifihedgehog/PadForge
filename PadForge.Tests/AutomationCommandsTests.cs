@@ -35,6 +35,7 @@ namespace PadForge.Tests
         public void ShowWindow() => Note("show");
         public bool HideToTray() { Note("hide"); return HasTray; }
         public void MinimizeWindow() => Note("minimize");
+        public void MaximizeWindow() => Note("maximize");
         public void Exit() => Note("exit");
         public EngineChange SetEngine(bool on) { Note("engine " + (on ? "on" : "off")); return EngineAnswer; }
         public void SetAllControllers(bool on) => Note("controllers " + (on ? "on" : "off"));

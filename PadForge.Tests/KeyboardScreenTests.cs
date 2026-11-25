@@ -1157,6 +1157,9 @@ namespace PadForge.Tests
             Assert.Equal(MacroActionType.PanKeyboardScreen, Enum.GetValues<MacroActionType>()[^12]);
             Assert.Equal(0, (int)KeyboardScreenMode.Off);
             Assert.Equal(8, (int)KeyboardScreenMode.Lightbar);
+            // Offline Devices (#600 item 43), appended after it.
+            Assert.Equal(9, (int)KeyboardScreenMode.OfflineDevices);
+            Assert.Equal(KeyboardScreenMode.OfflineDevices, Enum.GetValues<KeyboardScreenMode>().Max());
             Assert.Equal(KeyboardScreenMode.Lightbar, KeyboardScreenData.DefaultMode);
             Assert.Equal(3, (int)KeyboardScreenKind.Strike7);
         }

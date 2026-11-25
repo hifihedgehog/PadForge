@@ -694,6 +694,9 @@ namespace PadForge.Tests
                     [KeyboardScreenMode.Picture] = c => Assert.True(c.IsEmpty),
                     [KeyboardScreenMode.Stopwatch] = c => Assert.Equal(KeyboardScreenService.FormatStopwatch(KeyboardScreenService.StopwatchTime(now)), c.Text),
                     [KeyboardScreenMode.Lightbar] = c => Assert.True(c.IsEmpty),
+                    // The mapped devices that are away, or the line that
+                    // says none is (#600 item 43).
+                    [KeyboardScreenMode.OfflineDevices] = c => Assert.Equal(service.OfflineDevicesText(), c.Text),
                 };
                 var modes = Enum.GetValues<KeyboardScreenMode>();
                 Assert.Equal(modes.Length, cases.Count);

@@ -11,8 +11,9 @@ namespace PadForge.Views
     /// <summary>
     /// Win11-flyout-styled window that shows a shift layer's icon, name and
     /// color. Visually matches ProfileSwitchOverlay: bottom-center of the
-    /// work area, slides up from below the taskbar edge, themed
-    /// background/border.
+    /// work area of the monitor that holds the window in front
+    /// (<see cref="FlyoutPlacement"/>), slides up from below the taskbar
+    /// edge, themed background/border, and clicks pass through it.
     ///
     /// <para>The window shows what it is told and lets it go after
     /// <see cref="AutoDismissDelay"/> unless it is kept alive. How long a
@@ -52,6 +53,10 @@ namespace PadForge.Views
         private readonly DispatcherTimer _autoDismissTimer;
         private bool _isSlidingOut;
 
+        // The monitor the flyout was last put on, for a window WPF sizes
+        // again on a monitor of another scale.
+        private FlyoutPlacement.WorkArea? _placedOn;
+
         public ShiftLayerFlyout()
         {
             InitializeComponent();
@@ -63,6 +68,10 @@ namespace PadForge.Views
             _autoDismissTimer.Tick += OnAutoDismissTick;
 
             Loaded += OnLoaded;
+            SizeChanged += (_, _) =>
+            {
+                if (IsVisible && _placedOn is { } area) FlyoutPlacement.Place(this, area);
+            };
         }
 
         private void OnAutoDismissTick(object sender, EventArgs e)
@@ -223,15 +232,20 @@ namespace PadForge.Views
 
         private void ShowFlyout()
         {
-            var screen = SystemParameters.WorkArea;
+            // The monitor of the window in front, as every flyout of the
+            // family (#600 item 42).
+            var area = FlyoutPlacement.Front();
+            // The layer's color dot and its gap take 20 beside the line.
+            LayerNameText.MaxWidth = Math.Max(FlyoutPlacement.LeastLine, FlyoutPlacement.LineWidth(area) - 20);
 
             UpdateLayout();
             Show();
             UpdateLayout();
 
-            // Center horizontally; bottom margin (14px in XAML) provides gap above taskbar.
-            Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight;
+            // Centered across the work area. The panel's bottom margin keeps
+            // it above the taskbar.
+            _placedOn = area;
+            FlyoutPlacement.Place(this, area);
 
             SlideIn();
         }

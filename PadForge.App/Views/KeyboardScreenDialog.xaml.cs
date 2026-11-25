@@ -146,6 +146,7 @@ namespace PadForge.Views
                 KeyboardScreenMode.Picture => s.KeyboardScreen_Hint_Picture,
                 KeyboardScreenMode.Stopwatch => s.KeyboardScreen_Hint_Stopwatch,
                 KeyboardScreenMode.Lightbar => s.KeyboardScreen_Hint_Lightbar,
+                KeyboardScreenMode.OfflineDevices => s.KeyboardScreen_Hint_OfflineDevices,
                 _ => s.KeyboardScreen_Hint_Off,
             };
         }
@@ -163,6 +164,7 @@ namespace PadForge.Views
                 KeyboardScreenMode.Picture => s.KeyboardScreen_Hint_Picture_Overlay,
                 KeyboardScreenMode.Stopwatch => s.KeyboardScreen_Hint_Stopwatch_Overlay,
                 KeyboardScreenMode.Lightbar => s.KeyboardScreen_Hint_Lightbar_Overlay,
+                KeyboardScreenMode.OfflineDevices => s.KeyboardScreen_Hint_OfflineDevices_Overlay,
                 _ => s.KeyboardScreen_Hint_Off_Overlay,
             };
         }

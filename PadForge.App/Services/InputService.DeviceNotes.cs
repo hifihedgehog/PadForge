@@ -131,6 +131,8 @@ namespace PadForge.Services
 
                 string text = DeviceNoteText(note);
                 if (string.IsNullOrEmpty(text)) return;
+                // On the monitor of the window in front, clicks passing
+                // through, a drop for four seconds (#600 item 42).
                 SwitchOverlay().ShowDeviceNote(text, note.Kind == DeviceNoteKind.Connected);
             }
             catch { /* a note must never break the tick */ }
@@ -146,6 +148,26 @@ namespace PadForge.Services
         {
             string device = null, controller = null;
             int battery = -1;
+            if (note.Count > 1)
+            {
+                // A burst names each device it took (#600 item 42). A
+                // device that has no row any more is left out, and one left
+                // alone is said as its own line.
+                var names = new List<string>(note.Devices.Count);
+                Guid only = Guid.Empty;
+                foreach (var each in note.Devices)
+                {
+                    string name = LocalizedDeviceName(FindUserDevice(each));
+                    if (string.IsNullOrEmpty(name)) continue;
+                    names.Add(name);
+                    only = each;
+                }
+                if (names.Count == 0) return null;
+                if (names.Count == 1)
+                    return DeviceNoteText(new DeviceNote(note.Kind, 1, only, -1));
+                return DeviceNoteDirector.Text(new DeviceNote(note.Kind, names.Count, Guid.Empty, -1, note.Devices),
+                    null, null, -1, names);
+            }
             if (note.Count == 1)
             {
                 var ud = FindUserDevice(note.Device);

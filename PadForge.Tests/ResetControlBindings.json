@@ -103,6 +103,12 @@
   },
   {
     "File": "PadForge.App/Views/ExtrasPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableControllersNote_2039",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableControllersNote"
+  },
+  {
+    "File": "PadForge.App/Views/ExtrasPage.xaml",
     "Id": "Reset_DashboardViewModel_EnableDeviceDisconnectedNote_2032",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "EnableDeviceDisconnectedNote"
@@ -610,6 +616,12 @@
     "Id": "Reset_MacroExpressionVariable_ScriptValue_1649",
     "Owner": "PadForge.ViewModels.MacroExpressionVariable",
     "Property": "ScriptValue"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroExpressionVariable_DeviceGuid_1650",
+    "Owner": "PadForge.ViewModels.MacroExpressionVariable",
+    "Property": "DeviceGuid"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",

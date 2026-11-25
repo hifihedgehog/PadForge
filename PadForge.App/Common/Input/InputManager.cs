@@ -2303,6 +2303,11 @@ namespace PadForge.Common.Input
                                 // Evaluate global macros (profile shortcuts) even in idle
                                 // so the user can switch away from an empty profile.
                                 EvaluateGlobalMacros();
+                                // The slot macros that read a device's
+                                // connection (#600 item 43): the engine idles
+                                // once the last device drops, which is the
+                                // moment they are most often made for.
+                                EvaluateConnectionMacros();
 
                                 // An open On-Screen Keyboard (#566) keeps
                                 // working, and closing, with no slot active.

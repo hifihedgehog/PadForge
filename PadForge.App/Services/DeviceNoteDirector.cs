@@ -102,11 +102,17 @@ namespace PadForge.Services
     internal readonly struct DeviceNote
     {
         public DeviceNote(DeviceNoteKind kind, int count, Guid device, int emptiedSlot)
+            : this(kind, count, device, emptiedSlot, null)
+        {
+        }
+
+        public DeviceNote(DeviceNoteKind kind, int count, Guid device, int emptiedSlot, IReadOnlyList<Guid> devices)
         {
             Kind = kind;
             Count = count;
             Device = device;
             EmptiedSlot = emptiedSlot;
+            Devices = devices ?? (device == Guid.Empty ? Array.Empty<Guid>() : new[] { device });
         }
 
         public DeviceNoteKind Kind { get; }
@@ -121,6 +127,11 @@ namespace PadForge.Services
         /// <summary>The controller a drop left with no device connected, or
         /// -1.</summary>
         public int EmptiedSlot { get; }
+
+        /// <summary>Every device the line stands for, in the order they
+        /// changed, so a burst names the devices it took (#600 item
+        /// 42).</summary>
+        public IReadOnlyList<Guid> Devices { get; }
     }
 
     /// <summary>
@@ -149,7 +160,8 @@ namespace PadForge.Services
     /// then.</item>
     /// <item>Three drops in a minute are said once, as keeps disconnecting,
     /// and the device says nothing for five minutes.</item>
-    /// <item>Devices that change within half a second share one line.</item>
+    /// <item>Devices that change within half a second share one line,
+    /// which names them.</item>
     /// <item>Nothing is decided while the flyout shows a profile switch or
     /// the controllers turned on or off, so a change that ends before the
     /// flyout is free is never said. A line that is decided waits its turn
@@ -344,9 +356,22 @@ namespace PadForge.Services
                 var line = _lines[0];
                 _lines.RemoveAt(0);
                 // A line whose note was turned off while it waited, or whose
-                // device has left its controller since, is not said.
+                // device has left its controller since, is not said. A burst
+                // keeps the devices still mapped, and one left of it is said
+                // as its own line.
                 if (!(line.Kind == DeviceNoteKind.Connected ? noteReturns : noteDrops)) continue;
                 if (line.Count == 1 && !_states.ContainsKey(line.Device)) continue;
+                if (line.Count > 1)
+                {
+                    var kept = new List<Guid>(line.Devices.Count);
+                    foreach (var device in line.Devices)
+                        if (_states.ContainsKey(device)) kept.Add(device);
+                    if (kept.Count == 0) continue;
+                    if (kept.Count == 1)
+                        return new DeviceNote(line.Kind, 1, kept[0],
+                            line.Kind == DeviceNoteKind.Disconnected ? EmptiedSlot(mapped, kept[0]) : -1);
+                    if (kept.Count < line.Count) return new DeviceNote(line.Kind, kept.Count, Guid.Empty, -1, kept);
+                }
                 return line;
             }
             return default;
@@ -361,11 +386,15 @@ namespace PadForge.Services
             if (devices.Count == 0) return;
             var line = devices.Count == 1
                 ? new DeviceNote(kind, 1, devices[0], kind == DeviceNoteKind.Disconnected ? EmptiedSlot(mapped, devices[0]) : -1)
-                : new DeviceNote(kind, devices.Count, Guid.Empty, -1);
+                : new DeviceNote(kind, devices.Count, Guid.Empty, -1, devices.ToArray());
             devices.Clear();
             int last = _lines.Count - 1;
             if (last >= 0 && _lines[last].Kind == kind)
-                _lines[last] = new DeviceNote(kind, _lines[last].Count + line.Count, Guid.Empty, -1);
+            {
+                var together = new List<Guid>(_lines[last].Devices);
+                together.AddRange(line.Devices);
+                _lines[last] = new DeviceNote(kind, _lines[last].Count + line.Count, Guid.Empty, -1, together);
+            }
             else
                 _lines.Add(line);
         }
@@ -492,19 +521,23 @@ namespace PadForge.Services
         /// the name the Devices list shows. <paramref name="controllerName"/>
         /// is the controller the drop emptied, or null.
         /// <paramref name="batteryPercent"/> is the returned device's level,
-        /// or negative when PadForge does not know it.</summary>
-        internal static string Text(DeviceNote note, string deviceName, string controllerName, int batteryPercent)
+        /// or negative when PadForge does not know it. A line for several
+        /// names each of <paramref name="deviceNames"/>, in the order they
+        /// changed (#600 item 42).</summary>
+        internal static string Text(DeviceNote note, string deviceName, string controllerName, int batteryPercent,
+            IReadOnlyList<string> deviceNames = null)
         {
             var s = Strings.Instance;
+            string names = deviceNames == null ? string.Empty : string.Join(", ", deviceNames);
             switch (note.Kind)
             {
                 case DeviceNoteKind.Disconnected:
-                    if (note.Count > 1) return string.Format(s.Main_DevicesDisconnected_Format, note.Count);
+                    if (note.Count > 1) return string.Format(s.Main_DevicesDisconnectedNamed_Format, note.Count, names);
                     return string.IsNullOrEmpty(controllerName)
                         ? string.Format(s.Main_DeviceDisconnected_Format, deviceName)
                         : string.Format(s.Main_DeviceDisconnectedLast_Format, deviceName, controllerName);
                 case DeviceNoteKind.Connected:
-                    if (note.Count > 1) return string.Format(s.Main_DevicesConnected_Format, note.Count);
+                    if (note.Count > 1) return string.Format(s.Main_DevicesConnectedNamed_Format, note.Count, names);
                     return batteryPercent >= 0
                         ? string.Format(s.Main_DeviceConnectedBattery_Format, deviceName, batteryPercent)
                         : string.Format(s.Main_DeviceConnected_Format, deviceName);

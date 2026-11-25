@@ -112,6 +112,10 @@ namespace PadForge.Services.Automation
         /// <summary>The pipe's <c>rest</c>: every control of a program's
         /// device at rest (#600).</summary>
         Rest,
+
+        /// <summary><c>maximize</c>, the line of <c>--maximized</c>
+        /// (#600 item 44). Appended.</summary>
+        MaximizeWindow,
     }
 
     /// <summary>
@@ -160,6 +164,7 @@ namespace PadForge.Services.Automation
                     AutomationAskKind.ShowWindow => s.Automation_Asked_Show,
                     AutomationAskKind.HideWindow => s.Automation_Asked_Hide,
                     AutomationAskKind.MinimizeWindow => s.Automation_Asked_Minimize,
+                    AutomationAskKind.MaximizeWindow => s.Automation_Asked_Maximize,
                     AutomationAskKind.Exit => s.Automation_Asked_Exit,
                     AutomationAskKind.EngineOn => s.Automation_Asked_EngineOn,
                     AutomationAskKind.EngineOff => s.Automation_Asked_EngineOff,

@@ -251,6 +251,9 @@ namespace PadForge.Tests
             public readonly Dictionary<Guid, string> Names = new Dictionary<Guid, string>();
             public readonly List<string> Said = new List<string>();
             public readonly List<string> Quieted = new List<string>();
+            /// <summary>The devices each line for several names, in
+            /// order (#600 item 42).</summary>
+            public readonly List<string> Named = new List<string>();
             public long Now;
             /// <summary>When the enumeration the rows come from began. Null
             /// reads them as fresh at every walk.</summary>
@@ -282,6 +285,11 @@ namespace PadForge.Tests
                 string line = Now + " " + note.Kind + (note.Count == 1 ? " " + Names[note.Device] : " x" + note.Count);
                 if (note.EmptiedSlot >= 0) line += " empties " + note.EmptiedSlot;
                 Said.Add(line);
+                if (note.Count > 1)
+                {
+                    Assert.Equal(note.Count, note.Devices.Count);
+                    Named.Add(string.Join(",", note.Devices.Select(d => Names[d])));
+                }
             }
 
             /// <summary>Walks every quarter second until the clock stands at
@@ -551,6 +559,8 @@ namespace PadForge.Tests
             stage.Set(four, false);
             stage.Walk(6000);
             Assert.Equal(new[] { "3250 Disconnected x3", "4500 Disconnected Four empties 3" }, stage.Said);
+            // The line names the three the hub took (#600 item 42).
+            Assert.Equal(new[] { "One,Two,Three" }, stage.Named);
 
             // The hub comes back with all four, well after the ten seconds.
             stage.Said.Clear();
@@ -558,6 +568,7 @@ namespace PadForge.Tests
             foreach (var device in new[] { one, two, three, four }) stage.Set(device, true);
             stage.Walk(21_000);
             Assert.Equal(new[] { "20750 Connected x4" }, stage.Said);
+            Assert.Equal("One,Two,Three,Four", stage.Named.Last());
         }
 
         /// <summary>The line names the controller a drop left with no
@@ -683,6 +694,8 @@ namespace PadForge.Tests
             stage.Free = true;
             stage.Walk(10_250);
             Assert.Equal(new[] { "10250 Disconnected x2" }, stage.Said);
+            // The two lines that became one name both devices.
+            Assert.Equal(new[] { "One,Two" }, stage.Named);
             stage.Walk(10_500);
             Assert.Equal(new[] { "10250 Disconnected x2", "10500 Connected Three" }, stage.Said);
             stage.Walk(20_000);
@@ -766,8 +779,9 @@ namespace PadForge.Tests
             Assert.Equal("{0} disconnected. {1} has no device left.", English("Main_DeviceDisconnectedLast_Format"));
             Assert.Equal("{0} connected", English("Main_DeviceConnected_Format"));
             Assert.Equal("{0} connected, battery {1}%", English("Main_DeviceConnectedBattery_Format"));
-            Assert.Equal("{0} devices disconnected", English("Main_DevicesDisconnected_Format"));
-            Assert.Equal("{0} devices connected", English("Main_DevicesConnected_Format"));
+            // A burst names the devices it took (#600 item 42).
+            Assert.Equal("{0} devices disconnected: {1}", English("Main_DevicesDisconnectedNamed_Format"));
+            Assert.Equal("{0} devices connected: {1}", English("Main_DevicesConnectedNamed_Format"));
             Assert.Equal("{0} keeps disconnecting", English("Main_DeviceKeepsDisconnecting_Format"));
             Assert.Equal("Device Disconnected Note", English("Dashboard_DeviceDisconnectedNote"));
             Assert.Equal("Device Connected Note", English("Dashboard_DeviceConnectedNote"));
@@ -778,19 +792,22 @@ namespace PadForge.Tests
         {
             var s = Strings.Instance;
             var pad = Guid.NewGuid();
+            var burst = new[] { "DualSense", "T.16000M", "G29" };
             string Text(Kind kind, int count, string controller = null, int battery = -1, int slot = -1)
-                => DeviceNoteDirector.Text(new DeviceNote(kind, count, count == 1 ? pad : Guid.Empty, slot), count == 1 ? "DualSense" : null, controller, battery);
+                => DeviceNoteDirector.Text(new DeviceNote(kind, count, count == 1 ? pad : Guid.Empty, slot), count == 1 ? "DualSense" : null, controller, battery,
+                    count == 1 ? null : burst.Take(count).ToArray());
 
             Assert.Equal(string.Format(s.Main_DeviceDisconnected_Format, "DualSense"), Text(Kind.Disconnected, 1));
             Assert.Equal(string.Format(s.Main_DeviceDisconnectedLast_Format, "DualSense", "Virtual Controller 2"),
                 Text(Kind.Disconnected, 1, controller: "Virtual Controller 2", slot: 1));
-            Assert.Equal(string.Format(s.Main_DevicesDisconnected_Format, 3), Text(Kind.Disconnected, 3));
+            Assert.Equal(string.Format(s.Main_DevicesDisconnectedNamed_Format, 3, "DualSense, T.16000M, G29"), Text(Kind.Disconnected, 3));
+            Assert.Equal("3 devices disconnected: DualSense, T.16000M, G29", Text(Kind.Disconnected, 3));
 
             // The battery form only when the level is known. Zero is a level.
             Assert.Equal(string.Format(s.Main_DeviceConnected_Format, "DualSense"), Text(Kind.Connected, 1));
             Assert.Equal(string.Format(s.Main_DeviceConnectedBattery_Format, "DualSense", 80), Text(Kind.Connected, 1, battery: 80));
             Assert.Equal(string.Format(s.Main_DeviceConnectedBattery_Format, "DualSense", 0), Text(Kind.Connected, 1, battery: 0));
-            Assert.Equal(string.Format(s.Main_DevicesConnected_Format, 2), Text(Kind.Connected, 2, battery: 80));
+            Assert.Equal(string.Format(s.Main_DevicesConnectedNamed_Format, 2, "DualSense, T.16000M"), Text(Kind.Connected, 2, battery: 80));
 
             Assert.Equal(string.Format(s.Main_DeviceKeepsDisconnecting_Format, "DualSense"), Text(Kind.KeepsDisconnecting, 1));
             Assert.Equal(string.Empty, Text(Kind.None, 1));
@@ -1001,10 +1018,21 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(s.Main_DeviceKeepsDisconnecting_Format, "Player One"),
                 svc.DeviceNoteText(new DeviceNote(Kind.KeepsDisconnecting, 1, pad.InstanceGuid, -1)));
 
-            // A count needs no name, and a device with no row has no line.
-            Assert.Equal(string.Format(s.Main_DevicesDisconnected_Format, 4),
-                svc.DeviceNoteText(new DeviceNote(Kind.Disconnected, 4, Guid.Empty, -1)));
+            // A device with no row has no line.
             Assert.Null(svc.DeviceNoteText(new DeviceNote(Kind.Disconnected, 1, Guid.NewGuid(), -1)));
+
+            // A burst names each device it took, as the list does, and
+            // leaves out one that has no row (#600 item 42). One left alone
+            // is said as its own line, and none leaves no line.
+            var stick = Device("T.16000M", "XInput#8", online: false, InputDeviceType.Joystick, 1);
+            var gone = Guid.NewGuid();
+            Assert.Equal(string.Format(s.Main_DevicesDisconnectedNamed_Format, 2, "Player One, T.16000M"),
+                svc.DeviceNoteText(new DeviceNote(Kind.Disconnected, 3, Guid.Empty, -1, new[] { pad.InstanceGuid, gone, stick.InstanceGuid })));
+            Assert.Equal(string.Format(s.Main_DevicesConnectedNamed_Format, 2, "T.16000M, Player One"),
+                svc.DeviceNoteText(new DeviceNote(Kind.Connected, 2, Guid.Empty, -1, new[] { stick.InstanceGuid, pad.InstanceGuid })));
+            Assert.Equal(string.Format(s.Main_DeviceDisconnected_Format, "T.16000M"),
+                svc.DeviceNoteText(new DeviceNote(Kind.Disconnected, 2, Guid.Empty, -1, new[] { gone, stick.InstanceGuid })));
+            Assert.Null(svc.DeviceNoteText(new DeviceNote(Kind.Disconnected, 2, Guid.Empty, -1, new[] { gone, Guid.NewGuid() })));
         }
 
         // ── the two switches ───────────────────────────────────────────
@@ -1159,13 +1187,16 @@ namespace PadForge.Tests
         [Fact]
         public void TheOverlaysSwitch_CountsTheNotes_AndStillStartsWithTheThreeOverlays()
         {
-            Assert.Equal(7, DashboardViewModel.OverlaysStartingSet);
-            Assert.Equal(31, DashboardViewModel.OverlaysAllBits);
+            // The controllers on or off note (#600 item 42) starts on, as
+            // the three overlays do.
+            Assert.Equal(39, DashboardViewModel.OverlaysStartingSet);
+            Assert.Equal(63, DashboardViewModel.OverlaysAllBits);
             Assert.Equal(8, DashboardViewModel.DeviceDisconnectedNoteBit);
             Assert.Equal(16, DashboardViewModel.DeviceConnectedNoteBit);
+            Assert.Equal(32, DashboardViewModel.ControllersNoteBit);
 
             // On with one note alone.
-            var vm = new DashboardViewModel { EnableMenuOverlay = false, EnableShiftLayerFlyout = false, EnableProfileOverlay = false };
+            var vm = new DashboardViewModel { EnableMenuOverlay = false, EnableShiftLayerFlyout = false, EnableProfileOverlay = false, EnableControllersNote = false };
             Assert.False(vm.OverlaysAnyEnabled);
             var raised = new List<string>();
             vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
@@ -1181,31 +1212,33 @@ namespace PadForge.Tests
             Assert.Equal(DashboardViewModel.DeviceConnectedNoteBit, vm.OverlaysLastShown);
             vm.OverlaysAnyEnabled = true;
             Assert.True(vm.EnableDeviceConnectedNote);
-            Assert.False(vm.EnableDeviceDisconnectedNote || vm.EnableMenuOverlay || vm.EnableShiftLayerFlyout || vm.EnableProfileOverlay);
+            Assert.False(vm.EnableDeviceDisconnectedNote || vm.EnableMenuOverlay || vm.EnableShiftLayerFlyout || vm.EnableProfileOverlay || vm.EnableControllersNote);
 
-            // All five, off and on again.
-            vm.EnableMenuOverlay = vm.EnableShiftLayerFlyout = vm.EnableProfileOverlay = vm.EnableDeviceDisconnectedNote = true;
+            // All six, off and on again.
+            vm.EnableMenuOverlay = vm.EnableShiftLayerFlyout = vm.EnableProfileOverlay = vm.EnableDeviceDisconnectedNote = vm.EnableControllersNote = true;
             vm.OverlaysAnyEnabled = false;
             Assert.Equal(DashboardViewModel.OverlaysAllBits, vm.OverlaysLastShown);
             Assert.False(vm.EnableDeviceDisconnectedNote || vm.EnableDeviceConnectedNote);
             vm.OverlaysAnyEnabled = true;
             Assert.True(vm.EnableMenuOverlay && vm.EnableShiftLayerFlyout && vm.EnableProfileOverlay
-                && vm.EnableDeviceDisconnectedNote && vm.EnableDeviceConnectedNote);
+                && vm.EnableDeviceDisconnectedNote && vm.EnableDeviceConnectedNote && vm.EnableControllersNote);
 
-            // With nothing remembered: the three overlays, and no note.
-            var fresh = new DashboardViewModel { EnableMenuOverlay = false, EnableShiftLayerFlyout = false, EnableProfileOverlay = false };
+            // With nothing remembered: the three overlays and the
+            // controllers note, and no device note.
+            var fresh = new DashboardViewModel { EnableMenuOverlay = false, EnableShiftLayerFlyout = false, EnableProfileOverlay = false, EnableControllersNote = false };
             Assert.Equal(0, fresh.OverlaysLastShown);
             fresh.OverlaysAnyEnabled = true;
-            Assert.True(fresh.EnableMenuOverlay && fresh.EnableShiftLayerFlyout && fresh.EnableProfileOverlay);
+            Assert.True(fresh.EnableMenuOverlay && fresh.EnableShiftLayerFlyout && fresh.EnableProfileOverlay && fresh.EnableControllersNote);
             Assert.False(fresh.EnableDeviceDisconnectedNote || fresh.EnableDeviceConnectedNote);
 
-            // What is remembered is held to the five rows.
+            // What is remembered is held to the six rows.
             fresh.OverlaysLastShown = 0xFF;
-            Assert.Equal(31, fresh.OverlaysLastShown);
+            Assert.Equal(63, fresh.OverlaysLastShown);
 
             // The reset beside the switch: each row at its default.
+            vm.EnableControllersNote = false;
             vm.ResetOverlaysCommand.Execute(null);
-            Assert.True(vm.EnableMenuOverlay && vm.EnableShiftLayerFlyout && vm.EnableProfileOverlay);
+            Assert.True(vm.EnableMenuOverlay && vm.EnableShiftLayerFlyout && vm.EnableProfileOverlay && vm.EnableControllersNote);
             Assert.False(vm.EnableDeviceDisconnectedNote || vm.EnableDeviceConnectedNote);
         }
 
@@ -1231,6 +1264,7 @@ namespace PadForge.Tests
                 ("OverlaysPreviewMenu", "Dashboard_MenuOverlay", "Extras_Overlays_MenuHint", "EnableMenuOverlay"),
                 ("OverlaysPreviewShift", "Dashboard_ShiftLayerFlyout", "Extras_Overlays_ShiftLayerHint", "EnableShiftLayerFlyout"),
                 ("OverlaysPreviewProfile", "Dashboard_ProfileOverlay", "Extras_Overlays_ProfileHint", "EnableProfileOverlay"),
+                ("OverlaysPreviewControllers", "Dashboard_ControllersNote", "Extras_Overlays_ControllersNoteHint", "EnableControllersNote"),
                 ("OverlaysPreviewDeviceDisconnected", "Dashboard_DeviceDisconnectedNote", "Extras_Overlays_DeviceDisconnectedHint", "EnableDeviceDisconnectedNote"),
                 ("OverlaysPreviewDeviceConnected", "Dashboard_DeviceConnectedNote", "Extras_Overlays_DeviceConnectedHint", "EnableDeviceConnectedNote"),
             };
@@ -1277,6 +1311,7 @@ namespace PadForge.Tests
                 .Descendants().First(e => e.Name.LocalName == "RectangleGeometry").Attribute("Rect").Value;
             Assert.Equal(Pill("OverlaysPreviewProfile"), Pill("OverlaysPreviewDeviceDisconnected"));
             Assert.Equal(Pill("OverlaysPreviewProfile"), Pill("OverlaysPreviewDeviceConnected"));
+            Assert.Equal(Pill("OverlaysPreviewProfile"), Pill("OverlaysPreviewControllers"));
         }
 
         /// <summary>Search finds both settings on the Overlays page, each
@@ -1474,7 +1509,7 @@ namespace PadForge.Tests
         /// order, each with its preview drawn in a well of 84 by 48 and its
         /// switch. Both notes read off on a new settings file.</summary>
         [Fact]
-        public void TheOverlaysPage_DrawsFiveRowsInOrder_WithTheirPreviews()
+        public void TheOverlaysPage_DrawsSixRowsInOrder_WithTheirPreviews()
         {
             PageRenderDumpPages.WithApp((app, dispatcher) =>
             {
@@ -1500,13 +1535,14 @@ namespace PadForge.Tests
 
                     var panel = (FrameworkElement)page.FindName("OverlaysPage");
                     var rows = Under<SettingRow>(panel).ToList();
-                    Assert.Equal(5, rows.Count);
+                    Assert.Equal(6, rows.Count);
 
                     var expected = new[]
                     {
                         ("OverlaysPreviewMenu", Strings.Instance.Dashboard_MenuOverlay, true),
                         ("OverlaysPreviewShift", Strings.Instance.Dashboard_ShiftLayerFlyout, true),
                         ("OverlaysPreviewProfile", Strings.Instance.Dashboard_ProfileOverlay, true),
+                        ("OverlaysPreviewControllers", Strings.Instance.Dashboard_ControllersNote, true),
                         ("OverlaysPreviewDeviceDisconnected", Strings.Instance.Dashboard_DeviceDisconnectedNote, false),
                         ("OverlaysPreviewDeviceConnected", Strings.Instance.Dashboard_DeviceConnectedNote, false),
                     };
@@ -1534,11 +1570,11 @@ namespace PadForge.Tests
                         Assert.Equal(name, toggle.Content);
                         Assert.Equal(on, toggle.IsChecked);
                     }
-                    // The five previews are five drawings.
-                    Assert.Equal(5, rows.Select(r => Under<DecorativeImage>(r).Single().Source).Distinct().Count());
+                    // The six previews are six drawings.
+                    Assert.Equal(6, rows.Select(r => Under<DecorativeImage>(r).Single().Source).Distinct().Count());
 
                     // A switch on the page writes the setting.
-                    Under<CheckBox>(rows[3]).Single().IsChecked = true;
+                    Under<CheckBox>(rows[4]).Single().IsChecked = true;
                     Assert.True(dash.EnableDeviceDisconnectedNote);
                     Assert.False(dash.EnableDeviceConnectedNote);
                 }
@@ -1549,13 +1585,14 @@ namespace PadForge.Tests
             }, TimeSpan.FromMinutes(2), "The Overlays page test timed out.");
         }
 
-        /// <summary>The flyout shows a note for two seconds and is free
+        /// <summary>The flyout shows a drop for four seconds and any other
+        /// note for two (#600 item 42), and is free
         /// again once it has slid away. A state shown while the note slides
         /// away keeps the window: the end of the old slide, which still
         /// arrives, hides nothing. The window is moved off every screen as
         /// soon as it is shown, before it is drawn.</summary>
         [Fact]
-        public void TheFlyout_ShowsANoteForTwoSeconds_AndAStateShownWhileItSlidesAwayKeepsTheWindow()
+        public void TheFlyout_ShowsADropForFourSecondsAndAReturnForTwo_AndAStateShownWhileItSlidesAwayKeepsTheWindow()
         {
             PageRenderDumpPages.WithApp((app, dispatcher) =>
             {
@@ -1592,11 +1629,16 @@ namespace PadForge.Tests
                     Assert.Equal("\uE7BA", flyout.StatusIcon.Text);
                     Assert.Equal(Color.FromRgb(0xFF, 0xB9, 0x00), Assert.IsType<SolidColorBrush>(flyout.StatusIcon.Foreground).Color);
                     Assert.Equal(TextTrimming.CharacterEllipsis, flyout.StatusText.TextTrimming);
-                    Assert.True(flyout.StatusText.MaxWidth >= 160 && flyout.StatusText.MaxWidth < SystemParameters.WorkArea.Width);
+                    // The line fits the monitor of the window in front.
+                    Assert.Equal(FlyoutPlacement.LineWidth(FlyoutPlacement.Front()), flyout.StatusText.MaxWidth);
+                    Assert.True(flyout.StatusText.MaxWidth >= 160 && flyout.StatusText.MaxWidth < SystemParameters.VirtualScreenWidth);
 
-                    // Two seconds, the slide away, and the window is hidden
-                    // and free.
-                    Assert.True(Until(() => !flyout.IsVisible, 5000), "the note never left");
+                    // A drop stays four seconds (#600 item 42), then slides
+                    // away, and the window is hidden and free. Read on the
+                    // clock: a pump of ten milliseconds takes longer.
+                    var clock = System.Diagnostics.Stopwatch.StartNew();
+                    Assert.True(Until(() => !flyout.IsVisible, 9000), "the note never left");
+                    Assert.True(clock.ElapsedMilliseconds >= 3900, "a drop's note left after " + clock.ElapsedMilliseconds + " ms");
                     Assert.False(flyout.IsUp);
                     Assert.False(flyout.IsShowingDeviceNote);
 

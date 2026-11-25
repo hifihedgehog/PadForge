@@ -39,6 +39,11 @@ namespace PadForge.Services
         /// lowest slot the screen feeds, @eVenent's lightbar sync mode
         /// (discussion #507).</summary>
         Lightbar = 8,
+        /// <summary>The mapped devices that are not connected (#600 item
+        /// 43): each device a person plugs in that is assigned to a created,
+        /// enabled controller and is offline, by the name the Devices list
+        /// shows. Appended.</summary>
+        OfflineDevices = 9,
     }
 
     /// <summary>What the Stopwatch macro does.</summary>
@@ -525,6 +530,8 @@ namespace PadForge.Services
                     int slot = data?.LightbarSlot ?? KeyboardScreenData.LowestSlot;
                     return LightbarContent(IsOnItsSlot, slot == KeyboardScreenData.LowestSlot ? null : s => s == slot);
                 }
+                case KeyboardScreenMode.OfflineDevices:
+                    return new(OfflineDevicesText());
                 default:
                     return ScreenOverlayContent.Nothing;
             }
@@ -901,10 +908,41 @@ namespace PadForge.Services
                             () => KeyboardScreenRenderer.RenderColor(color.R, color.G, color.B, kind));
                     blank = Blank.NoLightbar;
                     return null;
+                case KeyboardScreenMode.OfflineDevices:
+                    return Text(screen, OfflineDevicesText());
                 default:
                     blank = Blank.Off;
                     return null;
             }
+        }
+
+        // One walk's readings and the copy of the device list they are made
+        // from, kept between passes so a pass allocates no list.
+        private readonly List<DeviceNoteReading> _offlineReadings = new();
+        private Engine.Data.UserDevice[] _offlineRows;
+
+        /// <summary>The mapped devices that are not connected, by the name
+        /// the Devices list shows, in the order they are assigned, or a line
+        /// that says none is (#600 item 43). "Mapped" is the device notes'
+        /// own reading (<see cref="InputService.ReadMappedDevices"/>): a
+        /// device a person plugs in, assigned to a controller that exists
+        /// and is on.</summary>
+        internal string OfflineDevicesText()
+        {
+            InputService.ReadMappedDevices(_offlineReadings, ref _offlineRows);
+            return OfflineDevicesText(_offlineReadings, device => InputService.LocalizedDeviceName(SettingsManager.FindDeviceByInstanceGuid(device)));
+        }
+
+        internal static string OfflineDevicesText(IReadOnlyList<DeviceNoteReading> mapped, Func<Guid, string> nameOf)
+        {
+            var names = new List<string>();
+            foreach (var reading in mapped)
+            {
+                if (!reading.RaisesNotes || reading.Online) continue;
+                string name = nameOf(reading.Device);
+                if (!string.IsNullOrEmpty(name)) names.Add(name);
+            }
+            return names.Count == 0 ? Strings.Instance.KeyboardScreen_NoDeviceOffline : string.Join(", ", names);
         }
 
         /// <summary>The slots whose lightbar a screen follows: the ones its
@@ -1153,6 +1191,7 @@ namespace PadForge.Services
                 KeyboardScreenMode.Picture => s.DreamcastScreen_Mode_Picture,
                 KeyboardScreenMode.Stopwatch => s.KeyboardScreens_Mode_Stopwatch,
                 KeyboardScreenMode.Lightbar => s.KeyboardScreens_Mode_Lightbar,
+                KeyboardScreenMode.OfflineDevices => s.KeyboardScreens_Mode_OfflineDevices,
                 _ => s.KeyboardScreens_Mode_Off,
             };
         }

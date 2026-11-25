@@ -176,6 +176,7 @@ namespace PadForge.Services.Automation
                 case "show": return Alone(AutomationAskKind.ShowWindow, rest);
                 case "hide": return Alone(AutomationAskKind.HideWindow, rest);
                 case "minimize": return Alone(AutomationAskKind.MinimizeWindow, rest);
+                case "maximize": return Alone(AutomationAskKind.MaximizeWindow, rest);
                 case "exit": return Alone(AutomationAskKind.Exit, rest);
                 case "snapshot": return Alone(AutomationAskKind.Snapshot, rest);
                 case "version": return Alone(AutomationAskKind.Version, rest);
@@ -255,6 +256,8 @@ namespace PadForge.Services.Automation
                     return OnUi(() => _target.HideToTray() ? Ok : NotAvailable, stopping);
                 case AutomationAskKind.MinimizeWindow:
                     return OnUi(() => { _target.MinimizeWindow(); return Ok; }, stopping);
+                case AutomationAskKind.MaximizeWindow:
+                    return OnUi(() => { _target.MaximizeWindow(); return Ok; }, stopping);
 
                 case AutomationAskKind.Exit:
                     // Answered first. PadForge closes once the answer is in

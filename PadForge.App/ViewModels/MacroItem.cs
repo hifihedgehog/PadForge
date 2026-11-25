@@ -7080,7 +7080,13 @@ namespace PadForge.ViewModels
         /// program set over the Automation pipe by name (#597,
         /// ScriptValues). Only variables offer it. Appended for the same
         /// reason.</summary>
-        ScriptValue
+        ScriptValue,
+
+        /// <summary>A Custom Expression variable that reads whether a chosen
+        /// device is connected (#600 item 43): 1 while it is, 0 while it is
+        /// not. Only variables offer it. Appended for the same
+        /// reason.</summary>
+        DeviceConnection
     }
 
     public enum MacroRepeatMode
@@ -8130,6 +8136,7 @@ namespace PadForge.ViewModels
             get
             {
                 if (_source == MacroTriggerSource.OutputController) return _outputChannel != MacroOutputChannel.None;
+                if (_source == MacroTriggerSource.DeviceConnection) return _deviceGuid != Guid.Empty;
                 if (_source == MacroTriggerSource.GameTelemetry)
                     return _telemetryChannel != Common.Input.Telemetry.TelemetryChannel.None
                         && (_telemetryChannel != Common.Input.Telemetry.TelemetryChannel.Variable || _telemetryVariable.Length > 0);
@@ -8142,7 +8149,7 @@ namespace PadForge.ViewModels
         /// <summary>Compact tagged form used for XML round-tripping.
         /// "in:GUID:btn:N", "in:GUID:pov:idx:cd", "in:GUID:ax:Target",
         /// "out:Channel", "tel:Channel", "tel:var:Name" (issue #531),
-        /// "val:Name" (#597). Empty for unbound. A variable's name never
+        /// "val:Name" (#597), "con:GUID" (#600 item 43). Empty for unbound. A variable's name never
         /// holds ':' or '|', which the custom format editor and
         /// ScriptValues.IsName refuse.</summary>
         public string Spec
@@ -8160,6 +8167,8 @@ namespace PadForge.ViewModels
                 }
                 if (_source == MacroTriggerSource.ScriptValue)
                     return IsBound ? $"val:{_scriptValue}" : "";
+                if (_source == MacroTriggerSource.DeviceConnection)
+                    return IsBound ? $"con:{_deviceGuid}" : "";
                 if (_deviceGuid == Guid.Empty) return "";
                 if (_rawButton >= 0) return $"in:{_deviceGuid}:btn:{_rawButton}";
                 if (!string.IsNullOrEmpty(_pov)) return $"in:{_deviceGuid}:pov:{_pov}";
@@ -8184,6 +8193,11 @@ namespace PadForge.ViewModels
                     {
                         _source = MacroTriggerSource.ScriptValue;
                         _scriptValue = parts[1];
+                    }
+                    else if (parts.Length >= 2 && parts[0] == "con")
+                    {
+                        _source = MacroTriggerSource.DeviceConnection;
+                        if (Guid.TryParse(parts[1], out var device)) _deviceGuid = device;
                     }
                     else if (parts.Length >= 2 && parts[0] == "out")
                     {
@@ -8249,6 +8263,8 @@ namespace PadForge.ViewModels
                     return TelemetryChannelNames.DisplayName(_telemetryChannel, _telemetryVariable);
                 if (_source == MacroTriggerSource.ScriptValue)
                     return _scriptValue;
+                if (_source == MacroTriggerSource.DeviceConnection)
+                    return ConnectionDeviceName(_deviceGuid);
 
                 string devName = ResolveDeviceName();
                 string prefix = string.IsNullOrEmpty(devName) ? "" : devName + " · ";
@@ -8263,6 +8279,40 @@ namespace PadForge.ViewModels
                 if (!string.IsNullOrEmpty(_pov)) return prefix + MacroItem.FormatPovTrigger(_pov);
                 if (_axisTarget != MacroAxisTarget.None) return prefix + _axisTarget.DisplayName();
                 return "";
+            }
+        }
+
+        /// <summary>A device as the Devices list names it, or its ID when
+        /// PadForge no longer has its row.</summary>
+        private static string ConnectionDeviceName(Guid device)
+            => Services.InputService.LocalizedDeviceName(SettingsManager.FindDeviceByInstanceGuid(device)) ?? device.ToString();
+
+        /// <summary>The devices a Device Connection variable can read (#600
+        /// item 43): every device a person plugs in that PadForge knows,
+        /// connected or not, as the device notes count them, and the chosen
+        /// one when it is no longer among them. Computed on read, so the
+        /// list is fresh each time the editor shows it.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public List<MacroDisconnectDeviceOption> ConnectionDeviceOptions
+        {
+            get
+            {
+                var options = new List<MacroDisconnectDeviceOption>();
+                var devices = SettingsManager.UserDevices;
+                if (devices != null)
+                {
+                    lock (devices.SyncRoot)
+                    {
+                        foreach (var ud in devices.Items)
+                        {
+                            if (!Services.InputService.RaisesDeviceNotes(ud)) continue;
+                            options.Add(new MacroDisconnectDeviceOption { Guid = ud.InstanceGuid, Name = ConnectionDeviceName(ud.InstanceGuid) });
+                        }
+                    }
+                }
+                if (_deviceGuid != Guid.Empty && !options.Exists(o => o.Guid == _deviceGuid))
+                    options.Add(new MacroDisconnectDeviceOption { Guid = _deviceGuid, Name = ConnectionDeviceName(_deviceGuid) });
+                return options;
             }
         }
 

@@ -1380,7 +1380,8 @@ namespace PadForge.Services
             if (args == null) return found;
             for (int i = 0; i < args.Count; i++)
             {
-                if (string.Equals(args[i], "--profile", StringComparison.OrdinalIgnoreCase))
+                // /profile and -profile are --profile too (#600 item 44).
+                if (PadForge.Common.CommandLineSwitches.NameOf(args[i], out string inline) == "--profile" && inline == null)
                 {
                     i++; // its value, whatever it says
                     continue;

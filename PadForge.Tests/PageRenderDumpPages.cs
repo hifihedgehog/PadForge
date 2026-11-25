@@ -1973,6 +1973,96 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The notes of #600 items 42 and 43, against the Notes
+        /// board: Overlays, What Shows with the Controllers On or Off row, a
+        /// burst's note in the flyout, a Custom Expression variable that
+        /// reads a device's connection, and a Screen Overlay showing Offline
+        /// Devices.</summary>
+        [Fact]
+        public void DrawNotes()
+        {
+            Run("notes", drawing =>
+            {
+                const double Board = 1440 - 264;
+                var savedDevices = PadForge.Common.Input.SettingsManager.UserDevices;
+                var savedSettings = PadForge.Common.Input.SettingsManager.UserSettings;
+                var savedCreated = (bool[])PadForge.Common.Input.SettingsManager.SlotCreated.Clone();
+                var savedEnabled = (bool[])PadForge.Common.Input.SettingsManager.SlotEnabled.Clone();
+                try
+                {
+                    PadForge.Common.Input.SettingsManager.UserDevices = new PadForge.Common.Input.DeviceCollection();
+                    PadForge.Common.Input.SettingsManager.UserSettings = new PadForge.Common.Input.SettingsCollection();
+                    PadForge.Common.Input.SettingsManager.SlotCreated[0] = PadForge.Common.Input.SettingsManager.SlotEnabled[0] = true;
+                    PadForge.Engine.Data.UserDevice Device(string name, string path, int type, bool online)
+                    {
+                        var ud = new PadForge.Engine.Data.UserDevice
+                        {
+                            InstanceGuid = Guid.NewGuid(), InstanceName = name, ProductName = name,
+                            DevicePath = path, CapType = type, IsOnline = online,
+                        };
+                        PadForge.Common.Input.SettingsManager.UserDevices.Items.Add(ud);
+                        PadForge.Common.Input.SettingsManager.UserSettings.Items.Add(new PadForge.Engine.Data.UserSetting { InstanceGuid = ud.InstanceGuid, MapTo = 0 });
+                        return ud;
+                    }
+                    var pad = Device("DualSense Wireless Controller", @"\\?\HID#VID_054C&PID_0CE6#8&1a2b3c&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", InputDeviceType.Gamepad, false);
+                    Device("T.16000M", @"\\?\HID#VID_044F&PID_B10A#8&2b3c4d&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}", InputDeviceType.Joystick, false);
+
+                    // Overlays, What Shows.
+                    var dash = new DashboardViewModel
+                    {
+                        DiscoverOpenXrRuntimes = () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>(),
+                    };
+                    var extras = new ExtrasPage { DataContext = dash };
+                    var extrasGround = drawing.Ground(extras);
+                    drawing.Picture(extrasGround, "notes-overlays.png", Board, 900, () => extras.Show("Overlays"));
+
+                    // A burst's note, in the flyout's own window, drawn on the
+                    // app's ground.
+                    var flyout = new ProfileSwitchOverlay();
+                    flyout.ShowDeviceNote(string.Format(PadForge.Resources.Strings.Strings.Instance.Main_DevicesDisconnectedNamed_Format, 2, "DualSense, T.16000M"), connected: false);
+                    flyout.Left = -32000;
+                    flyout.Top = -32000;
+                    flyout.StopTimers();
+                    flyout.FlyoutPanel.RenderTransform = null;
+                    var content = (FrameworkElement)flyout.Content;
+                    flyout.Content = null;
+                    flyout.Close();
+                    drawing.PictureControl(content, "notes-flyout-burst.png");
+
+                    // The Custom Expression variable that reads the pad's
+                    // connection: !a runs the macro when it disconnects.
+                    var vm = new PadViewModel(0);
+                    var macro = new MacroItem
+                    {
+                        Name = "DualSense Gone",
+                        TriggerMode = MacroTriggerMode.CustomExpression,
+                        TriggerExpression = "!a",
+                    };
+                    macro.TriggerExpressionVariables.Add(new MacroExpressionVariable { Spec = "con:" + pad.InstanceGuid });
+                    vm.Macros.Add(macro);
+                    var padPage = new PadPage { DataContext = vm };
+                    padPage.BindSteamVrState(new SettingsViewModel { IsSteamVrInstalled = true });
+                    var padGround = drawing.Ground(padPage);
+                    vm.SelectedConfigTab = PadViewModel.MacrosTabIndex;
+                    drawing.Picture(padGround, "notes-device-connection.png", Board, 1600, () => vm.SelectedMacro = macro);
+
+                    // The Screen Overlay showing the mapped devices that are away.
+                    var screens = new KeyboardScreenService(new SettingsViewModel(), null);
+                    var overlay = PadForge.Common.Input.KeyboardScreens.KeyboardScreenInfo.Overlay(1);
+                    object window = (Size?)new Size(320, 240);
+                    drawing.PictureWindow(Make<KeyboardScreenDialog>(screens, overlay, new KeyboardScreenData { Mode = KeyboardScreenMode.OfflineDevices }, "Rocket League", null, window),
+                        "notes-screen-overlay-offline.png");
+                }
+                finally
+                {
+                    PadForge.Common.Input.SettingsManager.UserDevices = savedDevices;
+                    PadForge.Common.Input.SettingsManager.UserSettings = savedSettings;
+                    Array.Copy(savedCreated, PadForge.Common.Input.SettingsManager.SlotCreated, savedCreated.Length);
+                    Array.Copy(savedEnabled, PadForge.Common.Input.SettingsManager.SlotEnabled, savedEnabled.Length);
+                }
+            });
+        }
+
         private static void Run(string what, Action<Drawing> body)
         {
             string dir = Environment.GetEnvironmentVariable("PADFORGE_PAGE_RENDER_DIR");

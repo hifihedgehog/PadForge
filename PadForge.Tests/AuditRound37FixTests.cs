@@ -445,6 +445,7 @@ namespace PadForge.Tests
                 Assert.Equal(spec, Count(file, "EnableProfileOverlay"));
                 Assert.Equal(spec, Count(file, "EnableDeviceDisconnectedNote"));
                 Assert.Equal(spec, Count(file, "EnableDeviceConnectedNote"));
+                Assert.Equal(spec, Count(file, "EnableControllersNote"));
             }
         }
 

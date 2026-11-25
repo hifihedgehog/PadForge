@@ -1317,6 +1317,9 @@ namespace PadForge.Tests
             Assert.True(variable.IsBound);
             Assert.Equal("val:speed", variable.Spec);
             Assert.Equal(3, (int)MacroTriggerSource.ScriptValue);
+            // Device Connection (#600 item 43), appended after it.
+            Assert.Equal(4, (int)MacroTriggerSource.DeviceConnection);
+            Assert.Equal(MacroTriggerSource.DeviceConnection, Enum.GetValues<MacroTriggerSource>().Max());
 
             var read = typeof(InputManager).GetMethod("ReadExpressionVariable", BindingFlags.NonPublic | BindingFlags.Instance);
             float Read() => (float)read.Invoke(rig.Engine.Manager, new object[] { variable, default(Gamepad), 0 });

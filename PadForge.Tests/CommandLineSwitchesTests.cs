@@ -319,7 +319,8 @@ namespace PadForge.Tests
             foreach (string name in new[]
                      {
                          "--profile", "--default-profile", "--engine", "--controllers", "--slot", "--show", "--hide",
-                         "--minimized", "--tray", "--exit", "--state", "--snapshot", "--record", "--wait", "--mcp",
+                         "--minimized", "--maximized", "--tray", "--exit", "--state", "--snapshot", "--record", "--wait", "--mcp",
+                         "--settings-folder",
                          "--tools", "--call", "--json", "--skill", "--describe",
                          "--version", "--help",
                      })

@@ -76,8 +76,8 @@ namespace PadForge.Tests
             ["Import_ExtrasMacro_Format"] = "{0} is an input's label, as in its siblings {0} lightbar and {0} range",
             ["ControllerDatabase_BuiltIn_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount: SDL's own Windows rows and the community's",
             ["ControllerDatabase_BuiltInUpdated_Format"] = "{0} is ControllerDatabaseStatus.BuiltInCount, and {3} and {4} stand before no noun",
-            ["Main_DevicesDisconnected_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
-            ["Main_DevicesConnected_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
+            ["Main_DevicesDisconnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
+            ["Main_DevicesConnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
             ["ExeFolder_TargetTaken_Format"] = "{0} is a folder's path, and holds is the verb",
         };
 

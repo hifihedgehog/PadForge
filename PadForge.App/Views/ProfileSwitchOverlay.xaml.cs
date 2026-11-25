@@ -14,6 +14,7 @@ namespace PadForge.Views
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_NOACTIVATE = 0x08000000;
         private const int WS_EX_TOOLWINDOW = 0x00000080;
+        private const int WS_EX_TRANSPARENT = 0x00000020;
         private const int WM_MOUSEACTIVATE = 0x0021;
         private const int MA_NOACTIVATE = 3;
 
@@ -39,6 +40,20 @@ namespace PadForge.Views
         // Green, gold and red are the app's colors for health.
         private static readonly Color OfflineAmber = Color.FromRgb(0xFF, 0xB9, 0x00);
         private static readonly Color EnabledGreen = Color.FromRgb(0x37, 0xC8, 0x52);
+
+        /// <summary>How long a note stays (#600 item 42): a drop, the note
+        /// that matters more, four seconds, and every other note two.</summary>
+        internal static readonly TimeSpan NoteTime = TimeSpan.FromSeconds(2);
+        internal static readonly TimeSpan DropNoteTime = TimeSpan.FromSeconds(4);
+
+        /// <summary>How long a device note stays: a device that connected
+        /// two seconds, a drop, a burst of drops or a device that keeps
+        /// disconnecting four.</summary>
+        internal static TimeSpan DeviceNoteTime(bool connected) => connected ? NoteTime : DropNoteTime;
+
+        // The monitor the flyout was last put on, for a window WPF sizes
+        // again on a monitor of another scale.
+        private FlyoutPlacement.WorkArea? _placedOn;
 
         private readonly DispatcherTimer _dismissTimer;
         private readonly DispatcherTimer _initMonitorTimer;
@@ -75,8 +90,12 @@ namespace PadForge.Views
             FlyoutPanel.RenderTransform = _slideTransform;
 
             Loaded += OnLoaded;
+            SizeChanged += (_, _) =>
+            {
+                if (IsVisible && _placedOn is { } area) FlyoutPlacement.Place(this, area);
+            };
 
-            _dismissTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+            _dismissTimer = new DispatcherTimer { Interval = NoteTime };
             _initMonitorTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(33) };
             _initMonitorTimer.Tick += OnInitMonitorTick;
         }
@@ -85,7 +104,9 @@ namespace PadForge.Views
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             int exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-            SetWindowLong(hwnd, GWL_EXSTYLE, exStyle | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW);
+            // Clicks pass through to the game, as the shift-layer flyout's
+            // do (#600 item 42).
+            SetWindowLong(hwnd, GWL_EXSTYLE, exStyle | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT);
 
             var source = HwndSource.FromHwnd(hwnd);
             source?.AddHook(WndProc);
@@ -201,11 +222,12 @@ namespace PadForge.Views
             _dismissTimer.Start();
         }
 
-        /// <summary>Shows one line about a mapped device (#597) for two
-        /// seconds: a device that disconnects under the offline line's glyph
-        /// in its amber, one that connects under the check in the green of
-        /// Virtual Controllers Enabled. InputService words the line and
-        /// shows one at a time, while the flyout shows nothing else.</summary>
+        /// <summary>Shows one line about a mapped device (#597): a device
+        /// that disconnects under the offline line's glyph in its amber for
+        /// four seconds, one that connects under the check in the green of
+        /// Virtual Controllers Enabled for two (<see cref="DeviceNoteTime"/>).
+        /// InputService words the line and shows one at a time, while the
+        /// flyout shows nothing else.</summary>
         public void ShowDeviceNote(string text, bool connected)
         {
             _dismissTimer.Stop();
@@ -226,7 +248,7 @@ namespace PadForge.Views
             _dismissTimer.Tick -= OnDismissThenMonitorInit;
             _dismissTimer.Tick -= OnDismissThenCheckOffline;
             _dismissTimer.Tick += OnDismissThenClose;
-            _dismissTimer.Interval = TimeSpan.FromSeconds(2);
+            _dismissTimer.Interval = DeviceNoteTime(connected);
             _dismissTimer.Start();
         }
 
@@ -376,22 +398,24 @@ namespace PadForge.Views
 
         private void ShowFlyout()
         {
-            var screen = SystemParameters.WorkArea;
+            // The monitor of the window in front (#600 item 42).
+            var area = FlyoutPlacement.Front();
             _shows++;
 
-            // One line that fits the screen: a long name is cut with an
+            // One line that fits that monitor: a long name is cut with an
             // ellipsis where the flyout would run past the work area. The
             // panel's margins, the border, the padding and the glyph take 80,
-            // and 16 more keep the flyout off the screen's sides.
-            StatusText.MaxWidth = Math.Max(160, screen.Width - 96);
+            // and 16 more keep the flyout off the monitor's sides.
+            StatusText.MaxWidth = FlyoutPlacement.LineWidth(area);
 
             UpdateLayout();
             Show();
             UpdateLayout();
 
-            // Center horizontally. Bottom margin (15px in XAML) provides gap above taskbar.
-            Left = screen.Left + (screen.Width - ActualWidth) / 2;
-            Top = screen.Bottom - ActualHeight;
+            // Centered across the work area, the panel's bottom margin above
+            // the taskbar.
+            _placedOn = area;
+            FlyoutPlacement.Place(this, area);
 
             SlideIn();
         }

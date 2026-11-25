@@ -29,17 +29,18 @@ namespace PadForge.ViewModels
         internal const int HeadTrackingStartingSources = HeadTrackingUdpBit | HeadTrackingFreeTrackBit;
 
         /// <summary>The overlays as bits: menu, shift layer, profile switch,
-        /// and the two device notes (#597).</summary>
+        /// the two device notes (#597) and the controllers on or off note
+        /// (#600 item 42).</summary>
         internal const int MenuOverlayBit = 1, ShiftLayerFlyoutBit = 2, ProfileOverlayBit = 4,
-            DeviceDisconnectedNoteBit = 8, DeviceConnectedNoteBit = 16;
+            DeviceDisconnectedNoteBit = 8, DeviceConnectedNoteBit = 16, ControllersNoteBit = 32;
 
         /// <summary>What the Overlays switch turns on the first time: the
-        /// three a new settings file starts with. The device notes ship off
+        /// four a new settings file starts with. The device notes ship off
         /// and wait to be chosen, so they are not in it.</summary>
-        internal const int OverlaysStartingSet = MenuOverlayBit | ShiftLayerFlyoutBit | ProfileOverlayBit;
+        internal const int OverlaysStartingSet = MenuOverlayBit | ShiftLayerFlyoutBit | ProfileOverlayBit | ControllersNoteBit;
 
         /// <summary>Every row the Overlays switch can turn off and bring
-        /// back: the starting three and the two device notes.</summary>
+        /// back: the starting four and the two device notes.</summary>
         internal const int OverlaysAllBits = OverlaysStartingSet | DeviceDisconnectedNoteBit | DeviceConnectedNoteBit;
 
         // ─────────────────────────────────────────────
@@ -113,7 +114,8 @@ namespace PadForge.ViewModels
             | (_enableShiftLayerFlyout ? ShiftLayerFlyoutBit : 0)
             | (_enableProfileOverlay ? ProfileOverlayBit : 0)
             | (_enableDeviceDisconnectedNote ? DeviceDisconnectedNoteBit : 0)
-            | (_enableDeviceConnectedNote ? DeviceConnectedNoteBit : 0);
+            | (_enableDeviceConnectedNote ? DeviceConnectedNoteBit : 0)
+            | (_enableControllersNote ? ControllersNoteBit : 0);
 
         private int _overlaysLastShown;
 
@@ -125,7 +127,7 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _overlaysLastShown, value & OverlaysAllBits);
         }
 
-        /// <summary>The Extras switch of Overlays: on while any of the five
+        /// <summary>The Extras switch of Overlays: on while any of the six
         /// rows is on.</summary>
         public bool OverlaysAnyEnabled
         {
@@ -141,14 +143,16 @@ namespace PadForge.ViewModels
                 EnableProfileOverlay = (mask & ProfileOverlayBit) != 0;
                 EnableDeviceDisconnectedNote = (mask & DeviceDisconnectedNoteBit) != 0;
                 EnableDeviceConnectedNote = (mask & DeviceConnectedNoteBit) != 0;
+                EnableControllersNote = (mask & ControllersNoteBit) != 0;
             }
         }
 
         private RelayCommand _resetOverlaysCommand;
 
         /// <summary>The reset beside the Overlays switch: each row back to
-        /// its default, which is on for the three overlays and off for the
-        /// two device notes.</summary>
+        /// its default, which is on for the three overlays and the
+        /// controllers on or off note and off for the two device
+        /// notes.</summary>
         public RelayCommand ResetOverlaysCommand =>
             _resetOverlaysCommand ??= new RelayCommand(() =>
             {
@@ -157,6 +161,7 @@ namespace PadForge.ViewModels
                 ResetSettingCommand.Execute(nameof(EnableProfileOverlay));
                 ResetSettingCommand.Execute(nameof(EnableDeviceDisconnectedNote));
                 ResetSettingCommand.Execute(nameof(EnableDeviceConnectedNote));
+                ResetSettingCommand.Execute(nameof(EnableControllersNote));
             });
 
         // ─────────────────────────────────────────────
@@ -277,6 +282,7 @@ namespace PadForge.ViewModels
                 case nameof(EnableProfileOverlay):
                 case nameof(EnableDeviceDisconnectedNote):
                 case nameof(EnableDeviceConnectedNote):
+                case nameof(EnableControllersNote):
                     base.OnPropertyChanged(new PropertyChangedEventArgs(nameof(OverlaysAnyEnabled)));
                     break;
                 case nameof(ScreenOverlays):

@@ -1926,6 +1926,7 @@ namespace PadForge.Common.Input
             if (compiled == null || !compiled.IsValid) return false;
             var vars = macro.TriggerExpressionVariables;
             int n = vars?.Count ?? 0;
+            if (!ConnectionsKnown(vars, n)) return false;
             var sources = _macroExprSourcesBuf ??= new List<float>(8);
             sources.Clear();
             for (int i = 0; i < n; i++)
@@ -1944,12 +1945,89 @@ namespace PadForge.Common.Input
             if (compiled == null || !compiled.IsValid) return false;
             var vars = macro.TriggerExpressionVariables;
             int n = vars?.Count ?? 0;
+            if (!ConnectionsKnown(vars, n)) return false;
             var sources = _macroExprSourcesBuf ??= new List<float>(8);
             sources.Clear();
             for (int i = 0; i < n; i++)
                 sources.Add(ReadExpressionVariableRaw(vars[i], in raw, macro.PadIndex));
             float result = compiled.Evaluate(sources);
             return result >= 0.5f;
+        }
+
+        /// <summary>Whether a macro is on and its Custom Expression trigger
+        /// reads a device's connection (#600 item 43).</summary>
+        internal static bool ReadsAConnection(MacroItem macro)
+        {
+            if (macro == null || !macro.IsEnabled || macro.TriggerMode != MacroTriggerMode.CustomExpression) return false;
+            var vars = macro.TriggerExpressionVariables;
+            if (vars == null) return false;
+            for (int i = 0; i < vars.Count; i++)
+                if (vars[i]?.Source == MacroTriggerSource.DeviceConnection && vars[i].IsBound) return true;
+            return false;
+        }
+
+        // The idle pass's list of one slot's connection macros, kept so the
+        // pass allocates only when a slot holds one.
+        private readonly List<MacroItem> _connectionMacroScratch = new();
+
+        /// <summary>The idle pass's macros (#600 item 43). An engine idles
+        /// once no controller has a connected device, and the idle pass
+        /// evaluates the global macros alone, so a slot macro whose trigger
+        /// reads a device's connection, most often made for the moment the
+        /// last device drops, is evaluated here too, against the slot's last
+        /// state. The engine stays idle, as Home and the state say.
+        /// Latched keys are let go after it by the idle pass, as
+        /// always.</summary>
+        internal void EvaluateConnectionMacros()
+        {
+            _desiredLatchedKeys.Clear();
+            _desiredLatchedMouseButtons.Clear();
+            for (int i = 0; i < MaxPads; i++)
+            {
+                var macros = MacroSnapshots[i];
+                if (macros == null || macros.Length == 0) continue;
+                _connectionMacroScratch.Clear();
+                foreach (var macro in macros)
+                    if (ReadsAConnection(macro)) _connectionMacroScratch.Add(macro);
+                if (_connectionMacroScratch.Count == 0) continue;
+                var only = _connectionMacroScratch.ToArray();
+                _currentMacroSlotRestricted = IsSlotRestricted(i) || AnyMacroTriggerRestricted(only);
+                try
+                {
+                    if (SlotRawHidSurface[i])
+                        EvaluateSlotMacrosExtended(ref CombinedRawHidStates[i], only);
+                    else
+                        EvaluateSlotMacros(ref CombinedOutputStates[i], only, ref CombinedPressureStates[i]);
+                }
+                catch (Exception ex)
+                {
+                    RaiseSlotError(i, $"Macro error on pad {i}", ex);
+                }
+            }
+            _currentMacroSlotRestricted = false;
+            _evalMacros = null;
+        }
+
+        /// <summary>Whether a device PadForge knows is connected now (#600
+        /// item 43): its row is online.</summary>
+        internal bool DeviceConnected(Guid device)
+        {
+            if (device == Guid.Empty) return false;
+            var ud = FindOnlineDeviceByInstanceGuid(device);
+            return ud != null && ud.IsOnline;
+        }
+
+        /// <summary>Whether the connections an expression reads are known
+        /// (#600 item 43). Until this run's first enumeration has finished,
+        /// every row reads offline, so an expression that reads a device's
+        /// connection holds still: <c>!a</c> does not fire at every engine
+        /// start.</summary>
+        private bool ConnectionsKnown(IList<MacroExpressionVariable> vars, int n)
+        {
+            for (int i = 0; i < n; i++)
+                if (vars[i]?.Source == MacroTriggerSource.DeviceConnection)
+                    return DevicesEnumeratedSince >= 0;
+            return true;
         }
 
         /// <summary>Reads one <see cref="MacroExpressionVariable"/>'s current value
@@ -1973,6 +2051,11 @@ namespace PadForge.Common.Input
             // after the program is gone.
             if (v.Source == MacroTriggerSource.ScriptValue)
                 return ScriptValues.Read(v.ScriptValue);
+
+            // Whether the chosen device is connected (#600 item 43), on any
+            // slot or none.
+            if (v.Source == MacroTriggerSource.DeviceConnection)
+                return DeviceConnected(v.DeviceGuid) ? 1f : 0f;
 
             var ud = FindSlotDeviceByInstanceGuid(v.DeviceGuid, slotIndex);
             if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;
@@ -2023,6 +2106,9 @@ namespace PadForge.Common.Input
             // A program's value, the same on every lane (#597).
             if (v.Source == MacroTriggerSource.ScriptValue)
                 return ScriptValues.Read(v.ScriptValue);
+            // A device's connection, the same on every lane (#600 item 43).
+            if (v.Source == MacroTriggerSource.DeviceConnection)
+                return DeviceConnected(v.DeviceGuid) ? 1f : 0f;
 
             var ud = FindSlotDeviceByInstanceGuid(v.DeviceGuid, slotIndex);
             if (ud == null || !ud.IsOnline || ud.InputState == null) return 0f;

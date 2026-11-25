@@ -336,6 +336,7 @@ namespace PadForge.ViewModels
             nameof(AutomationLevel) or
             nameof(EnableDeviceDisconnectedNote) or
             nameof(EnableDeviceConnectedNote) or
+            nameof(EnableControllersNote) or
             nameof(EnablePlugins) or
             nameof(TestControllerOn) or
             nameof(ReplayOn) or
@@ -441,6 +442,13 @@ namespace PadForge.ViewModels
                 case nameof(EnableDeviceConnectedNote):
                 {
                     EnableDeviceConnectedNote = false;
+                    break;
+                }
+                case nameof(EnableControllersNote):
+                {
+                    // On, as the note showed before it had a switch
+                    // (#600 item 42).
+                    EnableControllersNote = true;
                     break;
                 }
                 case nameof(EnablePlugins):
@@ -803,7 +811,8 @@ namespace PadForge.ViewModels
             nameof(Source) or
             nameof(OutputChannel) or
             nameof(TelemetryChannel) or
-            nameof(ScriptValue);
+            nameof(ScriptValue) or
+            nameof(DeviceGuid);
 
         private void ResetSetting(string name)
         {
@@ -818,6 +827,13 @@ namespace PadForge.ViewModels
                 {
                     // No name, the value a new script value row starts with (#597).
                     ScriptValue = string.Empty;
+                    break;
+                }
+                case nameof(DeviceGuid):
+                {
+                    // No device, what a new Device Connection row starts
+                    // with (#600 item 43).
+                    DeviceGuid = Guid.Empty;
                     break;
                 }
                 case nameof(OutputChannel):

@@ -119,13 +119,15 @@ namespace PadForge.Tests
             // switches of Head Tracking and Overlays, on the pages of the ten
             // extras that were cards. The four added since (#585, #597) have
             // their own. The two device notes (#597) brought the Overlays
-            // page two more.
-            Assert.Equal(47, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier" or "Automation" or "Plugins"))
+            // page two more, and the controllers on or off note (#600 item
+            // 42) one.
+            Assert.Equal(48, PadForge.Views.ExtrasPage.Keys.Where(k => k is not ("Crosshair" or "Magnifier" or "Automation" or "Plugins"))
                 .Sum(k => Count(PageOf(k), "<reset:SettingResetButton ")));
-            Assert.Equal(6, Count(PageOf("Overlays"), "<reset:SettingResetButton "));
+            Assert.Equal(7, Count(PageOf("Overlays"), "<reset:SettingResetButton "));
             foreach (string id in new[]
             {
                 "Reset_DashboardViewModel_EnableDeviceDisconnectedNote_2032", "Reset_DashboardViewModel_EnableDeviceConnectedNote_2035",
+                "Reset_DashboardViewModel_EnableControllersNote_2039",
             })
                 Assert.Equal(1, Count(page, "AutomationProperties.AutomationId=\"" + id + "\""));
             Assert.Equal(0, Count(dashboard, "<reset:SettingResetButton "));
@@ -765,7 +767,7 @@ namespace PadForge.Tests
             vm.OverlaysAnyEnabled = false;
             Assert.False(vm.EnableMenuOverlay || vm.EnableShiftLayerFlyout || vm.EnableProfileOverlay);
             Assert.False(vm.OverlaysAnyEnabled);
-            Assert.Equal(DashboardViewModel.MenuOverlayBit | DashboardViewModel.ProfileOverlayBit, vm.OverlaysLastShown);
+            Assert.Equal(DashboardViewModel.MenuOverlayBit | DashboardViewModel.ProfileOverlayBit | DashboardViewModel.ControllersNoteBit, vm.OverlaysLastShown);
 
             vm.OverlaysAnyEnabled = true;
             Assert.True(vm.EnableMenuOverlay);
@@ -773,11 +775,11 @@ namespace PadForge.Tests
             Assert.True(vm.EnableProfileOverlay);
 
             // With nothing remembered, on shows all three.
-            var fresh = new DashboardViewModel { EnableMenuOverlay = false, EnableShiftLayerFlyout = false, EnableProfileOverlay = false };
+            var fresh = new DashboardViewModel { EnableMenuOverlay = false, EnableShiftLayerFlyout = false, EnableProfileOverlay = false, EnableControllersNote = false };
             Assert.False(fresh.OverlaysAnyEnabled);
             Assert.Equal(0, fresh.OverlaysLastShown);
             fresh.OverlaysAnyEnabled = true;
-            Assert.True(fresh.EnableMenuOverlay && fresh.EnableShiftLayerFlyout && fresh.EnableProfileOverlay);
+            Assert.True(fresh.EnableMenuOverlay && fresh.EnableShiftLayerFlyout && fresh.EnableProfileOverlay && fresh.EnableControllersNote);
 
             // The reset beside it puts each overlay at its default, on.
             vm.OverlaysAnyEnabled = false;

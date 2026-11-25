@@ -2755,6 +2755,7 @@ namespace PadForge.Services
             _mainVm.Dashboard.EnableProfileOverlay = appSettings.EnableProfileOverlay;
             _mainVm.Dashboard.EnableDeviceDisconnectedNote = appSettings.EnableDeviceDisconnectedNote;
             _mainVm.Dashboard.EnableDeviceConnectedNote = appSettings.EnableDeviceConnectedNote;
+            _mainVm.Dashboard.EnableControllersNote = appSettings.EnableControllersNote;
             _mainVm.Dashboard.TouchpadOverlayOpacity = appSettings.TouchpadOverlayOpacity;
             _mainVm.Dashboard.TouchpadOverlayMonitor = appSettings.TouchpadOverlayMonitor;
             _mainVm.Dashboard.TouchpadOverlayLeft = appSettings.TouchpadOverlayLeft;
@@ -4566,6 +4567,7 @@ namespace PadForge.Services
                 _mainVm.Dashboard.EnableProfileOverlay = active.EnableProfileOverlay;
                 _mainVm.Dashboard.EnableDeviceDisconnectedNote = active.EnableDeviceDisconnectedNote;
                 _mainVm.Dashboard.EnableDeviceConnectedNote = active.EnableDeviceConnectedNote;
+                _mainVm.Dashboard.EnableControllersNote = active.EnableControllersNote;
                 _mainVm.Dashboard.TouchpadOverlayOpacity = active.TouchpadOverlayOpacity;
                 _mainVm.Dashboard.TouchpadOverlayMonitor = active.TouchpadOverlayMonitor;
                 _mainVm.Dashboard.TouchpadOverlayLeft = active.TouchpadOverlayLeft;
@@ -4751,6 +4753,7 @@ namespace PadForge.Services
             profile.EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay;
             profile.EnableDeviceDisconnectedNote = _mainVm.Dashboard.EnableDeviceDisconnectedNote;
             profile.EnableDeviceConnectedNote = _mainVm.Dashboard.EnableDeviceConnectedNote;
+            profile.EnableControllersNote = _mainVm.Dashboard.EnableControllersNote;
             // The service toggles are AUTHORED nullable legs (see
             // ProfileData.EnableHeadTracking): refresh a recorded opinion
             // from the live value, never invent one here. The live value
@@ -5326,6 +5329,7 @@ namespace PadForge.Services
                 EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay,
                 EnableDeviceDisconnectedNote = _mainVm.Dashboard.EnableDeviceDisconnectedNote,
                 EnableDeviceConnectedNote = _mainVm.Dashboard.EnableDeviceConnectedNote,
+                EnableControllersNote = _mainVm.Dashboard.EnableControllersNote,
                 TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity,
                 TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor,
                 TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft,
@@ -7943,6 +7947,13 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableDeviceConnectedNote { get; set; }
 
+        /// <summary>Whether the flyout says the virtual controllers just
+        /// turned on or off, from the shortcut or a macro (#600 item 42).
+        /// Default on, as the note always showed before it had a switch, so
+        /// a file from before it reads on.</summary>
+        [XmlElement]
+        public bool EnableControllersNote { get; set; } = true;
+
         /// <summary>Default profile's custom touchpad gestures.
         /// Named profiles store theirs under each profile's
         /// <c>ProfileData.TouchpadGestures</c>; when the default profile
@@ -9093,6 +9104,12 @@ namespace PadForge.Services
         /// (#597), the profile's own copy. Default off.</summary>
         [XmlElement]
         public bool EnableDeviceConnectedNote { get; set; }
+
+        /// <summary>Whether the flyout says the virtual controllers just
+        /// turned on or off (#600 item 42), the profile's own copy. Default
+        /// on, so a profile saved before it reads on.</summary>
+        [XmlElement]
+        public bool EnableControllersNote { get; set; } = true;
 
         /// <summary>The profile's Razer Chroma lightbar mirror opinion (#373)
         /// as files before #494 saved it. Read once by

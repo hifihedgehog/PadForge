@@ -321,6 +321,26 @@
                 </DrawingGroup>
             </DrawingImage.Drawing>
         </DrawingImage>
+        <!-- The controllers on or off note (#600 item 42), in the same pill:
+             the power glyph the flyout draws for controllers turned off, in
+             its red. -->
+        <DrawingImage x:Key="OverlaysPreviewControllers">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent" Geometry="M0,0 H84 V48 H0 Z"/>
+                    <GeometryDrawing Brush="#2D2E2E">
+                        <GeometryDrawing.Geometry><RectangleGeometry Rect="10,14,64,20" RadiusX="6" RadiusY="6"/></GeometryDrawing.Geometry>
+                        <GeometryDrawing.Pen><Pen Brush="#3A475A" Thickness="1"/></GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Geometry="M24.25,21.62 A3.5,3.5 0 1 1 19.75,21.62 M22,19.6 V24">
+                        <GeometryDrawing.Pen><Pen Brush="#E81B1C" Thickness="1.3" StartLineCap="Round" EndLineCap="Round"/></GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#A9B4C4">
+                        <GeometryDrawing.Geometry><RectangleGeometry Rect="32,21.5,34,5" RadiusX="2.5" RadiusY="2.5"/></GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
         <Style x:Key="OverlaysPreviewWell" TargetType="Border">
             <Setter Property="Width" Value="84"/>
             <Setter Property="Height" Value="48"/>
@@ -1797,6 +1817,22 @@
                                       Content="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}"
                                       IsChecked="{Binding EnableProfileOverlay}"/>
                             <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableProfileOverlay" SettingLabel="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableProfileOverlay_2029" Margin="14,0,0,0"/>
+                        </controls:SettingRow>
+                        <!-- The note the controllers on or off shortcut shows, which
+                             had no switch of its own (#600 item 42). -->
+                        <controls:SettingRow MinHeight="64">
+                            <Border Style="{StaticResource OverlaysPreviewWell}">
+                                <controls:DecorativeImage FlowDirection="LeftToRight" Source="{StaticResource OverlaysPreviewControllers}" Stretch="Uniform"/>
+                            </Border>
+                            <StackPanel controls:SettingRow.Fills="True" Margin="14,0,14,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Dashboard_ControllersNote, Source={x:Static strings:Strings.Instance}}" TextWrapping="Wrap"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                <TextBlock Text="{Binding Extras_Overlays_ControllersNoteHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}" Margin="0"/>
+                            </StackPanel>
+                            <CheckBox Style="{StaticResource SwitchCheckBox}"
+                                      Content="{Binding Dashboard_ControllersNote, Source={x:Static strings:Strings.Instance}}"
+                                      IsChecked="{Binding EnableControllersNote}"/>
+                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableControllersNote" SettingLabel="{Binding Dashboard_ControllersNote, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableControllersNote_2039" Margin="14,0,0,0"/>
                         </controls:SettingRow>
                         <controls:SettingRow MinHeight="64">
                             <Border Style="{StaticResource OverlaysPreviewWell}">

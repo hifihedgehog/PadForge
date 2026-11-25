@@ -353,8 +353,8 @@ public class Strings : INotifyPropertyChanged
     public string Main_DeviceDisconnectedLast_Format => Get("Main_DeviceDisconnectedLast_Format");
     public string Main_DeviceConnected_Format => Get("Main_DeviceConnected_Format");
     public string Main_DeviceConnectedBattery_Format => Get("Main_DeviceConnectedBattery_Format");
-    public string Main_DevicesDisconnected_Format => Get("Main_DevicesDisconnected_Format");
-    public string Main_DevicesConnected_Format => Get("Main_DevicesConnected_Format");
+    public string Main_DevicesDisconnectedNamed_Format => Get("Main_DevicesDisconnectedNamed_Format");
+    public string Main_DevicesConnectedNamed_Format => Get("Main_DevicesConnectedNamed_Format");
     public string Main_DeviceKeepsDisconnecting_Format => Get("Main_DeviceKeepsDisconnecting_Format");
     public string Main_Xbox_Max_Format => Get("Main_Xbox_Max_Format");
     public string Main_PlayStation_Max_Format => Get("Main_PlayStation_Max_Format");
@@ -631,6 +631,7 @@ public class Strings : INotifyPropertyChanged
     public string Extras_Overlays_MenuHint => Get("Extras_Overlays_MenuHint");
     public string Extras_Overlays_ShiftLayerHint => Get("Extras_Overlays_ShiftLayerHint");
     public string Extras_Overlays_ProfileHint => Get("Extras_Overlays_ProfileHint");
+    public string Extras_Overlays_ControllersNoteHint => Get("Extras_Overlays_ControllersNoteHint");
     public string Extras_Overlays_DeviceDisconnectedHint => Get("Extras_Overlays_DeviceDisconnectedHint");
     public string Extras_Overlays_DeviceConnectedHint => Get("Extras_Overlays_DeviceConnectedHint");
     public string Extras_CopyAddress => Get("Extras_CopyAddress");
@@ -926,6 +927,7 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Asked_Show => Get("Automation_Asked_Show");
     public string Automation_Asked_Hide => Get("Automation_Asked_Hide");
     public string Automation_Asked_Minimize => Get("Automation_Asked_Minimize");
+    public string Automation_Asked_Maximize => Get("Automation_Asked_Maximize");
     public string Automation_Asked_Exit => Get("Automation_Asked_Exit");
     public string Automation_Asked_EngineOn => Get("Automation_Asked_EngineOn");
     public string Automation_Asked_EngineOff => Get("Automation_Asked_EngineOff");
@@ -1182,6 +1184,7 @@ public class Strings : INotifyPropertyChanged
     public string KeyboardScreen_Hint_Picture_Overlay => Get("KeyboardScreen_Hint_Picture_Overlay");
     public string KeyboardScreen_Hint_Stopwatch_Overlay => Get("KeyboardScreen_Hint_Stopwatch_Overlay");
     public string KeyboardScreen_Hint_Lightbar_Overlay => Get("KeyboardScreen_Hint_Lightbar_Overlay");
+    public string KeyboardScreen_Hint_OfflineDevices_Overlay => Get("KeyboardScreen_Hint_OfflineDevices_Overlay");
     public string RemoteLink_PasswordEmpty => Get("RemoteLink_PasswordEmpty");
     public string RemoteLink_PasswordMismatch => Get("RemoteLink_PasswordMismatch");
     public string RemoteLink_IdentityModeSecure => Get("RemoteLink_IdentityModeSecure");
@@ -5370,6 +5373,7 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_OverlaysDescription => Get("Dashboard_OverlaysDescription");
     public string Dashboard_ShiftLayerFlyout => Get("Dashboard_ShiftLayerFlyout");
     public string Dashboard_ProfileOverlay => Get("Dashboard_ProfileOverlay");
+    public string Dashboard_ControllersNote => Get("Dashboard_ControllersNote");
     public string Dashboard_DeviceDisconnectedNote => Get("Dashboard_DeviceDisconnectedNote");
     public string Dashboard_DeviceConnectedNote => Get("Dashboard_DeviceConnectedNote");
     public string Workshop_Tr_MenuEmitted => Get("Workshop_Tr_MenuEmitted");
@@ -5697,6 +5701,8 @@ public class Strings : INotifyPropertyChanged
     public string KeyboardScreens_Mode_Off => Get("KeyboardScreens_Mode_Off");
     public string KeyboardScreens_Mode_Stopwatch => Get("KeyboardScreens_Mode_Stopwatch");
     public string KeyboardScreens_Mode_Lightbar => Get("KeyboardScreens_Mode_Lightbar");
+    public string KeyboardScreens_Mode_OfflineDevices => Get("KeyboardScreens_Mode_OfflineDevices");
+    public string KeyboardScreen_NoDeviceOffline => Get("KeyboardScreen_NoDeviceOffline");
     public string KeyboardScreens_Status_Line_Format => Get("KeyboardScreens_Status_Line_Format");
     public string KeyboardScreens_Status_Off => Get("KeyboardScreens_Status_Off");
     public string KeyboardScreens_Status_Lgs => Get("KeyboardScreens_Status_Lgs");
@@ -5739,6 +5745,7 @@ public class Strings : INotifyPropertyChanged
     public string KeyboardScreen_Hint_Picture => Get("KeyboardScreen_Hint_Picture");
     public string KeyboardScreen_Hint_Stopwatch => Get("KeyboardScreen_Hint_Stopwatch");
     public string KeyboardScreen_Hint_Lightbar => Get("KeyboardScreen_Hint_Lightbar");
+    public string KeyboardScreen_Hint_OfflineDevices => Get("KeyboardScreen_Hint_OfflineDevices");
     public string KeyboardScreen_PictureFilter => Get("KeyboardScreen_PictureFilter");
     public string KeyboardScreen_Pan_Label => Get("KeyboardScreen_Pan_Label");
     public string KeyboardScreen_PanX => Get("KeyboardScreen_PanX");
@@ -5990,6 +5997,7 @@ public class Strings : INotifyPropertyChanged
     public string Telemetry_Target_Driving => Get("Telemetry_Target_Driving");
     public string Macro_GameTelemetry => Get("Macro_GameTelemetry");
     public string Macro_ScriptValue => Get("Macro_ScriptValue");
+    public string Macro_DeviceConnection => Get("Macro_DeviceConnection");
     public string Telemetry_Channel_SpeedMph => Get("Telemetry_Channel_SpeedMph");
     public string Telemetry_Channel_RpmPercent => Get("Telemetry_Channel_RpmPercent");
     public string Telemetry_Channel_Gear => Get("Telemetry_Channel_Gear");

@@ -33,7 +33,8 @@ namespace PadForge
         /// says and, where it says nothing, the Start Minimized settings.
         /// <c>--tray</c> is the tray whatever the settings say.
         /// <c>--minimized</c> minimizes, which with Minimize to System Tray
-        /// on is the tray too, as Start Minimized is.</summary>
+        /// on is the tray too, as Start Minimized is. <c>--maximized</c>
+        /// shows the window maximized whatever the settings say.</summary>
         internal static CommandLineSwitches.WindowStart FirstWindowState(
             CommandLineSwitches.WindowStart asked, bool startMinimized, bool minimizeToTray)
         {
@@ -41,6 +42,7 @@ namespace PadForge
             {
                 case CommandLineSwitches.WindowStart.Shown:
                 case CommandLineSwitches.WindowStart.Tray:
+                case CommandLineSwitches.WindowStart.Maximized:
                     return asked;
                 case CommandLineSwitches.WindowStart.Minimized:
                     return minimizeToTray ? CommandLineSwitches.WindowStart.Tray : CommandLineSwitches.WindowStart.Minimized;
@@ -278,6 +280,18 @@ namespace PadForge
             CallerShow.ComeForward(new System.Windows.Interop.WindowInteropHelper(this).Handle);
         }
 
+        /// <summary><c>maximize</c> (#600 item 44): the same show, with the
+        /// same gap and the same lent right, and the window maximized. A
+        /// show that does not go ahead maximizes nothing, so the window
+        /// never comes forward by another way.</summary>
+        internal void MaximizeForACaller()
+        {
+            if (!_callerShow.Take()) return;
+            RestoreFromTray(forceForward: false);
+            WindowState = WindowState.Maximized;
+            CallerShow.ComeForward(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+        }
+
         /// <summary>Sends the window to the tray and puts the tray icon up,
         /// with a pending text edit kept and the settings saved, while the
         /// engine and the timers run on. Close to System Tray and the hide
@@ -415,6 +429,8 @@ namespace PadForge
             }
 
             public void MinimizeWindow() => _window.WindowState = WindowState.Minimized;
+
+            public void MaximizeWindow() => _window.MaximizeForACaller();
 
             public void Exit() => _window.ExitFromTray();
 

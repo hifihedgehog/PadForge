@@ -661,6 +661,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Menu Overlay (What Shows): switch, free. `extras/Overlays/OverlaysPage/Dashboard_MenuOverlay`
 - Shift Layer Flyout (What Shows): switch, free. `extras/Overlays/OverlaysPage/Dashboard_ShiftLayerFlyout`
 - Profile Switch Overlay (What Shows): switch, free. `extras/Overlays/OverlaysPage/Dashboard_ProfileOverlay`
+- Controllers On or Off (What Shows): switch, free. `extras/Overlays/OverlaysPage/Dashboard_ControllersNote`
 - Device Disconnected Note (What Shows): switch, free. `extras/Overlays/OverlaysPage/Dashboard_DeviceDisconnectedNote`
 - Device Connected Note (What Shows): switch, free. `extras/Overlays/OverlaysPage/Dashboard_DeviceConnectedNote`
 

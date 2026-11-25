@@ -19,7 +19,10 @@ namespace PadForge.Common
     /// <c>hide</c> and <c>minimize</c> to a copy that already runs.</para>
     ///
     /// <para>Pure: no window, no pipe, no file. A switch name is read without
-    /// regard to case, and <c>--name=value</c> is <c>--name value</c>.</para>
+    /// regard to case, <c>/name</c> and <c>-name</c> are <c>--name</c>, and
+    /// <c>--name=value</c> is <c>--name value</c> with any of the three
+    /// (#600). The prefix is read once, ahead of the switch's row, so a row
+    /// added as <c>case "--name":</c> takes every form.</para>
     /// </summary>
     internal static class CommandLineSwitches
     {
@@ -72,6 +75,10 @@ namespace PadForge.Common
             Shown,
             Minimized,
             Tray,
+
+            /// <summary><c>--maximized</c> (#600): shown, filling its
+            /// monitor.</summary>
+            Maximized,
         }
 
         /// <summary>What an update's restart does with a switch.</summary>
@@ -163,9 +170,18 @@ namespace PadForge.Common
             /// its own, which never starts the app.</summary>
             public string PluginKit { get; set; }
 
+            /// <summary><c>--settings-folder</c> (#600 item 44): Explorer
+            /// opens on the folder of PadForge.xml with the file selected. A
+            /// client run of its own, which needs no running copy.</summary>
+            public bool SettingsFolder { get; set; }
+
+            /// <summary>The switches given that run alone, each a client run
+            /// of its own, in the order given (#600 item 44).</summary>
+            internal List<string> Alone { get; } = new List<string>();
+
             /// <summary>Whether anything but the update marker was given.</summary>
             public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null && !AssistantRun && !Json
-                && Summarize == null && RecordSave == null && PluginKit == null;
+                && Summarize == null && RecordSave == null && PluginKit == null && !SettingsFolder;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -214,23 +230,15 @@ namespace PadForge.Common
                 int start = i;
                 r.ReadTo = start;
                 string arg = args[i] ?? string.Empty;
-                string name = arg;
-                string inline = null;
-                int eq = arg.IndexOf('=');
-                if (eq > 2 && arg.StartsWith("--", StringComparison.Ordinal))
-                {
-                    name = arg.Substring(0, eq);
-                    inline = arg.Substring(eq + 1);
-                }
-                name = name.ToLowerInvariant();
+                string name = NameOf(arg, out string inline);
                 var keep = Keep.Once;
 
                 switch (name)
                 {
+                    // -h, -?, /? and /h come here as --h and --?.
                     case "--help":
-                    case "-h":
-                    case "-?":
-                    case "/?":
+                    case "--h":
+                    case "--?":
                         if (inline != null) return Fail(r, name + " takes no value.");
                         r.Help = true;
                         break;
@@ -243,6 +251,13 @@ namespace PadForge.Common
                     case "--mcp":
                         if (inline != null) return Fail(r, name + " takes no value.");
                         r.Mcp = true;
+                        r.Alone.Add(name);
+                        break;
+
+                    case "--settings-folder":
+                        if (inline != null) return Fail(r, name + " takes no value.");
+                        r.SettingsFolder = true;
+                        r.Alone.Add(name);
                         break;
 
                     case "--install":
@@ -255,12 +270,14 @@ namespace PadForge.Common
                         string mistake = Services.Install.UserInstall.Parse(args, ref i, out var install);
                         if (mistake != null) return Fail(r, mistake);
                         r.Install = install;
+                        r.Alone.Add(name);
                         break;
                     }
 
                     case "--tools":
                         if (inline != null) return Fail(r, name + " takes no value.");
                         r.Tools = true;
+                        r.Alone.Add(name);
                         break;
 
                     case "--json":
@@ -280,6 +297,7 @@ namespace PadForge.Common
                         r.CallArguments = "{}";
                         if (i + 1 < args.Count && (args[i + 1] ?? string.Empty).TrimStart().StartsWith("{", StringComparison.Ordinal))
                             r.CallArguments = args[++i];
+                        r.Alone.Add(name);
                         break;
                     }
 
@@ -289,6 +307,7 @@ namespace PadForge.Common
                         string which = inline;
                         if (which == null && i + 1 < args.Count && !LooksLikeSwitch(args[i + 1])) which = args[++i];
                         r.Skill = (which ?? string.Empty).Trim();
+                        r.Alone.Add(name);
                         break;
                     }
 
@@ -298,6 +317,7 @@ namespace PadForge.Common
                         if (string.IsNullOrWhiteSpace(folder) || LooksLikeSwitch(folder))
                             return Fail(r, "--describe needs the folder to write the page description to.");
                         r.Describe = folder.Trim();
+                        r.Alone.Add(name);
                         break;
                     }
 
@@ -308,6 +328,7 @@ namespace PadForge.Common
                         if (string.IsNullOrWhiteSpace(folder) || (inline == null && LooksLikeSwitch(folder)))
                             return Fail(r, "--plugin-kit needs the folder to write the plugin kit into: --plugin-kit <folder>.");
                         r.PluginKit = folder.Trim();
+                        r.Alone.Add(name);
                         break;
                     }
 
@@ -334,6 +355,13 @@ namespace PadForge.Common
                         if (inline != null) return Fail(r, name + " takes no value.");
                         r.Window = WindowStart.Tray;
                         r.Steps.Add(new Step("hide", true, StartPhase.AtStart));
+                        keep = Keep.StartOption;
+                        break;
+
+                    case "--maximized":
+                        if (inline != null) return Fail(r, name + " takes no value.");
+                        r.Window = WindowStart.Maximized;
+                        r.Steps.Add(new Step("maximize", true, StartPhase.AtStart));
                         keep = Keep.StartOption;
                         break;
 
@@ -424,6 +452,7 @@ namespace PadForge.Common
                         if (string.IsNullOrWhiteSpace(file)) return Fail(r, "--summarize needs a recording's file.");
                         if (r.Summarize != null) return Fail(r, "--summarize is given once.");
                         r.Summarize = file.Trim();
+                        r.Alone.Add(name);
                         break;
                     }
 
@@ -440,6 +469,7 @@ namespace PadForge.Common
                                 if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(target))
                                     return Fail(r, "--record save needs the recording, then the file to write.");
                                 r.RecordSave = (source, target);
+                                r.Alone.Add("--record save");
                                 break;
                             }
                             case "start":
@@ -466,16 +496,82 @@ namespace PadForge.Common
                     }
 
                     default:
-                        return Fail(r, LooksLikeSwitch(arg)
-                            ? "PadForge does not know the switch " + arg + "."
+                        return Fail(r, arg.StartsWith("-", StringComparison.Ordinal) || arg.StartsWith("/", StringComparison.Ordinal)
+                            ? UnknownSwitch + arg + "."
                             : "PadForge does not know what to do with \"" + arg + "\".");
                 }
 
                 r.Parts.Add((start, i - start + 1, keep));
                 r.ReadTo = i + 1;
             }
+
+            // A switch that runs alone takes the whole call. With another
+            // switch beside it one of the two would be dropped without a
+            // word, so the line is refused. --json and --wait say how to
+            // answer and go with anything, and the help and the version
+            // answer before any run.
+            if (r.Alone.Count > 0 && !r.Help && !r.Version && (r.Alone.Count > 1 || r.Steps.Count > 0))
+            {
+                string other = r.Alone.Count > 1 ? r.Alone[1] : FirstStepSwitch(args, r);
+                return Fail(r, r.Alone[0] + " runs alone, and " + other + " was given with it. Give each in a call of its own.");
+            }
             return r;
         }
+
+        /// <summary>The first switch of the line that reaches the running
+        /// copy, as it was given, for the refusal above.</summary>
+        private static string FirstStepSwitch(IReadOnlyList<string> args, Request r)
+        {
+            foreach (var part in r.Parts)
+                if (Parse(Slice(args, part.Start, part.Count)).Steps.Count > 0) return args[part.Start];
+            return "another switch";
+        }
+
+        private static List<string> Slice(IReadOnlyList<string> args, int start, int count)
+        {
+            var words = new List<string>(count);
+            for (int i = start; i < start + count; i++) words.Add(args[i]);
+            return words;
+        }
+
+        /// <summary>A word's switch name with its prefix read as
+        /// <c>--</c>, in lower case, and what follows an <c>=</c> as its
+        /// value, or null when there is none (#600 item 44). <c>/name</c>
+        /// and <c>-name</c> are <c>--name</c>. A word that is no switch
+        /// comes back as it is, in lower case.</summary>
+        internal static string NameOf(string arg, out string inline)
+        {
+            inline = null;
+            arg ??= string.Empty;
+            int prefix = arg.StartsWith("--", StringComparison.Ordinal) ? 2
+                : arg.Length > 1 && (arg[0] == '-' || arg[0] == '/') ? 1
+                : 0;
+            if (prefix == 0) return arg.ToLowerInvariant();
+            string rest = arg.Substring(prefix);
+            int eq = rest.IndexOf('=');
+            if (eq > 0)
+            {
+                inline = rest.Substring(eq + 1);
+                rest = rest.Substring(0, eq);
+            }
+            return "--" + rest.ToLowerInvariant();
+        }
+
+        /// <summary>Whether a word names a switch PadForge knows, by any of
+        /// its prefixes. Read from the switch rows themselves: the word is
+        /// parsed alone, and only a switch no row takes gives the unknown
+        /// switch's refusal, so a row added later is known without a list
+        /// to keep.</summary>
+        internal static bool IsKnownSwitch(string arg)
+        {
+            if (arg == null || arg.Length < 2 || (arg[0] != '-' && arg[0] != '/')) return false;
+            string name = NameOf(arg, out _);
+            var one = Parse(new[] { name });
+            return one.Error == null || !one.Error.StartsWith(UnknownSwitch, StringComparison.Ordinal);
+        }
+
+        /// <summary>The start of the refusal of a switch no row takes.</summary>
+        internal const string UnknownSwitch = "PadForge does not know the switch ";
 
         /// <summary>The command line a copy that becomes the app is handed
         /// on: every word but <c>--wait</c>, which is the caller's own. A
@@ -525,6 +621,7 @@ namespace PadForge.Common
             "  --slot <1-16> on|off      Turn one virtual controller on or off\r\n" +
             "  --show, --hide            Show the window, or send it to the tray\r\n" +
             "  --minimized, --tray       Start minimized, or in the tray\r\n" +
+            "  --maximized               Start maximized, or maximize the window\r\n" +
             "  --exit                    Close PadForge\r\n" +
             "  --state                   Print PadForge's state as one line of JSON\r\n" +
             "  --snapshot                Save a diagnostics snapshot\r\n" +
@@ -542,12 +639,15 @@ namespace PadForge.Common
             "                            autohotkey, powershell, python [folder or file]\r\n" +
             "                            or assistant <program>. --remove takes it out,\r\n" +
             "                            --check says current (0), older (6) or none (7)\r\n" +
+            "  --settings-folder         Open the folder of PadForge.xml in Explorer\r\n" +
             "  --plugin-kit <folder>     Write the plugin kit: a guide to every verb and\r\n" +
             "                            setting, and a plugin in C#, Python, PowerShell\r\n" +
             "                            and AutoHotkey\r\n" +
             "  --version, --help         Print and exit\r\n" +
             "\r\n" +
-            "Switches run in order. --name=value works as --name value does.\r\n" +
+            "Switches run in order. /name and -name work as --name does, and\r\n" +
+            "--name=value as --name value. A switch that writes, prints or serves\r\n" +
+            "for the user runs alone, with --json or --wait at most.\r\n" +
             "Switches that reach a running copy need Automation on in PadForge, under Extras.\r\n" +
             "\r\n" +
             "Exit codes: 0 done, 1 PadForge answered an error, 2 the command line is wrong,\r\n" +
@@ -562,8 +662,14 @@ namespace PadForge.Common
         private static string Next(IReadOnlyList<string> args, ref int i)
             => i + 1 < args.Count ? args[++i] : null;
 
+        /// <summary>Whether a word in a value's place is a switch instead:
+        /// every word that starts with <c>-</c>, and one that starts with
+        /// <c>/</c> and names a switch PadForge knows, so a profile, a
+        /// folder or a marker's text that starts with a slash stays a
+        /// value.</summary>
         private static bool LooksLikeSwitch(string arg)
-            => arg != null && (arg.StartsWith("-", StringComparison.Ordinal) || arg == "/?");
+            => arg != null && (arg.StartsWith("-", StringComparison.Ordinal)
+                || (arg.StartsWith("/", StringComparison.Ordinal) && IsKnownSwitch(arg)));
 
         private static bool TryOnOff(string value, out bool on)
         {

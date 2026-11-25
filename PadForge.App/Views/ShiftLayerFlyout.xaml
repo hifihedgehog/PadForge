@@ -59,10 +59,13 @@
                                Margin="0,0,10,0"
                                Visibility="Collapsed"/>
 
+                        <!-- One line. The code gives it the monitor's width as
+                             its most, and a longer name ends in an ellipsis. -->
                         <TextBlock x:Name="LayerNameText"
                                    FontSize="14"
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"
+                                   TextTrimming="CharacterEllipsis"
                                    Foreground="White"/>
 
                         <Ellipse x:Name="ColorDot"

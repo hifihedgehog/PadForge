@@ -580,6 +580,11 @@ namespace PadForge
                 window.WindowState = WindowState.Minimized;
                 window.Show();
             }
+            else if (window.ShouldStartMaximized)
+            {
+                window.WindowState = WindowState.Maximized;
+                window.Show();
+            }
             else
             {
                 window.Show();

@@ -1663,6 +1663,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableDeviceConnectedNote, value);
         }
 
+        private bool _enableControllersNote = true;
+
+        /// <summary>Whether the flyout says the virtual controllers just
+        /// turned on or off, from the shortcut or a macro (#600 item 42).
+        /// Default on: the note showed before it had a switch. Display only:
+        /// the controllers turn on or off either way.</summary>
+        public bool EnableControllersNote
+        {
+            get => _enableControllersNote;
+            set => SetProperty(ref _enableControllersNote, value);
+        }
+
         private double _touchpadOverlayOpacity = 0.25;
 
         /// <summary>Surface opacity of the touchpad overlay (0.0–1.0).</summary>

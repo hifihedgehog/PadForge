@@ -507,7 +507,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Install and Restart (Updates): action, asks (RunsProgram). `settings.action/UpdateStatusItem/Settings_InstallAndRestart`
 - Check for Updates Automatically (Updates): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_CheckForUpdates`
 - Install Updates Automatically (Updates): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_InstallUpdatesAutomatically`
-- Include Pre-Releases (Updates): switch, free. `settings/GeneralGroup/Settings_IncludePreReleases`
+- Include Pre-Releases (Updates): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_IncludePreReleases`
 - Update Now Controller Database (Updates): action, asks. `settings.action/GeneralGroup/Settings_ControllerDatabaseUpdateNow#Settings_ControllerDatabase`
 - Controller Database (Updates): setting, free. `settings/GeneralGroup/Settings_ControllerDatabase`
 - Add Rows From a File or the Clipboard… Your Rows (Updates): action, free, under More. `settings.action/ControllerDatabaseMore/ControllerDatabase_AddRows#ControllerDatabase_YourRows`

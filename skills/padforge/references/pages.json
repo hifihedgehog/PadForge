@@ -5264,8 +5264,8 @@
     "card": "Updates",
     "words": "Include Pre-Releases",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {

@@ -642,7 +642,10 @@
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_InstallUpdatesAutomatically_4572"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
-                                <controls:SettingItem>
+                                <!-- With Install Updates Automatically on, the next start
+                                     installs what this switch lets in, so a program asks
+                                     before it changes which versions PadForge runs. -->
+                                <controls:SettingItem common:Reach.Class="Asks" common:Reach.Why="RunsProgram">
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_IncludePreReleases, Source={x:Static strings:Strings.Instance}}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_IncludePreReleases, Source={x:Static strings:Strings.Instance}}"

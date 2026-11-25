@@ -251,14 +251,20 @@ namespace PadForge.Tests
         private static string Layouts(string name)
             => "[{\"id\":\"c1a2\",\"name\":\"" + name + "\",\"widgets\":[{\"kind\":\"button\",\"x\":0.1,\"y\":0.2,\"w\":0.12,\"h\":0.18,\"code\":0,\"label\":\"A\"}]}]";
 
+        /// <summary>The first four bytes of a document's SHA-256, as the
+        /// layouts' shape ends.</summary>
+        private static string HashOf(string json)
+            => Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(json)), 0, 4).ToLowerInvariant();
+
         /// <summary>The web controller's layouts are a setting the user
-        /// changes in the browser, so the app line writes them like any value:
-        /// scrubbed whole, then cut, so a name the user typed keeps no
-        /// private word.</summary>
+        /// changes in the browser. The app line writes their shape: how many
+        /// layouts and controls, and a hash of the whole document. Their names
+        /// and labels are what the user typed, which the scrubber does not
+        /// know, so none of them is written.</summary>
         [Fact]
-        public void TheWebControllersLayouts_AreWritten_Scrubbed()
+        public void TheWebControllersLayouts_AreWrittenAsTheirShape_WithoutWhatTheUserTyped()
         {
-            string layouts = Layouts(RecorderTestHost.User + "'s couch pad");
+            string layouts = Layouts("Couch pad");
             var seam = RecorderHost.WebLayoutsSeam;
             RecorderHost.WebLayoutsSeam = () => layouts;
             var before = RecorderHost.Main;
@@ -266,17 +272,20 @@ namespace PadForge.Tests
             try
             {
                 var app = RecorderHost.AppValues().ToDictionary(v => v.Name, v => v.Value, StringComparer.Ordinal);
-                Assert.Equal(layouts, app["WebCustomLayoutsJson"]);
+                Assert.Equal("1 layout, 1 control, #" + HashOf(layouts), app["WebCustomLayoutsJson"]);
 
                 using var host = new RecorderTestHost();
                 var lines = new List<string>();
                 host.MoreSettingsLines(new PrivacyScrubber(host.Environment()), lines);
                 string line = Assert.Single(lines, l => l.StartsWith("app ", StringComparison.Ordinal));
-                string written = PadForge.Engine.Recording.RecordingCodec.ParseFacts(line.AsSpan(3))["WebCustomLayoutsJson"];
-                Assert.StartsWith("[{\"id\":\"c1a2\"", written);
-                Assert.Contains("couch pad", written);
-                Assert.DoesNotContain(RecorderTestHost.User, written, StringComparison.OrdinalIgnoreCase);
-                Assert.True(written.Length <= 100, written);
+                Assert.Equal("1 layout, 1 control, #" + HashOf(layouts), PadForge.Engine.Recording.RecordingCodec.ParseFacts(line.AsSpan(3))["WebCustomLayoutsJson"]);
+                foreach (string typed in new[] { "Couch", "c1a2", "\"label\"" })
+                    Assert.DoesNotContain(typed, line, StringComparison.OrdinalIgnoreCase);
+
+                Assert.Equal("none", RecorderHost.LayoutsShape("[]"));
+                Assert.Equal("unreadable", RecorderHost.LayoutsShape("{"));
+                string two = "[" + Layouts("A").Trim('[', ']') + "," + Layouts("B").Trim('[', ']') + "]";
+                Assert.Equal("2 layouts, 2 controls, #" + HashOf(two), RecorderHost.LayoutsShape(two));
             }
             finally
             {
@@ -286,7 +295,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>A layout saved in the browser while recording is written
-        /// as a setting that changed.</summary>
+        /// as a setting that changed, by its shape alone.</summary>
         [Fact]
         public void ALayoutSavedWhileRecording_IsWritten()
         {
@@ -308,8 +317,7 @@ namespace PadForge.Tests
                 recorder.UiTick();
                 string path = recorder.Stop(wait: true).Path;
                 var change = Assert.Single(RecorderTestKit.Events(path), e => e.Layer == 'C' && e.Payload.Contains("WebCustomLayoutsJson", StringComparison.Ordinal));
-                Assert.StartsWith("setting app WebCustomLayoutsJson = ", change.Payload);
-                Assert.Contains("Couch pad", change.Payload);
+                Assert.Equal("setting app WebCustomLayoutsJson = 1 layout, 1 control, #" + HashOf(layouts), change.Payload);
             }
             finally
             {

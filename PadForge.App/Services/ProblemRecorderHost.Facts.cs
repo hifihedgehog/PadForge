@@ -43,8 +43,8 @@ namespace PadForge.Services
         /// own, or keeps them outside the Settings page's view model and the
         /// Dashboard's: the theme, the language, Remote Link's reconnect, the
         /// chat's claim approval, voice macros, the OpenXR runtime and the
-        /// web controller's layouts built in the browser, read where
-        /// SettingsService reads them to save PadForge.xml.</summary>
+        /// web controller's layouts built in the browser (as their shape),
+        /// read where SettingsService reads them to save PadForge.xml.</summary>
         private static readonly Dictionary<string, Func<MainViewModel, object>> Renamed = new(StringComparer.Ordinal)
         {
             ["ThemeIndex"] = m => m.Settings.SelectedThemeIndex,
@@ -56,12 +56,39 @@ namespace PadForge.Services
             ["VoiceMinConfidence"] = _ => VoiceMacroService.MinConfidence,
             ["VoiceListeningMode"] = _ => VoiceMacroService.ListeningMode,
             ["HeadTrackingOpenXrRuntime"] = _ => HeadTrackingRuntime.OpenXrRuntimeManifest,
-            ["WebCustomLayoutsJson"] = _ => WebLayoutsSeam?.Invoke() ?? WebCustomLayoutStore.Json,
+            ["WebCustomLayoutsJson"] = _ => LayoutsShape(WebLayoutsSeam?.Invoke() ?? WebCustomLayoutStore.Json),
         };
 
         /// <summary>Test seam: the web controller's layouts as their store
         /// holds them. Null reads the store.</summary>
         internal static Func<string> WebLayoutsSeam;
+
+        /// <summary>The web controller's layouts as a recording writes them:
+        /// how many, how many controls in all, and the first four bytes of the
+        /// whole document's SHA-256, so a saved change shows. Their names and
+        /// labels are what the user typed, and the scrubber does not know them,
+        /// so they stay out.</summary>
+        internal static string LayoutsShape(string json)
+        {
+            if (string.IsNullOrEmpty(json)) return "none";
+            int layouts = 0, controls = 0;
+            try
+            {
+                using var doc = System.Text.Json.JsonDocument.Parse(json);
+                if (doc.RootElement.ValueKind != System.Text.Json.JsonValueKind.Array) return "unreadable";
+                foreach (var layout in doc.RootElement.EnumerateArray())
+                {
+                    layouts++;
+                    if (layout.ValueKind == System.Text.Json.JsonValueKind.Object && layout.TryGetProperty("widgets", out var widgets)
+                        && widgets.ValueKind == System.Text.Json.JsonValueKind.Array)
+                        controls += widgets.GetArrayLength();
+                }
+            }
+            catch (System.Text.Json.JsonException) { return "unreadable"; }
+            if (layouts == 0) return "none";
+            string hash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(json)), 0, 4).ToLowerInvariant();
+            return layouts + (layouts == 1 ? " layout, " : " layouts, ") + controls + (controls == 1 ? " control, #" : " controls, #") + hash;
+        }
 
         /// <summary>Where each app setting is read while PadForge runs: a
         /// holder of <see cref="Renamed"/>, else the Settings page's view

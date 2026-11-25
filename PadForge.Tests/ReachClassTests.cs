@@ -226,7 +226,7 @@ namespace PadForge.Tests
                 "ExtrasPage.xaml Network x7", "GetProfilesDialog.xaml ImportsProfile x1", "HomePage.xaml RunsProgram x1", "ImportConfigDialog.xaml ImportsProfile x1",
                 "KeepDriverDialog.xaml Drivers x1", "PadPage.xaml - x2", "PadPage.xaml ImportsProfile x2", "PadPage.xaml RunsProgram x1", "PadPage.xaml SendsInput x54",
                 "ProfileDialog.xaml Network x1", "ProfilesPage.xaml ImportsProfile x1", "ProfilesPage.xaml Network x1",
-                "SettingsPage.xaml - x1", "SettingsPage.xaml Drivers x3", "SettingsPage.xaml OpensPlace x4", "SettingsPage.xaml RunsProgram x7",
+                "SettingsPage.xaml - x1", "SettingsPage.xaml Drivers x3", "SettingsPage.xaml OpensPlace x4", "SettingsPage.xaml RunsProgram x8",
                 "UninstallBthPS3Dialog.xaml Drivers x1", "UninstallHIDMaestroDialog.xaml Drivers x1",
             }, found.GroupBy(x => x).Select(g => g.Key + " x" + g.Count()).OrderBy(x => x, StringComparer.Ordinal));
         }

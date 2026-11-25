@@ -250,7 +250,8 @@ namespace PadForge.Tests
         {
             string source = OffLimitsSource.Read("PadForge.App/Common/CommandLineSwitches.cs");
             var known = new SortedSet<string>(StringComparer.Ordinal);
-            foreach (Match m in Regex.Matches(source, "case \"(--[^\"]+)\":")) known.Add(m.Groups[1].Value);
+            // A row of the parser, never a comment that quotes one.
+            foreach (Match m in Regex.Matches(source, "^ *case \"(--[^\"]+)\":", RegexOptions.Multiline)) known.Add(m.Groups[1].Value);
             foreach (Match m in Regex.Matches(source, @"case ([A-Z][A-Za-z]*Switch):"))
             {
                 var field = typeof(CommandLineSwitches).GetField(m.Groups[1].Value, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);

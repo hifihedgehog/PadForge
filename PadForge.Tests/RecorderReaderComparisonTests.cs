@@ -352,12 +352,26 @@ namespace PadForge.Tests
         }
 
         /// <summary>One pass of the poll thread with this state, then the
-        /// watch's look, <paramref name="seconds"/> after the last.</summary>
-        private static void Pass(ProblemRecorder recorder, RecordingCapture capture, UserDevice device, CustomInputState state, double seconds)
+        /// watch's look, <paramref name="seconds"/> after the last. The
+        /// recorder's thread is held while the clock, the pass and
+        /// <paramref name="change"/>, what Raw Input hands over from here on,
+        /// move together. The look that follows a flush runs after the flush
+        /// is signaled, so one left over from the pass before would read the
+        /// new value at the old time, and the next would take it as
+        /// held.</summary>
+        private static void Pass(ProblemRecorder recorder, RecordingCapture capture, UserDevice device, CustomInputState state, double seconds,
+            Action change = null)
         {
-            if (seconds > 0) capture.Advance(seconds);
-            capture.Input(device, state);
-            capture.EndPass();
+            var release = new ManualResetEventSlim(false);
+            recorder.HoldWriterForTest(release);
+            try
+            {
+                change?.Invoke();
+                if (seconds > 0) capture.Advance(seconds);
+                capture.Input(device, state);
+                capture.EndPass();
+            }
+            finally { release.Set(); }
             recorder.WaitForFlush();
             recorder.WaitForFlush();
         }
@@ -386,8 +400,7 @@ namespace PadForge.Tests
                 Pass(recorder, capture, stick, Centered(), 0.05);
                 Pass(recorder, capture, stick, Centered(), 0.1);
                 // The two agree again, inside a sixteenth of the travel.
-                fed.Values = new uint[] { 129, 0 };
-                Pass(recorder, capture, stick, Centered(), 0.35);
+                Pass(recorder, capture, stick, Centered(), 0.35, () => fed.Values = new uint[] { 129, 0 });
 
                 var lines = ReaderLines(recorder.Stop(wait: true).Path);
                 Assert.Equal("is compared with its own reports through Raw Input: Axis0 is its X Axis, Button0 its Button 1", lines[0]);
@@ -415,14 +428,10 @@ namespace PadForge.Tests
                 var capture = recorder.CaptureForTest;
                 // A stick in motion: Raw Input's reading moves each look.
                 foreach (uint x in new uint[] { 0, 40, 80, 255, 200 })
-                {
-                    fed.Values = new uint[] { x, 0 };
-                    Pass(recorder, capture, stick, Centered(), 0.1);
-                }
+                    Pass(recorder, capture, stick, Centered(), 0.1, () => fed.Values = new uint[] { x, 0 });
                 // The positive control in the same file: a button Raw Input
                 // holds down.
-                fed.Values = new uint[] { 128, 1 };
-                Pass(recorder, capture, stick, Centered(), 0.1);
+                Pass(recorder, capture, stick, Centered(), 0.1, () => fed.Values = new uint[] { 128, 1 });
                 Pass(recorder, capture, stick, Centered(), 0.1);
                 Pass(recorder, capture, stick, Centered(), 0.1);
 
@@ -497,15 +506,19 @@ namespace PadForge.Tests
                 // Reports of another ID, 500 of them over two seconds past the
                 // last named one: a Bluetooth PlayStation pad once SDL turns on
                 // its full reports.
-                fed.Other = fed.Named + 2 * Stopwatch.Frequency;
-                fed.OtherCount = 500;
-                fed.Values = new uint[] { 255, 0 };
+                Pass(recorder, capture, stick, Centered(), 0.1, () =>
+                {
+                    fed.Other = fed.Named + 2 * Stopwatch.Frequency;
+                    fed.OtherCount = 500;
+                    fed.Values = new uint[] { 255, 0 };
+                });
                 Pass(recorder, capture, stick, Centered(), 0.1);
                 Pass(recorder, capture, stick, Centered(), 0.1);
-                Pass(recorder, capture, stick, Centered(), 0.1);
-                fed.Named = fed.Other + 1;
-                fed.Values = new uint[] { 128, 0 };
-                Pass(recorder, capture, stick, Centered(), 0.1);
+                Pass(recorder, capture, stick, Centered(), 0.1, () =>
+                {
+                    fed.Named = fed.Other + 1;
+                    fed.Values = new uint[] { 128, 0 };
+                });
 
                 var lines = ReaderLines(recorder.Stop(wait: true).Path);
                 Assert.Single(lines, l => l == "the reports Raw Input hands over now name none of its controls");
@@ -535,16 +548,20 @@ namespace PadForge.Tests
                 Pass(recorder, capture, stick, Centered(), 0);
                 // A puck at rest: two battery reports in three seconds, no
                 // named report.
-                fed.Other = fed.Named + 3 * Stopwatch.Frequency;
-                fed.OtherCount = 2;
-                Pass(recorder, capture, stick, Centered(), 0.1);
+                Pass(recorder, capture, stick, Centered(), 0.1, () =>
+                {
+                    fed.Other = fed.Named + 3 * Stopwatch.Frequency;
+                    fed.OtherCount = 2;
+                });
                 Pass(recorder, capture, stick, Centered(), 0.1);
                 // The positive control in the same file, after the mark: others
                 // at 250 a second for two seconds more.
-                capture.Mark();
-                fed.Other += 2 * Stopwatch.Frequency;
-                fed.OtherCount += 500;
-                Pass(recorder, capture, stick, Centered(), 0.1);
+                Pass(recorder, capture, stick, Centered(), 0.1, () =>
+                {
+                    capture.Mark();
+                    fed.Other += 2 * Stopwatch.Frequency;
+                    fed.OtherCount += 500;
+                });
                 Pass(recorder, capture, stick, Centered(), 0.1);
 
                 var events = RecorderTestKit.Events(recorder.Stop(wait: true).Path);
@@ -575,14 +592,18 @@ namespace PadForge.Tests
                 var capture = recorder.CaptureForTest;
                 // The first report of another ID starts the run, at a time as
                 // far from 0 as the pump's Stopwatch times are.
-                fed.Other = 1000 * Stopwatch.Frequency;
-                fed.OtherCount = 1;
+                Pass(recorder, capture, stick, Centered(), 0.1, () =>
+                {
+                    fed.Other = 1000 * Stopwatch.Frequency;
+                    fed.OtherCount = 1;
+                });
                 Pass(recorder, capture, stick, Centered(), 0.1);
-                Pass(recorder, capture, stick, Centered(), 0.1);
-                capture.Mark();
-                fed.Other += 3 * Stopwatch.Frequency / 2;
-                fed.OtherCount += 300;
-                Pass(recorder, capture, stick, Centered(), 0.1);
+                Pass(recorder, capture, stick, Centered(), 0.1, () =>
+                {
+                    capture.Mark();
+                    fed.Other += 3 * Stopwatch.Frequency / 2;
+                    fed.OtherCount += 300;
+                });
                 Pass(recorder, capture, stick, Centered(), 0.1);
 
                 var events = RecorderTestKit.Events(recorder.Stop(wait: true).Path);

@@ -265,6 +265,91 @@ namespace PadForge.Tests
             Assert.Null(mine.ForSdlDevice(clone));
         }
 
+        /// <summary>
+        /// A row reaches a device at the step of SDL's lookup that would read
+        /// it (SDL_PrivateGetGamepadMappingForGUID): the device's version with
+        /// its checksum (SDL_gamepad.c:1612), its version with a row naming no
+        /// checksum (:1623), then any version, with the checksum and then
+        /// without (:1630, :1635), for a device whose ID names a vendor and a
+        /// product in SDL's standard form and is no MFi controller's
+        /// (SDL_JoystickGUIDUsesVersion). A row naming another checksum is
+        /// never read. So a row of another firmware maps the device, at SDL's
+        /// last tries. The standard form's bus is below 0x20 or the virtual
+        /// bus, 0xFF (SDL_GetJoystickGUIDInfo).
+        /// </summary>
+        [Fact]
+        public void ARowReachesADevice_AtTheStepOfSdlsLookup()
+        {
+            const string device = "03001a2b4c050000e60c000001010000";
+            Assert.Equal(1, SdlMappingRow.Reach(device, device));
+            Assert.Equal(2, SdlMappingRow.Reach("030000004c050000e60c000001010000", device));
+            Assert.Equal(3, SdlMappingRow.Reach("03001a2b4c050000e60c000002010000", device));
+            Assert.Equal(4, SdlMappingRow.Reach("030000004c050000e60c000002010000", device));
+            Assert.Equal(4, SdlMappingRow.Reach("030000004c050000e60c000000000000", device));
+            Assert.Equal(0, SdlMappingRow.Reach("030034124c050000e60c000001010000", device));
+            Assert.Equal(0, SdlMappingRow.Reach("030000004c050000e70c000001010000", device));
+            Assert.True(SdlMappingRow.Maps("030000004c050000e60c000002010000", device));
+
+            const string unnamed = "030000004c050000e60c000001010000";
+            Assert.Equal(1, SdlMappingRow.Reach(unnamed, unnamed));
+            Assert.Equal(3, SdlMappingRow.Reach("030000004c050000e60c000002010000", unnamed));
+            Assert.Equal(0, SdlMappingRow.Reach(device, unnamed));
+
+            const string mfi = "050000004c050000e60c000001006d00";
+            Assert.Equal(1, SdlMappingRow.Reach(mfi, mfi));
+            Assert.Equal(0, SdlMappingRow.Reach("050000004c050000e60c000002006d00", mfi));
+            Assert.Equal(3, SdlMappingRow.Reach("ff0000004c050000e60c000002010000", "ff0000004c050000e60c000001010000"));
+            Assert.Equal(0, SdlMappingRow.Reach("760000004c050000e60c000002010000", "760000004c050000e60c000001010000"));
+        }
+
+        /// <summary>
+        /// A paste for a pad of one firmware is what SDL reads a pad of
+        /// another, of the same name, through when SDL holds nothing nearer
+        /// for it: the card names it the user's, and no copy is given. Where
+        /// SDL reads that pad through a mapping of its own, its HIDAPI one
+        /// made at the pad's first open, the paste goes to SDL under the pad's
+        /// own ID. Of the user's rows, the one at SDL's nearest step stands
+        /// for a device, whatever their order, and so for Find's pick among a
+        /// text's rows.
+        /// </summary>
+        [Fact]
+        public void TheCardAndTheCopy_FollowTheRowSdlReads_ForAnotherFirmware()
+        {
+            const string first = "050057564c050000e60c000001016800";
+            const string second = "050057564c050000e60c000002016800";
+            var mine = MineOf(first + ",Pasted,a:b5,platform:Windows,");
+            string throughPaste = second + ",Pasted,a:b5,platform:Windows,crc:5657,";
+            Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(second, throughPaste, mine, null, null, null));
+            Assert.Null(ControllerDatabaseUse.CopyFor(second, mine, throughPaste));
+            Assert.Equal(second + ",Pasted,a:b5,platform:Windows,",
+                ControllerDatabaseUse.CopyFor(second, mine, second + ",*,a:b0,b:b1,crc:5657,platform:Windows,"));
+
+            var both = MineOf(DualSenseBtModel + ",Model,a:b1,platform:Windows,", "050000004c050000e60c000002016800,Firmware,a:b2,platform:Windows,");
+            Assert.Equal("Firmware", both.ForSdlDevice(second).Row.Name);
+            Assert.Equal("Model", both.ForSdlDevice(DualSenseBt).Row.Name);
+
+            var rows = new List<SdlMappingRow>();
+            foreach (string text in new[] { DualSenseBtModel + ",Model,a:b1,platform:Windows,", "050000004c050000e60c000002016800,Firmware,a:b2,platform:Windows," })
+            {
+                Assert.True(SdlMappingRow.TryParse(text, out var row, out _));
+                rows.Add(row);
+            }
+            Assert.Equal("Firmware", SdlMappingRow.PickFor(rows, second, out var fit).Name);
+            Assert.Equal(SdlMappingRow.Fit.ItsId, fit);
+        }
+
+        /// <summary>SDL reads a vendor and product only from an ID of its
+        /// standard form, whose bus is below 0x20 or the virtual bus, 0xFF
+        /// (SDL_GetJoystickGUIDInfo, SDL_HARDWARE_BUS_VIRTUAL). So a row for a
+        /// GameCube adapter on the virtual bus gets the GameCube hint as SDL
+        /// adds it, and one on bus 0x76 does not.</summary>
+        [Fact]
+        public void AGameCubeAdapterOnTheVirtualBus_ReadsAsSdlStoresIt()
+        {
+            Assert.Equal("a:b0,b:b2,x:b1,y:b3,", ControllerDatabaseSource.StoredLayoutOf("ff0000007e0500003703000000000000,GameCube,a:b0,b:b1,x:b2,y:b3,"));
+            Assert.Equal("a:b0,b:b1,x:b2,y:b3,", ControllerDatabaseSource.StoredLayoutOf("760000007e0500003703000000000000,GameCube,a:b0,b:b1,x:b2,y:b3,"));
+        }
+
         // ── A row in the community's form, under each device's own ID (brief part 3) ──
 
         private static ControllerDatabaseMine MineOf(params string[] rows)
@@ -281,7 +366,7 @@ namespace PadForge.Tests
 
         /// <summary>
         /// SDL tries a device's exact version and checksum first
-        /// (SDL_gamepad.c:1611), so a row of SDL's that names them stands
+        /// (SDL_gamepad.c:1612), so a row of SDL's that names them stands
         /// over a row of the model with neither, as Add Rows keeps. Where SDL
         /// reads such a device through another row, the user's row is given
         /// to it once more under the device's own ID, as Paste gives one. A
@@ -516,7 +601,9 @@ namespace PadForge.Tests
         /// driver off, since the test host starts no SDL
         /// (TestHostFences.DeviceOutputOffLimits), read the way PadForge reads
         /// them. Each first answer, given back as Under writes it, was
-        /// answered again as it was. A: SDL read a DualSense past the model
+        /// answered again as it was. D: SDL read a device of firmware 0x0101
+        /// through a row of version 0x0102 while it held nothing nearer, and
+        /// through a row of the device's own version once there was one. A: SDL read a DualSense past the model
         /// row through its own HIDAPI mapping, so CopyFor gives the copy in the
         /// form the probe gave, and the copy SDL then held, with the checksum
         /// SDL added, reads as the user's row. B: SDL stored a text with no
@@ -562,6 +649,16 @@ namespace PadForge.Tests
             Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(gs, gs + ",Probe Yours,a:b2,b:b3,platform:Windows,crc:1aa4,", own, null, null, null));
             Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of("03003412491900000204000000000000",
                 "03003412491900000204000000000000,Probe Community,a:b1,b:b0,platform:Windows,", community, null, null, null));
+
+            const string firmware = "03001a2b341200007856000001010000";
+            var otherFirmware = MineOf("03000000341200007856000002010000,Probe Other Firmware,a:b1,b:b0,platform:Windows,");
+            Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(firmware,
+                firmware + ",Probe Other Firmware,a:b1,b:b0,platform:Windows,", otherFirmware, null, null, null));
+            var bothFirmwares = MineOf("03000000341200007856000002010000,Probe Other Firmware,a:b1,b:b0,platform:Windows,",
+                "03000000341200007856000001010000,Probe Own Firmware,a:b2,b:b3,platform:Windows,");
+            Assert.Equal("Probe Own Firmware", bothFirmwares.ForSdlDevice(firmware).Row.Name);
+            Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(firmware,
+                firmware + ",Probe Own Firmware,a:b2,b:b3,platform:Windows,", bothFirmwares, null, null, null));
         }
     }
 }

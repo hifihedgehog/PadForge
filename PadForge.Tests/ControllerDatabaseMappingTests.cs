@@ -67,10 +67,11 @@ namespace PadForge.Tests
             Assert.Equal(held.Layout, pasted.Layout);
             Assert.True(SdlMappingRow.Maps(pasted.Guid, DualSenseBt));
             Assert.False(SdlMappingRow.Maps(pasted.Guid, "030057564c050000e60c000000006800"));
-            // A version the row names must match. A zero matches any.
+            // A row of the pad's version is read before any other, and one of
+            // another version, a zero among them, at SDL's last tries.
             Assert.True(SdlMappingRow.Maps("030000004c050000e60c000000000000", "03001a2b4c050000e60c000001010000"));
-            Assert.False(SdlMappingRow.Maps("030000004c050000e60c000002010000", "03001a2b4c050000e60c000001010000"));
-            Assert.True(SdlMappingRow.Maps("030000004c050000e60c000001010000", "03001a2b4c050000e60c000001010000"));
+            Assert.Equal(4, SdlMappingRow.Reach("030000004c050000e60c000002010000", "03001a2b4c050000e60c000001010000"));
+            Assert.Equal(2, SdlMappingRow.Reach("030000004c050000e60c000001010000", "03001a2b4c050000e60c000001010000"));
         }
 
         [Fact]

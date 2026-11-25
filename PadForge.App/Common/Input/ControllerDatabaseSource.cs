@@ -198,16 +198,11 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Whether SDL reads an ID as a controller on its GameCube
-        /// list: the standard form's bus, below 0x20 or the virtual bus, then
-        /// its vendor and product (SDL_GetJoystickGUIDInfo).</summary>
+        /// list: an ID of its standard form (<see cref="SdlMappingRow.IsStandardForm"/>),
+        /// then its vendor and product (SDL_GetJoystickGUIDInfo).</summary>
         private static bool IsGameCube(string guid)
         {
-            if (!SdlMappingRow.TryReadIds(guid, out ushort vendor, out ushort product)) return false;
-            if (!ushort.TryParse(guid.AsSpan(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier, System.Globalization.CultureInfo.InvariantCulture, out ushort low)
-                || !ushort.TryParse(guid.AsSpan(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier, System.Globalization.CultureInfo.InvariantCulture, out ushort high))
-                return false;
-            int bus = low | (high << 8);
-            if (bus >= 0x20 && bus != 'v') return false;
+            if (!SdlMappingRow.IsStandardForm(guid) || !SdlMappingRow.TryReadIds(guid, out ushort vendor, out ushort product)) return false;
             foreach (var (v, p) in GameCube)
                 if (v == vendor && p == product) return true;
             return false;

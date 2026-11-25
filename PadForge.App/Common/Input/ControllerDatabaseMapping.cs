@@ -303,34 +303,65 @@ namespace PadForge.Common.Input
         /// </summary>
         internal static string CommunityId(string deviceGuid) => ControllerDatabaseRow.LookupId(deviceGuid);
 
+        /// <summary>Whether SDL reads a device through a row of this ID at some
+        /// step of its lookup (<see cref="Reach"/>).</summary>
+        internal static bool Maps(string rowGuid, string deviceGuid) => Reach(rowGuid, deviceGuid) > 0;
+
         /// <summary>
-        /// Whether SDL reads a device through a row of this ID: the two IDs
-        /// agree once both checksums are cleared, either their versions agree
-        /// or the row's is zero (SDL_PrivateFindGamepadMappingForGUID), and a
-        /// row whose ID names a checksum names the device's. SDL writes the
-        /// ID's checksum into the row as it adds it
+        /// The step of SDL's lookup at which it reads a device through a row
+        /// of this ID, or 0 when no step does
+        /// (SDL_PrivateGetGamepadMappingForGUID,
+        /// SDL_PrivateMatchGamepadMappingForGUID). The two IDs agree once both
+        /// checksums and versions are set aside. Then 1: the device's version,
+        /// with the device's checksum, or a row naming none for a device with
+        /// none. 2: the device's version, a row naming no checksum for a
+        /// device with one. 3 and 4: another version in the same two ways, for
+        /// a device whose ID is of SDL's standard form with a vendor and a
+        /// product and is no MFi controller's (SDL_JoystickGUIDUsesVersion). A
+        /// row whose ID names a checksum other than the device's is never read:
+        /// SDL writes the ID's checksum into the row as it adds it
         /// (SDL_PrivateAddMappingForGUID) and passes over a row whose checksum
-        /// is not the device's (SDL_PrivateMatchGamepadMappingForGUID).
+        /// is not the device's. SDL reads the row of the nearest step, and of
+        /// rows at one step the first in its list.
         /// </summary>
-        internal static bool Maps(string rowGuid, string deviceGuid)
+        internal static int Reach(string rowGuid, string deviceGuid)
         {
-            if (rowGuid == null || deviceGuid == null || rowGuid.Length != 32 || deviceGuid.Length != 32) return false;
-            bool rowVersionZero = true;
+            if (rowGuid == null || deviceGuid == null || rowGuid.Length != 32 || deviceGuid.Length != 32) return 0;
             for (int i = 0; i < 32; i++)
             {
-                if (i >= 4 && i < 8) continue;
-                char r = char.ToLowerInvariant(rowGuid[i]), d = char.ToLowerInvariant(deviceGuid[i]);
-                if (i >= 24 && i < 28)
-                {
-                    if (r != '0') rowVersionZero = false;
-                    continue;
-                }
-                if (r != d) return false;
+                if ((i >= 4 && i < 8) || (i >= 24 && i < 28)) continue;
+                if (char.ToLowerInvariant(rowGuid[i]) != char.ToLowerInvariant(deviceGuid[i])) return 0;
             }
-            ushort checksum = ChecksumOf(rowGuid);
-            if (checksum != 0 && checksum != ChecksumOf(deviceGuid)) return false;
-            if (rowVersionZero) return true;
-            return string.Compare(rowGuid, 24, deviceGuid, 24, 4, StringComparison.OrdinalIgnoreCase) == 0;
+            ushort rowChecksum = ChecksumOf(rowGuid), deviceChecksum = ChecksumOf(deviceGuid);
+            if (rowChecksum != 0 && rowChecksum != deviceChecksum) return 0;
+            int step = 1;
+            if (string.Compare(rowGuid, 24, deviceGuid, 24, 4, StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                if (!UsesVersion(deviceGuid)) return 0;
+                step = 3;
+            }
+            return rowChecksum == 0 && deviceChecksum != 0 ? step + 1 : step;
+        }
+
+        /// <summary>Whether SDL's lookup sets a device's version aside on its
+        /// last tries (SDL_JoystickGUIDUsesVersion): its ID is of the standard
+        /// form with a vendor and a product, and is no MFi controller's, whose
+        /// version holds its buttons (driver mark 'm').</summary>
+        private static bool UsesVersion(string guid)
+            => IsStandardForm(guid) && TryReadIds(guid, out ushort vendor, out ushort product) && vendor != 0 && product != 0
+               && !string.Equals(guid.Substring(28, 2), "6d", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Whether an ID of 32 hex digits is of SDL's standard form,
+        /// from which SDL reads a vendor, a product, a version and a checksum
+        /// (SDL_GetJoystickGUIDInfo): a bus below 0x20 or the virtual bus,
+        /// 0xFF (SDL_HARDWARE_BUS_VIRTUAL), and zero words after the vendor and
+        /// after the product.</summary>
+        internal static bool IsStandardForm(string guid)
+        {
+            if (guid == null || guid.Length != 32 || !HexByte(guid, 0, out int low) || !HexByte(guid, 2, out int high)) return false;
+            int bus = low | (high << 8);
+            if (bus >= 0x20 && bus != 0xFF) return false;
+            return string.CompareOrdinal(guid, 12, "0000", 0, 4) == 0 && string.CompareOrdinal(guid, 20, "0000", 0, 4) == 0;
         }
 
         /// <summary>The name checksum an ID of 32 hex digits carries: its
@@ -396,22 +427,40 @@ namespace PadForge.Common.Input
         {
             /// <summary>SDL would read the device through the row's ID.</summary>
             ItsId,
-            /// <summary>Another bus or version of the same vendor and product.</summary>
+            /// <summary>The same vendor and product under an ID SDL would not
+            /// read the device through: another bus, or another version of a
+            /// device SDL keeps to its own version for.</summary>
             SameProduct,
             /// <summary>Another device's row.</summary>
             Other,
         }
 
         /// <summary>
-        /// The row for a device among the rows of a text: one SDL would read
-        /// it through, then one of its vendor and product, then the first.
+        /// The row for a device among the rows of a text: the one SDL would
+        /// read it through, at the nearest step of its lookup
+        /// (<see cref="Reach"/>), the first of them at one step, then one of
+        /// its vendor and product, then the first.
         /// </summary>
         internal static SdlMappingRow PickFor(IReadOnlyList<SdlMappingRow> rows, string deviceGuid, out Fit fit)
         {
             fit = Fit.Other;
             if (rows == null || rows.Count == 0) return null;
+            SdlMappingRow nearest = null;
+            int nearestStep = int.MaxValue;
             foreach (var row in rows)
-                if (Maps(row.Guid, deviceGuid)) { fit = Fit.ItsId; return row; }
+            {
+                int step = Reach(row.Guid, deviceGuid);
+                if (step > 0 && step < nearestStep)
+                {
+                    nearest = row;
+                    nearestStep = step;
+                }
+            }
+            if (nearest != null)
+            {
+                fit = Fit.ItsId;
+                return nearest;
+            }
             if (TryReadIds(deviceGuid, out ushort v, out ushort p))
                 foreach (var row in rows)
                     if (TryReadIds(row.Guid, out ushort rv, out ushort rp) && rv == v && rp == p) { fit = Fit.SameProduct; return row; }

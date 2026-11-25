@@ -23,7 +23,7 @@ namespace PadForge.Common.Input
     /// One row of the user's own (#600 items 47 to 49). <see cref="Id"/> is
     /// the ID SDL is given it under: a device's own, checksum and version
     /// kept, so SDL reads that device through it before any row of its
-    /// model (SDL_PrivateFindGamepadMappingForGUID tries the exact ID
+    /// model (SDL_PrivateGetGamepadMappingForGUID tries the exact ID
     /// first), or the row's own ID for a row added for many devices.
     /// <see cref="Device"/> names a device SDL does not read, such as a
     /// plugin's, which PadForge maps through the row itself.
@@ -164,18 +164,26 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The user's row SDL reads a device through, by the
-        /// device's ID: its own row first, then a row of its model.</summary>
+        /// device's ID: its own row first, then the row at the nearest step
+        /// of SDL's lookup (<see cref="SdlMappingRow.Reach"/>), the first of
+        /// them at one step.</summary>
         internal ControllerDatabaseMineRow ForSdlDevice(string deviceGuid)
         {
             if (deviceGuid == null) return null;
-            ControllerDatabaseMineRow model = null;
+            ControllerDatabaseMineRow nearest = null;
+            int nearestStep = int.MaxValue;
             foreach (var row in Rows)
             {
                 if (row.ForPadForgeDevice) continue;
                 if (string.Equals(row.Id, deviceGuid, StringComparison.OrdinalIgnoreCase)) return row;
-                if (model == null && SdlMappingRow.Maps(row.Id, deviceGuid)) model = row;
+                int step = SdlMappingRow.Reach(row.Id, deviceGuid);
+                if (step > 0 && step < nearestStep)
+                {
+                    nearest = row;
+                    nearestStep = step;
+                }
             }
-            return model;
+            return nearest;
         }
 
         /// <summary>The user's row for a device SDL does not read.</summary>

@@ -373,8 +373,16 @@ namespace PadForge.Tests
             Assert.Contains(row.Settings.Rows, r => r is PluginSettingItem { Key: "dead" });
 
             // A plugin that stopped is named on the status line, which Home's
-            // Plugins tile shows: while it waits out its pause to start
-            // again, and once it failed too often to be started again.
+            // Plugins tile shows: from its second failure in a row while it
+            // waits out its pause to start again, and once it failed too
+            // often to be started again. One exit is its row's and log's.
+            rig.Launcher.Last.Exit(1);
+            rig.Controller.Manager.Tick();
+            rig.Controller.Refresh();
+            Assert.Equal(PluginStatus.Restarting, run.Status);
+            Assert.DoesNotContain("pedals.exe", rig.Vm.PluginsStatus);
+            rig.Now += 31_000;
+            rig.Controller.Manager.Tick();
             rig.Launcher.Last.Exit(1);
             rig.Controller.Manager.Tick();
             rig.Controller.Refresh();
@@ -382,7 +390,7 @@ namespace PadForge.Tests
             Assert.EndsWith(string.Format(s.Plugins_Problem_Restarting_Format, "pedals.exe"), rig.Vm.PluginsStatus);
             rig.Now += 31_000;
             rig.Controller.Manager.Tick();
-            for (int i = 1; i < PluginManager.MostFailures; i++)
+            for (int i = 2; i < PluginManager.MostFailures; i++)
             {
                 rig.Launcher.Last.Exit(1);
                 rig.Now += 31_000;

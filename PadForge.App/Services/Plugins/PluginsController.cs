@@ -345,8 +345,11 @@ namespace PadForge.Services.Plugins
                 PluginStatus.Changed => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Changed_Format, run.ShownName),
                 PluginStatus.Refused => string.Format(CultureInfo.CurrentCulture, s.Plugins_Problem_Refused_Format, run.ShownName),
                 // It exited, or could not be started, while it should run,
-                // and waits out its pause before the next start.
-                PluginStatus.Restarting => string.Format(CultureInfo.CurrentCulture,
+                // and waits out its pause before the next start. A single
+                // failure after a steady run is a one-second pause that its
+                // row and log keep, so the line names it from the second
+                // failure in a row.
+                PluginStatus.Restarting when run.Failures >= 2 => string.Format(CultureInfo.CurrentCulture,
                     run.Refusal != PluginRefusal.None ? s.Plugins_Problem_Refused_Format : s.Plugins_Problem_Restarting_Format, run.ShownName),
                 _ => null,
             };

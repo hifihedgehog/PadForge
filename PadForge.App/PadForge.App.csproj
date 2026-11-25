@@ -401,7 +401,16 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v2.3.0, which runs every profile on
+         release there. Current: v2.4.0, whose UMDF2 driver is 2.4.0, so
+         the first start with rights after the upgrade installs it. A raw
+         or extended report may run to 1,024 bytes, where 80 was the most,
+         and on an older driver one past 80 is refused with
+         NotSupportedException. PadForge's largest frame is 78 bytes. Touch
+         and pen devices are new (SubmitTouch, SubmitPen), and nothing
+         public of 2.3.0 changed. On ARM64, and for the composite personas
+         on x64, usbip-win2's root hub filter runs as HIDMaestro's own
+         service on its host controller's hub alone.
+         v2.3.0 before it runs every profile on
          Windows on ARM64. Windows there does not install HIDMaestro's
          driver, so each controller is a USB device on usbip-win2's host
          controller, and Windows' own drivers bind it. The backend is a

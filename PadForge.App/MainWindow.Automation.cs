@@ -93,6 +93,8 @@ namespace PadForge
             // The assistants' server, the call line of scripts, Save the
             // Skill and the Activity card's Undo (#597).
             StartAssistants();
+            // Reach PadForge From the Web (#600 item 11).
+            StartWebDoor();
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableAutomation)
@@ -201,10 +203,9 @@ namespace PadForge
         //  The connected mark (#600 item 13)
         // ─────────────────────────────────────────────
 
-        /// <summary>Whether a connected program came from the web, through
-        /// the web helper, which sets it. Until then no program is from the
-        /// web.</summary>
-        internal static Func<AutomationClient, bool> ClientIsFromWeb = _ => false;
+        /// <summary>Whether a connected program came from the web: a web
+        /// assistant through the web helper (#600 item 11).</summary>
+        internal static Func<AutomationClient, bool> ClientIsFromWeb = client => client.Kind == AutomationClientKind.Web;
 
         /// <summary>What the title bar's mark shows: whether it shows, the
         /// count, whether the globe shows, and its words for hover and a

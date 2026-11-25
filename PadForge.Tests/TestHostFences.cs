@@ -73,6 +73,14 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Common.Crosshairs.MagnifierNative.OffLimitsForTest = true;
     }
 
+    /// <summary>No tunnel program is started for the web door (#600 item
+    /// 11).</summary>
+    internal static class WebTunnelOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Services.Automation.Web.WebTunnels.OffLimitsForTest = true;
+    }
+
     /// <summary>No socket or listener is bound beyond loopback.</summary>
     internal static class ListenerOffLimits
     {

@@ -115,6 +115,20 @@ namespace PadForge.Services.Automation
             }, out _);
         };
 
+        /// <summary>The hello this copy sends PadForge, when it is not an
+        /// assistant's own: the web helper's copy for one web assistant
+        /// (#600 item 11) says <c>kind=web</c> with its grant.</summary>
+        internal Func<string> HelloLine { get; set; }
+
+        /// <summary>Whether a tool's <c>path</c> is a file this copy opens
+        /// with its own rights. False for a web assistant, whose paths are
+        /// not this PC's to give: it sends a profile's bytes instead.</summary>
+        internal bool LocalFiles { get; set; } = true;
+
+        /// <summary>Whether the assistant hears when the lists change. False
+        /// for the web, whose replies hold the result alone.</summary>
+        internal bool ListChanges { get; set; } = true;
+
         private DateTimeOffset _startedAt = DateTimeOffset.MinValue;
         private readonly object _startSync = new object();
 
@@ -180,9 +194,9 @@ namespace PadForge.Services.Automation
                 ResourceCollection = _resources,
                 Capabilities = new ServerCapabilities
                 {
-                    Tools = new ToolsCapability { ListChanged = true },
-                    Prompts = new PromptsCapability { ListChanged = true },
-                    Resources = new ResourcesCapability { ListChanged = true },
+                    Tools = new ToolsCapability { ListChanged = ListChanges },
+                    Prompts = new PromptsCapability { ListChanged = ListChanges },
+                    Resources = new ResourcesCapability { ListChanged = ListChanges },
                     Extensions = new Dictionary<string, object> { [AssistantSkill.ExtensionId] = new JsonObject() },
                 },
             };
@@ -277,11 +291,16 @@ namespace PadForge.Services.Automation
         //  Toward PadForge
         // ─────────────────────────────────────────────
 
+        /// <summary>Keeps trying PadForge until <paramref name="stopping"/>,
+        /// for a copy whose server side runs per request (the web helper's,
+        /// #600 item 11).</summary>
+        internal Task RunUpstreamAsync(CancellationToken stopping) => KeepTryingAsync(stopping);
+
         private async Task KeepTryingAsync(CancellationToken stopping)
         {
             // The hello names the client: wait a moment for its first
-            // request, never long.
-            await Task.WhenAny(_named.Task, Task.Delay(1000, stopping)).ConfigureAwait(false);
+            // request, never long. A hello of its own needs no name.
+            if (HelloLine == null) await Task.WhenAny(_named.Task, Task.Delay(1000, stopping)).ConfigureAwait(false);
             while (!stopping.IsCancellationRequested)
             {
                 try
@@ -333,7 +352,8 @@ namespace PadForge.Services.Automation
                 return;
             }
 
-            string hello = "hello kind=mcp name=" + AutomationLine.Quote(_clientName ?? "assistant")
+            string hello = HelloLine != null ? HelloLine() + " resume=" + Resume + "\n"
+                : "hello kind=mcp name=" + AutomationLine.Quote(_clientName ?? "assistant")
                 + (string.IsNullOrEmpty(_host) ? string.Empty : " host=" + AutomationLine.Quote(_host))
                 + " resume=" + Resume + "\n";
             byte[] bytes = Encoding.UTF8.GetBytes(hello);
@@ -632,6 +652,8 @@ namespace PadForge.Services.Automation
                 // program, and this copy opens the pipe for identification
                 // only, so PadForge could not borrow these rights to.
                 string exportTo = null;
+                if (!_mirror.LocalFiles && _tool.Name is "import_profile" or "export_profile" && PathIn(arguments) != null)
+                    return Failed("A web assistant reaches no file on this PC. Send the profile as content_base64, or take it from the result.", "bad-argument");
                 if (_tool.Name == "import_profile" && PathIn(arguments) is { } readFrom)
                 {
                     var (content, problem) = ReadFile(readFrom);

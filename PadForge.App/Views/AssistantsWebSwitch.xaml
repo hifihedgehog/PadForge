@@ -1,0 +1,28 @@
+<UserControl common:Reach.Class="UsersOwn" x:Class="PadForge.Views.AssistantsWebSwitch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
+    <!--
+        Reach PadForge From the Web (#600 item 11), the last row under the
+        Assistants card's More, in the More's own row look. Off until the user
+        turns it on, and turning it on asks first (the window's
+        confirmation). The user's alone, as everything on the Automation page
+        is. The data context is a WebAccessViewModel.
+    -->
+    <StackPanel>
+        <controls:SettingRow MinHeight="44">
+            <TextBlock Text="{Binding Web_Reach_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+            <CheckBox Style="{DynamicResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
+                      AutomationProperties.AutomationId="Web_Reach"
+                      AutomationProperties.Name="{Binding Web_Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                      AutomationProperties.HelpText="{Binding Web_Reach_Hint, Source={x:Static strings:Strings.Instance}}"
+                      IsChecked="{Binding IsOn}"/>
+            <controls:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="IsOn"
+                                         SettingLabel="{Binding Web_Reach_Label, Source={x:Static strings:Strings.Instance}}"
+                                         AutomationProperties.AutomationId="Reset_WebAccessViewModel_IsOn_60011" Margin="14,0,0,0"/>
+        </controls:SettingRow>
+        <TextBlock Text="{Binding Web_Reach_Hint, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource ExtraRowNote}"/>
+    </StackPanel>
+</UserControl>

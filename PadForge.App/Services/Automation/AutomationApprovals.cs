@@ -34,6 +34,23 @@ namespace PadForge.Services.Automation
         /// first connection, or a show while the window is behind. The card
         /// words its two answers by it.</summary>
         public ApprovalKind Kind { get; init; } = ApprovalKind.Change;
+
+        /// <summary>A web sign-in's six digits (#600 item 11), which the
+        /// request card alone shows, under <see cref="CodeLead"/> and above
+        /// <see cref="CodeAfter"/>. Never in <see cref="Detail"/>, which the
+        /// Automation page lists.</summary>
+        public string Code { get; init; }
+
+        /// <summary>The line above the code on the card.</summary>
+        public string CodeLead { get; init; }
+
+        /// <summary>The line under the code on the card.</summary>
+        public string CodeAfter { get; init; }
+
+        /// <summary>The line that says who asks, when it is not a program's
+        /// image: a web assistant is named by the address its sign-in
+        /// returns to.</summary>
+        public string From { get; init; }
     }
 
     /// <summary>The kinds of question the card puts (#600). Append-only.</summary>
@@ -51,6 +68,10 @@ namespace PadForge.Services.Automation
         /// window is not in front: Not Now and Show. Show brings the window
         /// forward.</summary>
         Show,
+
+        /// <summary>A web assistant signs in (#600 item 11): Don't Allow and
+        /// Allow, alike, with the sign-in's code on the card.</summary>
+        WebSignIn,
     }
 
     /// <summary>A question that waits for the user.</summary>

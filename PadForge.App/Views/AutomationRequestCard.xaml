@@ -51,7 +51,43 @@
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                 <TextBlock x:Name="FromText" Text="{Binding From}" FontSize="12" TextWrapping="Wrap" Margin="0,2,0,0"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <!-- A web sign-in (#600 item 11): the line, the sign-in's six
+                     digits in the ember look, and the line under them. The
+                     code shows here and on the sign-in page only, never in
+                     the detail lines the Automation page lists. -->
+                <StackPanel x:Name="CodePanel" Margin="0,10,0,0"
+                            Visibility="{Binding HasCode, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock x:Name="CodeLeadText" Text="{Binding CodeLead}" FontSize="13" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <ItemsControl x:Name="CodeDigits" ItemsSource="{Binding Code}" Margin="0,8,0,0" Focusable="False" IsTabStop="False"
+                                  AutomationProperties.Name="{Binding Code, TargetNullValue='', FallbackValue=''}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontSize="30" FontWeight="SemiBold" Margin="0,0,6,0"
+                                           Typography.NumeralAlignment="Tabular"
+                                           Foreground="{DynamicResource EmberHotBrush}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock x:Name="CodeAfterText" Text="{Binding CodeAfter}" FontSize="13" TextWrapping="Wrap" Margin="0,6,0,0"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                </StackPanel>
                 <ItemsControl x:Name="DetailList" ItemsSource="{Binding CardDetail}" Margin="0,10,0,0">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Setter Property="Focusable" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasCode}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" FontSize="13" TextWrapping="Wrap" Margin="0,0,0,3"

@@ -2853,12 +2853,22 @@
                                 <TextBlock Text="{Binding AutomationCopyNote}" Style="{StaticResource ExtraRowNote}" common:LiveText.Polite="True"
                                            AutomationProperties.AutomationId="Automation_CopyNote"
                                            Visibility="{Binding HasAutomationCopyNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <!-- Reach PadForge From the Web and its card (#600 item 11) go here. -->
-                                <ContentControl x:Name="AssistantsWebHost" Focusable="False"/>
+                                <!-- Reach PadForge From the Web (#600 item 11). Its card
+                                     stands under this one while it is on. -->
+                                <ContentControl x:Name="AssistantsWebHost" Focusable="False">
+                                    <views:AssistantsWebSwitch DataContext="{Binding WebAccess}"/>
+                                </ContentControl>
                             </StackPanel>
                         </controls:MoreRow>
                     </StackPanel>
                 </Border>
+
+                <!-- Assistants on the Web (#600 item 11), while Reach PadForge
+                     From the Web is on. -->
+                <ContentControl x:Name="AssistantsWebCardHost" Focusable="False"
+                                Visibility="{Binding WebAccess.IsOn, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <views:AssistantsWebCard DataContext="{Binding WebAccess}"/>
+                </ContentControl>
 
                 <!-- The Scripts card (#600 item 26) goes here. -->
                 <ContentControl x:Name="ScriptsCardHost" Focusable="False"/>

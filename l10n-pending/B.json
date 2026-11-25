@@ -1,0 +1,630 @@
+{
+  "new": [
+    {
+      "key": "Web_Reach_Label",
+      "english": "Reach PadForge From the Web",
+      "sibling": [
+        "Extras_Automation_OtherAssistants"
+      ],
+      "where": "Extras, Automation, Assistants card, More: the switch row's label",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Reach_Hint",
+      "english": "An assistant that runs on a website reaches PadForge through a tunnel program on this PC. Turning this on asks you first.",
+      "sibling": [
+        "Web_Reach_Label"
+      ],
+      "where": "Extras, Automation, Assistants card, More: the switch row's note",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Reach_Ask_Title",
+      "english": "Reach PadForge from the web?",
+      "sibling": [],
+      "where": "The confirmation PadForge shows when the user turns Reach PadForge From the Web on: its title",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Reach_Ask_Body",
+      "english": "PadForge starts a helper without administrator rights that listens on this PC only, and the tunnel program you pick gives it a public address. A web assistant gets in only after you allow its sign-in on PadForge’s question card, and it works at the level above.",
+      "sibling": [
+        "Web_Reach_Ask_Title"
+      ],
+      "where": "The same confirmation: its text",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Reach_Ask_Confirm",
+      "english": "Turn On",
+      "sibling": [
+        "Web_Reach_Ask_Title",
+        "Common_Cancel"
+      ],
+      "where": "The same confirmation: its button",
+      "keep": []
+    },
+    {
+      "key": "Web_Header",
+      "english": "Assistants on the Web",
+      "sibling": [
+        "Extras_Automation_Card_Assistants"
+      ],
+      "where": "Extras, Automation: the card under Assistants while the switch is on, its header",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Label",
+      "english": "Tunnel",
+      "sibling": [],
+      "where": "Assistants on the Web card: the tunnel row's label",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_None",
+      "english": "None",
+      "sibling": [
+        "Web_Tunnel_Paste"
+      ],
+      "where": "Assistants on the Web card, Tunnel list: no tunnel",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Paste",
+      "english": "An Address I Paste",
+      "sibling": [
+        "Web_Tunnel_None"
+      ],
+      "where": "Assistants on the Web card, Tunnel list: the user's own tunnel",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Starting",
+      "english": "Starting, with your rights.",
+      "sibling": [
+        "Web_Tunnel_Running_Keeps"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Running_Keeps",
+      "english": "Running, with your rights. Its address stays the same each time it starts.",
+      "sibling": [
+        "Web_Tunnel_Running_Changes"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Running_Changes",
+      "english": "Running, with your rights. A quick tunnel takes a new address each time it starts, so the assistant would be added again.",
+      "sibling": [
+        "Web_Tunnel_Running_Keeps"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Stopped",
+      "english": "Stopped.",
+      "sibling": [
+        "Web_Tunnel_Stopped_Format"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Stopped_Format",
+      "english": "Stopped. Its last words: {0}",
+      "sibling": [
+        "Web_Tunnel_Stopped"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status, {0} is the tunnel program's own last line",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Failed",
+      "english": "It could not be started.",
+      "sibling": [
+        "Web_Tunnel_Starting"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Missing",
+      "english": "It is not on this PC any more.",
+      "sibling": [
+        "Web_Tunnel_Starting"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_NoneFound",
+      "english": "No tunnel program was found on this PC. PadForge works with cloudflared, devtunnel, ngrok and Tailscale Funnel, or with your own tunnel’s address.",
+      "sibling": [
+        "Web_Tunnel_Label"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status",
+      "keep": [
+        "PadForge",
+        "cloudflared",
+        "devtunnel",
+        "ngrok",
+        "Tailscale Funnel"
+      ]
+    },
+    {
+      "key": "Web_Tunnel_Choose",
+      "english": "Pick a tunnel to give PadForge a public address.",
+      "sibling": [
+        "Web_Tunnel_Label"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status while None is picked",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Tunnel_AlsoFound_Format",
+      "english": "Also on this PC: {0}.",
+      "sibling": [
+        "Web_Tunnel_Keeps_Format",
+        "Web_Tunnel_Changes_Format"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status, {0} lists the other tunnel programs found",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Keeps_Format",
+      "english": "{0}, whose address stays the same",
+      "sibling": [
+        "Web_Tunnel_Changes_Format"
+      ],
+      "where": "One item of the list in Web_Tunnel_AlsoFound_Format, {0} is a tunnel program",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Changes_Format",
+      "english": "{0}, whose quick tunnels take a new address each time",
+      "sibling": [
+        "Web_Tunnel_Keeps_Format"
+      ],
+      "where": "One item of the list in Web_Tunnel_AlsoFound_Format, {0} is a tunnel program",
+      "keep": []
+    },
+    {
+      "key": "Web_Tunnel_Paste_Hint_Format",
+      "english": "Run your own tunnel to http://127.0.0.1:{0} and paste its https address. A named Cloudflare tunnel, a persistent dev tunnel, Tailscale Funnel and ngrok’s own domain keep their address.",
+      "sibling": [
+        "Web_Tunnel_Paste"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status while An Address I Paste is picked, {0} is the port",
+      "keep": [
+        "Cloudflare",
+        "Tailscale Funnel",
+        "ngrok"
+      ]
+    },
+    {
+      "key": "Web_Tunnel_Paste_Wrong",
+      "english": "Paste an https address with no path but /mcp, as your tunnel gives it.",
+      "sibling": [
+        "Web_Tunnel_Paste_Hint_Format"
+      ],
+      "where": "Assistants on the Web card, under the pasted address when it is not one",
+      "keep": []
+    },
+    {
+      "key": "Web_Helper_Starting",
+      "english": "Starting PadForge’s web helper.",
+      "sibling": [
+        "Web_Helper_Stopped_Format"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status before the helper runs",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Helper_Stopped_Format",
+      "english": "PadForge’s web helper stopped ({0}). Turn Reach PadForge From the Web off and on to start it again.",
+      "sibling": [
+        "Web_Helper_Starting"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status, {0} is the reason",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Address_Label",
+      "english": "Address",
+      "sibling": [],
+      "where": "Assistants on the Web card: the address row's label",
+      "keep": []
+    },
+    {
+      "key": "Web_Address_None",
+      "english": "No public address yet.",
+      "sibling": [
+        "Web_Address_Label"
+      ],
+      "where": "Assistants on the Web card: the address row while there is none",
+      "keep": []
+    },
+    {
+      "key": "Web_Address_AddToClaude",
+      "english": "Add to Claude",
+      "sibling": [
+        "Common_Copy"
+      ],
+      "where": "Assistants on the Web card, address row: opens Claude’s own add page with the address filled in",
+      "keep": [
+        "Claude"
+      ]
+    },
+    {
+      "key": "Web_Address_Copied",
+      "english": "Copied.",
+      "sibling": [
+        "Common_Copy"
+      ],
+      "where": "Assistants on the Web card, address row: after Copy",
+      "keep": []
+    },
+    {
+      "key": "Web_Accept_Label",
+      "english": "Accept a New Web Assistant",
+      "sibling": [],
+      "where": "Assistants on the Web card: the row's label",
+      "keep": []
+    },
+    {
+      "key": "Web_Accept_Start",
+      "english": "Start Accepting",
+      "sibling": [
+        "Web_Accept_Stop"
+      ],
+      "where": "Assistants on the Web card, Accept a New Web Assistant row: its button while off",
+      "keep": []
+    },
+    {
+      "key": "Web_Accept_Stop",
+      "english": "Stop Accepting",
+      "sibling": [
+        "Web_Accept_Start"
+      ],
+      "where": "Assistants on the Web card, Accept a New Web Assistant row: its button while accepting",
+      "keep": []
+    },
+    {
+      "key": "Web_Accept_Until_Format",
+      "english": "Accepting until {0}.",
+      "sibling": [
+        "Web_Accept_Off"
+      ],
+      "where": "Assistants on the Web card, Accept a New Web Assistant row's first line, {0} is a time of day",
+      "keep": []
+    },
+    {
+      "key": "Web_Accept_Off",
+      "english": "Not accepting. Start Accepting opens it for five minutes.",
+      "sibling": [
+        "Web_Accept_Until_Format"
+      ],
+      "where": "Assistants on the Web card, Accept a New Web Assistant row's first line",
+      "keep": []
+    },
+    {
+      "key": "Web_Accept_Hint",
+      "english": "Add the address in the assistant and sign in. Each sign-in shows its own six-digit code on its sign-in page and on PadForge’s question card. Allow it only when the two codes match. At other times a sign-in is refused and nothing asks you.",
+      "sibling": [
+        "Web_Accept_Label"
+      ],
+      "where": "Assistants on the Web card, Accept a New Web Assistant row's note",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Allowed_Label",
+      "english": "Allowed on the Web",
+      "sibling": [],
+      "where": "Assistants on the Web card: the allowed web assistants' row label",
+      "keep": []
+    },
+    {
+      "key": "Web_Allowed_None",
+      "english": "None yet.",
+      "sibling": [
+        "Web_Allowed_Label"
+      ],
+      "where": "Assistants on the Web card: Allowed on the Web while it holds none",
+      "keep": []
+    },
+    {
+      "key": "Web_Allowed_ReturnsTo_Format",
+      "english": "Its sign-in returned to {0}.",
+      "sibling": [
+        "Web_Allowed_CallsItself_Format"
+      ],
+      "where": "Assistants on the Web card, one allowed web assistant's line, {0} is a host such as claude.ai",
+      "keep": []
+    },
+    {
+      "key": "Web_Allowed_CallsItself_Format",
+      "english": "It calls itself {0}.",
+      "sibling": [
+        "Web_Allowed_ReturnsTo_Format"
+      ],
+      "where": "The same line, {0} is the name it gave",
+      "keep": []
+    },
+    {
+      "key": "Web_Allowed_When_Format",
+      "english": "Allowed {0}, last used {1}.",
+      "sibling": [
+        "Web_Allowed_WhenNew_Format"
+      ],
+      "where": "The same line, {0} and {1} are dates and times",
+      "keep": []
+    },
+    {
+      "key": "Web_Allowed_WhenNew_Format",
+      "english": "Allowed {0}, not used yet.",
+      "sibling": [
+        "Web_Allowed_When_Format"
+      ],
+      "where": "The same line, {0} is a date and time",
+      "keep": []
+    },
+    {
+      "key": "Web_Allowed_Revoke",
+      "english": "Revoke",
+      "sibling": [
+        "Web_Allowed_Label"
+      ],
+      "where": "Assistants on the Web card: the button of one allowed web assistant",
+      "keep": []
+    },
+    {
+      "key": "Web_ChatGpt_Label",
+      "english": "ChatGPT",
+      "sibling": [],
+      "where": "Assistants on the Web card: the row of OpenAI’s own tunnel",
+      "keep": [
+        "ChatGPT"
+      ]
+    },
+    {
+      "key": "Web_ChatGpt_Hint",
+      "english": "Its own Secure MCP Tunnel runs PadForge directly, with no address or sign-in here. Copy the command into that tunnel’s setup.",
+      "sibling": [
+        "Web_ChatGpt_Label"
+      ],
+      "where": "Assistants on the Web card, ChatGPT row's note",
+      "keep": [
+        "Secure MCP Tunnel",
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_ChatGpt_Copy",
+      "english": "Copy Command",
+      "sibling": [
+        "Web_ChatGpt_Label"
+      ],
+      "where": "Assistants on the Web card, ChatGPT row's button",
+      "keep": []
+    },
+    {
+      "key": "Web_Footnote",
+      "english": "PadForge downloads no tunnel program and keeps no other company’s key. A web assistant works at the level above.",
+      "sibling": [
+        "Web_Header"
+      ],
+      "where": "Assistants on the Web card: the note under its rows",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Ask_Title_Format",
+      "english": "Allow {0} to work with PadForge from the web?",
+      "sibling": [
+        "Automation_Ask_Consent_Format"
+      ],
+      "where": "The question card: a web assistant's sign-in, {0} is the host its sign-in returns to",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Ask_ReturnsTo_Format",
+      "english": "Its sign-in returns to {0}.",
+      "sibling": [
+        "Web_Ask_CallsItself_Format"
+      ],
+      "where": "The question card, a web sign-in's From line, {0} is a host",
+      "keep": []
+    },
+    {
+      "key": "Web_Ask_CallsItself_Format",
+      "english": "It calls itself {0}.",
+      "sibling": [
+        "Web_Ask_ReturnsTo_Format"
+      ],
+      "where": "The question card, a web sign-in's From line, {0} is the name it gave",
+      "keep": []
+    },
+    {
+      "key": "Web_Ask_CodeLead",
+      "english": "Allow only if its sign-in page shows this code:",
+      "sibling": [
+        "Web_Ask_Through_Format"
+      ],
+      "where": "The question card: the line above a web sign-in's six digits",
+      "keep": []
+    },
+    {
+      "key": "Web_Ask_CodeOnCard",
+      "english": "Its six-digit code shows on PadForge’s question card. Allow only if its sign-in page shows the same code.",
+      "sibling": [
+        "Web_Ask_Through_Format"
+      ],
+      "where": "Extras, Automation, Waiting for You: a web sign-in's first line, which leaves the code to the question card",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_Ask_Through_Format",
+      "english": "It works at {0}, through {1}.",
+      "sibling": [
+        "Web_Ask_CodeLead"
+      ],
+      "where": "The question card, a web sign-in's last line, {0} is the level, {1} the public host",
+      "keep": []
+    },
+    {
+      "key": "Web_Ask_LocalWarning",
+      "english": "Its sign-in returns to this PC, and any program here could claim that address.",
+      "sibling": [
+        "Web_Ask_Through_Format"
+      ],
+      "where": "The question card, a web sign-in that returns to localhost",
+      "keep": []
+    },
+    {
+      "key": "Web_SignIn_Title",
+      "english": "Sign in to PadForge",
+      "sibling": [],
+      "where": "The web sign-in page in the browser: its title",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_SignIn_Asks_Format",
+      "english": "{0} asks to work with PadForge on your PC.",
+      "sibling": [
+        "Web_SignIn_Code"
+      ],
+      "where": "The web sign-in page, {0} is the host its sign-in returns to",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_SignIn_CallsItself_Format",
+      "english": "It calls itself {0}.",
+      "sibling": [
+        "Web_SignIn_Asks_Format"
+      ],
+      "where": "The web sign-in page, {0} is the name it gave",
+      "keep": []
+    },
+    {
+      "key": "Web_SignIn_Code",
+      "english": "On your PC, PadForge’s question card asks about this sign-in. Allow it there only if the card shows this code:",
+      "sibling": [
+        "Web_SignIn_Moves"
+      ],
+      "where": "The web sign-in page: the line above the six digits",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_SignIn_Moves",
+      "english": "This page goes on by itself once you answer on the PC.",
+      "sibling": [
+        "Web_SignIn_Code"
+      ],
+      "where": "The web sign-in page: the line under the six digits",
+      "keep": []
+    },
+    {
+      "key": "Web_SignIn_LocalWarning",
+      "english": "This sign-in returns to a program on your PC, and any program there could claim that address.",
+      "sibling": [
+        "Web_SignIn_Code"
+      ],
+      "where": "The web sign-in page, for a sign-in that returns to localhost",
+      "keep": []
+    },
+    {
+      "key": "Web_SignIn_NotAccepting",
+      "english": "PadForge is not accepting a new web assistant now. On your PC, open PadForge, go to Extras, Automation, and under Assistants on the Web press Start Accepting. Then sign in again.",
+      "sibling": [
+        "Web_Accept_Start"
+      ],
+      "where": "The web sign-in page when nobody armed Accept a New Web Assistant",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_SignIn_CannotGoOn",
+      "english": "This sign-in cannot go on. Add PadForge’s address in the assistant again and sign in.",
+      "sibling": [
+        "Web_SignIn_NotAccepting"
+      ],
+      "where": "The web sign-in page when a client’s sign-in request is wrong",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Web_SignIn_Expired",
+      "english": "This sign-in has ended. Sign in again from the assistant.",
+      "sibling": [
+        "Web_SignIn_NotAccepting"
+      ],
+      "where": "The web sign-in page when its time ran out",
+      "keep": []
+    },
+    {
+      "key": "Web_Helper_Why_NotStarted",
+      "english": "Windows did not start it",
+      "sibling": [
+        "Web_Helper_Stopped_Format"
+      ],
+      "where": "Assistants on the Web card, the {0} of Web_Helper_Stopped_Format",
+      "keep": []
+    },
+    {
+      "key": "Web_Helper_Why_Ended_Format",
+      "english": "it ended with code {0}",
+      "sibling": [
+        "Web_Helper_Stopped_Format"
+      ],
+      "where": "Assistants on the Web card, the {0} of Web_Helper_Stopped_Format, {0} is a number",
+      "keep": []
+    },
+    {
+      "key": "Web_Helper_AutomationOff",
+      "english": "Automation is off, so no web assistant reaches PadForge. The web helper starts once Automation is on.",
+      "sibling": [
+        "Web_Helper_Starting"
+      ],
+      "where": "Assistants on the Web card, Tunnel row's status while Automation is off",
+      "keep": [
+        "PadForge"
+      ]
+    }
+  ],
+  "changed": [],
+  "removed": []
+}

@@ -226,6 +226,8 @@ namespace PadForge.Tests
         private const string RecordingFolderFile = "PadForge.App/Common/Recording/RecordingFolder.cs";
         private const string NativeCrashFile = "PadForge.App/Common/Recording/NativeCrashRecord.cs";
         private const string ReadBackFile = "PadForge.App/Common/Recording/XInputReadBack.cs";
+        private const string WebTunnelsFile = Services + "Automation/Web/WebTunnels.cs";
+        private const string WebDocuments = Services + "Automation/Web/WebClientDocuments.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -279,6 +281,7 @@ namespace PadForge.Tests
             (RecordingFolderFile, "RecordingFolder"),
             (NativeCrashFile, "NativeCrashRecord"),
             (ReadBackFile, "XInputReadBack"),
+            (WebTunnelsFile, "WebTunnels"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -340,6 +343,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Recording.RecordingFolder.OffLimitsForTest);
             Assert.True(PadForge.Common.Recording.NativeCrashRecord.OffLimitsForTest);
             Assert.True(PadForge.Common.Recording.XInputReadBack.OffLimitsForTest);
+            Assert.True(PadForge.Services.Automation.Web.WebTunnels.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -407,6 +411,11 @@ namespace PadForge.Tests
             new object[] { NativeCrashFile, "internal static IReadOnlyList<NativeCrash> Records()", "if (OffLimitsForTest && RecordsSeam == null) return Array.Empty<NativeCrash>();" },
             // What a game reads back through XInput, read while recording.
             new object[] { ReadBackFile, "internal static XInputRead Read(int place)", "if (OffLimitsForTest && ReadSeam == null) return default;" },
+            // The web door (#600 item 11): a tunnel program is started only
+            // through a test's own seam, a client's metadata document is
+            // fetched from no host beyond this PC, and the helper's listener
+            // binds loopback only.
+            new object[] { WebTunnelsFile, "internal static Process Start(WebTunnelKind kind, string exe, int port, Action<string> address, Action<string> line, Action<int> exited)", "if (OffLimitsForTest && StartSeam == null) return null;" },
             new object[] { UserInstallFile, "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)", "if (ToolSeam == null && OffLimitsForTest) return (-1, null);" },
             new object[] { UserInstallFile, "internal static IReadOnlyList<string> Pythons()", "if (PythonsSeam == null && OffLimitsForTest) return Array.Empty<string>();" },
             new object[] { UserInstallFile, "internal static string FindCommand(string name)", "if (FindSeam == null && OffLimitsForTest) return null;" },
@@ -614,6 +623,11 @@ namespace PadForge.Tests
         public static IEnumerable<object[]> AskedBeforeTheCall() => new[]
         {
             new object[] { Bluetooth, "public static bool TryDisconnect(string serial)", "if (OffLimitsForTest) return false;", "BluetoothFindFirstRadio(" },
+            // The web door (#600 item 11): a client's metadata document is
+            // fetched from no host beyond this PC in the test host, and the
+            // helper's listener binds loopback only.
+            new object[] { Services + "Automation/Web/WebClientDocuments.cs", "internal static async Task<string> FetchAsync(string address, CancellationToken cancel)", "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(uri.Host)) return null;", "await client.SendAsync(" },
+            new object[] { Services + "Automation/Web/WebHelper.cs", "internal static HttpListener Listen(int wanted, out int port)", "PadForge.Engine.Common.NetworkListenerGate.EnterPrefix(prefix);", "listener.Start();" },
             new object[] { VirtualController, "public void Connect()", "if (seam == null && OffLimitsForTest)", "_ctx.CreateController(_profile, _identityKey)" },
             new object[] { Kbm, "private IKbmHidSink CreateSink(HMProfile profile, bool keyboard)", "if (HMaestroVirtualController.OffLimitsForTest)", "_ctx.CreateController(profile, key)" },
             new object[] { Input + "HapticToneService.cs", "private static bool BuildSink(Sink s, Func<Action, bool> publish = null)", "if (DirectDeviceAccess.Refuses(path)) return false;", "h = CreateFileW(path, GENERIC_WRITE | GENERIC_READ, SHARE_RW," },
@@ -705,7 +719,11 @@ namespace PadForge.Tests
             // And the install's run of the user's own tools, an assistant's
             // add command and a Python, from a process without rights with
             // the user's own variables (#600).
-            Assert.Equal(Map((RightsVariablesStartFile, 1), (StartWithRightsFile, 1), (UserInstallFile, 1)), FenceSource.Census(@"\bProcess\.Start\("));
+            // And the web door's tunnel program (#600 item 11), started by the
+            // helper without rights, in the member that asks its fence first.
+            Assert.Equal(Map((RightsVariablesStartFile, 1), (StartWithRightsFile, 1), (UserInstallFile, 1), (WebTunnelsFile, 1)), FenceSource.Census(@"\bProcess\.Start\("));
+            Assert.Contains("Process.Start(info)",
+                FenceSource.Body(OffLimitsSource.Read(WebTunnelsFile), "internal static Process Start(WebTunnelKind kind, string exe, int port, Action<string> address, Action<string> line, Action<int> exited)"), StringComparison.Ordinal);
             Assert.Contains("using var process = Process.Start(psi);",
                 FenceSource.Body(OffLimitsSource.Read(UserInstallFile), "internal static (int Code, string Output) RunTool(string exe, IReadOnlyList<string> words, int timeoutMs, IReadOnlyList<string> variables = null)"), StringComparison.Ordinal);
 
@@ -995,7 +1013,9 @@ namespace PadForge.Tests
         public void EveryClientThatLeavesThisPc_IsOnTheList()
         {
             // A name looked up: each behind the gate (AskedBeforeTheCall).
-            Assert.Equal(Map((Krpc, 1), (LinkServerFile, 2), (Stun, 1)), FenceSource.Census(@"\bDns\.[A-Z][A-Za-z]*\("));
+            // The web door's client document (#600 item 11) is looked up
+            // inside the HTTP call its gate comes before.
+            Assert.Equal(Map((Krpc, 1), (LinkServerFile, 2), (Stun, 1), (WebDocuments, 1)), FenceSource.Census(@"\bDns\.[A-Z][A-Za-z]*\("));
 
             // A stream client: the relay's, the link's, Steam's and the
             // Twitch Chat row's (#555), whose session asks the gate first,
@@ -1018,7 +1038,10 @@ namespace PadForge.Tests
                 (DatabaseUpdater, 1),
                 (Services + "UpdateService.cs", 1),
                 (Outbound, 2),
-                (SteamHttpFile, 2)), FenceSource.Census(Creates("HttpClient")));
+                (SteamHttpFile, 2),
+                // A web assistant's client document (#600 item 11), sent
+                // only after the outbound gate (AskedBeforeTheCall).
+                (WebDocuments, 1)), FenceSource.Census(Creates("HttpClient")));
             Assert.DoesNotContain("NewHttpClient(", OffLimitsSource.Read(WorkshopPanel), StringComparison.Ordinal);
             Assert.DoesNotContain("new HttpClient(", OffLimitsSource.Read(WorkshopPanel), StringComparison.Ordinal);
 

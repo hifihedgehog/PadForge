@@ -1864,5 +1864,11 @@
     "Id": "Reset_DashboardViewModel_ReplayRepeat_59707",
     "Owner": "PadForge.ViewModels.DashboardViewModel",
     "Property": "ReplayRepeat"
+  },
+  {
+    "File": "PadForge.App/Views/AssistantsWebSwitch.xaml",
+    "Id": "Reset_WebAccessViewModel_IsOn_60011",
+    "Owner": "PadForge.ViewModels.WebAccessViewModel",
+    "Property": "IsOn"
   }
 ]

@@ -174,12 +174,15 @@ namespace PadForge.Services.Automation
                 int ofProcess = 0, notPlugins = 0;
                 foreach (var open in _sessions)
                 {
-                    if (open.Process.Id == session.Process.Id) ofProcess++;
+                    // Each web assistant comes through the one web helper,
+                    // which PadForge started: its sessions are bounded by the
+                    // web assistants allowed, not by the cap of one process.
+                    if (open.Process.Id == session.Process.Id && open.Kind != AutomationClientKind.Web) ofProcess++;
                     if (!open.IsPlugin) notPlugins++;
                 }
                 if (_sessions.Count >= MostSessions
                     || (!session.IsPlugin && notPlugins >= MostSessions - KeptForPlugins)
-                    || ofProcess >= MostPerProcess)
+                    || (ofProcess >= MostPerProcess && session.Kind != AutomationClientKind.Web))
                 {
                     error = "too-many";
                     return false;
@@ -495,6 +498,47 @@ namespace PadForge.Services.Automation
                 if (!_asking.TryGetValue(who.Key, out answer)) _asking[who.Key] = answer = AskConsent(session, who, wanted, store);
             }
             session.Consent = answer;
+        }
+
+        /// <summary>
+        /// Decides a web assistant's level as it opens (#600 item 11): the
+        /// user allowed it at its sign-in, on the question card with its
+        /// code, so it works at the user's level at once and asks nothing.
+        /// Its helper's resume secret keeps its undo and rate across a pipe
+        /// drop, as an assistant's does.
+        /// </summary>
+        internal void BeginWeb(AutomationSession session)
+        {
+            session.CallerKey = session.Number;
+            string key = session.Who?.Key;
+            if (session.Resume != null && key != null)
+            {
+                lock (_sync)
+                {
+                    if (_resumes.TryGetValue(session.Resume, out var known)) { if (known.Who == key) session.CallerKey = known.Key; }
+                    else _resumes[session.Resume] = (key, session.Number);
+                }
+            }
+            session.Granted = AutomationLevel.ChangeSettings;
+        }
+
+        /// <summary>A connection whose hello was taken but which is no
+        /// program of the list, the web helper's own (#600 item 11): it no
+        /// longer counts among those that wait for a hello.</summary>
+        internal void Settled(AutomationSession session)
+        {
+            lock (_sync) _waiting.Remove(session);
+        }
+
+        /// <summary>Closes the open sessions of a web assistant the user
+        /// revoked (#600 item 11).</summary>
+        internal void CloseWeb(string key)
+        {
+            List<AutomationSession> close = new();
+            lock (_sync)
+                foreach (var session in _sessions)
+                    if (session.Kind == AutomationClientKind.Web && session.Who?.Key == key) close.Add(session);
+            foreach (var session in close) session.CloseAfterWritten();
         }
 
         private async Task<bool> AskConsent(AutomationSession session, AllowedProgram who, AutomationLevel wanted, AutomationConsent store)

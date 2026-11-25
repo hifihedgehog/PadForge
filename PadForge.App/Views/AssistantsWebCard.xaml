@@ -1,0 +1,152 @@
+<UserControl common:Reach.Class="UsersOwn" x:Class="PadForge.Views.AssistantsWebCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
+    <!--
+        Assistants on the Web (#600 item 11), the card under Assistants while
+        Reach PadForge From the Web is on, in the Extras cards' own look:
+        Tunnel (the tunnel programs found on this PC, or an address the user
+        pastes, with what each does with its address), Address with Copy and
+        Add to Claude, Accept a New Web Assistant, Allowed on the Web with
+        Revoke, and the row of the assistant whose own tunnel runs PadForge's
+        stdio command. Every control is the user's alone. The data context
+        is a WebAccessViewModel.
+    -->
+    <Border Style="{DynamicResource ExtraCard}" AutomationProperties.AutomationId="Web_Card">
+        <StackPanel>
+            <TextBlock Text="{Binding Web_Header, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource ExtraCardTitle}" Margin="0,0,0,4"/>
+
+            <!-- Tunnel -->
+            <controls:SettingRow MinHeight="44">
+                <TextBlock Text="{Binding Web_Tunnel_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}"/>
+                <ComboBox controls:SettingRow.Fills="True" MaxWidth="300" ItemsSource="{Binding Tunnels}" SelectedItem="{Binding SelectedTunnel, Mode=TwoWay}"
+                          DisplayMemberPath="Name"
+                          AutomationProperties.AutomationId="Web_Tunnel"
+                          AutomationProperties.Name="{Binding Web_Tunnel_Label, Source={x:Static strings:Strings.Instance}}"/>
+            </controls:SettingRow>
+            <TextBox Text="{Binding PastedAddress, UpdateSourceTrigger=PropertyChanged}" MaxLength="300" MaxWidth="460" HorizontalAlignment="Left"
+                     Margin="0,0,0,6" AutomationProperties.AutomationId="Web_PastedAddress"
+                     AutomationProperties.Name="{Binding Web_Tunnel_Paste, Source={x:Static strings:Strings.Instance}}"
+                     Visibility="{Binding IsPaste, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding PasteNote}" Style="{DynamicResource ExtraRowNote}" common:LiveText.Polite="True"
+                       Visibility="{Binding HasPasteNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding TunnelLine}" Style="{DynamicResource ExtraRowNote}" common:LiveText.Polite="True"
+                       AutomationProperties.AutomationId="Web_TunnelLine"/>
+
+            <!-- Address -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+                <StackPanel>
+                    <!-- The address fills the row up to its buttons, as the
+                         board draws it. -->
+                    <Grid Margin="0,10,0,0" MinHeight="44">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Web_Address_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding Address, Mode=OneWay}" VerticalAlignment="Center"
+                                 AutomationProperties.AutomationId="Web_Address"
+                                 AutomationProperties.Name="{Binding Web_Address_Label, Source={x:Static strings:Strings.Instance}}"
+                                 Visibility="{Binding HasAddress, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Web_Address_None, Source={x:Static strings:Strings.Instance}}" FontSize="13" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Visibility="{Binding HasAddress, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                        <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding CopyAddressCommand}" IsEnabled="{Binding HasAddress}" Margin="14,0,0,0"
+                                VerticalAlignment="Center" AutomationProperties.AutomationId="Web_CopyAddress"
+                                Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Grid.Column="3" Style="{DynamicResource ExtraButton}" Command="{Binding AddToClaudeCommand}" IsEnabled="{Binding HasAddress}" Margin="10,0,0,0"
+                                VerticalAlignment="Center" AutomationProperties.AutomationId="Web_AddToClaude"
+                                Content="{Binding Web_Address_AddToClaude, Source={x:Static strings:Strings.Instance}}"/>
+                    </Grid>
+                    <TextBlock Text="{Binding AddressNote}" Style="{DynamicResource ExtraRowNote}" common:LiveText.Polite="True"
+                               Visibility="{Binding HasAddressNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Accept a New Web Assistant -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0" Margin="0,10,0,0">
+                <Grid Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Web_Accept_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" Margin="0,0,14,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding AcceptLine}" FontSize="14" TextWrapping="Wrap" common:LiveText.Polite="True"
+                                   AutomationProperties.AutomationId="Web_AcceptLine"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <TextBlock Text="{Binding Web_Accept_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+                    <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding ArmCommand}" VerticalAlignment="Center"
+                            AutomationProperties.AutomationId="Web_Accept"
+                            AutomationProperties.HelpText="{Binding Web_Accept_Hint, Source={x:Static strings:Strings.Instance}}"
+                            Content="{Binding AcceptWords}"/>
+                </Grid>
+            </Border>
+
+            <!-- Allowed on the Web -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                <Grid Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Web_Allowed_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}" VerticalAlignment="Top" Margin="0,4,12,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding Web_Allowed_None, Source={x:Static strings:Strings.Instance}}" FontSize="13" Margin="0,4,0,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Visibility="{Binding HasAllowed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                        <ItemsControl ItemsSource="{Binding Allowed}" IsTabStop="False" AutomationProperties.AutomationId="Web_AllowedList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel VerticalAlignment="Center" Margin="0,0,14,0">
+                                            <TextBlock Text="{Binding Origin}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Style="{DynamicResource ExtraButton}" Command="{Binding RevokeCommand}" VerticalAlignment="Center"
+                                                AutomationProperties.AutomationId="{Binding RevokeId}"
+                                                AutomationProperties.HelpText="{Binding Origin}"
+                                                Content="{Binding Web_Allowed_Revoke, Source={x:Static strings:Strings.Instance}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- The assistant whose own tunnel runs PadForge's stdio command. -->
+            <Border BorderBrush="{DynamicResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                <Grid Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Web_ChatGpt_Label, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource DzLabel}" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Web_ChatGpt_Hint, Source={x:Static strings:Strings.Instance}}" FontSize="13" TextWrapping="Wrap"
+                               VerticalAlignment="Center" Margin="0,0,14,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <Button Grid.Column="2" Style="{DynamicResource ExtraButton}" Command="{Binding CopyCommandCommand}" VerticalAlignment="Center"
+                            AutomationProperties.AutomationId="Web_CopyCommand"
+                            AutomationProperties.HelpText="{Binding Web_ChatGpt_Hint, Source={x:Static strings:Strings.Instance}}"
+                            Content="{Binding Web_ChatGpt_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="{Binding Web_Footnote, Source={x:Static strings:Strings.Instance}}" Style="{DynamicResource ExtraSmall}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+        </StackPanel>
+    </Border>
+</UserControl>

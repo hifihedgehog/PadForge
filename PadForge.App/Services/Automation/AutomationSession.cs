@@ -87,6 +87,7 @@ namespace PadForge.Services.Automation
         {
             AutomationClientKind.Plugin => "plugin",
             AutomationClientKind.Assistant => "assistant",
+            AutomationClientKind.Web => "web",
             _ => "script",
         };
 
@@ -481,7 +482,7 @@ namespace PadForge.Services.Automation
             // no program takes a plugin's place, and an assistant is told so
             // before it takes a session's place: the copy it started then
             // says Automation is off. This is the one check of it.
-            if (kind is "script" or "mcp" && !_hub.Host.IsOn)
+            if (kind is "script" or "mcp" or "web" && !_hub.Host.IsOn)
             {
                 Answer(request.Tag, AutomationLine.Error("not-allowed", "Automation is off, and the pipe serves plugins alone"));
                 CloseAfterWritten();
@@ -512,6 +513,59 @@ namespace PadForge.Services.Automation
                     _hub.BeginConsent(this);
                     var peer = Peer();
                     _handOver = (stream, stopping) => bridge(peer, stream, stopping);
+                    Opened = true;
+                    Answer(request.Tag, HelloAnswer(), () => _handOverReady.TrySetResult(true));
+                    return;
+                }
+                case "web-helper":
+                {
+                    // The web helper PadForge started (#600 item 11), by its
+                    // one-time key from that very process. Its pipe carries
+                    // the web door's own lines, and it is no program of the
+                    // connected list.
+                    var door = PadForge.Services.Automation.Web.WebDoor.Of(_hub.Host);
+                    if (door == null || !door.AcceptHelper(request.Get("token"), Process.Id))
+                    {
+                        Answer(request.Tag, AutomationLine.Error("denied", "PadForge takes only the web helper it started"));
+                        CloseAfterWritten();
+                        return;
+                    }
+                    _handOver = (stream, stopping) => door.ServeHelperAsync(stream, stopping);
+                    _hub.Settled(this);
+                    Opened = true;
+                    Answer(request.Tag, "ok padforge=" + BuildIdentity.VersionText(BuildIdentity.Version) + " protocol=" + AutomationLine.Protocol + " web=helper",
+                        () => _handOverReady.TrySetResult(true));
+                    return;
+                }
+                case "web":
+                {
+                    // One web assistant through that helper, by the grant
+                    // the user allowed. It is named by the address its
+                    // sign-in returned to, and the name it gave is its claim.
+                    var door = PadForge.Services.Automation.Web.WebDoor.Of(_hub.Host);
+                    var grant = door?.AcceptWeb(request.Get("token"), Process.Id, request.Get("grant"));
+                    var bridge = _hub.Host.McpSession;
+                    if (grant == null || bridge == null)
+                    {
+                        Answer(request.Tag, AutomationLine.Error("denied", "no such web assistant"));
+                        CloseAfterWritten();
+                        return;
+                    }
+                    Kind = AutomationClientKind.Web;
+                    ClaimedName = ProgramDeviceDeclaration.Clean(grant.Origin, ProgramDeviceDeclaration.LongestName);
+                    IdentityName = ClaimedName;
+                    GivenName = string.IsNullOrEmpty(grant.Name) ? null : grant.Name;
+                    Who = new AllowedProgram(PadForge.Services.Automation.Web.WebDoor.WebKey(grant.Id), ClaimedName, "web", null, null, null,
+                        AutomationLevel.ChangeSettings);
+                    if (!_hub.Open(this, out string full))
+                    {
+                        Answer(request.Tag, AutomationLine.Error(full));
+                        CloseAfterWritten();
+                        return;
+                    }
+                    _hub.BeginWeb(this);
+                    var webPeer = Peer();
+                    _handOver = (stream, stopping) => bridge(webPeer, stream, stopping);
                     Opened = true;
                     Answer(request.Tag, HelloAnswer(), () => _handOverReady.TrySetResult(true));
                     return;

@@ -6764,4 +6764,69 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rows, yours over every other source for their devices.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>None yet.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>In use at once.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Reach PadForge From the Web</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>An assistant that runs on a website reaches PadForge through a tunnel program on this PC. Turning this on asks you first.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Reach PadForge from the web?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge starts a helper without administrator rights that listens on this PC only, and the tunnel program you pick gives it a public address. A web assistant gets in only after you allow its sign-in on PadForge’s question card, and it works at the level above.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Turn On</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Assistants on the Web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>None</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>An Address I Paste</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Starting, with your rights.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Running, with your rights. Its address stays the same each time it starts.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Running, with your rights. A quick tunnel takes a new address each time it starts, so the assistant would be added again.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Stopped.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Stopped. Its last words: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>It could not be started.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>It is not on this PC any more.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>No tunnel program was found on this PC. PadForge works with cloudflared, devtunnel, ngrok and Tailscale Funnel, or with your own tunnel’s address.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pick a tunnel to give PadForge a public address.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Also on this PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, whose address stays the same</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, whose quick tunnels take a new address each time</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Run your own tunnel to http://127.0.0.1:{0} and paste its https address. A named Cloudflare tunnel, a persistent dev tunnel, Tailscale Funnel and ngrok’s own domain keep their address.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Paste an https address with no path but /mcp, as your tunnel gives it.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Starting PadForge’s web helper.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge’s web helper stopped ({0}). Turn Reach PadForge From the Web off and on to start it again.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>No public address yet.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Copied.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Accept a New Web Assistant</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Start Accepting</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Stop Accepting</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Accepting until {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Not accepting. Start Accepting opens it for five minutes.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Add the address in the assistant and sign in. Each sign-in shows its own six-digit code on its sign-in page and on PadForge’s question card. Allow it only when the two codes match. At other times a sign-in is refused and nothing asks you.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Allowed on the Web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>None yet.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Its sign-in returned to {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>It calls itself {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Allowed {0}, last used {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Allowed {0}, not used yet.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoke</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Its own Secure MCP Tunnel runs PadForge directly, with no address or sign-in here. Copy the command into that tunnel’s setup.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copy Command</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge downloads no tunnel program and keeps no other company’s key. A web assistant works at the level above.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Allow {0} to work with PadForge from the web?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Its sign-in returns to {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>It calls itself {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Allow only if its sign-in page shows this code:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Its six-digit code shows on PadForge’s question card. Allow only if its sign-in page shows the same code.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>It works at {0}, through {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Its sign-in returns to this PC, and any program here could claim that address.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Sign in to PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} asks to work with PadForge on your PC.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>It calls itself {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>On your PC, PadForge’s question card asks about this sign-in. Allow it there only if the card shows this code:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>This page goes on by itself once you answer on the PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>This sign-in returns to a program on your PC, and any program there could claim that address.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge is not accepting a new web assistant now. On your PC, open PadForge, go to Extras, Automation, and under Assistants on the Web press Start Accepting. Then sign in again.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>This sign-in cannot go on. Add PadForge’s address in the assistant again and sign in.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>This sign-in has ended. Sign in again from the assistant.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows did not start it</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>it ended with code {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation is off, so no web assistant reaches PadForge. The web helper starts once Automation is on.</value></data>
 </root>

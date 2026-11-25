@@ -1911,6 +1911,96 @@ namespace PadForge.Tests
         /// ember Allow, and a show while the window is behind with Not Now
         /// and Show. Then the guided pointer's callout beside a setting of the
         /// Settings page, held by its ring.</summary>
+        /// <summary>Reach PadForge From the Web (#600 item 11): the
+        /// Assistants card's More with the switch on, the Assistants on the
+        /// Web card under it with ngrok running, the armed window, one web
+        /// assistant allowed and the row for an assistant's own tunnel, then
+        /// the question card of a web sign-in with its code. Against the
+        /// Assistants-Web and Request-Cards boards.</summary>
+        [Fact]
+        public void DrawWebAccess()
+        {
+            Run("web", drawing =>
+            {
+                const double Board = 1440 - 264;
+                var now = new DateTimeOffset(2026, 11, 24, 12, 44, 0, TimeSpan.Zero);
+                var s = PadForge.Resources.Strings.Strings.Instance;
+                using var host = new PadForge.Services.Automation.AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                    "PadForge.Tests.DrawWeb." + Guid.NewGuid().ToString("N"), _ => PadForge.Services.Automation.AutomationProgram.Unknown, () => now);
+                var store = new PadForge.Services.Automation.Web.WebAccessStore();
+                using var door = new PadForge.Services.Automation.Web.WebDoor(host, store, new WebTestLauncher { Id = 6100 },
+                    () => @"C:\PadForge\PadForge.exe", "PadForge.Tests.DrawWeb." + Guid.NewGuid().ToString("N"), () => now);
+                var view = new WebAccessViewModel(door, store, () => now)
+                {
+                    AskToTurnOn = () => true,
+                    ClipboardSeam = _ => { },
+                    OpenLinkSeam = _ => true,
+                };
+                var dash = new DashboardViewModel
+                {
+                    RemoteLink = new SettingsViewModel(),
+                    DiscoverOpenXrRuntimes = () => Array.Empty<PadForge.Engine.Common.OpenXr.OpenXrRuntimeEntry>(),
+                    AutomationExePath = @"C:\PadForge\PadForge.exe",
+                    WebAccess = view,
+                };
+                dash.HeadTrackingFreeTrack = false;
+                dash.HeadTrackingOpenXr = false;
+                dash.AttachAutomation(host, drawing.App.Dispatcher);
+                dash.AssistantInstallSeam = request => System.Threading.Tasks.Task.FromResult(new PadForge.Services.Install.InstallRun(0, null, "[]"));
+                dash.EnableAutomation = true;
+                dash.IsAutomationRunning = true;
+                dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.ChangeSettings;
+                dash.AutomationStatus = s.Automation_Status_NoPrograms;
+                var page = new ExtrasPage { DataContext = dash };
+                var ground = drawing.Ground(page);
+                drawing.Step("the Extras page is made");
+
+                // Off: the switch alone, under More.
+                var more = (Expander)page.FindName("AutomationMore");
+                drawing.Picture(ground, "web-off.png", Board, 1400, () => { page.Show("Automation"); more.IsExpanded = true; });
+
+                // On: ngrok running with its address, cloudflared also found,
+                // the armed window, claude.ai allowed.
+                view.IsOn = true;
+                door.Take(new System.Text.Json.Nodes.JsonObject { ["t"] = "port", ["port"] = 51234 });
+                door.HelperState = PadForge.Services.Automation.Web.WebHelperState.Running;
+                door.Take(new System.Text.Json.Nodes.JsonObject
+                {
+                    ["t"] = "found",
+                    ["tunnels"] = new System.Text.Json.Nodes.JsonArray(
+                        new System.Text.Json.Nodes.JsonObject { ["key"] = "ngrok", ["path"] = @"C:\Tools\ngrok.exe" },
+                        new System.Text.Json.Nodes.JsonObject { ["key"] = "cloudflared", ["path"] = @"C:\Program Files (x86)\cloudflared\cloudflared.exe" }),
+                });
+                door.PickTunnel("ngrok");
+                door.Take(new System.Text.Json.Nodes.JsonObject { ["t"] = "tunnel", ["key"] = "ngrok", ["state"] = "running", ["address"] = "https://quiet-lake-4b2c.ngrok-free.app" });
+                store.Add(new PadForge.Services.Automation.Web.WebGrant
+                {
+                    Id = "g1", Origin = "claude.ai", Name = "Claude", Allowed = now.AddMinutes(-3), LastUsed = now,
+                });
+                door.Arm();
+                view.Refresh();
+                drawing.Picture(ground, "web-on.png", Board, 2100, () => { page.Show("Automation"); more.IsExpanded = true; });
+
+                // The question card of a web sign-in.
+                AutomationRequestCard.KindOf = id => host.Approvals.KindOf(id);
+                try
+                {
+                    _ = door.AskAsync(new PadForge.Services.Automation.Web.WebSignIn("sid", "claude.ai", "Claude", "482913",
+                        "quiet-lake-4b2c.ngrok-free.app", false, "https://claude.ai/oauth/doc", "https://claude.ai/api/mcp/auth_callback",
+                        "https://quiet-lake-4b2c.ngrok-free.app/mcp"));
+                    drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(13)), "web-card-signin.png");
+                    // The same question in Waiting for You, which leaves the
+                    // code to the card.
+                    drawing.Picture(ground, "web-waiting.png", Board, 2300, () => page.Show("Automation"));
+                    foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+                }
+                finally
+                {
+                    AutomationRequestCard.KindOf = null;
+                }
+            });
+        }
+
         [Fact]
         public void DrawAssistantCardsAndPointer()
         {

@@ -686,7 +686,9 @@ namespace PadForge.Tests
             Assert.DoesNotContain("Style=\"{StaticResource MoreCardRow}\"", kept);
             Assert.Contains("Command=\"{Binding CopyAutomationJsonCommand}\"", kept);
             Assert.Contains("Command=\"{Binding CopyAutomationMessageCommand}\"", kept);
-            Assert.Contains("<ContentControl x:Name=\"AssistantsWebHost\" Focusable=\"False\"/>", kept);
+            // The slot holds Reach PadForge From the Web (#600 item 11).
+            Assert.Contains("<ContentControl x:Name=\"AssistantsWebHost\" Focusable=\"False\">", kept);
+            Assert.Contains("<views:AssistantsWebSwitch DataContext=\"{Binding WebAccess}\"/>", kept);
             Assert.Contains("<ContentControl x:Name=\"ScriptsCardHost\" Focusable=\"False\"/>", body);
             Assert.DoesNotContain("AutomationAssistantJson}", body);
             // Each card that lists something hides while it lists nothing.

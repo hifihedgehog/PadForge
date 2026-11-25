@@ -32,7 +32,10 @@ namespace PadForge.ViewModels
             Expires = pending.Expires;
             var request = pending.Request;
             Title = ShownText.Clean(request.Title ?? string.Empty);
-            From = FromLine(request.Who);
+            From = request.From != null ? ShownText.Clean(request.From) : FromLine(request.Who);
+            Code = request.Code == null ? null : PadForge.Services.Automation.Web.WebSecrets.Spaced(request.Code);
+            CodeLead = request.Code == null ? null : ShownText.Clean(request.CodeLead ?? string.Empty);
+            CodeAfter = request.Code == null ? null : ShownText.Clean(request.CodeAfter ?? string.Empty);
             var detail = new List<string>();
             if (request.Detail != null)
                 foreach (string line in request.Detail)
@@ -64,6 +67,20 @@ namespace PadForge.ViewModels
 
         /// <summary>Every line that says what would change.</summary>
         public IReadOnlyList<string> Detail { get; }
+
+        /// <summary>A web sign-in's code as the card shows it, two groups of
+        /// three digits, or null (#600 item 11). Only the request card binds
+        /// it.</summary>
+        public string Code { get; }
+
+        /// <summary>The card's line above the code.</summary>
+        public string CodeLead { get; }
+
+        /// <summary>The card's line under the code.</summary>
+        public string CodeAfter { get; }
+
+        /// <summary>Whether the card shows a code.</summary>
+        public bool HasCode => Code != null;
 
         /// <summary>The first <see cref="CardDetailLines"/> lines, for the
         /// request card.</summary>

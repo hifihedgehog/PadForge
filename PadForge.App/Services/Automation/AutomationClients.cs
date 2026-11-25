@@ -15,6 +15,11 @@ namespace PadForge.Services.Automation
 
         /// <summary>A plugin PadForge started.</summary>
         Plugin,
+
+        /// <summary>A web assistant, through the web helper PadForge
+        /// started (#600 item 11), named by the address its sign-in
+        /// returned to.</summary>
+        Web,
     }
 
     /// <summary>A program connected over the long-lived pipe.</summary>

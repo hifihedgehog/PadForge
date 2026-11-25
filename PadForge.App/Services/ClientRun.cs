@@ -89,6 +89,9 @@ namespace PadForge.Services
             public Func<string> VersionLine = () => "PadForge " + BuildIdentity.Display;
             public Func<int> ServeAssistant = AssistantMirror.Run;
 
+            /// <summary>Runs the web helper (#600 item 11).</summary>
+            public Func<int> ServeWeb = PadForge.Services.Automation.Web.WebHelper.Run;
+
             /// <summary>Runs <c>--install</c> (#600) and gives its exit
             /// code. Its words go where the run's answers go.</summary>
             public Func<Install.InstallRequest, Action<string>, Action<string>, int> Install = PadForge.Services.Install.UserInstall.RunAsTheUser;
@@ -187,6 +190,13 @@ namespace PadForge.Services
                 // The assistant's side of the door. It serves whether or not
                 // PadForge runs, and says which.
                 exitCode = seams.ServeAssistant();
+                return true;
+            }
+            if (request.Web)
+            {
+                // The web helper reaches the running copy, which takes only
+                // the one it started. With no copy running it gives 4.
+                exitCode = seams.CopyRuns() ? seams.ServeWeb() : NotRunning;
                 return true;
             }
             if (request.AssistantRun)

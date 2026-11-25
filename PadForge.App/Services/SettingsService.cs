@@ -474,6 +474,9 @@ namespace PadForge.Services
                 // an undo that puts app settings back never brings back a
                 // program the user removed.
                 Automation.AutomationConsent.Shared.Load(data.AppSettings?.AllowedPrograms);
+                // Reach PadForge From the Web and the web assistants allowed
+                // (#600 item 11), from the file alone for the same reason.
+                Automation.Web.WebAccessStore.Shared.Load(data.AppSettings?.WebAccess);
 
                 // Publish user-imported HIDMaestro profiles to the catalog
                 // so they appear in the Extended dropdown alongside the
@@ -5261,6 +5264,7 @@ namespace PadForge.Services
                 EnablePlugins = _mainVm.Dashboard.EnablePlugins,
                 Plugins = _mainVm.Dashboard.PluginRecords is { Length: > 0 } plugins ? plugins : null,
                 AllowedPrograms = Automation.AutomationConsent.Shared.Save(),
+                WebAccess = Automation.Web.WebAccessStore.Shared.Save(),
                 TestControllerOn = _mainVm.Dashboard.TestControllerOn,
                 TestControllerValues = _mainVm.Dashboard.TestControllerValues is { Length: > 0 } testValues ? testValues : null,
                 ReplayOn = _mainVm.Dashboard.ReplayOn,
@@ -7663,6 +7667,14 @@ namespace PadForge.Services
         [XmlArrayItem("Program")]
         public Automation.AllowedProgramData[] AllowedPrograms { get; set; }
         public bool ShouldSerializeAllowedPrograms() => AllowedPrograms != null && AllowedPrograms.Length > 0;
+
+        /// <summary>Reach PadForge From the Web (#600 item 11): its switch,
+        /// the tunnel picked, a pasted address, the loopback port, and the web
+        /// assistants allowed with their tokens as SHA-256 hashes only.
+        /// Written only while it holds something.</summary>
+        [XmlElement("WebAccess")]
+        public Automation.Web.WebAccessData WebAccess { get; set; }
+        public bool ShouldSerializeWebAccess() => WebAccess != null;
 
         /// <summary>The built-in Test Controller's switch (#597). Off, and
         /// left out of the file, until the user turns it on.</summary>

@@ -3614,6 +3614,7 @@ namespace PadForge
                 App.InstanceSignal?.MarkClosing();
                 // The plugins end first, while the pipe they speak on stands.
                 StopPlugins();
+                StopWebDoor();
                 _automation?.Dispose();
                 _requestCard?.Close();
                 _requestCard = null;

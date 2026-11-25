@@ -108,6 +108,10 @@ namespace PadForge.Common
             public bool Help { get; set; }
             public bool Version { get; set; }
             public bool Mcp { get; set; }
+
+            /// <summary><c>--web</c> (#600 item 11): the web helper, which
+            /// PadForge starts itself while Reach PadForge From the Web is on.</summary>
+            public bool Web { get; set; }
             public bool Wait { get; set; }
 
             /// <summary><c>--engine on</c> or <c>off</c> when given, for a copy
@@ -180,7 +184,7 @@ namespace PadForge.Common
             internal List<string> Alone { get; } = new List<string>();
 
             /// <summary>Whether anything but the update marker was given.</summary>
-            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null && !AssistantRun && !Json
+            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Web && !Wait && Install == null && !AssistantRun && !Json
                 && Summarize == null && RecordSave == null && PluginKit == null && !SettingsFolder;
 
             /// <summary>Whether a copy that finds none running can start
@@ -257,6 +261,12 @@ namespace PadForge.Common
                     case "--settings-folder":
                         if (inline != null) return Fail(r, name + " takes no value.");
                         r.SettingsFolder = true;
+                        r.Alone.Add(name);
+                        break;
+
+                    case "--web":
+                        if (inline != null) return Fail(r, name + " takes no value.");
+                        r.Web = true;
                         r.Alone.Add(name);
                         break;
 
@@ -630,6 +640,7 @@ namespace PadForge.Common
             "  --wait                    Return when PadForge exits, with its exit code\r\n" +
             "  --mcp                     Serve an assistant over standard input and output,\r\n" +
             "                            starting PadForge when a call needs it\r\n" +
+            "  --web                     The web helper, which PadForge starts itself\r\n" +
             "  --tools                   List the assistant tools with their levels\r\n" +
             "  --call <tool> [json]      Call one, with a JSON object of its arguments\r\n" +
             "  --json                    One line of JSON from --state, --tools and --call\r\n" +

@@ -50,6 +50,15 @@ namespace PadForge.Services.Automation
             ("features/touchpad/", "Touchpads"),
             ("features/settings/", "Settings"),
             ("features/driver-management/", "Drivers and HidHide"),
+            ("features/automation/", "Automation: the level, consent per program, the question card, Allowed Programs and Activity"),
+            ("features/assistants/", "Assistants: adding one, the tools, the guided pointer and assistants on the web"),
+            ("features/plugins/", "Plugins: approval, the lifecycle, declared settings, the Test Controller, Replay and the plugin kit"),
+            ("features/scripts/", "Scripts in AutoHotkey v2, Python and PowerShell: installs, control names, holds, hotkeys and a script's own controller"),
+            ("features/problem-recorder/", "Recording a problem, the review, memory dumps and sending a file privately"),
+            ("features/mouse-steering/", "Steering with a mouse, its scroll wheels, a trackball or a spinner"),
+            ("features/connection-notes/", "Connection notes, the flyouts, and a device's connection as a value"),
+            ("features/controller-database/", "How SDL reads a controller, and copying, pasting, finding and guessing its mapping"),
+            ("reference/command-line/", "Every command-line switch, the exit codes and the control pipe"),
             ("troubleshooting/", "When a game does not see a controller, and other problems"),
         };
 
@@ -65,6 +74,8 @@ namespace PadForge.Services.Automation
             ["Crosshair"] = "features/crosshair/",
             ["Magnifier"] = "features/magnifier/",
             ["TouchpadOverlay"] = "features/touchpad/",
+            ["Automation"] = "features/automation/",
+            ["Plugins"] = "features/plugins/",
         };
 
         private static readonly string[] BySection =
@@ -104,6 +115,7 @@ namespace PadForge.Services.Automation
                     LiveKind.Controller => "features/controller-slots/",
                     LiveKind.Profile => "guides/profiles/",
                     LiveKind.Macro => "guides/macros/",
+                    LiveKind.Plugin or LiveKind.PluginDeclaration => "features/plugins/",
                     _ => null,
                 };
             }

@@ -30,4 +30,13 @@ The pages people read, by what they cover. A read names the page a place comes f
 - Touchpads: https://padforge.org/docs/features/touchpad/
 - Settings: https://padforge.org/docs/features/settings/
 - Drivers and HidHide: https://padforge.org/docs/features/driver-management/
+- Automation: the level, consent per program, the question card, Allowed Programs and Activity: https://padforge.org/docs/features/automation/
+- Assistants: adding one, the tools, the guided pointer and assistants on the web: https://padforge.org/docs/features/assistants/
+- Plugins: approval, the lifecycle, declared settings, the Test Controller, Replay and the plugin kit: https://padforge.org/docs/features/plugins/
+- Scripts in AutoHotkey v2, Python and PowerShell: installs, control names, holds, hotkeys and a script's own controller: https://padforge.org/docs/features/scripts/
+- Recording a problem, the review, memory dumps and sending a file privately: https://padforge.org/docs/features/problem-recorder/
+- Steering with a mouse, its scroll wheels, a trackball or a spinner: https://padforge.org/docs/features/mouse-steering/
+- Connection notes, the flyouts, and a device's connection as a value: https://padforge.org/docs/features/connection-notes/
+- How SDL reads a controller, and copying, pasting, finding and guessing its mapping: https://padforge.org/docs/features/controller-database/
+- Every command-line switch, the exit codes and the control pipe: https://padforge.org/docs/reference/command-line/
 - When a game does not see a controller, and other problems: https://padforge.org/docs/troubleshooting/

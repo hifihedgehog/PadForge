@@ -432,7 +432,11 @@ A Switch Layer action jumps the slot to Base or to any layer you have authored, 
 
 ### Move the mouse, move the stick.
 
-Two new mapping sources, Mouse Position X and Mouse Position Y, read where the desktop cursor sits on screen. Center reads zero, and distance from center pushes the stick toward its edge. (That differs from the Mouse Speed X/Y sources, which read how fast the mouse moves.) Each row using a Mouse Position source gets its own Sensitivity, from 0.1 to 5.0. At 1.0 the stick reaches full deflection when the cursor sits 10% of the screen width from center. Raise it for less cursor travel, lower it for more. A Mouse Position source can drive a stick axis, a trigger, or a button. Primary monitor only.
+Two new mapping sources, Mouse Position X and Mouse Position Y, read where the desktop cursor sits on screen. Center reads zero, and distance from center pushes the stick toward its edge. (That differs from the Mouse Speed X/Y sources, which read how fast the mouse moves.) Each row using a Mouse Position source gets its own Sensitivity, from 0.1 to 5.0. At 1.0 the stick reaches full deflection when the cursor sits 10% of its monitor's width from center. Raise it for less cursor travel, lower it for more. A Mouse Position source can drive a stick axis, a trigger, or a button. It measures on the monitor the pointer is on, and can start from where the pointer was when steering began.
+
+### Steer with the mouse, the scroll wheel or a trackball.
+
+Mouse Travel holds a wheel where the hand leaves it, from how far the mouse moved. Wheel Travel and Wheel Travel Sideways do the same with the scroll wheel, at a fine-scrolling wheel's full precision, and an axis of a trackball or spinner marked "This axis moves relatively" does it too. Every mouse source can steer Always, While Held and Center, While Held and Stay, or by Toggle, so one mouse can steer and look around. Centering comes back by Spring, From Telemetry (shaped like a car's steering, firmer with speed) or From the Game's Force, and with the mouse's DPI set, travel reads in centimeters. In the Source picker each mouse family says what it does, and Preview shows how it follows your own mouse before anything is mapped. The [Mouse Steering](https://padforge.org/docs/features/mouse-steering/) page lists every setting.
 
 ### Flick the mouse. Fire an action.
 
@@ -667,7 +671,29 @@ Handheld gaming PCs (Legion Go, ROG Ally, GPD Win, OneXPlayer, AYANEO, AYN, Zota
 
 ### The launcher picks the profile.
 
-Turn on Allow External Control by Launchers and Scripts on the Profiles page and PadForge serves a local named pipe. Playnite, LaunchBox, or a one-line script activates a profile by name, and that profile is held, so the foreground-window watcher stands down until the script releases it or you switch profiles yourself. Local machine only, and the pipe stays closed until you open it. A profile can also carry its own polling rate, from 60 Hz to 10000 Hz, overriding the Settings polling rate while it is active.
+Turn on Automation under Extras and PadForge serves a local named pipe. Playnite, LaunchBox, or a one-line script activates a profile by name, and that profile is held, so the foreground-window watcher stands down until the script releases it or you switch profiles yourself. Local machine only, and the pipe stays closed until you open it. A profile can also carry its own polling rate, from 60 Hz to 10000 Hz, overriding the Settings polling rate while it is active.
+
+### Launchers, scripts and assistants, at the level you set.
+
+Automation is one switch under Extras, off until you turn it on, and one level that caps every program: Commands, Read, Send Inputs or Change Settings. A program that wants to read devices or more asks once, on a card that names its path and its signer and takes no focus from the game. Activity lists every call a program made this session, with Undo for its latest changes, and a mark in the title bar shows who is connected. No program needs administrator rights. The [Automation](https://padforge.org/docs/features/automation/) page has the levels and the rules.
+
+An assistant that speaks MCP reads PadForge's settings and devices, changes them at your level, and points at the place on the page in its own words while you do the clicking. The Assistants card finds the assistant programs on this PC and adds PadForge to one with a click, and Reach PadForge From the Web lets an assistant on a website in, through a tunnel program you already have, after a sign-in whose six-digit code you check on PadForge's own card. See [Assistants](https://padforge.org/docs/features/assistants/).
+
+### Plugins that add devices.
+
+A plugin is a program in any language that adds devices. PadForge starts it with your ordinary rights, runs it only for the exact file you approved, restarts it when it stops, and draws the settings it declares on its own card. The built-in Test Controller moves by itself for trying a mapping with no pad in hand, and Replay plays a problem recording back as the devices that made it. Save the Plugin Kit writes a guide and the same sample plugin in C#, Python, PowerShell and AutoHotkey. See [Plugins](https://padforge.org/docs/features/plugins/).
+
+### Scripts in AutoHotkey, Python and PowerShell.
+
+One object model in all three: a device is an object whose properties are its own controls in plain units, so `pad.A := true` holds A for the game and `pad.LeftX` reads the stick. Hotkeys take AutoHotkey's own forms, `pad.Hotkey("A", fn)` takes A from the game inside PadForge's own pass, and Tap and Sequence run on PadForge's clock. A script and PadForge start in either order and carry on through a restart, and a script can add a controller of its own that hears the game's rumble. Install on the Scripts card puts each library where its language finds it. Some online games' anti-cheat flags a player while a script drives the game, so check a game's rules first. See [Scripts](https://padforge.org/docs/features/scripts/).
+
+### Every switch on the command line.
+
+PadForge stays one copy, and a second start hands its switches to the running one: profiles, the engine, each virtual controller, the window, snapshots and recordings, with exit codes a script can test and `--json` for a machine to read. The [Command Line](https://padforge.org/docs/reference/command-line/) page lists every switch and has a PowerShell function for the pipe.
+
+### Record the problem, read it, then send it.
+
+Record a Problem in Settings keeps everything a developer needs in one zip: settings and devices, input, output, feedback, timing, the window and its errors, Automation's activity and the diagnostics lines. Names, serials and addresses are replaced before a line is written. Stop opens the recording inside PadForge, part by part, as it will be shared, with a check that none of this PC's own values got through, and Save writes it where you pick. Keep the Last 60 Seconds holds the last minute in memory for a problem that comes once an evening. While the window does not answer, the recording names what the window was doing and Windows' wait chain of its thread. The [Problem Recorder](https://padforge.org/docs/features/problem-recorder/) page also covers memory dumps and sending a file privately.
 
 ### Polling from 60 to 10,000 Hz.
 
@@ -737,6 +763,10 @@ The media row on a keyboard, a media remote, a headset's transport buttons: PadF
 
 Every wireless pad that reports a battery shows its charge on the Devices page, with a charging glyph while it tops up. Set an Idle Disconnect timer and a Bluetooth controller drops its link after a few quiet minutes, so it sleeps instead of draining on the coffee table. A Disconnect Controller macro turns one off on command, from a chord or a button.
 
+### A note when a pad drops.
+
+Turn on the connection notes in Overlays and a mapped device that disconnects puts its name on screen for four seconds, and says so when it comes back, with its battery level. A burst names every device it took, a pad that keeps dropping is said once and then left quiet for five minutes, and nothing is said at startup or across sleep. Every flyout shows on the monitor of the window in front and lets clicks through. A macro can read a device's connection as a value, and keyboard screens and the Screen Overlay can list the mapped devices that are offline. See [Connection Notes](https://padforge.org/docs/features/connection-notes/).
+
 ![A device's battery and its Settings card on the Devices page](screenshots/devices.jpg)
 
 ### Plug it in, and the radio lets go.
@@ -776,6 +806,8 @@ A Bluetooth Switch 2 controller whose link drops keeps its place, with its contr
 ### 2,687 devices by name, and the ones Windows can't read.
 
 PadForge's SDL3 build adds 286 pads from the community SDL_GameControllerDB to the pads SDL knows on its own, and it reads controllers Windows gives no usable input: Bluetooth LE pads, the iCade, serial I-Force wheels with their force feedback, DJI RC remotes, clone Xbox 360 receivers, the Ring-Con, the PS Move Sharp Shooter and Racing Wheel, Namco USIO arcade boards and more. The [Supported Devices](https://padforge.org/docs/devices/supported/) page names every one.
+
+Each device's panel shows how SDL reads it, under what name and ID, and where its mapping came from. Copy SDL Mapping writes the device's row in the community database's form, Paste SDL Mapping keeps a row as yours in PadForge.xml and applies it, Find a Mapping lends a known pad's row to a clone, and Guess a Layout starts one for a pad no database knows. Update Now in Settings downloads newer community rows into the same file. See [Controller Database](https://padforge.org/docs/features/controller-database/).
 
 ![Pair a serial controller](screenshots/serial-pair.jpg)
 
@@ -981,8 +1013,8 @@ Each profile holds its own mappings, deadzones, force feedback, lighting, and ma
 One window for a new profile from elsewhere: Starters, Community for Steam Workshop configs, and Import a File for PadForge, reWASD, DS4Windows and DSX files.
 
 ### External profile control
-![Allow External Control by Launchers and Scripts on the Profiles page](screenshots/profiles-external-control.jpg)
-A local named pipe lets Playnite, LaunchBox, or a script activate a profile and hold it until the script releases it or you switch profiles yourself. Off until you turn it on.
+![The External Control card on the Profiles page, with Open Automation](screenshots/profiles-external-control.jpg)
+A local named pipe lets Playnite, LaunchBox, or a script activate a profile and hold it until the script releases it or you switch profiles yourself. It is Automation's, under Extras, and off until you turn it on. The External Control card says what Automation allows, with Open Automation.
 
 ### Per-profile polling rate
 ![The polling rate picker in the profile dialog](screenshots/profile-polling-override.jpg)

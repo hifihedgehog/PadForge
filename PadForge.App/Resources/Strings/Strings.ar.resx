@@ -5931,7 +5931,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>نُزّل {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>ملف PadForge الخاص</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>لك، أُضيف {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>المتغير SDL_GAMECONTROLLERCONFIG، الذي يقدّمه SDL على أي صف تضيفه</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>نسخ تعيين SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>يضع تعيين الجهاز في الحافظة كصف من قاعدة بيانات المجتمع، تحت معرّف الجهاز مع تصفير المجموع الاختباري والإصدار.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>لصق تعيين SDL…</value></data>
@@ -5969,7 +5968,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>عُيّن من جديد من تخطيط SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>قيد الاستخدام الآن. الصف لك ويتقدم لهذا الجهاز.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>حُفظ كصف لك. يُستخدم متى عمل المحرك واتصل الجهاز.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>حُفظ كصف لك، لكن المتغير SDL_GAMECONTROLLERCONFIG يحمل صفا لهذا الجهاز، ويقدّمه SDL على صفك.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>لم يقبل SDL الصف. لم يتغير شيء لهذا الجهاز.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>لصق تعيين SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>لصق تعيين SDL لـ {0}</value></data>

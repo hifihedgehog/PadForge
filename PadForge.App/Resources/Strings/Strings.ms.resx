@@ -5919,7 +5919,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Dimuat turun {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fail PadForge sendiri</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Milik anda, ditambah {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Pemboleh ubah SDL_GAMECONTROLLERCONFIG, yang SDL pegang di atas sebarang baris yang anda tambah</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Salin Pemetaan SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Meletakkan pemetaan peranti pada papan keratan sebagai baris pangkalan data komuniti, di bawah ID peranti dengan checksum dan versinya dijadikan sifar.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Tampal Pemetaan SDL…</value></data>
@@ -5957,7 +5956,6 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Dipetakan semula daripada susun atur SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Digunakan sekarang. Baris itu milik anda dan diutamakan untuk peranti ini.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Disimpan sebagai milik anda. Ia digunakan setelah enjin berjalan dan peranti bersambung.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Disimpan sebagai milik anda, tetapi pemboleh ubah SDL_GAMECONTROLLERCONFIG memegang satu baris untuk peranti ini, yang SDL utamakan daripada baris anda.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tidak menerima baris itu. Tiada apa berubah untuk peranti ini.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Tampal Pemetaan SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Tampal Pemetaan SDL untuk {0}</value></data>

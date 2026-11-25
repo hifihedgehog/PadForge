@@ -5930,7 +5930,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Baixada el {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>El fitxer propi de PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Teva, afegida el {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>La variable SDL_GAMECONTROLLERCONFIG, que SDL manté per sobre de qualsevol fila que afegeixis</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Copia l'assignació SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Posa l'assignació del dispositiu al porta-retalls com a fila de la base de dades de la comunitat, sota l'ID del dispositiu amb la suma de verificació i la versió a zero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Enganxa una assignació SDL…</value></data>
@@ -5968,7 +5967,6 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Tornat a assignar a partir de la disposició de SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>En ús ara. La fila és teva i preval per a aquest dispositiu.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Conservada com a teva. S'usa quan el motor s'executa i el dispositiu és connectat.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Conservada com a teva, però la variable SDL_GAMECONTROLLERCONFIG té una fila per a aquest dispositiu, que SDL conserva per sobre de la teva.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL no ha pres la fila. No ha canviat res per a aquest dispositiu.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Enganxa una assignació SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Enganxa una assignació SDL per a {0}</value></data>

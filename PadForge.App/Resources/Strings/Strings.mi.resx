@@ -2493,7 +2493,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>I tikiakehia {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Te kōnae ake o PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Nāu, i tāpiria {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Te taurangi SDL_GAMECONTROLLERCONFIG, ka puritia e SDL i runga ake i ngā rārangi ka tāpirihia e koe</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Tāruatia te Mahere SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ka waiho i te mahere o te pūrere ki te papatopenga hei rārangi o te pātengi raraunga hapori, i raro i te ID o te pūrere, kua tautuhia ki te 0 tōna checksum me tōna putanga.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Whakapirihia he Mahere SDL…</value></data>
@@ -2531,7 +2530,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kua maheretia anō mai i te whakatakotoranga a SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Kei te whakamahia ināianei. Nāu te rārangi, ā, ko ia te mātāmua mō tēnei pūrere.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kua puritia hei mea nāu. Ka whakamahia ina rere te pūkaha, ā, ka hono te pūrere.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kua puritia hei mea nāu, engari kei te taurangi SDL_GAMECONTROLLERCONFIG tētahi rārangi mō tēnei pūrere, ā, ka puritia e SDL i runga ake i tōu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Kāore a SDL i tango i te rārangi. Kāore he mea i huri mō tēnei pūrere.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Whakapirihia he Mahere SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Whakapirihia he Mahere SDL mō {0}</value></data>

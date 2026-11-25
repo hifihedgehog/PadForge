@@ -19,7 +19,10 @@ namespace PadForge.Common.Input
     /// replaces the one held for its ID only at the same or a higher
     /// priority (SDL_PrivateAddMappingForGUID). So the order rows are added
     /// in decides which one stands among PadForge's own additions, and no
-    /// addition of PadForge's displaces a USER row.</para>
+    /// addition of PadForge's displaces a USER row. PadForge's engine never
+    /// has the variable: it runs only with rights, and a start with rights
+    /// keeps the allow list's variables alone (RightsVariables,
+    /// ProtectedStart).</para>
     ///
     /// <para>A changed row is for an ID the fork's community copy holds, and
     /// replaces that copy. A new row is for an ID this release has no
@@ -104,6 +107,75 @@ namespace PadForge.Common.Input
             }
             rows.AddRange(ownRows);
             return rows;
+        }
+
+        /// <summary>
+        /// The row of the user's that SDL is to be given under a device's own
+        /// ID (#600 items 47 and 49), or null. SDL tries a device's exact
+        /// version and checksum first (SDL_PrivateGetGamepadMappingForGUID),
+        /// so a row of SDL's that names them stands over a row of the model
+        /// that names neither, as Add Rows keeps rows. Where SDL reads the
+        /// device through a mapping with other bindings than the user's row
+        /// for it (<paramref name="sdlMapping"/>, null for none), the row goes
+        /// to SDL once more under the device's own ID, as Paste gives one,
+        /// which SDL finds at that first try. A device with a row of the
+        /// user's under its own ID needs none.
+        /// </summary>
+        internal static string CopyFor(string deviceGuid, ControllerDatabaseMine mine, string sdlMapping)
+        {
+            if (string.IsNullOrEmpty(deviceGuid) || mine == null) return null;
+            var row = mine.ForSdlDevice(deviceGuid);
+            if (row == null || row.ForPadForgeDevice || string.Equals(row.Id, deviceGuid, StringComparison.OrdinalIgnoreCase)) return null;
+            if (string.Equals(ControllerDatabaseSource.LayoutOf(sdlMapping), ControllerDatabaseSource.StoredLayout(row), StringComparison.Ordinal))
+                return null;
+            return row.Row.TextUnder(deviceGuid.ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// What a row of the user's under a device's own ID takes the place
+        /// of, for Paste to keep: the mapping SDL read the device through
+        /// before any row of the user's. <paramref name="sdlMapping"/> is the
+        /// one SDL reads it through now, empty for none. Under a copy of the
+        /// user's row for its model (<paramref name="copied"/>), it is what SDL
+        /// held under the device's ID before the first copy
+        /// (<paramref name="beforeCopy"/>, null for none). Through the user's
+        /// row for its model (<paramref name="model"/>, in the same bindings),
+        /// it is what SDL held for that row's ID before it, null while that
+        /// is not known. Where SDL had nothing for the device before a row of
+        /// the user's that went (<paramref name="hadNone"/>), SDL still answers
+        /// that row, and there was none. Otherwise no row of the user's is
+        /// read, and SDL's mapping is the one. So Remove Mine gives back the
+        /// row SDL had, whichever of the user's rows goes first.
+        /// </summary>
+        internal static string ReadBefore(string sdlMapping, ControllerDatabaseMineRow model, bool copied, string beforeCopy, bool hadNone)
+        {
+            if (copied) return beforeCopy ?? string.Empty;
+            if (model != null && !string.IsNullOrEmpty(sdlMapping)
+                && string.Equals(ControllerDatabaseSource.LayoutOf(sdlMapping), ControllerDatabaseSource.StoredLayout(model), StringComparison.Ordinal))
+                return model.OldRow;
+            if (hadNone) return string.Empty;
+            return sdlMapping ?? string.Empty;
+        }
+
+        /// <summary>A mapping SDL held, to give it back under the ID of the
+        /// row or device it takes the place of, so SDL puts it on the same
+        /// entry. Under an ID with no name checksum it keeps no checksum
+        /// field: SDL reads a field's checksum into such an ID, which would
+        /// put the mapping on another entry, and an ID with a checksum has SDL
+        /// replace the field with its own (SDL_PrivateAddMappingForGUID). SDL
+        /// takes the text through its turn to positional buttons again, so it
+        /// goes as <see cref="ControllerDatabaseSource.ForSdlAgain"/> makes
+        /// it. A text with no comma is no row and stays as it is.</summary>
+        internal static string Under(string id, string mapping)
+        {
+            int comma = mapping.IndexOf(',');
+            if (comma < 0) return mapping;
+            if (SdlMappingRow.ChecksumOf(id) != 0) return ControllerDatabaseSource.ForSdlAgain(id + mapping.Substring(comma));
+            var parts = new List<string>(mapping.Split(','));
+            parts[0] = id;
+            for (int i = parts.Count - 1; i >= 2; i--)
+                if (parts[i].StartsWith("crc:", StringComparison.Ordinal)) parts.RemoveAt(i);
+            return ControllerDatabaseSource.ForSdlAgain(string.Join(",", parts));
         }
 
         /// <summary>What SDL said of a joystick it lists, before PadForge

@@ -5886,7 +5886,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} ರಂದು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ನ ಸ್ವಂತ ಫೈಲ್</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>ನಿಮ್ಮದು, {0} ರಂದು ಸೇರಿಸಲಾಗಿದೆ</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG ವೇರಿಯಬಲ್, ಇದನ್ನು SDL ನೀವು ಸೇರಿಸುವ ಯಾವುದೇ ಸಾಲಿಗಿಂತ ಮೇಲೆ ಇರಿಸುತ್ತದೆ</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL ಮ್ಯಾಪಿಂಗ್ ನಕಲಿಸಿ</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>ಸಾಧನದ ಮ್ಯಾಪಿಂಗ್ ಅನ್ನು ಸಮುದಾಯ ಡೇಟಾಬೇಸ್‌ನ ಒಂದು ಸಾಲಾಗಿ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ಇಡುತ್ತದೆ, ಸಾಧನದ ID ಅಡಿಯಲ್ಲಿ, ಅದರ ಚೆಕ್‌ಸಮ್ ಮತ್ತು ಆವೃತ್ತಿಯನ್ನು ಸೊನ್ನೆ ಮಾಡಿ.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL ಮ್ಯಾಪಿಂಗ್ ಅಂಟಿಸಿ…</value></data>
@@ -5924,7 +5923,6 @@ PadForge ಅವುಗಳನ್ನು ಈಗ ಅನ್‌ಇನ್‌ಸ್ಟಾ
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL ನ ಲೇಔಟ್‌ನಿಂದ ಮತ್ತೆ ಮ್ಯಾಪ್ ಮಾಡಲಾಗಿದೆ: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ಈಗ ಬಳಕೆಯಲ್ಲಿದೆ. ಸಾಲು ನಿಮ್ಮದು, ಮತ್ತು ಈ ಸಾಧನಕ್ಕೆ ಅದನ್ನೇ ಬಳಸಲಾಗುತ್ತದೆ.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>ನಿಮ್ಮದಾಗಿ ಇರಿಸಲಾಗಿದೆ. ಎಂಜಿನ್ ಚಲಿಸಿ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡ ಮೇಲೆ ಬಳಕೆಯಲ್ಲಿರುತ್ತದೆ.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>ನಿಮ್ಮದಾಗಿ ಇರಿಸಲಾಗಿದೆ, ಆದರೆ SDL_GAMECONTROLLERCONFIG ವೇರಿಯಬಲ್ ಈ ಸಾಧನಕ್ಕೆ ಒಂದು ಸಾಲನ್ನು ಹೊಂದಿದೆ, ಅದನ್ನು SDL ನಿಮ್ಮದಕ್ಕಿಂತ ಮೇಲೆ ಇರಿಸುತ್ತದೆ.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ಸಾಲನ್ನು ತೆಗೆದುಕೊಳ್ಳಲಿಲ್ಲ. ಈ ಸಾಧನಕ್ಕೆ ಏನೂ ಬದಲಾಗಿಲ್ಲ.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL ಮ್ಯಾಪಿಂಗ್ ಅಂಟಿಸಿ</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} ಗಾಗಿ SDL ಮ್ಯಾಪಿಂಗ್ ಅಂಟಿಸಿ</value></data>

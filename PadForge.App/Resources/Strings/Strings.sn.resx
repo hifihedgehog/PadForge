@@ -1841,7 +1841,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Yakadhawunirodhwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faira ye-PadForge pachayo</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Yako, yakawedzerwa {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variable ye-SDL_GAMECONTROLLERCONFIG, iyo SDL inoisa pamusoro pemutsara upi zvawo waunowedzera</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopa SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Inoisa mepu yemudziyo pa-clipboard semutsara wedhatabhesi yenharaunda, pasi pe-ID yemudziyo, checksum nevhezheni zvakaiswa pa0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Namira SDL Mapping…</value></data>
@@ -1879,7 +1878,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Zvamepwa zvakare kubva pamarongerwo e-SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Iri kushandiswa izvozvi. Mutsara ndewako uye ndiwo unoshandiswa pamudziyo uyu.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wachengetwa seyako. Unoshandiswa kana injini ichimhanya uye mudziyo wakabatana.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Wachengetwa seyako, asi variable ye-SDL_GAMECONTROLLERCONFIG ine mutsara wemudziyo uyu, uyo SDL inochengeta pamusoro pewako.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL haina kugamuchira mutsara. Hapana chachinja pamudziyo uyu.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Namira SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Namira SDL Mapping ye-{0}</value></data>

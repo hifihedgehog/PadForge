@@ -6604,7 +6604,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Преземено {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Сопствената датотека на PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ваш, додаден {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Променливата SDL_GAMECONTROLLERCONFIG, што SDL ја држи над секој ред што го додавате</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Копирај SDL мапирање</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Го става мапирањето на уредот на клипбордот како ред од базата на заедницата, под ID на уредот со нулирани контролен збир и верзија.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Залепи SDL мапирање…</value></data>
@@ -6642,7 +6641,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Повторно мапирано од распоредот на SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Во употреба сега. Редот е ваш и има предност за овој уред.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Чуван како ваш. Во употреба е штом моторот работи и уредот е поврзан.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Чуван како ваш, но променливата SDL_GAMECONTROLLERCONFIG држи ред за овој уред, што SDL го чува над вашиот.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL не го прими редот. Ништо не се промени за овој уред.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Залепете SDL мапирање</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Залепете SDL мапирање за {0}</value></data>

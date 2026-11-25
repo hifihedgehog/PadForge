@@ -5883,7 +5883,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ներբեռնված՝ {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ի սեփական ֆայլը</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ձերը՝ ավելացվել է {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG փոփոխականը, որը SDL-ը պահում է ձեր ավելացրած ցանկացած տողից վեր</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Պատճենել SDL կապակցումը</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Դնում է սարքի կապակցումը փոխանակման բուֆերում՝ որպես համայնքի տվյալների բազայի տող, սարքի ID-ով, ստուգիչ գումարը և տարբերակը զրոյացված։</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Տեղադրել SDL կապակցումը…</value></data>
@@ -5921,7 +5920,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Նորից կապակցվեց SDL-ի դասավորությունից՝ {0}։</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Այժմ օգտագործվում է։ Տողը ձերն է և գերակայում է այս սարքի համար։</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Պահվեց որպես ձերը։ Այն օգտագործվում է, երբ մեխանիզմը աշխատում է և սարքը միացված է։</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Պահվեց որպես ձերը, բայց SDL_GAMECONTROLLERCONFIG փոփոխականը այս սարքի համար տող ունի, որը SDL-ը պահում է ձերից վեր։</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-ը չընդունեց տողը։ Այս սարքի համար ոչինչ չփոխվեց։</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Տեղադրել SDL կապակցում</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Տեղադրել SDL կապակցում՝ {0}</value></data>

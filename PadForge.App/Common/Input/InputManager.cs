@@ -1199,6 +1199,11 @@ namespace PadForge.Common.Input
                 catch { }
                 Engine.SdlDiagLog.Install();
 
+                // SDL starts with only the rows PadForge gives it this start,
+                // so a joystick read raw since a row of the user's went is read
+                // as SDL maps it again (#600).
+                ControllerDatabaseEngine.SdlStarting();
+
                 // SDL3: SDL_Init returns bool (true = success), and
                 // SDL_INIT_GAMECONTROLLER is renamed to SDL_INIT_GAMEPAD.
                 // Keyboards and mice do not need SDL_INIT_VIDEO: RawInputListener enumerates and reads both.

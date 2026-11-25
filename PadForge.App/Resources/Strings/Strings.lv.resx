@@ -6604,7 +6604,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lejupielādēts {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge paša fails</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Jūsu, pievienots {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Mainīgais SDL_GAMECONTROLLERCONFIG, ko SDL tur augstāk par jebkuru jūsu pievienoto rindu</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopēt SDL piesaisti</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ievieto ierīces piesaisti starpliktuvē kā kopienas datubāzes rindu zem ierīces ID ar kontrolsummu un versiju, kas ir nulle.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Ielīmēt SDL piesaisti…</value></data>
@@ -6642,7 +6641,6 @@ Vai vēlaties, lai PadForge tos tagad atinstalē? Tam nepieciešamas paaugstinā
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Piesaistīts vēlreiz no SDL izkārtojuma: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Tagad izmantots. Rinda ir jūsu un šai ierīcei ir noteicošā.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Paturēts kā jūsu. To izmanto, kad dzinējs darbojas un ierīce ir pievienota.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Paturēts kā jūsu, bet mainīgais SDL_GAMECONTROLLERCONFIG satur rindu šai ierīcei, ko SDL tur augstāk par jūsējo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL neņēma rindu. Šai ierīcei nekas nemainījās.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Ielīmēt SDL piesaisti</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Ielīmēt SDL piesaisti ierīcei {0}</value></data>

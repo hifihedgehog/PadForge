@@ -1857,7 +1857,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Zotsitsidwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fayilo ya PadForge yokha</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Wanu, woonjezedwa {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variable ya SDL_GAMECONTROLLERCONFIG, yomwe SDL imaika pamwamba pa mzere uliwonse womwe mwaonjeza</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Koperani Mapu a SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Imaika mapu a chipangizo pa clipboard ngati mzere wa nkhokwe ya anthu onse, pansi pa ID ya chipangizo, checksum yake ndi mtundu wake zitaikidwa ziro.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Matani Mapu a SDL…</value></data>
@@ -1895,7 +1894,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Zapangidwanso mapu kuchokera ku kapangidwe ka SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ukugwiritsidwa ntchito tsopano. Mzere ndi wanu ndipo umatsogola pa chipangizo ichi.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wasungidwa ngati wanu. Umagwiritsidwa ntchito injini ikayamba kuyenda ndipo chipangizo chikalumikizidwa.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Wasungidwa ngati wanu, koma variable ya SDL_GAMECONTROLLERCONFIG ili ndi mzere wa chipangizo ichi, womwe SDL imasunga pamwamba pa wanu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL sinalandire mzere. Palibe chomwe chasintha pa chipangizo ichi.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Matani Mapu a SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Matani Mapu a SDL a {0}</value></data>

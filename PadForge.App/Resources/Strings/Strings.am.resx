@@ -5893,7 +5893,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>የወረደ፦ {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>የPadForge የራሱ ፋይል</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>የእርስዎ፣ የታከለው፦ {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG ተለዋዋጭ፣ SDL ከሚያክሉት ማንኛውም ረድፍ በላይ የሚያስቀድመው</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL ማዛመጃ ቅዳ</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>የመሣሪያውን ማዛመጃ እንደ የማኅበረሰብ ውሂብ ጎታ ረድፍ፣ በመሣሪያው መለያ ስር ቼክሰሙ እና ስሪቱ ዜሮ ተደርገው፣ ወደ ቅንጥብ ሰሌዳ ያስቀምጣል።</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL ማዛመጃ ለጥፍ…</value></data>
@@ -5931,7 +5930,6 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>ከSDL አቀማመጥ እንደገና ተዛምዷል፦ {0}።</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>አሁን ጥቅም ላይ ነው። ረድፉ የእርስዎ ነው፣ ለዚህ መሣሪያም ቅድሚያ ያገኛል።</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>እንደ እርስዎ ተቀምጧል። ሞተሩ ሲሄድ እና መሣሪያው ሲገናኝ ጥቅም ላይ ይውላል።</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>እንደ እርስዎ ተቀምጧል፣ ነገር ግን የSDL_GAMECONTROLLERCONFIG ተለዋዋጭ ለዚህ መሣሪያ ረድፍ ይዟል፣ SDL ደግሞ ያንን ከእርስዎ በላይ ያስቀድማል።</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ረድፉን አልተቀበለም። ለዚህ መሣሪያ ምንም አልተቀየረም።</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL ማዛመጃ ለጥፍ</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>ለ{0} SDL ማዛመጃ ለጥፍ</value></data>

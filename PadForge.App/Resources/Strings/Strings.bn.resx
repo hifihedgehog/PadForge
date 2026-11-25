@@ -6604,7 +6604,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ডাউনলোড {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-এর নিজের ফাইল</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>আপনার, যোগ করা {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG ভেরিয়েবল, যাকে SDL আপনার যোগ করা যেকোনো সারির ওপরে রাখে</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL ম্যাপিং কপি করুন</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>ডিভাইসের ম্যাপিং কমিউনিটি ডেটাবেসের একটি সারি হিসেবে ক্লিপবোর্ডে রাখে, ডিভাইসের আইডি-র নিচে, চেকসাম ও সংস্করণ শূন্য করে।</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL ম্যাপিং পেস্ট করুন…</value></data>
@@ -6642,7 +6641,6 @@ PadForge কি এখনই সেগুলো আনইনস্টল কর�
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-এর বিন্যাস থেকে আবার ম্যাপ হয়েছে: {0}।</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>এখন ব্যবহার হচ্ছে। সারিটি আপনার এবং এই ডিভাইসে এটিই চলে।</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>আপনার সারি হিসেবে রাখা হয়েছে। ইঞ্জিন চললে ও ডিভাইস সংযুক্ত থাকলে এটি ব্যবহার হবে।</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>আপনার সারি হিসেবে রাখা হয়েছে, কিন্তু SDL_GAMECONTROLLERCONFIG ভেরিয়েবলে এই ডিভাইসের একটি সারি আছে, যা SDL আপনারটির ওপরে রাখে।</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL সারিটি নেয়নি। এই ডিভাইসে কিছুই বদলায়নি।</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>একটি SDL ম্যাপিং পেস্ট করুন</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0}-এর জন্য একটি SDL ম্যাপিং পেস্ট করুন</value></data>

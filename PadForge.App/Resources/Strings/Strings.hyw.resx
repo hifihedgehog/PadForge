@@ -5875,7 +5875,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ներբեռնուած՝ {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ի սեփական ֆայլը</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ձերը, աւելցուած՝ {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG փոփոխականը, զոր SDL-ը կը դասէ ձեր աւելցուցած ամէն տողէն վեր</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Պատճէնել SDL համապատասխանեցումը</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Սարքին համապատասխանեցումը սեղմատախտակին վրայ կը դնէ իբրեւ համայնքի շտեմարանի տող, սարքին նոյնացուցիչով, որուն ստուգիչ գումարն ու տարբերակը զրոյացուած են։</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Փակցնել SDL համապատասխանեցում…</value></data>
@@ -5913,7 +5912,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Կրկին համապատասխանեցուեցաւ SDL-ի դասաւորութենէն՝ {0}։</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Հիմա գործածութեան մէջ է։ Տողը ձերն է եւ այս սարքին համար կը գերակայէ։</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Պահուեցաւ իբրեւ ձերը։ Ան գործածութեան մէջ կ՚ըլլայ, երբ շարժիչը աշխատի եւ սարքը միացած ըլլայ։</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Պահուեցաւ իբրեւ ձերը, սակայն SDL_GAMECONTROLLERCONFIG փոփոխականը այս սարքին համար տող մը կը պարունակէ, զոր SDL-ը կը նախընտրէ ձերինէն։</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-ը չընդունեց տողը։ Այս սարքին համար ոչինչ փոխուեցաւ։</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Փակցնել SDL համապատասխանեցում</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Փակցնել SDL համապատասխանեցում {0}-ի համար</value></data>

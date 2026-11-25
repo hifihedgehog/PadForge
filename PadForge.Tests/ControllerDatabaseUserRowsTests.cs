@@ -47,7 +47,7 @@ namespace PadForge.Tests
             SettingsManager.ControllerDatabase = _savedSection;
             ControllerDatabaseMine.Current = _savedMine;
             SettingsManager.XboxSlotOrder = _savedXboxOrder;
-            ControllerDatabaseEngine.SetReadsRaw(PadSdlGuid, false);
+            ControllerDatabaseEngine.SdlStarting();
         }
 
         private sealed class Harness : IDisposable
@@ -312,6 +312,7 @@ namespace PadForge.Tests
         public void TheRawList_ReadsEveryDeviceTheRemovedRowMapped()
         {
             const string modelRow = "050000004c050000e60c000000006800";
+            ControllerDatabaseMine.Current = ControllerDatabaseMine.Empty;
             ControllerDatabaseEngine.SetReadsRaw(modelRow, true);
             Assert.True(ControllerDatabaseEngine.ReadsRaw(PadSdlGuid));
             Assert.False(ControllerDatabaseEngine.ReadsRaw("030057564c050000e60c000000006800"));

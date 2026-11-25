@@ -6581,7 +6581,6 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Scaricata il {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Il file di PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Tua, aggiunta il {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>La variabile SDL_GAMECONTROLLERCONFIG, che SDL tiene sopra ogni riga che aggiungi</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Copia mappatura SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Mette la mappatura del dispositivo negli appunti come riga del database della community, sotto l'ID del dispositivo con checksum e versione azzerati.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Incolla mappatura SDL…</value></data>
@@ -6619,7 +6618,6 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mappato di nuovo dalla disposizione di SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>In uso ora. La riga è tua e prevale per questo dispositivo.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Conservata come tua. Sarà in uso quando il motore è in esecuzione e il dispositivo è connesso.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Conservata come tua, ma la variabile SDL_GAMECONTROLLERCONFIG contiene una riga per questo dispositivo, che SDL tiene sopra la tua.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL non ha accettato la riga. Per questo dispositivo non è cambiato nulla.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Incolla una mappatura SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Incolla una mappatura SDL per {0}</value></data>

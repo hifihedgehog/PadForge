@@ -6604,7 +6604,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Preneseno {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Lastna datoteka programa PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Vaša, dodana {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Spremenljivka SDL_GAMECONTROLLERCONFIG, ki jo SDL drži nad vsako vrstico, ki jo dodate</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiraj preslikavo SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Da preslikavo naprave na odložišče kot vrstico skupnostne zbirke, pod ID-jem naprave z ničelno kontrolno vsoto in različico.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Prilepi preslikavo SDL …</value></data>
@@ -6642,7 +6641,6 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Znova preslikano iz razporeditve SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Zdaj v uporabi. Vrstica je vaša in za to napravo prevlada.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Obdržano kot vaša. V uporabi je, ko mehanizem deluje in je naprava povezana.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Obdržano kot vaša, vendar spremenljivka SDL_GAMECONTROLLERCONFIG vsebuje vrstico za to napravo, ki jo SDL drži nad vašo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL vrstice ni sprejel. Za to napravo se ni spremenilo nič.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Prilepi preslikavo SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Prilepi preslikavo SDL za: {0}</value></data>

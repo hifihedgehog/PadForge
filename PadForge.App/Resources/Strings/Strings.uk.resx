@@ -5919,7 +5919,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Завантажено {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Власний файл PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ваш, додано {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Змінна SDL_GAMECONTROLLERCONFIG, яку SDL ставить вище за будь-який доданий вами рядок</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Копіювати зіставлення SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Кладе зіставлення пристрою в буфер обміну як рядок бази даних спільноти, під ID пристрою з обнуленими контрольною сумою та версією.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Вставити зіставлення SDL…</value></data>
@@ -5957,7 +5956,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Зіставлено знову за розкладкою SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Використовується зараз. Рядок ваш і має пріоритет для цього пристрою.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Збережено як ваш. Він використовується, коли рушій працює й пристрій підключено.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Збережено як ваш, але змінна SDL_GAMECONTROLLERCONFIG містить рядок для цього пристрою, який SDL ставить вище за ваш.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL не прийняв рядок. Для цього пристрою нічого не змінилося.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Вставлення зіставлення SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Вставлення зіставлення SDL для {0}</value></data>

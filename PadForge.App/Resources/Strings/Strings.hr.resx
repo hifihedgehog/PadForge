@@ -5922,7 +5922,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Preuzeto {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Vlastita datoteka programa PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Vaše, dodano {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Varijabla SDL_GAMECONTROLLERCONFIG, koju SDL drži iznad svakog retka koji dodate</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiraj SDL mapiranje</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Stavlja mapiranje uređaja u međuspremnik kao redak baze zajednice, pod ID-jem uređaja, s kontrolnim zbrojem i verzijom postavljenima na nulu.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Zalijepi SDL mapiranje…</value></data>
@@ -5960,7 +5959,6 @@ Kopija prethodne verzije nalazi se u ovoj mapi: {1}</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Ponovno mapirano iz SDL-ova rasporeda: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Sada u upotrebi. Redak je vaš i za ovaj uređaj ima prednost.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Zadržano kao vaše. U upotrebi je kad mehanizam radi i uređaj je povezan.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Zadržano kao vaše, ali varijabla SDL_GAMECONTROLLERCONFIG sadrži redak za ovaj uređaj, koji SDL drži iznad vašeg.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nije prihvatio redak. Za ovaj uređaj ništa se nije promijenilo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Zalijepi SDL mapiranje</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Zalijepi SDL mapiranje za {0}</value></data>

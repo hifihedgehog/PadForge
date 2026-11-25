@@ -5918,7 +5918,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>បានទាញយក {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>ឯកសារផ្ទាល់របស់ PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>របស់អ្នក បានបន្ថែម {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>អថេរ SDL_GAMECONTROLLERCONFIG ដែល SDL ដាក់ពីលើជួរណាមួយដែលអ្នកបន្ថែម</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>ចម្លងការម៉ាប SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>ដាក់ការម៉ាបរបស់ឧបករណ៍ទៅក្ដារតម្បៀតខ្ទាស់ ជាជួរនៃមូលដ្ឋានទិន្នន័យរបស់សហគមន៍ ក្រោម ID របស់ឧបករណ៍ ដោយ checksum និងកំណែត្រូវបានកំណត់ជាសូន្យ។</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>បិទភ្ជាប់ការម៉ាប SDL…</value></data>
@@ -5956,7 +5955,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>បានម៉ាបម្ដងទៀតពីប្លង់របស់ SDL៖ {0}។</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>កំពុងប្រើឥឡូវ។ ជួរនេះជារបស់អ្នក ហើយមានអាទិភាពសម្រាប់ឧបករណ៍នេះ។</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>បានរក្សាទុកជារបស់អ្នក។ វានឹងត្រូវបានប្រើ នៅពេលម៉ាស៊ីនដំណើរការ ហើយឧបករណ៍បានភ្ជាប់។</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>បានរក្សាទុកជារបស់អ្នក ប៉ុន្តែអថេរ SDL_GAMECONTROLLERCONFIG មានជួរសម្រាប់ឧបករណ៍នេះ ដែល SDL ដាក់ពីលើជួររបស់អ្នក។</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL មិនបានទទួលយកជួរនេះទេ។ គ្មានអ្វីផ្លាស់ប្ដូរសម្រាប់ឧបករណ៍នេះទេ។</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>បិទភ្ជាប់ការម៉ាប SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>បិទភ្ជាប់ការម៉ាប SDL សម្រាប់ {0}</value></data>

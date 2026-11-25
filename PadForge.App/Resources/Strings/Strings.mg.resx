@@ -2648,7 +2648,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Nalaina tamin'ny {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ny rakitra an'ny PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Anao, nampiana tamin'ny {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ny variable SDL_GAMECONTROLLERCONFIG, izay tazonin'ny SDL ambonin'ny andalana rehetra ampianao</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Adikao ny Mapping SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Mametraka ny mapping an'ny fitaovana ao amin'ny clipboard ho andalana amin'ny tahiry fiarahamonina, eo ambanin'ny ID an'ny fitaovana, ary atao aotra ny checksum sy ny version.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Apetaho ny Mapping SDL…</value></data>
@@ -2686,7 +2685,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Natao mapping indray avy amin'ny fandaharan'ny SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ampiasaina izao. Anao ny andalana ary izy no mandresy ho an'ity fitaovana ity.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Voatahiry ho anao. Ampiasaina izy rehefa mandeha ny motera ary mifandray ny fitaovana.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Voatahiry ho anao, saingy misy andalana ho an'ity fitaovana ity ao amin'ny variable SDL_GAMECONTROLLERCONFIG, izay tazonin'ny SDL ambonin'ny anao.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Tsy noraisin'ny SDL ny andalana. Tsy nisy niova ho an'ity fitaovana ity.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Apetaho Mapping SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Apetaho Mapping SDL ho an'ny {0}</value></data>

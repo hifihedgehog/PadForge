@@ -6604,7 +6604,6 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Pobrane {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Własny plik programu PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Twój, dodany {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Zmienna SDL_GAMECONTROLLERCONFIG, którą SDL trzyma ponad każdym dodanym przez ciebie wierszem</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiuj mapowanie SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Wkłada mapowanie urządzenia do schowka jako wiersz bazy społeczności, pod ID urządzenia z sumą kontrolną i wersją wyzerowanymi.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Wklej mapowanie SDL…</value></data>
@@ -6642,7 +6641,6 @@ Czy PadForge ma je teraz odinstalować? Wymaga to uprawnień administratora i mo
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Zmapowano ponownie z układu SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Używane od razu. Wiersz jest twój i wygrywa dla tego urządzenia.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Zachowane jako twoje. Będzie używane, gdy silnik zacznie działać, a urządzenie będzie połączone.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Zachowane jako twoje, ale zmienna SDL_GAMECONTROLLERCONFIG zawiera wiersz dla tego urządzenia, który SDL trzyma ponad twoim.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nie przyjął wiersza. Nic się nie zmieniło dla tego urządzenia.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Wklej mapowanie SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Wklej mapowanie SDL dla: {0}</value></data>

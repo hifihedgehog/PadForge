@@ -129,7 +129,15 @@ namespace PadForge.Services
             string natives = ProtectedFolder.Natives;
             string variable = System32Calls.GetVariable(BaseVariable);
             string full = string.IsNullOrEmpty(variable) ? null : System32Calls.FullPath(variable);
-            if (Decide(true, full, natives, System32Calls.SameName, ProtectedFolder.NativesAreSound) == Decision.GoOn) return;
+            // A start that goes on as it is may have been steered there: every
+            // program of the user can name the protected folder in its
+            // variables (HKCU\Environment), and Windows builds those of the
+            // copy its prompt starts from them. So it keeps the allow list's
+            // variables only, as every start PadForge makes with rights gets
+            // them, and one whose variables cannot be read starts again.
+            if (Decide(true, full, natives, System32Calls.SameName, ProtectedFolder.NativesAreSound) == Decision.GoOn
+                && KeepAllowListOnly(natives))
+                return;
 
             if (!ProtectedFolder.MakeNativesSound())
             {
@@ -137,6 +145,49 @@ namespace PadForge.Services
                 System32Calls.ExitNow(NoSoundFolder);
             }
             System32Calls.ExitNow(Restart(natives));
+        }
+
+        /// <summary>
+        /// Makes this process's variables the allow list's
+        /// (<see cref="AllowListOnly"/>), before anything past Main reads one.
+        /// False when its variables cannot be read.
+        /// </summary>
+        private static bool KeepAllowListOnly(string natives)
+        {
+            string[] own = System32Calls.Variables();
+            if (own == null) return false;
+            var (drop, set) = AllowListOnly(own, System32Calls.MachineVariables(), natives);
+            foreach (string name in drop) System32Calls.SetVariable(name, null);
+            foreach (string line in set)
+            {
+                string name = NameOf(line);
+                System32Calls.SetVariable(name, line.Substring(name.Length + 1));
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// What makes a process's variables (<paramref name="own"/>, as
+        /// <c>name=value</c> lines) those of the allow list every start with
+        /// rights gets (<see cref="RightsVariables.Build"/>): the names to
+        /// remove, and the lines to set. The drive lines Windows keeps for each
+        /// process (<c>=C:=C:\</c>) stay.
+        /// </summary>
+        internal static (List<string> Drop, List<string> Set) AllowListOnly(IReadOnlyList<string> own, IReadOnlyList<string> machine,
+            string natives)
+        {
+            var set = RightsVariables.Build(machine, own, natives);
+            var drop = new List<string>();
+            foreach (string line in own ?? Array.Empty<string>())
+            {
+                if (string.IsNullOrEmpty(line) || line[0] == '=') continue;
+                string name = NameOf(line);
+                bool kept = false;
+                foreach (string keep in set)
+                    if (CompareNames(NameOf(keep), name) == 0) { kept = true; break; }
+                if (!kept) drop.Add(name);
+            }
+            return (drop, set);
         }
 
         /// <summary>Takes the handover event a restarting start handed this

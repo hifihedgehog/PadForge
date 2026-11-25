@@ -3297,7 +3297,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Deskargá {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>E archivo propio di PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Bo esun, agregá {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>E variabel SDL_GAMECONTROLLERCONFIG, ku SDL ta tene riba kualke fila ku bo agregá</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopia Asignashon SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ta pone e asignashon di e aparato riba e klipbòrt komo un fila di e base di dato di komunidat, bou di e ID di e aparato ku su checksum i vershon na sero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Pega Asignashon SDL…</value></data>
@@ -3335,7 +3334,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Asigná atrobe for di e layout di SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Na uso awor. E fila ta di bo i ta gana pa e aparato aki.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wardá komo bo esun. E ta na uso ora e motor ta kore i e aparato ta konektá.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Wardá komo bo esun, pero e variabel SDL_GAMECONTROLLERCONFIG tin un fila pa e aparato aki, ku SDL ta tene riba esun di bo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL no a aseptá e fila. Nada no a kambia pa e aparato aki.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pega un asignashon SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pega un asignashon SDL pa {0}</value></data>

@@ -6559,7 +6559,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Descargado {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Archivo propio de PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Tuya, agregada {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>La variable SDL_GAMECONTROLLERCONFIG, que SDL mantiene por encima de cualquier fila que agregues</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Copiar asignación SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Pone la asignación del dispositivo en el portapapeles como una fila de la base de datos de la comunidad, bajo el ID del dispositivo con su suma de comprobación y su versión en cero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Pegar asignación SDL…</value></data>
@@ -6597,7 +6596,6 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Asignado de nuevo desde la disposición de SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>En uso ahora. La fila es tuya y prevalece para este dispositivo.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Conservada como tuya. Se usa cuando el motor se ejecuta y el dispositivo está conectado.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Conservada como tuya, pero la variable SDL_GAMECONTROLLERCONFIG tiene una fila para este dispositivo, que SDL prefiere a la tuya.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL no aceptó la fila. Nada cambió para este dispositivo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pegar una asignación SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pegar una asignación SDL para {0}</value></data>

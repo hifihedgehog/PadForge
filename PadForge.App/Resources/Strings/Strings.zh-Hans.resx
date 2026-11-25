@@ -6559,7 +6559,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>已下载 {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 自己的文件</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>你的，添加于 {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 变量，SDL 会把它排在你添加的任何行之上</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>复制 SDL 映射</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>以社区数据库中一行的形式，把设备的映射放到剪贴板，使用设备的 ID，校验和与版本置零。</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>粘贴 SDL 映射…</value></data>
@@ -6597,7 +6596,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>已按 SDL 的布局重新映射：{0}。</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>已在使用。该行属于你，并对此设备优先生效。</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>已保存为你的。引擎运行且设备连接后即生效。</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>已保存为你的，但 SDL_GAMECONTROLLERCONFIG 变量中有此设备的一行，SDL 会优先使用它而不是你的。</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL 没有接受该行。此设备没有任何变化。</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>粘贴 SDL 映射</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>为 {0} 粘贴 SDL 映射</value></data>

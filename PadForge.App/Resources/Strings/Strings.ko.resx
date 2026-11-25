@@ -6559,7 +6559,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} 다운로드</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge의 자체 파일</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>사용자 행, {0} 추가</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 변수이며, SDL은 추가한 어떤 행보다 이것을 우선합니다</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL 매핑 복사</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>장치의 매핑을 커뮤니티 데이터베이스의 행 형식으로 클립보드에 넣습니다. 장치의 ID 아래에 두며 체크섬과 버전은 0으로 합니다.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL 매핑 붙여 넣기…</value></data>
@@ -6597,7 +6596,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL의 레이아웃에서 다시 매핑했습니다: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>지금 사용 중입니다. 이 행은 사용자 행이며 이 장치에서 우선합니다.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>사용자 행으로 보관했습니다. 엔진이 실행되고 장치가 연결되면 사용됩니다.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>사용자 행으로 보관했지만, SDL_GAMECONTROLLERCONFIG 변수에 이 장치의 행이 있어 SDL이 사용자 행보다 그것을 우선합니다.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL이 행을 받지 않았습니다. 이 장치에는 변경된 것이 없습니다.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL 매핑 붙여 넣기</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0}의 SDL 매핑 붙여 넣기</value></data>

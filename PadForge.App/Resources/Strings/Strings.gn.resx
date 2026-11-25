@@ -1598,7 +1598,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ojeboguejy {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge archivo voi</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Nde mba'e, oñembojuaju {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG variable, SDL omoĩva yvateve opaite tysýi rembojuajúvagui</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Emonguatia SDL mapeo</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Omoĩ mba'e'oka mapeo portapapeles ryepýpe tekoha aty tysýi ramo, mba'e'oka ID guýpe, checksum ha versión cero ramo.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Emboja SDL mapeo…</value></data>
@@ -1636,7 +1635,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Oñemapea jey SDL ñemohenda guive: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ojeporu ko'ág̃a. Tysýi nde mba'e ha ipu'aka ko mba'e'oka peg̃uarã.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Oñeñongatu nde mba'e ramo. Ojeporúta motor oñemboguata ha mba'e'oka ojoaju vove.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Oñeñongatu nde mba'e ramo, ha katu SDL_GAMECONTROLLERCONFIG variable oguereko peteĩ tysýi ko mba'e'oka peg̃uarã, SDL omoĩva nde mba'e ári.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nomoneĩri tysýi. Mba'eve noñemoambuéi ko mba'e'oka peg̃uarã.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Emboja peteĩ SDL mapeo</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Emboja peteĩ SDL mapeo {0} peg̃uarã</value></data>

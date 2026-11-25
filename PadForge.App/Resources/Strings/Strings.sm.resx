@@ -1527,7 +1527,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na sii mai {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Le faila lava a PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Lau mea, na faʻaopoopo {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Le fesuiaʻiga SDL_GAMECONTROLLERCONFIG, lea e tuʻu e SDL i luga aʻe o soʻo se laina e te faʻaopoopo</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopi le SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>E tuʻu le faʻafanua a le masini i le clipboard o se laina o le faʻamaumauga a le nuʻu, i lalo o le ID o le masini ma lona checksum ma lona lomiga ua seti i le 0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Faʻapipiʻi le SDL Mapping…</value></data>
@@ -1565,7 +1564,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Ua toe faʻafanua mai le faʻatulagaga a SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ua faʻaaogā nei. O le laina o lau mea ma e sili mo lenei masini.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Ua teu o lau mea. E faʻaaogā pe a galue le enisini ma fesoʻotaʻi le masini.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Ua teu o lau mea, ae o loʻo i ai i le fesuiaʻiga SDL_GAMECONTROLLERCONFIG se laina mo lenei masini, lea e tuʻu e SDL i luga aʻe o lau mea.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>E leʻi talia e SDL le laina. E leai se mea na suia mo lenei masini.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Faʻapipiʻi se SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Faʻapipiʻi se SDL Mapping mo {0}</value></data>

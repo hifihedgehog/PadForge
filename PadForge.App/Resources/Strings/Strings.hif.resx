@@ -1480,7 +1480,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Download bhais {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ke apan file</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Aap ke, add bhais {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG variable, jiske SDL aap ke add karaa koi row se upar rakhe hai</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL Mapping copy karo</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Device ke mapping ke clipboard pe community database ke ek row jaisan rakhe hai, device ke ID ke niche, checksum aur version zero karke.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL Mapping paste karo…</value></data>
@@ -1518,7 +1517,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL ke layout se phir se map bhais: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Abhi use me hai. Row aap ke hai aur ii device ke liye sab se upar hai.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Aap ke jaisan rakha gais. Engine chale aur device connect hoe pe use me aai.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Aap ke jaisan rakha gais, lekin SDL_GAMECONTROLLERCONFIG variable me ii device ke ek row hai, jiske SDL aap ke wala se upar rakhe hai.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL row nai lees. Ii device ke liye kuch nai badla.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL Mapping paste karo</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} ke liye SDL Mapping paste karo</value></data>

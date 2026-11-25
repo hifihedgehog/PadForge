@@ -1105,7 +1105,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Yawanulwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fayiro ya PadForge yennyini</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Lwo, lwagattibwako {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ekikyuka SDL_GAMECONTROLLERCONFIG, SDL ky'ekulembeza okusinga olunyiriri lwonna lw'ogattako</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Koppa Okugatta kwa SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Eteeka okugatta kw'ekyuma ku clipboard ng'olunyiriri lw'etterekero ly'ekibiina, wansi wa ID y'ekyuma, checksum ne version nga biteereddwa ku zero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Teekamu Okugatta kwa SDL…</value></data>
@@ -1143,7 +1142,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kigattiddwa nate okuva mu ntegeka ya SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Kikozesebwa kati. Olunyiriri lwo era lwe lukulembera ku kyuma kino.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kikuumiddwa ng'olwo. Kikozesebwa enjini bw'eba ekola n'ekyuma nga kiyungiddwa.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kikuumiddwa ng'olwo, naye ekikyuka SDL_GAMECONTROLLERCONFIG kirina olunyiriri lw'ekyuma kino, SDL lw'ekulembeza okusinga olwo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tetwala lunyiriri. Tewali kyakyuse ku kyuma kino.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Teekamu Okugatta kwa SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Teekamu Okugatta kwa SDL ku {0}</value></data>

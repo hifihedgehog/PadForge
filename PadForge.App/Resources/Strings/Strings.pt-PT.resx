@@ -5923,7 +5923,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Transferido {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ficheiro próprio do PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Seu, adicionado em {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>A variável SDL_GAMECONTROLLERCONFIG, que o SDL mantém acima de qualquer linha que adicione</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Copiar mapeamento SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Põe o mapeamento do dispositivo na área de transferência como uma linha da base de dados da comunidade, sob o ID do dispositivo com a soma de verificação e a versão a zero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Colar mapeamento SDL…</value></data>
@@ -5961,7 +5960,6 @@ Pretende que o PadForge os desinstale agora? Esta operação requer elevação e
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mapeado de novo a partir da disposição do SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Em uso agora. A linha é sua e prevalece para este dispositivo.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Guardada como sua. Fica em uso quando o motor estiver em execução e o dispositivo ligado.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Guardada como sua, mas a variável SDL_GAMECONTROLLERCONFIG tem uma linha para este dispositivo, que o SDL mantém acima da sua.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>O SDL não aceitou a linha. Nada mudou para este dispositivo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Colar um mapeamento SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Colar um mapeamento SDL para {0}</value></data>

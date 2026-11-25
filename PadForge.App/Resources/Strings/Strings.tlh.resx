@@ -6680,7 +6680,6 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Suqlu'pu': {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 'a'baqa'</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>DochlIj, chellu'pu': {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG choHlaHbogh mI', SDL Daq Dachelbogh tlheghmey juSbogh</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL neltaHghach velqa' yIchenmoH</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>yuvwan qawHaq tlhegh rur, jan neltaHghach velqa' chenmoH. jan ID lo', 'ej 'olmeH mI' nIqHom mI' je 0 moj.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL neltaHghach yIlan…</value></data>
@@ -6718,7 +6717,6 @@ DaH tIjomHa' PadForge 'e' DaneH'a'? chaw' tIn poQ, 'ej loQ mImlaH.</value></data
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL Qur lo'taHvIS nellu'qa'pu': {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>DaH lo'lu'. tlheghlIj 'oH, 'ej janvamvaD latlh tlheghmey juS.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>DochlIj rur 'uchlu'. QaptaHDI' QuQ 'ej rarDI' jan, lo'lu'.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>DochlIj rur 'uchlu', 'ach janvamvaD tlhegh ngaS SDL_GAMECONTROLLERCONFIG choHlaHbogh mI', 'ej Dochvetlh lo' SDL, tlheghlIj lo'be'.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>tlhegh lajbe' SDL. janvamvaD pagh choHpu'.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL neltaHghach yIlan</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>SDL neltaHghach yIlan: {0}</value></data>

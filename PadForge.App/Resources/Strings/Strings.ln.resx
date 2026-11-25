@@ -2391,7 +2391,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ekitisami {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fichier ya PadForge yango moko</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ya yo, ebakisami {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variable SDL_GAMECONTROLLERCONFIG, oyo SDL etiaka likolo ya ligne nyonso oyo obakisi</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kokopia SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Etiaka assignation ya appareil na presse-papiers lokola ligne ya base ya communauté, na nse ya ID ya appareil, checksum mpe version etiami na zéro.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Kotia SDL Mapping…</value></data>
@@ -2429,7 +2428,6 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Etiami lisusu uta na disposition ya SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ezali kosalelama sikoyo. Ligne ezali ya yo mpe elekaka mpo na appareil oyo.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Ebombami lokola ya yo. Ekosalelama ntango moteur ekotambola mpe appareil ekokangama.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Ebombami lokola ya yo, kasi variable SDL_GAMECONTROLLERCONFIG ezali na ligne mpo na appareil oyo, oyo SDL ebombaka likolo ya oyo ya yo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL endimi ligne te. Eloko moko te ebongwani mpo na appareil oyo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kotia SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kotia SDL Mapping mpo na {0}</value></data>

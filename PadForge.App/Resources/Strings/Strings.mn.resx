@@ -5904,7 +5904,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Татсан: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ийн өөрийн файл</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Таных, нэмсэн: {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG хувьсагч, SDL үүнийг таны нэмсэн аливаа мөрөөс дээгүүр тавьдаг</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL оноолтыг хуулах</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Төхөөрөмжийн оноолтыг нийгэмлэгийн мэдээллийн сангийн мөр болгон, төхөөрөмжийн ID-аар, шалгах нийлбэр ба хувилбарыг тэглэж санах ойд хуулна.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL оноолтыг буулгах…</value></data>
@@ -5942,7 +5941,6 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-ийн бүтцээс дахин оноосон: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Одоо ашиглагдаж байна. Мөр таных бөгөөд энэ төхөөрөмжид давуу эрхтэй.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Таных болгон хадгалсан. Хөдөлгүүр ажиллаж, төхөөрөмж холбогдоход ашиглагдана.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Таных болгон хадгалсан боловч SDL_GAMECONTROLLERCONFIG хувьсагчид энэ төхөөрөмжийн мөр байгаа бөгөөд SDL түүнийг таныхаас дээгүүр тавина.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL мөрийг хүлээж авсангүй. Энэ төхөөрөмжид юу ч өөрчлөгдсөнгүй.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL оноолт буулгах</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} төхөөрөмжид SDL оноолт буулгах</value></data>

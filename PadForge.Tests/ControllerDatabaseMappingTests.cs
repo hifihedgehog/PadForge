@@ -297,18 +297,15 @@ namespace PadForge.Tests
             string own = Row(0x2000, 0x0001, "Own Pad");
             string device = "0300aabb" + Id(0x1000, 0x0001).Substring(8);
 
-            Assert.Equal(SdlMappingSource.None, ControllerDatabaseSource.Of(device, null, null, null, null, baseline, null));
-            Assert.Equal(SdlMappingSource.Community, ControllerDatabaseSource.Of(device, kept, null, null, null, baseline, null));
-            Assert.Equal(SdlMappingSource.Sdl, ControllerDatabaseSource.Of("0300aabb" + Id(0x1000, 0x0002).Substring(8), sdl, null, null, null, baseline, null));
+            Assert.Equal(SdlMappingSource.None, ControllerDatabaseSource.Of(device, null, null, null, null, baseline));
+            Assert.Equal(SdlMappingSource.Community, ControllerDatabaseSource.Of(device, kept, null, null, null, baseline));
+            Assert.Equal(SdlMappingSource.Sdl, ControllerDatabaseSource.Of("0300aabb" + Id(0x1000, 0x0002).Substring(8), sdl, null, null, null, baseline));
             Assert.Equal(SdlMappingSource.PadForge,
-                ControllerDatabaseSource.Of("0300aabb" + Id(0x2000, 0x0001).Substring(8), own, null, null, new[] { own }, baseline, null));
+                ControllerDatabaseSource.Of("0300aabb" + Id(0x2000, 0x0001).Substring(8), own, null, null, new[] { own }, baseline));
 
             string yoursText = device + ",Mine,a:b5,platform:Windows,";
             var mine = ControllerDatabaseMine.Empty.With(MineRow(yoursText));
-            Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(device, device + ",Mine,a:b5,crc:aabb,", mine, null, null, baseline, null));
-            // SDL holds the variable's row over the user's.
-            string variable = Id(0x1000, 0x0001) + ",Steam,a:b6,";
-            Assert.Equal(SdlMappingSource.Variable, ControllerDatabaseSource.Of(device, device + ",Steam,a:b6,", mine, null, null, baseline, variable));
+            Assert.Equal(SdlMappingSource.Yours, ControllerDatabaseSource.Of(device, device + ",Mine,a:b5,crc:aabb,", mine, null, null, baseline));
         }
 
         [Fact]
@@ -319,7 +316,7 @@ namespace PadForge.Tests
             var baseline = Baseline(('K', kept));
             var download = ControllerDatabaseDownload.Read(CommunityFile(new[] { changed }), baseline);
             var section = ControllerDatabaseSection.FromDownload(download, null, new DateTime(2026, 11, 23, 0, 0, 0, DateTimeKind.Utc), baseline, "6.0.1", null);
-            Assert.Equal(SdlMappingSource.Downloaded, ControllerDatabaseSource.Of(Id(0x1000, 0x0001), changed, null, section, null, baseline, null));
+            Assert.Equal(SdlMappingSource.Downloaded, ControllerDatabaseSource.Of(Id(0x1000, 0x0001), changed, null, section, null, baseline));
             Assert.Equal(SdlMappingSource.Downloaded, ControllerDatabaseSource.OfRow(Id(0x1000, 0x0001), null, section, null, baseline));
             Assert.Equal(SdlMappingSource.Community, ControllerDatabaseSource.OfRow(Id(0x1000, 0x0001), null, null, null, baseline));
         }

@@ -1961,7 +1961,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Rub tawm {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge tus kheej daim ntawv</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Koj li, ntxiv {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Tus variable SDL_GAMECONTROLLERCONFIG, uas SDL tuav siab dua txhua kab koj ntxiv</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Theej Mapping SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Muab lub khoom siv qhov mapping tso rau clipboard ua ib kab ntawm lub database zej zog, nyob hauv lub khoom siv tus ID nrog nws checksum thiab version ua xoom.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Muab Mapping SDL tso…</value></data>
@@ -1999,7 +1998,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Map dua los ntawm SDL qhov layout: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Siv tam sim no. Kab yog koj li thiab siv ua ntej tshaj rau lub khoom siv no.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Khaws ua koj li. Nws yuav siv thaum lub engine khiav thiab lub khoom siv txuas.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Khaws ua koj li, tab sis tus variable SDL_GAMECONTROLLERCONFIG tuav ib kab rau lub khoom siv no, uas SDL khaws siab dua koj li.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tsis txais kab. Tsis muaj dab tsi hloov rau lub khoom siv no.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Muab ib qho Mapping SDL tso</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Muab ib qho Mapping SDL tso rau {0}</value></data>

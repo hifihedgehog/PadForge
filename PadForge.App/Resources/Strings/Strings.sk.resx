@@ -6604,7 +6604,6 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Stiahnuté {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Vlastný súbor programu PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Vaše, pridané {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Premenná SDL_GAMECONTROLLERCONFIG, ktorú SDL drží nad každým pridaným riadkom</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopírovať mapovanie SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Vloží mapovanie zariadenia do schránky ako riadok komunitnej databázy, pod ID zariadenia s vynulovaným kontrolným súčtom a verziou.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Vložiť mapovanie SDL…</value></data>
@@ -6642,7 +6641,6 @@ Chcete, aby ich PadForge teraz odinštaloval? Vyžaduje to oprávnenia správcu 
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Namapované znova z rozloženia SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Používa sa teraz. Riadok je váš a pre toto zariadenie má prednosť.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Ponechané ako vaše. Používa sa, keď beží jadro a zariadenie je pripojené.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Ponechané ako vaše, ale premenná SDL_GAMECONTROLLERCONFIG drží riadok pre toto zariadenie, ktorý SDL uprednostňuje pred vaším.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL riadok neprijal. Pre toto zariadenie sa nič nezmenilo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Vložiť mapovanie SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Vložiť mapovanie SDL pre {0}</value></data>

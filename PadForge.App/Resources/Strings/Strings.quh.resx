@@ -1967,7 +1967,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Uraykachisqa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge nisqap kikin archivon</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Qampa, yapasqa {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG variable, chaytaqa SDL nisqa yapasqayki tukuy filakunamanta aswan hanaqpi hap'in</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL Mapping nisqata copiay</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Dispositivop asignacionninta portapapelesman churan comunidadpa base de datosninpa huk filan hina, dispositivop ID nisqanwan, checksum versiónpas ceroman churasqa.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL Mapping nisqata ch'aqtay…</value></data>
@@ -2005,7 +2004,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL nisqap diseñonmanta hukmanta asignasqa: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Kunan llamk'achikuchkan. Filaqa qampa, kay dispositivopaqtaq atipan.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Qampa hina waqaychasqa. Motor llamk'aqtin, dispositivo tinkisqa kaqtintaq llamk'achikunqa.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Qampa hina waqaychasqa, ichaqa SDL_GAMECONTROLLERCONFIG variableqa kay dispositivopaq huk filata hap'in, chaytataq SDL nisqa qampamanta aswan waqaychan.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nisqaqa mana filata chaskirqanchu. Kay dispositivopaq mana imapas t'ikrakurqanchu.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Huk SDL Mapping nisqata ch'aqtay</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} nisqapaq huk SDL Mapping nisqata ch'aqtay</value></data>

@@ -5236,7 +5236,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Telechaje {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Pwòp fichye PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Pa w, ajoute {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Varyab SDL_GAMECONTROLLERCONFIG la, ke SDL mete pi wo pase nenpòt liy ou ajoute</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopye Asiyasyon SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Li mete asiyasyon aparèy la nan kalpin nan kòm yon liy baz done kominote a, anba ID aparèy la ak checksum li ak vèsyon li mete a zewo.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Kole Asiyasyon SDL…</value></data>
@@ -5274,7 +5273,6 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Asiyen ankò apati dispozisyon SDL la: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>An sèvis kounye a. Liy lan se pa w epi li genyen priyorite pou aparèy sa a.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kenbe kòm pa w. Li an sèvis depi motè a ap mache epi aparèy la konekte.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kenbe kòm pa w, men varyab SDL_GAMECONTROLLERCONFIG la gen yon liy pou aparèy sa a, ke SDL kenbe pi wo pase pa w.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL pa t aksepte liy lan. Anyen pa chanje pou aparèy sa a.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kole yon Asiyasyon SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kole yon Asiyasyon SDL pou {0}</value></data>

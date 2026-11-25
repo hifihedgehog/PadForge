@@ -6604,7 +6604,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>डाउनलोड गरिएको {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge को आफ्नै फाइल</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>तपाईंको, थपिएको {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG चर, जसलाई SDL ले तपाईंले थप्ने कुनै पनि पङ्क्तिभन्दा माथि राख्छ</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL म्यापिङ प्रतिलिपि गर्नुहोस्</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>यन्त्रको म्यापिङलाई सामुदायिक डेटाबेसको पङ्क्तिका रूपमा क्लिपबोर्डमा राख्छ, यन्त्रको ID अन्तर्गत, यसको चेकसम र संस्करण शून्य बनाएर।</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL म्यापिङ टाँस्नुहोस्…</value></data>
@@ -6642,7 +6641,6 @@ PadForge ले तिनलाई अहिले अनइन्स्टल �
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL को लेआउटबाट फेरि म्याप गरियो: {0}।</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>अहिले प्रयोगमा छ। पङ्क्ति तपाईंको हो र यो यन्त्रका लागि यसैलाई प्राथमिकता दिइन्छ।</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>तपाईंको रूपमा राखियो। इन्जिन चलेपछि र यन्त्र जडान भएपछि यो प्रयोगमा आउँछ।</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>तपाईंको रूपमा राखियो, तर SDL_GAMECONTROLLERCONFIG चरमा यो यन्त्रको पङ्क्ति छ, जसलाई SDL ले तपाईंको भन्दा माथि राख्छ।</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ले पङ्क्ति लिएन। यो यन्त्रका लागि केही परिवर्तन भएन।</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL म्यापिङ टाँस्नुहोस्</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} का लागि SDL म्यापिङ टाँस्नुहोस्</value></data>

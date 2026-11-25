@@ -6604,7 +6604,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Staženo {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Vlastní soubor programu PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Váš, přidán {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Proměnná SDL_GAMECONTROLLERCONFIG, kterou SDL drží nad každým vaším řádkem</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopírovat mapování SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Vloží mapování zařízení do schránky jako řádek komunitní databáze, pod ID zařízení s nulovým kontrolním součtem a verzí.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Vložit mapování SDL…</value></data>
@@ -6642,7 +6641,6 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Znovu namapováno podle rozložení SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Používá se nyní. Řádek je váš a pro toto zařízení má přednost.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Ponecháno jako vaše. Použije se, jakmile jádro běží a zařízení je připojeno.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Ponecháno jako vaše, ale proměnná SDL_GAMECONTROLLERCONFIG obsahuje řádek pro toto zařízení, který SDL drží nad vaším.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL řádek nepřijalo. Pro toto zařízení se nic nezměnilo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Vložit mapování SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Vložit mapování SDL pro {0}</value></data>

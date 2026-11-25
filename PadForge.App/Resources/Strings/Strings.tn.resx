@@ -1484,7 +1484,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E tsentswe {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faele ya PadForge ka boyone</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ya gago, e okeditswe {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variable ya SDL_GAMECONTROLLERCONFIG, e SDL e e tsayang pele ga mola mongwe le mongwe o o o okelelang</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopolola Mapo ya SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>E baya mapo ya sedirisiwa mo clipboard jaaka mola wa database ya setšhaba, ka fa tlase ga ID ya sedirisiwa, checksum le phetolelo di dirilwe 0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Kgomaretsa Mapo ya SDL…</value></data>
@@ -1522,7 +1521,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>E mapilwe gape go tswa mo thulaganyong ya SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>O a dirisiwa jaanong. Mola ke wa gago mme o tsewa pele mo sedirisiweng se.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>O bolokilwe e le wa gago. O a dirisiwa fa enjine e dira mme sedirisiwa se golagane.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>O bolokilwe e le wa gago, mme variable ya SDL_GAMECONTROLLERCONFIG e tshwere mola wa sedirisiwa se, o SDL e o tsayang pele ga wa gago.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ga e a amogela mola. Ga go a fetoga sepe mo sedirisiweng se.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kgomaretsa Mapo ya SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kgomaretsa Mapo ya SDL ya {0}</value></data>

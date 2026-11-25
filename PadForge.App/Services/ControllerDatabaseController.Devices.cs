@@ -25,7 +25,7 @@ namespace PadForge.Services
         Joystick,
         /// <summary>SDL maps it, and PadForge reads it raw: Force Raw
         /// Joystick Mode, a Bliss-Box port, or a row of the user's removed
-        /// this session.</summary>
+        /// since the engine started.</summary>
         ReadRaw,
         /// <summary>A joystick SDL does not read, such as a plugin's. The
         /// user's row lays its inputs out in PadForge.</summary>
@@ -51,9 +51,6 @@ namespace PadForge.Services
         InUse,
         /// <summary>Kept, and SDL is given it when the engine starts.</summary>
         AtStart,
-        /// <summary>SDL keeps the SDL_GAMECONTROLLERCONFIG variable's row for
-        /// the device over the user's.</summary>
-        VariableWins,
         /// <summary>SDL did not take the row.</summary>
         Refused,
         /// <summary>A device SDL does not read, mapped through the row in
@@ -79,10 +76,6 @@ namespace PadForge.Services
         /// <summary>The community database's page that says how to add a
         /// mapping.</summary>
         internal const string CommunityPage = "https://github.com/mdqinc/SDL_GameControllerDB#create-new-mappings";
-
-        /// <summary>Reads the SDL_GAMECONTROLLERCONFIG variable, replaceable
-        /// in tests.</summary>
-        internal Func<string> Variable = () => Environment.GetEnvironmentVariable("SDL_GAMECONTROLLERCONFIG");
 
         private Func<IReadOnlyList<LiveItem>> _catalog;
         private System.Threading.SynchronizationContext _ui;
@@ -158,7 +151,7 @@ namespace PadForge.Services
             try
             {
                 source = ControllerDatabaseSource.Of(facts.Guid, facts.Mapping, mine, SettingsManager.ControllerDatabase, OwnRows,
-                    Baseline(), Variable());
+                    Baseline());
             }
             catch (Exception)
             {
@@ -170,7 +163,7 @@ namespace PadForge.Services
             SdlReading reading = !facts.SdlMaps ? SdlReading.Joystick
                 : facts.OpenedAsGamepad && !ud.ForceRawJoystickMode ? SdlReading.Gamepad
                 : SdlReading.ReadRaw;
-            var yours = source == SdlMappingSource.Yours ? mine.ForSdlDevice(facts.Guid) : mine.ForSdlDevice(facts.Guid);
+            var yours = mine.ForSdlDevice(facts.Guid);
             return Build(reading, row?.Name, facts.Guid, source, yours, row, row?.TextUnder(SdlMappingRow.CommunityId(facts.Guid)),
                 instance, reading == SdlReading.Gamepad, controller);
         }
@@ -362,12 +355,22 @@ namespace PadForge.Services
             // before any, and which devices were mapped again through it.
             var earlierRow = mine.ForSdlDevice(id);
             bool sameId = earlierRow != null && string.Equals(earlierRow.Id, id, StringComparison.OrdinalIgnoreCase);
-            // What SDL held for the ID: the device's mapping, none, or, for a
-            // device away, SDL's answer for the ID. Unknown while the engine
-            // is stopped, and learned as SDL starts.
-            string old = sameId ? earlierRow.OldRow
-                : facts != null ? facts.Mapping ?? string.Empty
-                : await ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForGuid(id), null);
+            // What SDL read the device through before any row of the user's:
+            // from the device's mapping, none, or, for a device away, SDL's
+            // answer for the ID, a copy of the user's row for its model, that
+            // row itself and a removed row SDL still holds are looked past
+            // (ControllerDatabaseUse.ReadBefore). Unknown while the engine is
+            // stopped, and learned as SDL starts.
+            string old;
+            if (sameId) old = earlierRow.OldRow;
+            else
+            {
+                string now = facts != null ? facts.Mapping ?? string.Empty
+                    : await ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForGuid(id), null);
+                old = now == null ? null
+                    : ControllerDatabaseUse.ReadBefore(now, earlierRow, ControllerDatabaseEngine.HeldBeforeCopy(id, out string beforeCopy), beforeCopy,
+                        ControllerDatabaseEngine.HadNone(id));
+            }
             // The rows are mapped again only once the device is read through
             // the row (HandleUserRowOpened). Until then they keep the reading
             // they were made for.
@@ -381,8 +384,8 @@ namespace PadForge.Services
             if (applied.Refused > 0) return SdlApplyResult.Refused;
             var after = await ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(instance), null);
             if (after == null) return SdlApplyResult.AtStart;
-            if (!string.Equals(ControllerDatabaseSource.LayoutOf(Sanitized(after.Mapping)), keptRow.Row.Layout, StringComparison.Ordinal))
-                return SdlApplyResult.VariableWins;
+            if (!string.Equals(ControllerDatabaseSource.LayoutOf(Sanitized(after.Mapping)), ControllerDatabaseSource.StoredLayout(keptRow), StringComparison.Ordinal))
+                return SdlApplyResult.Refused;
             if (applied.Reopened.Contains(instance)) HandleUserRowOpened(instance);
             else if (after.OpenedAsGamepad) MarkMapped(instance);
             return SdlApplyResult.InUse;
@@ -530,7 +533,7 @@ namespace PadForge.Services
                 if (!ud.IsOnline) continue;
                 var facts = await ControllerDatabaseEngine.Post(e => e.ReadSdlFacts(ud.InstanceGuid), null);
                 if (facts?.OpenedAsGamepad == true
-                    && string.Equals(ControllerDatabaseSource.LayoutOf(Sanitized(facts.Mapping)), row.Row.Layout, StringComparison.Ordinal))
+                    && string.Equals(ControllerDatabaseSource.LayoutOf(Sanitized(facts.Mapping)), ControllerDatabaseSource.StoredLayout(row), StringComparison.Ordinal))
                     HandleUserRowOpened(ud.InstanceGuid);
             }
         }
@@ -552,9 +555,9 @@ namespace PadForge.Services
 
         /// <summary>
         /// Remove Mine: the user's row for a device goes, SDL is given back
-        /// the mapping it held before, or reads the device raw for the rest
-        /// of the session when it had none, and the device's rows are put
-        /// back as they were.
+        /// the mapping it held before, or reads the device raw until SDL
+        /// starts again when it had none, and the device's rows are put back
+        /// as they were.
         /// </summary>
         internal async Task RemoveMineAsync(Guid instance)
         {
@@ -571,26 +574,21 @@ namespace PadForge.Services
             if (row.HasMapped(instance) && !before.Exists(b => b.Instance == instance)) Remap(instance);
         }
 
-        /// <summary>Gives SDL back the reading a row of the user's
-        /// replaced.</summary>
+        /// <summary>Gives SDL back the reading a row of the user's replaced:
+        /// the mapping SDL held under the row's ID, and under the ID of each
+        /// device SDL was given a copy of the row for (#600). Called with the
+        /// row already gone from <see cref="ControllerDatabaseMine.Current"/>.</summary>
         private static Task GiveBackAsync(ControllerDatabaseMineRow row)
         {
+            if (row.ForPadForgeDevice) return Task.CompletedTask;
             // A row SDL was never given, added while the engine was stopped
-            // and removed before it ran, leaves SDL as it is.
-            if (row.ForPadForgeDevice || row.OldRow == null) return Task.CompletedTask;
-            if (row.OldRow.Length > 0)
-                return ControllerDatabaseEngine.Post(e => e.ApplySdlRows(new[] { OldUnder(row) }, false), ControllerDatabaseApplied.NotRunning);
-            ControllerDatabaseEngine.SetReadsRaw(row.Id, true);
-            return ControllerDatabaseEngine.Post(e => e.ApplySdlRows(Array.Empty<string>(), false), ControllerDatabaseApplied.NotRunning);
-        }
-
-        /// <summary>The mapping SDL held before, under the ID the user's row
-        /// took, so it lands on the same entry of SDL's list.</summary>
-        internal static string OldUnder(ControllerDatabaseMineRow row)
-        {
-            string old = row.OldRow;
-            int comma = old.IndexOf(',');
-            return comma < 0 ? old : row.Id + old.Substring(comma);
+            // and removed before it ran, leaves SDL's entry for its ID as it is.
+            var texts = ControllerDatabaseEngine.GiveBack(row);
+            return ControllerDatabaseEngine.Post(e =>
+            {
+                texts.AddRange(ControllerDatabaseEngine.TakeCopies(row.Id, ControllerDatabaseMine.Current));
+                return e.ApplySdlRows(texts, false);
+            }, ControllerDatabaseApplied.NotRunning);
         }
 
         /// <summary>Every row of the user's goes (Reset to Defaults), each
@@ -641,12 +639,15 @@ namespace PadForge.Services
                     matched.Add(ud.InstanceGuid);
                     if (!before.Exists(b => b.Instance == ud.InstanceGuid)) before.AddRange(Snapshot(ud.InstanceGuid));
                 }
-                // What SDL held for the row's ID. Unknown while the engine is
-                // stopped, and learned as SDL starts.
+                // What SDL held for the row's ID: none where a row of the
+                // user's for it went with nothing before it, since SDL still
+                // answers that row. Unknown while the engine is stopped, and
+                // learned as SDL starts.
                 if (!sameId)
                 {
                     string id = row.Guid;
                     old = await ControllerDatabaseEngine.Post(_ => ControllerDatabaseEngine.MappingForGuid(id), null);
+                    if (old != null && ControllerDatabaseEngine.HadNone(id)) old = string.Empty;
                 }
                 var kept = new ControllerDatabaseMineRow(row.Guid, row, MineNow(), old, Guid.Empty, before)
                 {
@@ -935,7 +936,6 @@ namespace PadForge.Services
                 SdlMappingSource.Downloaded => string.Format(CultureInfo.CurrentCulture, s.SdlMapping_From_Downloaded_Format, date ?? string.Empty),
                 SdlMappingSource.PadForge => s.SdlMapping_From_PadForge,
                 SdlMappingSource.Yours or SdlMappingSource.YoursPadForge => string.Format(CultureInfo.CurrentCulture, s.SdlMapping_From_Yours_Format, date ?? string.Empty),
-                SdlMappingSource.Variable => s.SdlMapping_From_Variable,
                 _ => string.Empty,
             };
         }

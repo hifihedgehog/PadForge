@@ -6431,7 +6431,6 @@ public class Strings : INotifyPropertyChanged
     public string SdlMapping_From_Downloaded_Format => Get("SdlMapping_From_Downloaded_Format");
     public string SdlMapping_From_PadForge => Get("SdlMapping_From_PadForge");
     public string SdlMapping_From_Yours_Format => Get("SdlMapping_From_Yours_Format");
-    public string SdlMapping_From_Variable => Get("SdlMapping_From_Variable");
     public string SdlMapping_Copy => Get("SdlMapping_Copy");
     public string SdlMapping_CopyTip => Get("SdlMapping_CopyTip");
     public string SdlMapping_Paste => Get("SdlMapping_Paste");
@@ -6469,7 +6468,6 @@ public class Strings : INotifyPropertyChanged
     public string SdlMapping_MappedAgain_Format => Get("SdlMapping_MappedAgain_Format");
     public string SdlMapping_Applied => Get("SdlMapping_Applied");
     public string SdlMapping_AppliesAtStart => Get("SdlMapping_AppliesAtStart");
-    public string SdlMapping_VariableWins => Get("SdlMapping_VariableWins");
     public string SdlMapping_SdlRefused => Get("SdlMapping_SdlRefused");
     public string SdlMappingDialog_Title => Get("SdlMappingDialog_Title");
     public string SdlMappingDialog_PasteTitle_Format => Get("SdlMappingDialog_PasteTitle_Format");

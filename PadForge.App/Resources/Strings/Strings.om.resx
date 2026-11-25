@@ -2507,7 +2507,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Buufatame {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faayilii PadForge mataa isaa</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Kan kee, dabalame {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Jijjiiramaa SDL_GAMECONTROLLERCONFIG, kan SDL tarree ati dabaltu kamiyyuu ol qabatu</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Walqabsiisa SDL garagalchi</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Walqabsiisa meeshaa akka tarree kuusa odeeffannoo hawaasaatti kilippboordii irra kaa'a, ID meeshaa jalatti checksum fi veershinii isaa zeeroo godhee.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Walqabsiisa SDL maxxansi…</value></data>
@@ -2545,7 +2544,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Caasaa SDL irraa irra deebi'ee walqabsiifame: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Amma hojii irra jira. Tarreen kan kee ti, meeshaa kanaaf immoo dursa qaba.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Akka kan keetti kuufameera. Yeroo injiniin hojjetuu fi meeshaan wal qunnamu hojii irra oola.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Akka kan keetti kuufameera, garuu jijjiiramaan SDL_GAMECONTROLLERCONFIG tarree meeshaa kanaa qaba, kan SDL kan kee ol kaa'u.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tarree sana hin fudhanne. Meeshaa kanaaf wanti jijjiirame hin jiru.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Walqabsiisa SDL maxxansi</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Walqabsiisa SDL kan {0} maxxansi</value></data>

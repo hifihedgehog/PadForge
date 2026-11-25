@@ -2174,7 +2174,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>I daonlod {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fael blong PadForge nomo</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Blong yu, yu putum {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Varibol SDL_GAMECONTROLLERCONFIG, we SDL i putum antap long evri lae we yu putum</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiem SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>I putum mapping blong divaes long klipbod olsem wan lae blong database blong komuniti, aninit long ID blong divaes, wetem jeksam mo vesen blong hem oli kam 0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Pestem SDL Mapping…</value></data>
@@ -2212,7 +2211,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>I mapim bakegen long leaot blong SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>I stap yusum naoia. Lae ia i blong yu mo i winim ol narawan blong divaes ia.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>I kipim olsem blong yu. Bambae i stap yusum taem enjin i ron mo divaes i konekt.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>I kipim olsem blong yu, be varibol SDL_GAMECONTROLLERCONFIG i holem wan lae blong divaes ia, we SDL i kipim antap long blong yu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL i no tekem lae ia. I no gat samting i jenis blong divaes ia.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pestem wan SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pestem wan SDL Mapping blong {0}</value></data>

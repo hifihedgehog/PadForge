@@ -6604,7 +6604,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>下載於 {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 自己的檔案</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>您的，新增於 {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 變數，SDL 會將它置於您新增的任何資料列之上</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>複製 SDL 對應</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>將裝置的對應以社群資料庫資料列的形式放到剪貼簿，使用裝置的 ID，其核對碼和版本設為零。</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>貼上 SDL 對應…</value></data>
@@ -6642,7 +6641,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>已依 SDL 的配置重新對應：{0}。</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>已立即生效。此資料列屬於您，並優先用於這個裝置。</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>已保留為您的資料列。引擎執行且裝置連接後就會生效。</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>已保留為您的資料列，但 SDL_GAMECONTROLLERCONFIG 變數有這個裝置的一個資料列，SDL 會優先採用它而非您的。</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL 沒有接受這個資料列。這個裝置沒有任何變更。</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>貼上 SDL 對應</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>為 {0} 貼上 SDL 對應</value></data>

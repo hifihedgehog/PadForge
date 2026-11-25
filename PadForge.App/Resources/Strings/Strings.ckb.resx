@@ -5915,7 +5915,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>داگیراو {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>فایلی خودی PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>هی تۆ، زیادکراو {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>گۆڕاوی SDL_GAMECONTROLLERCONFIG، کە SDL لە سەرووی هەر ڕیزێکەوە دایدەنێت کە تۆ زیادی دەکەیت</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>لەبەرگرتنەوەی نەخشەی SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>نەخشەی ئامێرەکە وەک ڕیزێکی بنکەدراوەی کۆمەڵگە دەخاتە سەر کلیپبۆرد، لە ژێر ناسنامەی ئامێرەکە بە سفرکردنەوەی checksum و وەشانەکەی.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>لکاندنی نەخشەی SDL…</value></data>
@@ -5953,7 +5952,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>دووبارە لە ڕێکخستنی SDL ەوە بەسترایەوە: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ئێستا بەکاردێت. ڕیزەکە هی تۆیە و بۆ ئەم ئامێرە لە پێشترە.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>وەک هی تۆ هەڵگیرا. کاتێک بزوێنەر کار دەکات و ئامێرەکە پەیوەستە بەکاردێت.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>وەک هی تۆ هەڵگیرا، بەڵام گۆڕاوی SDL_GAMECONTROLLERCONFIG ڕیزێکی بۆ ئەم ئامێرە تێدایە، کە SDL لە جیاتی هی تۆ دەیهێڵێتەوە.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ڕیزەکەی وەرنەگرت. هیچ شتێک بۆ ئەم ئامێرە نەگۆڕا.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>لکاندنی نەخشەیەکی SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>لکاندنی نەخشەیەکی SDL بۆ {0}</value></data>

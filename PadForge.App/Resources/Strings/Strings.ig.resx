@@ -1816,7 +1816,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E budatara {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faịlụ nke PadForge n'onwe ya</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Nke gị, etinyere {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variable SDL_GAMECONTROLLERCONFIG, nke SDL na-ebuli karịa ahịrị ọ bụla ị tinyere</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Detuo Mapping SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Na-etinye mapping ngwaọrụ ahụ na clipboard dị ka ahịrị nke ọdụ data obodo, n'okpuru ID ngwaọrụ ahụ, na checksum na version ya etinyere na efu.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Mado Mapping SDL…</value></data>
@@ -1854,7 +1853,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Emegharịrị mapping site na layout SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ọ nọ n'ọrụ ugbu a. Ahịrị ahụ bụ nke gị ma na-ebuli maka ngwaọrụ a.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Edebere ya dị ka nke gị. Ọ ga-anọ n'ọrụ ozugbo engine na-agba ma jikọọ ngwaọrụ ahụ.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Edebere ya dị ka nke gị, mana variable SDL_GAMECONTROLLERCONFIG nwere ahịrị maka ngwaọrụ a, nke SDL na-edebe karịa nke gị.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL anaraghị ahịrị ahụ. Ọ dịghị ihe gbanwere maka ngwaọrụ a.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Mado Mapping SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Mado Mapping SDL maka {0}</value></data>

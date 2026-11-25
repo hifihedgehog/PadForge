@@ -6604,7 +6604,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Đã tải {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Tệp riêng của PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Của bạn, đã thêm {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Biến SDL_GAMECONTROLLERCONFIG, mà SDL đặt trên mọi hàng bạn thêm</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Sao chép ánh xạ SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Đặt ánh xạ của thiết bị lên bảng nhớ tạm dưới dạng một hàng của cơ sở dữ liệu cộng đồng, theo ID của thiết bị với checksum và phiên bản được đặt về không.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Dán ánh xạ SDL…</value></data>
@@ -6642,7 +6641,6 @@ Bạn có muốn PadForge gỡ cài đặt chúng ngay bây giờ không? Việc
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Đã ánh xạ lại từ bố cục của SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Đang được dùng. Hàng này là của bạn và thắng cho thiết bị này.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Đã giữ làm của bạn. Nó được dùng khi bộ máy chạy và thiết bị được kết nối.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Đã giữ làm của bạn, nhưng biến SDL_GAMECONTROLLERCONFIG chứa một hàng cho thiết bị này, mà SDL ưu tiên hơn hàng của bạn.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL không nhận hàng này. Không có gì thay đổi cho thiết bị này.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Dán một ánh xạ SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Dán một ánh xạ SDL cho {0}</value></data>

@@ -5853,7 +5853,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Imepakuliwa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faili ya PadForge yenyewe</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Yako, imeongezwa {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Kigeu cha SDL_GAMECONTROLLERCONFIG, ambacho SDL huweka juu ya safu yoyote unayoongeza</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Nakili Ramani ya SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Huweka ramani ya kifaa kwenye ubao wa kunakili kama safu ya hifadhidata ya jamii, chini ya ID ya kifaa ikiwa na checksum na toleo vimewekwa sifuri.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Bandika Ramani ya SDL…</value></data>
@@ -5891,7 +5890,6 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Imeramaniwa tena kutoka mpangilio wa SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Inatumika sasa. Safu ni yako na inashinda kwa kifaa hiki.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Imehifadhiwa kama yako. Inatumika injini ikiendesha na kifaa kikiwa kimeunganishwa.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Imehifadhiwa kama yako, lakini kigeu cha SDL_GAMECONTROLLERCONFIG kina safu ya kifaa hiki, ambayo SDL huiweka juu ya yako.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL haikukubali safu. Hakuna kilichobadilika kwa kifaa hiki.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Bandika Ramani ya SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Bandika Ramani ya SDL kwa {0}</value></data>

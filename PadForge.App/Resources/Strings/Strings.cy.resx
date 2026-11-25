@@ -5886,7 +5886,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lawrlwythwyd {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ffeil PadForge ei hun</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Eich un chi, ychwanegwyd {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Y newidyn SDL_GAMECONTROLLERCONFIG, y mae SDL yn ei ddal uwchlaw unrhyw res a ychwanegwch</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Copïo Mapiad SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Yn rhoi mapiad y ddyfais ar y clipfwrdd fel rhes o gronfa ddata'r gymuned, o dan ID y ddyfais gyda'i gwirsym a'i fersiwn wedi'u sero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Gludo Mapiad SDL…</value></data>
@@ -5924,7 +5923,6 @@ Hoffech chi i PadForge eu dadosod nawr? Mae hyn angen caniatâd gweinyddwr ac ef
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Wedi'i fapio eto o gynllun SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Yn cael ei defnyddio nawr. Eich rhes chi yw hi ac mae'n drech ar gyfer y ddyfais hon.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wedi'i chadw fel eich un chi. Mae'n cael ei defnyddio unwaith y bydd yr injan yn rhedeg a'r ddyfais wedi cysylltu.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Wedi'i chadw fel eich un chi, ond mae'r newidyn SDL_GAMECONTROLLERCONFIG yn dal rhes ar gyfer y ddyfais hon, y mae SDL yn ei chadw dros eich un chi.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Ni dderbyniodd SDL y rhes. Ni newidiodd dim ar gyfer y ddyfais hon.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Gludo Mapiad SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Gludo Mapiad SDL ar gyfer {0}</value></data>

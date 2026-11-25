@@ -6604,7 +6604,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ladattu {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-sovelluksen oma tiedosto</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Sinun, lisätty {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG-muuttuja, jonka SDL asettaa lisäämiesi rivien edelle</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopioi SDL-määritys</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Asettaa laitteen määrityksen leikepöydälle yhteisön tietokannan rivinä laitteen tunnisteen alle, tarkistussumma ja versio nollattuina.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Liitä SDL-määritys…</value></data>
@@ -6642,7 +6641,6 @@ Haluatko, että PadForge poistaa niiden asennuksen nyt? Tämä vaatii järjestel
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Määritetty uudelleen SDL:n asettelusta: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Käytössä nyt. Rivi on sinun ja ohittaa muut tälle laitteelle.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Säilytetty omanasi. Se on käytössä, kun moottori on käynnissä ja laite yhdistetty.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Säilytetty omanasi, mutta SDL_GAMECONTROLLERCONFIG-muuttuja sisältää rivin tälle laitteelle, jonka SDL pitää omasi edellä.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ei ottanut riviä. Tälle laitteelle ei muuttunut mikään.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Liitä SDL-määritys</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Liitä SDL-määritys laitteelle {0}</value></data>

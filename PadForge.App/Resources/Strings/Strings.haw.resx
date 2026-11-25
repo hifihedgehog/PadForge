@@ -1494,7 +1494,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ua hoʻoiho ʻia {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ka faila ponoʻī o PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Nou, i hoʻohui ʻia {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ka loli SDL_GAMECONTROLLERCONFIG, ka mea a SDL e mālama ai ma luna o nā lālani āu e hoʻohui ai</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kope i ka hoʻonohonoho pihi SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Kau i ka hoʻonohonoho pihi o ka hāmeʻa ma ka papa kope ma ke ʻano he lālani o ka waihona ʻikepili kaiāulu, ma lalo o ka ID o ka hāmeʻa me kona checksum a me kona mana i hoʻonoho ʻia i 0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Hoʻopili i ka hoʻonohonoho pihi SDL…</value></data>
@@ -1532,7 +1531,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Ua hoʻonohonoho hou ʻia mai ka hoʻolālā o SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ke hoʻohana ʻia nei. Nou ka lālani a lanakila ia no kēia hāmeʻa.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Mālama ʻia nou. Hoʻohana ʻia ia ke holo ka ʻenekini a pili ka hāmeʻa.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Mālama ʻia nou, akā paʻa ka loli SDL_GAMECONTROLLERCONFIG i kekahi lālani no kēia hāmeʻa, ka mea a SDL e mālama ai ma mua o kāu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>ʻAʻole i lawe ʻo SDL i ka lālani. ʻAʻohe mea i loli no kēia hāmeʻa.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Hoʻopili i kekahi hoʻonohonoho pihi SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Hoʻopili i kekahi hoʻonohonoho pihi SDL no {0}</value></data>

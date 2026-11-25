@@ -1699,7 +1699,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Bukod a file ti PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Kukuam, nainayon {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ti variable a SDL_GAMECONTROLLERCONFIG, nga ipangpangruna ti SDL ngem iti aniaman a linia nga inayonmo</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiaen ti SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ikabil ti mapping ti device iti clipboard a kas linia ti database ti komunidad, iti baba ti ID ti device a nagbalin a zero ti checksum ken bersionna.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>I-paste ti SDL Mapping…</value></data>
@@ -1737,7 +1736,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Na-map manen manipud iti layout ti SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Mausar ita. Kukuam ti linia ken isu ti maipangpangruna para iti daytoy a device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Naidulin a kas kukuam. Mausar daytoy no agtartaray ti engine ken nakakonekta ti device.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Naidulin a kas kukuam, ngem adda linia para iti daytoy a device iti variable a SDL_GAMECONTROLLERCONFIG, nga ipangpangruna ti SDL ngem iti kukuam.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Saan nga inawat ti SDL ti linia. Awan ti nagbaliw para iti daytoy a device.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>I-paste ti maysa nga SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>I-paste ti SDL Mapping para iti {0}</value></data>

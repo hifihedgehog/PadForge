@@ -5912,7 +5912,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} တွင် ဒေါင်းလုဒ်လုပ်ခဲ့သည်</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ၏ ကိုယ်ပိုင်ဖိုင်</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>သင့်ဟာ၊ {0} တွင် ထည့်ခဲ့သည်</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG variable၊ SDL က သင် ထည့်သော မည်သည့်အတန်းထက်မဆို ဦးစားပေးသည်</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL မက်ပင်း ကူးယူရန်</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>စက်ပစ္စည်း၏ မက်ပင်းကို အသိုင်းအဝိုင်း ဒေတာဘေ့စ်၏ အတန်းတစ်ခုအဖြစ် စက်ပစ္စည်း၏ ID အောက်တွင် checksum နှင့် ဗားရှင်းကို သုညထား၍ clipboard ပေါ် တင်သည်။</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL မက်ပင်း ကူးထည့်ရန်…</value></data>
@@ -5950,7 +5949,6 @@ PadForge က ၎င်းတို့ကို ယခုပင် ဖြုတ�
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL ၏ အပြင်အဆင်မှ ထပ်မံ မက်ပင်းလုပ်ပြီး: {0}။</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ယခု အသုံးပြုနေသည်။ အတန်းသည် သင့်ဟာ ဖြစ်ပြီး ဤစက်ပစ္စည်းအတွက် ဦးစားပေးသည်။</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>သင့်ဟာအဖြစ် ထားပြီးပါပြီ။ အင်ဂျင် လည်ပတ်ပြီး စက်ပစ္စည်း ချိတ်ဆက်သည်နှင့် အသုံးပြုသည်။</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>သင့်ဟာအဖြစ် ထားပြီးပါပြီ၊ သို့သော် SDL_GAMECONTROLLERCONFIG variable တွင် ဤစက်ပစ္စည်းအတွက် အတန်းတစ်ခု ရှိပြီး SDL က ၎င်းကို သင့်ဟာထက် ဦးစားပေးသည်။</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL က အတန်းကို လက်မခံပါ။ ဤစက်ပစ္စည်းအတွက် ဘာမျှ မပြောင်းလဲပါ။</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL မက်ပင်း ကူးထည့်ရန်</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} အတွက် SDL မက်ပင်း ကူးထည့်ရန်</value></data>

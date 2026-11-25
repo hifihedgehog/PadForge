@@ -6604,7 +6604,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Спампавана {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Уласны файл PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ваш, дададзены {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Зменная SDL_GAMECONTROLLERCONFIG, якую SDL трымае вышэй за любы дададзены вамі радок</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Скапіраваць супастаўленне SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Змяшчае супастаўленне прылады ў буфер абмену як радок базы даных супольнасці, пад ID прылады з абнуленымі кантрольнай сумай і версіяй.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Уставіць супастаўленне SDL…</value></data>
@@ -6642,7 +6641,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Супастаўлена зноў па раскладцы SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Выкарыстоўваецца зараз. Радок ваш і мае перавагу для гэтай прылады.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Захавана як ваш. Ён выкарыстоўваецца, калі рухавік працуе і прылада падключана.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Захавана як ваш, але зменная SDL_GAMECONTROLLERCONFIG мае радок для гэтай прылады, які SDL трымае вышэй за ваш.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL не прыняў радок. Для гэтай прылады нічога не змянілася.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Уставіць супастаўленне SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Уставіць супастаўленне SDL для {0}</value></data>

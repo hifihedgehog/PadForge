@@ -5918,7 +5918,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Atsisiųsta {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>„PadForge“ savasis failas</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Jūsų, pridėta {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Kintamasis SDL_GAMECONTROLLERCONFIG, kurį SDL laiko aukščiau už bet kurią jūsų pridėtą eilutę</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopijuoti SDL susiejimą</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Padeda įrenginio susiejimą į mainų sritį kaip bendruomenės duomenų bazės eilutę, su įrenginio ID, kurio kontrolinė suma ir versija nunulintos.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Įklijuoti SDL susiejimą…</value></data>
@@ -5956,7 +5955,6 @@ Ar norite, kad „PadForge“ jas dabar pašalintų? Tam reikia administratoriau
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Susieta iš naujo pagal SDL išdėstymą: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Naudojama dabar. Eilutė yra jūsų ir šiam įrenginiui turi pirmenybę.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Išsaugota kaip jūsų. Ji naudojama, kai veikia variklis ir įrenginys prijungtas.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Išsaugota kaip jūsų, bet kintamasis SDL_GAMECONTROLLERCONFIG turi šio įrenginio eilutę, kurią SDL laiko aukščiau už jūsų.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL eilutės nepriėmė. Šiam įrenginiui niekas nepasikeitė.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Įklijuoti SDL susiejimą</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Įklijuoti SDL susiejimą įrenginiui {0}</value></data>

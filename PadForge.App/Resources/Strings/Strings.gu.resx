@@ -5913,7 +5913,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ડાઉનલોડ કર્યું {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ની પોતાની ફાઇલ</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>તમારી, ઉમેરી {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG વેરિએબલ, જેને SDL તમે ઉમેરેલી કોઈ પણ પંક્તિથી ઉપર રાખે છે</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL મેપિંગ કૉપિ કરો</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>ઉપકરણના મેપિંગને સમુદાય ડેટાબેઝની પંક્તિ તરીકે ક્લિપબોર્ડ પર મૂકે છે, ઉપકરણના ID હેઠળ, તેના ચેકસમ અને સંસ્કરણ શૂન્ય કરીને.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL મેપિંગ પેસ્ટ કરો…</value></data>
@@ -5951,7 +5950,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL ના લેઆઉટ પરથી ફરી મેપ કર્યું: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>હમણાં વપરાશમાં છે. પંક્તિ તમારી છે અને આ ઉપકરણ માટે અગ્રતા મેળવે છે.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>તમારી તરીકે રાખી. એન્જિન ચાલે અને ઉપકરણ કનેક્ટ થાય ત્યારે તે વપરાશમાં આવે છે.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>તમારી તરીકે રાખી, પણ SDL_GAMECONTROLLERCONFIG વેરિએબલ આ ઉપકરણ માટે એક પંક્તિ ધરાવે છે, જેને SDL તમારી કરતાં આગળ રાખે છે.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL એ પંક્તિ લીધી નહીં. આ ઉપકરણ માટે કંઈ બદલાયું નથી.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL મેપિંગ પેસ્ટ કરો</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} માટે SDL મેપિંગ પેસ્ટ કરો</value></data>

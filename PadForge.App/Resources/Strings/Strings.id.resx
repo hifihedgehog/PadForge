@@ -6604,7 +6604,6 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Diunduh {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>File milik PadForge sendiri</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Milik Anda, ditambahkan {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabel SDL_GAMECONTROLLERCONFIG, yang dipegang SDL di atas baris mana pun yang Anda tambahkan</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Salin pemetaan SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Menaruh pemetaan perangkat di clipboard sebagai baris database komunitas, di bawah ID perangkat dengan checksum dan versi dinolkan.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Tempel pemetaan SDL…</value></data>
@@ -6642,7 +6641,6 @@ Apakah Anda ingin PadForge menghapus instalannya sekarang? Tindakan ini memerluk
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Dipetakan ulang dari tata letak SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Dipakai sekarang. Baris itu milik Anda dan diutamakan untuk perangkat ini.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Disimpan sebagai milik Anda. Dipakai setelah mesin berjalan dan perangkat tersambung.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Disimpan sebagai milik Anda, tetapi variabel SDL_GAMECONTROLLERCONFIG menyimpan baris untuk perangkat ini, yang diutamakan SDL daripada baris Anda.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tidak menerima baris itu. Tidak ada yang berubah untuk perangkat ini.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Tempel pemetaan SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Tempel pemetaan SDL untuk {0}</value></data>

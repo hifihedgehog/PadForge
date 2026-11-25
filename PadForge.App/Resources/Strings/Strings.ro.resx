@@ -6604,7 +6604,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Descărcat {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fișierul propriu al PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Al dumneavoastră, adăugat {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabila SDL_GAMECONTROLLERCONFIG, pe care SDL o ține deasupra oricărui rând adăugat de dumneavoastră</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Copiere mapare SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Pune pe clipboard maparea dispozitivului ca rând al bazei de date comunitare, sub ID-ul dispozitivului, cu suma de control și versiunea aduse la zero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Lipire mapare SDL…</value></data>
@@ -6642,7 +6641,6 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mapat din nou din aranjamentul SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>În uz acum. Rândul este al dumneavoastră și are prioritate pentru acest dispozitiv.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Păstrat ca al dumneavoastră. Este în uz după ce rulează motorul și dispozitivul este conectat.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Păstrat ca al dumneavoastră, dar variabila SDL_GAMECONTROLLERCONFIG conține un rând pentru acest dispozitiv, pe care SDL îl ține deasupra al dumneavoastră.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nu a preluat rândul. Nimic nu s-a schimbat pentru acest dispozitiv.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Lipire mapare SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Lipire mapare SDL pentru {0}</value></data>

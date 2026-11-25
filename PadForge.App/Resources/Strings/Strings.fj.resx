@@ -917,7 +917,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lavei mai ena {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Na faile ni PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Nomu, vakuri ena {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Na variable SDL_GAMECONTROLLERCONFIG, e vakaliuca na SDL mai na laini kece o vakuria</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopitaka na SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Biuta na mapping ni iyaya ena clipboard me vaka e dua na laini ni community database, ena ruku ni ID ni iyaya ka sa vakaoqo na checksum kei na version.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Vakotora na SDL Mapping…</value></data>
@@ -955,7 +954,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Sa map tale mai na ituvatuva ni SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Sa vakayagataki tiko qo. Na laini e nomu ka liu me baleta na iyaya oqo.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Sa maroroi me nomu. Ena vakayagataki ni sa cici na engine ka semati na iyaya.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Sa maroroi me nomu, ia e tu ena variable SDL_GAMECONTROLLERCONFIG e dua na laini me baleta na iyaya oqo, ka vakaliuca na SDL mai na nomu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>E sega ni taura na SDL na laini. E sega ni dua na ka e veisau me baleta na iyaya oqo.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Vakotora e dua na SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Vakotora e dua na SDL Mapping me baleta na {0}</value></data>

@@ -2501,7 +2501,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Daunlod long {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fail bilong PadForge yet</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Bilong yu, i putim long {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabol SDL_GAMECONTROLLERCONFIG, we SDL i holim antap long olgeta lain yu putim</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopim Mep bilong SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>I putim mep bilong masin long klipbod olsem lain bilong data bilong komuniti, aninit long ID bilong masin, na checksum na vesen i kamap 0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Pestim Mep bilong SDL…</value></data>
@@ -2539,7 +2538,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>I mepim gen long leaut bilong SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>I wok nau. Lain i bilong yu na i winim ol narapela long dispela masin.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>I holim olsem bilong yu. Em i wok taim injin i ran na masin i konek.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>I holim olsem bilong yu, tasol variabol SDL_GAMECONTROLLERCONFIG i holim lain bilong dispela masin, na SDL i holim dispela antap long bilong yu.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL i no kisim lain. Dispela masin i no senis.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pestim Mep bilong SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pestim Mep bilong SDL long {0}</value></data>

@@ -2134,7 +2134,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Kaugalingon nga file sang PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Imo, gindugang {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ang variable nga SDL_GAMECONTROLLERCONFIG, nga ginabutang sang SDL sa ibabaw sang bisan ano nga row nga idugang mo</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopyaha ang mapping sang SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ginabutang ang mapping sang device sa clipboard subong row sang community database, sa idalom sang ID sang device nga gin-zero ang checksum kag bersyon sini.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>I-paste ang mapping sang SDL…</value></data>
@@ -2172,7 +2171,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Gin-map liwat halin sa layout sang SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ginagamit na subong. Imo ang row kag ini ang ginasunod para sa sini nga device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Gintipig subong imo. Gamiton ini kon nagadalagan ang engine kag naka-connect ang device.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Gintipig subong imo, pero ang variable nga SDL_GAMECONTROLLERCONFIG may row para sa sini nga device, nga ginauna sang SDL sang sa imo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Wala ginbaton sang SDL ang row. Wala sing nagbaylo para sa sini nga device.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>I-paste ang mapping sang SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>I-paste ang mapping sang SDL para sa {0}</value></data>

@@ -2331,7 +2331,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Wamanuwe ku wa {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Dosiye bwite ya PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Uwawe, wongeweho ku wa {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Impinduka SDL_GAMECONTROLLERCONFIG, SDL ishyira hejuru y'umurongo wose wongeraho</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Koporora Ihuzwa rya SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ishyira ihuzwa ry'igikoresho kuri clipboard nk'umurongo w'ububiko bw'amakuru bw'umuryango, munsi ya ID y'igikoresho, checksum na verisiyo byayo bigizwe zeru.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Omeka Ihuzwa rya SDL…</value></data>
@@ -2369,7 +2368,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Byongeye guhuzwa bihereye ku miterere ya SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Birakoreshwa ubu. Umurongo ni uwawe kandi ni wo ukurikizwa kuri iki gikoresho.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Wabitswe nk'uwawe. Urakoreshwa iyo moteri ikora kandi igikoresho gihujwe.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Wabitswe nk'uwawe, ariko impinduka SDL_GAMECONTROLLERCONFIG ifite umurongo w'iki gikoresho, SDL ishyira imbere y'uwawe.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ntiyakiriye umurongo. Nta cyahindutse kuri iki gikoresho.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Omeka Ihuzwa rya SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Omeka Ihuzwa rya SDL kuri {0}</value></data>

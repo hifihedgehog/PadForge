@@ -6559,7 +6559,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} にダウンロード</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 独自のファイル</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>自分の行、{0} に追加</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 変数。SDL は、追加した行よりこちらを優先します</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL マッピングをコピー</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>デバイスのマッピングを、チェックサムとバージョンをゼロにしたデバイス ID の下で、コミュニティデータベースの行としてクリップボードに置きます。</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL マッピングを貼り付け…</value></data>
@@ -6597,7 +6596,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL のレイアウトから再マッピングしました: {0}。</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>使用中です。この行は自分のもので、このデバイスでは優先されます。</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>自分の行として保持しました。エンジンが実行され、デバイスが接続されると使われます。</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>自分の行として保持しましたが、SDL_GAMECONTROLLERCONFIG 変数にこのデバイスの行があり、SDL はそちらを優先します。</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL は行を受け付けませんでした。このデバイスでは何も変わっていません。</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL マッピングを貼り付け</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} 用の SDL マッピングを貼り付け</value></data>

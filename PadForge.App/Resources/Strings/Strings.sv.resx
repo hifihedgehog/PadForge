@@ -6604,7 +6604,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Nedladdad {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Egen fil i PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Din, tillagd {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabeln SDL_GAMECONTROLLERCONFIG, som SDL håller över varje rad du lägger till</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiera SDL-mappning</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Lägger enhetens mappning på urklipp som en rad i gemenskapens databas, under enhetens ID med dess kontrollsumma och version nollade.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Klistra in SDL-mappning…</value></data>
@@ -6642,7 +6641,6 @@ Vill du att PadForge avinstallerar dem nu? Detta kräver förhöjd behörighet o
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mappad igen från SDL-layouten: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Används nu. Raden är din och gäller för den här enheten.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Behållen som din. Den används när motorn körs och enheten är ansluten.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Behållen som din, men variabeln SDL_GAMECONTROLLERCONFIG har en rad för den här enheten, som SDL håller över din.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tog inte raden. Inget ändrades för den här enheten.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Klistra in en SDL-mappning</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Klistra in en SDL-mappning för {0}</value></data>

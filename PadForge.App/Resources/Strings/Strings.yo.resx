@@ -2468,7 +2468,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A gbà á wálẹ̀ ní {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fáìlì PadForge fúnra rẹ̀</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Tìrẹ, a fi kún un ní {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Àyípadà SDL_GAMECONTROLLERCONFIG, tí SDL fi ṣáájú ìlà èyíkéyìí tí o fi kún</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Ṣàdàkọ Ìsopọ̀ SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ó ń fi ìsopọ̀ ẹ̀rọ náà sínú àpò ìdàkọ bí ìlà kan ti ibi ìpamọ́ àwùjọ, lábẹ́ ID ẹ̀rọ náà pẹ̀lú checksum àti ẹ̀yà rẹ̀ tí a sọ di òdo.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Lẹ̀ Ìsopọ̀ SDL…</value></data>
@@ -2506,7 +2505,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>A tún so pọ̀ láti ìṣètò SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ó ń ṣiṣẹ́ báyìí. Ìlà náà jẹ́ tìrẹ, ó sì borí fún ẹ̀rọ yìí.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>A pa á mọ́ bí tìrẹ. Ó máa ṣiṣẹ́ nígbà tí ẹ́ńjìnnì bá ń ṣiṣẹ́ tí ẹ̀rọ náà sì sopọ̀.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>A pa á mọ́ bí tìrẹ, ṣùgbọ́n àyípadà SDL_GAMECONTROLLERCONFIG ní ìlà kan fún ẹ̀rọ yìí, èyí tí SDL fi ṣáájú tìrẹ.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL kò gba ìlà náà. Kò sí ohun tí ó yípadà fún ẹ̀rọ yìí.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Lẹ̀ Ìsopọ̀ SDL kan</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Lẹ̀ Ìsopọ̀ SDL kan fún {0}</value></data>

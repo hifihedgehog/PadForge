@@ -3331,7 +3331,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Kulandwe ngo-{0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ifayela le-PadForge uqobo</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Okwakho, kwengezwe ngo-{0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Okuguquguqukayo kwe-SDL_GAMECONTROLLERCONFIG, i-SDL ekubeka ngaphezu kwanoma imuphi umugqa owengezayo</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopisha ukumaphwa kwe-SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ibeka ukumaphwa kwedivayisi kubhodi lokunamathisela njengomugqa wesizindalwazi somphakathi, ngaphansi kwe-ID yedivayisi ene-checksum nenguqulo yayo kwenziwe u-0.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Namathisela ukumaphwa kwe-SDL…</value></data>
@@ -3369,7 +3368,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kumephwe futhi kusuka esakhiweni se-SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Kuyasetshenziswa manje. Umugqa ungowakho futhi uhamba phambili kule divayisi.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kugcinwe njengokwakho. Kuzosetshenziswa uma injini isebenza futhi idivayisi ixhunyiwe.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kugcinwe njengokwakho, kodwa okuguquguqukayo kwe-SDL_GAMECONTROLLERCONFIG kunomugqa wale divayisi, i-SDL ewugcina ngaphezu kwakho.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>I-SDL ayiwamukelanga umugqa. Akukho okushintshile kule divayisi.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Namathisela ukumaphwa kwe-SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Namathisela ukumaphwa kwe-SDL kwe-{0}</value></data>

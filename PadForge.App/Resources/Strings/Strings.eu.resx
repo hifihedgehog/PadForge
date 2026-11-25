@@ -5915,7 +5915,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Deskargatuta: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ren berezko fitxategia</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Zurea, gehitua: {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG aldagaia, SDL-k gehitzen duzun edozein errenkadaren gainetik duena</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiatu SDL mapaketa</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Gailuaren mapaketa arbelean jartzen du komunitatearen datu-baseko errenkada gisa, gailuaren IDarekin, bere checksuma eta bertsioa zeroan jarrita.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Itsatsi SDL mapaketa…</value></data>
@@ -5953,7 +5952,6 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-ren diseinutik berriro mapatuta: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Orain erabiltzen da. Errenkada zurea da eta nagusitzen da gailu honetarako.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Zuretzat gordeta. Motorra martxan dagoenean eta gailua konektatuta dagoenean erabiltzen da.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Zuretzat gordeta, baina SDL_GAMECONTROLLERCONFIG aldagaiak gailu honetarako errenkada bat du, eta SDL-k hura mantentzen du zurearen gainetik.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-k ez du errenkada hartu. Ez da ezer aldatu gailu honetarako.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Itsatsi SDL mapaketa bat</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Itsatsi SDL mapaketa bat {0} gailuarentzat</value></data>

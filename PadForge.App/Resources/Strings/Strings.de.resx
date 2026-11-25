@@ -6559,7 +6559,6 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Heruntergeladen {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Die eigene Datei von PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ihre, hinzugefügt {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Die Variable SDL_GAMECONTROLLERCONFIG, die SDL über jede von Ihnen hinzugefügte Zeile stellt</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL-Zuordnung kopieren</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Legt die Zuordnung des Geräts als Zeile der Community-Datenbank in die Zwischenablage, unter der ID des Geräts, mit Prüfsumme und Version auf null gesetzt.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL-Zuordnung einfügen…</value></data>
@@ -6597,7 +6596,6 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Aus dem Layout von SDL neu zugeordnet: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Jetzt in Gebrauch. Die Zeile ist Ihre und hat für dieses Gerät Vorrang.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Als Ihre behalten. Sie ist in Gebrauch, sobald die Engine läuft und das Gerät verbunden ist.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Als Ihre behalten, aber die Variable SDL_GAMECONTROLLERCONFIG enthält eine Zeile für dieses Gerät, die SDL über Ihrer behält.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL hat die Zeile nicht angenommen. Für dieses Gerät hat sich nichts geändert.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Eine SDL-Zuordnung einfügen</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Eine SDL-Zuordnung für {0} einfügen</value></data>

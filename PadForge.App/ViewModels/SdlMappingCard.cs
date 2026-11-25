@@ -328,7 +328,6 @@ namespace PadForge.ViewModels
             SdlApplyResult.InUse => Strings.Instance.SdlMapping_Applied,
             SdlApplyResult.InPadForge => Strings.Instance.SdlMapping_Applied,
             SdlApplyResult.AtStart => Strings.Instance.SdlMapping_AppliesAtStart,
-            SdlApplyResult.VariableWins => Strings.Instance.SdlMapping_VariableWins,
             _ => Strings.Instance.SdlMapping_SdlRefused,
         };
     }

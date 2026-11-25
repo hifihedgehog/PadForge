@@ -6604,7 +6604,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Изтеглено {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Собственият файл на PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ваш, добавен {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Променливата SDL_GAMECONTROLLERCONFIG, която SDL държи над всеки ред, който добавите</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Копирай SDL съпоставянето</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Поставя съпоставянето на устройството в клипборда като ред от общностната база данни, под ID на устройството, с нулирани контролна сума и версия.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Постави SDL съпоставяне…</value></data>
@@ -6642,7 +6641,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Съпоставено отново от подредбата на SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>В употреба сега. Редът е ваш и има предимство за това устройство.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Запазен като ваш. Влиза в употреба, щом двигателят работи и устройството е свързано.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Запазен като ваш, но променливата SDL_GAMECONTROLLERCONFIG държи ред за това устройство, който SDL предпочита пред вашия.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL не прие реда. Нищо не се промени за това устройство.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Поставяне на SDL съпоставяне</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Поставяне на SDL съпоставяне за {0}</value></data>

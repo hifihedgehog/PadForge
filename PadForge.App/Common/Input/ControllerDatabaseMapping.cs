@@ -305,8 +305,12 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Whether SDL reads a device through a row of this ID: the two IDs
-        /// agree once both checksums are cleared, and either their versions
-        /// agree or the row's is zero (SDL_PrivateFindGamepadMappingForGUID).
+        /// agree once both checksums are cleared, either their versions agree
+        /// or the row's is zero (SDL_PrivateFindGamepadMappingForGUID), and a
+        /// row whose ID names a checksum names the device's. SDL writes the
+        /// ID's checksum into the row as it adds it
+        /// (SDL_PrivateAddMappingForGUID) and passes over a row whose checksum
+        /// is not the device's (SDL_PrivateMatchGamepadMappingForGUID).
         /// </summary>
         internal static bool Maps(string rowGuid, string deviceGuid)
         {
@@ -323,9 +327,23 @@ namespace PadForge.Common.Input
                 }
                 if (r != d) return false;
             }
+            ushort checksum = ChecksumOf(rowGuid);
+            if (checksum != 0 && checksum != ChecksumOf(deviceGuid)) return false;
             if (rowVersionZero) return true;
             return string.Compare(rowGuid, 24, deviceGuid, 24, 4, StringComparison.OrdinalIgnoreCase) == 0;
         }
+
+        /// <summary>The name checksum an ID of 32 hex digits carries: its
+        /// second and third bytes, little-endian, as SDL_GetJoystickGUIDInfo
+        /// reads them. Zero for any other text.</summary>
+        internal static ushort ChecksumOf(string id)
+        {
+            if (id == null || id.Length != 32) return 0;
+            return HexByte(id, 4, out int low) && HexByte(id, 6, out int high) ? (ushort)(low | (high << 8)) : (ushort)0;
+        }
+
+        private static bool HexByte(string id, int at, out int value) =>
+            int.TryParse(id.AsSpan(at, 2), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out value);
 
         /// <summary>The vendor and product an ID of SDL's standard form
         /// carries, little-endian at hex digits 8 and 16, or false.</summary>

@@ -5879,7 +5879,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>බාගත කළේ {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge හි තමන්ගේම ගොනුව</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>ඔබේ, එක් කළේ {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG විචල්‍යය, SDL එය ඔබ එක් කරන ඕනෑම පේළියකට වඩා ඉහළින් තබයි</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL සිතියම්ගත කිරීම පිටපත් කරන්න</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>උපාංගයේ සිතියම්ගත කිරීම, එහි චෙක්සම් සහ අනුවාදය බිංදුවට සකසා, උපාංගයේ ID යටතේ ප්‍රජා දත්ත සමුදායේ පේළියක් ලෙස ක්ලිප්බෝඩයට දමයි.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL සිතියම්ගත කිරීම අලවන්න…</value></data>
@@ -5917,7 +5916,6 @@ PadForge විසින් ඒවා දැන් අස්ථාපනය ක�
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL හි පිරිසැලසුමෙන් නැවත සිතියම්ගත කළා: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>දැන් භාවිතයේ ඇත. පේළිය ඔබේ වන අතර මෙම උපාංගය සඳහා එයට ප්‍රමුඛතාව ඇත.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>ඔබේ එක ලෙස තබා ගත්තා. එන්ජිම ධාවනය වී උපාංගය සම්බන්ධ වූ පසු එය භාවිතයට පැමිණේ.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>ඔබේ එක ලෙස තබා ගත්තා, නමුත් SDL_GAMECONTROLLERCONFIG විචල්‍යයේ මෙම උපාංගය සඳහා පේළියක් ඇති අතර, SDL එය ඔබේ එකට වඩා ඉහළින් තබයි.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL පේළිය පිළිගත්තේ නැත. මෙම උපාංගය සඳහා කිසිවක් වෙනස් නොවීය.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL සිතියම්ගත කිරීමක් අලවන්න</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} සඳහා SDL සිතියම්ගත කිරීමක් අලවන්න</value></data>

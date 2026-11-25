@@ -6604,7 +6604,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Sótt {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Eigin skrá PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Þín, bætt við {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Breytan SDL_GAMECONTROLLERCONFIG, sem SDL setur ofar öllum línum sem þú bætir við</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Afrita SDL-vörpun</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Setur vörpun tækisins á klippiborðið sem línu í samfélagsgagnagrunninum, undir auðkenni tækisins með prófsummu og útgáfu núllstillt.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Líma SDL-vörpun…</value></data>
@@ -6642,7 +6641,6 @@ Viltu að PadForge fjarlægi þá núna? Þetta krefst stjórnandaréttinda og g
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Varpað aftur út frá útliti SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Í notkun núna. Línan er þín og ræður fyrir þetta tæki.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Geymt sem þitt. Það er í notkun þegar vélin er í gangi og tækið tengt.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Geymt sem þitt, en breytan SDL_GAMECONTROLLERCONFIG geymir línu fyrir þetta tæki, sem SDL setur ofar þinni.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tók ekki línuna. Ekkert breyttist fyrir þetta tæki.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Líma SDL-vörpun</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Líma SDL-vörpun fyrir {0}</value></data>

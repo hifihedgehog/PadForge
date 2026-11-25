@@ -46,6 +46,9 @@ namespace PadForge.Common.Input
         /// </summary>
         private string OfferControllerDatabaseRow(uint instanceId)
         {
+            // A row of the user's goes to SDL under the joystick's own ID
+            // first, where SDL would read it through another row (#600).
+            GiveCopy(instanceId);
             var section = SettingsManager.ControllerDatabase;
             if (section == null || section.NewRows == 0) return null;
             try
@@ -75,6 +78,35 @@ namespace PadForge.Common.Input
                 // failure here must never keep a controller from opening.
                 SdlDiagLog.WriteLine($"MAPPINGS database row for SDL#{instanceId} failed: {ex.Message}");
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Gives SDL a row of the user's under a joystick's own ID when SDL
+        /// would read the joystick through a mapping with other bindings
+        /// (<see cref="ControllerDatabaseUse.CopyFor"/>), and keeps the mapping
+        /// SDL held under that ID before, for the row's removal
+        /// (<see cref="ControllerDatabaseEngine.TakeCopies"/>). Poll thread, or
+        /// as Step 1 opens a joystick. A failure leaves the joystick as SDL
+        /// reads it.
+        /// </summary>
+        private static void GiveCopy(uint instanceId)
+        {
+            var mine = ControllerDatabaseMine.Current;
+            if (mine.Count == 0) return;
+            try
+            {
+                string guid = GetJoystickGUIDStringForID(instanceId);
+                string mapping = ControllerDatabaseEngine.MappingForId(instanceId);
+                string copy = ControllerDatabaseUse.CopyFor(guid, mine, mapping);
+                if (copy == null) return;
+                int added = SDL_AddGamepadMapping(copy);
+                if (added >= 0) ControllerDatabaseEngine.NoteCopy(guid, mine.ForSdlDevice(guid).Id, mapping);
+                SdlDiagLog.WriteLine($"MAPPINGS your row under SDL#{instanceId}'s own ID: added={added}");
+            }
+            catch (Exception ex)
+            {
+                SdlDiagLog.WriteLine($"MAPPINGS your row under SDL#{instanceId}'s own ID failed: {ex.Message}");
             }
         }
 
@@ -171,6 +203,10 @@ namespace PadForge.Common.Input
                 foreach (var (_, w, _) in listed)
                     if (w.GameController == IntPtr.Zero && OfferControllerDatabaseRow(w.SdlInstanceId) is { } used)
                         firstUsed.Add(used);
+            // A row of the user's that SDL reads a device past goes to SDL
+            // again under the device's own ID (#600), before it is opened again.
+            foreach (var (_, w, _) in listed)
+                GiveCopy(w.SdlInstanceId);
 
             var reopened = new List<Guid>();
             foreach (var (ud, old, mappingBefore) in listed)
@@ -229,10 +265,9 @@ namespace PadForge.Common.Input
             if (mine.Count == 0) return;
             var row = mine.ForSdlDevice(ud.SdlGuid);
             if (row == null || row.HasMapped(ud.InstanceGuid)) return;
-            // Only when SDL reads it through this row: a row of
-            // SDL_GAMECONTROLLERCONFIG for the device stands above it.
+            // Only when SDL reads it through this row.
             string layout = ControllerDatabaseSource.LayoutOf(ControllerDatabaseEngine.MappingForId(wrapper.SdlInstanceId));
-            if (!string.Equals(layout, row.Row.Layout, StringComparison.Ordinal)) return;
+            if (!string.Equals(layout, ControllerDatabaseSource.StoredLayout(row), StringComparison.Ordinal)) return;
             ControllerDatabaseEngine.RaiseUserRowOpened(ud.InstanceGuid);
         }
     }
@@ -262,11 +297,144 @@ namespace PadForge.Common.Input
     {
         private static readonly System.Collections.Concurrent.ConcurrentQueue<Action<InputManager>> Queue = new();
 
-        /// <summary>The joysticks read raw for the rest of the session, by
-        /// the ID of the user's row that was removed: a device's own ID, or a
-        /// row's for every device it maps (<see cref="SdlMappingRow.Maps"/>).</summary>
+        /// <summary>The joysticks read raw until SDL starts again, by the ID
+        /// of the user's row that was removed: a device's own ID, or a row's
+        /// for every device it maps (<see cref="SdlMappingRow.Maps"/>). SDL
+        /// keeps a mapping once given until it quits, and starts again with
+        /// only the rows PadForge has then (<see cref="SdlStarting"/>).</summary>
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> RawIds =
             new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The rows of the user's SDL was given again under a
+        /// device's own ID this start, by the device's ID: the row's ID and
+        /// the mapping SDL held under the device's ID before the first copy,
+        /// null for none (InputManager.GiveCopy).</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (string RowId, string Old)> Copies =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The IDs SDL was given a mapping back under this start, as
+        /// a row of the user's or its copy went: SDL reads a device of such an
+        /// ID through that entry, whatever a removed row of its model
+        /// left.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> GivenBack =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The IDs of the user's rows that went with no mapping of
+        /// SDL's before them, as <see cref="RawIds"/> takes them, kept for the
+        /// rest of the start after a new row lifts the raw read: SDL still
+        /// answers the removed row's bindings for them (<see cref="HadNone"/>).</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> NoneIds =
+            new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>As the engine starts, before SDL does: the joysticks read
+        /// raw since a row of the user's went are read as SDL maps them
+        /// again, and no copy of a row or mapping given back is held, since
+        /// SDL starts with no row PadForge has not given it this
+        /// start.</summary>
+        internal static void SdlStarting()
+        {
+            RawIds.Clear();
+            Copies.Clear();
+            GivenBack.Clear();
+            NoneIds.Clear();
+        }
+
+        /// <summary>
+        /// Whether SDL had no mapping of its own for this ID before a row of
+        /// the user's that went this start, under the ID itself, or under its
+        /// model's ID while SDL was given no mapping back under the ID. SDL
+        /// keeps a removed row until it quits, so what it answers for such an
+        /// ID is that row, and a row kept for the ID, or a copy given for it,
+        /// replaces nothing.
+        /// </summary>
+        internal static bool HadNone(string deviceGuid)
+            => !string.IsNullOrEmpty(deviceGuid) && !NoneIds.IsEmpty && Marked(NoneIds, deviceGuid);
+
+        /// <summary>Whether a removed row's ID in <paramref name="ids"/> is the
+        /// device's own, or its model's while SDL was given no mapping back
+        /// under the device's ID.</summary>
+        private static bool Marked(System.Collections.Concurrent.ConcurrentDictionary<string, byte> ids, string deviceGuid)
+        {
+            foreach (string id in ids.Keys)
+            {
+                if (string.Equals(id, deviceGuid, StringComparison.OrdinalIgnoreCase)) return true;
+                if (SdlMappingRow.Maps(id, deviceGuid) && !GivenBack.ContainsKey(deviceGuid)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Whether SDL was given a copy of a row of the user's under
+        /// a device's own ID this start, and the mapping SDL held under that
+        /// ID before the first copy (<paramref name="old"/>, null for
+        /// none).</summary>
+        internal static bool HeldBeforeCopy(string deviceGuid, out string old)
+        {
+            old = null;
+            if (string.IsNullOrEmpty(deviceGuid) || !Copies.TryGetValue(deviceGuid, out var copy)) return false;
+            old = copy.Old;
+            return true;
+        }
+
+        /// <summary>
+        /// What SDL is given back for a row of the user's that went, besides
+        /// its copies (<see cref="TakeCopies"/>): the mapping SDL held for the
+        /// row's ID before it, under that ID. Where SDL held none, the devices
+        /// the row mapped are read raw until SDL starts again. A row whose
+        /// earlier mapping is not known, added while the engine was stopped
+        /// and removed before it ran, gives nothing back, and a row for a
+        /// device SDL does not read has nothing to give.
+        /// </summary>
+        internal static List<string> GiveBack(ControllerDatabaseMineRow row)
+        {
+            var texts = new List<string>();
+            if (row == null || row.ForPadForgeDevice || row.OldRow == null) return texts;
+            if (row.OldRow.Length == 0)
+            {
+                SetReadsRaw(row.Id, true);
+                return texts;
+            }
+            texts.Add(ControllerDatabaseUse.Under(row.Id, row.OldRow));
+            GivenBack[row.Id] = 0;
+            return texts;
+        }
+
+        /// <summary>Notes that SDL was given a row of the user's under a
+        /// device's own ID. A device given a copy before keeps the mapping
+        /// SDL held before the first one, and one SDL had nothing for before
+        /// a removed row (<see cref="HadNone"/>) keeps none.</summary>
+        internal static void NoteCopy(string deviceGuid, string rowId, string old)
+        {
+            if (string.IsNullOrEmpty(deviceGuid) || rowId == null) return;
+            if (HadNone(deviceGuid)) old = null;
+            Copies.AddOrUpdate(deviceGuid, (rowId, string.IsNullOrEmpty(old) ? null : old), (_, held) => (rowId, held.Old));
+        }
+
+        /// <summary>
+        /// The copies of a removed row of the user's, taken back: for each
+        /// device SDL was given one for, the mapping SDL held under its ID
+        /// before, to give SDL again, or, when SDL held none, the device read
+        /// raw until SDL starts again. A device with a row of the user's under
+        /// its own ID in <paramref name="mine"/> keeps that row's entry. Poll
+        /// thread.
+        /// </summary>
+        internal static List<string> TakeCopies(string rowId, ControllerDatabaseMine mine)
+        {
+            var back = new List<string>();
+            foreach (var pair in Copies)
+            {
+                if (!string.Equals(pair.Value.RowId, rowId, StringComparison.OrdinalIgnoreCase)) continue;
+                if (!Copies.TryRemove(pair.Key, out var copy)) continue;
+                var own = mine?.ForSdlDevice(pair.Key);
+                if (own != null && string.Equals(own.Id, pair.Key, StringComparison.OrdinalIgnoreCase)) continue;
+                if (copy.Old != null)
+                {
+                    back.Add(ControllerDatabaseUse.Under(pair.Key, copy.Old));
+                    GivenBack[pair.Key] = 0;
+                }
+                else SetReadsRaw(pair.Key, true);
+            }
+            return back;
+        }
 
         /// <summary>Raised on the poll thread when a device opens through a
         /// row of the user's whose remap it owes (#600), with its instance
@@ -295,25 +463,34 @@ namespace PadForge.Common.Input
         /// <summary>Whether the engine runs, so posted work is done.</summary>
         internal static bool Running => Environment.TickCount64 - System.Threading.Interlocked.Read(ref _lastLook) < StaleMs;
 
-        /// <summary>Whether PadForge reads the joystick of this ID raw for the
-        /// rest of the session.</summary>
+        /// <summary>
+        /// Whether PadForge reads the joystick of this ID raw until SDL starts
+        /// again: a removed row of the user's, under the joystick's own ID or
+        /// its model's, had no mapping of SDL's to give back. A joystick that
+        /// a row of the user's maps now is read through that row, as it was
+        /// kept or as its copy, and one SDL was given its own mapping back
+        /// under its ID is read through that, whatever a removed row of its
+        /// model left.
+        /// </summary>
         internal static bool ReadsRaw(string deviceGuid)
         {
             if (deviceGuid == null || RawIds.IsEmpty) return false;
-            foreach (string id in RawIds.Keys)
-                if (string.Equals(id, deviceGuid, StringComparison.OrdinalIgnoreCase) || SdlMappingRow.Maps(id, deviceGuid)) return true;
-            return false;
+            if (ControllerDatabaseMine.Current?.ForSdlDevice(deviceGuid) != null) return false;
+            return Marked(RawIds, deviceGuid);
         }
 
         /// <summary>Reads the joysticks a removed row of the user's mapped
-        /// raw for the rest of the session, or, for a row given again, lets
-        /// SDL's mapping decide again for every device it maps.</summary>
+        /// raw until SDL starts again, or, for a row given again, lets SDL's
+        /// mapping decide again for every device it maps. A row that went
+        /// with nothing before it is also noted for <see cref="HadNone"/>,
+        /// which a row given again does not lift.</summary>
         internal static void SetReadsRaw(string rowId, bool raw)
         {
             if (string.IsNullOrEmpty(rowId)) return;
             if (raw)
             {
                 RawIds[rowId] = 0;
+                NoneIds[rowId] = 0;
                 return;
             }
             foreach (string id in RawIds.Keys)

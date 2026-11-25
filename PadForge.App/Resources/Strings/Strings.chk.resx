@@ -1003,7 +1003,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Pwisin file an PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Pwisin om, mi apachaatá {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ewe variable SDL_GAMECONTROLLERCONFIG, ewe SDL a aúchea asan row meinisin ka apachaatá</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kapiini SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>A isóni ewe mapping an ewe device won ewe clipboard usun eu row non ewe community database, fán ewe ID an ewe device, nge an checksum me version ra seró.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Pacheei SDL Mapping…</value></data>
@@ -1041,7 +1040,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>A map sefál seni ewe layout an SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>A aea iei. Ewe row om, me a akkomw ren ei device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>A isóni usun om. Epwe aea lupwen ewe engine a angang me ewe device a riri.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>A isóni usun om, nge ewe variable SDL_GAMECONTROLLERCONFIG a amwéch eu row ren ei device, me SDL a akkomwa ena asan om.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ese etiwa ewe row. Esor met a siwil ren ei device.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pacheei eu SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pacheei eu SDL Mapping ren {0}</value></data>

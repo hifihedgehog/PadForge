@@ -1514,7 +1514,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>E jarollotswe {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faele ya PadForge ka boyona</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ya hao, e ekeditswe {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Vereiabole ya SDL_GAMECONTROLLERCONFIG, eo SDL e e behang ka hodimo ho mola ofe kapa ofe oo o o eketsang</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopitsa SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>E beha mmapping wa sesebediswa ho klipeboto e le mola wa dathabeise ya setjhaba, tlasa ID ya sesebediswa, checksum le mofuta di entswe zero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Kgomaretsa SDL Mapping…</value></data>
@@ -1552,7 +1551,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>E mmapuwe hape ho tswa sebopehong sa SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>E a sebediswa hona jwale. Mola ke wa hao mme o tla pele bakeng sa sesebediswa sena.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>O bolokilwe e le wa hao. O tla sebediswa hang ha enjene e sebetsa mme sesebediswa se hokahantswe.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>O bolokilwe e le wa hao, empa vereiabole ya SDL_GAMECONTROLLERCONFIG e tshwere mola bakeng sa sesebediswa sena, oo SDL e o behang ka hodimo ho wa hao.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ha e a amohela mola. Ha ho letho le fetohileng bakeng sa sesebediswa sena.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kgomaretsa SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kgomaretsa SDL Mapping bakeng sa {0}</value></data>

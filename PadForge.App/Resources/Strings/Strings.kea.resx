@@ -3620,7 +3620,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Baxadu {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fixeru propi di PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Di bo, djuntadu {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variável SDL_GAMECONTROLLERCONFIG, ki SDL ta poi riba di kualker linha ki bu djunta</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopia Mapiamentu SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ta poi mapiamentu di dispozitivu na área di transferénsia suma un linha di bazi di dadus di komunidadi, baxu di ID di dispozitivu ku se checksum i vérson zeradu.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Kola Mapiamentu SDL…</value></data>
@@ -3658,7 +3657,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mapiadu otu bês a partir di dispozison di SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Na uzu gosi. Linha é di bo i e ten prioridadi pa es dispozitivu.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Guardadu suma di bo. E ta fika na uzu kantu motor roda i dispozitivu sta konektadu.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Guardadu suma di bo, ma variável SDL_GAMECONTROLLERCONFIG ten un linha pa es dispozitivu, ki SDL ta prifiri riba di di bo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ka aseita linha. Nada ka muda pa es dispozitivu.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kola un Mapiamentu SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kola un Mapiamentu SDL pa {0}</value></data>

@@ -1617,7 +1617,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Sadiring file kan PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Saimo, idinugang {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>An variable na SDL_GAMECONTROLLERCONFIG, na inuuna kan SDL sa ano man na row na idinudugang mo</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopyahon an SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ibinubutang an mapping kan device sa clipboard bilang row kan database kan komunidad, sa irarom kan ID kan device na an checksum asin bersyon ginibong zero.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Idikit an SDL Mapping…</value></data>
@@ -1655,7 +1654,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Na-map giraray hale sa layout kan SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ginagamit na ngunyan. Saimo an row asin ini an inuuna para sa device na ini.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Itinago bilang saimo. Magagamit ini kun nagdadalagan an engine asin nakakonektar an device.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Itinago bilang saimo, alagad may row an variable na SDL_GAMECONTROLLERCONFIG para sa device na ini, na inuuna kan SDL kaysa sa saimo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Dai inako kan SDL an row. Mayong nagbago para sa device na ini.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Idikit an sarong SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Idikit an sarong SDL Mapping para sa {0}</value></data>

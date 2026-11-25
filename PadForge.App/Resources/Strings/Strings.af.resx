@@ -5726,7 +5726,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Afgelaai {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge se eie lêer</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Joune, bygevoeg {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Die SDL_GAMECONTROLLERCONFIG-veranderlike, wat SDL bo enige ry hou wat jy byvoeg</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopieer SDL-toewysing</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Sit die toestel se toewysing op die knipbord as 'n ry van die gemeenskapsdatabasis, onder die toestel se ID met sy kontrolesom en weergawe op nul.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Plak SDL-toewysing…</value></data>
@@ -5764,7 +5763,6 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Weer toegewys uit SDL se uitleg: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Nou in gebruik. Die ry is joune en geld vir hierdie toestel.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>As joune gehou. Dit is in gebruik sodra die enjin loop en die toestel gekoppel is.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>As joune gehou, maar die SDL_GAMECONTROLLERCONFIG-veranderlike hou 'n ry vir hierdie toestel, wat SDL bo joune hou.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL het nie die ry geneem nie. Niks het vir hierdie toestel verander nie.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Plak 'n SDL-toewysing</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Plak 'n SDL-toewysing vir {0}</value></data>

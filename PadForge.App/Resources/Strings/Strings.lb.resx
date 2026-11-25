@@ -5879,7 +5879,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Erofgelueden den {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Déi eege Datei vu PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Är eegen Zeil, derbäigesat den {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>D'Variabel SDL_GAMECONTROLLERCONFIG, déi SDL iwwer all Zeil stellt, déi Dir derbäisetzt</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL-Zouuerdnung kopéieren</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Leet d'Zouuerdnung vum Apparat als Zeil vun der Community-Datebank an d'Tëschenoflag, ënner der ID vum Apparat, mat Préifzomm a Versioun op null gesat.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL-Zouuerdnung asetzen…</value></data>
@@ -5917,7 +5916,6 @@ Soll PadForge se elo desinstalléieren? Dat brauch Administratorrechter a ka e M
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Nei aus dem Layout vu SDL zougeuerdnet: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Elo am Gebrauch. D'Zeil ass Är a gëllt fir dësen Apparat virun allem aneren.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Als Är behalen. Se gëtt benotzt, soubal d'Engine leeft an den Apparat verbonnen ass.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Als Är behalen, mä d'Variabel SDL_GAMECONTROLLERCONFIG huet eng Zeil fir dësen Apparat, déi SDL virun Ärer behält.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL huet d'Zeil net ugeholl. Fir dësen Apparat huet sech näischt geännert.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Eng SDL-Zouuerdnung asetzen</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Eng SDL-Zouuerdnung fir {0} asetzen</value></data>

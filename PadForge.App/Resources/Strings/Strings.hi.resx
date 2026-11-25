@@ -6604,7 +6604,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} को डाउनलोड की गई</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge की अपनी फ़ाइल</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>आपकी, {0} को जोड़ी गई</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG वेरिएबल, जिसे SDL आपकी जोड़ी किसी भी पंक्ति से ऊपर रखता है</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL मैपिंग कॉपी करें</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>डिवाइस की मैपिंग को समुदाय डेटाबेस की एक पंक्ति के रूप में क्लिपबोर्ड पर रखता है, डिवाइस की ID के साथ, उसके चेकसम और संस्करण को शून्य करके।</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL मैपिंग चिपकाएँ…</value></data>
@@ -6642,7 +6641,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL के लेआउट से दोबारा मैप किया गया: {0}।</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>अब इस्तेमाल में है। पंक्ति आपकी है और इस डिवाइस के लिए वही चलती है।</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>आपकी पंक्ति के रूप में रखी गई। इंजन चलने और डिवाइस कनेक्ट होने पर वह इस्तेमाल में आती है।</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>आपकी पंक्ति के रूप में रखी गई, लेकिन SDL_GAMECONTROLLERCONFIG वेरिएबल में इस डिवाइस की एक पंक्ति है, जिसे SDL आपकी पंक्ति से ऊपर रखता है।</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ने पंक्ति नहीं ली। इस डिवाइस के लिए कुछ नहीं बदला।</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>एक SDL मैपिंग चिपकाएँ</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} के लिए SDL मैपिंग चिपकाएँ</value></data>

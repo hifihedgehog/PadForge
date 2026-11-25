@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PadForge.Common.Input
 {
     /// <summary>Where the mapping SDL reads a device through came from
-    /// (#600 item 45). Append-only.</summary>
+    /// (#600 item 45). Held in memory only, for the card.</summary>
     internal enum SdlMappingSource
     {
         /// <summary>No mapping: SDL reads the device as a joystick.</summary>
@@ -20,9 +20,6 @@ namespace PadForge.Common.Input
         PadForge,
         /// <summary>The user's own row.</summary>
         Yours,
-        /// <summary>A row of the SDL_GAMECONTROLLERCONFIG variable, which SDL
-        /// holds above every row a program adds.</summary>
-        Variable,
         /// <summary>A device SDL does not read, which PadForge maps through
         /// the user's row.</summary>
         YoursPadForge,
@@ -33,15 +30,21 @@ namespace PadForge.Common.Input
     /// answered and what PadForge gave it, as plain logic. SDL holds one
     /// mapping per ID (SDL_PrivateAddMappingForGUID), so the source is the
     /// one whose bindings SDL holds now, tried from the strongest down: the
-    /// variable, the user's row, a downloaded row, PadForge's own, then the
+    /// user's row, a downloaded row, PadForge's own, then the
     /// release's community copy by the baseline's verdict, and SDL for any
     /// other mapping.
     /// </summary>
     internal static class ControllerDatabaseSource
     {
-        /// <summary>What a mapping's text says, read from its third field
-        /// on: the layout <see cref="SdlMappingRow.Layout"/> gives, or null
-        /// for text that is no row.</summary>
+        /// <summary>What the text SDL hands back for a mapping it holds says,
+        /// read from its third field on: the layout
+        /// <see cref="SdlMappingRow.Layout"/> gives, or null for text that is
+        /// no row. The text is read as it is. A row SDL was given is stored
+        /// converted already, and a mapping SDL builds itself, a driver's or
+        /// an automatic one, goes into its table unconverted
+        /// (SDL_PrivateAddMappingForGUID's callers other than
+        /// SDL_PrivateAddGamepadMapping). A row PadForge or the user gives SDL
+        /// is read through <see cref="StoredLayoutOf"/>.</summary>
         internal static string LayoutOf(string mapping)
         {
             if (string.IsNullOrEmpty(mapping)) return null;
@@ -73,36 +76,26 @@ namespace PadForge.Common.Input
         /// <param name="mapping">The mapping SDL holds for the device
         /// (SDL_GetGamepadMappingForID), or null when it reads the device as
         /// a joystick.</param>
-        /// <param name="variable">The SDL_GAMECONTROLLERCONFIG variable's
-        /// text, or null.</param>
         internal static SdlMappingSource Of(string deviceGuid, string mapping, ControllerDatabaseMine mine,
-            ControllerDatabaseSection section, IReadOnlyList<string> ownRows, ControllerDatabaseBaseline baseline, string variable)
+            ControllerDatabaseSection section, IReadOnlyList<string> ownRows, ControllerDatabaseBaseline baseline)
         {
             if (string.IsNullOrEmpty(mapping)) return SdlMappingSource.None;
             string layout = LayoutOf(mapping);
             string id = ControllerDatabaseRow.LookupId(deviceGuid);
 
-            if (!string.IsNullOrEmpty(variable))
-                foreach (string line in variable.Split('\n'))
-                {
-                    int comma = line.IndexOf(',');
-                    if (comma == 32 && SdlMappingRow.Maps(line.Substring(0, 32), deviceGuid) && Same(LayoutOf(line), layout))
-                        return SdlMappingSource.Variable;
-                }
-
             var yours = mine?.ForSdlDevice(deviceGuid);
-            if (yours != null && Same(yours.Row.Layout, layout)) return SdlMappingSource.Yours;
+            if (yours != null && Same(StoredLayout(yours), layout)) return SdlMappingSource.Yours;
 
             if (section != null)
                 foreach (var stored in section.Rows)
                     if (string.Equals(stored.Row.Guid, id, StringComparison.Ordinal)
-                        && Same(LayoutOf(stored.Row.Text), layout))
+                        && Same(StoredLayoutOf(stored.Row.Text), layout))
                         return SdlMappingSource.Downloaded;
 
             foreach (string own in ownRows ?? Array.Empty<string>())
             {
                 int comma = own.IndexOf(',');
-                if (comma == 32 && SdlMappingRow.Maps(own.Substring(0, 32), deviceGuid) && Same(LayoutOf(own), layout))
+                if (comma == 32 && SdlMappingRow.Maps(own.Substring(0, 32), deviceGuid) && Same(StoredLayoutOf(own), layout))
                     return SdlMappingSource.PadForge;
             }
 
@@ -112,6 +105,113 @@ namespace PadForge.Common.Input
         }
 
         private static bool Same(string a, string b) => a != null && string.Equals(a, b, StringComparison.Ordinal);
+
+        /// <summary>The layout of a row of the user's as SDL stores it,
+        /// to hold against SDL's own text for the mapping it reads a device
+        /// through.</summary>
+        internal static string StoredLayout(ControllerDatabaseMineRow row) => row == null ? null : StoredLayoutOf(row.Text);
+
+        /// <summary>The layout of a row SDL is given, as SDL stores it
+        /// (<see cref="AsSdlStores"/>), to hold against SDL's own text, which
+        /// <see cref="LayoutOf"/> reads.</summary>
+        internal static string StoredLayoutOf(string row) => LayoutOf(AsSdlStores(row));
+
+        /// <summary>The controllers SDL gives the GameCube label hint
+        /// (initial_gamecube_devices in SDL_joystick.c), as vendor and
+        /// product.</summary>
+        private static readonly (ushort Vendor, ushort Product)[] GameCube =
+        {
+            (0x0079, 0x1843), (0x0079, 0x1844), (0x0079, 0x1846), (0x057e, 0x0337), (0x057e, 0x2073), (0x05e3, 0x0681),
+            (0x0926, 0x8888), (0x0e6f, 0x0185), (0x1a34, 0xf705), (0x20d6, 0xa711),
+        };
+
+        private const string Hint = "hint:";
+        private const string GameCubeLabels = "SDL_GAMECONTROLLER_USE_GAMECUBE_LABELS";
+        private const string ButtonLabels = "SDL_GAMECONTROLLER_USE_BUTTON_LABELS";
+
+        /// <summary>
+        /// A row's text as SDL stores it once it is added
+        /// (SDL_PrivateAddGamepadMapping). A row for a controller on SDL's
+        /// GameCube list that names no GameCube hint gets it, appended as SDL
+        /// appends it. Then the first hint field decides: the GameCube label
+        /// hint swaps the first b and x fields, the button-label hint swaps
+        /// the first a and b fields and the first x and y fields, and either
+        /// is marked "!" (SDL_ConvertMappingToPositionalAXBY,
+        /// SDL_ConvertMappingToPositionalBAXY). A hint already marked "!",
+        /// another hint, or none leaves the row as it is. Only a row SDL is
+        /// given passes here: SDL's own text for a mapping it holds is the
+        /// stored form already, or a mapping SDL built without the conversion.
+        /// </summary>
+        internal static string AsSdlStores(string mapping)
+        {
+            if (string.IsNullOrEmpty(mapping)) return mapping;
+            int comma = mapping.IndexOf(',');
+            if (comma == 32 && IsGameCube(mapping.Substring(0, 32)) && mapping.IndexOf(GameCubeLabels, StringComparison.Ordinal) < 0)
+                mapping += Hint + GameCubeLabels + ":=1,";
+
+            int at = mapping.IndexOf(Hint, StringComparison.Ordinal);
+            if (at < 0) return mapping;
+            at += Hint.Length;
+            if (at < mapping.Length && mapping[at] == '!') return mapping;
+            int end = at;
+            while (end < mapping.Length && mapping[end] != ',' && mapping[end] != ':' && end - at < 127) end++;
+            string name = mapping.Substring(at, end - at);
+            if (string.Equals(name, GameCubeLabels, StringComparison.Ordinal))
+                return Positional(mapping, new[] { (",b:", 'x'), (",x:", 'b') }, GameCubeLabels);
+            if (string.Equals(name, ButtonLabels, StringComparison.Ordinal))
+                return Positional(mapping, new[] { (",a:", 'b'), (",b:", 'a'), (",x:", 'y'), (",y:", 'x') }, ButtonLabels);
+            return mapping;
+        }
+
+        /// <summary>
+        /// SDL's own text for a mapping, made ready to give SDL again so it
+        /// stores the same bindings. SDL takes a given text through the turn
+        /// (<see cref="AsSdlStores"/>), and for a controller on the GameCube
+        /// list a text with no hint field would get the GameCube hint
+        /// unmarked and have b and x swapped. Such a text gets the hint marked
+        /// "!", which SDL keeps as it is. SDL stores that hint for the
+        /// controller whatever it is given, so only the swap is avoided. Any
+        /// other text is returned as it is.
+        /// </summary>
+        internal static string ForSdlAgain(string mapping)
+        {
+            if (string.IsNullOrEmpty(mapping) || mapping.IndexOf(',') != 32 || !IsGameCube(mapping.Substring(0, 32))
+                || mapping.IndexOf(Hint, StringComparison.Ordinal) >= 0)
+                return mapping;
+            return (mapping.EndsWith(",", StringComparison.Ordinal) ? mapping : mapping + ",") + Hint + "!" + GameCubeLabels + ":=1,";
+        }
+
+        /// <summary>SDL's turn of a row to positional buttons: every field is
+        /// found before any is changed, the first of each takes its new
+        /// letter, and "!" goes in front of the hint's name.</summary>
+        private static string Positional(string mapping, (string Field, char Letter)[] swaps, string hintName)
+        {
+            var chars = mapping.ToCharArray();
+            foreach (var (field, letter) in swaps)
+            {
+                int at = mapping.IndexOf(field, StringComparison.Ordinal);
+                if (at >= 0) chars[at + 1] = letter;
+            }
+            string swapped = new string(chars);
+            int hint = swapped.IndexOf(Hint + hintName, StringComparison.Ordinal);
+            return hint < 0 ? swapped : swapped.Insert(hint + Hint.Length, "!");
+        }
+
+        /// <summary>Whether SDL reads an ID as a controller on its GameCube
+        /// list: the standard form's bus, below 0x20 or the virtual bus, then
+        /// its vendor and product (SDL_GetJoystickGUIDInfo).</summary>
+        private static bool IsGameCube(string guid)
+        {
+            if (!SdlMappingRow.TryReadIds(guid, out ushort vendor, out ushort product)) return false;
+            if (!ushort.TryParse(guid.AsSpan(0, 2), System.Globalization.NumberStyles.AllowHexSpecifier, System.Globalization.CultureInfo.InvariantCulture, out ushort low)
+                || !ushort.TryParse(guid.AsSpan(2, 2), System.Globalization.NumberStyles.AllowHexSpecifier, System.Globalization.CultureInfo.InvariantCulture, out ushort high))
+                return false;
+            int bus = low | (high << 8);
+            if (bus >= 0x20 && bus != 'v') return false;
+            foreach (var (v, p) in GameCube)
+                if (v == vendor && p == product) return true;
+            return false;
+        }
 
         /// <summary>The source of a row of every mapping PadForge carries,
         /// by its ID, for Find a Mapping (#600 item 48).</summary>

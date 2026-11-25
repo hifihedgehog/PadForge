@@ -5918,7 +5918,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Жүктелген: {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge өз файлы</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Сіздікі, қосылған күні: {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG айнымалысы, оны SDL сіз қосқан кез келген жолдан жоғары ұстайды</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL тағайындауын көшіру</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Құрылғының тағайындауын қауымдастық дерекқорының жолы ретінде алмасу буферіне салады, құрылғының ID мәнімен, оның бақылау сомасы мен нұсқасы нөлге теңестіріліп.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL тағайындауын қою…</value></data>
@@ -5956,7 +5955,6 @@ PadForge оларды қазір жойсын ба? Ол үшін әкімші �
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL орналасуынан қайта тағайындалды: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Қазір қолданыста. Жол сіздікі және осы құрылғы үшін басым.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Сіздікі ретінде сақталды. Қозғалтқыш жұмыс істеп, құрылғы қосылғанда қолданылады.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Сіздікі ретінде сақталды, бірақ SDL_GAMECONTROLLERCONFIG айнымалысында осы құрылғы үшін жол бар, оны SDL сіздікінен жоғары ұстайды.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL жолды қабылдамады. Осы құрылғы үшін ештеңе өзгерген жоқ.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL тағайындауын қою</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} үшін SDL тағайындауын қою</value></data>

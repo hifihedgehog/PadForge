@@ -220,7 +220,7 @@ namespace PadForge.Tests
             Assert.True(SdlMappingRow.TryParse("050057564c050000e60c000000006800,Mine,a:b0,", out var row, out _));
             var mine = new ControllerDatabaseMineRow("050057564c050000e60c000000006800", row, DateTime.UtcNow,
                 "050057564c050000e60c000000006800,DualSense Wireless Controller,a:b1,crc:5657,", Guid.Empty, Array.Empty<ControllerDatabaseBefore>());
-            Assert.Equal("050057564c050000e60c000000006800,DualSense Wireless Controller,a:b1,crc:5657,", ControllerDatabaseController.OldUnder(mine));
+            Assert.Equal("050057564c050000e60c000000006800,DualSense Wireless Controller,a:b1,crc:5657,", ControllerDatabaseUse.Under(mine.Id, mine.OldRow));
         }
 
         [Fact]

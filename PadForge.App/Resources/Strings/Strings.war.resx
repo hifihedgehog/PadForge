@@ -1885,7 +1885,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Gin-download han {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Kalugaringon nga file han PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Imo, gindugang han {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>An variable nga SDL_GAMECONTROLLERCONFIG, nga ginkakapot han SDL labaw ha bisan ano nga linya nga imo idugang</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopyaha an Mapping han SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ginbubutang an mapping han device ha clipboard sugad nga linya han database han komunidad, ha ilarom han ID han device nga ginhimo nga zero an checksum ngan bersyon niya.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Idikit an Mapping han SDL…</value></data>
@@ -1923,7 +1922,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Gin-map utro tikang ha layout han SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Ginagamit na yana. Imo an linya ngan ini an ginsusunod para hini nga device.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Gintipig sugad nga imo. Gagamiton ini kun nadalagan an engine ngan nakakonek an device.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Gintipig sugad nga imo, pero may linya para hini nga device an variable nga SDL_GAMECONTROLLERCONFIG, nga ginpapalabaw han SDL ha imo.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Diri gindawat han SDL an linya. Waray nagbag-o para hini nga device.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Idikit an Mapping han SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Idikit an Mapping han SDL para ha {0}</value></data>

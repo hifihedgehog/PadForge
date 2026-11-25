@@ -6604,7 +6604,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lastet ned {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Egen fil fra PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Din, lagt til {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabelen SDL_GAMECONTROLLERCONFIG, som SDL holder over enhver rad du legger til</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopier SDL-tilordning</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Legger enhetens tilordning på utklippstavlen som en rad i fellesskapsdatabasen, under enhetens ID med sjekksummen og versjonen nullstilt.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Lim inn SDL-tilordning…</value></data>
@@ -6642,7 +6641,6 @@ Vil du at PadForge skal avinstallere dem nå? Dette krever administratorrettighe
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Tilordnet på nytt ut fra SDL-layouten: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>I bruk nå. Raden er din og går foran for denne enheten.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Beholdt som din. Den er i bruk når motoren kjører og enheten er tilkoblet.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Beholdt som din, men variabelen SDL_GAMECONTROLLERCONFIG har en rad for denne enheten, som SDL holder over din.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tok ikke raden. Ingenting endret seg for denne enheten.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Lim inn en SDL-tilordning</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Lim inn en SDL-tilordning for {0}</value></data>

@@ -6604,7 +6604,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Λήψη {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Το δικό του αρχείο του PadForge</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Δική σας, προστέθηκε {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Η μεταβλητή SDL_GAMECONTROLLERCONFIG, που το SDL τη βάζει πάνω από κάθε γραμμή που προσθέτετε</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Αντιγραφή αντιστοίχισης SDL</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Βάζει την αντιστοίχιση της συσκευής στο πρόχειρο ως γραμμή της κοινοτικής βάσης δεδομένων, με το αναγνωριστικό της συσκευής και με μηδενισμένα το άθροισμα ελέγχου και την έκδοση.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Επικόλληση αντιστοίχισης SDL…</value></data>
@@ -6642,7 +6641,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Αντιστοιχίστηκε ξανά από τη διάταξη του SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Σε χρήση τώρα. Η γραμμή είναι δική σας και υπερισχύει για αυτή τη συσκευή.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Κρατήθηκε ως δική σας. Θα χρησιμοποιηθεί όταν εκτελείται η μηχανή και η συσκευή είναι συνδεδεμένη.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Κρατήθηκε ως δική σας, αλλά η μεταβλητή SDL_GAMECONTROLLERCONFIG έχει γραμμή για αυτή τη συσκευή, την οποία το SDL προτιμά από τη δική σας.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Το SDL δεν δέχτηκε τη γραμμή. Τίποτα δεν άλλαξε για αυτή τη συσκευή.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Επικόλληση αντιστοίχισης SDL</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Επικόλληση αντιστοίχισης SDL για το {0}</value></data>

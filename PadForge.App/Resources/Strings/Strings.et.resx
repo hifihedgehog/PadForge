@@ -5921,7 +5921,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Allalaaditud {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge oma fail</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Teie oma, lisatud {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Muutuja SDL_GAMECONTROLLERCONFIG, mida SDL hoiab kõrgemal kui mis tahes teie lisatud rida</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopeeri SDL vastendus</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Paneb seadme vastenduse lõikelauale kogukonna andmebaasi reana, seadme ID all, kontrollsumma ja versiooniga nulliks seatud.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Kleebi SDL vastendus…</value></data>
@@ -5959,7 +5958,6 @@ Kas soovite, et PadForge need nüüd desinstalliks? Selleks on vaja kõrgendatud
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Vastendatud uuesti SDL paigutusest: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>Praegu kasutusel. Rida on teie oma ja ülimuslik selle seadme jaoks.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Hoitud teie omana. See on kasutusel, kui mootor töötab ja seade on ühendatud.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Hoitud teie omana, kuid muutuja SDL_GAMECONTROLLERCONFIG sisaldab selle seadme rida, mida SDL hoiab teie omast kõrgemal.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ei võtnud rida vastu. Selle seadme jaoks midagi ei muutunud.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kleebi SDL vastendus</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kleebi SDL vastendus seadmele {0}</value></data>

@@ -5903,7 +5903,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>डाउनलोड केले {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge ची स्वतःची फाइल</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>तुमची, {0} रोजी जोडली</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG व्हेरिएबल, जे SDL तुम्ही जोडलेल्या कोणत्याही ओळीच्या वर ठेवते</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL मॅपिंग कॉपी करा</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>डिव्हाइसचे मॅपिंग समुदाय डेटाबेसच्या ओळीप्रमाणे क्लिपबोर्डवर ठेवते, डिव्हाइसच्या ID खाली, त्याचा चेकसम आणि आवृत्ती शून्य करून.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL मॅपिंग पेस्ट करा…</value></data>
@@ -5941,7 +5940,6 @@ PadForge ने ते आता अनइन्स्टॉल करावे�
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL च्या लेआउटवरून पुन्हा मॅप केले: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>आता वापरात आहे. ही ओळ तुमची आहे आणि या डिव्हाइससाठी तीच लागू होते.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>तुमची म्हणून ठेवली. इंजिन चालू झाले आणि डिव्हाइस कनेक्ट झाले की ती वापरात येते.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>तुमची म्हणून ठेवली, पण SDL_GAMECONTROLLERCONFIG व्हेरिएबलमध्ये या डिव्हाइसची एक ओळ आहे, जी SDL तुमच्या ओळीपेक्षा वर ठेवते.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ने ती ओळ घेतली नाही. या डिव्हाइससाठी काहीही बदलले नाही.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL मॅपिंग पेस्ट करा</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} साठी SDL मॅपिंग पेस्ट करा</value></data>

@@ -567,10 +567,11 @@ namespace PadForge.Engine
             => sdlMapsIt && !BlissBoxApi.ReadsRaw(vendorId, productId);
 
         /// <summary>Whether PadForge reads a joystick SDL lists as a joystick
-        /// for the rest of the session, whatever SDL maps (#600): a device
-        /// whose user's row was removed when SDL had read it as a joystick
-        /// before. SDL keeps a mapping once given and has no call that takes
-        /// one away. Null reads none so.</summary>
+        /// until SDL starts again, whatever SDL maps (#600): a device whose
+        /// user's row was removed when SDL had read it as a joystick before.
+        /// SDL keeps a mapping once given and has no call that takes one away,
+        /// and it starts again with only the rows PadForge gives it then. Null
+        /// reads none so.</summary>
         public static Func<uint, bool> ReadsRawThisSession;
 
         /// <summary>

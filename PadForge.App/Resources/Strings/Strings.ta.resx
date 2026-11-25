@@ -6604,7 +6604,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} அன்று பதிவிறக்கப்பட்டது</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-இன் சொந்தக் கோப்பு</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>உங்களுடையது, {0} அன்று சேர்க்கப்பட்டது</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG மாறி, நீங்கள் சேர்க்கும் எந்த வரிசையையும்விட SDL இதற்கே முன்னுரிமை தரும்</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL மேப்பிங்கை நகலெடு</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>சாதனத்தின் மேப்பிங்கை, அதன் ID-யின் கீழ் செக்சம்மும் பதிப்பும் பூஜ்யமாக்கப்பட்டு, சமூகத் தரவுத்தளத்தின் ஒரு வரிசையாக கிளிப்போர்டில் வைக்கும்.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL மேப்பிங்கை ஒட்டு…</value></data>
@@ -6642,7 +6641,6 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-இன் அமைப்பிலிருந்து மீண்டும் மேப் செய்யப்பட்டது: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>இப்போது பயன்பாட்டில் உள்ளது. வரிசை உங்களுடையது, இந்தச் சாதனத்துக்கு அதுவே முன்னுரிமை பெறும்.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>உங்களுடையதாக வைக்கப்பட்டது. இன்ஜின் இயங்கி சாதனம் இணைந்ததும் பயன்பாட்டுக்கு வரும்.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>உங்களுடையதாக வைக்கப்பட்டது, ஆனால் SDL_GAMECONTROLLERCONFIG மாறியில் இந்தச் சாதனத்துக்கு ஒரு வரிசை உள்ளது, அதை SDL உங்களுடையதைவிட மேலாக வைக்கும்.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL வரிசையை ஏற்கவில்லை. இந்தச் சாதனத்துக்கு எதுவும் மாறவில்லை.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL மேப்பிங்கை ஒட்டு</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} க்கு SDL மேப்பிங்கை ஒட்டு</value></data>

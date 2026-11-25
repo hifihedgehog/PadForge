@@ -944,7 +944,6 @@
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Naʻe hiki mai ʻi he {0}</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faile ʻa e PadForge tonu</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ko hoʻo meʻa, naʻe tānaki ʻi he {0}</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ko e variable SDL_GAMECONTROLLERCONFIG, ʻa ia ʻoku tauhi ʻe he SDL ʻi ʻolunga ʻi ha laine ʻoku ke tānaki</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopi ʻa e SDL Mapping</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Tuku ʻa e mape ʻa e naunau ki he clipboard ko ha laine ʻo e database ʻa e kominiuti, ʻi lalo ʻi he ID ʻo e naunau, mo hono checksum mo e version kuo ʻai ke noa.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>Pēsiti ʻa e SDL Mapping…</value></data>
@@ -982,7 +981,6 @@
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Kuo toe mape mei he fokotuʻutuʻu ʻa e SDL: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ʻOku ngāueʻaki he taimi ni. Ko hoʻo laine ia pea ʻoku muʻomuʻa ia ki he naunau ko ʻeni.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kuo tauhi ko hoʻo meʻa. ʻE ngāueʻaki ia ʻi he taimi ʻoku lele ai ʻa e misini pea fakafehokotaki ʻa e naunau.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kuo tauhi ko hoʻo meʻa, ka ʻoku ʻi ai ha laine ʻi he variable SDL_GAMECONTROLLERCONFIG ki he naunau ko ʻeni, ʻa ia ʻoku muʻomuʻa ʻe he SDL ʻi hoʻo meʻa.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Naʻe ʻikai tali ʻe he SDL ʻa e laine. Naʻe ʻikai liliu ha meʻa ki he naunau ko ʻeni.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pēsiti ha SDL Mapping</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pēsiti ha SDL Mapping ki he {0}</value></data>

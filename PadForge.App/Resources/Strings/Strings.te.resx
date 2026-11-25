@@ -6604,7 +6604,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} న డౌన్లోడ్ చేసినది</value></data>
   <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge సొంత ఫైల్</value></data>
   <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>మీది, {0} న జోడించినది</value></data>
-  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG వేరియబుల్, మీరు జోడించే ఏ వరుస కంటే SDL దీన్ని పైన ఉంచుతుంది</value></data>
   <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL మ్యాపింగ్ కాపీ చేయి</value></data>
   <data name="SdlMapping_CopyTip" xml:space="preserve"><value>పరికరం మ్యాపింగ్‌ను, చెక్‌సమ్, వెర్షన్ సున్నాగా చేసి, పరికరం ID తో కమ్యూనిటీ డేటాబేస్ వరుసగా క్లిప్‌బోర్డ్‌లో ఉంచుతుంది.</value></data>
   <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL మ్యాపింగ్ అతికించు…</value></data>
@@ -6642,7 +6641,6 @@ PadForge వాటిని ఇప్పుడు అన్ఇన్స్టా
   <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL లేఅవుట్ నుండి మళ్లీ మ్యాప్ చేయబడింది: {0}.</value></data>
   <data name="SdlMapping_Applied" xml:space="preserve"><value>ఇప్పుడు వాడుకలో ఉంది. వరుస మీది, ఈ పరికరానికి అదే వర్తిస్తుంది.</value></data>
   <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>మీదిగా ఉంచబడింది. ఇంజిన్ నడిచి పరికరం కనెక్ట్ అయ్యాక వాడుకలోకి వస్తుంది.</value></data>
-  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>మీదిగా ఉంచబడింది, కానీ SDL_GAMECONTROLLERCONFIG వేరియబుల్‌లో ఈ పరికరానికి ఒక వరుస ఉంది, SDL దాన్ని మీ వరుస కంటే పైన ఉంచుతుంది.</value></data>
   <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL వరుసను తీసుకోలేదు. ఈ పరికరానికి ఏదీ మారలేదు.</value></data>
   <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL మ్యాపింగ్ అతికించు</value></data>
   <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} కోసం SDL మ్యాపింగ్ అతికించు</value></data>

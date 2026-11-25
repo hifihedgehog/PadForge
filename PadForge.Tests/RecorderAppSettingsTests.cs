@@ -36,7 +36,6 @@ namespace PadForge.Tests
             ["EnableLightsyncLightbar"] = "an older file's switch, moved to a peripheral row and never written",
             ["HeadTrackingIndependentInputs"] = "always written true, a mark of the file's form",
             ["ActiveProfileId"] = "the profile line names the active profile by its stand-in",
-            ["WebCustomLayoutsJson"] = "a document of the user's own layouts, with names the user typed",
         };
 
         private static bool IsText(Type type)
@@ -244,6 +243,78 @@ namespace PadForge.Tests
             finally
             {
                 RecorderHost.Main = before;
+            }
+        }
+
+        /// <summary>A layout as the web controller's store keeps it, under a
+        /// name the user typed.</summary>
+        private static string Layouts(string name)
+            => "[{\"id\":\"c1a2\",\"name\":\"" + name + "\",\"widgets\":[{\"kind\":\"button\",\"x\":0.1,\"y\":0.2,\"w\":0.12,\"h\":0.18,\"code\":0,\"label\":\"A\"}]}]";
+
+        /// <summary>The web controller's layouts are a setting the user
+        /// changes in the browser, so the app line writes them like any value:
+        /// scrubbed whole, then cut, so a name the user typed keeps no
+        /// private word.</summary>
+        [Fact]
+        public void TheWebControllersLayouts_AreWritten_Scrubbed()
+        {
+            string layouts = Layouts(RecorderTestHost.User + "'s couch pad");
+            var seam = RecorderHost.WebLayoutsSeam;
+            RecorderHost.WebLayoutsSeam = () => layouts;
+            var before = RecorderHost.Main;
+            RecorderHost.Main = new MainViewModel();
+            try
+            {
+                var app = RecorderHost.AppValues().ToDictionary(v => v.Name, v => v.Value, StringComparer.Ordinal);
+                Assert.Equal(layouts, app["WebCustomLayoutsJson"]);
+
+                using var host = new RecorderTestHost();
+                var lines = new List<string>();
+                host.MoreSettingsLines(new PrivacyScrubber(host.Environment()), lines);
+                string line = Assert.Single(lines, l => l.StartsWith("app ", StringComparison.Ordinal));
+                string written = PadForge.Engine.Recording.RecordingCodec.ParseFacts(line.AsSpan(3))["WebCustomLayoutsJson"];
+                Assert.StartsWith("[{\"id\":\"c1a2\"", written);
+                Assert.Contains("couch pad", written);
+                Assert.DoesNotContain(RecorderTestHost.User, written, StringComparison.OrdinalIgnoreCase);
+                Assert.True(written.Length <= 100, written);
+            }
+            finally
+            {
+                RecorderHost.Main = before;
+                RecorderHost.WebLayoutsSeam = seam;
+            }
+        }
+
+        /// <summary>A layout saved in the browser while recording is written
+        /// as a setting that changed.</summary>
+        [Fact]
+        public void ALayoutSavedWhileRecording_IsWritten()
+        {
+            string layouts = "[]";
+            var seam = RecorderHost.WebLayoutsSeam;
+            RecorderHost.WebLayoutsSeam = () => layouts;
+            var main = new MainViewModel();
+            var before = RecorderHost.Main;
+            RecorderHost.Main = main;
+            using var host = new RecorderTestHost { RealSettings = true };
+            host.DeviceList.Add(RecorderTestKit.Pad());
+            var recorder = new ProblemRecorder(host) { FrozenClock = System.Diagnostics.Stopwatch.GetTimestamp() };
+            try
+            {
+                Assert.True(recorder.Start().Ok);
+                recorder.UiTick();
+                Thread.Sleep(1100);
+                layouts = Layouts("Couch pad");
+                recorder.UiTick();
+                string path = recorder.Stop(wait: true).Path;
+                var change = Assert.Single(RecorderTestKit.Events(path), e => e.Layer == 'C' && e.Payload.Contains("WebCustomLayoutsJson", StringComparison.Ordinal));
+                Assert.StartsWith("setting app WebCustomLayoutsJson = ", change.Payload);
+                Assert.Contains("Couch pad", change.Payload);
+            }
+            finally
+            {
+                RecorderHost.Main = before;
+                RecorderHost.WebLayoutsSeam = seam;
             }
         }
     }

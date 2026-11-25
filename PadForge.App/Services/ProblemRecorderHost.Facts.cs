@@ -42,8 +42,9 @@ namespace PadForge.Services
         /// <summary>The app settings whose holder gives them a name of its
         /// own, or keeps them outside the Settings page's view model and the
         /// Dashboard's: the theme, the language, Remote Link's reconnect, the
-        /// chat's claim approval, voice macros and the OpenXR runtime, read
-        /// where SettingsService reads them to save PadForge.xml.</summary>
+        /// chat's claim approval, voice macros, the OpenXR runtime and the
+        /// web controller's layouts built in the browser, read where
+        /// SettingsService reads them to save PadForge.xml.</summary>
         private static readonly Dictionary<string, Func<MainViewModel, object>> Renamed = new(StringComparer.Ordinal)
         {
             ["ThemeIndex"] = m => m.Settings.SelectedThemeIndex,
@@ -55,7 +56,12 @@ namespace PadForge.Services
             ["VoiceMinConfidence"] = _ => VoiceMacroService.MinConfidence,
             ["VoiceListeningMode"] = _ => VoiceMacroService.ListeningMode,
             ["HeadTrackingOpenXrRuntime"] = _ => HeadTrackingRuntime.OpenXrRuntimeManifest,
+            ["WebCustomLayoutsJson"] = _ => WebLayoutsSeam?.Invoke() ?? WebCustomLayoutStore.Json,
         };
+
+        /// <summary>Test seam: the web controller's layouts as their store
+        /// holds them. Null reads the store.</summary>
+        internal static Func<string> WebLayoutsSeam;
 
         /// <summary>Where each app setting is read while PadForge runs: a
         /// holder of <see cref="Renamed"/>, else the Settings page's view

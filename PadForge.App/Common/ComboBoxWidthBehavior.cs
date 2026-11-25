@@ -93,7 +93,11 @@ namespace PadForge.Common
             DependencyProperty.RegisterAttached("MeasuredWidth", typeof(double),
                 typeof(ComboBoxWidthBehavior), new PropertyMetadata(0.0));
 
-        private static readonly Dictionary<string, List<WeakReference<ComboBox>>> _groups = new();
+        // A group's members stand in one window, and a window on one
+        // thread. Each thread keeps its own groups, so no member is read
+        // from a thread that does not own it.
+        [ThreadStatic] private static Dictionary<string, List<WeakReference<ComboBox>>> t_groups;
+        private static Dictionary<string, List<WeakReference<ComboBox>>> Groups => t_groups ??= new();
         private static readonly Dictionary<(Type, string), PropertyInfo> _displayProps = new();
 
         // Every loaded combo the behavior sizes, held weakly, for the
@@ -185,8 +189,8 @@ namespace PadForge.Common
         {
             string group = GetWidthGroup(cb);
             if (string.IsNullOrEmpty(group)) return;
-            if (!_groups.TryGetValue(group, out var list))
-                _groups[group] = list = new List<WeakReference<ComboBox>>();
+            if (!Groups.TryGetValue(group, out var list))
+                Groups[group] = list = new List<WeakReference<ComboBox>>();
             foreach (var wr in list)
                 if (wr.TryGetTarget(out var existing) && ReferenceEquals(existing, cb)) return;
             list.Add(new WeakReference<ComboBox>(cb));
@@ -200,7 +204,7 @@ namespace PadForge.Common
             cb.SetValue(MeasuredWidthProperty, measured);
 
             string group = GetWidthGroup(cb);
-            if (string.IsNullOrEmpty(group) || !_groups.TryGetValue(group, out var list))
+            if (string.IsNullOrEmpty(group) || !Groups.TryGetValue(group, out var list))
             {
                 cb.Width = measured;
                 return;
@@ -211,7 +215,7 @@ namespace PadForge.Common
 
         private static void Unregister(ComboBox cb, string group)
         {
-            if (string.IsNullOrEmpty(group) || !_groups.TryGetValue(group, out var list)) return;
+            if (string.IsNullOrEmpty(group) || !Groups.TryGetValue(group, out var list)) return;
             list.RemoveAll(wr => !wr.TryGetTarget(out var member) || ReferenceEquals(member, cb));
             ReapplyGroup(group, list);
         }
@@ -231,7 +235,7 @@ namespace PadForge.Common
                 double w = (double)member.GetValue(MeasuredWidthProperty);
                 if (w > groupMax) groupMax = w;
             }
-            if (list.Count == 0) _groups.Remove(group);
+            if (list.Count == 0) Groups.Remove(group);
             if (groupMax <= 0) return;
             // A member with a MaxWidth of its own stops there, as it does
             // when it is sized alone.

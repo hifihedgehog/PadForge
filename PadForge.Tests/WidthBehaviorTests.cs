@@ -92,6 +92,73 @@ public sealed class WidthBehaviorTests(ITestOutputHelper output)
         Assert.True(enabledAlive);Assert.False(disabledAlive);
     });
 
+    /// <summary>A group of one name on two threads: each thread's window
+    /// sizes its own members alone, and one thread never reads another's.
+    /// With one table for every thread, the second thread's unload read the
+    /// first thread's picker and threw "a different thread owns it", which
+    /// ended the walk census in a full run.</summary>
+    [Fact] public void AGroupOfOneNameOnTwoThreads_EachSizesItsOwn_AndNeitherReadsTheOther()
+    {
+        string group=Guid.NewGuid().ToString();
+        var firstUp=new ManualResetEventSlim();var secondDone=new ManualResetEventSlim();
+        double firstWidth=0;
+        Exception failure=null,thrown=null;
+        // An exception in a layout pass leaves through the window's message
+        // handler, where nothing catches it and the test host ends. Each
+        // thread's dispatcher keeps it instead, so this test fails with it.
+        void Keep()=>Dispatcher.CurrentDispatcher.UnhandledException+=(_,e)=>{Interlocked.CompareExchange(ref thrown,e.Exception,null);e.Handled=true;};
+        var first=new Thread(()=>
+        {
+            try
+            {
+                Keep();
+                var wide=new ComboBox{ItemsSource=new[]{new string('W',90)}};
+                ComboBoxWidthBehavior.SetWidthGroup(wide,group);ComboBoxWidthBehavior.SetSizeToItems(wide,true);
+                var window=new Window{Content=wide,Width=900,Height=150,ShowActivated=false,Left=-10000,Top=-10000};
+                try
+                {
+                    window.Show();window.Dispatcher.Invoke(()=>{},DispatcherPriority.ApplicationIdle);
+                    Assert.Null(thrown);
+                    firstWidth=wide.Width;
+                    firstUp.Set();
+                    Assert.True(secondDone.Wait(10000));
+                    window.Dispatcher.Invoke(()=>{},DispatcherPriority.ApplicationIdle);
+                    Assert.Null(thrown);
+                    Assert.Equal(firstWidth,wide.Width);
+                }
+                finally{window.Close();}
+            }
+            catch(Exception e){failure=e;firstUp.Set();}
+        }){IsBackground=true};
+        first.SetApartmentState(ApartmentState.STA);first.Start();
+        Assert.True(firstUp.Wait(10000));
+        try
+        {
+            Sta(()=>
+            {
+                Keep();
+                var narrow=new ComboBox{ItemsSource=new[]{"A"}};
+                ComboBoxWidthBehavior.SetWidthGroup(narrow,group);ComboBoxWidthBehavior.SetSizeToItems(narrow,true);
+                var panel=new StackPanel();panel.Children.Add(narrow);
+                var window=new Window{Content=panel,Width=900,Height=150,ShowActivated=false,Left=-10000,Top=-10000};
+                try
+                {
+                    window.Show();window.Dispatcher.Invoke(()=>{},DispatcherPriority.ApplicationIdle);
+                    Assert.Null(thrown);
+                    output.WriteLine($"first={firstWidth} second={narrow.Width}");
+                    // Sized to its own item, not to the other thread's.
+                    Assert.True(narrow.Width<firstWidth);
+                    panel.Children.Remove(narrow);window.Dispatcher.Invoke(()=>{},DispatcherPriority.ApplicationIdle);
+                    Assert.Null(thrown);
+                }
+                finally{window.Close();}
+            });
+        }
+        finally{secondDone.Set();}
+        Assert.True(first.Join(10000));
+        if(failure!=null)System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
+    }
+
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
     static WeakReference<ComboBox> SubscribedControl(bool disable)
     {

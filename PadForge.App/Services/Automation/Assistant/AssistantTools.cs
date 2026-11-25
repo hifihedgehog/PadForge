@@ -468,7 +468,7 @@ namespace PadForge.Services.Automation
 
     internal sealed class ShowStepArgs
     {
-        [JsonRequired, Description("The place's ID, from find: a setting, action, card, section, extra, page, dialog, device, controller, profile or plugin.")]
+        [JsonRequired, Description("The place's ID, from find: a setting, action, card, section, extra, page, dialog, device, controller, profile, macro, plugin or a plugin's setting.")]
         public string Place { get; set; }
 
         [Description("Your words for the user, beside the place. PadForge heads them with your name, takes out control characters and cuts them at 300 characters.")]
@@ -498,7 +498,7 @@ namespace PadForge.Services.Automation
         [Description("In place of place: several steps, shown one after another.")]
         public List<ShowStepArgs> Steps { get; set; }
 
-        [Description("True to ring each click on the way to the last place first: the sidebar entry, the section or extra, and each closed card and More. The user does the clicking.")]
+        [Description("True to ring each click on the way to the last place first: the sidebar entry, the section or extra, a filter that hides the row, the row, and each closed card and More. The user does the clicking.")]
         public bool Walk { get; set; }
     }
 

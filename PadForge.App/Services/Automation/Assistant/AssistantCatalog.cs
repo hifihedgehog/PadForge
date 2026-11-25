@@ -93,6 +93,9 @@ namespace PadForge.Services.Automation
             _parts = parts ?? new AssistantCatalogParts();
             _tray = TrayMenu.Entries();
             _trayIds = SearchIds.Assign(_tray);
+            // A mapping row's mouse settings ring their lines on this
+            // catalog's controller page.
+            MouseSteeringCatalog.DrawnOn = () => pageOf?.Invoke(SearchPage.Pad);
         }
 
         internal AssistantCatalogParts Parts => _parts;
@@ -1856,10 +1859,10 @@ namespace PadForge.Services.Automation
                 var s = request.Steps[i];
                 var p = Resolve(s.Place, all);
                 // A walk rings each click on the way to its last place, and
-                // the user makes them: that step leaves every fold shut.
+                // the user makes them: that step opens nothing.
                 bool walked = request.Walk && i == request.Steps.Count - 1;
                 if (walked) steps.AddRange(WalkTo(p));
-                steps.Add(StepOf(p, s.Words, s.Advance, s.Seconds, openFolds: !walked));
+                steps.Add(StepOf(p, s.Words, s.Advance, s.Seconds, walked));
             }
             pointer.Play(request.Program, steps, request.Owner);
             var first = Resolve(request.Steps[0].Place, all);
@@ -1878,8 +1881,10 @@ namespace PadForge.Services.Automation
         public bool NextCall(int owner) => _parts.Pointer?.NextCall(owner) ?? false;
 
         /// <summary>One step: how to bring its place up, and how to find its
-        /// element once it is up.</summary>
-        private AssistantPointer.Step StepOf(Place p, string words, AssistantAdvance advance, int seconds, bool openFolds = true)
+        /// element once it is up. A walk's last step brings nothing up: the
+        /// steps before it ring every click on the way, and the user makes
+        /// each one.</summary>
+        private AssistantPointer.Step StepOf(Place p, string words, AssistantAdvance advance, int seconds, bool walked = false)
         {
             string id = p.Id;
             return new AssistantPointer.Step
@@ -1887,42 +1892,48 @@ namespace PadForge.Services.Automation
                 Words = words,
                 Advance = advance,
                 Seconds = seconds,
-                Open = () => OpenPlace(id, openFolds),
+                Open = walked ? null : () => OpenPlace(id),
                 Find = () => ElementOf(id),
             };
         }
 
-        /// <summary>Takes the page to a place, as Search's landing does,
-        /// without the keyboard's focus and without the ring, which the
-        /// pointer draws and holds itself. With <paramref name="openFolds"/>
-        /// false it opens no More row or fold card on the way: a walk's
-        /// user opens them.</summary>
-        private void OpenPlace(string id, bool openFolds = true)
+        /// <summary>Takes the page to a place for a plain show, as Search's
+        /// landing does, without the keyboard's focus and without the ring,
+        /// which the pointer draws and holds itself: the page, the
+        /// controller, its section and part, the More rows and fold cards on
+        /// the way, a device's panel with the filters that hide its row
+        /// emptied. A walk never calls it.</summary>
+        private void OpenPlace(string id)
         {
             // A place on another device's panel: that device's panel opens
-            // first, as Search's landing on a device opens it. A walk's user
-            // picks the device's row in a step of its own.
-            if (openFolds && NamesAnotherDevice(id) && DeviceRowOf(id) is { } row)
+            // first, as Search's landing on a device opens it.
+            if (NamesAnotherDevice(id) && DeviceRowOf(id) is { } row)
                 _navigator.Open(new SearchResult { Target = SearchTarget.Device, Payload = row }, takeFocus: false);
             Place p;
             try { p = Resolve(id); }
             catch (AssistantRefusal) { return; }
             if (p.Entry != null && p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles)
             {
-                _navigator.Open(new SearchResult { Target = SearchTarget.Entry, Entry = p.Entry, Payload = p.Item ?? p.Label, Pad = p.Pad }, takeFocus: false, ring: false, openFolds: openFolds);
+                _navigator.Open(new SearchResult { Target = SearchTarget.Entry, Entry = p.Entry, Payload = p.Item ?? p.Label, Pad = p.Pad }, takeFocus: false, ring: false);
+                return;
+            }
+            // Home's and About's own markup: the page, then the folds on the
+            // way, as a landing opens them.
+            if (p.Entry?.Page is SearchPage.Home or SearchPage.About)
+            {
+                OpenPageOf(p.Entry.Page == SearchPage.Home ? "Home" : "About", Target(p));
                 return;
             }
             if (p.LiveItem is { Kind: LiveKind.PluginDeclaration } declared)
             {
                 // Its plugin's card on the Plugins page, or its device's
                 // panel, then each fold on the way to it, the card's own
-                // among them, unless a walk's user opens them. A page that
-                // just came up draws its cards when it lays out, so the folds
-                // open again then, as Search's landing waits for the layout
-                // (SearchNavigator.Open posts its Land at Loaded).
+                // among them. A page that just came up draws its cards when
+                // it lays out, so the folds open again then, as Search's
+                // landing waits for the layout (SearchNavigator.Open posts
+                // its Land at Loaded).
                 if (HolderOf(p) is not { } holder) return;
-                OpenPlace(holder.Id, openFolds);
-                if (!openFolds) return;
+                OpenPlace(holder.Id);
                 string key = KeyOf(declared);
                 void OpenOnTheWay()
                 {
@@ -1932,17 +1943,24 @@ namespace PadForge.Services.Automation
                 System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, new Action(OpenOnTheWay));
                 return;
             }
+            if (p.LiveItem is { } item)
+            {
+                // A mapping row's mouse setting: its controller's list, with
+                // the row picked and open, as a landing on a row's option.
+                if (MouseSteeringCatalog.SpotOf(_vm, item.Id) is { } spot)
+                {
+                    _navigator.OpenMappingRow(spot.Pad.PadIndex, spot.Row);
+                    return;
+                }
+                // Any other row: the page that draws it, and the folds on
+                // the way.
+                var element = LiveElement(item);
+                if (TagOfLiveItem(item, element) is { } tag) OpenPageOf(tag, element);
+                return;
+            }
             if (p.Live == null) return;
             switch (p.Live.Kind)
             {
-                // Opening a device's panel opens the Not Connected card that
-                // holds an offline device's row: a walk's user opens it, so
-                // a walk only goes to the page. A row the search box or a
-                // segment hides has no list to stand in, and its panel
-                // opens, which empties them.
-                case LiveKind.Device when !openFolds && ListHolding(_pageOf(SearchPage.Devices), p.Live.Payload) != null:
-                    _navigator.Open(new SearchResult { Target = SearchTarget.Page, Payload = "Devices" }, takeFocus: false);
-                    break;
                 case LiveKind.Device:
                     _navigator.Open(new SearchResult { Target = SearchTarget.Device, Payload = p.Live.Payload }, takeFocus: false);
                     break;
@@ -1959,8 +1977,9 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>The element a place rings once it is up: its row, card or
-        /// button, a device's row, a profile's row, a controller's or page's
-        /// sidebar entry, a dialog, or a menu item's button.</summary>
+        /// button, a device's row, a profile's row, a macro's row, a
+        /// controller's or page's sidebar entry, a dialog's content, or a
+        /// menu item's button.</summary>
         internal FrameworkElement ElementOf(string id)
         {
             var all = Places(otherControllers: false);
@@ -1968,9 +1987,9 @@ namespace PadForge.Services.Automation
             try { p = Resolve(id, all); }
             catch (AssistantRefusal) { return null; }
             if (p.LiveItem is { } item)
-                return item.Element?.Invoke()
+                return LiveElement(item)
                        ?? (item.Kind == LiveKind.PluginDeclaration ? DeclarationIn(HolderCard(HolderOf(p, all)), KeyOf(item)) : null);
-            if (p.Entry == null && p.Live == null) return p.Root;
+            if (p.Entry == null && p.Live == null) return Ringable(p.Root);
             if (p.Live != null)
             {
                 switch (p.Live.Kind)
@@ -1979,11 +1998,12 @@ namespace PadForge.Services.Automation
                     case LiveKind.Controller: return _parts.NavItem?.Invoke("Pad" + ((int)p.Live.Payload + 1).ToString(CultureInfo.InvariantCulture));
                     case LiveKind.Device: return RowElement(_pageOf(SearchPage.Devices), p.Live.Payload);
                     case LiveKind.Profile: return RowElement(_pageOf(SearchPage.Profiles), p.Live.Payload);
+                    case LiveKind.Macro: return p.Live.Payload is ValueTuple<int, MacroItem> macro ? MacroRow(macro.Item1, macro.Item2) : null;
                     case LiveKind.Plugin: return PluginCard(p.Live.Payload);
                     default: return null;
                 }
             }
-            if (p.Entry.Kind == SearchKind.Dialog) return p.Root;
+            if (p.Entry.Kind == SearchKind.Dialog) return Ringable(p.Root);
             if (p.Entry.Kind == SearchKind.Section && _pageOf(SearchPage.Pad) is PadPage pad) return pad.SectionButton(p.Entry.Section);
             if (p.Entry.Kind == SearchKind.Extra && _pageOf(SearchPage.Extras) is ExtrasPage extras)
                 return extras.FindName(p.Entry.ExtraKey + "Tile") as FrameworkElement;
@@ -2142,14 +2162,16 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>The row a walk to an option rings: the picked row when it
-        /// holds the option, else the first the list shows that does, else
-        /// the controller's first that does, which the list's box hides and
-        /// the step names.</summary>
+        /// holds the option, else the first the list shows in an open group
+        /// that does, else the first the list shows that does, else the
+        /// controller's first that does, which a filter of the list keeps
+        /// out until the user clears it.</summary>
         private object RowFor(SearchEntry entry)
         {
             if (MappingGrid() is not { } grid) return null;
             if (HoldsOption(entry, grid.SelectedItem)) return grid.SelectedItem;
-            return grid.Items.Cast<object>().FirstOrDefault(item => HoldsOption(entry, item))
+            var listed = grid.Items.Cast<object>().Where(item => HoldsOption(entry, item)).ToList();
+            return listed.FirstOrDefault(item => !GroupFolded(item as MappingItem)) ?? listed.FirstOrDefault()
                    ?? (_pageOf(SearchPage.Pad)?.DataContext as PadViewModel)?.RowsOfSlot.FirstOrDefault(item => HoldsOption(entry, item));
         }
 
@@ -2176,30 +2198,137 @@ namespace PadForge.Services.Automation
             return label == null ? null : SearchLocator.TargetOf(label, entry);
         }
 
+        /// <summary>An item's row in the list on a page that shows it. A
+        /// list that holds the item and has not drawn its row brings it into
+        /// view first, as the list's own scroll would.</summary>
         private static FrameworkElement RowElement(FrameworkElement page, object item)
         {
             if (page == null || item == null) return null;
             foreach (var list in SearchLocator.VisualDescendants(page).OfType<ItemsControl>())
-                if (list.IsVisible && list.ItemContainerGenerator.ContainerFromItem(item) is FrameworkElement row && row.IsVisible) return row;
+                if (list.IsVisible && list.Items.Contains(item) && DrawnRow(list, item) is { IsVisible: true } row) return row;
             return null;
         }
 
+        /// <summary>The row a list draws for an item, brought into view when
+        /// the list has not drawn it.</summary>
+        private static FrameworkElement DrawnRow(ItemsControl list, object item)
+        {
+            if (list.ItemContainerGenerator.ContainerFromItem(item) is FrameworkElement drawn) return drawn;
+            if (list is not ListBox box) return null;
+            box.ScrollIntoView(item);
+            box.UpdateLayout();
+            return box.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
+        }
+
         /// <summary>The clicks on the way to a place, outermost first: the
-        /// sidebar entry, another device's row, the controller's section and
-        /// its part, the extra's tile or the Settings group, and each closed
-        /// fold card and More that holds the place, wherever it sits. A click
-        /// already made is skipped when the walk comes to it, and a fold's
-        /// step stays until the fold is open.</summary>
+        /// sidebar entry, the filters that keep a device's row out of the
+        /// Devices page's lists and another device's row, the controller's
+        /// section and its part, the mapping list's filters, the band of a
+        /// folded group and the row an option or a mouse setting is on, the
+        /// way back to the Extras page's tiles and the extra's tile, the
+        /// Settings group, and each closed fold card and More that holds the
+        /// place, wherever it sits. A click already made is skipped when the
+        /// walk comes to it. A step whose click can leave its work undone (a
+        /// fold's switch, a box that still holds words) stays until it is
+        /// done.</summary>
         private IEnumerable<AssistantPointer.Step> WalkTo(Place p)
         {
             if (p.LiveItem is { Kind: LiveKind.PluginDeclaration } declared) return WalkToDeclaration(p, declared);
-            var s = PadForge.Resources.Strings.Strings.Instance;
-            string tag = null;
+            var steps = new List<AssistantPointer.Step>();
+            // A mapping row's mouse setting: the controller's entry, the way
+            // to the row in the list, then the row, which the user picks. The
+            // setting stands in the row's details, which open with the pick.
+            if (p.LiveItem != null && MouseSteeringCatalog.SpotOf(_vm, p.LiveItem.Id) is { } spot)
+            {
+                var mapped = spot.Row;
+                steps.Add(SidebarStep(PadTag(spot.Pad)));
+                steps.AddRange(WayToMappingRow(spot.Pad, () => mapped));
+                steps.Add(MappingRowStep(() => mapped, () => ReferenceEquals(MappingGrid()?.SelectedItem, mapped)));
+                string line = p.Id;
+                steps.AddRange(FoldSteps(null, () => ElementOf(line)));
+                return steps;
+            }
+            var element = p.LiveItem != null ? LiveElement(p.LiveItem) : null;
+            string tag = TagOf(p, element);
+            if (tag != null) steps.Add(SidebarStep(tag));
+            // A device: the filters and the folds that keep its row from
+            // showing. The row is the place.
+            if (p.Live?.Kind == LiveKind.Device && p.Live.Payload is DeviceRowViewModel shown)
+                steps.AddRange(WayToDeviceRow(shown));
+            // A place on another device's panel: that device's row, after the
+            // filters and folds that keep it from showing, which the user
+            // picks.
+            if (p.Entry?.Page == SearchPage.Devices && NamesAnotherDevice(p.Id) && DeviceRowOf(p.Id) is { } device)
+            {
+                steps.AddRange(WayToDeviceRow(device));
+                steps.Add(DeviceRowStep(device));
+            }
+            if (p.Entry?.Page == SearchPage.Pad && p.Entry.Section >= 0 && p.Pad != null)
+            {
+                var pad = p.Pad;
+                // The section's button, unless the place is that button.
+                if (p.Entry.Kind != SearchKind.Section) steps.Add(SectionStep(pad, p.Entry.Section));
+                // Buttons and Macros & Menus show one part at a time: the
+                // part's own button, unless the place is that button.
+                if (p.Entry.Kind != SearchKind.Part && PartOf(p.Entry.Tab) is { } part) steps.Add(PartStep(pad, part));
+                // An option of a mapping row: the way to the row in the list,
+                // then the row the option is on, which the user picks. Its
+                // details open with the pick.
+                if (p.Entry.RowOptions)
+                {
+                    var entry = p.Entry;
+                    steps.AddRange(WayInMappingList(() => RowFor(entry) as MappingItem));
+                    steps.Add(MappingRowStep(() => RowFor(entry), () => HoldsOption(entry, MappingGrid()?.SelectedItem)));
+                }
+            }
+            // A macro: Macros & Menus, whose list holds it whichever of the
+            // two parts shows.
+            if (p.Live?.Kind == LiveKind.Macro && PadOfMacro(p.Live.Payload) is { } macroPad)
+                steps.Add(SectionStep(macroPad, PadViewModel.MacrosSection));
+            // The Extras page: back to its tiles from another extra's page,
+            // then the extra's tile, unless the place is the tile.
+            if (p.Entry?.Page == SearchPage.Extras || p.Live?.Kind == LiveKind.Plugin)
+            {
+                string extra = p.Live?.Kind == LiveKind.Plugin ? "Plugins"
+                    : p.Entry.Kind != SearchKind.Extra ? p.Entry.ExtraKey : null;
+                steps.Add(ExtrasBackStep(extra));
+                if (extra != null) steps.Add(ExtraTileStep(extra));
+            }
+            // The Settings page shows one group at a time: its group's
+            // button on the page's left.
+            var onSettings = p.Entry?.Page == SearchPage.Settings ? SettingsSpot(p.Entry) : p.LiveItem != null && tag == "Settings" ? element : null;
+            if (SettingsGroupStep(onSettings) is { } group) steps.Add(group);
+            // Each closed fold card and More that holds the place. A page's
+            // or a controller's sidebar entry sits in none, and a device's
+            // row is reached through its list above.
+            if (p.Live?.Kind is not (LiveKind.Page or LiveKind.Controller or LiveKind.Device))
+            {
+                string id = p.Id;
+                steps.AddRange(FoldSteps(ElementOf(id), () => ElementOf(id)));
+            }
+            return steps;
+        }
+
+        /// <summary>The sidebar's tag of a controller's page.</summary>
+        private static string PadTag(PadViewModel pad) => "Pad" + (pad.PadIndex + 1).ToString(CultureInfo.InvariantCulture);
+
+        /// <summary>The controller a macro's payload names, or null.</summary>
+        private PadViewModel PadOfMacro(object payload)
+            => payload is ValueTuple<int, MacroItem> macro && macro.Item1 >= 0 && macro.Item1 < _vm.Pads.Count ? _vm.Pads[macro.Item1] : null;
+
+        /// <summary>The sidebar's tag of the page that holds a place: a
+        /// page's entry for Search's and the catalog's markup, the page of a
+        /// device, a profile, a plugin or a macro, and for a live row the
+        /// page its element sits in. Null for a page's or a controller's own
+        /// entry, which is the place, and for a dialog's or the window's
+        /// place.</summary>
+        private string TagOf(Place p, FrameworkElement element)
+        {
             if (p.Entry != null)
             {
-                tag = p.Entry.Page switch
+                return p.Entry.Page switch
                 {
-                    SearchPage.Pad => p.Pad == null ? null : "Pad" + (p.Pad.PadIndex + 1).ToString(CultureInfo.InvariantCulture),
+                    SearchPage.Pad => p.Pad == null ? null : PadTag(p.Pad),
                     SearchPage.Settings => "Settings",
                     SearchPage.Extras => "Extras",
                     SearchPage.Devices => "Devices",
@@ -2209,116 +2338,333 @@ namespace PadForge.Services.Automation
                     _ => null,
                 };
             }
-            else if (p.Live?.Kind is LiveKind.Device) tag = "Devices";
-            else if (p.Live?.Kind is LiveKind.Profile) tag = "Profiles";
-            else if (p.Live?.Kind is LiveKind.Plugin) tag = "Extras";
-            var steps = new List<AssistantPointer.Step>();
-            if (tag != null)
+            switch (p.Live?.Kind)
             {
-                string nav = tag;
-                string name = tag.StartsWith("Pad", StringComparison.Ordinal) ? SearchService.SlotName(p.Pad) : PageName(PageOfTag(tag));
-                steps.Add(new AssistantPointer.Step
-                {
-                    Words = string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, name),
-                    Advance = AssistantAdvance.Click,
-                    Done = () => (_parts.NavTag?.Invoke() ?? _vm.SelectedNavTag) == nav,
-                    Find = () => _parts.NavItem?.Invoke(nav),
-                });
+                case LiveKind.Device: return "Devices";
+                case LiveKind.Profile: return "Profiles";
+                case LiveKind.Plugin: return "Extras";
+                case LiveKind.Macro: return PadOfMacro(p.Live.Payload) is { } pad ? PadTag(pad) : null;
             }
-            // A place on another device's panel: that device's row, after
-            // the folds that hold its list.
-            if (p.Entry?.Page == SearchPage.Devices && NamesAnotherDevice(p.Id) && DeviceRowOf(p.Id) is { } device)
+            return p.LiveItem is { } item ? TagOfLiveItem(item, element) : null;
+        }
+
+        /// <summary>The sidebar's tag of the page that draws a live row: the
+        /// page its provider names (<see cref="LiveItem.Page"/>), else the
+        /// page its element sits in. Null for a row in a dialog.</summary>
+        private string TagOfLiveItem(LiveItem item, FrameworkElement element)
+            => item.Page ?? TagOfElement(element);
+
+        private static readonly (SearchPage Page, string Tag)[] PageTags =
+        {
+            (SearchPage.Settings, "Settings"), (SearchPage.Extras, "Extras"), (SearchPage.Devices, "Devices"), (SearchPage.Profiles, "Profiles"),
+        };
+
+        /// <summary>The sidebar's tag of the page an element sits in, or
+        /// null for one in a dialog or in none of the pages.</summary>
+        private string TagOfElement(FrameworkElement element)
+        {
+            for (DependencyObject at = element; at != null; at = SearchLocator.Up(at))
             {
-                steps.AddRange(FoldSteps(ListHolding(_pageOf(SearchPage.Devices), device), null));
-                steps.Add(DeviceRowStep(device));
-            }
-            if (p.Entry?.Page == SearchPage.Pad && p.Entry.Section >= 0 && p.Pad != null)
-            {
-                int section = p.Entry.Section;
-                var pad = p.Pad;
-                steps.Add(new AssistantPointer.Step
+                if (at is not FrameworkElement here) continue;
+                if (ReferenceEquals(here, _pageOf(SearchPage.Pad))) return here.DataContext is PadViewModel pad ? PadTag(pad) : null;
+                foreach (var (page, tag) in PageTags)
+                    if (ReferenceEquals(here, _pageOf(page))) return tag;
+                if (_parts.CatalogPageOf is { } catalogPage)
                 {
-                    Words = string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format,
-                        (_pageOf(SearchPage.Pad) as PadPage)?.SectionName(section) ?? string.Empty),
-                    Advance = AssistantAdvance.Click,
-                    Done = () => PadViewModel.SectionOfTab(pad.SelectedConfigTab) == section,
-                    Find = () => (_pageOf(SearchPage.Pad) as PadPage)?.SectionButton(section),
-                });
-                // Buttons and Macros & Menus show one part at a time: the
-                // part's own button, unless the place is that button.
-                if (p.Entry.Kind != SearchKind.Part && PartOf(p.Entry.Tab) is { } part)
-                {
-                    steps.Add(new AssistantPointer.Step
-                    {
-                        Words = string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, PartName(part.Button)),
-                        Advance = AssistantAdvance.Click,
-                        Done = () => part.Shows(pad),
-                        Find = () => (_pageOf(SearchPage.Pad) as PadPage)?.FindName(part.Button) as FrameworkElement,
-                    });
-                }
-                // An option of a mapping row: each fold over the list, then
-                // the row the option is on, which the user picks. Its
-                // details open with the pick.
-                if (p.Entry.RowOptions && MappingGrid() is { } grid)
-                {
-                    var entry = p.Entry;
-                    steps.AddRange(FoldSteps(grid, null));
-                    steps.Add(new AssistantPointer.Step
-                    {
-                        Say = () => string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, (RowFor(entry) as MappingItem)?.TargetLabel ?? string.Empty),
-                        Advance = AssistantAdvance.Click,
-                        Done = () => HoldsOption(entry, MappingGrid()?.SelectedItem),
-                        Find = () => RowContainer(RowFor(entry)),
-                        Stays = true,
-                    });
+                    if (ReferenceEquals(here, catalogPage(SearchPage.Home))) return "Home";
+                    if (ReferenceEquals(here, catalogPage(SearchPage.About))) return "About";
                 }
             }
-            string extra = p.Entry?.Page == SearchPage.Extras && p.Entry.ExtraKey != null && p.Entry.Kind != SearchKind.Extra ? p.Entry.ExtraKey
-                : p.Live?.Kind == LiveKind.Plugin ? "Plugins" : null;
-            if (extra != null)
+            return null;
+        }
+
+        /// <summary>A page's name as its sidebar entry says it: a
+        /// controller's name for a controller's page.</summary>
+        private string NameOfTag(string tag)
+        {
+            if (tag.StartsWith("Pad", StringComparison.Ordinal)
+                && int.TryParse(tag.AsSpan(3), NumberStyles.None, CultureInfo.InvariantCulture, out int one) && one >= 1 && one <= _vm.Pads.Count)
+                return SearchService.SlotName(_vm.Pads[one - 1]);
+            return PageName(PageOfTag(tag));
+        }
+
+        /// <summary>A plain show's opening of a place Search's index does not
+        /// hold: its page, as a click on its sidebar entry opens it, the
+        /// Settings group that holds it with the page's search box emptied,
+        /// and each fold on the way to its element.</summary>
+        private void OpenPageOf(string tag, FrameworkElement element)
+        {
+            _navigator.Open(new SearchResult { Target = SearchTarget.Page, Payload = tag }, takeFocus: false);
+            if (element == null) return;
+            if (tag == "Settings" && _pageOf(SearchPage.Settings) is SettingsPage settings) settings.Reveal(element);
+            SearchNavigator.OpenFolds(element, null);
+        }
+
+        /// <summary>A live row's element where it is drawn now: the item's
+        /// own. A mapping row's mouse setting falls back to its line on this
+        /// catalog's controller page, whichever page the item's own element
+        /// looks on.</summary>
+        private FrameworkElement LiveElement(LiveItem item)
+        {
+            if (item.Element is { } find && SafeElement(find) is { } own) return own;
+            return MouseSteeringCatalog.SpotOf(_vm, item.Id) is { } spot
+                ? SafeElement(() => MouseSteeringCatalog.LineElement(_pageOf(SearchPage.Pad), spot.Row, spot.Source, spot.Key))
+                : null;
+        }
+
+        /// <summary>A macro's row in its controller's macro list, while the
+        /// controller page shows that controller. The list shows in both
+        /// parts of Macros &amp; Menus.</summary>
+        private FrameworkElement MacroRow(int padIndex, MacroItem macro)
+        {
+            if (_pageOf(SearchPage.Pad) is not PadPage page || page.DataContext is not PadViewModel pad || pad.PadIndex != padIndex) return null;
+            var list = SearchLocator.LogicalDescendants(page).OfType<ListBox>().FirstOrDefault(l => AutomationProperties.GetAutomationId(l) == "MacroList");
+            return list == null || !list.IsVisible || !list.Items.Contains(macro) ? null : DrawnRow(list, macro);
+        }
+
+        /// <summary>What a ring goes around for a window: its content. The
+        /// ring is drawn on the adorner layer inside a window, and no layer
+        /// lies over a window itself.</summary>
+        private static FrameworkElement Ringable(FrameworkElement root)
+            => root is Window window && window.Content is FrameworkElement content ? content : root;
+
+        /// <summary>A walk's step to a page's sidebar entry.</summary>
+        private AssistantPointer.Step SidebarStep(string tag) => new()
+        {
+            Words = string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format, NameOfTag(tag)),
+            Advance = AssistantAdvance.Click,
+            Done = () => (_parts.NavTag?.Invoke() ?? _vm.SelectedNavTag) == tag,
+            Find = () => _parts.NavItem?.Invoke(tag),
+        };
+
+        /// <summary>A walk's step to a section of a controller's page. Its
+        /// name is read when the step comes, once the page shows that
+        /// controller: the first section's name follows the controller's
+        /// type.</summary>
+        private AssistantPointer.Step SectionStep(PadViewModel pad, int section) => new()
+        {
+            Say = () => string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format,
+                (_pageOf(SearchPage.Pad) as PadPage)?.SectionName(section) ?? string.Empty),
+            Advance = AssistantAdvance.Click,
+            Done = () => PadViewModel.SectionOfTab(pad.SelectedConfigTab) == section,
+            Find = () => (_pageOf(SearchPage.Pad) as PadPage)?.SectionButton(section),
+        };
+
+        /// <summary>A walk's step to a part button of Buttons or of Macros
+        /// &amp; Menus.</summary>
+        private AssistantPointer.Step PartStep(PadViewModel pad, PartButton part) => new()
+        {
+            Say = () => string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format, PartName(part.Button)),
+            Advance = AssistantAdvance.Click,
+            Done = () => part.Shows(pad),
+            Find = () => (_pageOf(SearchPage.Pad) as PadPage)?.FindName(part.Button) as FrameworkElement,
+        };
+
+        /// <summary>
+        /// The clicks on the way to a device's row on the Devices page, after
+        /// its sidebar entry: the control that keeps the row out of both
+        /// lists (the Show segment, the connection segment, the search box,
+        /// one after another, as DevicesPage.HiderOf names them), which the
+        /// user clears or picks, then each closed fold over the list that
+        /// holds the row. The filters' step stays until the row is listed,
+        /// as a fold's step stays until the fold is open. The program never
+        /// empties the search or changes a segment.
+        /// </summary>
+        private IEnumerable<AssistantPointer.Step> WayToDeviceRow(DeviceRowViewModel device)
+        {
+            FrameworkElement Hider() => (_pageOf(SearchPage.Devices) as DevicesPage)?.HiderOf(device);
+            var steps = new List<AssistantPointer.Step>
             {
-                string key = extra;
-                var tile = _service.Index.FirstOrDefault(e => e.Kind == SearchKind.Extra && e.ExtraKey == key);
-                steps.Add(new AssistantPointer.Step
+                new()
                 {
-                    Words = string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, tile == null ? key : SearchLocator.LabelText(tile.Label, null)),
+                    Say = () => FilterWords(Hider()),
                     Advance = AssistantAdvance.Click,
-                    Done = () => (_pageOf(SearchPage.Extras) as ExtrasPage)?.CurrentExtra == key,
-                    Find = () => _pageOf(SearchPage.Extras)?.FindName(key + "Tile") as FrameworkElement,
-                });
-            }
-            if (p.Entry?.Page == SearchPage.Settings && _pageOf(SearchPage.Settings) is SettingsPage settingsPage)
-            {
-                // The Settings page shows one group at a time: its group's
-                // button on the page's left.
-                _service.Locator.Reset();
-                var label = p.Entry.ItemsPath == null && !p.Entry.RowOptions ? _service.Locator.Find(p.Entry, _service.Index) : null;
-                if (label != null && settingsPage.GroupOf(label) is { } group && settingsPage.DataContext is SettingsViewModel settingsVm)
-                {
-                    steps.Add(new AssistantPointer.Step
-                    {
-                        Words = string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, settingsPage.GroupName(group)),
-                        Advance = AssistantAdvance.Click,
-                        Done = () => settingsVm.SelectedSettingsGroup == group && string.IsNullOrEmpty(settingsVm.SettingsSearchText),
-                        Find = () => settingsPage.GroupButton(group),
-                    });
-                }
-            }
-            // Each closed fold card and More that holds the place. A page's
-            // or a controller's sidebar entry sits in none. A device's row is
-            // drawn only while its list shows, so the folds over it are the
-            // ones over its list.
-            if (p.Live?.Kind == LiveKind.Device)
-            {
-                object row = p.Live.Payload;
-                steps.AddRange(FoldSteps(ListHolding(_pageOf(SearchPage.Devices), row), () => ListHolding(_pageOf(SearchPage.Devices), row)));
-            }
-            else if (p.Live?.Kind is not (LiveKind.Page or LiveKind.Controller))
-            {
-                string id = p.Id;
-                steps.AddRange(FoldSteps(ElementOf(id), () => ElementOf(id)));
-            }
+                    Done = () => Hider() == null,
+                    Find = Hider,
+                    Stays = true,
+                },
+            };
+            steps.AddRange(FoldSteps(ListHolding(_pageOf(SearchPage.Devices), device), () => ListHolding(_pageOf(SearchPage.Devices), device)));
             return steps;
+        }
+
+        /// <summary>A filter's step in words: Clear the search box for a box
+        /// the user empties, or Pick and the words of the choice that shows
+        /// every row, for a segment or a picker.</summary>
+        private static string FilterWords(FrameworkElement hider)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            string words;
+            switch (hider)
+            {
+                case null:
+                    return string.Empty;
+                case System.Windows.Controls.Primitives.TextBoxBase:
+                    return s.Automation_Pointer_ClearSearch;
+                case ComboBox picker:
+                    words = picker.Items.OfType<ComboBoxItem>().FirstOrDefault(i => (i.Tag as string) == "All")?.Content as string;
+                    break;
+                default:
+                    words = SearchLocator.LogicalDescendants(hider).OfType<TextBlock>().Select(t => t.Text).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t))
+                            ?? AutomationProperties.GetName(hider);
+                    break;
+            }
+            return string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Pick_Format, words ?? string.Empty);
+        }
+
+        /// <summary>The clicks on the way to a mapping row of a controller's
+        /// list, after the controller's sidebar entry: the first section,
+        /// its List, and the way in the list (<see cref="WayInMappingList"/>).
+        /// </summary>
+        private IEnumerable<AssistantPointer.Step> WayToMappingRow(PadViewModel pad, Func<MappingItem> row)
+        {
+            var steps = new List<AssistantPointer.Step> { SectionStep(pad, PadViewModel.ButtonsSection) };
+            if (PartOf(PadViewModel.MappingsTabIndex) is { } list) steps.Add(PartStep(pad, list));
+            steps.AddRange(WayInMappingList(row));
+            return steps;
+        }
+
+        /// <summary>The clicks in the controller page's list on the way to a
+        /// row, once the list shows: each closed fold over the list, the
+        /// control that keeps the row out of the list (its Keyboard and Mouse
+        /// scope, then its search box), which the user picks or clears, and
+        /// the band of the row's group while the group is folded. Each stays
+        /// until it is done. <paramref name="row"/> is read as each step
+        /// comes.</summary>
+        private IEnumerable<AssistantPointer.Step> WayInMappingList(Func<MappingItem> row)
+        {
+            var steps = new List<AssistantPointer.Step>();
+            if (MappingGrid() is { } grid) steps.AddRange(FoldSteps(grid, null));
+            steps.Add(new AssistantPointer.Step
+            {
+                Say = () => FilterWords(ListHider(row())),
+                Advance = AssistantAdvance.Click,
+                Done = () => ListHider(row()) == null,
+                Find = () => ListHider(row()),
+                Stays = true,
+            });
+            steps.Add(new AssistantPointer.Step
+            {
+                Say = () => string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format,
+                    FoldedBand(row()) is { } band ? AutomationProperties.GetName(band) : string.Empty),
+                Advance = AssistantAdvance.Click,
+                Done = () => !GroupFolded(row()),
+                Find = () => FoldedBand(row()),
+                Stays = true,
+            });
+            return steps;
+        }
+
+        /// <summary>A walk's step to a mapping row of the list, which the
+        /// user picks: its details open with the pick.</summary>
+        private AssistantPointer.Step MappingRowStep(Func<object> row, Func<bool> done) => new()
+        {
+            Say = () => string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format,
+                (row() as MappingItem)?.TargetLabel ?? string.Empty),
+            Advance = AssistantAdvance.Click,
+            Done = done,
+            Find = () => RowContainer(row()),
+            Stays = true,
+        };
+
+        /// <summary>The control that keeps a mapping row out of the
+        /// controller page's list now: the Keyboard and Mouse scope while it
+        /// leaves the row out, then the list's search box while its words
+        /// match nothing the row says. Null while the list holds the row or
+        /// shows the picture, and for a row the slot's own surface mode
+        /// leaves out, which no filter of the list brings back.</summary>
+        private FrameworkElement ListHider(MappingItem row)
+        {
+            if (row == null || MappingGrid() is not { } grid || grid.Items.Contains(row)) return null;
+            var page = _pageOf(SearchPage.Pad);
+            if (page?.DataContext is not PadViewModel vm || !vm.IsButtonsListView || !vm.Mappings.Contains(row)) return null;
+            var kbm = vm.OutputType == PadForge.Engine.VirtualControllerType.KeyboardMouse ? vm.KbmConfig : null;
+            if (!PadViewModel.RowMatchesSurface(row, "All", kbm)) return null;
+            if (!PadViewModel.RowMatchesSurface(row, vm.MappingSurfaceScope, kbm) && page.FindName("MappingSurfaceScopeBox") is ComboBox scope && scope.IsVisible)
+                return scope;
+            return PadViewModel.RowMatchesSearch(row, vm.MappingInputSearch) ? null : page.FindName("MappingFilterSearchBox") as FrameworkElement;
+        }
+
+        /// <summary>Whether the list's group that holds a row is folded: a
+        /// controller's list folds Left Stick and Right Stick to start
+        /// with.</summary>
+        private bool GroupFolded(MappingItem row)
+            => row != null && _pageOf(SearchPage.Pad)?.DataContext is PadViewModel vm && vm.ListIsGrouped
+               && MappingGrid() is { } grid && grid.Items.Contains(row) && !vm.IsListGroupOpen(row.Category);
+
+        /// <summary>The band of the folded group that holds a row, which the
+        /// user clicks to open the group. A group the list has not drawn is
+        /// brought into view first, as the list brings a row in: the list
+        /// draws a folded group's band and none of its rows.</summary>
+        private FrameworkElement FoldedBand(MappingItem row)
+        {
+            if (!GroupFolded(row) || MappingGrid() is not { } grid) return null;
+            var group = grid.Items.Groups?.OfType<CollectionViewGroup>().FirstOrDefault(g => g.Items.Contains(row));
+            if (group == null) return null;
+            if (grid.ItemContainerGenerator.ContainerFromItem(group) is not GroupItem item)
+            {
+                grid.ScrollIntoView(row);
+                grid.UpdateLayout();
+                item = grid.ItemContainerGenerator.ContainerFromItem(group) as GroupItem;
+            }
+            var band = item == null ? null : SearchLocator.VisualDescendants(item).OfType<Expander>().FirstOrDefault();
+            return band?.Template?.FindName("Band", band) as FrameworkElement ?? band;
+        }
+
+        /// <summary>A walk's step back to the Extras page's tiles while an
+        /// extra's page other than <paramref name="keep"/> shows: that page's
+        /// Extras crumb, which the user clicks.</summary>
+        private AssistantPointer.Step ExtrasBackStep(string keep) => new()
+        {
+            Words = string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format, PageName(SearchPage.Extras)),
+            Advance = AssistantAdvance.Click,
+            Done = () => (_pageOf(SearchPage.Extras) as ExtrasPage)?.CurrentExtra is not { } now || now == keep,
+            Find = () => _pageOf(SearchPage.Extras) is ExtrasPage extras && extras.CurrentExtra is { } now
+                ? SearchLocator.LogicalDescendants(extras).OfType<System.Windows.Controls.Primitives.ButtonBase>()
+                    .FirstOrDefault(b => AutomationProperties.GetAutomationId(b) == "Extras_Back_" + now)
+                : null,
+        };
+
+        /// <summary>A walk's step to an extra's tile on the Extras
+        /// page.</summary>
+        private AssistantPointer.Step ExtraTileStep(string key)
+        {
+            var tile = _service.Index.FirstOrDefault(e => e.Kind == SearchKind.Extra && e.ExtraKey == key);
+            return new AssistantPointer.Step
+            {
+                Words = string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format,
+                    tile == null ? key : SearchLocator.LabelText(tile.Label, null)),
+                Advance = AssistantAdvance.Click,
+                Done = () => (_pageOf(SearchPage.Extras) as ExtrasPage)?.CurrentExtra == key,
+                Find = () => _pageOf(SearchPage.Extras)?.FindName(key + "Tile") as FrameworkElement,
+            };
+        }
+
+        /// <summary>Where a Settings page entry sits, for its group: its
+        /// label, or for an entry of a list's items the list, as Search's
+        /// landing reveals it (SearchNavigator.Open). None for a row's
+        /// option.</summary>
+        private DependencyObject SettingsSpot(SearchEntry entry)
+        {
+            if (entry.RowOptions) return null;
+            _service.Locator.Reset();
+            return entry.ItemsPath != null ? _service.Locator.ListOf(entry) : _service.Locator.Find(entry, _service.Index);
+        }
+
+        /// <summary>A walk's step to the Settings page's group that holds a
+        /// part of the page, or null for a part in none. The group's button
+        /// empties the page's search box as it opens the group.</summary>
+        private AssistantPointer.Step SettingsGroupStep(DependencyObject part)
+        {
+            if (part == null || _pageOf(SearchPage.Settings) is not SettingsPage page || page.GroupOf(part) is not { } group
+                || page.DataContext is not SettingsViewModel vm) return null;
+            return new AssistantPointer.Step
+            {
+                Words = string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format, page.GroupName(group)),
+                Advance = AssistantAdvance.Click,
+                Done = () => vm.SelectedSettingsGroup == group && string.IsNullOrEmpty(vm.SettingsSearchText),
+                Find = () => page.GroupButton(group),
+            };
         }
 
         /// <summary>A step for each closed fold on the way to an element,

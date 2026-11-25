@@ -63,6 +63,14 @@ namespace PadForge.Services.Catalog
         /// <summary>The element to ring for it, when one is drawn now.</summary>
         public Func<System.Windows.FrameworkElement> Element { get; init; }
 
+        /// <summary>The sidebar's tag of the page that draws it (Home,
+        /// Settings and the rest), for a row a page of the window draws: the
+        /// guided pointer's walk rings that page's entry on the way to it,
+        /// and a plain show opens that page (#600 item 7). Null for one in a
+        /// dialog, and for one the catalog places by its own ID, such as a
+        /// mapping row's mouse setting.</summary>
+        public string Page { get; init; }
+
         /// <summary>What it does, in the words the user reads beside it or on
         /// hover: a plugin's help for a setting, or its paragraph.</summary>
         public string Help { get; init; }

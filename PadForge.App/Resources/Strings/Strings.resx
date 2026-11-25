@@ -897,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Click it to go on.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Open {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Open More.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Pick {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Clear the search box.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>From {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>From {1}, which calls itself “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>From a program that calls itself “{0}”</value></data>

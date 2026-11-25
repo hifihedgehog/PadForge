@@ -244,6 +244,37 @@ namespace PadForge.Views
             }));
         }
 
+        /// <summary>
+        /// The control that keeps a device's row out of both lists now, for a
+        /// walk of the guided pointer (#600 item 7), which rings it for the
+        /// user to clear or pick: the Show segment's All while the Show
+        /// segment leaves the row's kind out, the connection segment's All
+        /// while that segment leaves the row out, then the search box while
+        /// its words match nothing the row says. Null while a list holds the
+        /// row. A walk never empties the search or changes a segment, and
+        /// <see cref="ShowDevice"/>, which does both, is Search's landing and
+        /// a program's plain show.
+        /// </summary>
+        internal FrameworkElement HiderOf(ViewModels.DeviceRowViewModel row)
+        {
+            if (row == null || DataContext is not ViewModels.DevicesViewModel vm || ListOf(row) != null) return null;
+            if (vm.Filter != ViewModels.DeviceFilter.All && ViewModels.DevicesViewModel.FilterOf(row.DeviceTypeKey) != vm.Filter)
+                return SegmentOf(ShowSegments, nameof(ViewModels.DeviceFilter.All));
+            if ((vm.Connection == ViewModels.DeviceConnection.Connected && !row.IsOnline)
+                || (vm.Connection == ViewModels.DeviceConnection.NotConnected && row.IsOnline))
+                return SegmentOf(ConnectionSegments, nameof(ViewModels.DeviceConnection.All));
+            // Both segments let the row through, so the search is what
+            // leaves it out. A list not yet in step with a row that just
+            // changed is no search's doing, and has nothing to ring.
+            return string.IsNullOrWhiteSpace(vm.SearchText) ? null : DeviceSearchBox;
+        }
+
+        /// <summary>A segment of a track by the Tag that names its
+        /// choice.</summary>
+        private static RadioButton SegmentOf(FrameworkElement track, string tag)
+            => PadForge.Search.SearchLocator.LogicalDescendants(track).OfType<RadioButton>()
+                .FirstOrDefault(segment => string.Equals(segment.Tag as string, tag, StringComparison.Ordinal));
+
         /// <summary>The list that holds a device's row now, or null while the
         /// segment or the search hides it.</summary>
         private ListBox ListOf(ViewModels.DeviceRowViewModel row)

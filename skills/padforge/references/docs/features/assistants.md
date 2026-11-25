@@ -76,9 +76,9 @@ A Windows file chooser or message box that PadForge cannot read is reported as w
 
 **show** rings a place and puts the assistant's words beside it in a callout, headed by its name. The words are cleaned of control characters and cut at 300. A step moves on when you click the ringed place (the default, and the callout says **Click it to go on.**), after a number of seconds from 1 to 60, or at the assistant's next call. With several steps it shows **Step 2 of 5.**, up to 20 steps.
 
-With a walk, the pointer rings each click on the way: the sidebar entry, the controller page's section, the extra's tile, the Settings group, **More**. You do the clicking. A click you already made is skipped.
+With a walk, the pointer rings each click on the way: the sidebar entry, the controller page's section and its part, the extra's tile, the Settings group, each closed card and **More**, and the row the place is on, such as another device's row or a mapping row. When the Devices page's search box or one of its segments hides that row, or the mapping list's search box or scope does, the pointer rings that first, and the walk goes on once the row shows. You do the clicking: a walk opens, picks and empties nothing for you. A click you already made is skipped.
 
-One callout shows at a time. It stays until you click elsewhere, press a key, press **Close**, the next step comes, or ten minutes pass. Shift, Ctrl, Alt, the Windows keys and Print Screen leave it up, so a screenshot keeps it. It is never placed over an **Allow** or **Don’t Allow** button, and it cannot point at a place that is yours alone.
+One callout shows at a time. It stays until you click elsewhere, press a key outside the ringed place, press **Close**, the next step comes, or ten minutes pass. Shift, Ctrl, Alt, the Windows keys and Print Screen leave it up, so a screenshot keeps it. It is never placed over an **Allow** or **Don’t Allow** button, and it cannot point at a place that is yours alone.
 
 When PadForge's window is behind another, the question card asks **… wants to show you …**, with **Not Now** and **Show**. Only your click on **Show** brings the window forward. No program can raise it.
 

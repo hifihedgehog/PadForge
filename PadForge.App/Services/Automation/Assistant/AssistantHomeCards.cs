@@ -38,6 +38,10 @@ namespace PadForge.Services.Automation
             ("add-device", "Dash_AddDevice", "Pad_AddDevice"),
         };
 
+        /// <summary>The sidebar's tag of Home, the page that draws the
+        /// cards.</summary>
+        internal const string HomeTag = "Home";
+
         internal static IReadOnlyList<LiveItem> Items(FrameworkElement home, DashboardViewModel dash, IReadOnlyList<PadViewModel> pads)
         {
             var list = new List<LiveItem>();
@@ -55,6 +59,7 @@ namespace PadForge.Services.Automation
                 list.Add(new LiveItem(id, LiveKind.Setting, name, ReachClass.Free)
                 {
                     Where = s.Home_Title,
+                    Page = HomeTag,
                     Read = () => Words(Card()),
                     Element = Card,
                     Menu = Buttons.Select(b => Button(home, id + "/" + b.Key, PadForge.Resources.Strings.Strings.Get(b.WordsKey), b.AutomationId, index)).ToList(),
@@ -71,6 +76,7 @@ namespace PadForge.Services.Automation
             return new LiveItem(id, LiveKind.Action, words, cls, why)
             {
                 Where = PadForge.Resources.Strings.Strings.Instance.Home_Title,
+                Page = HomeTag,
                 Element = () => Element(home, automationId, index),
                 Press = () =>
                 {

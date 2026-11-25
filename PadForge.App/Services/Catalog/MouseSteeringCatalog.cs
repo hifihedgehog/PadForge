@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine.Data;
@@ -26,12 +30,21 @@ namespace PadForge.Services.Catalog
     /// for its added source n, counted from 1. Every one is Free: the
     /// settings change how the mouse moves the stick, and none runs a
     /// program, opens a place or sends input to Windows.</para>
+    /// <para>Each entry's element is its line where the controller page
+    /// draws it, which the guided pointer rings (#600 item 7), and
+    /// <see cref="SpotOf"/> reads an ID back into its controller, row and
+    /// source for the walk to it.</para>
     /// </summary>
     internal static class MouseSteeringCatalog
     {
         private static WeakReference<MainViewModel> s_main;
         private static readonly Func<IReadOnlyList<LiveItem>> s_provider = Items;
         private static bool s_registered;
+
+        /// <summary>The controller page the rows are drawn on, for each
+        /// entry's element. The assistants' catalog gives it as it is made,
+        /// from the window's own pages.</summary>
+        internal static Func<FrameworkElement> DrawnOn { get; set; }
 
         /// <summary>Puts the rows of <paramref name="main"/> in the catalog.
         /// The window's view model calls it once it is made, and a later one
@@ -52,12 +65,17 @@ namespace PadForge.Services.Catalog
             for (int i = 0; i < InputManager.MaxPads && i < main.Pads.Count; i++)
             {
                 if (!SettingsManager.SlotCreated[i]) continue;
-                var pad = main.Pads[i];
-                int number = SettingsManager.SlotOrders.GetGlobalSlotNumber(i);
-                if (number <= 0) number = i + 1;
-                AddPad(items, pad, number);
+                AddPad(items, main.Pads[i], NumberOf(i));
             }
             return items;
+        }
+
+        /// <summary>A controller's number in the IDs: the one the sidebar
+        /// shows, or its place counted from 1 when it has none.</summary>
+        private static int NumberOf(int padIndex)
+        {
+            int number = SettingsManager.SlotOrders.GetGlobalSlotNumber(padIndex);
+            return number > 0 ? number : padIndex + 1;
         }
 
         /// <summary>The entries of one controller's rows, for a test and for
@@ -71,45 +89,48 @@ namespace PadForge.Services.Catalog
                 var row = pad.Mappings[r];
                 string id = "row/c" + number.ToString(CultureInfo.InvariantCulture) + "/" + r.ToString(CultureInfo.InvariantCulture);
                 string where = controller + ", " + row.TargetLabel;
-                AddLine(items, new RowLine(row), id + "/mouse/", where);
+                AddLine(items, new RowLine(row), row, row, id + "/mouse/", where);
                 for (int k = 0; k < row.ExtraSources.Count; k++)
-                    AddLine(items, new SourceLine(row.ExtraSources[k]),
+                    AddLine(items, new SourceLine(row.ExtraSources[k]), row, row.ExtraSources[k],
                         id + "/s" + (k + 1).ToString(CultureInfo.InvariantCulture) + "/mouse/", where);
             }
         }
 
-        private static void AddLine(List<LiveItem> items, ILine line, string prefix, string where)
+        /// <summary>The entries of one source's line. Each carries its
+        /// element: the line where the controller page draws it now.</summary>
+        private static void AddLine(List<LiveItem> items, ILine line, MappingItem row, object source, string prefix, string where)
         {
             var s = PadForge.Resources.Strings.Strings.Instance;
+            var mine = new List<LiveItem>();
             if (line.AxisRelativeShown)
-                items.Add(Switch(prefix + "relative", s.Mapping_AxisRelative, where,
+                mine.Add(Switch(prefix + "relative", s.Mapping_AxisRelative, where,
                     () => line.AxisRelativeShown, () => line.AxisRelative, v => line.AxisRelative = v));
             if (line.TravelShown)
             {
-                items.Add(Number(prefix + "lock", s.Mapping_MouseTravelCounts, where, () => line.TravelShown,
+                mine.Add(Number(prefix + "lock", s.Mapping_MouseTravelCounts, where, () => line.TravelShown,
                     () => line.Counts, v => line.Counts = v, "0"));
-                items.Add(Choice(prefix + "centering", s.Mapping_MouseTravelCentering, where, () => line.TravelShown,
+                mine.Add(Choice(prefix + "centering", s.Mapping_MouseTravelCentering, where, () => line.TravelShown,
                     MouseTravelLine.CenteringChoices, () => line.Centering, v => line.Centering = v));
             }
             if (line.ReturnTimeShown)
-                items.Add(Number(prefix + "return", s.Mapping_MouseTravelReturnTime, where, () => line.ReturnTimeShown,
+                mine.Add(Number(prefix + "return", s.Mapping_MouseTravelReturnTime, where, () => line.ReturnTimeShown,
                     () => line.ReturnTime, v => line.ReturnTime = v, "0.00"));
             if (line.SpeedShown)
             {
-                items.Add(Number(prefix + "sensitivity", s.Mapping_MouseSpeedSensitivity, where, () => line.SpeedShown,
+                mine.Add(Number(prefix + "sensitivity", s.Mapping_MouseSpeedSensitivity, where, () => line.SpeedShown,
                     () => line.SpeedSensitivity, v => line.SpeedSensitivity = v, "0.00"));
-                items.Add(Number(prefix + "back", s.Mapping_MouseBackToCenter, where, () => line.SpeedShown,
+                mine.Add(Number(prefix + "back", s.Mapping_MouseBackToCenter, where, () => line.SpeedShown,
                     () => line.BackToCenter, v => line.BackToCenter = v, "0.00"));
             }
             if (line.SteerShown)
             {
-                items.Add(Choice(prefix + "steer", s.Mapping_MouseTravelSteer, where, () => line.SteerShown,
+                mine.Add(Choice(prefix + "steer", s.Mapping_MouseTravelSteer, where, () => line.SteerShown,
                     MouseTravelLine.SteerChoices, () => line.Steer, v => line.Steer = v));
-                items.Add(Number(prefix + "smoothing", s.Mapping_MouseTravelSmoothing, where, () => line.SteerShown,
+                mine.Add(Number(prefix + "smoothing", s.Mapping_MouseTravelSmoothing, where, () => line.SteerShown,
                     () => line.SmoothingMs, v => line.SmoothingMs = v, "0"));
             }
             if (line.SteerInputShown)
-                items.Add(new LiveItem(prefix + "steerinput", LiveKind.Setting, s.Mapping_MouseTravelSteerInput, PadForge.Common.ReachClass.Free)
+                mine.Add(new LiveItem(prefix + "steerinput", LiveKind.Setting, s.Mapping_MouseTravelSteerInput, PadForge.Common.ReachClass.Free)
                 {
                     Where = where,
                     Read = () => line.SteerInput?.DisplayName ?? string.Empty,
@@ -121,11 +142,95 @@ namespace PadForge.Services.Catalog
                     },
                 });
             if (line.AnchorShown)
-                items.Add(Switch(prefix + "anchor", s.Mapping_MousePositionAnchor, where,
+                mine.Add(Switch(prefix + "anchor", s.Mapping_MousePositionAnchor, where,
                     () => line.AnchorShown, () => line.Anchor, v => line.Anchor = v));
             if (line.LockAtSpeedShown)
-                items.Add(Number(prefix + "lockatspeed", s.Mapping_MouseTravelLockAtSpeed, where, () => line.LockAtSpeedShown,
+                mine.Add(Number(prefix + "lockatspeed", s.Mapping_MouseTravelLockAtSpeed, where, () => line.LockAtSpeedShown,
                     () => line.LockAtSpeed, v => line.LockAtSpeed = v, "0"));
+            foreach (var item in mine)
+            {
+                string key = item.Id.Substring(prefix.Length);
+                items.Add(item with { Element = () => LineElement(DrawnOn?.Invoke(), row, source, key) });
+            }
+        }
+
+        /// <summary>Where an entry stands: its controller, its row, its
+        /// source (the row itself for the row's first source, else the added
+        /// one) and its key.</summary>
+        internal sealed record Spot(PadViewModel Pad, MappingItem Row, object Source, string Key);
+
+        /// <summary>An entry's ID read back into where it stands, with the
+        /// numbering <see cref="Items"/> gives. Null for an ID of no row's
+        /// mouse setting.</summary>
+        internal static Spot SpotOf(MainViewModel main, string id)
+        {
+            if (main?.Pads == null || id == null || !id.StartsWith("row/c", StringComparison.Ordinal)) return null;
+            // row/c<n>/<r>/mouse/<key>, or row/c<n>/<r>/s<k>/mouse/<key>.
+            string[] parts = id.Split('/');
+            if (parts.Length is not (5 or 6) || parts[^2] != "mouse") return null;
+            if (!int.TryParse(parts[1].AsSpan(1), NumberStyles.None, CultureInfo.InvariantCulture, out int number)
+                || !int.TryParse(parts[2], NumberStyles.None, CultureInfo.InvariantCulture, out int r))
+                return null;
+            int k = 0;
+            if (parts.Length == 6
+                && (!parts[3].StartsWith('s') || !int.TryParse(parts[3].AsSpan(1), NumberStyles.None, CultureInfo.InvariantCulture, out k) || k < 1))
+                return null;
+            for (int i = 0; i < InputManager.MaxPads && i < main.Pads.Count; i++)
+            {
+                if (!SettingsManager.SlotCreated[i] || NumberOf(i) != number) continue;
+                var pad = main.Pads[i];
+                if (pad?.Mappings == null || r >= pad.Mappings.Count) return null;
+                var row = pad.Mappings[r];
+                if (k > row.ExtraSources.Count) return null;
+                return new Spot(pad, row, k == 0 ? row : row.ExtraSources[k - 1], parts[^1]);
+            }
+            return null;
+        }
+
+        /// <summary>The property each key's line resets, as the line's reset
+        /// button names it (PadPage.xaml's SourceDials).</summary>
+        private static readonly Dictionary<string, string> ResetOf = new(StringComparer.Ordinal)
+        {
+            ["relative"] = nameof(MappingItem.ParamAxisRelative),
+            ["lock"] = nameof(MappingItem.ParamTravelCounts),
+            ["centering"] = nameof(MappingItem.ParamTravelCentering),
+            ["return"] = nameof(MappingItem.ParamTravelReturnTime),
+            ["sensitivity"] = nameof(MappingItem.ParamMouseSpeedSensitivity),
+            ["back"] = nameof(MappingItem.ParamMouseBackToCenter),
+            ["steer"] = nameof(MappingItem.ParamTravelSteer),
+            ["smoothing"] = nameof(MappingItem.ParamTravelSmoothingMs),
+            ["steerinput"] = nameof(MappingItem.TravelSteerInputChoice),
+            ["anchor"] = nameof(MappingItem.ParamMousePositionAnchor),
+            ["lockatspeed"] = nameof(MappingItem.ParamTravelLockAtSpeed),
+        };
+
+        /// <summary>
+        /// A mouse setting's line where the controller page draws it now: in
+        /// the list's open row, or under the picture's bar for the picked
+        /// row. A line holds the setting's label, its control and its reset,
+        /// and is found by the reset, which names the source it resets and
+        /// the property. The line must show: the reset itself is not asked.
+        /// Null while neither draws it, and off the page's thread.
+        /// </summary>
+        internal static FrameworkElement LineElement(FrameworkElement page, MappingItem row, object source, string key)
+        {
+            if (page == null || row == null || source == null || key == null || !page.Dispatcher.CheckAccess()
+                || !ResetOf.TryGetValue(key, out string property)) return null;
+            foreach (var drawn in DrawnRows(page, row))
+                foreach (var reset in SearchLocator.VisualDescendants(drawn).OfType<PadForge.Controls.SettingResetButton>())
+                    if (ReferenceEquals(reset.DataContext, source) && reset.CommandParameter as string == property
+                        && VisualTreeHelper.GetParent(reset) is FrameworkElement { IsVisible: true } line)
+                        return line;
+            return null;
+        }
+
+        /// <summary>Where the page draws a row's lines: its row in the list,
+        /// and the bar under the picture.</summary>
+        private static IEnumerable<DependencyObject> DrawnRows(FrameworkElement page, MappingItem row)
+        {
+            if (page.FindName("MappingDataGrid") is DataGrid grid && grid.ItemContainerGenerator.ContainerFromItem(row) is DataGridRow listed)
+                yield return listed;
+            if (page.FindName("PickedLines") is DependencyObject bar) yield return bar;
         }
 
         private static LiveItem Number(string id, string words, string where, Func<bool> shown,

@@ -23,10 +23,12 @@ namespace PadForge.Services.Automation
     ///
     /// <para>One callout at a time: a new show replaces the last. A step goes
     /// on when the user clicks the ringed place, after its seconds, or at the
-    /// program's next call, as the step says. The callout stays until the
-    /// user acts (a click elsewhere in the window, a key, Close), the next
-    /// step comes, or <see cref="LongestUp"/> passes. Print Screen, the
-    /// Windows keys and the modifiers leave it up, so a screenshot shows it.
+    /// program's next call, as the step says. A key typed in the ringed place
+    /// of a step that stays until it is done counts as acting on it. The
+    /// callout stays until the user acts (a click
+    /// elsewhere in the window, a key elsewhere, Close), the next step comes,
+    /// or <see cref="LongestUp"/> passes. Print Screen, the Windows keys and
+    /// the modifiers leave it up, so a screenshot shows it.
     /// It is never placed over an approval: the Waiting for You card's
     /// buttons, which the user answers.</para>
     ///
@@ -68,10 +70,12 @@ namespace PadForge.Services.Automation
             public Func<FrameworkElement> Find { get; init; }
             public Func<bool> Done { get; init; }
 
-            /// <summary>A click on the way that leaves <see cref="Done"/>
-            /// false keeps the step and rings its place again: a fold's
-            /// switch was clicked, not its line, or another fold waits under
-            /// the one just opened.</summary>
+            /// <summary>A click or a key on the way that leaves
+            /// <see cref="Done"/> false keeps the step. A click rings its
+            /// place again: a fold's switch was clicked, not its line, or
+            /// another fold waits under the one just opened. A key typed in a
+            /// search box that still hides the row leaves the ring
+            /// up.</summary>
             public bool Stays { get; init; }
         }
 
@@ -352,14 +356,29 @@ namespace PadForge.Services.Automation
             if (_at < 0) return;
             var key = e.Key == Key.System ? e.SystemKey : e.Key;
             if (LeavesItUp(key)) return;
+            // A key typed in the ringed place of a step that stays until it
+            // is done is the user doing the step, as a click on it is: a
+            // search box a walk asks them to clear. A key anywhere else, or in
+            // the place of any other step, is the user acting, as before.
+            if (_target != null && _at < _steps.Count && _steps[_at].Stays && Inside(e.OriginalSource as DependencyObject, _target))
+            {
+                AfterTheUsersAct(again: false);
+                return;
+            }
             Clear();
         }
 
-        private void OnTargetClicked(object sender, MouseButtonEventArgs e)
+        private void OnTargetClicked(object sender, MouseButtonEventArgs e) => AfterTheUsersAct(again: true);
+
+        /// <summary>The user clicked the ringed place or typed in it. The
+        /// click or the key does its own work first, which can open the next
+        /// step's page or empty the box. A step that stays goes on once it
+        /// is done. Until then a click rings its place again, found anew. A
+        /// key does that only when the step's place is now another control,
+        /// so typing in a box leaves its ring be.</summary>
+        private void AfterTheUsersAct(bool again)
         {
             int generation = _generation;
-            // The click does its own work first, which can open the next
-            // step's page.
             Dispatcher().BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
             {
                 if (generation != _generation) return;
@@ -368,8 +387,15 @@ namespace PadForge.Services.Automation
                 try { done = step?.Stays != true || step.Done?.Invoke() != false; }
                 catch (Exception) { done = true; }
                 if (done) NextStep();
-                else Again(step);
+                else if (again || !ReferenceEquals(FoundNow(step), _target)) Again(step);
             }));
+        }
+
+        /// <summary>A step's place as its finder gives it now, or null.</summary>
+        private static FrameworkElement FoundNow(Step step)
+        {
+            try { return step?.Find?.Invoke(); }
+            catch (Exception) { return null; }
         }
 
         /// <summary>Rings a step's place again, found anew: its click on the

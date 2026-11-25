@@ -948,7 +948,9 @@ namespace PadForge.Services
         /// The user's rows as catalog entries, through wave 1's one seam for
         /// live rows: each is <c>db/&lt;ID&gt;</c>, its value the row, with
         /// Remove Mine in its menu. Free: a program at Change Settings may
-        /// read and remove them, as a person does on the card.
+        /// read and remove them, as a person does on the card. The Settings
+        /// page draws them together on one row, Your Rows, under Controller
+        /// Database's More, so each of them points there (#600 item 7).
         /// </summary>
         private IReadOnlyList<LiveItem> CatalogItems()
         {
@@ -962,15 +964,75 @@ namespace PadForge.Services
                 {
                     Press = () => _ = RemoveRowAsync(r),
                     Where = s.Settings_ControllerDatabase,
+                    Page = SettingsTag,
+                    Element = YourRowsRow,
                 };
                 items.Add(new LiveItem(id, LiveKind.Setting, r.Row.Name, ReachClass.Free)
                 {
                     Read = () => r.Text,
                     Where = s.Settings_ControllerDatabase,
+                    Page = SettingsTag,
+                    Element = YourRowsRow,
                     Menu = new[] { remove },
                 });
             }
             return items;
+        }
+
+        /// <summary>The sidebar's tag of the Settings page.</summary>
+        internal const string SettingsTag = "Settings";
+
+        /// <summary>The automation ID of Add Rows, on the Your Rows
+        /// row.</summary>
+        internal const string AddRowsId = "Settings_ControllerDatabase_AddRows";
+
+        private WeakReference<System.Windows.FrameworkElement> _yourRows;
+
+        /// <summary>
+        /// The Settings page's Your Rows row, under Controller Database's
+        /// More: the row Add Rows stands on, on the Settings page that shows
+        /// this controller's settings in one of PadForge's windows. The main
+        /// window holds its pages in the sidebar's ContentOverlay, which a
+        /// template draws and the logical tree does not reach, so the page is
+        /// found among the window's visuals, and the row in the page's
+        /// logical tree, which holds it while More is shut and before the
+        /// page is first shown. Kept once found, since the page lives as
+        /// long as its window. Null off the interface's thread, and while no
+        /// window holds the page.
+        /// </summary>
+        internal System.Windows.FrameworkElement YourRowsRow()
+        {
+            var app = System.Windows.Application.Current;
+            if (app == null || !app.Dispatcher.CheckAccess()) return null;
+            if (_yourRows != null && _yourRows.TryGetTarget(out var kept) && IsYourRows(kept)) return kept;
+            foreach (System.Windows.Window window in app.Windows)
+                foreach (var page in PadForge.Search.SearchLocator.VisualDescendants(window).OfType<PadForge.Views.SettingsPage>())
+                {
+                    if (!ReferenceEquals(page.DataContext, _vm.Settings)) continue;
+                    foreach (var add in PadForge.Search.SearchLocator.LogicalDescendants(page).OfType<System.Windows.FrameworkElement>())
+                    {
+                        if (System.Windows.Automation.AutomationProperties.GetAutomationId(add) != AddRowsId) continue;
+                        var row = RowOf(add);
+                        _yourRows = new WeakReference<System.Windows.FrameworkElement>(row);
+                        return row;
+                    }
+                }
+            return null;
+        }
+
+        /// <summary>Whether a kept row is still the one on this controller's
+        /// Settings page.</summary>
+        private bool IsYourRows(System.Windows.FrameworkElement row)
+            => ReferenceEquals(row.DataContext, _vm.Settings)
+               && PadForge.Search.SearchLocator.LogicalDescendants(row).OfType<System.Windows.FrameworkElement>()
+                   .Any(e => System.Windows.Automation.AutomationProperties.GetAutomationId(e) == AddRowsId);
+
+        /// <summary>The setting row a control stands on.</summary>
+        private static System.Windows.FrameworkElement RowOf(System.Windows.FrameworkElement control)
+        {
+            for (System.Windows.DependencyObject at = control; at != null; at = PadForge.Search.SearchLocator.Up(at))
+                if (at is PadForge.Controls.SettingItem row) return row;
+            return control;
         }
 
         /// <summary>Removes one of the user's rows, wherever its device is.</summary>

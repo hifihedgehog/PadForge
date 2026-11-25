@@ -1066,6 +1066,8 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Pointer_ClickToGoOn => Get("Automation_Pointer_ClickToGoOn");
     public string Automation_Pointer_Open_Format => Get("Automation_Pointer_Open_Format");
     public string Automation_Pointer_OpenMore => Get("Automation_Pointer_OpenMore");
+    public string Automation_Pointer_Pick_Format => Get("Automation_Pointer_Pick_Format");
+    public string Automation_Pointer_ClearSearch => Get("Automation_Pointer_ClearSearch");
     public string Automation_Request_From_Format => Get("Automation_Request_From_Format");
     public string Automation_Request_FromClaimed_Format => Get("Automation_Request_FromClaimed_Format");
     public string Automation_Request_FromClaimedOnly_Format => Get("Automation_Request_FromClaimedOnly_Format");

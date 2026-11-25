@@ -52,10 +52,9 @@ namespace PadForge.Search
         /// assistant's show (#597), which must never activate the window,
         /// lands that way. With <paramref name="ring"/> false nothing is
         /// ringed: the guided pointer (#600) rings and holds the place
-        /// itself. With <paramref name="openFolds"/> false no More row or
-        /// fold card is opened: a walk's last step (#600 item 7), whose
-        /// folds the user has opened.</summary>
-        internal void Open(SearchResult result, bool takeFocus = true, bool ring = true, bool openFolds = true)
+        /// itself. A walk of the guided pointer never comes here: its user
+        /// makes each click on the way (#600 item 7).</summary>
+        internal void Open(SearchResult result, bool takeFocus = true, bool ring = true)
         {
             if (result == null) return;
             switch (result.Target)
@@ -148,16 +147,43 @@ namespace PadForge.Search
                     break;
             }
             var page = _pageOf(entry.Page);
-            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus, ring, openFolds)));
+            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus, ring)));
+        }
+
+        /// <summary>Opens a controller's mapping row for a program's plain
+        /// show of one of the row's mouse settings (#600 item 7), as a
+        /// landing on a row's option opens a row: the controller's page and
+        /// its list, the row picked, which opens its details and its folded
+        /// group (PadPage.SyncPickedRowSelection), and brought into view. A
+        /// row the list's box or scope hides empties them, as the Settings
+        /// page's box empties for a landing there.</summary>
+        internal void OpenMappingRow(int padIndex, MappingItem row)
+        {
+            if (row == null) return;
+            _openSlot(padIndex);
+            if (_pageOf(SearchPage.Pad) is not PadPage pad || pad.DataContext is not PadViewModel vm || vm.PadIndex != padIndex) return;
+            pad.OpenTab(PadViewModel.MappingsTabIndex);
+            pad.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (pad.FindName("MappingDataGrid") is not DataGrid grid || !vm.Mappings.Contains(row)) return;
+                if (!grid.Items.Contains(row))
+                {
+                    vm.MappingInputSearch = string.Empty;
+                    vm.MappingSurfaceScope = "All";
+                    if (!grid.Items.Contains(row)) return;
+                }
+                grid.SelectedItem = row;
+                grid.ScrollIntoView(row);
+            }));
         }
 
         /// <summary>The page shows: find the result's element, open what
         /// folds it, then scroll, ring and focus once that is laid out.</summary>
-        private void Land(SearchResult result, FrameworkElement page, bool takeFocus, bool ring, bool openFolds)
+        private void Land(SearchResult result, FrameworkElement page, bool takeFocus, bool ring)
         {
             var entry = result.Entry;
             DependencyObject label;
-            if (entry.RowOptions) label = RowOption(entry, page, openFolds);
+            if (entry.RowOptions) label = RowOption(entry, page);
             else if (entry.Kind == SearchKind.MenuItem) label = MenuOwner(page, entry);
             else if (entry.ItemsPath != null) label = _service.Locator.FindInItem(entry, result.Payload, _service.Index);
             else
@@ -168,7 +194,7 @@ namespace PadForge.Search
             if (label == null) return;
             var target = SearchLocator.TargetOf(label, entry);
             if (target == null) return;
-            if (openFolds) OpenFolds(target, page);
+            OpenFolds(target, page);
             page.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
                 if (!target.IsVisible) return;
@@ -250,20 +276,10 @@ namespace PadForge.Search
         /// rows whose item passes the option's gates is picked and shown, and
         /// its details hold the option. A row the table does not show opens
         /// the list, which holds every row, and the list's own box and scope
-        /// empty, as the Settings page's box does for a landing there. With
-        /// <paramref name="open"/> false, as a walk's user picks the row, it
-        /// is looked for in the row picked now, and nothing is picked or
-        /// opened.</summary>
-        private DependencyObject RowOption(SearchEntry entry, FrameworkElement page, bool open = true)
+        /// empty, as the Settings page's box does for a landing there.</summary>
+        private DependencyObject RowOption(SearchEntry entry, FrameworkElement page)
         {
             if (page.FindName("MappingDataGrid") is not DataGrid grid || page.DataContext is not PadViewModel vm) return null;
-            if (!open)
-            {
-                var picked = grid.SelectedItem;
-                if (picked == null || !entry.ItemGates.All(g => BindingProbe.Passes(picked, g, k => page.TryFindResource(k)))) return null;
-                if (grid.ItemContainerGenerator.ContainerFromItem(picked) is not DataGridRow shown) return null;
-                return SearchLocator.FindAmong(RowOptionParts(shown).ToList(), entry, picked, _service.Index, e => e.RowOptions);
-            }
             var item = vm.RowsOfSlot.FirstOrDefault(i => entry.ItemGates.All(g => BindingProbe.Passes(i, g, k => page.TryFindResource(k))));
             if (item == null) return null;
             if (!grid.Items.Contains(item))

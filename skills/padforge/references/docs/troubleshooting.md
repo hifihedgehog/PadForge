@@ -28,7 +28,7 @@ Related pages: [Installation](https://padforge.org/docs/start/installation/), [S
 3. Check Windows Device Manager. If the device does not appear under "Human Interface Devices" or "Sound, video and game controllers," the issue is the device or its driver.
 4. For Bluetooth controllers, pair and connect in Windows Bluetooth settings before starting PadForge.
 5. If HidHide is installed, another tool may have cloaked the device. PadForge adds itself to the HidHide whitelist automatically while **"Hide Devices from Games"** is on in [Settings](features/settings.md), so turn that toggle on if it is off and let PadForge manage hiding. If the message line at the bottom of the window says HidHide blocked PadForge from a device it had hidden, PadForge took that hide back, so the device keeps working in PadForge, and it hides again as soon as HidHide's whitelist changes or its Inverse application cloak goes off.
-6. Close other controller tools (DS4Windows, BetterJoy, reWASD, x360ce). They may intercept access.
+6. Close other controller tools (DS4Windows, BetterJoy, reWASD). They may intercept access.
 7. A DualShock 3 pairs through PadForge itself, with no separate driver tool to install. Connect it by USB, click **Pair a Controller** on the [Devices](features/devices.md) page, and follow the dialog. When it finishes, unplug the pad and press the PS button to connect over Bluetooth. It then streams with rumble and the player-number LED.
 
 ---

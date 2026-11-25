@@ -150,10 +150,13 @@ namespace PadForge.Services.Automation
 
         /// <summary>The rows of <c>caps</c>: each control with its index and
         /// the name the interface shows, an axis's rest, the sensors, the
-        /// touchpads, the battery and the feedback the device takes. Read
+        /// touchpads, the battery and the feedback the device takes. With
+        /// <paramref name="script"/>, each control's row also carries
+        /// <c>script=</c>, the name scripts use for it (#600 item 21). Read
         /// under the device list's lock by the caller.</summary>
-        internal static List<string> Caps(UserDevice ud)
+        internal static List<string> Caps(UserDevice ud, IReadOnlyList<ScriptControl> script = null)
         {
+            string Script(char kind, int index) => script == null ? string.Empty : " script=" + ScriptNames.NameOf(script, kind, index);
             var rows = new List<string>();
             var objects = ud.DeviceObjects ?? Array.Empty<DeviceObjectItem>();
 
@@ -176,6 +179,7 @@ namespace PadForge.Services.Automation
                         index >= ProgramAxis.FirstSlider ? "Slider " + (index - ProgramAxis.FirstSlider) : "Axis " + index)));
                 int? rest = RestOf(ud, index);
                 if (rest.HasValue) row.Append(" rest=").Append(rest.Value);
+                row.Append(Script('a', index));
                 rows.Add(row.ToString());
             }
 
@@ -189,14 +193,14 @@ namespace PadForge.Services.Automation
                 if (o.IsButton && o.InputIndex >= 0 && o.InputIndex < CustomInputState.MaxButtons)
                     buttons[o.InputIndex] = o.Name;
             foreach (var (index, name) in buttons)
-                rows.Add("button index=" + index + " name=" + AutomationLine.Quote(ControlName(name, "Button " + index)));
+                rows.Add("button index=" + index + " name=" + AutomationLine.Quote(ControlName(name, "Button " + index)) + Script('b', index));
 
             var hats = new SortedDictionary<int, string>();
             for (int i = 0; i < Math.Min(ud.CapPovCount, CustomInputState.MaxPovs); i++) hats[i] = null;
             foreach (var o in objects)
                 if (o.IsPov && o.InputIndex >= 0 && o.InputIndex < CustomInputState.MaxPovs) hats[o.InputIndex] = o.Name;
             foreach (var (index, name) in hats)
-                rows.Add("hat index=" + index + " name=" + AutomationLine.Quote(ControlName(name, "Hat " + index)));
+                rows.Add("hat index=" + index + " name=" + AutomationLine.Quote(ControlName(name, "Hat " + index)) + Script('h', index));
 
             if (ud.HasGyro) rows.Add("gyro");
             if (ud.HasAccel) rows.Add("accel");
@@ -212,10 +216,12 @@ namespace PadForge.Services.Automation
 
             var relayed = ud.Device as IRelayedFeedbackDevice;
             bool player = ud.Device is ProgramDevice p2 ? p2.Shape.Player : relayed != null;
+            bool trigfx = ud.Device is ProgramDevice p3 && p3.Shape.TriggerEffects;
             rows.Add("feedback rumble=" + (ud.HasForceFeedback ? 1 : 0)
                 + " trigrumble=" + (ud.HasRumbleTriggers ? 1 : 0)
                 + " light=" + (relayed?.HasLightbar == true ? 1 : 0)
-                + " player=" + (player ? 1 : 0));
+                + " player=" + (player ? 1 : 0)
+                + " trigfx=" + (trigfx ? 1 : 0));
             return rows;
         }
 

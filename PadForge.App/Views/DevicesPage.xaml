@@ -2275,12 +2275,52 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </Border>
+                                    <!-- Under More: a gamepad's full readout, and on every
+                                         device its script ID with Copy and its controls by the
+                                         names scripts use (#600 item 26). A device whose
+                                         readout is the card's body has only the script ID
+                                         here, and More says so. -->
                                     <controls:MoreRow x:Name="TestMore" StateKey="Devices.TestInputs.More"
                                                       AutomationProperties.AutomationId="Devices_More_TestInputs"
-                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
-                                                      Hint="{Binding Devices_More_TestInputs, Source={x:Static strings:Strings.Instance}}"
-                                                      Visibility="{Binding ShowGamepadTest, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Border x:Name="RawMoreHost"/>
+                                                      Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}">
+                                        <controls:MoreRow.Style>
+                                            <Style TargetType="controls:MoreRow" BasedOn="{StaticResource {x:Type controls:MoreRow}}">
+                                                <Setter Property="Hint" Value="{Binding Devices_More_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ShowGamepadTest}" Value="True">
+                                                        <Setter Property="Hint" Value="{Binding Devices_More_TestInputs, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </controls:MoreRow.Style>
+                                        <StackPanel>
+                                            <Border x:Name="RawMoreHost"/>
+                                            <Grid x:Name="ScriptIdRow" Margin="0,6,8,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Style="{StaticResource DetailKey}" VerticalAlignment="Center"
+                                                           Text="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Style="{StaticResource DetailValue}" Text="{Binding SelectedDevice.ScriptId, Mode=OneWay}"
+                                                               AutomationProperties.AutomationId="Devices_ScriptId"
+                                                               AutomationProperties.Name="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="{Binding SelectedDevice.ScriptIdNote}" FontSize="13" Margin="12,0,0,0" VerticalAlignment="Center"
+                                                               common:LiveText.Polite="True" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                                </StackPanel>
+                                                <Button Grid.Column="2" Style="{StaticResource DeviceButton}"
+                                                        Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"
+                                                        Command="{Binding SelectedDevice.CopyScriptIdCommand}"
+                                                        AutomationProperties.AutomationId="Devices_CopyScriptId"
+                                                        AutomationProperties.HelpText="{Binding Devices_ScriptId, Source={x:Static strings:Strings.Instance}}"/>
+                                            </Grid>
+                                            <TextBlock Text="{Binding SelectedDevice.ScriptControlNames, Mode=OneWay}" FontSize="13" TextWrapping="Wrap"
+                                                       Margin="0,6,8,4" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                       AutomationProperties.AutomationId="Devices_ScriptNames"
+                                                       Visibility="{Binding SelectedDevice.HasScriptControlNames, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </StackPanel>
                                     </controls:MoreRow>
                                 </StackPanel>
                             </Border>
@@ -2382,7 +2422,7 @@
                                                           Visibility="{Binding ShowPlaces, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Grid Margin="0,3" AutomationProperties.Name="{Binding ReadName}">
+                                                        <Grid Margin="0,3" AutomationProperties.Name="{Binding ReadName, Mode=OneWay, TargetNullValue='', FallbackValue=''}">
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="*"/>

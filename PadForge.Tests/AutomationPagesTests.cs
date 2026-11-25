@@ -612,46 +612,33 @@ namespace PadForge.Tests
             Assert.Contains("Visibility=\"{Binding CanUndo, Converter={StaticResource BoolToVisibilityConverter}}\"", body);
         }
 
-        /// <summary>Save a Library and Undo are calls later parts give the
-        /// host. Each button is absent until its call is there.</summary>
+        /// <summary>The Scripts card stands in its slot whatever the host
+        /// provides (#600 item 26), and Save a Library… sits under its More,
+        /// written through --install with the user's own rights, off the
+        /// interface's thread.</summary>
         [Fact]
-        public void TheProvidedButtons_ShowOnlyOnceTheHostHasTheirCalls()
+        public void TheScriptsCard_StandsInItsSlot_WithSaveALibraryUnderItsMore()
         {
-            using var host = NewHost();
-            var vm = Attached(host);
-            Assert.False(vm.HasAutomationLibraries);
-            var raised = new List<string>();
-            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
-
-            var libraries = AutomationLibraries.Instance;
-            host.Libraries = libraries;
-            Assert.True(vm.HasAutomationLibraries);
-            Assert.Same(libraries, vm.AutomationLibraries);
-            Assert.Contains(nameof(DashboardViewModel.HasAutomationLibraries), raised);
-
             // The dialog's file types are the libraries', in order.
             var s = Strings.Instance;
             Assert.Equal(s.Automation_Library_AutoHotkey_Filter + "|" + s.Automation_Library_Python_Filter + "|" + s.Automation_Library_PowerShell_Filter,
-                ExtrasPage.LibraryFilter(((IAutomationLibraries)libraries).All));
+                ExtrasPage.LibraryFilter(AutomationLibraries.All));
 
-            // A view model with no host offers none of them.
+            // A view model with no host has no record to export.
             var bare = new DashboardViewModel();
-            Assert.False(bare.HasAutomationLibraries);
-            Assert.Null(bare.AutomationLibraries);
             Assert.Null(bare.AutomationActivityText());
 
-            string body = PageOf("Automation");
-            Assert.Contains("x:Name=\"AutomationScriptsCard\" Style=\"{StaticResource ExtraCard}\"\n                        Visibility=\"{Binding HasAutomationLibraries, Converter={StaticResource BoolToVisibilityConverter}}\"",
-                body.Replace("\r\n", "\n"));
-            Assert.Contains("Click=\"SaveAutomationLibrary_Click\"", body);
-            Assert.DoesNotContain("SaveAutomationSkill", body);
+            string body = PageOf("Automation").Replace("\r\n", "\n");
+            int host = body.IndexOf("<ContentControl x:Name=\"ScriptsCardHost\" Focusable=\"False\">", StringComparison.Ordinal);
+            int card = body.IndexOf("<Border x:Name=\"AutomationScriptsCard\" Style=\"{StaticResource ExtraCard}\">", StringComparison.Ordinal);
+            int rows = body.IndexOf("x:Name=\"LibraryRowsList\"", StringComparison.Ordinal);
+            int more = body.IndexOf("<controls:MoreRow x:Name=\"ScriptsMore\"", StringComparison.Ordinal);
+            int save = body.IndexOf("Click=\"SaveAutomationLibrary_Click\"", StringComparison.Ordinal);
+            Assert.True(host > 0 && card > host && rows > card && more > rows && save > more, "the card stands in its slot with Save a Library under its More");
+            Assert.DoesNotContain("HasAutomationLibraries", body);
             string code = ExtrasPageTests.RepoText("PadForge.App", "Views", "ExtrasPage.xaml.cs");
-            // It writes through --install with the user's own rights (#600),
-            // off the interface's thread.
-            Assert.Contains("private async void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)", code);
             Assert.Contains("var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];", code);
             Assert.Contains("await System.Threading.Tasks.Task.Run(() => libraries.Save(picked.Kind, file));", code);
-            Assert.DoesNotContain("SaveAutomationSkill_Click", code);
         }
 
         /// <summary>The page's order and what shows when (#600 item 16): the
@@ -689,7 +676,7 @@ namespace PadForge.Tests
             // The slot holds Reach PadForge From the Web (#600 item 11).
             Assert.Contains("<ContentControl x:Name=\"AssistantsWebHost\" Focusable=\"False\">", kept);
             Assert.Contains("<views:AssistantsWebSwitch DataContext=\"{Binding WebAccess}\"/>", kept);
-            Assert.Contains("<ContentControl x:Name=\"ScriptsCardHost\" Focusable=\"False\"/>", body);
+            Assert.Contains("<ContentControl x:Name=\"ScriptsCardHost\" Focusable=\"False\">", body);
             Assert.DoesNotContain("AutomationAssistantJson}", body);
             // Each card that lists something hides while it lists nothing.
             foreach (var (card, flag) in new[] { ("AutomationWaitingCard", "HasAutomationRequests"), ("AutomationAllowedCard", "HasAllowedPrograms"),

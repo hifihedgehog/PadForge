@@ -33,6 +33,14 @@ namespace PadForge.Services.Automation
         /// it may ask.</summary>
         internal const int DefaultLeaseMs = 2000, ShortestLeaseMs = 250, LongestLeaseMs = 10000;
 
+        /// <summary>A script's lease unless its hello asks for another
+        /// (#600 item 24): its holds and claims let go 250 ms after it stops
+        /// beating. Measured with AutoHotkey 2.0.32, a 50 ms timer fires
+        /// every 62.5 ms and a Critical section stops it for as long as it
+        /// lasts, so a script that beats every 31 ms keeps it with room to
+        /// spare.</summary>
+        internal const int ScriptLeaseMs = 250;
+
         /// <summary>How much of an overlong line is read on before the
         /// connection is given up.</summary>
         internal const int LongestDrained = 1024 * 1024;
@@ -106,9 +114,18 @@ namespace PadForge.Services.Automation
         /// <summary>When the program last sent a line.</summary>
         public long LastHeardMs { get; private set; }
 
-        /// <summary>Whether the lease ran out: holds are let go and devices
-        /// rest until the program speaks again.</summary>
+        /// <summary>Whether the lease ran out: holds and claims are let go
+        /// and devices rest until the program speaks again.</summary>
         public bool Lapsed { get; set; }
+
+        /// <summary>Whether the script was silent long enough for its
+        /// devices to go offline, until it speaks again (#600 item
+        /// 24).</summary>
+        public bool Asleep { get; set; }
+
+        /// <summary>Taken while the session's devices go offline for its
+        /// silence or come back at its next line.</summary>
+        internal readonly object SleepGate = new object();
 
         /// <summary>The program's entry in Clients, while it lasts.</summary>
         public AutomationClient Client { get; set; }
@@ -162,7 +179,8 @@ namespace PadForge.Services.Automation
         internal void Heard()
         {
             LastHeardMs = _nowMs();
-            if (Lapsed) Lapsed = false;
+            Outbox.Heard();
+            if (Lapsed || Asleep) _hub.Woke(this);
         }
 
         /// <summary>Runs <paramref name="work"/> with the rights of the
@@ -347,7 +365,8 @@ namespace PadForge.Services.Automation
                 return;
             }
             LastHeardMs = _nowMs();
-            if (Lapsed) Lapsed = false;
+            Outbox.Heard();
+            if (Lapsed || Asleep) _hub.Woke(this);
 
             if (tooLong)
             {
@@ -374,8 +393,25 @@ namespace PadForge.Services.Automation
                 Answer(request.Tag, AutomationLine.Error(request.Error));
                 return;
             }
-            await _hub.RunAsync(this, request).ConfigureAwait(false);
+            // While a line runs the program waits on PadForge, and the lines
+            // it sent behind it, its beats among them, wait in the pipe: the
+            // lease does not run out meanwhile (#600 item 24).
+            Interlocked.Increment(ref _handling);
+            try
+            {
+                await _hub.RunAsync(this, request).ConfigureAwait(false);
+            }
+            finally
+            {
+                LastHeardMs = _nowMs();
+                Interlocked.Decrement(ref _handling);
+            }
         }
+
+        private int _handling;
+
+        /// <summary>Whether a line of the program's runs now.</summary>
+        internal bool Handling => Volatile.Read(ref _handling) > 0;
 
         private static string TagOf(string text)
         {
@@ -493,6 +529,7 @@ namespace PadForge.Services.Automation
             {
                 case "script":
                     Kind = AutomationClientKind.Script;
+                    if (lease == null) LeaseMs = ScriptLeaseMs;
                     break;
                 case "mcp":
                 {

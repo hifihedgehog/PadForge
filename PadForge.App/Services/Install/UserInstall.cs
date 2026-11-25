@@ -258,6 +258,15 @@ namespace PadForge.Services.Install
                 {
                     var state = Check(request);
                     say(state switch { InstallState.Current => "current", InstallState.Older => "older", _ => "not installed" });
+                    // A library's check names each place it goes and the
+                    // state there, which the Scripts card reads (#600 item
+                    // 26): "place current C:\...\PadForge.ahk".
+                    if (request.What is InstallWhat.AutoHotkey or InstallWhat.PowerShell or InstallWhat.Python)
+                    {
+                        byte[] bytes = AutomationLibraries.Read(KindOf(request.What));
+                        foreach (string file in LibraryFiles(request.What, request.Target))
+                            say("place " + (!File.Exists(file) ? "missing" : File.ReadAllBytes(file).AsSpan().SequenceEqual(bytes) ? "current" : "older") + " " + file);
+                    }
                     return state switch { InstallState.Current => Done, InstallState.Older => IsOlder, _ => IsMissing };
                 }
                 string done = request.What switch

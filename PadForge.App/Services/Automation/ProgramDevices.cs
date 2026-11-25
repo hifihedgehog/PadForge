@@ -310,6 +310,11 @@ namespace PadForge.Services.Automation
             /// <summary>A built-in plugin's device: it belongs to no
             /// session and stays on the list while its switch is on.</summary>
             public bool BuiltIn;
+
+            /// <summary>Its script was silent long enough for it to go
+            /// offline at rest (#600 item 24). It is still the script's, and
+            /// comes back when the script speaks.</summary>
+            public bool Asleep;
         }
 
         private readonly object _sync = new object();
@@ -437,6 +442,7 @@ namespace PadForge.Services.Automation
                     }
                     known = true;
                     e.OfflineAtMs = 0;
+                    e.Asleep = false;
                     e.Owner = session;
                     entry = e;
                 }
@@ -579,6 +585,56 @@ namespace PadForge.Services.Automation
             foreach (var e in OwnedBy(session)) e.Device.Rest();
         }
 
+        /// <summary>A script was silent too long (#600 item 24): its devices
+        /// go offline at rest, through the path that rests their mapped
+        /// outputs, and stay the script's.</summary>
+        internal void Sleep(AutomationSession session)
+        {
+            IAutomationEngine engine;
+            var unregister = new List<ProgramDevice>();
+            lock (_sync)
+            {
+                engine = _engine;
+                foreach (var e in _entries.Values)
+                {
+                    if (e.Owner != session || e.Asleep) continue;
+                    e.Asleep = true;
+                    e.Device.Rest();
+                    e.Device.SetAttached(false);
+                    if (e.Registered)
+                    {
+                        e.Registered = false;
+                        unregister.Add(e.Device);
+                    }
+                }
+            }
+            if (engine != null) foreach (var d in unregister) engine.Unregister(d);
+        }
+
+        /// <summary>The script spoke again: its devices are back
+        /// online.</summary>
+        internal void Wake(AutomationSession session)
+        {
+            IAutomationEngine engine;
+            var register = new List<ProgramDevice>();
+            lock (_sync)
+            {
+                engine = _engine;
+                foreach (var e in _entries.Values)
+                {
+                    if (e.Owner != session || !e.Asleep) continue;
+                    e.Asleep = false;
+                    e.Device.SetAttached(true);
+                    if (engine != null)
+                    {
+                        e.Registered = true;
+                        register.Add(e.Device);
+                    }
+                }
+            }
+            foreach (var d in register) engine.Register(d);
+        }
+
         private void TakeOffline(List<Entry> entries)
         {
             IAutomationEngine engine;
@@ -592,6 +648,7 @@ namespace PadForge.Services.Automation
                     e.Device.SetAttached(false);
                     e.Owner = null;
                     e.OfflineAtMs = 0;
+                    e.Asleep = false;
                     if (e.Registered)
                     {
                         e.Registered = false;
@@ -654,7 +711,12 @@ namespace PadForge.Services.Automation
             lock (_sync)
             {
                 foreach (var e in _entries.Values)
+                {
                     if (e.Owner == null && e.OfflineAtMs != 0 && now >= e.OfflineAtMs) (due ??= new List<Entry>()).Add(e);
+                    // A timed step of a device nothing reads lands on the
+                    // clock (#600 item 22).
+                    e.Device.LandDue();
+                }
             }
             if (due != null) TakeOffline(due);
         }
@@ -736,6 +798,7 @@ namespace PadForge.Services.Automation
                 foreach (var e in _entries.Values)
                 {
                     if (e.Owner == null && e.OfflineAtMs == 0 && !e.BuiltIn) continue;
+                    if (e.Asleep) continue;
                     e.Registered = true;
                     // The engine that stopped disposed the device with its
                     // list. It is the program's still.

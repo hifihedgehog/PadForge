@@ -22,7 +22,7 @@ Persistent
 #Include PadForge.ahk
 
 pf := PadForge.Plugin("Kit Plugin")
-pad := pf.AddController("kitpad", "Kit Pad", ["Fire", "Jump"], [{name: "Stick X"}, {name: "Stick Y"}], [], [], ["rumble"])
+pad := pf.AddController("kitpad", "Kit Pad", {Buttons: ["Fire", "Jump"], Axes: [{name: "Stick X"}, {name: "Stick Y"}], Feedback: ["rumble"]})
 pad.OnRumble((low, high) => ToolTip("rumble " low " " high))
 pf.Log("Declared Kit Pad as " pad.Id ".")
 
@@ -79,9 +79,8 @@ Move() {
         shown := turns
         pf.Request("setting key=turns value=" turns)
     }
-    pad.Set("a0", Round(100 * Sin(angle), 1))
-    pad.Set("a1", Round(-100 * Cos(angle), 1))
-    pad.Set("b0", tapFire && Mod((now - start) / 1000, 1.0) < 0.2)
-    pad.Send()
+    ; The stick's two axes and the button as one change.
+    pad.Hold("StickX", Round(100 * Sin(angle), 1), "StickY", Round(-100 * Cos(angle), 1),
+        "Fire", tapFire && Mod((now - start) / 1000, 1.0) < 0.2)
 }
 SetTimer(Move, 20)

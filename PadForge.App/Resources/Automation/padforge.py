@@ -1,45 +1,98 @@
 """PadForge Automation for Python. Speaks protocol 1 of PadForge's
 Automation pipe, PadForge.Automation. Standard library only, on Windows.
 
-Turn on Automation in PadForge (Extras, Automation) at the level your
-script needs: Read to follow devices, Send Inputs to add controllers,
-hold controls and set values.
+Install it from PadForge (Extras, Automation, Scripts, Install for
+Python), then a script anywhere starts with import padforge. Turn on
+Automation at the level the script needs: Read to follow devices, Send
+Inputs to hold controls, take them in hotkeys and add controllers.
 
 Example:
 
     import padforge
 
-    pf = padforge.connect("Turbo A")
-    pad = pf.find("gamepad")
-    pf.on_button(pad, 0, lambda down: print("A", "down" if down else "up"))
-    pf.run()
+    pad = padforge.device("gamepad")
+    pad.hotkey("A", lambda: pad.tap("B", 50))      # A presses B for the game
+    pad.hotkey("LeftX > 80%", lambda: print("right"))
+    pad.hotkey("Back", lambda: pad.hold("RightTrigger", 100))   # holds it
+    pad.hotkey("Back up", lambda: pad.release("RightTrigger"))  # gives it back
+    padforge.wait()
 
-Values are in plain units: a button is True or False, a stick runs from
--100 to 100 with 0 at rest, a trigger or slider from 0 to 100, and a hat is
-in degrees clockwise from up, or -1 at rest. A hat's directions are Up,
-Right, Down and Left, two for a diagonal, as in "Up+Right". Axes 0 to 23
-are the axes and 24 to 31 the sliders.
+A device is an object found by its script ID, its type (gamepad, keyboard,
+mouse, wheel, joystick, program...) or a part of its name. Its attributes
+are its controls by the names scripts use, the names its Script ID row on
+PadForge's Devices page lists: A, B, LeftX, RightTrigger, DPad for a pad,
+MouseX and MouseLeft for a mouse, KeyA for a keyboard, Axis0, Slider0, Hat0
+and Button0 for any device. Names are read without regard to case. By
+number: pad.button[0], pad.axis[0], pad.slider[0], pad.hat[0]. A name that
+is also a method's, such as Set, reads as pad["Set"].
+
+Values are plain units: a button is True or False, a stick runs from -100
+to 100 with 0 at rest, a trigger or slider from 0 to 100, a hat is degrees
+clockwise from up or -1 at rest, and its directions read as HatUp,
+HatRight, HatDown and HatLeft (DPadUp on a pad). LeftXPlus and LeftXMinus
+are the two halves of an axis, 0 to 100 each. A read costs nothing: the
+library keeps the device's whole state, which PadForge sends in full when
+the script starts following it. A device that is not connected reads None
+and its connected attribute is False.
+
+Setting an attribute holds the control at that value for the game:
+pad.A = True. None gives it back: pad.A = None, or pad.release("A").
+False and 0 are values like any other, so pad.A = False holds A up.
+pad.set("LeftX", 40) puts a value once, until the device's own input moves
+the control. pad.tap("A", 50) presses A for 50 ms and pad.sequence("A", 50,
+"B", 50) taps one after the other, timed on PadForge's own clock, and a tap
+sent between two of PadForge's passes is never lost.
+
+Hotkeys take AutoHotkey's forms: pad.hotkey("A", fn) takes A from the game
+while the hotkey exists, "~A" leaves it to the game too, and "A up",
+"HatUp", "LeftX > 80%", "LeftX < -80%" and "LeftX > 80% up" work. fn gets
+the hotkey's name when it takes an argument. pad.hotkey("A", "Off")
+removes it. PadForge decides the claim inside its own pass, so the game
+never sees a press the hotkey took.
+
+Callbacks run one at a time, in the order their events came, on a thread
+of the library's own. A callback may read, hold and make requests. The
+script's own thread ends the script when it ends, so a script that only
+waits for its callbacks ends with padforge.wait().
+
+The script and PadForge start in either order. While PadForge is not
+running, padforge.why says so and the library keeps trying, and when
+PadForge starts again it puts back what the script held, claimed and
+followed. A thread of the library's own beats every 31 ms, so a script
+busy in its own code keeps its holds. A script that stops beating for
+250 ms lets go of what it held and claimed until it beats again, and its
+controllers go offline after 5 seconds of silence.
 
 A plugin is a program PadForge starts itself (Extras, Plugins). It connects
-with connect_plugin(), which reads the one-time key and the pipe's name
-PadForge put in its environment. A plugin declares, drives and removes its
-own controllers whatever Automation's level, and writes to its log on the
-Plugins page with log().
+with padforge.plugin(name), which reads the one-time key and the pipe's
+name PadForge put in its environment. A plugin declares, drives and removes
+its own controllers whatever Automation's level, and writes to its log on
+the Plugins page with log().
+
+Some online games' anti-cheat flags a player while a script drives the
+game. Check a game's rules before a script drives it.
 """
 
 import _winapi
 import ctypes
+import inspect
 import itertools
-import json
+import json as _json
 import os
 import queue
+import re
+import sys
 import threading
 import time
+import traceback
+from collections import namedtuple
 
 PROTOCOL = 1
 PIPE = "PadForge.Automation"
 TOKEN_VARIABLE = "PADFORGE_PLUGIN_TOKEN"
 PIPE_VARIABLE = "PADFORGE_PIPE"
+BEAT_SECONDS = 0.031
+RETRY_SECONDS = 1.0
 
 _ERROR_FILE_NOT_FOUND = 2
 _ERROR_PIPE_BUSY = 231
@@ -121,6 +174,85 @@ def split(line):
         else:
             pairs[key] = "".join(value)
     return words, pairs, None
+
+
+def directions(degrees):
+    """The directions a hat in degrees holds: the nearest of the eight
+    points, a diagonal holding two, "" at rest."""
+    if degrees is None or degrees < 0:
+        return ""
+    point = int(degrees / 45.0 + 0.5) % 8
+    return ("Up", "Up+Right", "Right", "Right+Down", "Down", "Down+Left", "Left", "Up+Left")[point]
+
+
+def _number(value):
+    """A number as the line takes it: whole when it is, else up to three
+    places."""
+    if isinstance(value, bool):
+        return "1" if value else "0"
+    if isinstance(value, int):
+        return str(value)
+    text = ("%.3f" % float(value)).rstrip("0").rstrip(".")
+    return "0" if text in ("-0", "") else text
+
+
+def _read(text):
+    """A number as PadForge wrote it: whole when it has no point."""
+    try:
+        return float(text) if "." in text else int(text)
+    except ValueError:
+        try:
+            return float(text)
+        except ValueError:
+            return text
+
+
+def _wire(kind, value):
+    """A value as the pipe takes it for a control of a kind (b, a or h), in
+    plain units."""
+    if kind == "b":
+        if isinstance(value, str):
+            return "1" if value.strip().lower() in ("1", "true") else "0"
+        return "1" if value else "0"
+    if kind == "a":
+        if isinstance(value, str):
+            text = value.strip()
+            return text if text == "rest" or text.endswith("%") else text + "%"
+        return _number(value) + "%"
+    if value is None:
+        return "-1"
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return "-1" if value < 0 else _number(value) + "deg"
+    text = str(value).replace(" ", "")
+    return text if text else "-1"
+
+
+def _value(value):
+    """A named value as the var line takes it."""
+    if isinstance(value, (int, float)):
+        return _number(value)
+    return str(value)
+
+
+def _gone(value):
+    """Whether a value gives a control back: None or an empty string."""
+    return value is None or (isinstance(value, str) and value == "")
+
+
+def _arity(fn):
+    """How many arguments a callback takes by position, or None for any
+    number."""
+    try:
+        params = inspect.signature(fn).parameters.values()
+    except (TypeError, ValueError):
+        return None
+    count = 0
+    for p in params:
+        if p.kind == p.VAR_POSITIONAL:
+            return None
+        if p.kind in (p.POSITIONAL_ONLY, p.POSITIONAL_OR_KEYWORD):
+            count += 1
+    return count
 
 
 # ── The pipe ──
@@ -368,538 +500,602 @@ class _Pipe:
             pass
 
 
-# ── What PadForge describes ──
 
-class Device:
-    """A device on PadForge's list. `id` is the short ID PadForge makes up,
-    the same for this device across runs."""
+# ── Answers and controls ──
 
-    def __init__(self, pairs):
-        self.id = pairs.get("id", "")
-        self.type = pairs.get("type", "device")
-        self.online = pairs.get("online") == "1"
-        self.name = pairs.get("name", "")
-        self.buttons = int(pairs.get("buttons", "0"))
-        self.axes = int(pairs.get("axes", "0"))
-        self.sliders = int(pairs.get("sliders", "0"))
-        self.hats = int(pairs.get("hats", "0"))
-        self.gyro = pairs.get("gyro") == "1"
-        self.accel = pairs.get("accel") == "1"
-        self.touchpads = int(pairs.get("touchpads", "0"))
+Row = namedtuple("Row", "words pairs json")
+Row.__doc__ = "A row an answer carries before its ok: its bare words, its pairs and its JSON."
+
+Control = namedtuple("Control", "name kind index")
+Control.__doc__ = "A control of a device: its name, its kind (button, axis, slider or hat) and its index."
+
+# A control as the library keeps it: its name, its kind on the pipe (b, a
+# or h), its index (sliders from 24) and whether it is a stick.
+_Control = namedtuple("_Control", "name kind index stick")
+
+_Direction = namedtuple("_Direction", "hat bit name")
+
+
+class Answer(dict):
+    """The pairs of an ok line. `rows` holds the rows that came before it,
+    `words` its bare words and `json` the JSON it ends with, or None."""
+
+    def __init__(self, pairs, words=(), json=None, rows=()):
+        super().__init__(pairs)
+        self.words = list(words)
+        self.json = json
+        self.rows = list(rows)
+
+
+class _Entry:
+    """A request that waits for its answer."""
+
+    def __init__(self, pipe):
+        self.pipe = pipe
+        self.rows = []
+        self.final = None
+        self.done = threading.Event()
+
+
+class _Hotkey:
+    """One hotkey: its name as the script gave it and what it follows."""
+
+    def __init__(self, name, passes, up, kind, what, line, key, hat=0, bit=""):
+        self.name = name
+        self.passes = passes
+        self.up = up
+        self.kind = kind
+        self.what = what
+        self.line = line
+        self.key = key
+        self.hat = hat
+        self.bit = bit
+        self.fn = None
+
+
+class _Key:
+    """What the hotkeys on one control or one line share: the subscription,
+    whether it claims, and the line's number."""
+
+    def __init__(self, hotkey):
+        self.what = hotkey.what
+        self.kind = hotkey.kind
+        self.line = hotkey.line
+        self.number = 0
+        self.claimed = -1
+        self.items = []
+
+
+# The verbs of the command set, which PadForge answers while it still asks
+# the user about a script.
+_COMMAND_SET = ("hello", "state", "activate", "deactivate", "query", "engine", "controllers", "slot", "show", "hide",
+                "minimize", "snapshot", "record", "version", "exit")
+
+_NUMBERED = re.compile(r"^(button|axis|slider|hat)(\d+)$", re.IGNORECASE | re.ASCII)
+_SHORT = re.compile(r"^([bah])(\d+)$", re.IGNORECASE | re.ASCII)
+_HOTKEY = re.compile(r"^(\w+)\s*(?:([<>])\s*(-?\d+(?:\.\d+)?)\s*%?)?$", re.ASCII)
+_UP_DOWN = re.compile(r"\s+(up|down)$", re.IGNORECASE)
+_ENDS = ("Up", "Right", "Down", "Left")
+
+
+# ── The connection ──
+
+class Connection:
+    """A connection to the PadForge that runs on this PC. It does not wait:
+    while PadForge is not running, connected is False, why says why, and
+    the library tries again every second."""
+
+    def __init__(self, name, pipe=None, level="send-inputs", token=None, lease=0):
+        self.name = name
+        self.pipe = pipe or _pipe_name()
+        self.level = ""
+        self.version = ""
+        self.session = 0
+        self.why = "Not connected yet."
+        self.errors = []
+        self._wanted = level
+        self._token = token
+        self._lease = lease
+        # Held while the model changes: the devices, their holds and
+        # hotkeys, the controllers. The reader never takes it, so a request
+        # made under it is always answered.
+        self._lock = threading.RLock()
+        self._pipe_lock = threading.Lock()
+        self._answers = {}
+        self._answers_lock = threading.Lock()
+        self._tags = itertools.count(1)
+        self._queue = queue.Queue()
+        self._callbacks = {}
+        self._wanting = {}
+        self._by_id = {}
+        self._mine = {}
+        self._values = {}
+        self._follows = []
+        self._pipe = None
+        self._open = False
+        self._waiting = False
+        self._generation = 0
+        self._next_try = 0.0
+        self._ended = threading.Event()
+        threading.Thread(target=self._dispatch_loop, name="padforge-events", daemon=True).start()
+        with self._lock:
+            self._try_open()
+        if token is None:
+            threading.Thread(target=self._keep_loop, name="padforge-retry", daemon=True).start()
+            beat = BEAT_SECONDS
+        else:
+            beat = max(BEAT_SECONDS, lease / 3000.0) if lease else BEAT_SECONDS
+        threading.Thread(target=self._beat_loop, args=(beat,), name="padforge-beat", daemon=True).start()
+
+    @property
+    def connected(self):
+        """True while PadForge answers."""
+        return self._open
 
     def __repr__(self):
-        return "Device(%s, %s, %r)" % (self.id, self.type, self.name)
+        return "Connection(%r, %s)" % (self.name, "connected" if self._open else "not connected")
 
+    # ── Opening, and opening again ──
 
-def directions(degrees):
-    """The directions a hat in degrees holds: the nearest of the eight
-    points, a diagonal holding two, "" at rest."""
-    if degrees < 0:
-        return ""
-    point = int(degrees / 45.0 + 0.5) % 8
-    return ("Up", "Up+Right", "Right", "Right+Down", "Down", "Down+Left", "Left", "Up+Left")[point]
-
-
-def plain(control, value):
-    """A value as the pipe takes it in plain units: a button True or False,
-    an axis a percent, a hat degrees or directions."""
-    kind = control[:1]
-    if kind == "b":
-        return "1" if value else "0"
-    if kind == "a" and isinstance(value, (int, float)):
-        return "%s%%" % _number(value)
-    if kind == "h":
-        if isinstance(value, (int, float)):
-            return "-1" if value < 0 else "%sdeg" % _number(value)
-        return value or "-1"
-    if isinstance(value, (tuple, list)):
-        return ",".join(str(x) for x in value)
-    if isinstance(value, bool):
-        return "1" if value else "0"
-    return value
-
-
-def _read(text):
-    """A number as PadForge wrote it: whole when it has no point."""
-    return float(text) if "." in text else int(text)
-
-
-def _number(value):
-    text = ("%.3f" % value).rstrip("0").rstrip(".")
-    return "0" if text in ("-0", "") else text
-
-
-def _rests(controls):
-    """Axes with a rest as a share of the travel, for the declaration."""
-    out = []
-    for c in controls:
-        if isinstance(c, dict) and "rest" in c:
-            c = dict(c, rest="%s%%" % _number(c["rest"]))
-        out.append(c)
-    return out
-
-
-class State:
-    """A device's whole state in plain units: buttons, axes 0 to 31 (24 to
-    31 the sliders), hats in degrees, their directions, motion and
-    battery."""
-
-    def __init__(self, pairs):
-        raw = bytes.fromhex(pairs.get("b", "00"))
-        self.buttons = [bool(raw[i // 8] & (1 << (i % 8))) for i in range(len(raw) * 8)]
-        self.axes = [_read(v) for v in pairs.get("a", "").split(",") if v != ""]
-        self.hats = [_read(v) for v in pairs.get("h", "").split(",") if v != ""]
-        self.hat_directions = [directions(h) for h in self.hats]
-        self.gyro = tuple(float(v) for v in pairs.get("gyro", "0,0,0").split(","))
-        self.accel = tuple(float(v) for v in pairs.get("accel", "0,0,0").split(","))
-        battery = pairs.get("bat", "-1,0").split(",")
-        self.battery = int(battery[0])
-        self.charging = len(battery) > 1 and battery[1] == "1"
-
-    def button(self, index):
-        return index < len(self.buttons) and self.buttons[index]
-
-
-def _id(device):
-    return device.id if isinstance(device, Device) else str(device)
-
-
-class Controller:
-    """A controller of the script's own on PadForge's device list. Map and
-    assign it like any device. Its feedback comes back through on_rumble,
-    on_trigger_rumble, on_light and on_player."""
-
-    def __init__(self, padforge, device_id):
-        self._pf = padforge
-        self.id = device_id
-        self._staged = {}
-
-    def press(self, *buttons):
-        self._pf._send_set(self.id, {"b%d" % b: 1 for b in buttons})
-
-    def release(self, *buttons):
-        self._pf._send_set(self.id, {"b%d" % b: 0 for b in buttons})
-
-    def set(self, control=None, value=None, **controls):
-        """Stages values to go out together with send(), in plain units:
-        set("a0", -50), or set(a0=-50, a1=0, b3=True, h0="Up+Right"). Names
-        are b<i>, a<i>, h<i>, gyro, accel, t<pad>.<finger>, tc<pad>, bat and
-        charging."""
-        if control is not None:
-            controls[control] = value
-        for key, v in controls.items():
-            self._staged[key] = plain(key, v)
-
-    def rest(self):
-        """Every control at rest in one word."""
-        self._staged = {}
-        self._pf.request("rest " + self.id)
-
-    def send(self, **controls):
-        """Sends what set() staged, and these, as one change: a stick's two
-        axes never land on different passes."""
-        self.set(**controls)
-        staged, self._staged = self._staged, {}
-        if staged:
-            self._pf._send_set(self.id, staged)
-
-    def on_rumble(self, callback):
-        """callback(low, high), each 0 to 65535."""
-        self._pf._feedback.setdefault(("rumble", self.id), []).append(callback)
-
-    def on_trigger_rumble(self, callback):
-        """callback(left, right), each 0 to 65535."""
-        self._pf._feedback.setdefault(("trigrumble", self.id), []).append(callback)
-
-    def on_light(self, callback):
-        """callback("rrggbb")."""
-        self._pf._feedback.setdefault(("led", self.id), []).append(callback)
-
-    def on_player(self, callback):
-        """callback(number)."""
-        self._pf._feedback.setdefault(("player", self.id), []).append(callback)
-
-    def remove(self):
-        self._pf.request("gone " + self.id)
-
-
-class PadForge:
-    """One connection to PadForge. Requests wait for their answer. Events
-    run your callbacks on a thread of their own, so a callback may make
-    requests."""
-
-    def __init__(self, name, pipe=PIPE, lease=None, timeout=5.0, token=None):
-        self._pipe = _Pipe(pipe, timeout)
-        self._timeout = timeout
-        self._tags = itertools.count(1)
-        self._pending = {}
-        self._pending_lock = threading.Lock()
-        self._events = queue.Queue()
-        self._buttons = {}
-        self._hats = {}
-        self._axes = {}
-        self._crossings = {}
-        self._devices = []
-        self._profile = []
-        self._engine = []
-        self._level_callbacks = []
-        self._feedback = {}
-        self._events_by_kind = {}
-        self.errors = []
-        self._closed = threading.Event()
-        self._reader = threading.Thread(target=self._read_loop, name="padforge-reader", daemon=True)
-        self._reader.start()
-        self._dispatcher = threading.Thread(target=self._dispatch_loop, name="padforge-events", daemon=True)
-        self._dispatcher.start()
-        if token:
-            hello = "hello name=%s kind=plugin token=%s protocol=%d units=plain" % (quote(name), word(token), PROTOCOL)
+    def _try_open(self):
+        """Opens the pipe, says hello and puts back what the script holds,
+        claims and follows. Runs under the model's lock."""
+        self._next_try = time.monotonic() + RETRY_SECONDS
+        try:
+            pipe = _Pipe(self.pipe, 2.0)
+        except Exception as e:
+            self.why = str(e)
+            return False
+        with self._pipe_lock:
+            self._pipe = pipe
+        threading.Thread(target=self._read_loop, args=(pipe,), name="padforge-reader", daemon=True).start()
+        if self._token is not None:
+            hello = "hello name=%s kind=plugin token=%s protocol=%d units=plain" % (quote(self.name), quote(self._token), PROTOCOL)
         else:
-            hello = "hello name=%s kind=script protocol=%d units=plain" % (quote(name), PROTOCOL)
-        if lease:
-            hello += " lease=%d" % lease
-        _, pairs, _ = self._ask(hello)
-        self.version = pairs.get("padforge", "")
-        self.level = pairs.get("level", "")
-        self.session = int(pairs.get("session", "0"))
-        self._lease = (lease or 2000) / 1000.0
-        self._beater = threading.Thread(target=self._beat_loop, name="padforge-lease", daemon=True)
-        self._beater.start()
+            hello = "hello name=%s kind=script protocol=%d units=plain" % (quote(self.name), PROTOCOL)
+        if self._wanted:
+            hello += " level=" + self._wanted
+        if self._lease:
+            hello += " lease=%d" % self._lease
+        try:
+            answer = self._ask(hello, 10.0)
+        except Exception as e:
+            self._drop(pipe)
+            self.why = str(e)
+            return False
+        self.version = answer.get("padforge", "")
+        self.level = answer.get("level", "")
+        self.session = int(answer.get("session", "0") or 0)
+        self._waiting = answer.get("consent") == "waiting"
+        self.why = "PadForge asks you whether this script may work with it." if self._waiting else ""
+        self._generation += 1
+        self._open = True
+        if self._token is None:
+            self._restore()
+        if self._open:
+            self.why = ""
+        return True
 
-    # ── Lines ──
+    def _restore(self):
+        """Everything the script holds, claims and follows, put back on a
+        new connection: its devices found again, its controllers declared
+        again under the same keys, its values set again. A step PadForge
+        refuses goes to errors, and the next one still runs."""
+        for kind in list(self._follows):
+            self._step(lambda: self._ask("sub " + kind))
+        self._step(lambda: self._ask("sub devices"))
+        for ctl in list(self._mine.values()):
+            self._step(ctl._declare)
+        for name, value in list(self._values.items()):
+            self._send("var %s=%s" % (name, _value(value)))
+        for pad in list(self._wanting.values()):
+            pad._find()
 
-    def _read_loop(self):
+    def _step(self, fn):
+        try:
+            fn()
+        except Exception as e:
+            self.errors.append(str(e))
+
+    def _keep_loop(self):
+        while not self._ended.wait(0.05):
+            if self._pipe is None and time.monotonic() >= self._next_try:
+                with self._lock:
+                    if self._pipe is None and not self._ended.is_set():
+                        self._try_open()
+
+    def _beat_loop(self, seconds):
+        # No beat before hello's answer: PadForge takes hello first.
+        while not self._ended.wait(seconds):
+            if self._open:
+                self._send("beat")
+
+    def _drop(self, pipe):
+        """The pipe closed: every device of the script goes offline and
+        every request that waits on it ends."""
+        with self._pipe_lock:
+            if pipe is not self._pipe:
+                pipe.close()
+                return
+            self._pipe = None
+            self._open = False
+        pipe.close()
+        with self._answers_lock:
+            waiting = [e for e in self._answers.values() if e.pipe is pipe]
+        for entry in waiting:
+            entry.done.set()
+        self._next_try = time.monotonic() + RETRY_SECONDS
+        if self._ended.is_set():
+            self.why = "The script closed the connection."
+        elif self._token is not None:
+            self.why = "PadForge closed the connection."
+            self._ended.set()
+        else:
+            self.why = "PadForge closed the connection. The library tries again."
+        for pad in list(self._by_id.values()):
+            pad._lost()
+
+    # ── The pipe ──
+
+    def _read_loop(self, pipe):
         pending = b""
         while True:
-            data = self._pipe.read()
+            data = pipe.read()
             if not data:
                 break
             pending += data
             while b"\n" in pending:
                 raw, pending = pending.split(b"\n", 1)
                 self._line(raw.decode("utf-8", "replace").rstrip("\r"))
-        self._closed.set()
-        with self._pending_lock:
-            waiting = list(self._pending.values())
-            self._pending.clear()
-        for entry in waiting:
-            entry["done"].set()
-        self._events.put(None)
+        self._drop(pipe)
 
     def _line(self, line):
         if line.startswith("e "):
-            self._events.put(line)
+            # The copy takes the event at once, and a change the copy holds
+            # already (a second subscription's copy of it) goes no further.
+            item = self._mirror(line)
+            if item is not None:
+                self._queue.put(item)
             return
         tag = None
         if line.startswith("@"):
             tag, _, line = line.partition(" ")
-        with self._pending_lock:
-            entry = self._pending.get(tag) if tag else None
+        with self._answers_lock:
+            entry = self._answers.get(tag) if tag else None
         if entry is None:
             if line.startswith("err "):
                 self.errors.append(line)
             return
         if line == "ok" or line.startswith("ok ") or line.startswith("err "):
-            entry["final"] = line
-            entry["done"].set()
+            entry.final = line
+            entry.done.set()
         else:
-            entry["rows"].append(line)
+            entry.rows.append(line)
 
-    def _ask(self, line):
-        tag = "@%d" % next(self._tags)
-        entry = {"rows": [], "final": None, "done": threading.Event()}
-        with self._pending_lock:
-            self._pending[tag] = entry
+    def _mirror(self, line):
+        """An event into the copy of its device, and what the dispatcher
+        gets of it. None for a change the copy holds already."""
+        w = line.split(" ")
+        if len(w) < 3:
+            return ("event", line, None)
+        pad = self._by_id.get(w[2])
+        if pad is None:
+            return ("event", line, None)
+        go, extra = pad._take(w, line)
+        return ("event", line, extra) if go else None
+
+    def _write(self, line, pipe=None):
+        pipe = pipe or self._pipe
+        if pipe is None:
+            raise PadForgeError("closed", "PadForge is not connected: " + self.why)
         try:
-            self._pipe.write((tag + " " + line + "\n").encode("utf-8"))
-            if not entry["done"].wait(self._timeout + 30):
+            pipe.write((line + "\n").encode("utf-8"))
+        except PadForgeError:
+            self._drop(pipe)
+            raise PadForgeError("closed", "PadForge is not connected: the pipe closed.") from None
+        return pipe
+
+    def _send(self, line):
+        """A line that needs no answer. While PadForge is not connected it is
+        dropped: what it changed is put back from what the library keeps."""
+        if not self._open:
+            return False
+        try:
+            self._write(line)
+        except PadForgeError:
+            return False
+        return True
+
+    def _ask(self, line, timeout=None):
+        tag = "@%d" % next(self._tags)
+        pipe = self._pipe
+        if pipe is None:
+            raise PadForgeError("closed", "PadForge is not connected: " + self.why)
+        entry = _Entry(pipe)
+        with self._answers_lock:
+            self._answers[tag] = entry
+        try:
+            self._write(tag + " " + line, pipe)
+            if timeout is None:
+                # A line that waits for the user's answer to this script's
+                # first connection waits as long as PadForge's question
+                # card does.
+                timeout = 150.0 if self._waiting else 10.0
+            if not entry.done.wait(timeout):
                 raise PadForgeError("timeout", "PadForge did not answer.")
         finally:
-            with self._pending_lock:
-                self._pending.pop(tag, None)
-        final = entry["final"]
+            with self._answers_lock:
+                self._answers.pop(tag, None)
+        final = entry.final
         if final is None:
-            raise PadForgeError("closed", "The connection to PadForge closed.")
+            raise PadForgeError("closed", "PadForge is not connected: the pipe closed.")
+        verb = line.split(" ", 1)[0]
+        if self._waiting and verb not in _COMMAND_SET:
+            self._waiting = False
         if final.startswith("err "):
-            self._raise(line, final)
+            self._raise(verb, final)
         words, pairs, js = split(final[2:].strip())
-        return entry["rows"], pairs, js
+        return Answer(pairs, words, js, [Row(*split(r)) for r in entry.rows])
 
-    def _raise(self, line, final):
+    def _raise(self, verb, final):
         parts = final.split(" ", 2)
         code = parts[1] if len(parts) > 1 else "internal"
-        words = parts[2] if len(parts) > 2 else ""
-        verb = line.split(" ", 1)[0]
         if code == "not-allowed":
-            raise PadForgeError(code, "PadForge refused %s: Automation's level is %s, too low for it. Raise it in Extras, Automation."
-                                % (verb, self.level or "unknown"))
-        raise PadForgeError(code, "PadForge refused %s: %s (%s)." % (verb, words, code))
+            text = "PadForge refused %s: Automation's level is %s, too low for it. Raise it in Extras, Automation."
+            raise PadForgeError(code, text % (verb, self.level or "unknown"))
+        raise PadForgeError(code, "PadForge refused %s: %s (%s)." % (verb, parts[2] if len(parts) > 2 else "", code))
 
     def request(self, line):
-        """Sends a line and gives the words of its ok as a dict. Raises
-        PadForgeError for an err."""
-        return self._ask(line)[1]
-
-    def rows(self, line):
-        """Sends a line that answers rows, and gives them as (words,
-        pairs) pairs."""
-        rows, _, _ = self._ask(line)
-        result = []
-        for row in rows:
-            words, pairs, _ = split(row)
-            result.append((words, pairs))
-        return result
-
-    def log(self, text):
-        """A line for this plugin's log on the Plugins page. Only a
-        plugin has a log."""
-        self._pipe.write(("log " + quote(text) + "\n").encode("utf-8"))
-
-    def _send_set(self, device_id, controls):
-        parts = ["s", device_id] + ["%s=%s" % (k, v) for k, v in controls.items()]
-        self._pipe.write((" ".join(parts) + "\n").encode("utf-8"))
+        """Sends a line and waits for its answer: the ok line's pairs as a
+        dict, an Answer with rows, words and json. Raises PadForgeError with
+        PadForge's refusal in words."""
+        return self._ask(line)
 
     # ── Events ──
 
     def _dispatch_loop(self):
+        # One thread for the connection's whole life, across every pipe it
+        # opens, so callbacks run one at a time and in order.
         while True:
-            line = self._events.get()
-            if line is None:
+            item = self._queue.get()
+            if item is None:
                 return
             try:
-                self._event(line)
-            except Exception as e:
-                self.errors.append("callback failed: %r" % e)
+                if item[0] == "event":
+                    self._event(item[1], item[2])
+                else:
+                    self._invoke(item[1], item[2])
+            except Exception:
+                self._report()
 
-    def _event(self, line):
+    def _invoke(self, fn, args):
+        """Runs a callback with the arguments it takes. Its error is printed
+        and kept in errors, and the next callback still runs."""
+        count = _arity(fn)
+        try:
+            fn(*(args if count is None else args[:count]))
+        except Exception:
+            self._report()
+
+    def _report(self):
+        kind, error, _ = sys.exc_info()
+        self.errors.append("".join(traceback.format_exception_only(kind, error)).strip())
+        try:
+            sys.stderr.write("A PadForge callback failed:\n")
+            traceback.print_exc()
+            sys.stderr.flush()
+        except Exception:
+            pass
+
+    def _event(self, line, extra):
         words, pairs, _ = split(line)
-        kind = words[1] if len(words) > 1 else ""
-        if kind == "b" and len(words) >= 5:
-            for cb in self._buttons.get((words[2], int(words[3])), []):
-                cb(words[4] == "1")
-        elif kind == "h" and len(words) >= 5:
-            for cb in self._hats.get((words[2], int(words[3])), []):
-                cb(_read(words[4]))
-        elif kind == "a" and len(words) >= 5:
-            for cb in self._axes.get((words[2], int(words[3])), []):
-                cb(_read(words[4]))
-        elif kind == "x" and len(words) >= 5:
-            for cb in self._crossings.get((words[2], int(words[3])), []):
-                cb(words[4] == "1")
-        elif kind == "dev" and len(words) >= 4:
-            for cb in self._devices:
-                cb(words[2], words[3] == "online")
+        if len(words) < 2:
+            return
+        kind = words[1]
+        if kind in ("b", "h", "a", "x", "state"):
+            pad = self._by_id.get(words[2]) if len(words) > 2 else None
+            if pad is not None:
+                pad._fire(words, extra)
+        elif kind == "dev":
+            online = len(words) > 3 and words[3] == "online"
+            self._call("dev", words[2] if len(words) > 2 else "", online)
+            if online:
+                with self._lock:
+                    for pad in list(self._wanting.values()):
+                        if pad._generation != self._generation:
+                            pad._find()
         elif kind == "profile":
-            name = words[2] if len(words) > 2 else "default"
-            for cb in self._profile:
-                cb(name)
-        elif kind == "engine" and len(words) > 2:
-            for cb in self._engine:
-                cb(words[2])
-        elif kind == "level" and len(words) > 2:
-            self.level = words[2]
-            for cb in self._level_callbacks:
-                cb(words[2])
-        elif kind in ("rumble", "trigrumble") and len(words) >= 5:
-            for cb in self._feedback.get((kind, words[2]), []):
-                cb(int(words[3]), int(words[4]))
-        elif kind == "led" and len(words) >= 4:
-            for cb in self._feedback.get(("led", words[2]), []):
-                cb(words[3])
-        elif kind == "player" and len(words) >= 4:
-            for cb in self._feedback.get(("player", words[2]), []):
-                cb(int(words[3]))
-        for cb in self._events_by_kind.get(kind, []):
-            cb(pairs)
-
-    def on_button(self, device, button, callback):
-        """callback(down) on every press and release of a button of any
-        device, keyboards and mice included."""
-        did = _id(device)
-        first = not any(k[0] == did for k in self._buttons)
-        self._buttons.setdefault((did, button), []).append(callback)
-        if first:
-            self.request("sub %s buttons" % did)
-
-    def on_hat(self, device, hat, callback):
-        """callback(degrees) when a hat moves: degrees clockwise from up, or
-        -1. directions(degrees) gives its directions."""
-        did = _id(device)
-        first = not any(k[0] == did for k in self._hats)
-        self._hats.setdefault((did, hat), []).append(callback)
-        if first:
-            self.request("sub %s hats" % did)
-
-    def on_axis(self, device, axis, callback, above=None, hyst=None, hz=None):
-        """With `above`, callback(True) when the axis reaches it and
-        callback(False) when it falls back past above - hyst, worked out by
-        PadForge. above and hyst are plain: on_axis(pad, 0, fn, above=80) on
-        a stick. Without it, callback(value) up to `hz` times a second."""
-        did = _id(device)
-        if above is not None:
-            self._crossings.setdefault((did, axis), []).append(callback)
-            line = "sub %s axis=%d above=%s%%" % (did, axis, _number(above))
-            if hyst is not None:
-                line += " hyst=%s%%" % _number(hyst)
-            self.request(line)
+            self._call("profile", words[2] if len(words) > 2 else "default")
+        elif kind == "engine":
+            self._call("engine", words[2] if len(words) > 2 else "")
+        elif kind == "level":
+            self.level = words[2] if len(words) > 2 else ""
+            self._waiting = False
+            self._call("level", self.level)
+        elif kind in ("rumble", "trigrumble", "trigfx", "led", "player"):
+            pad = self._by_id.get(words[2]) if len(words) > 2 else None
+            if isinstance(pad, Controller):
+                pad._feedback(words)
+        elif kind == "lease":
+            # The lapse put the script's own controllers at rest, and the
+            # line that wakes the lease brings back only its holds and
+            # claims. What the script set goes out again, and that line
+            # wakes the lease.
+            with self._lock:
+                for ctl in list(self._mine.values()):
+                    ctl._send_set()
         else:
-            first = not any(k[0] == did for k in self._axes)
-            self._axes.setdefault((did, axis), []).append(callback)
-            if first or hz:
-                self.request("sub %s axes %d" % (did, hz or 100))
+            self._call("event|" + kind, pairs)
 
-    def on_device(self, callback):
-        """callback(device_id, online) when a device connects or
-        disconnects."""
-        if not self._devices:
-            self.request("sub devices")
-        self._devices.append(callback)
+    def _call(self, key, *args):
+        for fn in list(self._callbacks.get(key, ())):
+            self._invoke(fn, args)
 
-    def on_profile(self, callback):
-        """callback(name) when the profile changes, "default" for the
-        default profile."""
-        if not self._profile:
-            self.request("sub profile")
-        self._profile.append(callback)
+    def _add(self, key, fn):
+        if not callable(fn):
+            raise ValueError("A callback is a function.")
+        self._callbacks.setdefault(key, []).append(fn)
 
-    def on_engine(self, callback):
-        """callback(state): running, idle, stopping or stopped."""
-        if not self._engine:
-            self.request("sub engine")
-        self._engine.append(callback)
+    def _follow(self, kind, key, fn):
+        self._add(key, fn)
+        with self._lock:
+            # Devices are always followed: a device found again needs them.
+            if kind != "devices" and kind not in self._follows:
+                self._follows.append(kind)
+                if self._open:
+                    self._ask("sub " + kind)
 
-    def on_level(self, callback):
-        """callback(level) when the user changes Automation's level."""
-        self._level_callbacks.append(callback)
+    def on_device(self, fn):
+        """fn(id, online) when a device connects or disconnects."""
+        self._follow("devices", "dev", fn)
 
-    def on_event(self, kind, callback):
-        """callback(pairs) for every event of this kind, with the line's
-        key=value words as a dict: setting, press and choices for a plugin's
-        declared settings."""
-        self._events_by_kind.setdefault(kind, []).append(callback)
+    def on_profile(self, fn):
+        """fn(name) when the profile changes, "default" for the default."""
+        self._follow("profile", "profile", fn)
 
-    # ── Read ──
+    def on_engine(self, fn):
+        """fn(state): running, idle, stopping or stopped."""
+        self._follow("engine", "engine", fn)
+
+    def on_level(self, fn):
+        """fn(level) when the user changes Automation's level."""
+        self._add("level", fn)
+
+    def on_event(self, kind, fn):
+        """fn(pairs) for every event of this kind, with the line's key=value
+        words as a dict: setting, press and choices for a plugin's declared
+        settings."""
+        self._add("event|" + kind, fn)
+
+    # ── Devices ──
+
+    def device(self, what):
+        """A device by its script ID, its type or a part of its name. The
+        same words give the same object. It is found again whenever PadForge
+        connects and whenever a device connects while it is missing."""
+        key = str(what).lower()
+        with self._lock:
+            pad = self._wanting.get(key)
+            if pad is None:
+                pad = Device(self, what)
+                self._wanting[key] = pad
+                if self._open:
+                    pad._find()
+            return pad
 
     def devices(self):
-        """Every device PadForge knows, connected or not."""
-        return [Device(pairs) for words, pairs in self.rows("devices") if words and words[0] == "device"]
-
-    def find(self, name_or_type, online=True):
-        """The first device whose type is name_or_type (gamepad, keyboard,
-        mouse, wheel, program, ...) or whose name holds it."""
-        wanted = str(name_or_type).lower()
-        for d in self.devices():
-            if online and not d.online:
-                continue
-            if d.type == wanted or d.id == name_or_type or wanted in d.name.lower():
-                return d
-        return None
-
-    def caps(self, device):
-        """Each control of a device with its index and name, as dicts."""
-        return [dict(pairs, kind=words[0]) for words, pairs in self.rows("caps " + _id(device)) if words]
-
-    def read(self, device):
-        """A device's whole state now."""
-        return State(self.request("read " + _id(device)))
-
-    def outputs(self, number):
-        """What virtual controller `number` sends to the game now."""
-        return self.request("outputs %d" % number)
+        """Every device PadForge knows, connected or not, as device
+        objects."""
+        with self._lock:
+            out = []
+            for row in self._ask("devices").rows:
+                if not row.words or row.words[0] != "device":
+                    continue
+                pad = self._by_id.get(row.pairs.get("id", "")) or Device(self, row.pairs.get("id", ""))
+                pad._row(row.pairs)
+                out.append(pad)
+            return out
 
     # ── Send Inputs ──
 
     def add_controller(self, key, name, buttons=(), axes=(), sliders=(), hats=(), gyro=False, accel=False,
                        touchpads=(), battery=False, feedback=()):
         """Adds a controller of the script's own. `key` keeps its identity,
-        and its mappings, across runs. buttons, axes, sliders and hats are
-        lists of names or of dicts with index, name and rest. A rest is where
-        the axis rests as a share of its travel, 0 to 100: 50 makes a stick.
-        An axis rests at 50 and a slider at 0 when it is left out. feedback
-        holds any of rumble, trigrumble, light and player."""
-        shape = {"buttons": list(buttons), "axes": _rests(axes), "sliders": _rests(sliders), "hats": list(hats),
-                 "gyro": bool(gyro), "accel": bool(accel), "touchpads": list(touchpads),
-                 "battery": bool(battery), "feedback": list(feedback)}
-        pairs = self.request("declare key=%s name=%s %s" % (word(key), quote(name), json.dumps(shape)))
-        return Controller(self, pairs["id"])
-
-    def hold(self, device, **controls):
-        """Holds controls of any device at a value until released, in plain
-        units: hold(pad, b3=True, a0=40, h0="Up")."""
-        parts = ["%s=%s" % (k, plain(k, v)) for k, v in controls.items()]
-        self.request("own %s %s" % (_id(device), " ".join(parts)))
-
-    def release(self, device=None, *controls):
-        """Lets go of controls held on a device, or all of them."""
-        if device is None:
-            self.request("rel all")
-        else:
-            self.request("rel %s %s" % (_id(device), " ".join(controls) if controls else "all"))
+        and its mappings, across runs, and the same key gives the same
+        object. buttons, axes, sliders and hats are lists of names, or of
+        dicts with index, name and, for an axis or slider, rest as a share of
+        its travel from 0 to 100: 50 makes a stick. An axis rests at 50 and
+        a slider at 0 when rest is left out. touchpads holds each touchpad's
+        finger count, and feedback any of rumble, trigrumble, trigfx, light
+        and player."""
+        spec = {"buttons": list(buttons), "axes": list(axes), "sliders": list(sliders), "hats": list(hats),
+                "gyro": bool(gyro), "accel": bool(accel), "touchpads": list(touchpads), "battery": bool(battery),
+                "feedback": list(feedback)}
+        with self._lock:
+            ctl = self._mine.get(key)
+            if ctl is None:
+                ctl = Controller(self, key, name, spec)
+                self._mine[key] = ctl
+                if self._open:
+                    ctl._declare()
+            return ctl
 
     def set_value(self, name, value):
-        """A named value Custom Expression macro triggers read."""
-        self.request("var %s=%s" % (name, repr(float(value))))
+        """A named value Custom Expression macro triggers read. Set again
+        after PadForge starts again."""
+        with self._lock:
+            self._values[name] = value
+            if self._open:
+                self._ask("var %s=%s" % (name, _value(value)))
+
+    def log(self, text):
+        """A line for this plugin's log on the Plugins page. Only a plugin
+        has a log."""
+        self._send("log " + quote(text))
 
     # ── Commands ──
 
     def switch_profile(self, name):
-        return self.request("activate " + quote(name))
+        return self._ask("activate " + quote(name))
 
     def release_profile(self):
-        return self.request("deactivate")
+        return self._ask("deactivate")
 
     def engine(self, on):
-        return self.request("engine " + ("on" if on else "off"))
+        return self._ask("engine " + ("on" if on else "off"))
 
     def controllers(self, on):
-        return self.request("controllers " + ("on" if on else "off"))
+        return self._ask("controllers " + ("on" if on else "off"))
 
     def controller(self, number, on):
-        return self.request("slot %d %s" % (number, "on" if on else "off"))
+        return self._ask("slot %d %s" % (number, "on" if on else "off"))
 
     def show(self):
-        return self.request("show")
+        return self._ask("show")
 
     def hide(self):
-        return self.request("hide")
+        return self._ask("hide")
 
     def snapshot(self):
-        return self.request("snapshot")
+        return self._ask("snapshot")
 
     def state(self):
-        """What runs now, as PadForge's state JSON."""
-        return json.loads(self._ask("state")[2] or "{}")
+        """What runs now, as JSON text."""
+        return self._ask("state").json
 
-    def call(self, tool, arguments=None):
-        """Runs an assistant tool, at the tool's own level."""
-        return json.loads(self._ask("call %s %s" % (word(tool), json.dumps(arguments or {})))[2] or "{}")
+    def outputs(self, number):
+        """What virtual controller `number` sends to the game now, as a
+        dict."""
+        return self._ask("outputs %d" % number)
 
-    # ── The connection ──
+    def tool(self, name, json="{}"):
+        """Runs an assistant tool, at the tool's own level:
+        tool("press", '{"id": "..."}') presses what the user could. json is
+        text or a dict. Returns JSON text."""
+        text = json if isinstance(json, str) else _json.dumps(json)
+        return self._ask("call %s %s" % (word(name), text)).json
 
-    def _beat_loop(self):
-        while not self._closed.wait(self._lease / 3):
-            try:
-                self._pipe.write(b"beat\n")
-            except PadForgeError:
+    # ── The end ──
+
+    def wait(self, seconds=None):
+        """Waits while callbacks run: for good, for `seconds`, or until the
+        connection closes for good (a plugin's when PadForge closes it)."""
+        deadline = None if seconds is None else time.monotonic() + seconds
+        while True:
+            left = 0.25 if deadline is None else min(0.25, deadline - time.monotonic())
+            if left <= 0 or self._ended.wait(left):
                 return
 
-    @property
-    def closed(self):
-        return self._closed.is_set()
-
-    def run(self, seconds=None):
-        """Waits while events arrive, until the connection closes or
-        `seconds` pass."""
-        self._closed.wait(seconds)
-
     def close(self):
-        if not self._closed.is_set():
-            try:
-                self._pipe.write(b"bye\n")
-            except PadForgeError:
-                pass
-            self._closed.wait(1.0)
-        self._pipe.close()
-        self._closed.set()
+        """Closes the connection for good."""
+        self._ended.set()
+        pipe = self._pipe
+        if pipe is not None:
+            if self._open:
+                self._send("bye")
+            self._drop(pipe)
+        self.why = "The script closed the connection."
+        self._queue.put(None)
 
     def __enter__(self):
         return self
@@ -908,16 +1104,1163 @@ class PadForge:
         self.close()
 
 
-def connect(name, pipe=PIPE, lease=None, timeout=5.0):
-    """Opens a connection to the PadForge that runs on this PC."""
-    return PadForge(name, pipe=pipe, lease=lease, timeout=timeout)
+# ── Devices ──
+
+class _Numbered:
+    """pad.button[0] and the like: a control by its numbered name."""
+
+    __slots__ = ("_device", "_stem")
+
+    def __init__(self, device, stem):
+        self._device = device
+        self._stem = stem
+
+    def __getitem__(self, index):
+        return self._device._read("%s%d" % (self._stem, index))
+
+    def __setitem__(self, index, value):
+        self._device._hold("%s%d" % (self._stem, index), value)
 
 
-def connect_plugin(name, lease=None, timeout=5.0):
+class Device:
+    """A device PadForge reads, found by padforge.device(). Its attributes
+    are its controls (see the top of this file)."""
+
+    def __init__(self, connection, what):
+        self._pf = connection
+        self._what = str(what)
+        self._id = ""
+        self._name = ""
+        self._type = ""
+        self._online = False
+        self._controls = {}
+        self._by_index = {}
+        self._values = {}
+        self._hats = {}
+        self._connected = False
+        self._generation = -1
+        self._holds = {}
+        self._keys = {}
+        self._lines = {}
+        self._changes = {}
+        self._on_connect = []
+
+    def __repr__(self):
+        return "Device(%s, %s, %r)" % (self._id or self._what, self._type, self._name)
+
+    @property
+    def id(self):
+        """Its script ID, "" until it is found."""
+        return self._id
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def type(self):
+        return self._type
+
+    @property
+    def connected(self):
+        """True while PadForge reads it and the library follows it. A device
+        from devices() that the script does not follow says whether PadForge
+        has it."""
+        return self._connected if self._generation >= 0 else self._online
+
+    @property
+    def controls(self):
+        """Its controls: a dict of each name to a Control with name, kind
+        (button, axis, slider or hat) and index."""
+        with self._pf._lock:
+            if not self._controls and self._id and self._pf._open:
+                try:
+                    self._caps()
+                except PadForgeError as e:
+                    self._pf.errors.append(str(e))
+            out = {}
+            for c in self._controls.values():
+                kind = "button" if c.kind == "b" else "hat" if c.kind == "h" else "slider" if c.index >= 24 else "axis"
+                out[c.name] = Control(c.name, kind, c.index)
+            return out
+
+    @property
+    def button(self):
+        return _Numbered(self, "Button")
+
+    @property
+    def axis(self):
+        return _Numbered(self, "Axis")
+
+    @property
+    def slider(self):
+        return _Numbered(self, "Slider")
+
+    @property
+    def hat(self):
+        return _Numbered(self, "Hat")
+
+    def __getattr__(self, name):
+        if name.startswith("_"):
+            raise AttributeError(name)
+        return self._read(name)
+
+    def __setattr__(self, name, value):
+        if name.startswith("_") or isinstance(getattr(type(self), name, None), property):
+            object.__setattr__(self, name, value)
+        else:
+            self._hold(name, value)
+
+    def __getitem__(self, name):
+        return self._read(name)
+
+    def __setitem__(self, name, value):
+        self._hold(name, value)
+
+    # ── Finding it ──
+
+    def _find(self):
+        pf = self._pf
+        with pf._lock:
+            try:
+                rows = pf._ask("devices").rows
+            except PadForgeError as e:
+                pf.errors.append(str(e))
+                return
+            want = self._what.lower()
+            pick = spare = None
+            for row in rows:
+                if not row.words or row.words[0] != "device":
+                    continue
+                p = row.pairs
+                if not (p.get("id") == self._what or p.get("type", "").lower() == want
+                        or want in p.get("name", "").lower()):
+                    continue
+                if p.get("online") == "1":
+                    pick = p
+                    break
+                if spare is None:
+                    spare = p
+            pick = pick or spare
+            if pick is None:
+                return
+            self._row(pick)
+            try:
+                self._attach()
+            except PadForgeError as e:
+                pf.errors.append(str(e))
+
+    def _row(self, p):
+        pf = self._pf
+        new = p.get("id", "")
+        if self._id and self._id != new and pf._by_id.get(self._id) is self:
+            del pf._by_id[self._id]
+        self._id = new
+        self._name = p.get("name", "")
+        self._type = p.get("type", "")
+        self._online = p.get("online") == "1"
+        pf._by_id[new] = self
+
+    def _attach(self):
+        """Reads its controls, follows its whole state, and puts back what
+        the script holds and claims on it."""
+        pf = self._pf
+        self._caps()
+        self._generation = pf._generation
+        pf._ask("sub %s state" % self._id)
+        # Hotkeys, holds and change callbacks made before the controls were
+        # known are read again by the device's own names.
+        items = [item for key in self._keys.values() for item in key.items]
+        self._keys = {}
+        self._lines = {}
+        for item in items:
+            try:
+                self.hotkey(item.name, item.fn)
+            except Exception as e:
+                pf.errors.append(str(e))
+        changes = {}
+        for lower, fns in self._changes.items():
+            c = self._control(lower)
+            changes.setdefault(c.name.lower() if c else lower, []).extend(fns)
+        self._changes = changes
+        held, parts = {}, []
+        for name, value in self._holds.values():
+            c = self._control(name)
+            if c is None:
+                pf.errors.append("No such control: " + name)
+                continue
+            held[c.name.lower()] = (c.name, value)
+            parts.append("%s=%s" % (c.name, _wire(c.kind, value)))
+        self._holds = held
+        if parts:
+            pf._send("own %s %s" % (self._id, " ".join(parts)))
+
+    def _caps(self):
+        controls, by_index = {}, {}
+        for row in self._pf._ask("caps " + self._id).rows:
+            if not row.words or row.words[0] not in ("button", "axis", "hat"):
+                continue
+            p = row.pairs
+            k = row.words[0][0]
+            index = int(p.get("index", "0"))
+            name = p.get("script") or _numbered_name(k, index)
+            rest = int(p["rest"]) if "rest" in p else (32768 if index < 24 else 0)
+            c = _Control(name, k, index, rest in (32767, 32768))
+            controls[name.lower()] = c
+            by_index[(k, index)] = c
+        self._controls = controls
+        self._by_index = by_index
+
+    def _lost(self):
+        """The pipe closed. Runs on the reader, so the callbacks wait for
+        the dispatcher."""
+        if self._connected:
+            self._connected = False
+            self._pf._queue.put(("call", self._fire_connect, (False,)))
+
+    def _fire_connect(self, connected):
+        for fn in list(self._on_connect):
+            self._pf._invoke(fn, (connected,))
+
+    # ── The copy ──
+
+    def _take(self, w, line):
+        """An event into the copy, on the reader. Returns whether it goes on
+        to the dispatcher, and what the dispatcher needs of it."""
+        kind = w[1]
+        try:
+            if kind == "b":
+                key, down = ("b", int(w[3])), w[4] == "1"
+                if key in self._values and self._values[key] == down:
+                    return False, None
+                self._values[key] = down
+            elif kind in ("h", "a"):
+                key, value = (kind, int(w[3])), _read(w[4])
+                if key in self._values and self._values[key] == value:
+                    return False, None
+                self._values[key] = value
+            elif kind == "state":
+                was = self._connected
+                if len(w) > 3 and w[3] == "offline":
+                    self._connected = False
+                    return True, (was, False, None)
+                hats = self._state(split(line)[1])
+                self._connected = True
+                return True, (not was, True, hats)
+        except (IndexError, ValueError):
+            return False, None
+        return True, None
+
+    def _state(self, p):
+        text = p.get("b", "")
+        for i in range(len(text) // 2):
+            byte = int(text[i * 2:i * 2 + 2], 16)
+            for bit in range(8):
+                self._values[("b", i * 8 + bit)] = bool((byte >> bit) & 1)
+        for i, v in enumerate(p.get("a", "").split(",")):
+            if v:
+                self._values[("a", i)] = _read(v)
+        hats = []
+        for i, v in enumerate(p.get("h", "").split(",")):
+            if v:
+                self._values[("h", i)] = _read(v)
+                hats.append(_read(v))
+        return hats
+
+    def _control(self, name):
+        """The control a name names, or None."""
+        name = str(name)
+        c = self._controls.get(name.lower())
+        if c is not None:
+            return c
+        m = _NUMBERED.match(name)
+        if m:
+            stem = m.group(1).capitalize()
+            k = "b" if stem == "Button" else "h" if stem == "Hat" else "a"
+            index = int(m.group(2)) + (24 if stem == "Slider" else 0)
+            return self._by_index.get((k, index)) or _Control(stem + m.group(2), k, index, stem == "Axis")
+        m = _SHORT.match(name)
+        if m:
+            k, index = m.group(1).lower(), int(m.group(2))
+            return self._by_index.get((k, index)) or _Control(_numbered_name(k, index), k, index, k == "a" and index < 24)
+        return None
+
+    def _direction(self, name):
+        """The hat direction a name names, or None."""
+        name = str(name)
+        lower = name.lower()
+        for end in _ENDS:
+            if len(name) <= len(end) or not lower.endswith(end.lower()):
+                continue
+            head = name[:-len(end)]
+            if head.lower() == "hat":
+                return _Direction(0, end, name)
+            c = self._control(head)
+            if c is not None and c.kind == "h":
+                return _Direction(c.index, end, name)
+        return None
+
+    def _value(self, c):
+        if not self._connected:
+            return None
+        return self._values.get((c.kind, c.index), False if c.kind == "b" else -1 if c.kind == "h" else 0)
+
+    def _read(self, name):
+        name = str(name)
+        lower = name.lower()
+        for half in ("plus", "minus"):
+            if len(name) > len(half) and lower.endswith(half):
+                c = self._control(name[:-len(half)])
+                if c is not None and c.kind == "a":
+                    v = self._value(c)
+                    if v is None:
+                        return None
+                    minus = half == "minus"
+                    value = (-v if minus else v) if c.stick else ((50 - v) * 2 if minus else (v - 50) * 2)
+                    return max(0, value)
+        c = self._control(name)
+        if c is not None:
+            return self._value(c)
+        d = self._direction(name)
+        if d is not None:
+            if not self._connected:
+                return None
+            return d.bit in directions(self._values.get(("h", d.hat), -1)).split("+")
+        if not self._controls:
+            # Not found yet: its controls are not known.
+            return None
+        raise AttributeError("No such control: " + name)
+
+    # ── Holding ──
+
+    def _hold(self, name, value):
+        """Sets a control: holds it at the value, or gives it back for None.
+        Before the device is found its controls are not known yet, and the
+        hold waits under the name given."""
+        with self._pf._lock:
+            c = self._control(name)
+            if c is None and self._controls:
+                if self._direction(name) is not None:
+                    raise AttributeError('%s is a hat\'s direction: set the hat, such as DPad = "Up".' % name)
+                raise AttributeError("No such control: " + name)
+            key = c.name if c is not None else str(name)
+            if _gone(value):
+                self._holds.pop(key.lower(), None)
+                if self._id and c is not None:
+                    self._pf._send("rel %s %s" % (self._id, key))
+                return
+            self._holds[key.lower()] = (key, value)
+            if self._id and c is not None:
+                self._pf._send("own %s %s=%s" % (self._id, key, _wire(c.kind, value)))
+
+    def _pairs(self, pairs, what):
+        if len(pairs) % 2:
+            raise ValueError("%s takes names and values in pairs." % what)
+        out = []
+        for i in range(0, len(pairs), 2):
+            c = self._control(pairs[i])
+            if c is None and self._controls:
+                raise ValueError("No such control: %s" % pairs[i])
+            out.append((c, str(pairs[i]), pairs[i + 1]))
+        return out
+
+    def hold(self, *pairs):
+        """Holds several controls in one change: hold("LeftX", 50, "LeftY",
+        -20). None for a value gives that control back."""
+        with self._pf._lock:
+            own, rel = [], []
+            for c, name, value in self._pairs(pairs, "hold"):
+                key = c.name if c is not None else name
+                if _gone(value):
+                    self._holds.pop(key.lower(), None)
+                    if c is not None:
+                        rel.append(key)
+                else:
+                    self._holds[key.lower()] = (key, value)
+                    if c is not None:
+                        own.append("%s=%s" % (key, _wire(c.kind, value)))
+            if self._id and own:
+                self._pf._send("own %s %s" % (self._id, " ".join(own)))
+            if self._id and rel:
+                self._pf._send("rel %s %s" % (self._id, " ".join(rel)))
+
+    def release(self, *names):
+        """Gives controls back: release("A", "LeftX"), or all of them."""
+        with self._pf._lock:
+            if not names:
+                self._holds.clear()
+                if self._id:
+                    self._pf._send("rel %s all" % self._id)
+                return
+            rel = []
+            for name in names:
+                c = self._control(name)
+                if c is None and self._controls:
+                    raise ValueError("No such control: %s" % name)
+                key = c.name if c is not None else str(name)
+                self._holds.pop(key.lower(), None)
+                if c is not None:
+                    rel.append(key)
+            if self._id and rel:
+                self._pf._send("rel %s %s" % (self._id, " ".join(rel)))
+
+    def _known(self, name):
+        """The control a method names. None before the device is found."""
+        c = self._control(name)
+        if c is None and self._controls:
+            raise ValueError("No such control: %s" % name)
+        return c
+
+    def set(self, name, value):
+        """Puts a value once, until the device's own input moves the
+        control."""
+        c = self._known(name)
+        if c is not None and self._id:
+            self._pf._send("set %s %s=%s" % (self._id, c.name, _wire(c.kind, value)))
+
+    def tap(self, name, ms=50, value=None):
+        """Presses a control for ms milliseconds on PadForge's clock: a
+        button, or an axis to value (100 by default) and back."""
+        c = self._known(name)
+        if c is None or not self._id:
+            return
+        if value is None:
+            value = True if c.kind == "b" else 0 if c.kind == "h" else 100
+        self._pf._send("own %s %s=%s" % (self._id, c.name, _wire(c.kind, value)))
+        self._pf._send("rel %s %s in=%d" % (self._id, c.name, round(ms)))
+
+    def sequence(self, *steps):
+        """Taps controls one after the other, each held its ms:
+        sequence("A", 50, "B", 50). Each starts as the one before lets
+        go."""
+        steps = self._pairs(steps, "sequence")
+        if not self._id or any(c is None for c, _, _ in steps):
+            return
+        first = True
+        for c, _, ms in steps:
+            on = "1" if c.kind == "b" else "0deg" if c.kind == "h" else "100%"
+            self._pf._send("own %s %s=%s%s" % (self._id, c.name, on, "" if first else " after=0"))
+            self._pf._send("rel %s %s after=%d" % (self._id, c.name, round(ms)))
+            first = False
+
+    # ── Hotkeys ──
+
+    def hotkey(self, key_name, fn=None):
+        """hotkey(key_name, fn): see the top of this file. fn gets the
+        hotkey's name when it takes an argument. hotkey(key_name, "Off"), or
+        None, removes it."""
+        with self._pf._lock:
+            h = self._parse(key_name)
+            kid = h.key.lower()
+            if fn is None or (isinstance(fn, str) and fn.lower() == "off"):
+                key = self._keys.get(kid)
+                if key is not None:
+                    key.items = [i for i in key.items if i.name.lower() != h.name.lower()]
+                    if not key.items:
+                        del self._keys[kid]
+                        self._unclaim(key)
+                    else:
+                        self._claim(key)
+                return
+            if not callable(fn):
+                raise ValueError('A hotkey needs a function or "Off": %s' % key_name)
+            h.fn = fn
+            key = self._keys.get(kid)
+            if key is None:
+                key = self._keys[kid] = _Key(h)
+            key.items = [i for i in key.items if i.name.lower() != h.name.lower()] + [h]
+            self._claim(key)
+
+    def _parse(self, key_name):
+        """A hotkey's words: its name, whether it leaves the control to the
+        game, on release, and what it follows."""
+        key_name = str(key_name)
+        text = key_name.strip()
+        passes = text.startswith("~")
+        if passes:
+            text = text[1:].lstrip()
+        up = False
+        m = _UP_DOWN.search(text)
+        if m:
+            up = m.group(1).lower() == "up"
+            text = text[:m.start()].rstrip()
+        m = _HOTKEY.match(text)
+        if not m:
+            raise ValueError("Not a control: " + key_name)
+        name, op, limit = m.groups()
+        if op:
+            half, base = "", name
+            lower = name.lower()
+            if lower.endswith("plus") and len(name) > 4:
+                half, base = "Plus", name[:-4]
+            elif lower.endswith("minus") and len(name) > 5:
+                half, base = "Minus", name[:-5]
+            c = self._control(base if half else name)
+            if c is None and half:
+                c, half = self._control(name), ""
+            if c is None and self._controls:
+                raise ValueError(("Only an axis or a slider takes a limit: " if self._direction(name) is not None
+                                  else "No such control: ") + key_name)
+            if c is not None and c.kind != "a":
+                raise ValueError("Only an axis or a slider takes a limit: " + key_name)
+            limit = float(limit)
+            low = op == "<"
+            if half:
+                stick = c.stick if c is not None else True
+                if half == "Minus":
+                    limit, low = (-limit if stick else 50 - limit / 2), not low
+                else:
+                    limit = limit if stick else 50 + limit / 2
+            what = c.name if c is not None else name
+            line = ("below=" if low else "above=") + _number(limit) + "%"
+            return _Hotkey(key_name, passes, up, "l", what, line, what + " " + line)
+        d = self._direction(name)
+        if d is not None:
+            return _Hotkey(key_name, passes, up, "d", d.name, "", d.name, d.hat, d.bit)
+        c = self._control(name)
+        if c is None and self._controls:
+            raise ValueError("No such control: " + key_name)
+        if c is not None and c.kind == "a":
+            raise ValueError("An axis or slider hotkey needs a limit, such as LeftX > 80%: " + key_name)
+        if c is not None and c.kind == "h":
+            raise ValueError("A hat's directions are its hotkeys, such as %sUp: %s" % (c.name, key_name))
+        what = c.name if c is not None else name
+        return _Hotkey(key_name, passes, up, "b", what, "", what)
+
+    def _claim(self, key):
+        """Subscribes what a hotkey follows, claimed unless every hotkey on
+        it leaves it to the game. A line's number comes back in the
+        answer."""
+        claim = any(not i.passes for i in key.items)
+        if not self._id or not self._pf._open:
+            key.claimed = -1
+            return
+        if key.kind != "l" and not claim:
+            # A button or direction the game keeps: the whole state's
+            # subscription carries its events.
+            if key.claimed == 1:
+                self._pf._ask("unsub %s %s" % (self._id, key.what))
+            key.claimed = 0
+            return
+        if key.kind == "l" and key.claimed == (1 if claim else 0) and key.number:
+            return
+        if key.kind == "l" and key.number:
+            self._lines.pop(key.number, None)
+            self._pf._ask("unsub %s line=%d" % (self._id, key.number))
+            key.number = 0
+        answer = self._pf._ask("sub %s %s%s%s" % (self._id, key.what, " " + key.line if key.line else "",
+                                                 " claim" if claim else ""))
+        key.claimed = 1 if claim else 0
+        if key.kind == "l":
+            key.number = int(answer.get("line", "0") or 0)
+            self._lines[key.number] = key
+
+    def _unclaim(self, key):
+        if not self._id or not self._pf._open:
+            return
+        if key.kind == "l" and key.number:
+            self._lines.pop(key.number, None)
+            self._pf._ask("unsub %s line=%d" % (self._id, key.number))
+        elif key.claimed == 1:
+            self._pf._ask("unsub %s %s" % (self._id, key.what))
+
+    # ── Events ──
+
+    def on_change(self, name, fn):
+        """fn(value, name) each time a control changes: a button, a hat, or
+        an axis as it moves, up to 100 times a second."""
+        if not callable(fn):
+            raise ValueError("A callback is a function.")
+        with self._pf._lock:
+            c = self._control(name)
+            key = (c.name if c is not None else str(name)).lower()
+            self._changes.setdefault(key, []).append(fn)
+
+    def on_connect(self, fn):
+        """fn(connected) when the device connects or disconnects."""
+        if not callable(fn):
+            raise ValueError("A callback is a function.")
+        self._on_connect.append(fn)
+
+    def _fire(self, w, extra):
+        """An event's callbacks, on the dispatcher. They run after the
+        model's lock is let go."""
+        calls = []
+        with self._pf._lock:
+            kind = w[1]
+            if kind == "b" and len(w) > 4:
+                index, down = int(w[3]), w[4] == "1"
+                c = self._by_index.get(("b", index))
+                name = c.name if c is not None else _numbered_name("b", index)
+                calls += self._change_calls(name, down)
+                key = self._keys.get(name.lower())
+                if key is not None and key.kind == "b":
+                    calls += [(i.fn, (i.name,)) for i in key.items if i.up != down]
+            elif kind == "h" and len(w) > 4:
+                index, deg = int(w[3]), _read(w[4])
+                c = self._by_index.get(("h", index))
+                calls += self._change_calls(c.name if c is not None else _numbered_name("h", index), deg)
+                before = directions(self._hats.get(index, -1)).split("+")
+                after = directions(deg).split("+")
+                self._hats[index] = deg
+                for key in self._keys.values():
+                    if key.kind != "d" or not key.items or key.items[0].hat != index:
+                        continue
+                    bit = key.items[0].bit
+                    now = bit in after
+                    if (bit in before) == now:
+                        continue
+                    calls += [(i.fn, (i.name,)) for i in key.items if i.up != now]
+            elif kind == "a" and len(w) > 4:
+                index = int(w[3])
+                c = self._by_index.get(("a", index))
+                calls += self._change_calls(c.name if c is not None else _numbered_name("a", index), _read(w[4]))
+            elif kind == "x" and len(w) > 4:
+                key = self._lines.get(int(w[5]) if len(w) > 5 else 0)
+                if key is not None:
+                    past = w[4] == "1"
+                    calls += [(i.fn, (i.name,)) for i in key.items if i.up != past]
+            elif kind == "state" and extra is not None:
+                changed, connected, hats = extra
+                for i, deg in enumerate(hats or ()):
+                    self._hats[i] = deg
+                if changed:
+                    calls += [(fn, (connected,)) for fn in self._on_connect]
+        for fn, args in calls:
+            self._pf._invoke(fn, args)
+
+    def _change_calls(self, name, value):
+        return [(fn, (value, name)) for fn in self._changes.get(name.lower(), ())]
+
+
+def _numbered_name(kind, index):
+    if kind == "b":
+        return "Button%d" % index
+    if kind == "h":
+        return "Hat%d" % index
+    return "Slider%d" % (index - 24) if index >= 24 else "Axis%d" % index
+
+
+# ── A controller of the script's own ──
+
+# The words of the pipe a declared name may not take, as PadForge keeps
+# them.
+_RESERVED = frozenset(("gyro", "accel", "bat", "charging", "rest", "after", "in", "claim", "above", "below", "hyst",
+                       "line", "all", "state", "buttons", "hats", "axes", "axis", "hz", "devices", "profile", "engine"))
+
+
+def _word(label):
+    """A declared name as scripts name it: its letters and digits, each
+    word's first letter upper case, as PadForge makes it. None when nothing
+    is left, it starts with a digit or it runs past 32 letters."""
+    if label is None or not str(label).strip():
+        return None
+    out, start = [], True
+    for ch in str(label):
+        if ord(ch) < 128 and ch.isalnum():
+            out.append(ch.upper() if start else ch)
+            start = False
+        else:
+            start = True
+    text = "".join(out)
+    if not text or text[0].isdigit() or len(text) > 32:
+        return None
+    return text
+
+
+def _looks_numbered(text):
+    """Whether a word reads as a numbered control (Button3), the pipe's short
+    form (b3), a touchpad's word (t0, tc0) or a hat's direction (HatUp)."""
+    lower = text.lower()
+    m = _SHORT.match(lower)
+    if m and int(m.group(2)) < {"b": 256, "a": 32, "h": 4}[m.group(1)]:
+        return True
+    if _NUMBERED.match(lower):
+        return True
+    if len(lower) > 1 and lower[0] == "t" and (lower[1].isdigit() or lower.startswith("tc")):
+        return True
+    return lower.startswith("hat") and any(lower.endswith(d.lower()) for d in _ENDS)
+
+
+def _declared(items, base, default_rest):
+    """A declaration's list as PadForge reads it: (index, name, rest share)
+    for each, the index from the item or its place."""
+    out = []
+    for place, item in enumerate(items):
+        if isinstance(item, dict):
+            index = int(item.get("index", place))
+            label = item.get("name")
+            rest = item.get("rest", default_rest)
+        else:
+            index, label, rest = place, item, default_rest
+        if isinstance(rest, str):
+            rest = _read(rest.strip().rstrip("%"))
+        out.append((base + index, None if label is None else str(label).strip(), rest))
+    return out
+
+
+def _rests(items):
+    """Axes with a rest as a share of the travel, for the declaration."""
+    out = []
+    for item in items:
+        if isinstance(item, dict) and "rest" in item and not isinstance(item["rest"], str):
+            item = dict(item, rest=_number(item["rest"]) + "%")
+        out.append(item)
+    return out
+
+
+class Controller(Device):
+    """A controller of the script's own on PadForge's device list. Map and
+    assign it like any device. Setting an attribute sets that control:
+    ctl.A = True, ctl.LeftX = -50, ctl.DPad = "Up". None puts it at rest."""
+
+    def __init__(self, connection, key, name, spec):
+        super().__init__(connection, key)
+        self._key = key
+        self._label = name
+        self._spec = spec
+        self._set = {}
+        self._extra = {}
+        self._feedbacks = {}
+        self._connected = True
+        self._shape()
+
+    def __repr__(self):
+        return "Controller(%s, %r)" % (self._key, self._label)
+
+    @property
+    def key(self):
+        return self._key
+
+    @property
+    def name(self):
+        return self._label
+
+    @property
+    def type(self):
+        return "program"
+
+    @property
+    def connected(self):
+        return bool(self._id) and self._pf._open
+
+    @property
+    def gyro(self):
+        return self._extra.get("gyro")
+
+    @gyro.setter
+    def gyro(self, value):
+        self._hold("gyro", value)
+
+    @property
+    def accel(self):
+        return self._extra.get("accel")
+
+    @accel.setter
+    def accel(self, value):
+        self._hold("accel", value)
+
+    @property
+    def battery(self):
+        return self._extra.get("battery")
+
+    @battery.setter
+    def battery(self, value):
+        self._hold("battery", value)
+
+    @property
+    def charging(self):
+        return self._extra.get("charging")
+
+    @charging.setter
+    def charging(self, value):
+        self._hold("charging", value)
+
+    def _shape(self):
+        """The controls the declaration names, as PadForge names them:
+        buttons, then axes and sliders, then hats, each name taken once."""
+        spec = self._spec
+        taken = set()
+
+        def pick(label, numbered):
+            text = _word(label)
+            if text is None or text.lower() in taken or text.lower() in _RESERVED or _looks_numbered(text):
+                text = numbered
+            taken.add(text.lower())
+            return text
+
+        controls, by_index = {}, {}
+
+        def add(c):
+            controls[c.name.lower()] = c
+            by_index[(c.kind, c.index)] = c
+
+        for index, label, _ in sorted(_declared(spec["buttons"], 0, 0), key=lambda t: t[0]):
+            add(_Control(pick(label, "Button%d" % index), "b", index, False))
+        axes = _declared(spec["axes"], 0, 50) + _declared(spec["sliders"], 24, 0)
+        for index, label, rest in sorted(axes, key=lambda t: t[0]):
+            add(_Control(pick(label, _numbered_name("a", index)), "a", index, rest == 50))
+        hats = {}
+        for index, label, _ in _declared(spec["hats"], 0, 0):
+            hats[index] = label
+        for index in range(max(hats) + 1 if hats else 0):
+            add(_Control(pick(hats.get(index), "Hat%d" % index), "h", index, False))
+        self._controls = controls
+        self._by_index = by_index
+
+    def _declare(self):
+        spec = self._spec
+        shape = {"buttons": spec["buttons"], "axes": _rests(spec["axes"]), "sliders": _rests(spec["sliders"]),
+                 "hats": spec["hats"]}
+        for part in ("gyro", "accel", "battery"):
+            if spec[part]:
+                shape[part] = True
+        if spec["touchpads"]:
+            shape["touchpads"] = spec["touchpads"]
+        shape["feedback"] = spec["feedback"]
+        p = self._pf._ask("declare key=%s name=%s %s" % (word(self._key), quote(self._label), _json.dumps(shape)))
+        self._row({"id": p.get("id", ""), "name": self._label, "type": "program", "online": "1"})
+        self._generation = self._pf._generation
+        if not self._connected:
+            self._connected = True
+            self._pf._queue.put(("call", self._fire_connect, (True,)))
+        # What the script set before, put back after PadForge starts again.
+        self._send_set()
+
+    def _send_set(self):
+        """Everything the script set on the controller, as one change."""
+        parts = [n + "=" + w for n, w in self._set.values()] + [self._special(k, v) for k, v in self._extra.items()]
+        if parts:
+            self._send(" ".join(parts))
+
+    def _row(self, p):
+        super()._row(p)
+        self._name = self._label
+        self._type = "program"
+
+    def _lost(self):
+        if self._connected:
+            self._connected = False
+            self._pf._queue.put(("call", self._fire_connect, (False,)))
+
+    @staticmethod
+    def _special(name, value):
+        if name in ("gyro", "accel"):
+            x, y, z = value
+            return "%s=%s,%s,%s" % (name, _number(x), _number(y), _number(z))
+        if name == "battery":
+            return "bat=%d" % round(value)
+        return "charging=%d" % (1 if value else 0)
+
+    def _read(self, name):
+        name = str(name)
+        if name.lower() in ("gyro", "accel", "battery", "charging"):
+            return self._extra.get(name.lower())
+        c = self._control(name)
+        if c is None:
+            return super()._read(name)
+        entry = self._set.get(c.name.lower())
+        wire = entry[1] if entry else ""
+        if c.kind == "b":
+            return wire == "1"
+        if c.kind == "h":
+            if wire in ("", "-1"):
+                return -1
+            return _read(wire[:-3]) if wire.endswith("deg") else wire
+        return 0 if wire == "" else _read(wire.rstrip("%"))
+
+    def _rest_wire(self, c):
+        return "0" if c.kind == "b" else "-1" if c.kind == "h" else "0%"
+
+    def _control_wire(self, name, value):
+        c = self._control(name)
+        if c is None:
+            raise AttributeError("No such control: %s" % name)
+        wire = self._rest_wire(c) if _gone(value) else _wire(c.kind, value)
+        return c, "0%" if wire == "rest" else wire
+
+    def _hold(self, name, value):
+        """Sets a control of the script's own controller. None puts it at
+        rest."""
+        lower = str(name).lower()
+        with self._pf._lock:
+            if lower in ("gyro", "accel", "battery", "charging"):
+                if _gone(value):
+                    self._extra.pop(lower, None)
+                    return
+                if lower in ("gyro", "accel"):
+                    value = tuple(value)
+                self._extra[lower] = value
+                self._send(self._special(lower, value))
+                return
+            c, wire = self._control_wire(name, value)
+            self._set[c.name.lower()] = (c.name, wire)
+            self._send("%s=%s" % (c.name, wire))
+
+    def _send(self, controls):
+        if self._id:
+            self._pf._send("s %s %s" % (self._id, controls))
+
+    def hold(self, *pairs):
+        """Several controls as one change: hold("LeftX", 50, "LeftY", -20)."""
+        if len(pairs) % 2:
+            raise ValueError("hold takes names and values in pairs.")
+        with self._pf._lock:
+            parts = []
+            for i in range(0, len(pairs), 2):
+                c, wire = self._control_wire(pairs[i], pairs[i + 1])
+                self._set[c.name.lower()] = (c.name, wire)
+                parts.append("%s=%s" % (c.name, wire))
+            if parts:
+                self._send(" ".join(parts))
+
+    def release(self, *names):
+        """Puts controls at rest: release("A"), or every control."""
+        if not names:
+            with self._pf._lock:
+                self._set.clear()
+                if self._id:
+                    self._pf._send("rest " + self._id)
+            return
+        for name in names:
+            self._hold(name, None)
+
+    def set(self, name, value):
+        self._hold(name, value)
+
+    def tap(self, name, ms=50, value=None):
+        c = self._control(name)
+        if c is None:
+            raise ValueError("No such control: %s" % name)
+        if value is None:
+            value = True if c.kind == "b" else 0 if c.kind == "h" else 100
+        self._send("%s=%s" % (c.name, _wire(c.kind, value)))
+        self._send("%s=%s in=%d" % (c.name, self._rest_wire(c), round(ms)))
+
+    def sequence(self, *steps):
+        if len(steps) % 2:
+            raise ValueError("sequence takes names and times in pairs.")
+        first = True
+        for i in range(0, len(steps), 2):
+            c = self._control(steps[i])
+            if c is None:
+                raise ValueError("No such control: %s" % steps[i])
+            on = "1" if c.kind == "b" else "0deg" if c.kind == "h" else "100%"
+            self._send("%s=%s%s" % (c.name, on, "" if first else " after=0"))
+            self._send("%s=%s after=%d" % (c.name, self._rest_wire(c), round(steps[i + 1])))
+            first = False
+
+    def touch(self, pad, finger, x, y, down=True, pressure=1):
+        """A finger on touchpad pad: x and y from 0 to 1."""
+        self._send("t%d.%d=%s,%s,%d,%s" % (pad, finger, _number(x), _number(y), 1 if down else 0, _number(pressure)))
+
+    def click(self, pad, down=True):
+        """A touchpad's click."""
+        self._send("tc%d=%d" % (pad, 1 if down else 0))
+
+    def hotkey(self, key_name, fn=None):
+        raise TypeError("A controller of the script's own has no hotkeys. Follow a device PadForge reads with "
+                        "padforge.device().")
+
+    def on_rumble(self, fn):
+        """fn(low, high) when a game rumbles the controller, 0 to 65535."""
+        self._on("rumble", fn)
+
+    def on_trigger_rumble(self, fn):
+        """fn(left, right) for the trigger motors, 0 to 65535."""
+        self._on("trigrumble", fn)
+
+    def on_trigger_effects(self, fn):
+        """fn(left, right): each trigger's 11-byte effect as 22 hex
+        digits."""
+        self._on("trigfx", fn)
+
+    def on_light(self, fn):
+        """fn("rrggbb")."""
+        self._on("led", fn)
+
+    def on_player(self, fn):
+        """fn(number), from 1."""
+        self._on("player", fn)
+
+    def _on(self, kind, fn):
+        if not callable(fn):
+            raise ValueError("A callback is a function.")
+        self._feedbacks.setdefault(kind, []).append(fn)
+
+    def _feedback(self, w):
+        kind = w[1]
+        args = tuple(w[3:])
+        if kind in ("rumble", "trigrumble", "player"):
+            try:
+                args = tuple(int(a) for a in args)
+            except ValueError:
+                pass
+        for fn in list(self._feedbacks.get(kind, ())):
+            self._pf._invoke(fn, args)
+
+    def remove(self):
+        """Takes the controller off PadForge's device list."""
+        with self._pf._lock:
+            self._pf._mine.pop(self._key, None)
+            if self._id:
+                self._pf._ask("gone " + self._id)
+
+
+# ── The script's connection ──
+
+def _pipe_name():
+    """The pipe the script's connection opens: PadForge's own, or the one
+    PADFORGE_PIPE names, as a test's host serves."""
+    return os.environ.get(PIPE_VARIABLE) or PIPE
+
+
+def _script_name():
+    name = os.path.splitext(os.path.basename(sys.argv[0] if sys.argv and sys.argv[0] else ""))[0]
+    return name if name and not name.startswith("-") else "Python script"
+
+
+_default = None
+_default_lock = threading.Lock()
+
+
+def _connection():
+    global _default
+    with _default_lock:
+        if _default is None:
+            _default = Connection(_script_name())
+        return _default
+
+
+def connect(name=None, level="send-inputs", pipe=None):
+    """Makes the script's connection with a name and the level it asks for:
+    "read", "send-inputs" (the default) or "change-settings". Call it before
+    anything else to choose them."""
+    global _default
+    with _default_lock:
+        if _default is not None:
+            _default.close()
+        _default = Connection(name or _script_name(), pipe or _pipe_name(), level)
+        return _default
+
+
+def plugin(name, lease=2000):
     """Opens a plugin's connection: PadForge started this program, and its
-    environment holds the one-time key and the pipe's name. The key is
-    taken once, so a plugin connects once for each start."""
+    environment holds the one-time key and the pipe's name. The key is taken
+    once, so a plugin connects once for each start and does not try
+    again."""
     token = os.environ.get(TOKEN_VARIABLE)
     if not token:
         raise PadForgeError("not-a-plugin", "PadForge did not start this program as a plugin. Add it on the Plugins page.")
-    return PadForge(name, pipe=os.environ.get(PIPE_VARIABLE) or PIPE, lease=lease, timeout=timeout, token=token)
+    c = Connection(name, os.environ.get(PIPE_VARIABLE) or PIPE, None, token, lease)
+    if not c.connected:
+        raise PadForgeError("closed", c.why)
+    return c
+
+
+def device(what):
+    return _connection().device(what)
+
+
+def devices():
+    return _connection().devices()
+
+
+def add_controller(key, name, buttons=(), axes=(), sliders=(), hats=(), gyro=False, accel=False, touchpads=(),
+                   battery=False, feedback=()):
+    return _connection().add_controller(key, name, buttons, axes, sliders, hats, gyro, accel, touchpads, battery,
+                                        feedback)
+
+
+def on_device(fn):
+    _connection().on_device(fn)
+
+
+def on_profile(fn):
+    _connection().on_profile(fn)
+
+
+def on_engine(fn):
+    _connection().on_engine(fn)
+
+
+def on_level(fn):
+    _connection().on_level(fn)
+
+
+def on_event(kind, fn):
+    _connection().on_event(kind, fn)
+
+
+def set_value(name, value):
+    _connection().set_value(name, value)
+
+
+def switch_profile(name):
+    return _connection().switch_profile(name)
+
+
+def release_profile():
+    return _connection().release_profile()
+
+
+def engine(on):
+    return _connection().engine(on)
+
+
+def controllers(on):
+    return _connection().controllers(on)
+
+
+def controller(number, on):
+    return _connection().controller(number, on)
+
+
+def show():
+    return _connection().show()
+
+
+def hide():
+    return _connection().hide()
+
+
+def snapshot():
+    return _connection().snapshot()
+
+
+def state():
+    return _connection().state()
+
+
+def outputs(number):
+    return _connection().outputs(number)
+
+
+def tool(name, json="{}"):
+    return _connection().tool(name, json)
+
+
+def request(line):
+    return _connection().request(line)
+
+
+def wait(seconds=None):
+    """Keeps the script running while its callbacks do: for good, or for
+    `seconds`."""
+    _connection().wait(seconds)
+
+
+def close():
+    global _default
+    with _default_lock:
+        if _default is not None:
+            _default.close()
+            _default = None
+
+
+def __getattr__(name):
+    # padforge.connected, padforge.why and padforge.level read the script's
+    # connection as they are now.
+    if name in ("connected", "why", "level", "errors"):
+        return getattr(_connection(), name)
+    raise AttributeError("module 'padforge' has no attribute %r" % name)

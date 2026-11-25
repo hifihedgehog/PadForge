@@ -351,9 +351,9 @@ namespace PadForge.Tests
             using var client = rig.Open();
             Assert.Equal("ok", client.Final("own " + id + " a0=-50% h0=Down b2=true"));
             var holds = PadForge.Common.Input.ControlHolds.Current[pad.InstanceGuid];
-            Assert.Contains(holds.Axes, a => a.Index == 0 && a.Value == 16384);
-            Assert.Contains(holds.Hats, h => h.Index == 0 && h.Value == 18000);
-            Assert.Contains(holds.Buttons, b => b.Index == 2 && b.Down);
+            Assert.Contains(holds.Axes, a => a.Index == 0 && a.Hold.Value == 16384);
+            Assert.Contains(holds.Hats, h => h.Index == 0 && h.Hold.Value == 18000);
+            Assert.Contains(holds.Buttons, b => b.Index == 2 && b.Hold.Value == 1);
             Assert.StartsWith("err bad-argument ", client.Final("own " + id + " a0=200%"));
         }
 

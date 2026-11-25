@@ -74,6 +74,7 @@ namespace PadForge.Services.Automation
             public string Device;
             public int Index;
             public int Value;
+            public int Line;
             public AxisStreamSlots Slots;
             public Action After;
         }
@@ -150,8 +151,11 @@ namespace PadForge.Services.Automation
         public bool Hat(string device, int index, int value)
             => Put(new Item { Kind = Kind.Hat, Device = device, Index = index, Value = value });
 
-        public bool Crossing(string device, int index, bool above)
-            => Put(new Item { Kind = Kind.Crossing, Device = device, Index = index, Value = above ? 1 : 0 });
+        /// <summary>An axis past its line or back. <paramref name="line"/>
+        /// is the line's number, which a named subscription's event repeats,
+        /// or 0 for the <c>axis=</c> form's event.</summary>
+        public bool Crossing(string device, int index, bool above, int line = 0)
+            => Put(new Item { Kind = Kind.Crossing, Device = device, Index = index, Value = above ? 1 : 0, Line = line });
 
         /// <summary>An axis of a stream. A value of the same axis that still
         /// waits is replaced, and no second line is queued.</summary>
@@ -233,7 +237,22 @@ namespace PadForge.Services.Automation
             var afters = new System.Collections.Generic.List<Action>();
             while (!stopping.IsCancellationRequested)
             {
-                await _signal.WaitAsync(stopping).ConfigureAwait(false);
+                // A wake the program may have missed is posted again
+                // (#600 item 24): AutoHotkey drops a message that comes while
+                // the callback of the one before still runs, and the lines
+                // then wait in the pipe. While the program has said nothing
+                // since the last batch, the wake goes again every
+                // RewakeMs, up to MostRewakes times.
+                if (Volatile.Read(ref _wakesOwed) > 0)
+                {
+                    if (!await _signal.WaitAsync(RewakeMs, stopping).ConfigureAwait(false))
+                    {
+                        if (Volatile.Read(ref _heard) == _heardAtWake && Interlocked.Decrement(ref _wakesOwed) >= 0) Wake();
+                        else Volatile.Write(ref _wakesOwed, 0);
+                        continue;
+                    }
+                }
+                else await _signal.WaitAsync(stopping).ConfigureAwait(false);
                 Volatile.Write(ref _signaled, 0);
                 text.Clear();
                 afters.Clear();
@@ -267,7 +286,14 @@ namespace PadForge.Services.Automation
                     byte[] bytes = Encoding.UTF8.GetBytes(text.ToString());
                     await _stream.WriteAsync(bytes.AsMemory(), stopping).ConfigureAwait(false);
                     await _stream.FlushAsync(stopping).ConfigureAwait(false);
-                    Wake();
+                    // What the program said is counted before the wake, so a
+                    // line it sends as soon as it wakes counts as heard.
+                    int heard = Volatile.Read(ref _heard);
+                    if (Wake())
+                    {
+                        _heardAtWake = heard;
+                        Volatile.Write(ref _wakesOwed, MostRewakes);
+                    }
                 }
                 foreach (var after in afters)
                 {
@@ -298,7 +324,9 @@ namespace PadForge.Services.Automation
                     text.Append('\n');
                     break;
                 case Kind.Crossing:
-                    text.Append("e x ").Append(item.Device).Append(' ').Append(item.Index).Append(' ').Append(item.Value).Append('\n');
+                    text.Append("e x ").Append(item.Device).Append(' ').Append(item.Index).Append(' ').Append(item.Value);
+                    if (item.Line > 0) text.Append(' ').Append(item.Line);
+                    text.Append('\n');
                     break;
                 case Kind.Axis:
                     var slots = item.Slots;
@@ -333,15 +361,41 @@ namespace PadForge.Services.Automation
             }
         }
 
-        private void Wake()
+        /// <summary>How long a wake waits for the program to speak before it
+        /// is posted again, and how many times it is.</summary>
+        internal const int RewakeMs = 20, MostRewakes = 25;
+
+        private int _heard, _heardAtWake, _wakesOwed;
+
+        /// <summary>How many wakes were posted, for tests.</summary>
+        internal int Wakes => Volatile.Read(ref _wakes);
+        private int _wakes;
+
+        /// <summary>The program sent a line: it is awake, and a wake owed is
+        /// not posted again.</summary>
+        public void Heard() => Interlocked.Increment(ref _heard);
+
+        /// <summary>Test seam: stands in for posting the message. Null in
+        /// the app.</summary>
+        internal Action WakeForTest;
+
+        private bool Wake()
         {
+            var seam = WakeForTest;
+            if (seam != null)
+            {
+                Interlocked.Increment(ref _wakes);
+                seam();
+                return true;
+            }
             IntPtr window = WakeWindow;
             var process = Process;
-            if (window == IntPtr.Zero || process == null) return;
+            if (window == IntPtr.Zero || process == null) return false;
             // Checked again each time: a window that closed can come back as
             // another program's handle.
-            if (!process.OwnsWindow(window)) return;
-            PostMessageW(window, unchecked((uint)WakeMessage), IntPtr.Zero, IntPtr.Zero);
+            if (!process.OwnsWindow(window)) return false;
+            Interlocked.Increment(ref _wakes);
+            return PostMessageW(window, unchecked((uint)WakeMessage), IntPtr.Zero, IntPtr.Zero);
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]

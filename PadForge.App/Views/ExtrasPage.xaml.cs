@@ -52,7 +52,17 @@ namespace PadForge.Views
                 (_, e) => { ShowCatalog(); e.Handled = true; },
                 (_, e) => { e.CanExecute = CurrentExtra != null; e.Handled = true; }));
             IsVisibleChanged += (_, _) => FollowDisplays();
+            // The Scripts card keeps its own rows, checked as the user each
+            // time it shows (#600 item 26).
+            AutomationScriptsCard.DataContext = ScriptsCardModel;
+            AutomationScriptsCard.IsVisibleChanged += (_, e) =>
+            {
+                if (e.NewValue is true) _ = ScriptsCardModel.RefreshAsync();
+            };
         }
+
+        /// <summary>The Scripts card's rows (#600 item 26).</summary>
+        internal ViewModels.ScriptLibraryRows ScriptsCardModel { get; } = new ViewModels.ScriptLibraryRows();
 
         /// <summary>The key of the extra whose page is showing, or null while
         /// the catalog is.</summary>
@@ -209,15 +219,16 @@ namespace PadForge.Views
         //  Automation (#597)
         // ─────────────────────────────────────────────
 
-        /// <summary>Save a Library: one Save dialog whose file types are the
-        /// libraries the build carries, on the first. The type the user
-        /// leaves picked is the library written.</summary>
+        /// <summary>Save a Library…, under the Scripts card's More: one Save
+        /// dialog whose file types are the libraries PadForge carries. The
+        /// type the user leaves picked is the library written, by
+        /// <c>--install</c> with the user's own rights, which the page does
+        /// not wait on.</summary>
         private async void SaveAutomationLibrary_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.DashboardViewModel vm || vm.AutomationLibraries is not { } libraries) return;
-            var all = libraries.All;
-            if (all == null || all.Count == 0) return;
-            string title = PadForge.Resources.Strings.Strings.Instance.Extras_Automation_SaveLibrary.TrimEnd('…');
+            var all = PadForge.Services.Automation.AutomationLibraries.All;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            string title = s.Extras_Automation_SaveLibrary.TrimEnd('…');
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
                 Title = title,
@@ -231,16 +242,14 @@ namespace PadForge.Views
             if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
             var picked = all[Math.Clamp(dialog.FilterIndex, 1, all.Count) - 1];
             string file = dialog.FileName;
+            PadForge.Services.Automation.IAutomationLibraries libraries = PadForge.Services.Automation.AutomationLibraries.Instance;
             try
             {
-                // Written by --install with the user's own rights (#600),
-                // which the page does not wait on.
                 await System.Threading.Tasks.Task.Run(() => libraries.Save(picked.Kind, file));
             }
             catch (Exception ex)
             {
-                ConfirmDialog.Notice(Window.GetWindow(this), title,
-                    string.Format(PadForge.Resources.Strings.Strings.Instance.Extras_Automation_NotSaved_Format, ex.Message));
+                ConfirmDialog.Notice(Window.GetWindow(this), title, string.Format(s.Extras_Automation_NotSaved_Format, ex.Message));
             }
         }
 

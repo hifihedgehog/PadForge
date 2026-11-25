@@ -37,11 +37,11 @@ namespace PadForge.Services.Automation
     /// <summary>
     /// The script libraries embedded in PadForge (#597): AutoHotkey v2,
     /// Python and PowerShell, each one file that speaks protocol 1 of the
-    /// Automation pipe. The Automation page's Save a Library button lists
+    /// Automation pipe. The Scripts card (#600 item 26) installs each where
+    /// its language finds it, and its Save a Library… lists
     /// <see cref="All"/> and has the one the user picks written where the
-    /// user says, by <c>PadForge.exe --install</c> run with the user's own
-    /// rights (#600). PadForge writes no library by itself. <see cref="Instance"/> is what the window hands the host as
-    /// its <see cref="AutomationHost.Libraries"/>.
+    /// user says, both by <c>PadForge.exe --install</c> run with the user's
+    /// own rights. PadForge writes no library by itself.
     /// </summary>
     internal sealed class AutomationLibraries : IAutomationLibraries
     {

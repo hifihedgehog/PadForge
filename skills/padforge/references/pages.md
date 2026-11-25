@@ -558,7 +558,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Diagnostics: card, free. `settings.card/DataGroup/Settings_Diagnostics`
 - Start Recording (Diagnostics): action, free. `settings.action/RecordProblemButton/Settings_RecordProblem_Start`
 - Save a Snapshot… (Diagnostics): action, free. `settings.action/SaveSnapshotButton/Settings_DiagnosticsSnapshot`
-- Open Log Folder (Diagnostics): action, free. `settings.action/DataGroup/Settings_DiagnosticsOpenFolder`
+- Open Log Folder (Diagnostics): action, asks (OpensPlace). `settings.action/DataGroup/Settings_DiagnosticsOpenFolder`
 - Keep a Diagnostics Log (Diagnostics): switch, free. `settings/DataGroup/Settings_DiagnosticsLogging`
 - What to Record (Diagnostics): setting, yours-alone, under More. `settings/WhatToRecord/Settings_RecordProblem_WhatToRecord`
 - Save the Last 60 Seconds (Diagnostics): action, free, under More. `settings.action/DiagnosticsMore/Settings_RecordProblem_SaveLastMinute`
@@ -744,7 +744,8 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Copy Settings Other Assistants (Assistants): action, yours-alone, under More. `extras.action/Automation/AutomationMore/Extras_Automation_CopySettings#Extras_Automation_OtherAssistants`
 - Copy a Message Other Assistants (Assistants): action, yours-alone, under More. `extras.action/Automation/AutomationMore/Extras_Automation_CopyMessage#Extras_Automation_OtherAssistants`
 - Scripts: card, yours-alone. `extras.card/Automation/AutomationScriptsCard/Extras_Automation_Card_Scripts`
-- Save a Library… Script Library (Scripts): action, yours-alone. `extras.action/Automation/AutomationScriptsCard/Extras_Automation_SaveLibrary#Extras_Automation_Library`
+- Save a Library… Script Library (Scripts): action, yours-alone, under More. `extras.action/Automation/ScriptsMore/Extras_Automation_SaveLibrary#Extras_Automation_Library`
+- Remove All Installed Copies (Scripts): action, yours-alone, under More. `extras.action/Automation/ScriptsMore/Extras_Automation_Scripts_RemoveAll#Extras_Automation_Scripts_Installed`
 - Allowed Programs: card, yours-alone. `extras.card/Automation/AutomationAllowedCard/Extras_Automation_Card_Allowed`
 - Activity: card, yours-alone. `extras.card/Automation/AutomationActivityCard/Extras_Automation_Card_Activity`
 - Export… (Activity): action, yours-alone. `extras.action/Automation/AutomationActivityCard/Extras_Automation_Export`

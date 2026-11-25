@@ -41,7 +41,7 @@ A value sent is PadForge's raw number (axes 0 to 65535, a stick at rest on 32768
 |---|---|
 | `hello name="..." kind=plugin token=... protocol=1 [units=plain] [lease=<ms>]` | Opens the session. The answer gives PadForge's version, the protocol and the level. |
 | `declare key=<key> name="..." {json}` | Adds a device, or gives the one of that key a new shape. A plugin may add 16. The answer carries its `id`. |
-| `s <id> b0=1 a0=-50% h0=90deg ...` | Sets controls of its device as one change. `b<i>` buttons, `a<i>` axes, `h<i>` hats. |
+| `s <id> b0=1 a0=-50% h0=90deg ...` | Sets controls of its device as one change: by the names its declaration gave (`Fire=1`), or `b<i>` buttons, `a<i>` axes, `h<i>` hats. A control changes once a pass, so a press and its release sent together land on two passes. |
 | `rest <id>` | Puts every control of its device at rest. |
 | `gone <id>` | Takes its device offline. |
 | `setting key=<key> kind=<kind> name="..." [...] [{json}]` | Declares a setting or control. The answer gives `key=` and the `value=` in force. |
@@ -53,8 +53,9 @@ A value sent is PadForge's raw number (axes 0 to 65535, a stick at rest on 32768
 | `bye` | Closes the session. |
 | `state`, `activate`, `deactivate`, `query`, `engine on`, `controllers off`, `slot 2 on`, `show`, `hide`, `minimize`, `snapshot`, `record start`, `version`, `exit` | PadForge's commands, in the words `PadForge.Control` takes. |
 | `devices`, `caps <id>`, `read <id>`, `outputs <n>` | Lists, a device's named controls, its state, what a virtual controller sends. |
-| `sub <id> A`, `sub <id> A claim`, `sub devices`, `unsub` | Events, starting with the whole state. `claim` takes the control from the game while the subscription lives. |
-| `own <id> A=1`, `rel <id> A`, `var name=value` | Holds a control of any device, lets go, sets a named value for Custom Expression triggers. |
+| `sub <id> state`, `sub <id> A`, `sub <id> A claim`, `sub <id> HatUp claim`, `sub <id> LeftX above=80%`, `sub <id> LeftX below=-80% claim`, `sub devices`, `unsub <id> A`, `unsub <id> line=<n>` | Events, starting with the whole state. `claim` takes the control from the game while the subscription lives: a button reads up, a hat's direction is left out, an axis past its line reads at its rest. A line's answer gives its number, `ok line=<n>`. |
+| `own <id> A=1`, `set <id> LeftX=40%`, `rel <id> A`, `var name=value` | Holds a control of any device, puts a value once until the device's own input moves it, lets go, sets a named value for Custom Expression triggers. |
+| `in=<ms>`, `after=<ms>` | On `s`, `own`, `set` and `rel`: the step waits that long from now (`in=`), or after the session's previous timed step (`after=`), on PadForge's clock. |
 | `call <tool> {json}` | Runs any assistant tool at its own level. |
 
 ### Events PadForge sends
@@ -69,6 +70,9 @@ A value sent is PadForge's raw number (axes 0 to 65535, a stick at rest on 32768
 | `e setting key=<key> value=<value> [device=<key>]` | The user, or an assistant, changed a setting. It arrives before anything PadForge sends after it. A reset sends the default. |
 | `e press key=<key> [device=<key>]` | The user pressed a button the plugin declared. |
 | `e choices key=<key> [device=<key>]` | A choice's list opened: send its list as it is now. |
+| `e state <id> b=... a=... h=...`, `e state <id> offline` | A followed device's whole state, when following starts and each time it comes back, and its going. |
+| `e b <id> <i> 0\|1`, `e h <id> <i> <hat>`, `e a <id> <i> <value>`, `e x <id> <axis> 0\|1 <line>` | A followed button, hat or axis changed, or an axis crossed its line and came back. |
+| `e dev <id> online\|offline`, `e profile <name>`, `e engine <state>`, `e level <level>` | A device came or went, the profile, the engine or the level changed. |
 | `e lease lapsed` | The plugin was silent for its lease. Its devices rest until it speaks again. |
 
 ### What a device declares

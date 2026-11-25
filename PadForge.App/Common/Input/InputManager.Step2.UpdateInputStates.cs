@@ -78,6 +78,10 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // Programs' holds and claims (#600 item 22): the steps due land
+            // before any device is read, one change per control per pass.
+            ControlHolds.BeginPass();
+
             long gyroTiltTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
             for (int si = 0; si < snapshotCount; si++)
             {

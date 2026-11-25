@@ -165,15 +165,19 @@ namespace PadForge.Tests
         private readonly bool[] _created = SettingsManager.SlotCreated;
         private readonly string _profile = SettingsManager.ActiveProfileId;
 
-        public readonly string PipeName = "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
+        public readonly string PipeName;
         public readonly RecordingAutomationTarget Target = new();
         public readonly InlineAutomationUi Ui = new();
         public readonly AutomationHost Host;
         public readonly AutomationTestEngine Engine;
         private readonly List<AutomationTestClient> _clients = new();
 
-        public AutomationPipeRig(AutomationLevel level = AutomationLevel.SendInputs, bool engine = true)
+        /// <param name="pipeName">The pipe's name, for a test that serves
+        /// the same pipe again as PadForge does after a restart. A name of
+        /// the test's own when null.</param>
+        public AutomationPipeRig(AutomationLevel level = AutomationLevel.SendInputs, bool engine = true, string pipeName = null)
         {
+            PipeName = pipeName ?? "PadForge.Tests.Automation." + Guid.NewGuid().ToString("N");
             SettingsManager.UserDevices = new DeviceCollection();
             SettingsManager.UserSettings = new SettingsCollection();
             SettingsManager.SlotCreated = new bool[InputManager.MaxPads];
@@ -976,14 +980,14 @@ namespace PadForge.Tests
             Assert.IsAssignableFrom<IRelayedFeedbackDevice>(ud.Device);
 
             var caps = client.Ask("caps " + id);
-            Assert.Contains("axis index=0 name=\"Steer\" rest=32768", caps);
-            Assert.Contains("axis index=2 name=\"Gas\" rest=0", caps);
-            Assert.Contains("axis index=24 name=\"Throttle\" rest=0", caps);
-            Assert.Contains("button index=9 name=\"Boost\"", caps);
-            Assert.Contains("hat index=0 name=\"View\"", caps);
+            Assert.Contains("axis index=0 name=\"Steer\" rest=32768 script=Steer", caps);
+            Assert.Contains("axis index=2 name=\"Gas\" rest=0 script=Gas", caps);
+            Assert.Contains("axis index=24 name=\"Throttle\" rest=0 script=Throttle", caps);
+            Assert.Contains("button index=9 name=\"Boost\" script=Boost", caps);
+            Assert.Contains("hat index=0 name=\"View\" script=View", caps);
             Assert.Contains("touchpad index=0 fingers=2", caps);
             Assert.Contains("battery", caps);
-            Assert.Contains("feedback rumble=1 trigrumble=1 light=1 player=1", caps);
+            Assert.Contains("feedback rumble=1 trigrumble=1 light=1 player=1 trigfx=0", caps);
         }
 
         /// <summary>The new device family's number is pinned, and it joins

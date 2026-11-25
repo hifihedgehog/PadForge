@@ -441,6 +441,16 @@ namespace PadForge.Tests
                 var page = new ExtrasPage { DataContext = dash };
                 var ground = drawing.Ground(page);
                 drawing.Step("the Extras page is made");
+                // The Scripts card's rows as the board draws them (#600 item 26).
+                var scripts = page.ScriptsCardModel;
+                scripts.RunSeam = request => System.Threading.Tasks.Task.FromResult(request.What switch
+                {
+                    PadForge.Services.Install.InstallWhat.AutoHotkey => new PadForge.Services.Install.InstallRun(0, null, "current"),
+                    PadForge.Services.Install.InstallWhat.Python => new PadForge.Services.Install.InstallRun(6, null,
+                        "older\nplace older " + @"C:\Users\you\AppData\Roaming\Python\Python314\site-packages\padforge.py"),
+                    _ => new PadForge.Services.Install.InstallRun(7, null, "not installed"),
+                });
+                scripts.RefreshAsync().Wait();
 
                 dash.EngineStateKey = "Running";
                 drawing.Picture(ground, "automation-catalog.png", Board, 1180, () => page.Show(null));
@@ -467,7 +477,6 @@ namespace PadForge.Tests
                 Found("claude-desktop", "current", "upload");
                 Found("codex", "current", "older");
                 dash.AutomationLevel = PadForge.Services.Automation.AutomationLevel.ChangeSettings;
-                host.Libraries = PadForge.Services.Automation.AutomationLibraries.Instance;
                 var claudeCode = host.Clients.Add("claude-code (claude.exe)", PadForge.Services.Automation.AutomationClientKind.Assistant, 5100, "PadForge.exe");
                 var steer = host.Clients.Add("Steer Assist", PadForge.Services.Automation.AutomationClientKind.Script, 5200, "AutoHotkey64.exe");
                 dash.AutomationStatus = MainWindow.AutomationStatusLine(ExternalControlService.PipeState.Serving, ExternalControlService.PipeState.Serving,
@@ -497,6 +506,10 @@ namespace PadForge.Tests
                 host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(telemetry, "Allow Telemetry Bridge to work with PadForge at Read?",
                     new[] { @"python.exe running C:\Tools\telemetry_bridge.py. It asks once." }));
                 drawing.Picture(ground, "automation-busy.png", Board, 2300, () => page.Show("Automation"));
+                // The Scripts card's More open (#600 item 26).
+                var scriptsMore = (Expander)page.FindName("ScriptsMore");
+                drawing.Picture(ground, "automation-scripts-more.png", Board, 2500, () => scriptsMore.IsExpanded = true);
+                scriptsMore.IsExpanded = false;
                 dash.AutomationActivity[1].IsOpen = true;
                 drawing.Picture(ground, "automation-busy-run-open.png", Board, 2400);
                 dash.AutomationActivity[1].IsOpen = false;

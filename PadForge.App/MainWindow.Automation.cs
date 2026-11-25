@@ -87,9 +87,6 @@ namespace PadForge
             // and reach the engine while it runs (#597).
             _automation.ProfileName = () => _inputService?.ActiveProfileForState().Name;
             _inputService?.AttachAutomation(_automation);
-            // The script libraries PadForge carries, which the page's Save a
-            // Library writes.
-            _automation.Libraries = AutomationLibraries.Instance;
             // The assistants' server, the call line of scripts, Save the
             // Skill and the Activity card's Undo (#597).
             StartAssistants();

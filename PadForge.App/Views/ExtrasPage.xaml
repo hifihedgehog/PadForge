@@ -2870,24 +2870,75 @@
                     <views:AssistantsWebCard DataContext="{Binding WebAccess}"/>
                 </ContentControl>
 
-                <!-- The Scripts card (#600 item 26) goes here. -->
-                <ContentControl x:Name="ScriptsCardHost" Focusable="False"/>
-
-                <!-- Save a Library: one Save dialog whose file types are the
-                     libraries the build carries. -->
-                <Border x:Name="AutomationScriptsCard" Style="{StaticResource ExtraCard}"
-                        Visibility="{Binding HasAutomationLibraries, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Extras_Automation_Card_Scripts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
-                        <controls:SettingRow MinHeight="44">
-                            <TextBlock Text="{Binding Extras_Automation_Library, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                            <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationLibrary_Click"
-                                    AutomationProperties.AutomationId="Automation_SaveLibrary"
-                                    Content="{Binding Extras_Automation_SaveLibrary, Source={x:Static strings:Strings.Instance}}"/>
-                        </controls:SettingRow>
-                        <TextBlock Text="{Binding Extras_Automation_LibraryHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
-                    </StackPanel>
-                </Border>
+                <!-- The Scripts card (#600 item 26): a row for each library
+                     with its state and one button, Install, Update or Open
+                     Folder, each run with the user's own rights, and under
+                     More, Save a Library… for a folder of the user's choosing
+                     and Remove All. It keeps its own rows (the page's
+                     ScriptsCardModel), checked each time it shows, and shows
+                     whether Automation is on or off. Every control is the
+                     user's alone, as the page is: an install is never a
+                     program's to start. -->
+                <ContentControl x:Name="ScriptsCardHost" Focusable="False">
+                    <Border x:Name="AutomationScriptsCard" Style="{StaticResource ExtraCard}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Extras_Automation_Card_Scripts, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraCardTitle}" Margin="0,0,0,4"/>
+                            <ItemsControl x:Name="LibraryRowsList" ItemsSource="{Binding Rows}" IsTabStop="False">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- A hairline over every row, as on the Assistants
+                                             card. -->
+                                        <Border BorderBrush="{StaticResource SteelLineSoftBrush}" BorderThickness="0,1,0,0">
+                                            <Grid Margin="0,10,0,10" MinHeight="44">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel VerticalAlignment="Center" Margin="0,0,14,0">
+                                                    <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                               Foreground="{StaticResource TextFillColorPrimaryBrush}"/>
+                                                    <TextBlock Text="{Binding Line}" FontSize="13" TextWrapping="Wrap" common:LiveText.Polite="True"
+                                                               Foreground="{StaticResource TextFillColorSecondaryBrush}"/>
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Style="{StaticResource ExtraButton}" Command="{Binding PressCommand}"
+                                                        IsEnabled="{Binding IsIdle}"
+                                                        Visibility="{Binding HasButton, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                        AutomationProperties.AutomationId="{Binding ButtonId}"
+                                                        AutomationProperties.HelpText="{Binding Name}"
+                                                        Content="{Binding ButtonWords}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="{Binding Extras_Automation_Scripts_Hint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraSmall}"
+                                       TextWrapping="Wrap" Margin="0,12,0,4"/>
+                            <controls:MoreRow x:Name="ScriptsMore" StateKey="Extras.Scripts.More"
+                                              AutomationProperties.AutomationId="Extras_More_Scripts"
+                                              Header="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
+                                              Hint="{Binding Extras_More_Scripts, Source={x:Static strings:Strings.Instance}}">
+                                <StackPanel>
+                                    <controls:SettingRow MinHeight="44">
+                                        <TextBlock Text="{Binding Extras_Automation_Library, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Button Style="{StaticResource ExtraButton}" Click="SaveAutomationLibrary_Click"
+                                                AutomationProperties.AutomationId="Automation_SaveLibrary"
+                                                Content="{Binding Extras_Automation_SaveLibrary, Source={x:Static strings:Strings.Instance}}"/>
+                                    </controls:SettingRow>
+                                    <TextBlock Text="{Binding Extras_Automation_LibraryHint, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource ExtraRowNote}"/>
+                                    <controls:SettingRow MinHeight="44" Visibility="{Binding AnyInstalled, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Extras_Automation_Scripts_Installed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
+                                        <Button Style="{StaticResource ExtraButton}" Command="{Binding RemoveAllCommand}"
+                                                AutomationProperties.AutomationId="Automation_Scripts_RemoveAll"
+                                                Content="{Binding Extras_Automation_Scripts_RemoveAll, Source={x:Static strings:Strings.Instance}}"/>
+                                    </controls:SettingRow>
+                                    <TextBlock Text="{Binding Note}" Style="{StaticResource ExtraRowNote}" common:LiveText.Polite="True"
+                                               AutomationProperties.AutomationId="Automation_Scripts_Note"
+                                               Visibility="{Binding HasNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </StackPanel>
+                            </controls:MoreRow>
+                        </StackPanel>
+                    </Border>
+                </ContentControl>
 
                 <!-- Allowed Programs (#600 items 5 and 16), while it lists
                      one: each program the user allowed at Read or above,

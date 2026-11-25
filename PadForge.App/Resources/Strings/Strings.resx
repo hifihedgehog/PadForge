@@ -585,7 +585,7 @@
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Script Library</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Save a Library…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>One file for AutoHotkey v2, Python or PowerShell. A script that loads it reads devices and drives mappings at the level above.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>One file for AutoHotkey v2, Python or PowerShell, written where you pick.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Waiting for You</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activity</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Undo</value></data>
@@ -6838,4 +6838,21 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows did not start it</value></data>
   <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>it ended with code {0}</value></data>
   <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation is off, so no web assistant reaches PadForge. The web helper starts once Automation is on.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Checking…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Not installed.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Installed and current. A script starts with {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Installed for {0} and current. A script starts with {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Installed. This PadForge has a newer copy.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Installed for {0}. This PadForge has a newer copy.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Installing…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge could not check it: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Install puts PadForge’s library where that language finds it. A script that loads it reads devices and drives mappings at the level above.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Save a library anywhere</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Installed Copies</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Remove All</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Removed.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Its script ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripts name its controls {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripts name its keys KeyA, KeySpace, KeyLeftShift and the like, and every key by its code, Vk0 to Vk255.</value></data>
 </root>

@@ -80,6 +80,7 @@ namespace PadForge.Common.Input
                 var seam = InForceSeam;
                 if (seam != null) return seam();
                 return ControlHolds.Current != null
+                    || ControlHolds.Pending
                     || Volatile.Read(ref _liveProgramDevices) > 0
                     || ScriptValues.AnySet;
             }

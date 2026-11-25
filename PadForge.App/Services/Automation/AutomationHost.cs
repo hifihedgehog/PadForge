@@ -66,11 +66,9 @@ namespace PadForge.Services.Automation
     /// <see cref="RecordStop"/>, <see cref="RecordMark"/>,
     /// <see cref="Recording"/>), empty until a build's recorder fills
     /// them.</item>
-    /// <item>What the Automation page calls for its Undo, Save the Skill and
-    /// Save a Library buttons (<see cref="CanUndo"/>, <see cref="Undo"/>,
-    /// <see cref="SaveSkill"/>, <see cref="Libraries"/>), empty until a
-    /// build's part fills them, and the buttons absent while they
-    /// are.</item>
+    /// <item>What the Automation page calls for its Undo button
+    /// (<see cref="CanUndo"/>, <see cref="Undo"/>), empty until a build's
+    /// part fills them, and the button absent while they are.</item>
     /// </list>
     ///
     /// <para><see cref="Apply"/> and <see cref="Dispose"/> are called on the
@@ -297,13 +295,10 @@ namespace PadForge.Services.Automation
 
         private Func<AutomationActivityEntry, bool> _canUndo;
         private Action<AutomationActivityEntry> _undo;
-        private Action<string> _saveSkill;
-        private IAutomationLibraries _libraries;
 
         /// <summary>Raised on the thread that set one of
-        /// <see cref="CanUndo"/>, <see cref="Undo"/>, <see cref="SaveSkill"/>
-        /// and <see cref="Libraries"/>, so the Automation page shows or
-        /// hides the buttons that call it.</summary>
+        /// <see cref="CanUndo"/> and <see cref="Undo"/>, so the Automation
+        /// page shows or hides the buttons that call it.</summary>
         public event EventHandler ProvidedChanged;
 
         /// <summary>Whether the change an Activity entry records can be
@@ -322,26 +317,6 @@ namespace PadForge.Services.Automation
         {
             get => _undo;
             set { _undo = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
-        }
-
-        /// <summary>Writes the skill an assistant reads from disk into the
-        /// folder given, which the user picked. Null in a build that has no
-        /// skill to write, and then the page has no Save the Skill button.
-        /// It waits for the install, so it is called off the interface's
-        /// thread. A failure throws.</summary>
-        public Action<string> SaveSkill
-        {
-            get => _saveSkill;
-            set { _saveSkill = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
-        }
-
-        /// <summary>The script libraries Save a Library writes. Null in a
-        /// build that carries none, and then the page has no Scripts
-        /// card.</summary>
-        public IAutomationLibraries Libraries
-        {
-            get => _libraries;
-            set { _libraries = value; ProvidedChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         /// <summary>

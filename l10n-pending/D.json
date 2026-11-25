@@ -1,0 +1,195 @@
+{
+  "new": [
+    {
+      "key": "Extras_Automation_Scripts_Checking",
+      "english": "Checking…",
+      "sibling": [
+        "Extras_Automation_Scripts_NotInstalled"
+      ],
+      "where": "Extras, Automation, Scripts card: a library row's line while PadForge checks it",
+      "keep": []
+    },
+    {
+      "key": "Extras_Automation_Scripts_NotInstalled",
+      "english": "Not installed.",
+      "sibling": [
+        "Common_Install"
+      ],
+      "where": "Extras, Automation, Scripts card: a library row's line",
+      "keep": []
+    },
+    {
+      "key": "Extras_Automation_Scripts_Current_Format",
+      "english": "Installed and current. A script starts with {0}.",
+      "sibling": [
+        "Settings_OpenFolder"
+      ],
+      "where": "Extras, Automation, Scripts card: a library row's line. {0} is the line a script starts with, such as #Include <PadForge>",
+      "keep": [
+        "PadForge",
+        "#Include <PadForge>"
+      ]
+    },
+    {
+      "key": "Extras_Automation_Scripts_CurrentFor_Format",
+      "english": "Installed for {0} and current. A script starts with {1}.",
+      "sibling": [
+        "Settings_OpenFolder"
+      ],
+      "where": "Extras, Automation, Scripts card: the Python row's line. {0} names the Pythons, such as Python 3.14. {1} is import padforge",
+      "keep": [
+        "PadForge",
+        "import padforge"
+      ]
+    },
+    {
+      "key": "Extras_Automation_Scripts_Older",
+      "english": "Installed. This PadForge has a newer copy.",
+      "sibling": [
+        "Extras_Automation_Update"
+      ],
+      "where": "Extras, Automation, Scripts card: a library row's line",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Extras_Automation_Scripts_OlderFor_Format",
+      "english": "Installed for {0}. This PadForge has a newer copy.",
+      "sibling": [
+        "Extras_Automation_Update"
+      ],
+      "where": "Extras, Automation, Scripts card: the Python row's line. {0} names the Pythons",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Extras_Automation_Scripts_Installing",
+      "english": "Installing…",
+      "sibling": [
+        "Extras_Automation_Scripts_Checking"
+      ],
+      "where": "Extras, Automation, Scripts card: a library row's line while its install runs",
+      "keep": []
+    },
+    {
+      "key": "Extras_Automation_Scripts_CheckFailed_Format",
+      "english": "PadForge could not check it: {0}",
+      "sibling": [
+        "Extras_Automation_CheckFailed_Format"
+      ],
+      "where": "Extras, Automation, Scripts card: a library row's line. {0} is the reason",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Extras_Automation_Scripts_Hint",
+      "english": "Install puts PadForge’s library where that language finds it. A script that loads it reads devices and drives mappings at the level above.",
+      "sibling": [
+        "Extras_Automation_AssistantsHint"
+      ],
+      "where": "Extras, Automation, Scripts card: the note under the rows",
+      "keep": [
+        "PadForge"
+      ]
+    },
+    {
+      "key": "Extras_More_Scripts",
+      "english": "Save a library anywhere",
+      "sibling": [
+        "Common_More",
+        "Extras_More_Automation"
+      ],
+      "where": "Extras, Automation, Scripts card: the More row's hint",
+      "keep": []
+    },
+    {
+      "key": "Extras_Automation_Scripts_Installed",
+      "english": "Installed Copies",
+      "sibling": [
+        "Extras_Automation_Library"
+      ],
+      "where": "Extras, Automation, Scripts card, More: the label of the Remove All row",
+      "keep": []
+    },
+    {
+      "key": "Extras_Automation_Scripts_RemoveAll",
+      "english": "Remove All",
+      "sibling": [
+        "Extras_Automation_SaveLibrary"
+      ],
+      "where": "Extras, Automation, Scripts card, More: the button that removes every installed copy",
+      "keep": []
+    },
+    {
+      "key": "Extras_Automation_Scripts_Removed",
+      "english": "Removed.",
+      "sibling": [
+        "Extras_Automation_Scripts_RemoveAll"
+      ],
+      "where": "Extras, Automation, Scripts card, More: the line after Remove All",
+      "keep": []
+    },
+    {
+      "key": "Devices_ScriptId",
+      "english": "Script ID",
+      "sibling": [
+        "Common_Copy",
+        "SdlMapping_Id"
+      ],
+      "where": "Devices page, a device's Test Inputs card, More: the label of the script ID row",
+      "keep": []
+    },
+    {
+      "key": "Devices_More_ScriptId",
+      "english": "Its script ID",
+      "sibling": [
+        "Devices_More_TestInputs",
+        "Common_More"
+      ],
+      "where": "Devices page, Test Inputs card: the More row's hint for a device whose readout is the card itself",
+      "keep": []
+    },
+    {
+      "key": "Devices_ScriptNames_Format",
+      "english": "Scripts name its controls {0}.",
+      "sibling": [
+        "Devices_ScriptId"
+      ],
+      "where": "Devices page, Test Inputs card, More: under the script ID. {0} lists control names such as A, B, LeftX, which stay as written",
+      "keep": []
+    },
+    {
+      "key": "Devices_ScriptKeys",
+      "english": "Scripts name its keys KeyA, KeySpace, KeyLeftShift and the like, and every key by its code, Vk0 to Vk255.",
+      "sibling": [
+        "Devices_ScriptNames_Format",
+        "Devices_ScriptId"
+      ],
+      "where": "Devices page, a keyboard's Test Inputs card, More: under the script ID",
+      "keep": [
+        "KeyA",
+        "KeySpace",
+        "KeyLeftShift",
+        "Vk0",
+        "Vk255"
+      ]
+    }
+  ],
+  "changed": [
+    {
+      "key": "Extras_Automation_LibraryHint",
+      "english": "One file for AutoHotkey v2, Python or PowerShell, written where you pick.",
+      "where": "Extras, Automation, Scripts card, More: the note under Save a Library…",
+      "keep": [
+        "AutoHotkey v2",
+        "Python",
+        "PowerShell"
+      ],
+      "may_stand": false
+    }
+  ],
+  "removed": []
+}

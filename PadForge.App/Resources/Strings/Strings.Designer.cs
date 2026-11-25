@@ -6589,4 +6589,21 @@ public class Strings : INotifyPropertyChanged
     public string Web_Helper_Why_NotStarted => Get("Web_Helper_Why_NotStarted");
     public string Web_Helper_Why_Ended_Format => Get("Web_Helper_Why_Ended_Format");
     public string Web_Helper_AutomationOff => Get("Web_Helper_AutomationOff");
+    public string Extras_Automation_Scripts_Checking => Get("Extras_Automation_Scripts_Checking");
+    public string Extras_Automation_Scripts_NotInstalled => Get("Extras_Automation_Scripts_NotInstalled");
+    public string Extras_Automation_Scripts_Current_Format => Get("Extras_Automation_Scripts_Current_Format");
+    public string Extras_Automation_Scripts_CurrentFor_Format => Get("Extras_Automation_Scripts_CurrentFor_Format");
+    public string Extras_Automation_Scripts_Older => Get("Extras_Automation_Scripts_Older");
+    public string Extras_Automation_Scripts_OlderFor_Format => Get("Extras_Automation_Scripts_OlderFor_Format");
+    public string Extras_Automation_Scripts_Installing => Get("Extras_Automation_Scripts_Installing");
+    public string Extras_Automation_Scripts_CheckFailed_Format => Get("Extras_Automation_Scripts_CheckFailed_Format");
+    public string Extras_Automation_Scripts_Hint => Get("Extras_Automation_Scripts_Hint");
+    public string Extras_More_Scripts => Get("Extras_More_Scripts");
+    public string Extras_Automation_Scripts_Installed => Get("Extras_Automation_Scripts_Installed");
+    public string Extras_Automation_Scripts_RemoveAll => Get("Extras_Automation_Scripts_RemoveAll");
+    public string Extras_Automation_Scripts_Removed => Get("Extras_Automation_Scripts_Removed");
+    public string Devices_ScriptId => Get("Devices_ScriptId");
+    public string Devices_More_ScriptId => Get("Devices_More_ScriptId");
+    public string Devices_ScriptNames_Format => Get("Devices_ScriptNames_Format");
+    public string Devices_ScriptKeys => Get("Devices_ScriptKeys");
 }

@@ -45,7 +45,16 @@ namespace PadForge.Services.Automation
             /// <summary>What a <c>sub</c> line names, for <c>unsub</c>.</summary>
             public abstract string What { get; }
 
+            /// <summary>The controls the subscription takes from games while
+            /// it lives (#600 item 23): each key as ControlHolds takes it,
+            /// and the claim's own value. Empty for none.</summary>
+            public List<(char Kind, int Index, object Value)> Claims { get; } = new();
+
             public abstract void Pass(CustomInputState s, long now);
+
+            /// <summary>The device is missing from a pass that had it
+            /// before: offline, or no longer read.</summary>
+            public virtual void Gone() { }
         }
 
         internal sealed class Buttons : Entry
@@ -151,45 +160,192 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>An axis crossing a line, worked out here with
-        /// hysteresis: it is above once it reaches <c>above</c>, and below
-        /// again once it falls under <c>above - hyst</c>.</summary>
+        /// hysteresis. On the high side (<c>above=</c>) it is past once it
+        /// reaches the line, and back once it falls under the line less the
+        /// band. On the low side (<c>below=</c>, #600 item 23) it is past
+        /// once it reaches the line from above, and back once it rises over
+        /// the line and the band. A line of a named subscription has a
+        /// number, which its events repeat (<c>e x &lt;id&gt; &lt;axis&gt; 1
+        /// &lt;line&gt;</c>), and tells the whole state first.</summary>
         internal sealed class Crossing : Entry
         {
-            private bool _isAbove;
+            private bool _past;
+            private readonly StateOnce _state;
 
-            public Crossing(AutomationSession session, Guid device, string id, int axis, int above, int hyst)
+            public Crossing(AutomationSession session, Guid device, string id, int axis, int above, int hyst,
+                bool low = false, int line = 0, int[] rests = null, int buttons = 0)
                 : base(session, device, id)
             {
                 Axis = axis;
                 Above = above;
                 Hysteresis = hyst;
+                Low = low;
+                Line = line;
+                _state = line > 0 ? new StateOnce(id, rests, buttons) : null;
             }
 
             public int Axis { get; }
+
+            /// <summary>The line, raw.</summary>
             public int Above { get; }
             public int Hysteresis { get; }
-            public override string What => "axis=" + Axis;
+
+            /// <summary>The line is on the low side.</summary>
+            public bool Low { get; }
+
+            /// <summary>The line's number, or 0 for a line of the
+            /// <c>axis=</c> form, whose events carry none.</summary>
+            public int Line { get; }
+            public override string What => Line > 0 ? "line=" + Line : "axis=" + Axis;
+
+            private bool IsPast(int value) => Low ? value <= Above : value >= Above;
+            private bool IsBack(int value) => Low ? value > Above + Hysteresis : value < Above - Hysteresis;
 
             public override void Pass(CustomInputState s, long now)
             {
                 int value = Axis < CustomInputState.MaxAxis ? s.Axis[Axis] : s.Sliders[Axis - CustomInputState.MaxAxis];
                 if (!Primed)
                 {
-                    _isAbove = value >= Above;
+                    _state?.Send(Session, s);
+                    _past = IsPast(value);
                     Primed = true;
                     return;
                 }
-                if (!_isAbove && value >= Above)
+                if (!_past && IsPast(value))
                 {
-                    _isAbove = true;
-                    Session.Outbox.Crossing(DeviceId, Axis, true);
+                    _past = true;
+                    Session.Outbox.Crossing(DeviceId, Axis, true, Line);
                 }
-                else if (_isAbove && value < Above - Hysteresis)
+                else if (_past && IsBack(value))
                 {
-                    _isAbove = false;
-                    Session.Outbox.Crossing(DeviceId, Axis, false);
+                    _past = false;
+                    Session.Outbox.Crossing(DeviceId, Axis, false, Line);
                 }
             }
+
+            public override void Gone() => _state?.Gone(Session);
+        }
+
+        /// <summary>The whole state of a device, told when a named
+        /// subscription starts and each time the device comes back
+        /// (<c>e state &lt;id&gt; b=... a=... h=...</c>, plain for a plain
+        /// session), and <c>e state &lt;id&gt; offline</c> when it goes
+        /// (#600 item 21). Made on the poll thread at those times
+        /// only.</summary>
+        internal sealed class StateOnce
+        {
+            private readonly string _id;
+            private readonly int[] _rests;
+            private readonly int _buttons;
+
+            public StateOnce(string id, int[] rests, int buttons)
+            {
+                _id = id;
+                _rests = rests ?? AxisStreamSlots.DefaultRests();
+                _buttons = buttons <= 0 ? CustomInputState.MaxButtons : buttons;
+            }
+
+            public void Send(AutomationSession session, CustomInputState s)
+            {
+                string line = session.Outbox.Plain
+                    ? AutomationDevices.StateLine(s, _buttons, _rests)
+                    : AutomationDevices.StateLine(s, _buttons);
+                // StateLine opens with "ok ".
+                session.Outbox.Line("e state " + _id + " " + line.Substring(3));
+            }
+
+            public void Gone(AutomationSession session) => session.Outbox.Line("e state " + _id + " offline");
+        }
+
+        /// <summary>A device's whole state (<c>sub &lt;id&gt; state</c>) or
+        /// one named control (<c>sub &lt;id&gt; A</c>): the whole state first,
+        /// then every change of what it follows, axes at most <c>hz</c>
+        /// times a second (#600 item 21).</summary>
+        internal sealed class State : Entry
+        {
+            private readonly bool[] _buttons = new bool[CustomInputState.MaxButtons];
+            private readonly int[] _hats = new int[CustomInputState.MaxPovs];
+            private readonly int[] _axes = new int[ProgramAxis.End];
+            private readonly StateOnce _state;
+            private readonly long _period;
+            private readonly string _name;
+            private long _due;
+
+            /// <param name="only">One control to follow, (kind, index), or
+            /// null for every control.</param>
+            /// <param name="name">That control's name, for unsub.</param>
+            public State(AutomationSession session, Guid device, string id, int hz, int[] rests, int buttons,
+                (char Kind, int Index)? only = null, string name = null) : base(session, device, id)
+            {
+                Only = only;
+                _name = name;
+                _period = Stopwatch.Frequency / Math.Clamp(hz, 1, 1000);
+                _state = new StateOnce(id, rests, buttons);
+                Slots = new AxisStreamSlots(id, rests);
+            }
+
+            public (char Kind, int Index)? Only { get; }
+            public readonly AxisStreamSlots Slots;
+            public override string What => _name == null ? "state" : _name.ToLowerInvariant();
+
+            private static int Value(CustomInputState s, int i)
+                => i < CustomInputState.MaxAxis ? s.Axis[i] : s.Sliders[i - CustomInputState.MaxAxis];
+
+            public override void Pass(CustomInputState s, long now)
+            {
+                if (!Primed)
+                {
+                    Array.Copy(s.Buttons, _buttons, CustomInputState.MaxButtons);
+                    Array.Copy(s.Povs, _hats, CustomInputState.MaxPovs);
+                    for (int i = 0; i < ProgramAxis.End; i++) _axes[i] = Value(s, i);
+                    _state.Send(Session, s);
+                    Primed = true;
+                    _due = now;
+                    return;
+                }
+                var outbox = Session.Outbox;
+                var only = Only;
+                if (only == null || only.Value.Kind == 'b')
+                {
+                    int from = only?.Index ?? 0, to = only == null ? CustomInputState.MaxButtons : only.Value.Index + 1;
+                    for (int i = from; i < to; i++)
+                    {
+                        bool down = s.Buttons[i];
+                        if (down == _buttons[i]) continue;
+                        _buttons[i] = down;
+                        outbox.Button(DeviceId, i, down);
+                    }
+                }
+                if (only == null || only.Value.Kind == 'h')
+                {
+                    int from = only?.Index ?? 0, to = only == null ? CustomInputState.MaxPovs : only.Value.Index + 1;
+                    for (int i = from; i < to; i++)
+                    {
+                        int value = s.Povs[i];
+                        if (value == _hats[i]) continue;
+                        _hats[i] = value;
+                        outbox.Hat(DeviceId, i, value);
+                    }
+                }
+                if ((only == null || only.Value.Kind == 'a') && now >= _due)
+                {
+                    int from = only?.Index ?? 0, to = only == null ? ProgramAxis.End : only.Value.Index + 1;
+                    bool sent = false;
+                    for (int i = from; i < to; i++)
+                    {
+                        int value = Value(s, i);
+                        if (value == _axes[i]) continue;
+                        _axes[i] = value;
+                        outbox.Axis(Slots, i, value);
+                        sent = true;
+                    }
+                    // The rate counts from a change sent, so the first
+                    // change after a quiet spell goes out on its own pass.
+                    if (sent) _due = now + _period;
+                }
+            }
+
+            public override void Gone() => _state.Gone(Session);
         }
 
         private sealed class Table
@@ -262,6 +418,7 @@ namespace PadForge.Services.Automation
                     var entry = entries[i];
                     if (!_byGuid.TryGetValue(entry.Device, out var ud))
                     {
+                        if (entry.Primed) entry.Gone();
                         entry.Primed = false;
                         continue;
                     }
@@ -330,7 +487,11 @@ namespace PadForge.Services.Automation
             _online = new HashSet<Guid>();
             _onlinePrimed = false;
             foreach (var g in online) Tell(followers, "e dev " + AutomationDevices.IdOf(g) + " offline");
-            foreach (var entry in table.Entries) entry.Primed = false;
+            foreach (var entry in table.Entries)
+            {
+                if (entry.Primed) entry.Gone();
+                entry.Primed = false;
+            }
         }
     }
 }

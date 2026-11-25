@@ -25,7 +25,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import padforge  # noqa: E402
 
-pf = padforge.connect_plugin("Kit Plugin")
+pf = padforge.plugin("Kit Plugin")
 pad = pf.add_controller("kitpad", "Kit Pad", buttons=["Fire", "Jump"],
                         axes=[{"name": "Stick X"}, {"name": "Stick Y"}], feedback=["rumble"])
 pad.on_rumble(lambda low, high: print("rumble", low, high, flush=True))
@@ -63,7 +63,7 @@ pf.request("setting key=turns kind=status name=Turns")
 
 angle, last, shown = 0.0, time.monotonic(), -1
 start = last
-while not pf.closed:
+while pf.connected:
     now = time.monotonic()
     angle += (now - last) * math.pi * state["speed"]
     last = now
@@ -74,7 +74,7 @@ while not pf.closed:
     if turns != shown:
         shown = turns
         pf.request("setting key=turns value=%d" % turns)
-    pad.send(a0=round(100 * math.sin(angle), 1),
-             a1=round(-100 * math.cos(angle), 1),
-             b0=state["fire"] and (now - start) % 1.0 < 0.2)
+    # The stick's two axes and the button as one change.
+    pad.hold("StickX", round(100 * math.sin(angle), 1), "StickY", round(-100 * math.cos(angle), 1),
+             "Fire", state["fire"] and (now - start) % 1.0 < 0.2)
     time.sleep(0.02)

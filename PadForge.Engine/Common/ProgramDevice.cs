@@ -111,8 +111,10 @@ namespace PadForge.Engine
     ///
     /// <para>State is copy-on-write, as <see cref="WebControllerDevice"/>
     /// keeps it: each change clones the whole state under a lock, edits the
-    /// copy and publishes it, so the poll thread takes one read with no lock
-    /// and copies it into a pooled buffer.</para>
+    /// copy and publishes it. A change that would be a control's second
+    /// before the next read waits in a queue (#600 item 22), and the poll
+    /// thread's read lands what waits under the same lock, held for that
+    /// alone, then copies the state into a pooled buffer.</para>
     ///
     /// <para>Feedback goes back to the program. Rumble arrives through
     /// <see cref="SetRumble"/>, trigger rumble through
@@ -175,6 +177,7 @@ namespace PadForge.Engine
                 Volatile.Write(ref _shape, shape);
                 Volatile.Write(ref _name, name ?? string.Empty);
                 Volatile.Write(ref _state, RestState(shape, battery: -1, charging: false));
+                DropWaitingLocked();
             }
             CapabilitiesChanged?.Invoke();
         }
@@ -229,65 +232,282 @@ namespace PadForge.Engine
             return s;
         }
 
+        // ── One change per control per read (#600 item 22) ──
+
+        /// <summary>The most changes that wait for later reads. Past it a
+        /// change is folded into the last one waiting, its values over that
+        /// one's.</summary>
+        public const int MostWaiting = 1024;
+
+        /// <summary>How long without a read before the device counts as not
+        /// polled, and a change lands at once whatever it touches: the engine
+        /// is stopped or the device is not on its list.</summary>
+        public static readonly long NotPolledTicks = System.Diagnostics.Stopwatch.Frequency / 10;
+
+        // Every control a change can touch, as one number: buttons, then
+        // axes and sliders, hats, the sensors, the battery, the touchpads'
+        // clicks and fingers.
+        private const int KeyAxes = CustomInputState.MaxButtons;
+        private const int KeyHats = KeyAxes + ProgramAxis.End;
+        private const int KeyGyro = KeyHats + CustomInputState.MaxPovs;
+        private const int KeyAccel = KeyGyro + 1;
+        private const int KeyBattery = KeyAccel + 1;
+        private const int KeyCharging = KeyBattery + 1;
+        private const int KeyClicks = KeyCharging + 1;
+        private const int KeyFingers = KeyClicks + 8;
+        private const int KeyCount = KeyFingers + 8 * 16;
+
+        // Touched since the last read, under the state lock: the controls a
+        // change landed on that no read has taken yet.
+        private readonly bool[] _touched = new bool[KeyCount];
+        private readonly List<int> _touchedList = new();
+        private readonly List<(ProgramDeviceChange Change, long Due)> _waiting = new();
+        private readonly List<(ProgramDeviceChange Change, long Due)> _kept = new();
+        private readonly bool[] _held = new bool[KeyCount];
+        private readonly List<int> _heldList = new();
+        private volatile int _waitingCount;
+        private long _lastRead;
+
+        /// <summary>Test seam: the clock, in Stopwatch ticks. Null reads
+        /// Stopwatch.</summary>
+        public Func<long> ClockForTest { get; set; }
+
+        private long Now() => ClockForTest?.Invoke() ?? System.Diagnostics.Stopwatch.GetTimestamp();
+
+        /// <summary>How many changes wait for a later read, for tests.</summary>
+        public int Waiting => _waitingCount;
+
+        private static void Keys(ProgramDeviceChange change, List<int> into)
+        {
+            into.Clear();
+            if (change.Rest)
+            {
+                // Rest touches every control.
+                for (int k = 0; k < KeyCount; k++) into.Add(k);
+                return;
+            }
+            foreach (var (index, _) in change.Buttons) if ((uint)index < CustomInputState.MaxButtons) into.Add(index);
+            foreach (var (index, _) in change.Axes) if ((uint)index < ProgramAxis.End) into.Add(KeyAxes + index);
+            foreach (var (index, _) in change.Hats) if ((uint)index < CustomInputState.MaxPovs) into.Add(KeyHats + index);
+            if (change.Gyro != null) into.Add(KeyGyro);
+            if (change.Accel != null) into.Add(KeyAccel);
+            if (change.Battery != null) into.Add(KeyBattery);
+            if (change.Charging != null) into.Add(KeyCharging);
+            foreach (var (pad, _) in change.Clicks) if ((uint)pad < 8) into.Add(KeyClicks + pad);
+            foreach (var (pad, finger, _, _, _, _) in change.Fingers)
+                if ((uint)pad < 8 && (uint)finger < 16) into.Add(KeyFingers + pad * 16 + finger);
+        }
+
+        private readonly List<int> _keys = new();
+
         /// <summary>
-        /// Applies several controls as one change. A control the shape does
-        /// not have is left out, so a program cannot drive what it did not
-        /// declare. Values outside a control's range are brought inside it.
-        /// Called from the program's connection.
+        /// Applies several controls as one change, no sooner than
+        /// <paramref name="due"/> (Stopwatch ticks, 0 for now). A control
+        /// changes at most once between two reads: a change that touches a
+        /// control already changed since the last read, or that is not due,
+        /// waits for a later read, as does every later change of the same
+        /// control, so a press and its release sent between two passes land
+        /// on two passes in their order. A control the shape does not have
+        /// is left out, and values outside a control's range are brought
+        /// inside it. Called from the program's connection.
         /// </summary>
-        public void Apply(ProgramDeviceChange change)
+        public void Apply(ProgramDeviceChange change, long due = 0)
         {
             if (change == null || change.IsEmpty) return;
             lock (_stateLock)
             {
-                var shape = _shape;
-                var s = change.Rest
-                    ? RestState(shape, _state.BatteryPercent, _state.BatteryCharging)
-                    : _state.Clone();
-                foreach (var (index, down) in change.Buttons)
-                    if (HasButton(shape, index)) s.Buttons[index] = down;
-                foreach (var (index, value) in change.Axes)
+                long now = Now();
+                if (now - _lastRead > NotPolledTicks)
                 {
-                    if (!HasAxis(shape, index)) continue;
-                    int v = Math.Clamp(value, 0, 65535);
-                    if (index >= ProgramAxis.FirstSlider) s.Sliders[index - ProgramAxis.FirstSlider] = v;
-                    else s.Axis[index] = v;
+                    // Nothing reads the device: what waits lands now, in
+                    // order, and a change not due yet still waits.
+                    FlushLocked(now, all: false);
+                    if (_waiting.Count == 0 && due <= now)
+                    {
+                        Land(change);
+                        return;
+                    }
                 }
-                foreach (var (index, value) in change.Hats)
-                    if (index >= 0 && index < shape.Hats.Count)
-                        s.Povs[index] = value >= 0 && value < 36000 ? value : -1;
-                if (change.Gyro != null && shape.Gyro)
-                    for (int i = 0; i < 3; i++) s.Gyro[i] = Finite(change.Gyro[i]);
-                if (change.Accel != null && shape.Accel)
-                    for (int i = 0; i < 3; i++) s.Accel[i] = Finite(change.Accel[i]);
-                foreach (var (padIndex, finger, x, y, down, pressure) in change.Fingers)
+                Keys(change, _keys);
+                bool free = _waiting.Count == 0 && due <= now;
+                if (free)
+                    foreach (int k in _keys)
+                        if (_touched[k]) { free = false; break; }
+                if (free)
                 {
-                    if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
-                    var pad = s.Touchpads[padIndex];
-                    if (finger < 0 || finger >= pad.MaxFingers) continue;
-                    pad.FingerX[finger] = Math.Clamp(Finite(x), 0f, 1f);
-                    pad.FingerY[finger] = Math.Clamp(Finite(y), 0f, 1f);
-                    pad.FingerPressure[finger] = down ? Math.Clamp(Finite(pressure), 0f, 1f) : 0f;
-                    bool was = pad.FingerDown[finger];
-                    pad.FingerDown[finger] = down;
-                    if (down && !was) pad.FingerContactId[finger] = _nextContact++;
-                    else if (!down && was) pad.FingerContactId[finger] = -1;
+                    Land(change);
+                    Touch(_keys);
+                    return;
                 }
-                foreach (var (padIndex, clicked) in change.Clicks)
+                if (_waiting.Count >= MostWaiting)
                 {
-                    if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
-                    s.Touchpads[padIndex].Clicked = clicked;
-                    // The first pad's click rides button 16 as well, where
-                    // every other touchpad device carries it.
-                    if (padIndex == 0) s.Buttons[16] = clicked;
+                    Fold(_waiting[^1].Change, change);
+                    return;
                 }
-                if (shape.Battery)
-                {
-                    if (change.Battery.HasValue) s.BatteryPercent = Math.Clamp(change.Battery.Value, 0, 100);
-                    if (change.Charging.HasValue) s.BatteryCharging = change.Charging.Value;
-                }
-                Volatile.Write(ref _state, s);
+                _waiting.Add((change, due));
+                _waitingCount = _waiting.Count;
             }
+        }
+
+        private void Touch(List<int> keys)
+        {
+            foreach (int k in keys)
+            {
+                if (_touched[k]) continue;
+                _touched[k] = true;
+                _touchedList.Add(k);
+            }
+        }
+
+        /// <summary>Puts <paramref name="later"/>'s values into
+        /// <paramref name="into"/>, later values over earlier ones.</summary>
+        private static void Fold(ProgramDeviceChange into, ProgramDeviceChange later)
+        {
+            if (later.Rest)
+            {
+                into.Rest = true;
+                into.Buttons.Clear(); into.Axes.Clear(); into.Hats.Clear();
+                into.Fingers.Clear(); into.Clicks.Clear();
+                into.Gyro = null; into.Accel = null;
+            }
+            into.Buttons.AddRange(later.Buttons);
+            into.Axes.AddRange(later.Axes);
+            into.Hats.AddRange(later.Hats);
+            into.Fingers.AddRange(later.Fingers);
+            into.Clicks.AddRange(later.Clicks);
+            if (later.Gyro != null) into.Gyro = later.Gyro;
+            if (later.Accel != null) into.Accel = later.Accel;
+            if (later.Battery != null) into.Battery = later.Battery;
+            if (later.Charging != null) into.Charging = later.Charging;
+        }
+
+        /// <summary>Under the lock, at a read: the changes that wait land in
+        /// their order, each control once, counting the changes that landed
+        /// since the last read, and a change that cannot land holds back
+        /// every later change of its controls.</summary>
+        private void DrainLocked(long now)
+        {
+            if (_waiting.Count == 0) return;
+            _kept.Clear();
+            foreach (var item in _waiting)
+            {
+                Keys(item.Change, _keys);
+                bool land = item.Due <= now;
+                if (land)
+                    foreach (int k in _keys)
+                        if (_touched[k] || _held[k]) { land = false; break; }
+                if (land)
+                {
+                    Land(item.Change);
+                    Touch(_keys);
+                    continue;
+                }
+                _kept.Add(item);
+                foreach (int k in _keys)
+                {
+                    if (_held[k]) continue;
+                    _held[k] = true;
+                    _heldList.Add(k);
+                }
+            }
+            foreach (int k in _heldList) _held[k] = false;
+            _heldList.Clear();
+            _waiting.Clear();
+            _waiting.AddRange(_kept);
+            _kept.Clear();
+            _waitingCount = _waiting.Count;
+        }
+
+        /// <summary>Under the lock, with nothing reading the device: every
+        /// change due lands in its order, all when
+        /// <paramref name="all"/>.</summary>
+        private void FlushLocked(long now, bool all)
+        {
+            foreach (int k in _touchedList) _touched[k] = false;
+            _touchedList.Clear();
+            if (_waiting.Count == 0) return;
+            int landed = 0;
+            foreach (var item in _waiting)
+            {
+                if (!all && item.Due > now) break;
+                Land(item.Change);
+                landed++;
+            }
+            _waiting.RemoveRange(0, landed);
+            _waitingCount = _waiting.Count;
+        }
+
+        /// <summary>Lands the changes that are due when nothing has read the
+        /// device for a while: the sessions' clock calls it, so a timed step
+        /// lands with the engine stopped too.</summary>
+        public void LandDue()
+        {
+            if (_waitingCount == 0) return;
+            lock (_stateLock)
+            {
+                long now = Now();
+                if (now - _lastRead > NotPolledTicks) FlushLocked(now, all: false);
+            }
+        }
+
+        private void DropWaitingLocked()
+        {
+            _waiting.Clear();
+            _waitingCount = 0;
+            foreach (int k in _touchedList) _touched[k] = false;
+            _touchedList.Clear();
+        }
+
+        /// <summary>Under the lock: one change on the state, published.</summary>
+        private void Land(ProgramDeviceChange change)
+        {
+            var shape = _shape;
+            var s = change.Rest
+                ? RestState(shape, _state.BatteryPercent, _state.BatteryCharging)
+                : _state.Clone();
+            foreach (var (index, down) in change.Buttons)
+                if (HasButton(shape, index)) s.Buttons[index] = down;
+            foreach (var (index, value) in change.Axes)
+            {
+                if (!HasAxis(shape, index)) continue;
+                int v = Math.Clamp(value, 0, 65535);
+                if (index >= ProgramAxis.FirstSlider) s.Sliders[index - ProgramAxis.FirstSlider] = v;
+                else s.Axis[index] = v;
+            }
+            foreach (var (index, value) in change.Hats)
+                if (index >= 0 && index < shape.Hats.Count)
+                    s.Povs[index] = value >= 0 && value < 36000 ? value : -1;
+            if (change.Gyro != null && shape.Gyro)
+                for (int i = 0; i < 3; i++) s.Gyro[i] = Finite(change.Gyro[i]);
+            if (change.Accel != null && shape.Accel)
+                for (int i = 0; i < 3; i++) s.Accel[i] = Finite(change.Accel[i]);
+            foreach (var (padIndex, finger, x, y, down, pressure) in change.Fingers)
+            {
+                if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
+                var pad = s.Touchpads[padIndex];
+                if (finger < 0 || finger >= pad.MaxFingers) continue;
+                pad.FingerX[finger] = Math.Clamp(Finite(x), 0f, 1f);
+                pad.FingerY[finger] = Math.Clamp(Finite(y), 0f, 1f);
+                pad.FingerPressure[finger] = down ? Math.Clamp(Finite(pressure), 0f, 1f) : 0f;
+                bool was = pad.FingerDown[finger];
+                pad.FingerDown[finger] = down;
+                if (down && !was) pad.FingerContactId[finger] = _nextContact++;
+                else if (!down && was) pad.FingerContactId[finger] = -1;
+            }
+            foreach (var (padIndex, clicked) in change.Clicks)
+            {
+                if (s.Touchpads == null || padIndex < 0 || padIndex >= s.Touchpads.Length) continue;
+                s.Touchpads[padIndex].Clicked = clicked;
+                // The first pad's click rides button 16 as well, where
+                // every other touchpad device carries it.
+                if (padIndex == 0) s.Buttons[16] = clicked;
+            }
+            if (shape.Battery)
+            {
+                if (change.Battery.HasValue) s.BatteryPercent = Math.Clamp(change.Battery.Value, 0, 100);
+                if (change.Charging.HasValue) s.BatteryCharging = change.Charging.Value;
+            }
+            Volatile.Write(ref _state, s);
         }
 
         private int _nextContact = 1;
@@ -301,7 +521,11 @@ namespace PadForge.Engine
         {
             if (state == null) return;
             var s = state.Clone();
-            lock (_stateLock) Volatile.Write(ref _state, s);
+            lock (_stateLock)
+            {
+                DropWaitingLocked();
+                Volatile.Write(ref _state, s);
+            }
         }
 
         private static float Finite(float value) => float.IsFinite(value) ? value : 0f;
@@ -329,6 +553,7 @@ namespace PadForge.Engine
             lock (_stateLock)
             {
                 var current = _state;
+                DropWaitingLocked();
                 Volatile.Write(ref _state, RestState(_shape, current.BatteryPercent, current.BatteryCharging));
             }
         }
@@ -428,12 +653,29 @@ namespace PadForge.Engine
         public string SerialNumber => string.Empty;
         public string SdlGuid => string.Empty;
 
-        /// <summary>The state the program last set, copied into a pooled
-        /// buffer. One read of the published state and no lock: every change
-        /// publishes a whole new state.</summary>
+        /// <summary>The state the program set, copied into a pooled buffer.
+        /// The changes that wait land first, one change per control per read
+        /// (#600 item 22). The poll thread is the only reader, once a pass,
+        /// and the lock it takes is held for the drain alone.</summary>
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            var src = Live?.Invoke() ?? Volatile.Read(ref _state);
+            var live = Live;
+            CustomInputState src;
+            if (live != null) src = live();
+            else
+            {
+                lock (_stateLock)
+                {
+                    long now = Now();
+                    _lastRead = now;
+                    DrainLocked(now);
+                    // What landed is read now: the next change of any
+                    // control is the next read's.
+                    foreach (int k in _touchedList) _touched[k] = false;
+                    _touchedList.Clear();
+                    src = _state;
+                }
+            }
             var dst = _pool.Next();
             src.CopyInto(dst);
             return dst;

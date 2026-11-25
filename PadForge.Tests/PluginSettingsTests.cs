@@ -549,8 +549,11 @@ namespace PadForge.Tests
             run = run.Substring(0, run.IndexOf("default:", StringComparison.Ordinal));
             var verbs = Regex.Matches(run, "case \"(\\w+)\":").Select(m => m.Groups[1].Value).Distinct().ToList();
             Assert.True(verbs.Count > 20);
-            foreach (string verb in verbs) Assert.True(readme.Contains("`" + verb, StringComparison.Ordinal), "the guide lacks " + verb);
-            foreach (string e in new[] { "e rumble", "e trigrumble", "e trigfx", "e led", "e player", "e setting", "e press", "e choices", "e lease" })
+            // A verb as a word of its own: `set` is not found inside `setting`.
+            foreach (string verb in verbs)
+                Assert.True(Regex.IsMatch(readme, "`" + verb + "[ `]"), "the guide lacks " + verb);
+            foreach (string e in new[] { "e rumble", "e trigrumble", "e trigfx", "e led", "e player", "e setting", "e press", "e choices", "e lease",
+                         "e state", "e b", "e h", "e a", "e x", "e dev", "e profile", "e engine", "e level" })
                 Assert.Contains("`" + e, readme);
             foreach (string kind in PluginDeclarations.Kinds.Keys) Assert.Contains("| `" + kind + "` |", readme);
             foreach (string word in new[] { "key", "kind", "name", "help", "group", "device", "default", "min", "max", "step", "unit", "choices", "stay", "when", "look" })

@@ -19,10 +19,9 @@ and kind of setting.
 
 Import-Module (Join-Path $PSScriptRoot 'PadForge.psm1')
 
-Connect-PadForgePlugin -Name 'Kit Plugin' | Out-Null
-$pad = New-PadForgeController -Key 'kitpad' -Name 'Kit Pad' -Buttons 'Fire', 'Jump' `
-    -Axes @{ name = 'Stick X' }, @{ name = 'Stick Y' } -Feedback 'rumble'
-Register-PadForgeRumble -Controller $pad -Action { param($low, $high) [Console]::WriteLine("rumble $low $high") }
+$pf = Connect-PadForgePlugin 'Kit Plugin'
+$pad = Add-PadForgeController kitpad 'Kit Pad' -Buttons Fire, Jump -Axes @{ name = 'Stick X' }, @{ name = 'Stick Y' } -Feedback rumble
+$pad.OnRumble({ param($low, $high) [Console]::WriteLine("rumble $low $high") })
 Write-PadForgeLog "Declared Kit Pad as $($pad.Id)."
 
 # What the user sets on the plugin's card. Each declaration's answer carries
@@ -30,7 +29,7 @@ Write-PadForgeLog "Declared Kit Pad as $($pad.Id)."
 $script:Speed = 1.0
 $script:TapFire = $true
 $script:Center = $false
-Register-PadForgeEvent -Kind 'setting' -Action {
+Register-PadForgeEvent setting {
     param($pairs)
     switch ($pairs['key']) {
         'speed' { $script:Speed = [double]::Parse($pairs['value'], [Globalization.CultureInfo]::InvariantCulture) }
@@ -39,7 +38,7 @@ Register-PadForgeEvent -Kind 'setting' -Action {
     }
     Write-PadForgeLog "$($pairs['key']) is $($pairs['value'])."
 }
-Register-PadForgeEvent -Kind 'press' -Action { param($pairs) if ($pairs['key'] -eq 'center') { $script:Center = $true } }
+Register-PadForgeEvent press { param($pairs) if ($pairs['key'] -eq 'center') { $script:Center = $true } }
 $answer = Invoke-PadForgeRequest 'setting key=speed kind=number name=Speed min=0.5 max=4 step=0.5 unit=x default=1 help="How fast the stick goes round."'
 $script:Speed = [double]::Parse($answer.Pairs['value'], [Globalization.CultureInfo]::InvariantCulture)
 $answer = Invoke-PadForgeRequest 'setting key=fire kind=switch name="Tap Fire" default=true help="Taps Fire once a second."'
@@ -51,7 +50,8 @@ $clock = [System.Diagnostics.Stopwatch]::StartNew()
 $angle = 0.0
 $last = 0.0
 $shown = -1
-while ($true) {
+# The plugin runs until PadForge closes its connection.
+while ($pf.Connected) {
     $t = $clock.Elapsed.TotalSeconds
     $angle += ($t - $last) * [Math]::PI * $script:Speed
     $last = $t
@@ -64,11 +64,9 @@ while ($true) {
         $shown = $turns
         Invoke-PadForgeRequest "setting key=turns value=$turns" | Out-Null
     }
-    Send-PadForgeControl $pad @{
-        a0 = [Math]::Round(100 * [Math]::Sin($angle), 1)
-        a1 = [Math]::Round(-100 * [Math]::Cos($angle), 1)
-        b0 = $script:TapFire -and (($t % 1.0) -lt 0.2)
-    }
-    # Event actions run while the script sleeps.
-    Start-Sleep -Milliseconds 20
+    # The stick's two axes and the button as one change.
+    $pad.Hold('StickX', [Math]::Round(100 * [Math]::Sin($angle), 1), 'StickY', [Math]::Round(-100 * [Math]::Cos($angle), 1),
+        'Fire', ($script:TapFire -and (($t % 1.0) -lt 0.2)))
+    # The settings' and the rumble's script blocks run while it waits.
+    Wait-PadForge -Seconds 0.02
 }

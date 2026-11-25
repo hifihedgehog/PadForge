@@ -5825,8 +5825,8 @@
     "card": "Diagnostics",
     "words": "Open Log Folder",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "OpensPlace",
     "under_more": false
   },
   {
@@ -7414,7 +7414,7 @@
     "under_more": false
   },
   {
-    "id": "extras.action/Automation/AutomationScriptsCard/Extras_Automation_SaveLibrary#Extras_Automation_Library",
+    "id": "extras.action/Automation/ScriptsMore/Extras_Automation_SaveLibrary#Extras_Automation_Library",
     "page": "Extras",
     "place": "Automation",
     "card": "Scripts",
@@ -7422,7 +7422,18 @@
     "kind": "action",
     "reach": "yours-alone",
     "why": null,
-    "under_more": false
+    "under_more": true
+  },
+  {
+    "id": "extras.action/Automation/ScriptsMore/Extras_Automation_Scripts_RemoveAll#Extras_Automation_Scripts_Installed",
+    "page": "Extras",
+    "place": "Automation",
+    "card": "Scripts",
+    "words": "Remove All Installed Copies",
+    "kind": "action",
+    "reach": "yours-alone",
+    "why": null,
+    "under_more": true
   },
   {
     "id": "extras.card/Automation/AutomationAllowedCard/Extras_Automation_Card_Allowed",

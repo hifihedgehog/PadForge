@@ -648,19 +648,7 @@ namespace PadForge.ViewModels
         //  What later parts provide
         // ─────────────────────────────────────────────
 
-        /// <summary>The script libraries, or null in a build that carries
-        /// none.</summary>
-        internal IAutomationLibraries AutomationLibraries => _automationHost?.Libraries;
-
-        /// <summary>Whether the Scripts card shows: the build carries the
-        /// libraries.</summary>
-        public bool HasAutomationLibraries => _automationHost?.Libraries != null;
-
-        private void ShowAutomationProvided()
-        {
-            OnPropertyChanged(nameof(HasAutomationLibraries));
-            RefreshAutomationUndo();
-        }
+        private void ShowAutomationProvided() => RefreshAutomationUndo();
 
         // ─────────────────────────────────────────────
         //  Waiting for You

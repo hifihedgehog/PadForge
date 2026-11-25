@@ -1412,6 +1412,17 @@ namespace PadForge.Tests
                 foreach (string fold in folds) ((System.Windows.Controls.Expander)page.FindName(fold)).IsExpanded = false;
             }
 
+            // The device list as the engine keeps it, for the names scripts
+            // use under More (#600 item 26).
+            var keptDevices = PadForge.Common.Input.SettingsManager.UserDevices;
+            var rows = new PadForge.Common.Input.DeviceCollection();
+            foreach (var (row, capType, buttons, axes, hats) in new[] { (dualSense, PadForge.Engine.InputDeviceType.Gamepad, 16, 6, 1), (keyboard, PadForge.Engine.InputDeviceType.Keyboard, 256, 0, 0) })
+            {
+                var ud = new PadForge.Engine.Data.UserDevice { InstanceGuid = row.InstanceGuid, ProductName = row.DeviceName, IsOnline = true };
+                ud.LoadCapabilities(axes, buttons, hats, capType);
+                rows.Items.Add(ud);
+            }
+            PadForge.Common.Input.SettingsManager.UserDevices = rows;
             Shot("devices-1280.png", PageWidth, 1088, PickDualSense);
             ShotOpen("devices-1280-details.png", 1500, "DetailsFold");
             ShotOpen("devices-1280-more.png", 1800, "TestMore");
@@ -1449,6 +1460,10 @@ namespace PadForge.Tests
                 vm.HasRawData = true;
                 vm.HasGyroData = vm.HasAccelData = vm.HasTouchpadData = false;
             });
+            // A keyboard's More: its script ID and its keys by the names
+            // scripts use (#600 item 26).
+            ShotOpen("devices-1280-keyboard-more.png", 1700, "TestMore");
+            PadForge.Common.Input.SettingsManager.UserDevices = keptDevices;
             // A joystick and a wheel, which draw their own kind in place of
             // the gamepad (owner, 2026-11-17).
             Shot("devices-1280-joystick.png", PageWidth, 1088, () =>

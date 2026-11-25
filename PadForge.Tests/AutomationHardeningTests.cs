@@ -332,9 +332,13 @@ namespace PadForge.Tests
             Assert.Contains("if (isTheAppsOwn || owner == null) return false;", libraries[AutomationLibraryKind.PowerShell]);
             Assert.Contains("pipe != PadForge.DefaultPipe && pipe != \"PadForge.Control\" && owner != \"\" && owner = PadForge.OwnUser()", libraries[AutomationLibraryKind.AutoHotkey]);
             // The owner is read before the first write: the PowerShell
-            // library reads only once it is checked.
+            // library's open checks it, and only the open's caller starts
+            // the pipe and says hello.
             string ps = libraries[AutomationLibraryKind.PowerShell];
-            Assert.True(ps.IndexOf("ServerIsPadForge($Pipe", StringComparison.Ordinal) < ps.IndexOf("$handle.Start()", StringComparison.Ordinal));
+            int check = ps.IndexOf("if (!handle.ServerIsPadForge(pipe))", StringComparison.Ordinal);
+            int start = ps.IndexOf("link.Start();", StringComparison.Ordinal);
+            int hello = ps.IndexOf("try { answer = Ask(hello); }", StringComparison.Ordinal);
+            Assert.True(check > 0 && check < start && start < hello, "check " + check + ", start " + start + ", hello " + hello);
         }
 
         [Fact]

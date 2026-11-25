@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Nadiskonekta ang {0}. Wala nang natitirang device ang {1}.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Nakakonekta ang {0}</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Nakakonekta ang {0}, baterya {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} device ang nadiskonekta</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} device ang nakakonekta</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} device ang nadiskonekta: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} device ang nakakonekta: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Paulit-ulit na nadidiskonekta ang {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (hanggang {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (hanggang {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-Reconnect, port, pairing identity, pagkonekta gamit ang address</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe stand-in</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Mga Port, Buong Bilis, Mga Custom Format</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Ibang assistant, mga assistant sa web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Tumingin sa paligid gamit ang head tracker o VR headset habang nasa mga button pa rin ang dalawang hinlalaki mo.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>I-map ang bilis, mga pedal at gear na ipinapadala ng isang laro sa pagmamaneho, gaya ng anumang input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Magpadala ng galaw ng controller sa mga emulator na nagbabasa ng DSU motion source.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ang ring, grid o bar ng isang menu habang bukas ito.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ang pangalan ng layer kapag nag-on ang isang shift layer, sa haba ng oras na itinakda ng layer na iyon.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ang pangalan ng profile kapag nagbago ang profile.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Kung ang mga virtual controller ay kaka-on o kaka-off lang, mula sa shortcut o isang macro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ang pangalan ng naka-map na device kapag nadiskonekta ito.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ang pangalan ng naka-map na device kapag kumonekta ito.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopyahin ang Address</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Maaaring magpalit ng profile at bitawan ito ang mga program, magsimula at huminto ng engine, mag-on at mag-off ng mga virtual controller, magpakita at magtago ng window, magsara ng PadForge, mag-save ng diagnostics snapshot at magtanong kung ano ang tumatakbo.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Lahat ng nasa Mga Command, at nakikita ng mga program ang mga device, virtual controller, mapping, profile at setting, nasusundan ang mga input ng bawat device habang nangyayari ang mga ito, at nakakapagpakita sila sa iyo ng isang lugar sa PadForge. Nakikita ng program na nasa Pagbasa ang bawat key na pinindot sa bawat device, pati ang mga key na tinipa sa mga window na tumatakbo bilang administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Lahat ng nasa Pagbasa, at maaaring magdagdag ng sarili nilang device ang mga program at patakbuhin ang mga ito, humawak ng kontrol ng alinmang device at magbigay ng mga pinangalanang value sa mga macro trigger.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Lahat ng nasa Pagpapadala ng Input, at maaaring baguhin ng mga program ang mga maaari mong baguhin sa mga page.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Lahat ng nasa Pagpapadala ng Input, at maaaring baguhin ng mga program ang mga maaari mong baguhin sa mga page. Ang ilang pagbabago ay palaging nagtatanong muna sa iyo sa question card ng PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Mga Assistant</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>I-paste ito sa MCP settings ng isang assistant. Makikipagtulungan na ang assistant sa PadForge sa antas sa itaas.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopyahin bilang TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Mga Assistant na Nagbabasa ng TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Inilalagay ng Idagdag ang PadForge, kasama ang skill nito, sa assistant na iyon. Gumagana na ito sa antas sa itaas, at lumalabas ang mga salita nito sa tabi ng itinuturo nito, sa ilalim ng pangalan nito.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Mga Script</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Script Library</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>I-save ang Library…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Isang file para sa AutoHotkey v2, Python o PowerShell. Ang script na naglo-load nito ay nagbabasa ng mga device at nagpapatakbo ng mga mapping sa antas sa itaas.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Isang file para sa AutoHotkey v2, Python o PowerShell, isinusulat kung saan mo piliin.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Naghihintay sa Iyo</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktibidad</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Wala pang program na tumatawag. Nakalista rito ang bawat tawag kasama ang kinalabasan nito.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>I-undo</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill para sa mga Assistant</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>I-save ang Skill…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>Hindi ito na-save ng PadForge: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Habang nakakonekta ang isang program na nasa Pagbasa o mas mataas, nakikita nito ang pinipindot sa bawat device, kasama ang mga keyboard.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Mga Plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Patakbuhin ang mga Plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Walang tumatakbong plugin.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Tumatakbo ang isang plugin gamit ang iyong mga karapatan, hindi ang sa PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Built-in</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Test Controller</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Isang controller na kumikilos nang mag-isa, isang kontrol sa bawat pagkakataon, para masubukan ang isang mapping nang walang hawak na hardware.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Bilis</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Mabagal</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Mabilis</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Pinakamabilis</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Pinapatugtog muli ang recording ng problema bilang mga device na gumawa nito, sa timing na mayroon sila. Mga bagong device ang mga ito sa PC na ito, na naka-map ayon sa pag-map mo o ng isang profile.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Mga recording ng problema|*.zip;*.log|Lahat ng file|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>Hindi mapatugtog ng PadForge ang {0}. Hindi ito recording ng problema, o wala itong input ng anumang device.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Mga Plugin Mo</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Ang plugin ay isang program na nagdaragdag ng mga device sa PadForge. Sinisimulan ito ng PadForge gamit ang iyong karaniwang mga karapatan tuwing tumatakbo ang engine.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Magdagdag ng Plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Mga program at script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Lahat ng file|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Aprubahan…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprubahan at I-restart…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Nagsisimula kasabay ng engine</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Sinusuri ang file bago magsimula</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Natapos na may code na {0}. Magsisimula muli sa loob ng {1} s.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>Nasa listahan na ang {0}.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>Nagpapatakbo ang PadForge ng hanggang 16 plugin. Mag-alis ng isa para makapagdagdag ng iba.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Mga tumatakbong plugin: {0}. Mga device na idinagdag nila: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Huminto ang {0} pagkatapos ng limang pagkabigo.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Nagbago ang {0} mula nang aprubahan mo ito.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Hindi masimulan ang {0}.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Idinagdag: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Nilagdaan ng {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Hindi nilagdaan.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Lumalabas dito ang mga setting nito habang tumatakbo ito.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Wala itong idinedeklarang setting.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>Hindi nabasa ng PadForge ang mga setting nito: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Tinapos pagkatapos ng isang minutong walang sagot</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Nagbago ang file nito habang tumatakbo ito</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Idinagdag ng {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Mga Setting ng {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Pumili</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Pumindot ng kontrol…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Walang napili</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Magdagdag ng plugin, o i-drop ang file nito sa page na ito. Ipinapakita ng PadForge ang path, ang lumagda at ang SHA-256 nito, at nagtatanong ito sa iyo bago ito tumakbo. Tumatakbo ang plugin sa mga karapatan mo, hindi sa mga karapatan ng PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Pinapatugtog muli ang recording ng problema bilang mga device na gumawa nito, sa timing nila.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Tumatakbo.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Tumatakbo, sa kamay.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Ano ang Gumagalaw</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Mga Stick at Trigger</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Mga Stick</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Mga Trigger</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Pattern</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Sweep</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Bilog</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Oras ng Galaw</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Oras ng Pahinga</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Pindutin ang mga Button</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Pindutin ang mga Button ng Nabigasyon</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Kumikilos ang mga Windows app sa A, B, Back, Start at D-pad ng virtual na Xbox controller sa window na nasa harap, at binubuksan ng Guide ang Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Paikutin ang D-Pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Sa parehong dahilan.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Oras ng Pindot</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Mga Controller</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Sa Kamay</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Itinitigil ang galaw. Itakda ang mga input nito sa ibaba gamit ang mouse.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Kaliwang Stick</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Kanang Stick</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Kaliwang Trigger</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Kanang Trigger</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Pagbasa Kada Segundo</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Ang plugin kit, at ang log ng plugin na pipiliin mo</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>I-save ang Plugin Kit…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Isang maliit na plugin sa C#, at ang parehong plugin para sa AutoHotkey, Python at PowerShell, bawat file ay may paliwanag kung paano ito i-build o patakbuhin.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Isang gabay sa bawat verb, event at uri ng setting, isang build script para sa C# plugin, at ang parehong plugin para sa AutoHotkey, Python at PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pumili ng plugin para makita ang log nito.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Wala pang laman ang log ng plugin na ito.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Isang game mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>May ibang program na may hawak ng pangalan ng pipe na {0}. Isara ang program na iyon.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Tinanggihan ng Windows ang pipe na {0}, kaya hindi makakonekta ang mga program.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Walang nakakonektang program.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Naka-on. Walang nakakonektang program.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Nakakonekta: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Hindi kilalang program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nilagdaan ng {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Wala nang karagdagan nito hangga't hindi muling nagsisimula ang PadForge</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Walang ganoong tool ang PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Mas lumang estado ang nabasa ng program</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Walang ganoong setting</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Walang may ganoong ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Wala sa saklaw ng setting ang value</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Hindi mo ito pinayagan</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Walang sumagot sa takdang oras</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Ipakita ang window</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Ipadala ang window sa system tray</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>I-minimize ang window</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>I-maximize ang window</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Isara ang PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Simulan ang engine</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ihinto ang engine</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Idagdag ang device na {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Itakda ang mga kontrol ng device {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Alisin ang device na {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Ibalik sa pahinga ang bawat kontrol ng device {0}</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Pinapatakbo ang isang program sa PadForge.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Nagbubukas ng file, folder o web page.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Pinapadala ng PadForge ang mga key o input ng mouse sa Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Nag-i-import ng profile mula sa labas ng PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>Nagtatanong ang PadForge sa iyo bago ito gawin ng isang program.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Mga Dialog</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Mga Macro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hawakan ang mga kontrol ng device {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Bitawan ang mga kontrol ng device {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Itakda ang value na {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Magpalit ng profile</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Simulan o ihinto ang engine</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>I-on o i-off ang mga virtual controller</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>I-save ang diagnostics snapshot</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Basahin ang polling rate at mga driver</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Ilista ang mga profile</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Basahin ang isang profile</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Ilista ang mga virtual controller</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Ilista ang mga device</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Basahin ang isang device</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Hintayin ang input mo</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Basahin ang mga mapping ng isang controller</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Ilista ang mga macro ng isang controller</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Mag-record ng problema</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Maghanap ng mga setting</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Basahin ang isang setting</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Ipakita sa iyo ang isang lugar</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Maghanap ng mga lugar sa PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Basahin ang isang lugar sa PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Basahin ang nakikita mo</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Magdagdag ng sarili nitong device</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Patakbuhin ang device nito</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Alisin ang device nito</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Humawak o bumitaw ng kontrol</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Magtakda ng value para sa mga macro trigger</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Magbago ng setting</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Pindutin ang isang button</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Gumawa ng profile</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Palitan ang pangalan ng profile</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Burahin ang profile</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Baguhin ang uri ng controller</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Mag-assign ng device</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Itakda ang mga mapping row</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>I-clear ang mga mapping row</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Awtomatikong i-map ang controller</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Mag-save ng macro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Burahin ang macro</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Gumagawa ng controller ng keyboard at mouse</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ino-on ang {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Baguhin ang “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Pindutin ang “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>Gusto ng {0} na ipakita sa iyo ang {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Sa {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Payagan ang {0} na makipagtulungan sa PadForge sa antas na {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>Pinapatakbo ng {0} ang {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Sinimulan ng {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Nilagdaan ng {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Hindi nilagdaan.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Sa Pagbasa at mas mataas, nakikita nito ang bawat key na pinindot sa bawat device, pati ang mga keyboard.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Isang beses lang itong nagtatanong. Maaari mo itong alisin sa page ng Awtomasyon.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>command line ng PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Itinatakda ang {0} sa {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Nakikinig sa network, kaya maaabot ng ibang device ang PC na ito.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Binabago ang isang driver o ang HidHide, na umaasa ang ibang program at laro.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Mga PowerShell Module (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Payagan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Huwag Payagan</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Huwag Muna</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Ipakita</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Hakbang {0} sa {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>I-click ito para magpatuloy.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Buksan ang {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Buksan ang Higit pa.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mula sa {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mula sa {1}, na tinatawag ang sarili nitong “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mula sa program na tinatawag ang sarili nitong “{0}”</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>I-install at i-restart</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Release notes</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database ng Controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Dina-download ng I-update Ngayon ang database ng controller ng komunidad (SDL_GameControllerDB) mula sa GitHub at itinatago, sa settings file, ang mga mapping na kulang sa bersyong ito ng PadForge. Ginagamit lang ang bagong mapping para sa controller na wala nang ibang nagbabasa bilang gamepad, na hindi naka-assign at wala sa Raw Joystick Mode na pinilit. Inaalis ng reset ang bawat na-download na mapping.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Dina-download ng I-update Ngayon ang database ng controller ng komunidad (SDL_GameControllerDB) mula sa GitHub at itinatago, sa settings file, ang mga mapping na kulang sa bersyong ito ng PadForge. Ginagamit agad ang mga ito. Ginagamit lang ang bagong mapping para sa controller na wala nang ibang nagbabasa bilang gamepad, na hindi naka-assign at wala sa Pilitin ang Raw Joystick Mode. Inaalis ng reset ang bawat na-download na mapping. Nananatili ang sarili mong mga row, sa ilalim ng Higit pa.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>I-update Ngayon</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Nag-a-update…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Tumitingin ng mga update…</value></data>
@@ -994,12 +1049,10 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Hindi natapos ma-install ang update sa PadForge {0}. I-install ito mula sa Settings para subukan muli.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>Na-update ang PadForge sa {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Built-in: {0} mapping, kopya ng komunidad noong {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built-in: {0} mapping, kopya ng komunidad noong {1}. Na-update noong {2}: {3} bago, {4} nabago.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Built-in: {0} mapping, kopya ng komunidad noong {1}. Na-download noong {2}: {3} bagong row, {4} nabago.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Walang nagbago sa database ng komunidad mula sa huling update.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Hindi maabot ang GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Tinanggihan ng PadForge ang download dahil hindi ito ang database ng controller na inaasahan nito. Walang nagbago.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Gagamitin ang bagong mapping sa susunod na pagkonekta ng controller nito.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Gagamitin ang nabagong mapping sa susunod na pagsisimula ng PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Magsimulang naka-minimize</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Magsimula sa pag-login</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Impormasyon ng bersyon, at pag-log ng mga event ng engine para sa pag-troubleshoot.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Magtago ng diagnostics log</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Tuloy-tuloy na isinusulat ang mga event ng engine sa diagnostics.log sa log folder, na binubuksan ng Open Log Folder. Nananatiling naka-enable kahit mag-restart. Kapag umabot sa 8 MB ang file, ililipat ito sa diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>I-save ang snapshot</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Sine-save ang pinakabagong mga event ng engine sa bagong file. Gumagana kahit naka-off ang diagnostics log.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Mag-save ng Snapshot…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Kinukuha ang app, Windows, ang mga device at setting mo sa kasalukuyan, kasama ang pinakabagong mga event ng engine, at bubuksan ang mga ito para mabasa mo bago mo i-save. Gumagana kahit naka-off ang diagnostics log.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Buksan ang folder ng log</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Mag-record ng Problema</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Simulan ang Pag-record</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Ihinto ang Pag-record ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nagre-record hanggang sa Ihinto ang Pag-record, 10 minuto o 20 MB na zip, tapos pinipili ang zip sa Explorer, handa nang ilakip sa ulat.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Magsimula, pangyarihin ang problema, tapos ihinto. Isang file sa tabi ng PadForge ang may lahat ng binasa, ipinadala at itinala ng PadForge, kasama ang buod ng nagkamali. Nasa file ang bawat key at button na pinindot sa bawat device habang nagre-record, pati ang mga keyboard at mouse. Pinapalitan ang mga username, serial number, address at tinipang pangalan bago isulat ang anuman.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nagre-record hanggang sa Ihinto ang Pag-record, 30 minuto o 20 MB na zip, tapos bubuksan ang recording para mabasa mo bago mo i-save.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Magsimula, pangyarihin ang problema, tapos ihinto. Pagkatapos ay basahin ang laman nito, bahagi por bahagi, at i-save kung saan mo gusto. Nasa loob nito ang bawat key na pinindot sa bawat device habang nagre-record, pati ang mga keyboard at mouse. Pinapalitan ang mga username, serial number, address at tinipang pangalan bago isulat ang anuman.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Isinusulat ang buod…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Na-save ang {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Hindi nagsimula ang pag-record. May nakitang pribadong value ng PC na ito na hindi maitatago sa file.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Hindi nagsimula ang pag-record. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Tinatapos pa ang huling recording.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Naka-off ang Itago ang Huling 60 Segundo, kaya walang mase-save.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Natapos ang recording na hindi pa naihinto ng PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Naghihintay sa iyo sa Home na basahin ang recording na hindi pa naihinto ng PadForge: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Itago ang Huling 60 Segundo</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Habang tumatakbo ang engine, itinatago sa memory ang huling minuto ng laman ng isang recording, para sa problemang isang beses lang dumarating kada gabi. Isinusulat ito bilang file ng I-save ang Huling 60 Segundo.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Habang tumatakbo ang engine, itinatago sa memory ang huling minuto ng laman ng isang recording, para sa problemang isang beses lang dumarating kada gabi. Binubuksan ito ng I-save ang Huling 60 Segundo para mabasa mo bago mo i-save.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>I-save ang Huling 60 Segundo</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Isulat ang mga Tinipang Letra at Numero bilang Iisang Key</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Isinusulat ng recording ang mga key ng letra at numero na hindi binabasa ng anumang mapping o macro bilang iisang key, bawat pindot sa sarili nitong oras. Ang bawat ibang key, at ang bawat key na binabasa ng mapping o macro, ay isinusulat na pinindot.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Itago ang Huling 60 Segundo, Isulat ang mga Tinipang Letra at Numero bilang Iisang Key</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Ano ang ire-record, ang huling 60 segundo, mga tinipang letra</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Mag-save ng Snapshot</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>Ang PadForge, Windows, ang mga device at setting mo sa kasalukuyan, sa parehong pagsusuri.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log sa tabi ng PadForge.exe, na mababasa mo roon.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ano ang Ire-record</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Lahat ay naka-on. Ang bahaging pinatay ay hindi isasama sa susunod na recording, at sinasabi ng file kung aling mga bahagi ang laman nito.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Para sa problemang isang beses lang dumarating kada gabi.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Naghihintay ang recording na basahin mo ito sa Home.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Buod</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Mga Setting at Device</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Feedback</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Timing</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Window at mga Error</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Aktibidad</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Mga Linya ng Diagnostics</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Basahin ang Recording Mo</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} hanggang {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Snapshot noong {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minuto</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minuto</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 segundo</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} segundo</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Inihinto mo.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Kusang huminto sa {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Kusang huminto sa {0} sa zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Inihinto ng isang macro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Inihinto ng isang program o ng --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Inihinto ng assistant na nagsimula nito.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Huminto nang magsara ang PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Ang huling 60 segundo, nakatago sa memory.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Basahin ang ibabahagi mo. I-off ang isang bahagi para hindi ito isama, tapos i-save. Walang lumalabas sa PC na ito maliban kung ipo-post mo.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, kung paano ito ibabahagi</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Ipakita ang {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>hindi isinama</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>hindi na-record</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} bilang text, {1} sa zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} bilang text, {1} sa zip na ibabahagi mo. Humihinto ang recording sa {2} sa zip o pagkalipas ng {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Scrub check: pinalitan ng PadForge ang {0} mula sa {1}. Walang pangalan, serial o address ng PC na ito sa mga bahaging itinatago mo.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} value</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 value</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} pribadong uri</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 pribadong uri</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Scrub check: {0} sa sariling value ng PC na ito ang nasa mga bahaging itinatago mo pa rin. I-off ang mga bahaging iyon o burahin ang recording. Mananatiling naka-off ang I-save hanggang noon.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Scrub check: isa sa sariling value ng PC na ito ang nasa mga bahaging itinatago mo pa rin. I-off ang mga bahaging iyon o burahin ang recording. Mananatiling naka-off ang I-save hanggang noon.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Walang nangyari sa bahaging ito habang nagre-record.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Burahin</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopyahin ang Buod</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Nakopya</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>I-save…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>I-save ang Recording</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Mga zip file</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Hindi na-save. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Sine-save bilang ikaw, sa folder ng Downloads mo sa unang pagkakataon, tapos sa huling pinag-saveng lugar, at ipinapakita sa File Explorer. Ang recording na humihinto habang walang nasa page (ang limitasyon nito, isang macro, isang program, ang assistant tool o --record stop) ay naghihintay ng pagsusuring ito sa Home, at binubura pagkalipas ng 7 araw kung hindi na-save. Sinasabihan ang isang program na naghihintay ito, ngunit hindi kung saan.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Naghihintay sa iyo ang recording ng problema mula {0} para basahin.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Suriin</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Markahan ang Recording</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Bersyon ng app</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Bersyon ng SDL</value></data>
@@ -2888,31 +2998,64 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scroll ng Mouse</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posisyon ng Mouse X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posisyon ng Mouse Y</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity ng cursor kada source. Ang 1.0 ay umaabot sa buong deflection ng stick sa 10% ng lapad ng screen mula sa gitna. Ang mga halagang mas mataas sa 1.0 ay umaabot sa buong deflection nang mas maikli ang galaw ng cursor. Ang mga halagang mas mababa sa 1.0 ay nangangailangan ng mas marami.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensitivity ng cursor kada source. Ang 1.0 ay umaabot sa buong deflection ng stick sa 10% ng lapad ng monitor ng pointer mula sa gitna nito. Ang mga halagang mas mataas sa 1.0 ay umaabot sa buong deflection nang mas maikli ang galaw ng cursor. Ang mga halagang mas mababa sa 1.0 ay nangangailangan ng mas marami.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Galaw ng Mouse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Galaw ng Mouse Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Layo Hanggang Full Lock</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Gaano kalayo gumagalaw ang mouse mula sa gitna hanggang full lock, sa mga count na iniuulat ng mouse. Mas pino ang pagpipihit kapag mas mataas ang numero, at mas malaking galaw ng kamay ang kailangan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Gaano kalayo gumagalaw ang mouse o ang wheel mula sa gitna hanggang full lock, sa mga count na iniuulat nito. Mas pino ang pagpipihit kapag mas mataas ang numero, at mas malaking galaw ng kamay ang kailangan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Kapag naitakda ang DPI ng mouse sa panel ng device nito, ipinapakita rin ang layo sa sentimetro.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>count</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centering</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Iniiwan ng Naka-off ang wheel kung saan ito iniwan ng kamay. Ibinabalik ito ng Spring sa loob ng Oras ng Pagbalik. Hinihila ito ng Mula sa Telemetry gaya ng gagawin ng mga gulong sa harap ng kotse sa bilis at kapit ng laro: tahimik kapag nakahinto, mas matigas habang bumibilis, magaan kapag dumudulas ang mga gulong. Kapag walang larong nagpapadala ng telemetry, ito ang spring. Hinahayaan ng Mula sa Force ng Laro na ang sariling force feedback ng virtual wheel ang magpihit nito.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Iniiwan ng Naka-off ang wheel kung saan ito iniwan ng kamay. Ibinabalik ito ng Spring sa loob ng Oras ng Pagbalik. Hinihila ito ng Mula sa Telemetry gaya ng ginagawa ng manibela ng kotse sa bilis at kapit ng laro: matarik malapit sa gitna at mas banayad sa malayo, tahimik kapag nakahinto, mas matigas habang bumibilis, magaan kapag dumudulas ang mga gulong. Kapag walang larong nagpapadala ng telemetry, humihila ito na parang nasa 100 km/h sa tuyong kalsada. Hinahayaan ng Mula sa Force ng Laro na ang sariling force feedback ng virtual wheel ang magpihit nito.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Naka-off</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Mula sa Telemetry</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Mula sa Force ng Laro</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Oras ng Pagbalik</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Gaano katagal ibabalik ng Spring ang wheel nang 95% ng daan pabalik. Ganito katagal ito sa Mula sa Telemetry sa 100 km/h sa tuyong kalsada.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Gaano katagal ibabalik ng Spring ang wheel nang 95% ng daan pabalik. Agad itong isinasentro ng 0. Ganito katagal ito sa Mula sa Telemetry mula malapit sa gitna sa 100 km/h sa tuyong kalsada.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Magpihit</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Hinahayaan ng Palagi na magpihit ang mouse sa lahat ng oras. Hinahayaan ng Habang Hawak na magpihit ito habang hawak lang ang Input ng Pagpipihit. Ino-on o ino-off ng I-toggle ang pagpipihit sa bawat pindot ng Input ng Pagpipihit. Habang hindi nagpipihit ang mouse, nananatili ang wheel kung nasaan ito o bumabalik sa gitna, kaya makakapagpihit at makakatingin sa paligid ang iisang mouse.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Hinahayaan ng Palagi na magpihit ang mouse sa lahat ng oras. Hinahayaan ng Habang Hawak at Gitna na magpihit ito habang hawak lang ang Input ng Pagpipihit, tapos ibinabalik ito sa gitna, nang may Centering kung mayroon ito ang source at agad kung wala. Hinahayaan ng Habang Hawak at Manatili na magpihit ito habang hawak lang ang input at iniiwan kung saan ito binitawan. Ino-on o ino-off ng I-toggle ang pagpipihit sa bawat pindot ng Input ng Pagpipihit. Kaya makakapagpihit at makakatingin sa paligid ang iisang mouse.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Palagi</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Habang Hawak</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Habang Hawak at Gitna</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>I-toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input ng Pagpipihit</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button na nagpapahintulot sa mouse na magpihit, sa parehong device ng galaw ng mouse. Kapag walang napili, palaging nagpipihit ang mouse.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ang button na nagpapahintulot sa mouse na magpihit, sa parehong device ng source. Kapag walang napili, palaging nagpipihit ang mouse.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Smoothing</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Pinapantay ang mouse na hindi pantay mag-ulat. Nahuhuli ang wheel sa kamay nang ganito katagal. Naka-off ang 0.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Pinapantay ang mouse na hindi pantay mag-ulat. Nahuhuli ang stick sa kamay nang ganito katagal. Naka-off ang 0.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock sa Bilis</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Kapag naka-on ang Game Telemetry, kung gaano karami ng lock ang natitira sa 200 km/h. Sa 100%, buo ang lock sa bawat bilis.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Layo ng Wheel</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Layo ng Wheel Patagilid</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Gaano kabilis gumagalaw ang mouse. Bumibitaw kapag huminto ang kamay.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Kung nasaan ang pointer sa monitor nito, mula sa gitna nito o mula sa kinaroroonan nito nang magsimula ang pagpipihit.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Gaano kalayo ang naigalaw ng mouse, hawak kung saan iniwan ng kamay, gaya ng wheel.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Mga notch ng scroll na hawak bilang posisyon, sa buong precision sa wheel na pino ang pag-scroll.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Mga notch ng pahalang na wheel na hawak bilang posisyon, sa buong precision sa wheel na pino ang pag-scroll.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Isang tulak sa bawat notch, bumabalik agad sa pahinga.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Habang Hawak at Manatili</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Gaano karami ng stick ang ibinibigay ng isang bilis. Sa 1.00, umaabot ang stick sa buong deflection sa 16,000 count kada segundo, sa bawat polling rate at report rate ng mouse.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Balik sa Gitna</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Kapag bumagal o huminto ang mouse, bumabalik ang stick nang hindi mas mabilis kaysa rito. Hinahayaan ng 0 na bumalik ito kasabay ng mouse.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Magsimula Kung Saan Nagsimula ang Pagpipihit</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Kapag may Input ng Pagpipihit, sumusukat ang stick mula sa kinaroroonan ng pointer nang magsimula ang pagpipihit, gaya ng stick sa screen ng telepono na nagsisimula kung saan dumapo ang daliri. Kapag naka-off, sumusukat ito mula sa gitna ng monitor ng pointer.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Relatibong gumagalaw ang axis na ito</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Para sa trackball o spinner na nag-uulat kung gaano kalayo ang naikot nito. Kapag naka-on, humahawak ang axis ng posisyon gaya ng ginagawa ng Mouse Travel at tinatanggap nito ang mga setting ng galaw. Hindi sinasabi ng Windows kung aling mga axis ang gumagalaw nang ganito.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ipinapakita kung paano sinusundan ng pamilyang ito ang sarili mong mouse. Walang namamapa hangga't hindi mo ito pinipili.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Nagpi-preview. Igalaw ang mouse mo.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Nakahawak sa {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Nasa {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% sa kanan</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% sa kaliwa</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% pataas</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% pababa</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>gitna</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Gumagalaw habang hawak ang {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI ng Mouse</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Ang mga count na iniuulat ng mouse na ito sa bawat pulgadang nilalakbay nito, ayon sa software ng gumawa nito.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Kapag naitakda ang DPI, ipinapakita rin ng Mouse Travel ang layo nito sa sentimetro. Ang 0 ay hindi pa nakatakda.</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Liwanag ng IR</value></data>
   <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Pagpisil sa Ring-Con</value></data>
   <data name="Mapping_RingConPull" xml:space="preserve"><value>Paghila sa Ring-Con</value></data>
@@ -4455,6 +4598,7 @@ May kopya ng nakaraang bersyon sa folder na ito: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Mga on-screen na indicator na ipinapakita ng PadForge habang naglalaro ka. Ang pag-off sa isa ay hindi kailanman nagbabago ng behavior, kung ipinapakita lang ito.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift Layer Flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile Switch Overlay</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Pag-on o Pag-off ng mga Controller</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Abiso sa Pag-disconnect ng Device</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Abiso sa Pagkonekta ng Device</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ipakita ang on-screen ring o grid habang naka-engage ang radial o touch menu. Gumagana pa rin ang mga menu kahit naka-off ang overlay.</value></data>
@@ -5121,6 +5265,8 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Off</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Kulay ng Lightbar</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Mga Offline na Device</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Nakakonekta lahat</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>naka-off</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>sa pamamagitan ng Logitech Gaming Software</value></data>
@@ -5163,6 +5309,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Ipinapakita ng screen ang larawang pipiliin mo, sa sarili nitong laki. Ang larawang mas malaki kaysa sa screen ay nagpapakita ng bintana na kasinlaki ng screen, na inililipat ng macro na I-pan ang Larawan ng Screen ng Keyboard. Sa S.T.R.I.K.E. 7, nililipat din ito ng daliring hinihila sa screen.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Ipinapakita ng screen ang stopwatch, na sinisimulan, ipinapause, at ni-reset ng macro na Stopwatch. Iisang stopwatch ang ipinapakita ng bawat screen.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Ipinapakita ng screen ang kulay ng lightbar ng DualShock 4 o DualSense sa pinakamababang slot na pinapakain ng screen na ito, o sa pinakamababang slot sa lahat kapag wala itong pinapakain. Ipinapakita ng monochrome na screen ang liwanag nito bilang dot pattern. Hangga't walang kulay na umaabot sa lightbar, walang ipinapakita ang PadForge.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Inililista ng screen ang mga naka-map na device na hindi nakakonekta, ayon sa mga pangalang ipinapakita ng page ng Mga Device, at sinasabi nitong Nakakonekta lahat kapag walang kulang.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Mga Larawan (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Lahat ng File (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Pan</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Pan X</value></data>
@@ -5359,6 +5506,7 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Nagmamaneho (Hindi 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Game Telemetry</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Script Value</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Koneksyon ng Device</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Bilis (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% ng Max)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gear (-1 Reverse, 0 Neutral)</value></data>
@@ -5525,4 +5673,231 @@ Gusto mo bang i-uninstall na ang mga ito ng PadForge ngayon? Nangangailangan ito
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Pag-record ng Problema</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Simulan o Ihinto ang Pag-record</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markahan ang Recording</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Inililista ng overlay ang mga naka-map na device na hindi nakakonekta, ayon sa mga pangalang ipinapakita ng page ng Mga Device, at sinasabi nitong Nakakonekta lahat kapag walang kulang.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Naka-off. Walang program na makakaabot sa PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} at {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Aktibidad ng PadForge: {0} tawag, mula sa pinakaluma. Mga tawag bago ang mga ito: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Aktibidad ng PadForge: {0} tawag. Mga tawag bago nito: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} mas lumang tawag ang nawala. Pinapanatili ng Aktibidad ang pinakabagong {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} mas lumang tawag ang nawala. Pinapanatili ng Aktibidad ang pinakabagong {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>I-export…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>I-export ang Aktibidad</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Text file</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Buksan</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>I-update</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Higit pa para sa {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>I-save ang Skill bilang ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Buksan ang Settings File Nito</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Na-save. Sa {0}, idagdag ang {1} sa ilalim ng {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>Wala pang settings file ang {0}. Gagawa nito ang Idagdag.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>Walang nakitang assistant program ang PadForge sa PC na ito na may dokumentadong setup sa Windows ang gumawa nito. Gumagana ang Copy Settings sa ilalim ng Higit pa sa alinmang iba pa.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>Hindi masuri ng PadForge ang mga assistant program: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Hindi pa naidagdag.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Naidagdag.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Naidagdag. Nakakonekta ngayon.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Naidagdag. Hindi pa ito nakakonekta mula noon. Nakikita ng assistant na nakabukas ang PadForge pagkatapos itong isara at buksan muli.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Naidagdag para sa ibang PadForge. Itinuturo ito ng I-update sa isang ito.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Naidagdag. Mas luma ang skill nitong PadForge kaysa sa PadForge na ito.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Naidagdag, nang wala ang skill nitong PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Naidagdag. Ang skill nitong PadForge ay mula sa mas bagong PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Tumatanggap ito ng mga skill sa pamamagitan lang ng upload.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Maaabot ng mga naidagdag na assistant ang PadForge kapag naka-on ang Awtomasyon.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Idinaragdag…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Inaalis…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ina-update…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Hindi ito natapos: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Nakopya.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Hindi nakopya: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Mga Pinayagang Program</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ang program na gustong magkaroon ng Pagbasa o higit pa ay nagtatanong nang isang beses, sa unang pagkakataong kumonekta ito, at nakukuha ang antas na hinihingi nito, hanggang sa antas sa itaas. Pinapayagan na ng pagdaragdag sa itaas ang isang assistant.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Nakakonekta ngayon.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Huling ginamit {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Hindi pa nagagamit.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Nakakonekta: {0}. I-click para buksan ang Awtomasyon.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Sa PC na ito: {0}. Mula sa web: {1}. I-click para buksan ang Awtomasyon.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Nakakonekta mula sa web: {0}. I-click para buksan ang Awtomasyon.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL Mapping</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Isang gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Isang joystick. Walang mapping ang SDL para rito.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Isang joystick. Binabasa ito ng PadForge nang raw, kaya hindi ginagamit ang mapping ng SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Isang joystick, na inilatag bilang gamepad ng row mo.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>Nagbabasa ng mga device ang SDL habang tumatakbo ang engine.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ang kopya ng komunidad na kasama na, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Na-download noong {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Sariling file ng PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Sa iyo, idinagdag noong {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ang variable na SDL_GAMECONTROLLERCONFIG, na inuuna ng SDL kaysa sa anumang row na idagdag mo</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopyahin ang SDL Mapping</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Inilalagay sa clipboard ang mapping ng device bilang row ng community database, sa ilalim ng ID ng device na may checksum at version na naka-zero.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>I-paste ang SDL Mapping…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Kumukuha ng row para sa device na ito, sinusuri ito, itinatago bilang iyo at agad na ina-apply.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Maghanap ng Mapping…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Hinahanap ayon sa pangalan ang bawat row na dala ng PadForge at ina-apply ang piniling row sa device na ito, para sa clone na magkaiba ang mga ID.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Manghula ng Layout</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Humuhula ng layout ng gamepad mula sa mga axis, button at hat ng device, para sa device na walang database na nakakakilala. Suriin ito sa Subukan ang mga Input.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Alisin ang Akin</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Ibinabalik ng Alisin ang Akin ang dating row at ang mga row ng controller.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>I-map Muli</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Ginagawang muli ang mga row ng device sa bawat controller na kinaroroonan nito mula sa layout ng SDL, gaya ng ginagawa ng pag-assign dito.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Page ng Community Database</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Ang row, at kung saan ito naiiba sa {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Ang row</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Row ng {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Input nito ngayon</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Sabi ng row ng SDL</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>wala sa row ng SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, naiiba</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Hindi ginagamit ng PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Ang row</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Nakopya.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Nakopya. Hindi kayang maglaman ng {0} ang anyo ng SDL.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>mga macro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>mga curve</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>mga dead zone</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>mga output ng keyboard at mouse</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, mga toggle at iba pang aksyon</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} at {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Walang makokopya: walang mapping ang SDL para sa device na ito, at wala ito sa anumang controller.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Ginagamit ng ibang program ang clipboard. Walang nakopya.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Naalis ang row mo. Binabasa ang device gaya ng dati.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Na-map muli mula sa layout ng SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Ginagamit na ngayon. Sa iyo ang row at ito ang nananaig para sa device na ito.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Itinago bilang iyo. Gagamitin ito kapag tumatakbo na ang engine at nakakonekta ang device.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Itinago bilang iyo, ngunit may row para sa device na ito ang variable na SDL_GAMECONTROLLERCONFIG, na inuuna ng SDL kaysa sa iyo.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Hindi tinanggap ng SDL ang row. Walang nagbago para sa device na ito.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Mag-paste ng SDL Mapping</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Mag-paste ng SDL Mapping para sa {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Maghanap ng Mapping para sa {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Manghula ng Layout para sa {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Magdagdag ng mga Row Mula sa File o Clipboard</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>I-paste</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Magbukas ng File…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Mga mapping file (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Mahigit 4 MB ang file. Mga 0.6 MB ang buong file ng komunidad.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Maghanap ayon sa pangalan, ID o VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Mga row na dala ng PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Walang tumutugmang row.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ina-apply ang piniling row sa {0} sa sarili nitong ID, sa parehong pagsusuri at parehong pagpili gaya ng I-paste.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Row ng SDL mapping</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Row para sa device na ito.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Isang hinulaang layout.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} field, tugma ang ID nito sa device na ito.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} field, mula sa parehong vendor at produkto sa ibang bus o bersyon. Itinatago ito sa ilalim ng sariling ID ng device na ito.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} field, row ng ibang device. Itinatago ito sa ilalim ng sariling ID ng device na ito.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} field. Hindi binabasa ng SDL ang device na ito, kaya inilalatag ng PadForge ang mga input nito ayon sa row.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} field, mula sa mga axis, button at hat ng device. Suriin ito sa Subukan ang mga Input, tapos itago o baguhin dito.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} field, tugma ang ID nito sa device na ito.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} field, mula sa parehong vendor at produkto sa ibang bus o bersyon. Itinatago ito sa ilalim ng sariling ID ng device na ito.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} field, row ng ibang device. Itinatago ito sa ilalim ng sariling ID ng device na ito.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} field. Hindi binabasa ng SDL ang device na ito, kaya inilalatag ng PadForge ang mga input nito ayon sa row.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} field, mula sa mga axis, button at hat ng device. Suriin ito sa Subukan ang mga Input, tapos itago o baguhin dito.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Binabago nito kung paano binabasa ang {0}. Ang mga row nito sa {1} ay imamapa muli mula sa bagong layout.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Binabago nito kung paano binabasa ang {0}. Wala ito sa anumang controller, kaya walang row na magbabago.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Pinapanatili ng mga shortcut ng profile na bumabasa sa {0} ang mga input na itinakda sa kanila.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Itinatago ang row bilang iyo sa PadForge.xml at nananaig ito sa bawat ibang pinagmulan para sa device na ito. Ibinabalik ng Alisin ang Akin ang lumang row at ang mga lumang row.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Itinatago ang mga row bilang iyo sa PadForge.xml at nananaig ang mga ito para sa kanilang mga device sa bawat ibang pinagmulan. Inaalis ang mga ito ng I-clear, sa ilalim ng Higit pa ng row ng Database ng Controller.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} row para sa Windows. Lalaktawan ang {1} para sa ibang system.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row para sa Windows. Lalaktawan ang {1} para sa ibang system.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ang tinanggihan. Ang una: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Mag-paste ng row, o ng text ng file na gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Hindi row ng controller database ng SDL ang text: isang ID na may 32 hex digit, isang pangalan, tapos mga field gaya ng a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Para sa ibang system ang mga row. Binabasa ng PadForge ang mga row para sa Windows, o para sa walang partikular na system.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Hindi sa isang device ang ID ng row. Kailangan nito ng 32 hex digit.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Walang laman ang pangalan ng row, mahigit 128 character, o may character na binabasa ng SDL bilang field.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>May hint o Android field ang row, na hindi tinatanggap ng PadForge.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>May field ang row na hindi alam ng SDL.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Wala sa anyo ng SDL ang isang binding, gaya ng b3, a2, +a2, a2~ o h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Dalawang beses na ibinigay ng row ang isang field.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Mahigit 1,024 character ang row.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Walang kontrol na ibinibigkis ang row.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Mga Row Mo</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Mga Row Mo</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ang mga row na idinagdag mo rito, o na-paste mo sa SDL Mapping card ng isang device, ay nananaig para sa kanilang mga device sa bawat ibang pinagmulan at nananatili sa reset.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Magdagdag ng mga Row Mula sa File o Clipboard…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} row, sa iyo at nananaig sa bawat ibang pinagmulan para sa kanilang mga device.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} row, sa iyo at nananaig sa bawat ibang pinagmulan para sa device nito.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Wala pa.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ginagamit agad.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>I-on</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Mga Assistant sa Web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Wala</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Address na Ipa-paste Ko</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Nagsisimula, sa mga karapatan mo.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Tumatakbo, sa mga karapatan mo. Hindi nagbabago ang address nito sa bawat simula.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Tumatakbo, sa mga karapatan mo. Kumukuha ng bagong address ang quick tunnel sa bawat simula, kaya kailangang idagdag muli ang assistant.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Nakahinto.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Nakahinto. Ang huli nitong sinabi: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Hindi ito masimulan.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Wala na ito sa PC na ito.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Walang nakitang tunnel program sa PC na ito. Gumagana ang PadForge sa cloudflared, devtunnel, ngrok at Tailscale Funnel, o sa address ng sarili mong tunnel.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pumili ng tunnel para bigyan ang PadForge ng pampublikong address.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Nasa PC na ito rin: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, na hindi nagbabago ang address</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, na ang mga quick tunnel ay kumukuha ng bagong address sa bawat pagkakataon</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Patakbuhin ang sarili mong tunnel papunta sa http://127.0.0.1:{0} at i-paste ang https address nito. Pinapanatili ang address ng named na Cloudflare tunnel, persistent na dev tunnel, Tailscale Funnel at sariling domain ng ngrok.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Mag-paste ng https address na walang path maliban sa /mcp, ayon sa bigay ng tunnel mo.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Sinisimulan ang web helper ng PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Huminto ang web helper ng PadForge ({0}). I-off at i-on ang Reach PadForge From the Web para simulan itong muli.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Wala pang pampublikong address.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Idagdag sa Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Nakopya.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Tumanggap ng Bagong Web Assistant</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Magsimulang Tumanggap</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Ihinto ang Pagtanggap</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Tumatanggap hanggang {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Hindi tumatanggap. Binubuksan ito ng Magsimulang Tumanggap sa loob ng limang minuto.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Idagdag ang address sa assistant at mag-sign in. Bawat sign-in ay may sariling anim na digit na code sa sign-in page nito at sa question card ng PadForge. Payagan lang kapag magkatugma ang dalawang code. Sa ibang pagkakataon, tinatanggihan ang sign-in at walang nagtatanong sa iyo.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Pinayagan sa Web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Wala pa.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Bumalik ang sign-in nito sa {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Tinatawag nito ang sarili na {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Pinayagan {0}, huling ginamit {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Pinayagan {0}, hindi pa nagagamit.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Bawiin</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Direktang pinapatakbo ng sarili nitong Secure MCP Tunnel ang PadForge, nang walang address o sign-in dito. Kopyahin ang command sa setup ng tunnel na iyon.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopyahin ang Command</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>Walang dina-download na tunnel program ang PadForge at walang itinatagong key ng ibang kumpanya. Gumagana ang web assistant sa antas sa itaas.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Payagan ang {0} na makipagtulungan sa PadForge mula sa web?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Bumabalik ang sign-in nito sa {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Tinatawag nito ang sarili na {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Payagan lang kung ipinapakita ng sign-in page nito ang code na ito:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Ang anim na digit na code nito ay lumalabas sa question card ng PadForge. Payagan lang kung ipinapakita ng sign-in page nito ang parehong code.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Gumagana ito sa {0}, sa pamamagitan ng {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Bumabalik ang sign-in nito sa PC na ito, at maaaring angkinin ng anumang program dito ang address na iyon.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Mag-sign in sa PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>Hinihiling ng {0} na makipagtulungan sa PadForge sa PC mo.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Tinatawag nito ang sarili na {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Sa PC mo, nagtatanong ang question card ng PadForge tungkol sa sign-in na ito. Payagan lang doon kung ipinapakita ng card ang code na ito:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Awtomatikong magpapatuloy ang page na ito kapag sumagot ka sa PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Bumabalik ang sign-in na ito sa isang program sa PC mo, at maaaring angkinin ng anumang program doon ang address na iyon.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>Hindi tumatanggap ng bagong web assistant ang PadForge ngayon. Sa PC mo, buksan ang PadForge, pumunta sa Mga Extra, Awtomasyon, at sa ilalim ng Mga Assistant sa Web pindutin ang Magsimulang Tumanggap. Pagkatapos ay mag-sign in muli.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Hindi na maaaring magpatuloy ang sign-in na ito. Idagdag muli ang address ng PadForge sa assistant at mag-sign in.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Tapos na ang sign-in na ito. Mag-sign in muli mula sa assistant.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>hindi ito sinimulan ng Windows</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>natapos ito sa code na {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Naka-off ang Awtomasyon, kaya walang web assistant na makakaabot sa PadForge. Magsisimula ang web helper kapag naka-on ang Awtomasyon.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Sinusuri…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Hindi naka-install.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Naka-install at napapanahon. Nagsisimula ang script sa {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Naka-install para sa {0} at napapanahon. Nagsisimula ang script sa {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Naka-install. May mas bagong kopya ang PadForge na ito.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Naka-install para sa {0}. May mas bagong kopya ang PadForge na ito.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Ini-install…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>Hindi ito masuri ng PadForge: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Inilalagay ng I-install ang library ng PadForge kung saan ito mahahanap ng wikang iyon. Ang script na naglo-load nito ay nagbabasa ng mga device at nagpapatakbo ng mga mapping sa antas sa itaas.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Mag-save ng library kahit saan</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Mga Naka-install na Kopya</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Alisin Lahat</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Naalis.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Script ID nito</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Pinapangalanan ng mga script ang mga kontrol nito na {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Pinapangalanan ng mga script ang mga key nito na KeyA, KeySpace, KeyLeftShift at iba pa, at bawat key ayon sa code nito, Vk0 hanggang Vk255.</value></data>
 </root>

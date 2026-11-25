@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} се разкачи. {1} няма останало устройство.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} се свърза</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} се свърза, батерия {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Разкачени устройства: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Свързани устройства: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} устройства се разкачиха: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} устройства се свързаха: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} непрекъснато се разкачва</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автоматично повторно свързване, порт, идентичност при сдвояване, свързване по адрес</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, заместник DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портове, Пълна скорост, Персонализирани формати</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, умение</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Други асистенти, асистенти в уеб</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Оглеждайте се с проследяващо устройство за глава или VR шлем, докато палците ви остават на бутоните.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Съпоставяйте скоростта, педалите и предавките, които изпраща една състезателна игра, като всеки друг вход.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Изпращайте движението на контролера към емулатори, които четат източник на движение DSU.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Пръстенът, мрежата или лентата на менюто, докато е отворено.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Името на слоя, когато слоят се включи, за времето, което слоят задава.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Името на профила, когато профилът се смени.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Дали виртуалните контролери току-що са се включили или изключили, от клавишната комбинация или от макрос.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Името на съпоставено устройство, когато се разкачи.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Името на съпоставено устройство, когато се свърже.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Копирай адреса</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програмите могат да превключват профили и да ги освобождават, да стартират и спират двигателя, да включват и изключват виртуалните контролери, да показват и скриват прозореца, да затварят PadForge, да записват моментна снимка за диагностика и да питат какво работи.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Всичко от ниво „Команди“ и още: програмите могат да виждат устройствата, виртуалните контролери, съпоставянията, профилите и настройките, да следят входовете на всяко устройство в реално време и да ви показват място в PadForge. Програма на ниво „Четене“ вижда всеки натиснат клавиш на всяко устройство, включително клавишите, въведени в прозорци, работещи като администратор.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Всичко от ниво „Четене“ и още: програмите могат да добавят собствени устройства и да ги управляват, да задържат контрол на всяко устройство и да подават именувани стойности към тригерите на макроси.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Всичко от ниво „Изпращане на входове“ и още: програмите могат да променят всичко, което можете да променяте на страниците.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Всичко от ниво Изпращане на входове и още: програмите могат да променят всичко, което можете да променяте на страниците. Някои промени винаги ви питат първо в картата с въпрос на PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Асистенти</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Поставете това в настройките за MCP на асистента. Тогава асистентът работи с PadForge на нивото по-горе.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Копирай като TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Асистенти, които четат TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>„Добави“ поставя PadForge, заедно с неговото умение, в този асистент. Тогава той работи на нивото по-горе, а думите му се показват до това, към което сочи, под неговото име.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Скриптове</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Библиотека със скриптове</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Запиши библиотека…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Един файл за AutoHotkey v2, Python или PowerShell. Скрипт, който го зарежда, чете устройства и управлява съпоставянията на нивото по-горе.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Един файл за AutoHotkey v2, Python или PowerShell, записан там, където изберете.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Чака ви</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Дейност</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Още няма обаждане от програма. Всяко обаждане се изброява тук с резултата си.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Отмени</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Умение за асистенти</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Запиши умението…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge не можа да го запише: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Докато е свързана програма на ниво „Четене“ или по-високо, тя вижда какво се натиска на всяко устройство, включително клавиатурите.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Приставки</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Изпълнение на приставки</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Не работи приставка.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Приставката работи с вашите права, а не с тези на PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Вградени</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Тестов контролер</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Контролер, който се движи сам, по една контрола наведнъж, за да може съпоставяне да се изпробва без устройство под ръка.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Скорост</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Бавно</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Нормално</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Бързо</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Най-бързо</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Повторно възпроизвеждане</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Възпроизвежда запис на проблем като устройствата, които са го направили, със същото време. Те са нови устройства на този компютър и се съпоставят така, както ги съпоставяте вие или профил.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Запис</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Записи на проблеми|*.zip;*.log|Всички файлове|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не може да възпроизведе {0}. Това не е запис на проблем или не съдържа вход на устройство.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Вашите приставки</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Приставката е програма, която добавя устройства към PadForge. PadForge я стартира с вашите обикновени права всеки път, когато двигателят работи.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Добави приставка…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програми и скриптове|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Всички файлове|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Одобри…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Одобри и рестартирай…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Стартира се с двигателя</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Проверка на файла преди стартиране</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Приключи с код {0}. Стартира отново след {1} s.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} вече е в списъка.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge изпълнява до 16 приставки. Премахнете една, за да добавите друга.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Работещи приставки: {0}. Добавени от тях устройства: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} спря след пет неуспеха.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} е променена, откакто я одобрихте.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} не можа да стартира.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Добавени: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Подписан от {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Неподписан.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Настройките ѝ се показват тук, докато работи.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Не декларира настройки.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge не можа да прочете настройките ѝ: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Прекратена след минута без отговор</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Файлът ѝ се промени, докато работеше</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Добавено от {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Настройки на {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Избери</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Натиснете контрол…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Не е избран</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Добавете приставка или пуснете файла ѝ върху тази страница. PadForge показва пътя му, подписалия го и неговия SHA-256 и ви пита, преди да го стартира. Приставката работи с вашите права, а не с тези на PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Възпроизвежда запис на проблем като устройствата, които са го направили, с тяхното време.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Работи.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Работи, на ръка.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Какво се движи</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Стикове и тригери</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Стикове</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Тригери</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Шаблон</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Люлеене</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Кръг</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Време за движение</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Време за покой</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Натискане на бутони</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Натискане на навигационни бутони</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Приложенията на Windows реагират на A, B, Back, Start и D-pad на виртуален контролер Xbox в прозореца отпред, а Guide отваря Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Завъртане на D-pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>По същата причина.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Време на натискане</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Контролери</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>На ръка</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Спира движението. Задайте входовете му по-долу с мишката.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Ляв стик</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Десен стик</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Ляв тригер</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Десен тригер</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Отчитания в секунда</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Комплектът за приставки и журналът на избрана приставка</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Комплект за приставки</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Запиши комплекта за приставки…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Малка приставка на C# и същата приставка за AutoHotkey, Python и PowerShell, всеки файл с указания как се компилира или стартира.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ръководство за всяка команда, събитие и вид настройка, скрипт за компилиране на приставката на C# и същата приставка за AutoHotkey, Python и PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Журнал</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Изберете приставка, за да видите журнала ѝ.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>В журнала на тази приставка още няма нищо.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Игрови мод</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Друга програма държи името на канала {0}. Затворете тази програма.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows отказа канала {0}, затова програмите не могат да се свържат.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Няма свързана програма.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Включено. Няма свързана програма.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Свързани: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Неизвестна програма</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, подписана от {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Не повече от тях, докато PadForge не стартира отново</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge няма такъв инструмент</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Програмата прочете по-старо състояние</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Няма такава настройка</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Нищо няма този ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Стойността беше извън допустимото за настройката</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Не го разрешихте</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Никой не отговори навреме</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Показване на прозореца</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Изпращане на прозореца в системната област</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Минимизиране на прозореца</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Максимизиране на прозореца</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Затваряне на PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Стартиране на двигателя</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Спиране на двигателя</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Добавяне на устройството {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Задаване на контролите на устройство {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Премахване на устройството {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Връщане на всеки контрол на устройство {0} в покой</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Кара PadForge да стартира програма.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Отваря файл, папка или уеб страница.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Кара PadForge да изпраща клавиши или въвеждане от мишка към Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Импортира профил извън PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge ви пита, преди програма да направи това.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Диалози</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Макроси</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Задържане на контроли на устройство {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Освобождаване на контроли на устройство {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задаване на стойността {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Превключване на профили</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Стартиране или спиране на двигателя</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Включване или изключване на виртуални контролери</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Записване на моментна снимка за диагностика</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Четене на честотата на отчитане и драйверите</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Изброяване на профилите</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Четене на профил</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Изброяване на виртуалните контролери</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Изброяване на устройствата</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Четене на устройство</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Изчакване на вашия вход</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Четене на съпоставянията на контролер</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Изброяване на макросите на контролер</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Запис на проблем</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Търсене на настройки</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Четене на настройка</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Показване на място</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Търсене на места в PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Четене на място в PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Четене на това, което виждате</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Добавяне на собствено устройство</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Управление на собственото устройство</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Премахване на собственото устройство</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Задържане или освобождаване на контрол</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Задаване на стойност за задействания на макроси</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Промяна на настройка</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Натискане на бутон</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Създаване на профил</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Преименуване на профил</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Изтриване на профил</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Промяна на типа на контролер</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Назначаване на устройство</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Задаване на редове за съпоставяне</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Изчистване на редове за съпоставяне</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Автоматично съпоставяне на контролер</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Записване на макрос</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Изтриване на макрос</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Създава контролер за клавиатура и мишка</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Включва {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Промяна на „{0}“</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Натискане на „{0}“</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} иска да ви покаже {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>В {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Да разрешите ли на {0} да работи с PadForge на ниво {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} изпълнява {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Стартиран от {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Подписана от {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Неподписана.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>При ниво Четене и по-горе вижда всеки натиснат клавиш на всяко устройство, включително клавиатури.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Пита веднъж. Можете да я премахнете на страницата Автоматизация.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>командния ред на PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Задава {0} на {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Слуша в мрежата, затова други устройства могат да стигнат до този компютър.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Променя драйвер или HidHide, на които разчитат други програми и игри.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Модули на PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Разреши</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Не разрешавай</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Не сега</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Покажи</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Стъпка {0} от {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Щракнете върху него, за да продължите.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Отворете {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Отворете Още.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>От {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>От {1}, която се нарича „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>От програма, която се нарича „{0}“</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Инсталирай и рестартирай</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Бележки по версията</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>База данни на контролерите</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>„Актуализирай сега“ изтегля общностната база данни на контролерите (SDL_GameControllerDB) от GitHub и пази във файла с настройки съпоставянията, които тази версия на PadForge няма. Ново съпоставяне се използва само за контролер, който нищо друго не чете като геймпад, който не е назначен и не е в „Принудителен суров режим на джойстик“. Нулирането премахва всяко изтеглено съпоставяне.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Актуализирай сега изтегля общностната база данни на контролерите (SDL_GameControllerDB) от GitHub и пази във файла с настройки съпоставянията, които тази версия на PadForge няма. Те са в употреба веднага. Ново съпоставяне се използва само за контролер, който нищо друго не чете като геймпад, който не е назначен и не е в Принудителен суров режим на джойстик (без пренасочване на геймпада). Нулирането премахва всяко изтеглено съпоставяне. Вашите собствени редове, под „Още“, остават.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Актуализирай сега</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Актуализиране…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Проверка за актуализации…</value></data>
@@ -1045,12 +1100,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Инсталирането на актуализацията до PadForge {0} не завърши. Инсталирайте я от „Настройки“, за да опитате отново.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge беше актуализиран до {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Вградени: {0} съпоставяния, общностно копие от {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Вградени: {0} съпоставяния, общностно копие от {1}. Актуализирано на {2}, нови: {3}, променени: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Вградени: {0} съпоставяния, общностно копие от {1}. Изтеглени на {2}: {3} нови реда, {4} променени.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Общностната база данни не се е променила от последната актуализация.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub не можа да бъде достигнат: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge отказа изтеглянето, защото то не е базата данни на контролерите, която очаква. Нищо не се промени.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ново съпоставяне се използва при следващото свързване на контролера му.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Променено съпоставяне се използва при следващото стартиране на PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Стартиране в минимизиран вид</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Стартиране при влизане</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Информация за версията и регистриране на събитията на двигателя за отстраняване на проблеми.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Водене на диагностичен журнал</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Непрекъснато записва събитията на двигателя в diagnostics.log в папката с журнала, която се отваря с „Отвори папката с журнала“. Остава включено и след рестартиране. Когато файлът достигне 8 MB, той се премества в diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Запиши моментна снимка</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Записва най-новите събития на двигателя в нов файл. Работи дори когато диагностичният журнал е изключен.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Запази моментна снимка…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Взема приложението, Windows, вашите устройства и настройки такива, каквито са сега, с най-новите събития на двигателя, и ги отваря, за да ги прочетете, преди да ги запазите. Работи дори когато диагностичният журнал е изключен.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Отвори папката с журнала</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Записване на проблем</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Започни запис</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Спри записа ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Записва до „Спри записа“, 10 минути или 20 MB zip, после избира zip файла в Explorer, готов за прикачване към доклад.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Започнете, предизвикайте проблема, после спрете. Един файл до PadForge съдържа всичко, което PadForge е прочел, изпратил и записал в журнала, с обобщение на това, което е сбъркало. Всеки клавиш и бутон, натиснат на всяко устройство по време на записа, е във файла, включително клавиатури и мишки. Потребителските имена, серийните номера, адресите и въведените имена се заменят, преди да се запише каквото и да е.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Записва до „Спри записа“, 30 минути или 20 MB zip, после отваря записа, за да го прочетете, преди да го запазите.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Започнете, предизвикайте проблема, после спрете. После прочетете какво съдържа, част по част, и го запазете където искате. Всеки клавиш, натиснат на всяко устройство по време на записа, е в него, включително клавиатури и мишки. Потребителските имена, серийните номера, адресите и въведените имена се заменят, преди да се запише каквото и да е.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Записване на обобщението…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Записан {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Записът не започна. Проверка откри лична стойност на този PC, която нямаше да остане извън файла.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Записът не започна. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Предишният запис още се завършва.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>„Пази последните 60 секунди“ е изключено, затова няма какво да се запише.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Завършен запис, който PadForge не беше спрял: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Запис, който PadForge не беше спрял, чака да го прочетете в Начало: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Пази последните 60 секунди</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Докато двигателят работи, държи в паметта последната минута от онова, което съдържа един запис, за проблем, който се появява веднъж вечер. „Запази последните 60 секунди“ я записва като файл.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Докато двигателят работи, държи в паметта последната минута от онова, което съдържа един запис, за проблем, който се появява веднъж вечер. „Запази последните 60 секунди“ я отваря, за да я прочетете, преди да я запазите.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Запази последните 60 секунди</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Записване на въведените букви и цифри като един клавиш</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Записът записва буквените и цифровите клавиши, които никое съпоставяне или макрос не чете, като един клавиш, всяко натискане в своето време. Всеки друг клавиш и всеки клавиш, който съпоставяне или макрос чете, се записва както е натиснат.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Пази последните 60 секунди, Записване на въведените букви и цифри като един клавиш</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Какво да се записва, последните 60 секунди, въведените букви</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Запази моментна снимка</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, вашите устройства и настройки такива, каквито са сега, през същия преглед.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log до PadForge.exe, където можете да го прочетете.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Какво да се записва</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Всичко е включено. Изключена част се пропуска в следващия запис, а файлът казва кои части съдържа.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>За проблем, който се появява веднъж вечер.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Записът чака да го прочетете в Начало.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Обобщение</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Настройки и устройства</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Вход</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Изход</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Обратна връзка</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Времеви данни</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Прозорец и грешки</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Дейност</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Редове от диагностиката</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Прочетете записа си</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} до {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Моментна снимка в {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 минута</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} минути</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 секунда</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} секунди</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Спряно от вас.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Спряно само при {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Спряно само при {0} в zip файла.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Спряно от макрос.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Спряно от програма или --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Спряно от асистента, който го е стартирал.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Спряно при затваряне на PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Последните 60 секунди, пазени в паметта.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Прочетете какво ще споделите. Изключете част, за да я пропуснете, после запазете. Нищо не напуска този компютър, освен ако не го публикувате.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, както ще бъде споделено</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Показване на {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>пропуснато</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>не е записано</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} като текст, {1} в zip файла</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} като текст, {1} в zip файла, който споделяте. Записът спира при {2} в zip файла или след {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Проверка за почистване: PadForge замени {0} от {1}. Никакви имена, серийни номера или адреси на този компютър не са в частите, които запазвате.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} стойности</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 стойност</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} частни вида</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 частен вид</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Проверка за почистване: {0} от собствените стойности на този компютър още са в частите, които запазвате. Изключете тези части или изтрийте записа. Бутонът „Запази…“ остава изключен дотогава.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Проверка за почистване: една от собствените стойности на този компютър още е в частите, които запазвате. Изключете тези части или изтрийте записа. Бутонът „Запази…“ остава изключен дотогава.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Нищо от тази част не се случи по време на записа.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Изтрий</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Копирай обобщението</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Копирано</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Запази…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Запазване на записа</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip файлове</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Не е запазено. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Запазва се от ваше име, първия път в папката „Изтегляния“, после където сте запазвали последно, и се показва във „Файлов мениджър“. Запис, който спира, докато никой не е на страницата (по лимит, от макрос, от програма, от инструмента на асистента или от --record stop), чака този преглед в Начало и се изтрива след 7 дни, ако не бъде запазен. На програмата се казва, че чака, но никога къде.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Запис на проблем от {0} чака да го прочетете.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Преглед</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Отбелязване в записа</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Версия на приложението</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Среда за изпълнение .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Версия на SDL</value></data>
@@ -3128,31 +3238,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Позиция на мишката X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Позиция на мишката Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Чувствителност</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Чувствителност на курсора за всеки източник. При 1.0 пълно отклонение на стика се достига на 10% от ширината на екрана от центъра. Стойностите над 1.0 достигат пълно отклонение с по-малко движение на курсора. Стойностите под 1.0 изискват повече.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Чувствителност на курсора за всеки източник. При 1.0 пълно отклонение на стика се достига на 10% от ширината на монитора на показалеца, от неговия център. Стойностите над 1.0 достигат пълно отклонение с по-малко движение на курсора. Стойностите под 1.0 изискват повече.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ход на мишката X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ход на мишката Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ход до краен ъгъл</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Колко се движи мишката от центъра до крайния ъгъл, в единиците, които мишката отчита. По-голямо число управлява по-фино и изисква повече ход на ръката.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Колко се движи мишката или колелцето от центъра до крайния ъгъл, в единиците, които отчита. По-голямо число управлява по-фино и изисква повече ход на ръката.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Когато DPI на мишката е зададен в панела на устройството ѝ, ходът се показва и в сантиметри.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>единици</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Центриране</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>„Изключено“ държи волана там, където ръката го е оставила. „Пружина“ го връща за времето за връщане. „От телеметрията“ го дърпа както предните гуми на автомобил при скоростта и сцеплението в играта: неподвижен в покой, по-твърд със скоростта, лек, когато гумите се плъзгат. Ако никоя игра не изпраща телеметрия, работи като пружина. „От силата на играта“ оставя собствената обратна връзка със сила на виртуалния волан да го върти.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>„Изключено“ държи волана там, където ръката го е оставила. „Пружина“ го връща за времето за връщане. „От телеметрията“ го дърпа както управлението на автомобил при скоростта и сцеплението в играта: стръмно близо до центъра и по-меко по-навън, неподвижно в покой, по-твърдо със скоростта, леко, когато гумите се плъзгат. Ако никоя игра не изпраща телеметрия, дърпа като при 100 km/h по сух път. „От силата на играта“ оставя собствената обратна връзка със сила на виртуалния волан да го върти.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Изключено</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Пружина</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>От телеметрията</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>От силата на играта</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Време за връщане</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>За колко време „Пружина“ връща волана на 95% от пътя назад. „От телеметрията“ отнема толкова при 100 km/h по сух път.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>За колко време „Пружина“ връща волана на 95% от пътя назад. 0 го центрира веднага. „От телеметрията“ отнема толкова от близо до центъра при 100 km/h по сух път.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Управление</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>„Винаги“ позволява на мишката да управлява постоянно. „Докато е задържан“ я оставя да управлява само докато вход за управление е задържан. „Превключване“ включва или изключва управлението при всяко натискане на входа за управление. Докато мишката не управлява, воланът остава на място или се центрира, така че една мишка да може да управлява и да оглежда.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>„Винаги“ позволява на мишката да управлява постоянно. „Докато е задържан и център“ я оставя да управлява само докато Вход за управление е задържан, после я връща в центъра, чрез центриране там, където източникът има такова, и веднага там, където няма. „Докато е задържан и остава“ я оставя да управлява само докато входът е задържан и я оставя там, където е била пусната. „Превключване“ включва или изключва управлението при всяко натискане на Вход за управление. Така една мишка може да управлява и да оглежда.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Винаги</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Докато е задържан</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Докато е задържан и център</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Превключване</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Вход за управление</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Бутонът, който позволява на мишката да управлява, на същото устройство като хода на мишката. Ако не е избран нито един, мишката управлява винаги.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Бутонът, който позволява на мишката да управлява, на същото устройство като източника. Ако не е избран нито един, мишката управлява винаги.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Изглаждане</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Изравнява мишка, която отчита неравномерно. Воланът изостава от ръката с около толкова време. 0 е изключено.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Изравнява мишка, която отчита неравномерно. Стикът изостава от ръката с около толкова време. 0 е изключено.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Ъгъл при скорост</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>При включена игрова телеметрия, каква част от крайния ъгъл остава при 200 km/h. При 100% целият ъгъл е наличен при всяка скорост.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Ход на колелцето</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Ход на колелцето настрани</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Колко бързо се движи мишката. Пуска се, когато ръката спре.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Къде е показалецът на своя монитор, от центъра му или от мястото, където е бил, когато е започнало управлението.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Колко далеч се е преместила мишката, задържано там, където ръката я остави, както при волан.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Прищраквания на колелцето, задържани като положение, с пълна точност при колелце с плавно превъртане.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Прищраквания на хоризонталното колелце, задържани като положение, с пълна точност при колелце с плавно превъртане.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Тласък за всяко прищракване, после веднага в покой.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Докато е задържан и остава</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Чувствителност</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Колко от стика дава една скорост. При 1.00 стикът достига пълно отклонение при 16 000 единици в секунда, при всяка честота на опитване и честота на отчитане на мишката.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Връщане в центъра</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>След като мишката се забави или спре, стикът се връща не по-бързо от това. 0 го оставя да се връща заедно с мишката.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Начало от мястото, където е започнало управлението</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>При зададен Вход за управление стикът се измерва от мястото, където е бил показалецът, когато е започнало управлението, както стик на екрана на телефон започва там, където се приземи пръстът. Изключено, измерва се от центъра на монитора на показалеца.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Тази ос се движи относително</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>За тракбол или въртящ се регулатор, който отчита колко е завъртян. Включено, оста държи положение като „Ход на мишката“ и приема настройките за хода. Windows не казва кои оси се движат така.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} см</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Преглед</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Показва как това семейство следва вашата мишка. Нищо не е съпоставено, докато не го изберете.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Преглед. Движете мишката.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Задържано: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Положение: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% надясно</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% наляво</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% нагоре</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% надолу</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>в центъра</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Движи се, докато е задържан {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI на мишката</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Единиците, които тази мишка отчита за всеки инч движение, както ги задава софтуерът на производителя ѝ.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>При зададен DPI „Ход на мишката“ показва хода и в сантиметри. 0 означава незададен.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR показалец X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR показалец Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR яркост</value></data>
@@ -4923,6 +5066,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Екранни индикатори, които PadForge показва, докато играете. Изключването на някой от тях никога не променя поведението, а само дали се показва.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Изскачащ панел за слоя</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Наслагване при смяна на профила</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Включване или изключване на контролерите</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Бележка за разкачено устройство</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Бележка за свързано устройство</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Показва екранния пръстен или мрежа, докато радиално или сензорно меню е активно. Менютата работят и при изключено наслагване.</value></data>
@@ -5651,6 +5795,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Изключено</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Хронометър</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Цвят на светлинната лента</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Несвързани устройства</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Всички свързани</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>изключено</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>чрез Logitech Gaming Software</value></data>
@@ -5693,6 +5839,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Екранът показва избрана от вас картинка в нейния собствен размер. Картинка, по-голяма от екрана, се показва като прозорец с размера на екрана, който се мести от макроса „Панорамиране на картинката на екрана на клавиатурата“. На S.T.R.I.K.E. 7 и пръст, плъзнат по екрана, го мести.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Екранът показва хронометъра, който макросът „Хронометър“ стартира, паузира и нулира. Всички екрани показват един и същ хронометър.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Екранът показва цвета на светлинната лента на DualShock 4 или DualSense в най-ниския слот, към който този екран подава, или в най-ниския от всички слотове, когато не подава към нито един. Монохромният екран показва яркостта ѝ като точкова шарка. Докато цвят не стигне до светлинната лента, PadForge не показва нищо.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Екранът изброява съпоставените устройства, които не са свързани, с имената, които показва страницата Устройства, и казва Всички свързани, когато няма липсващи.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Картинки (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Всички файлове (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Панорамиране</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Панорамиране по X</value></data>
@@ -5944,6 +6091,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Каране (не 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Игрова телеметрия</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Стойност от скрипт</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Връзка на устройство</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Скорост (мили/ч)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Обороти (% от макс.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Предавка (-1 задна, 0 неутрална)</value></data>
@@ -6049,6 +6197,7 @@
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Наслагването показва избрана от вас картинка, мащабирана да запълни прозореца му със запазени пропорции. При мащаб над 100 процента показва част от картинката, например за карта. Макросът Панорамиране на картинката на екрана на клавиатурата мести тази част, както и влаченето с левия бутон на мишката, докато PadForge е на преден план.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Наслагването показва хронометъра, който макросът „Хронометър“ стартира, паузира и нулира. Това е същият хронометър, който показват всички екрани на клавиатури.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Наслагването показва цвета на светлинната лента на DualShock 4 или DualSense в слота, който изберете тук, или в най-ниския слот с цвят. Докато цвят не стигне до светлинната лента, не показва нищо.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Наслагването изброява съпоставените устройства, които не са свързани, с имената, които показва страницата Устройства, и казва Всички свързани, когато няма липсващи.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Наслагване на екрана {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Добавяне на наслагване</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Най-ниският слот с цвят</value></data>
@@ -6391,6 +6540,245 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е отпуснат преди времето за задържане. По-дълго натискане не прави нищо.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато „Отваря се с“ е натиснат три пъти в рамките на прозореца за натискане.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Отваря или затваря клавиатурата, когато прозорецът за натискане изтече след едно натискане на „Отваря се с“. Второ натискане в прозореца го отменя.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Изключено. Никоя програма не може да стигне до PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} и {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Дейност: {0} извиквания, най-старите първо. По-ранни извиквания: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Дейност на PadForge: {0} извикване. По-ранни извиквания: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} по-стари извиквания отпаднаха. „Дейност“ пази най-новите {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} по-старо извикване отпадна. „Дейност“ пази най-новите {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Експортиране…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Експортиране на дейността</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Текстов файл</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Отвори</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Актуализирай</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Още за {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Запази умението като ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Отвори файла му с настройки</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Запазено. В {0} добавете {1} под {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} още няма файл с настройки. „Добави“ го създава.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge не намира програма за асистент на този компютър, чийто производител документира настройка за Windows. „Копирай настройките“ под „Още“ работи за всеки друг.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge не можа да провери програмите за асистенти: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Не е добавен.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Добавен.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Добавен. Свързан в момента.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Добавен. Оттогава не се е свързвал. Отворен асистент вижда PadForge, след като се затвори и отвори отново.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Добавен за друг PadForge. Актуализирането го насочва към този.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Добавен. Умението му за PadForge е по-старо от този PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Добавен, без умението му за PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Добавен. Умението му за PadForge идва от по-нов PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Приема умения само като качен файл.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Добавените асистенти стигат до PadForge, щом Автоматизация е включена.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Добавяне…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Премахване…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Актуализиране…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Не завърши: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Други асистенти</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>За асистент, който не е в списъка по-горе: Копирай настройките дава записа за неговите настройки за MCP, а Копирай съобщение дава кратък текст за всеки чат, който казва как да се свърже и какво да попита първо.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Копирай настройките</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Копирай съобщение</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Копирано.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Не е копирано: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Свържи се с PadForge, програмата за съпоставяне на контролери на моя компютър. Това е локален MCP сървър, който работи през stdio: командата е {0}, с аргумент --mcp. Като настройки в JSON: {1} След като се свържеш, първо извикай неговия инструмент status, после ме попитай какво искам да настроя, например: „Покажи ми къде да съпоставя тригерите на контролера ми.“</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Автоматизацията на PadForge е изключена сега: първо я включи в PadForge под Допълнения, Автоматизация.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Разрешени програми</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Програма, която иска Четене или повече, пита веднъж, при първото си свързване, и получава нивото, което иска, до нивото по-горе. Асистент, който добавите по-горе, е разрешен с това.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Свързана сега.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Последно използвана {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Още не е използвана.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Свързани: {0}. Щракнете, за да отворите Автоматизация.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>На този компютър: {0}. От уеб: {1}. Щракнете, за да отворите Автоматизация.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Свързани от уеб: {0}. Щракнете, за да отворите Автоматизация.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL съпоставяне</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Чете се като</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Откъде</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Геймпад, „{0}“</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Джойстик. SDL няма съпоставяне за него.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Джойстик. PadForge го чете суров, затова съпоставянето на SDL не се използва.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Джойстик, подреден като геймпад от ваш ред.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL чете устройствата, докато двигателят работи.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Вграденото общностно копие, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Изтеглено {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Собственият файл на PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ваш, добавен {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Променливата SDL_GAMECONTROLLERCONFIG, която SDL държи над всеки ред, който добавите</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Копирай SDL съпоставянето</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Поставя съпоставянето на устройството в клипборда като ред от общностната база данни, под ID на устройството, с нулирани контролна сума и версия.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Постави SDL съпоставяне…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Взема ред за това устройство, проверява го, пази го като ваш и го прилага веднага.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Намери съпоставяне…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Търси по име във всеки ред, който носи PadForge, и прилага избрания към това устройство, за клонинг, чиито идентификатори се различават.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Налучкай подредба</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Налучква подредба на геймпад по осите, бутоните и хатовете на устройството, за устройство, което никоя база данни не познава. Проверете я в Тест на входовете.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Премахни моя</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>„Премахни моя“ връща предишния ред и редовете на контролерите.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Съпостави отново</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Съставя отново редовете на устройството във всеки контролер, на който е, от подредбата на SDL, както при назначаването му.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Страница на общностната база данни</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Редът и къде се различава от {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Редът</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Контролер</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Ред на {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Входът му сега</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Редът на SDL казва</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>няма в реда на SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, различава се</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Не се използва от PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Редът</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Копирано.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Копирано. Формата на SDL не побира {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>макроси</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>криви</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>мъртви зони</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>изходи за клавиатура и мишка</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>турбо, превключватели и други действия</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} и {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Няма какво да се копира: SDL няма съпоставяне за това устройство и то не е на никой контролер.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Друга програма използва клипборда. Нищо не е копирано.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Редът ви е премахнат. Устройството се чете както преди него.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Съпоставено отново от подредбата на SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>В употреба сега. Редът е ваш и има предимство за това устройство.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Запазен като ваш. Влиза в употреба, щом двигателят работи и устройството е свързано.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Запазен като ваш, но променливата SDL_GAMECONTROLLERCONFIG държи ред за това устройство, който SDL предпочита пред вашия.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL не прие реда. Нищо не се промени за това устройство.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Поставяне на SDL съпоставяне</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Поставяне на SDL съпоставяне за {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Намиране на съпоставяне за {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Налучкване на подредба за {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Добавяне на редове от файл или клипборда</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Постави</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Отвори файл…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Файлове за съпоставяне (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Файлът е над 4 MB. Целият общностен файл е около 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Търсене по име, ID или VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Редове, които носи PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Няма съвпадащ ред.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Избраният ред се прилага към {0} под собствения му ID, през същата проверка и същия избор като при „Постави“.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Ред за SDL съпоставяне</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ред за това устройство.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Налучкана подредба.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} полета, ID му съвпада с това устройство.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} полета, от същия производител и продукт на друга шина или версия. Пази се под собствения ID на това устройство.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} полета, ред на друго устройство. Пази се под собствения ID на това устройство.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} полета. SDL не чете това устройство, затова PadForge подрежда входовете му по реда.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} полета, от осите, бутоните и хатовете на устройството. Проверете го в Тест на входовете, после го запазете или го променете тук.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} поле, ID му съвпада с това устройство.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} поле, от същия производител и продукт на друга шина или версия. Пази се под собствения ID на това устройство.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} поле, ред на друго устройство. Пази се под собствения ID на това устройство.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} поле. SDL не чете това устройство, затова PadForge подрежда входовете му по реда.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} поле, от осите, бутоните и хатовете на устройството. Проверете го в Тест на входовете, после го запазете или го променете тук.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Това променя как се чете {0}. Редовете му в {1} се съпоставят отново от новата подредба.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Това променя как се чете {0}. То не е на никой контролер, затова никой ред не се променя.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Преките пътища на профили, които четат {0}, запазват входовете, на които са били зададени.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Редът се пази като ваш в PadForge.xml и има предимство пред всеки друг източник за това устройство. „Премахни моя“ връща стария ред и старите редове.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Редовете се пазят като ваши в PadForge.xml и имат предимство за своите устройства пред всеки друг източник. „Изчисти“, под „Още“ на реда „База данни на контролерите“, ги премахва.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} реда за Windows. {1} за други системи се пропускат.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ред за Windows. {1} за други системи се пропускат.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} отказани. Първият: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Поставете ред или текста на файл gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Текстът не е ред от базата данни на контролерите на SDL: ID от 32 шестнадесетични цифри, име, после полета като a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Редовете са за други системи. PadForge чете редове за Windows или за никоя система в частност.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID на реда не е на устройство. Трябват 32 шестнадесетични цифри.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Името на реда е празно, над 128 знака или съдържа знак, който SDL чете като поле.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Редът носи подсказка или поле за Android, които PadForge не приема.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Редът има поле, което SDL не познава.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Обвързване не е във формата на SDL, като b3, a2, +a2, a2~ или h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Редът дава едно поле два пъти.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Редът е над 1 024 знака.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Редът не обвързва нито един контрол.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Вашите редове</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Вашите редове</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Редове, които добавяте тук или поставяте в картата SDL съпоставяне на устройство, имат предимство за своите устройства пред всеки друг източник и остават след нулирането.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Добави редове от файл или клипборда…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} реда, ваши, с предимство пред всеки друг източник за своите устройства.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ред, ваш, с предимство пред всеки друг източник за своето устройство.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Още няма.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>В употреба веднага.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Достъп до PadForge от уеб</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Асистент, който работи на уебсайт, стига до PadForge чрез програма за тунел на този компютър. Включването първо ви пита.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Достъп до PadForge от уеб?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge стартира помощник без администраторски права, който слуша само на този компютър, а програмата за тунел, която изберете, му дава публичен адрес. Уеб асистент влиза само след като разрешите влизането му в картата с въпрос на PadForge, и работи на нивото по-горе.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Включи</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Асистенти в уеб</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Тунел</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Няма</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Адрес, който поставям</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Стартира се, с вашите права.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Работи, с вашите права. Адресът му остава същият при всяко стартиране.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Работи, с вашите права. Бързият тунел взема нов адрес при всяко стартиране, затова асистентът ще трябва да се добави отново.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Спрян.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Спрян. Последните му думи: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Не можа да се стартира.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Вече го няма на този компютър.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>На този компютър не е намерена програма за тунел. PadForge работи с cloudflared, devtunnel, ngrok и Tailscale Funnel или с адреса на ваш собствен тунел.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Изберете тунел, за да даде на PadForge публичен адрес.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Още на този компютър: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, чийто адрес остава същият</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, чиито бързи тунели взимат нов адрес всеки път</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Пуснете свой тунел към http://127.0.0.1:{0} и поставете неговия https адрес. Именуван тунел на Cloudflare, постоянен dev тунел, Tailscale Funnel и собственият домейн на ngrok запазват адреса си.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Поставете https адрес без път освен /mcp, както го дава тунелът ви.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Стартира се уеб помощникът на PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Уеб помощникът на PadForge спря ({0}). Изключете и включете отново „Достъп до PadForge от уеб“, за да го стартирате пак.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Адрес</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Още няма публичен адрес.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Добави към Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Копирано.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Приемане на нов уеб асистент</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Започни приемане</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Спри приемането</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Приема до {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Не приема. „Започни приемане“ го отваря за пет минути.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Добавете адреса в асистента и влезте. Всяко влизане показва свой шестцифрен код на страницата си за вход и в картата с въпрос на PadForge. Натиснете „Разреши“ само когато двата кода съвпадат. В други моменти влизането се отказва и нищо не ви пита.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Разрешени в уеб</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Още няма.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Влизането му се върна към {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Нарича се {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Разрешен {0}, последно използван {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Разрешен {0}, още не е използван.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Отнеми</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Собственият му Secure MCP Tunnel стартира PadForge директно, без адрес или вход тук. Копирайте командата в настройката на този тунел.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Копирай командата</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge не изтегля програма за тунел и не пази ключ на друга компания. Уеб асистент работи на нивото по-горе.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Да разрешите ли на {0} да работи с PadForge от уеб?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Влизането му се връща към {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Нарича се {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Натиснете „Разреши“ само ако страницата му за вход показва този код:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Шестцифреният му код се показва в картата с въпрос на PadForge. Натиснете „Разреши“ само ако страницата му за вход показва същия код.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Работи на ниво {0}, през {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Влизането му се връща към този компютър и всяка програма тук може да поиска този адрес.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Вход в PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} иска да работи с PadForge на вашия компютър.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Нарича се {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>На вашия компютър картата с въпрос на PadForge пита за този вход. Натиснете „Разреши“ там само ако картата показва този код:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Тази страница продължава сама, щом отговорите на компютъра.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Този вход се връща към програма на вашия компютър и всяка програма там може да поиска този адрес.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge не приема нов уеб асистент в момента. На вашия компютър отворете PadForge, идете в Допълнения, Автоматизация и под „Асистенти в уеб“ натиснете „Започни приемане“. После влезте отново.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Този вход не може да продължи. Добавете отново адреса на PadForge в асистента и влезте.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Този вход е изтекъл. Влезте отново от асистента.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows не го стартира</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>завърши с код {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Автоматизация е изключена, затова никой уеб асистент не стига до PadForge. Уеб помощникът стартира, щом Автоматизация се включи.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Проверява се…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Не е инсталирана.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Инсталирана и актуална. Скриптът започва с {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Инсталирана за {0} и актуална. Скриптът започва с {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Инсталирана. Този PadForge има по-ново копие.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Инсталирана за {0}. Този PadForge има по-ново копие.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Инсталиране…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge не можа да я провери: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>„Инсталирай“ слага библиотеката на PadForge там, където този език я намира. Скрипт, който я зарежда, чете устройства и управлява съпоставянията на нивото по-горе.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Запази библиотека където и да е</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Инсталирани копия</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Премахни всички</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Премахнати.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID на скрипта</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Неговият ID за скриптове</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скриптовете наричат контролите му {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скриптовете наричат клавишите му KeyA, KeySpace, KeyLeftShift и подобни, а всеки клавиш по неговия код, от Vk0 до Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Цветовете се изпращат директно към {0}. Променящите се цветове, като цикъл на цветовете или цветове, които следват звука, не стигат до него. Цвят, който не се променя, стига.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Всички файлове (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Профил на PadForge (*{0})|*{0}</value></data>

@@ -180,8 +180,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} dekonekte. {1} pa gen okenn aparèy ki rete.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} konekte</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} konekte, batri {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} aparèy dekonekte</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} aparèy konekte</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} aparèy dekonekte: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} aparèy konekte: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} pa sispann dekonekte</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks {0})</value></data>
@@ -423,8 +423,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rekoneksyon otomatik, pò, idantite asosyasyon, konekte ak adrès</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pò, ranplasan DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Pò, Vitès maksimòm, Fòma pèsonalize</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Konpetans</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Lòt asistan, asistan sou wèb la</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Gade toutotou ak yon aparèy swivi tèt oswa yon kas VR pandan de pous ou rete sou bouton yo.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Asiyen vitès, pedal yo ak bwat vitès yon jwèt kous voye, tankou nenpòt antre.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Voye mouvman kontwolè a bay emilatè ki li yon sous mouvman DSU.</value></data>
@@ -465,7 +464,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Yon mod jwèt</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Yon lòt pwogram kenbe non tiyo {0} la. Fèmen pwogram sa a.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows refize tiyo {0} la, kidonk pwogram yo pa ka konekte.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Okenn pwogram pa konekte.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Limen. Okenn pwogram pa konekte.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konekte: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Pwogram enkoni</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, siyen pa {1}</value></data>
@@ -499,7 +498,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Pa gen plis nan sa yo jiskaske PadForge demare ankò</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge pa gen zouti sa a</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Pwogram lan te li yon eta ki pi ansyen</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Paramèt sa a pa egziste</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Anyen pa gen ID sa a</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valè a te deyò sa paramèt la aksepte</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ou pa t pèmèt li</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Pèsonn pa t reponn atan</value></data>
@@ -516,6 +515,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Montre fenèt la</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Voye fenèt la nan zòn notifikasyon an</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimize fenèt la</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maksimize fenèt la</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Fèmen PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Demare motè a</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Kanpe motè a</value></data>
@@ -541,6 +541,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ajoute aparèy {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Mete kontwòl aparèy {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Retire aparèy {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Mete chak kontwòl aparèy {0} an repo</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Li fè PadForge lanse yon pwogram.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Li louvri yon fichye, yon dosye oswa yon paj wèb.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Li fè PadForge voye touch oswa antre sourit bay Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Li enpòte yon pwofil ki soti andeyò PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge mande w anvan yon pwogram fè sa.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Bwat dyalòg</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Kenbe kontwòl aparèy {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lage kontwòl aparèy {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Mete valè {0}</value></data>
@@ -549,25 +557,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Chanje pwofil</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Demare oswa kanpe motè a</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Aktive oswa dezaktive kontwolè vityèl yo</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Anrejistre yon kopi dyagnostik</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Li frekans sondaj la ak drivè yo</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Fè lis pwofil yo</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Li yon pwofil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Fè lis kontwolè vityèl yo</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Fè lis aparèy yo</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Li yon aparèy</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Tann antre ou</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Li asiyasyon yon kontwolè</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Fè lis makwo yon kontwolè</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Anrejistre yon pwoblèm</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Chèche paramèt</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Li yon paramèt</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Montre w yon kote</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Chèche kote nan PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Li yon kote nan PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Li sa w wè</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ajoute yon aparèy pa li</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Kontwole aparèy li</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Retire aparèy li</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Kenbe oswa lage yon kontwòl</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Mete yon valè pou deklanchè makro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Chanje yon paramèt</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Peze yon bouton</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Kreye yon pwofil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Chanje non yon pwofil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Efase yon pwofil</value></data>
@@ -578,7 +585,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Chanje kalite yon kontwolè</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Asiyen yon aparèy</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Mete liy asiyasyon</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Efase liy asiyasyon</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Asiyen yon kontwolè otomatikman</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Anrejistre yon makwo</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Efase yon makwo</value></data>
@@ -598,6 +604,9 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Kreye yon kontwolè klavye ak sourit</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Aktive {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Chanje “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Peze “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vle montre w {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Sou {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Mete {0} sou {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Li koute sou rezo a, kidonk lòt aparèy ka rive jwenn PC sa a.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Li chanje yon drivè oswa HidHide, ke lòt pwogram ak jwèt depann de yo.</value></data>
@@ -619,6 +628,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Modil PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Pèmèt</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Pa pèmèt</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Pa kounye a</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Montre</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Etap {0} sou {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klike sou li pou kontinye.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Louvri {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Louvri Plis.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Soti nan {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Soti nan {1}, ki rele tèt li “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Soti nan yon pwogram ki rele tèt li “{0}”</value></data>
@@ -735,7 +750,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Enstale epi redemare</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Nòt vèsyon</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Baz done kontwolè</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mete ajou kounye a telechaje baz done kontwolè kominote a (SDL_GameControllerDB) sou GitHub epi kenbe, nan fichye paramèt la, asiyasyon vèsyon PadForge sa a pa genyen. Yon nouvo asiyasyon itilize sèlman pou yon kontwolè ke anyen lòt pa li kòm gamepad, ki pa asiyen epi ki pa nan Fòse mòd joystick brit. Reyinisyalizasyon an retire tout asiyasyon ki telechaje.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Mete ajou kounye a telechaje baz done kontwolè kominote a (SDL_GameControllerDB) sou GitHub epi kenbe, nan fichye paramèt la, asiyasyon vèsyon PadForge sa a pa genyen. Yo an sèvis touswit. Yon nouvo asiyasyon itilize sèlman pou yon kontwolè ke anyen lòt pa li kòm gamepad, ki pa asiyen epi ki pa nan Force Raw Joystick Mode. Reyinisyalizasyon an retire tout asiyasyon ki telechaje. Pwòp liy pa w yo, anba Plis, rete.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Mete ajou kounye a</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Ap mete ajou…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Ap chèche mizajou…</value></data>
@@ -760,12 +775,10 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Mizajou pou PadForge {0} pa t fin enstale. Enstale l nan Paramèt pou eseye ankò.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge mete ajou nan vèsyon {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Entegre: {0} asiyasyon, kopi kominote a {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Entegre: {0} asiyasyon, kopi kominote a {1}. Mete ajou {2}: {3} nouvo, {4} chanje.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Entegre: {0} asiyasyon, kopi kominote a {1}. Telechaje {2}: {3} nouvo liy, {4} chanje.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baz done kominote a pa chanje depi dènye mizajou a.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Pa t ka rive jwenn GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge refize telechajman an paske se pa baz done kontwolè li tann nan. Anyen pa chanje.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Yon nouvo asiyasyon itilize pwochen fwa kontwolè li a konekte.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Yon asiyasyon ki chanje itilize pwochen fwa PadForge demare.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Demare minimize</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Demare lè ou konekte</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -862,28 +875,85 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Enfòmasyon sou vèsyon an, ak jounal evènman motè a pou rezoud pwoblèm.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Kenbe yon jounal dyagnostik</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Ekri evènman motè a san rete nan diagnostics.log nan dosye jounal la, ke bouton Louvri dosye jounal la louvri. Li rete aktive menm apre ou redemare. Lè fichye a rive 8 MB, li pase nan diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Anrejistre yon kopi</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Anrejistre dènye evènman motè a nan yon nouvo fichye. Li mache menm lè jounal dyagnostik la dezaktive.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Anrejistre yon kopi…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Li pran aplikasyon an, Windows, aparèy ou yo ak paramèt ou yo jan yo ye kounye a, ak dènye evènman motè a, epi li louvri yo pou ou li yo anvan ou anrejistre yo. Li mache menm lè jounal dyagnostik la dezaktive.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Louvri dosye jounal yo</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Anrejistre yon pwoblèm</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kòmanse anrejistre</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Kanpe anrejistreman an ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Anrejistre jiskaske ou peze Kanpe anrejistreman an, 10 minit oswa yon zip 20 MB, apre sa li chwazi zip la nan Explorer, pare pou mete nan yon rapò.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Kòmanse, fè pwoblèm lan rive, epi kanpe. Yon sèl fichye bò kote PadForge kenbe tout sa PadForge li, voye ak ekri nan jounal, ak yon rezime sa ki pa t mache. Chak touch ak bouton ki peze sou chak aparèy pandan l ap anrejistre nan fichye a, klavye ak sourit enkli. Non itilizatè, nimewo seri, adrès ak non ki tape ranplase anvan anyen ekri.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Anrejistre jiskaske ou peze Kanpe anrejistreman an, 30 minit oswa yon zip 20 MB, apre sa li louvri anrejistreman an pou ou li l anvan ou anrejistre l.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Kòmanse, fè pwoblèm lan rive, epi kanpe. Apre sa, li sa li genyen, pati pa pati, epi anrejistre l kote ou vle. Chak touch ki peze sou chak aparèy pandan l ap anrejistre ladan l, klavye ak sourit enkli. Non itilizatè, nimewo seri, adrès ak non ki tape ranplase anvan anyen ekri.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Ap ekri rezime a…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Anrejistre {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Anrejistreman an pa t kòmanse. Yon verifikasyon jwenn yon valè prive PC sa a ki pa t ap rete deyò fichye a.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Anrejistreman an pa t kòmanse. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Dènye anrejistreman an poko fin ekri.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Kenbe dènye 60 segonn yo dezaktive, kidonk pa gen anyen pou anrejistre.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Li fini yon anrejistreman PadForge pa t kanpe: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Yon anrejistreman PadForge pa t kanpe ap tann ou li l nan Akèy: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Kenbe dènye 60 segonn yo</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Pandan motè a ap mache, li kenbe nan memwa dènye minit sa yon anrejistreman kenbe, pou yon pwoblèm ki parèt yon fwa pa aswè. Anrejistre dènye 60 segonn yo ekri l kòm yon fichye.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Pandan motè a ap mache, li kenbe nan memwa dènye minit sa yon anrejistreman kenbe, pou yon pwoblèm ki parèt yon fwa pa aswè. Anrejistre dènye 60 segonn yo louvri l pou ou li l anvan ou anrejistre l.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Anrejistre dènye 60 segonn yo</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Ekri lèt ak chif ki tape kòm yon sèl touch</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Yon anrejistreman ekri touch lèt ak chif ke okenn asiyasyon oswa makwo pa li kòm yon sèl touch, chak peze nan pwòp moman li. Tout lòt touch, ak chak touch yon asiyasyon oswa makwo li, ekri jan yo peze yo.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Kenbe dènye 60 segonn yo, Ekri lèt ak chif ki tape kòm yon sèl touch</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Sa pou anrejistre, dènye 60 segonn yo, lèt ki tape</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Anrejistre yon kopi</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, aparèy ou yo ak paramèt ou yo jan yo ye kounye a, atravè menm revizyon an.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log bò kote PadForge.exe, kote ou ka li l.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Sa pou anrejistre</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Tout limen. Yon pati ki etenn rete deyò pwochen anrejistreman an, epi fichye a di ki pati li genyen.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Pou yon pwoblèm ki parèt yon fwa pa aswè.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Anrejistreman an ap tann ou li l nan Akèy.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Rezime</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Paramèt ak aparèy</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Antre</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Sòti</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Retou fizik</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Tan</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Fenèt ak erè</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Aktivite</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Liy dyagnostik</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Li anrejistreman ou</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} rive {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Yon kopi a {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minit</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minit</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 segonn</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} segonn</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Ou menm ki kanpe l.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Li kanpe pou kont li a {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Li kanpe pou kont li a {0} nan zip la.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Yon makro kanpe l.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Yon pwogram oswa --record stop kanpe l.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Asistan ki te kòmanse l la kanpe l.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Li kanpe lè PadForge te fèmen.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Dènye 60 segonn yo, kenbe nan memwa.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Li sa ou pral pataje. Etenn yon pati pou kite l deyò, epi anrejistre. Anyen pa kite PC sa a si ou pa pibliye l.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, jan li pral pataje</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Montre {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>kite deyò</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>pa anrejistre</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} an tèks, {1} nan zip la</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} an tèks, {1} nan zip ou pataje a. Yon anrejistreman kanpe a {2} nan zip la oswa apre {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Verifikasyon netwayaj: PadForge ranplase {0} nan {1}. Okenn non, nimewo seri oswa adrès PC sa a pa nan pati ou kenbe yo.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} valè</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 valè</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} kalite prive</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 kalite prive</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Verifikasyon netwayaj: {0} nan valè PC sa a toujou nan pati ou kenbe yo. Etenn pati sa yo oswa efase anrejistreman an. Anrejistre… rete etenn jiskaske sa fèt.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Verifikasyon netwayaj: youn nan valè PC sa a toujou nan pati ou kenbe yo. Etenn pati sa yo oswa efase anrejistreman an. Anrejistre… rete etenn jiskaske sa fèt.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Anyen nan pati sa a pa t pase pandan anrejistreman an.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Efase</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopye rezime a</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Kopye</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Anrejistre…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Anrejistre anrejistreman an</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Fichye zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Pa anrejistre. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Anrejistre kòm ou menm, nan dosye Downloads ou a premye fwa a, apre sa kote ou te anrejistre dènye fwa a, epi montre nan Explorer. Yon anrejistreman ki kanpe pandan pèsonn pa sou paj la (limit li, yon makro, yon pwogram, zouti asistan an oswa --record stop) ap tann revizyon sa a nan Akèy, epi li efase apre 7 jou si yo pa anrejistre l. Yo di yon pwogram li ap tann, men yo pa janm di l ki kote.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Yon anrejistreman pwoblèm depi {0} ap tann ou li l.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Revize</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Make anrejistreman an</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Vèsyon aplikasyon an</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Vèsyon SDL</value></data>
@@ -2417,31 +2487,64 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Pozisyon sourit X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozisyon sourit Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sansiblite</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sansiblite kisè a pou chak sous. Avèk 1.0, stick la rive nan deplasman konplè lè kisè a 10% lajè ekran an lwen sant lan. Valè ki pi wo pase 1.0 rive nan deplasman konplè ak mwens mouvman kisè. Valè ki pi ba pase 1.0 bezwen plis.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sansiblite kisè a pou chak sous. Avèk 1.0, stick la rive nan deplasman konplè lè kisè a 10% lajè monitè pwentè a lwen sant li. Valè ki pi wo pase 1.0 rive nan deplasman konplè ak mwens mouvman kisè. Valè ki pi ba pase 1.0 bezwen plis.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Deplasman sourit X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Deplasman sourit Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Deplasman jouk nan limit</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Konbyen sourit la deplase soti nan sant jouk nan limit, an inite sourit la rapòte. Yon nimewo pi wo dirije pi fen epi mande plis mouvman men.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Konbyen sourit la oswa woulèt la deplase soti nan sant jouk nan limit, an inite li rapòte. Yon nimewo pi wo dirije pi fen epi mande plis mouvman men.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Lè DPI sourit la mete sou panèl aparèy li a, deplasman an parèt an santimèt tou.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>inite</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Santraj</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Dezaktive kenbe volan an kote men an kite l. Resò mennen l tounen nan Tan retou. Soti nan telemetri rale l tounen jan kawotchou devan yon machin ta fè a vitès ak adezyon jwèt la: anyen lè machin nan kanpe, pi fò ak vitès, lejè lè kawotchou yo glise. Si okenn jwèt pa voye telemetri, se resò a. Soti nan fòs jwèt la kite pwòp retou fòs yon volan vityèl vire l.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Dezaktive kenbe volan an kote men an kite l. Resò mennen l tounen nan Tan retou. Soti nan telemetri rale l tounen jan direksyon yon machin fè a vitès ak adezyon jwèt la: fò toupre sant la epi pi dous pi lwen, anyen lè machin nan kanpe, pi fò ak vitès, lejè lè kawotchou yo glise. Si okenn jwèt pa voye telemetri, li rale tankou a 100 km/h sou yon wout sèk. Soti nan fòs jwèt la kite pwòp retou fòs yon volan vityèl vire l.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Dezaktive</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Resò</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Soti nan telemetri</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Soti nan fòs jwèt la</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tan retou</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Konbyen tan Resò pran pou mennen volan an 95% nan chemen retou a. Soti nan telemetri pran menm tan sa a a 100 km/h sou yon wout sèk.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Konbyen tan Resò pran pou mennen volan an 95% nan chemen retou a. 0 santre l touswit. Soti nan telemetri pran menm tan sa a apati toupre sant la a 100 km/h sou yon wout sèk.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Dirije</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Toujou kite sourit la dirije tout tan. Pandan ou kenbe kite l dirije sèlman pandan ou kenbe Antre direksyon an. Limen/etenn aktive oswa dezaktive direksyon an chak fwa ou peze Antre direksyon an. Pandan sourit la pa dirije, volan an rete kote li ye oswa li retounen nan sant, kidonk yon sèl sourit ka dirije epi gade alantou.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Toujou kite sourit la dirije tout tan. Pandan ou kenbe epi santre kite l dirije sèlman pandan ou kenbe Antre direksyon an, epi apre sa li mennen l tounen nan sant, avèk Santraj lè sous la genyen youn epi touswit lè li pa genyen. Pandan ou kenbe epi rete kite l dirije sèlman pandan ou kenbe antre a epi li kite l kote ou te lage l. Limen/etenn aktive oswa dezaktive direksyon an chak fwa ou peze Antre direksyon an. Konsa yon sèl sourit ka dirije epi gade alantou.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Toujou</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Pandan ou kenbe</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Pandan ou kenbe epi santre</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Limen/etenn</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Antre direksyon</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton ki kite sourit la dirije, sou menm aparèy ak deplasman sourit la. Si pa gen okenn chwazi, sourit la toujou dirije.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bouton ki kite sourit la dirije, sou menm aparèy ak sous la. Si pa gen okenn chwazi, sourit la toujou dirije.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Adousisman</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Li egalize yon sourit ki rapòte yon fason inegal. Volan an rete dèyè men an anviwon tan sa a. 0 vle di dezaktive.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Li egalize yon sourit ki rapòte yon fason inegal. Joystick la rete dèyè men an anviwon tan sa a. 0 vle di dezaktive.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limit a vitès</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Lè Telemetri jwèt aktive, konbyen nan limit la ki rete a 200 km/h. A 100%, tout limit la la a tout vitès.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Deplasman wou</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Deplasman wou sou kote</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Ki vitès sourit la deplase. Li lage lè men an kanpe.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Kote pwentè a ye sou monitè li, apati sant li oswa apati kote li te ye lè direksyon an te kòmanse.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Konbyen sourit la deplase, kenbe kote men an kite l, tankou yon volan.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Kran woulèt kenbe kòm yon pozisyon, ak tout presizyon sou yon wou ki woule fen.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Kran wou sou kote a kenbe kòm yon pozisyon, ak tout presizyon sou yon wou ki woule fen.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Yon pouse pou chak kran, epi retounen an repo touswit.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Pandan ou kenbe epi rete</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sansiblite</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Konbyen nan joystick la yon vitès bay. A 1.00 joystick la rive nan deviyasyon total a 16,000 inite pa segonn, nan chak frekans sondaj ak chak frekans rapò sourit.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Retounen nan sant</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Depi sourit la ralanti oswa kanpe, joystick la pa retounen pi vit pase sa. 0 kite l retounen ansanm ak sourit la.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Kòmanse kote direksyon an te kòmanse</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Avèk yon Antre direksyon, joystick la mezire apati kote pwentè a te ye lè direksyon an te kòmanse, tankou yon joystick sou ekran telefòn kòmanse kote dwèt la poze. Lè l etenn, li mezire apati sant monitè pwentè a.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Aks sa a deplase an relatif</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pou yon trackball oswa yon spinner ki rapòte konbyen li vire. Lè l limen, aks la kenbe yon pozisyon menm jan ak Deplasman sourit epi li pran paramèt deplasman yo. Windows pa di ki aks ki deplase konsa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Apèsi</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Li montre kijan fanmi sa a swiv pwòp sourit ou. Anyen pa asiyen jiskaske ou chwazi l.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Apèsi an kou. Deplase sourit ou.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Kenbe nan {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Nan {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% adwat</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% agoch</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% anwo</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% anba</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>sant la</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Li deplase pandan {0} kenbe.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI sourit</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Inite sourit sa a rapòte pou chak pous li deplase, jan lojisyèl fabrikan li a mete l.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Lè DPI a mete, Deplasman sourit montre deplasman li an santimèt tou. 0 vle di pa mete.</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Klète IR</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouvman sourit X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouvman sourit Y</value></data>
@@ -3768,6 +3871,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Sipèpozisyon</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Endikatè sou ekran PadForge montre pandan w ap jwe. Lè ou etenn youn, sa pa janm chanje fonksyònman an, se sèlman si li parèt.</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sipèpozisyon chanjman pwofil</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontwolè limen oswa etenn</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nòt aparèy dekonekte</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nòt aparèy konekte</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Montre bag oswa griy sou ekran an pandan yon meni aktif. Meni yo toujou mache menm lè sipèpozisyon an etenn.</value></data>
@@ -4408,6 +4512,8 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Etenn</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Kwonomèt</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Koulè ba limyè</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Aparèy dekonekte</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Tout konekte</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>etenn</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>atravè Logitech Gaming Software</value></data>
@@ -4450,6 +4556,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Ekran an montre yon imaj ou chwazi, nan pwòp gwosè li. Yon imaj ki pi gran pase ekran an montre yon fenèt gwosè ekran an, ke makwo Deplase imaj ekran klavye a deplase. Sou S.T.R.I.K.E. 7 la, yon dwèt ki glise sou ekran an deplase l tou.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Ekran an montre kwonomèt la, ke makwo Kwonomèt la kòmanse, mete an poz epi reyinisyalize. Tout ekran yo montre menm kwonomèt la.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Ekran an montre koulè ba limyè DualShock 4 oswa DualSense ki nan plas ki pi ba ekran sa a alimante a, oswa nan plas ki pi ba nan tout plas yo lè li pa alimante okenn. Yon ekran monokwom montre klète li kòm yon modèl pwen. Jiskaske yon koulè rive sou yon ba limyè, PadForge pa montre anyen.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ekran an bay lis aparèy asiyen ki pa konekte yo, ak non paj Aparèy la montre yo, epi li di Tout konekte lè okenn pa manke.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Imaj (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tout fichye (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Deplase</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Deplase X</value></data>
@@ -4635,6 +4742,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Ap kondi (pa 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetri jwèt</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Valè script</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Koneksyon aparèy</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Vitès (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% maksimòm nan)</value></data>
   <data name="Telemetry_Channel_Throttle" xml:space="preserve"><value>Akseleratè (%)</value></data>
@@ -4691,6 +4799,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Pad_Scope_Controller" xml:space="preserve"><value>Tout kontwolè a</value></data>
   <data name="Pad_BothSticks_Header" xml:space="preserve"><value>De stick yo</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Non pwofil la lè pwofil la chanje.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Si kontwolè vityèl yo fèk limen oswa etenn, avèk rakousi a oswa yon makro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Non yon aparèy asiyen lè li dekonekte.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Non yon aparèy asiyen lè li konekte.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopye adrès la</value></data>
@@ -4949,33 +5058,22 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="About_ThemeArtEnterpriseD" xml:space="preserve"><value>Imaj tèm: USS Enterprise-D</value></data>
   <data name="About_ThemeArtEnterpriseDDesc" xml:space="preserve"><value>Yon imaj nan Star Trek: The Next Generation: imaj tèm Star Trek Starfleet la. Yo jwenn li sou Memory Alpha.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistan</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kole sa a nan paramèt MCP yon asistan. Apre sa, asistan an travay avèk PadForge nan nivo ki anwo a.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopye an TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistan ki li TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ajoute mete PadForge, ak skill li, nan asistan sa a. Apre sa li travay nan nivo ki anwo a, epi mo li yo parèt bò kote sa li montre a, anba non li.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Bibliyotèk script</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Anrejistre yon bibliyotèk…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Yon sèl fichye pou AutoHotkey v2, Python oswa PowerShell. Yon script ki chaje l li aparèy yo epi kontwole asiyasyon yo nan nivo ki anwo a.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Yon sèl fichye pou AutoHotkey v2, Python oswa PowerShell, ekri kote ou chwazi.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>K ap tann ou</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivite</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Okenn pwogram poko rele. Chak apèl parèt isit la ak sa ki soti ladan l.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Defèt</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Konpetans pou asistan</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Anrejistre konpetans lan…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge pa t ka anrejistre l: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Pandan yon pwogram nan nivo Li oswa pi wo konekte, li wè sa ki peze sou chak aparèy, klavye yo enkli.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Fè plugin yo mache</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Okenn plugin pa ap mache.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Yon plugin mache ak dwa pa w, pa ak dwa PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Entegre</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kontwolè tès</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Yon kontwolè ki bouje pou kont li, yon kontwòl alafwa, pou w ka eseye yon asiyasyon san okenn materyèl nan men w.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Vitès</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Dousman</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Nòmal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rapid</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Pi rapid</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Rejwe</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Li rejwe yon anrejistreman pwoblèm kòm aparèy ki te fè l yo, ak menm tan yo te genyen. Se nouvo aparèy sou PC sa a, asiyen jan ou menm oswa yon pwofil asiyen yo.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Anrejistreman</value></data>
@@ -4990,10 +5088,9 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Anrejistreman pwoblèm|*.zip;*.log|Tout fichye|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge pa ka jwe {0}. Se pa yon anrejistreman pwoblèm, oswa li pa gen antre okenn aparèy.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Plugin ou yo</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Yon plugin se yon pwogram ki ajoute aparèy nan PadForge. PadForge lanse l ak dwa òdinè ou chak fwa motè a ap mache.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Ajoute yon plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Pwogram ak script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tout fichye|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Apwouve…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Apwouve epi rekòmanse…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Demare ak motè a</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Ap verifye fichye a anvan li demare</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Li fini ak kòd {0}. Li demare ankò nan {1} s.</value></data>
@@ -5024,10 +5121,53 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} deja nan lis la.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge fè jiska 16 plugin mache. Retire youn pou ajoute yon lòt.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin k ap mache: {0}. Aparèy yo ajoute: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} kanpe apre senk echèk.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} chanje depi ou te apwouve l.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} pa t ka demare.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Li ajoute {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Siyen pa {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Pa siyen.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Paramèt li yo parèt isit la pandan l ap mache.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Li pa deklare okenn paramèt.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge pa t ka li paramèt li yo: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Fini apre yon minit san yon mo</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Fichye li chanje pandan l t ap mache</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Ajoute pa {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Paramèt {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Chwazi</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Peze yon kontwòl…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Pa chwazi</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Ajoute yon plugin, oswa lage fichye li sou paj sa a. PadForge montre chemen li, moun ki siyen l ak SHA-256 li, epi li mande w anvan li mache. Yon plugin mache ak dwa pa w, pa ak dwa PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Li rejwe yon anrejistreman pwoblèm kòm aparèy ki te fè l yo, ak menm tan yo.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>K ap mache.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>K ap mache, alamen.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Sa k deplase</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Joystick ak gachèt</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Joystick</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Gachèt</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Modèl</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Balaye</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Sèk</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Tan mouvman</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Tan repo</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Peze bouton yo</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Peze bouton navigasyon yo</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Aplikasyon Windows yo reyaji ak A, B, Retou, Start ak D-pad yon kontwolè Xbox vityèl nan fenèt ki devan an, epi Guide louvri Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Vire D-Pad la</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Pou menm rezon an.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Tan peze</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Kontwolè</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Alamen</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Li kanpe mouvman an. Mete antre li yo anba a avèk sourit la.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Joystick goch</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Joystick dwat</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Gachèt goch</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Gachèt dwat</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Lekti pa segonn</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Twous plugin lan, ak jounal yon plugin ou chwazi</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Twous plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Anrejistre twous plugin lan…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Yon ti plugin an C#, ak menm plugin lan pou AutoHotkey, Python ak PowerShell, chak fichye ak fason pou konstwi l oswa fè l mache.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Yon gid pou chak vèb, evènman ak kalite paramèt, yon script konstriksyon pou plugin C# la, ak menm plugin lan pou AutoHotkey, Python ak PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Jounal</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chwazi yon plugin pou wè jounal li.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Poko gen anyen nan jounal plugin sa a.</value></data>
@@ -5040,4 +5180,230 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Anrejistreman pwoblèm</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Kòmanse oswa kanpe anrejistreman</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Make anrejistreman an</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Sipèpozisyon an bay lis aparèy asiyen ki pa konekte yo, ak non paj Aparèy la montre yo, epi li di Tout konekte lè okenn pa manke.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Dezaktive. Okenn pwogram pa ka rive jwenn PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} ak {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Aktivite PadForge: {0} apèl, pi ansyen an anvan. Apèl ki te pase anvan yo: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Aktivite PadForge: {0} apèl. Apèl ki te pase anvan li: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} ansyen apèl ale. Aktivite kenbe {1:N0} pi resan yo.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} ansyen apèl ale. Aktivite kenbe {1:N0} pi resan yo.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Ekspòte…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Ekspòte Aktivite</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Fichye tèks</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Louvri</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Mete ajou</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Plis pou {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Anrejistre skill la kòm yon ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Louvri fichye paramèt li</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Anrejistre. Nan {0}, ajoute {1} anba {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} poko gen fichye paramèt. Ajoute kreye youn.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge pa jwenn okenn pwogram asistan sou PC sa a ki gen fabrikan ki dokimante yon konfigirasyon sou Windows. Copy Settings anba Plis mache pou nenpòt lòt.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge pa t ka verifye pwogram asistan yo: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Pa ajoute.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Ajoute.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Ajoute. Konekte kounye a.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Ajoute. Li pa konekte depi lè sa a. Yon asistan ki te louvri wè PadForge apre yo fèmen l epi louvri l ankò.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Ajoute pou yon lòt PadForge. Mete ajou fè l montre sou sa a.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Ajoute. Skill PadForge li a pi ansyen pase PadForge sa a.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Ajoute, san skill PadForge li a.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Ajoute. Skill PadForge li a soti nan yon PadForge ki pi nouvo.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Li pran skill sèlman kòm yon fichye telechaje.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Asistan ki ajoute yo rive jwenn PadForge depi Otomatizasyon limen.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Ap ajoute…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Ap retire…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ap mete ajou…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Li pa t fini: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopye.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Pa kopye: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Pwogram ki pèmèt</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Yon pwogram ki vle Read oswa plis mande yon sèl fwa, premye fwa li konekte, epi li jwenn nivo li mande a, jiska nivo ki anwo a. Yon asistan ou ajoute anwo a gen pèmisyon pa sa.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Konekte kounye a.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Dènye itilizasyon {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Poko itilize.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Konekte: {0}. Klike pou louvri Otomatizasyon.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Sou PC sa a: {0}. Soti sou wèb la: {1}. Klike pou louvri Otomatizasyon.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Konekte soti sou wèb la: {0}. Klike pou louvri Otomatizasyon.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Asiyasyon SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Yon gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Yon joystick. SDL pa gen okenn asiyasyon pou li.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Yon joystick. PadForge li l brit, kidonk asiyasyon SDL la pa itilize.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Yon joystick, ranje kòm yon gamepad pa liy pa w la.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL li aparèy yo pandan motè a ap mache.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi kominote a ki enkli, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Telechaje {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Pwòp fichye PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Pa w, ajoute {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Varyab SDL_GAMECONTROLLERCONFIG la, ke SDL mete pi wo pase nenpòt liy ou ajoute</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopye Asiyasyon SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Li mete asiyasyon aparèy la nan kalpin nan kòm yon liy baz done kominote a, anba ID aparèy la ak checksum li ak vèsyon li mete a zewo.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Kole Asiyasyon SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Li pran yon liy pou aparèy sa a, verifye l, kenbe l kòm pa w epi aplike l touswit.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Chèche yon asiyasyon…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Li chèche nan chak liy PadForge genyen pa non epi aplike sa ou chwazi a sou aparèy sa a, pou yon kopi ki gen ID diferan.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Devine yon dispozisyon</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Li devine yon dispozisyon gamepad apati aks, bouton ak hat aparèy la, pou yon aparèy okenn baz done pa konnen. Verifye l nan Teste antre yo.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Retire pa m</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Retire pa m remete liy lan ak liy kontwolè yo jan yo te ye anvan.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Asiyen ankò</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Li refè liy aparèy la sou chak kontwolè li ye a apati dispozisyon SDL la, menm jan asiyen l fè.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Paj baz done kominote a</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Liy lan, ak kote li diferan de {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Liy lan</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontwolè</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Liy {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Antre li kounye a</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Liy SDL la di</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>pa nan liy SDL la</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, diferan</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge pa itilize: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Liy lan</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Kopye.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Kopye. Fòm SDL la pa ka kenbe {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>koub</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zòn mò</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>sòti klavye ak sourit</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, baskil ak lòt aksyon</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ak {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Anyen pou kopye: SDL pa gen okenn asiyasyon pou aparèy sa a, epi li pa sou okenn kontwolè.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Yon lòt pwogram ap itilize kalpin nan. Anyen pa t kopye.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Liy pa w la retire. Aparèy la li jan li te ye anvan l.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Asiyen ankò apati dispozisyon SDL la: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>An sèvis kounye a. Liy lan se pa w epi li genyen priyorite pou aparèy sa a.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Kenbe kòm pa w. Li an sèvis depi motè a ap mache epi aparèy la konekte.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Kenbe kòm pa w, men varyab SDL_GAMECONTROLLERCONFIG la gen yon liy pou aparèy sa a, ke SDL kenbe pi wo pase pa w.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL pa t aksepte liy lan. Anyen pa chanje pou aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Kole yon Asiyasyon SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Kole yon Asiyasyon SDL pou {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Chèche yon asiyasyon pou {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Devine yon dispozisyon pou {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Ajoute liy soti nan yon fichye oswa kalpin nan</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Kole</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Louvri yon fichye…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Fichye asiyasyon (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Fichye a depase 4 MB. Tout fichye kominote a fè anviwon 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Chèche pa non, ID oswa VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Liy PadForge genyen</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Okenn liy pa koresponn.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Liy ou chwazi a aplike sou {0} anba pwòp ID li, atravè menm verifikasyon an ak menm chwa a ak Kole.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Liy asiyasyon SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Yon liy pou aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Yon dispozisyon devine.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} chan, ID li koresponn ak aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} chan, menm machann ak menm pwodwi sou yon lòt bis oswa yon lòt vèsyon. Li kenbe anba pwòp ID aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} chan, liy yon lòt aparèy. Li kenbe anba pwòp ID aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} chan. SDL pa li aparèy sa a, kidonk PadForge ranje antre li yo dapre liy lan.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} chan, apati aks, bouton ak hat aparèy la. Verifye l nan Teste antre yo, epi kenbe l oswa chanje l isit la.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} chan, ID li koresponn ak aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} chan, menm machann ak menm pwodwi sou yon lòt bis oswa yon lòt vèsyon. Li kenbe anba pwòp ID aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} chan, liy yon lòt aparèy. Li kenbe anba pwòp ID aparèy sa a.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} chan. SDL pa li aparèy sa a, kidonk PadForge ranje antre li yo dapre liy lan.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} chan, apati aks, bouton ak hat aparèy la. Verifye l nan Teste antre yo, epi kenbe l oswa chanje l isit la.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Sa chanje fason yo li {0}. Liy li yo nan {1} asiyen ankò apati nouvo dispozisyon an.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Sa chanje fason yo li {0}. Li pa sou okenn kontwolè, kidonk okenn liy pa chanje.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Rakousi pwofil ki li {0} kenbe antre yo te mete yo.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Liy lan kenbe kòm pa w nan PadForge.xml epi li genyen priyorite sou tout lòt sous pou aparèy sa a. Retire pa m remete ansyen liy lan ak ansyen liy yo.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Liy yo kenbe kòm pa w nan PadForge.xml epi yo genyen priyorite pou aparèy yo sou tout lòt sous. Efase, anba Plis nan liy Baz done kontwolè a, retire yo.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} liy pou Windows. {1} pou lòt sistèm yo sote.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} liy pou Windows. {1} pou lòt sistèm yo sote.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} refize. Premye a: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Kole yon liy, oswa tèks yon fichye gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Tèks la pa yon liy nan baz done kontwolè SDL la: yon ID 32 chif ekzadesimal, yon non, epi chan tankou a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Liy yo se pou lòt sistèm. PadForge li liy pou Windows, oswa pou okenn sistèm an patikilye.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID liy lan pa ID yon aparèy. Li bezwen 32 chif ekzadesimal.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Non liy lan vid, depase 128 karaktè, oswa gen yon karaktè SDL li kòm yon chan.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Liy lan gen yon hint oswa yon chan Android, ke PadForge pa aksepte.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Liy lan gen yon chan SDL pa konnen.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Yon liyezon pa nan fòm SDL la, tankou b3, a2, +a2, a2~ oswa h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Liy lan bay yon chan de fwa.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Liy lan depase 1,024 karaktè.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Liy lan pa lye okenn kontwòl.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Liy pa w yo</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Liy pa w yo</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Liy ou ajoute isit la, oswa ou kole sou kat Asiyasyon SDL yon aparèy, genyen priyorite pou aparèy yo sou tout lòt sous epi yo rete apre reyinisyalizasyon an.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ajoute liy soti nan yon fichye oswa kalpin nan…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} liy, pa w, ak priyorite sou tout lòt sous pou aparèy yo.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} liy, pa w, ak priyorite sou tout lòt sous pou aparèy li.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Poko genyen.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>An sèvis touswit.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Limen</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Asistan sou wèb la</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tinèl</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Okenn</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Yon adrès mwen kole</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Ap demare, ak dwa pa w.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>K ap mache, ak dwa pa w. Adrès li rete menm jan chak fwa li demare.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>K ap mache, ak dwa pa w. Yon tinèl rapid pran yon nouvo adrès chak fwa li demare, kidonk fòk ou ta ajoute asistan an ankò.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Kanpe.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Kanpe. Dènye mo li: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Li pa t ka demare.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Li pa sou PC sa a ankò.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Pa gen okenn pwogram tinèl sou PC sa a. PadForge mache ak cloudflared, devtunnel, ngrok ak Tailscale Funnel, oswa ak adrès pwòp tinèl pa w.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Chwazi yon tinèl pou bay PadForge yon adrès piblik.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Sou PC sa a tou: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ki gen yon adrès ki rete menm jan</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, ki gen tinèl rapid ki pran yon nouvo adrès chak fwa</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Lanse pwòp tinèl pa w sou http://127.0.0.1:{0} epi kole adrès https li. Yon tinèl Cloudflare ki gen non, yon dev tunnel pèmanan, Tailscale Funnel ak pwòp domèn ngrok kenbe adrès yo.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Kole yon adrès https san okenn chemen eksepte /mcp, jan tinèl ou bay li.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Ap demare asistan wèb PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Asistan wèb PadForge kanpe ({0}). Etenn epi limen Reach PadForge From the Web pou demare l ankò.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adrès</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Poko gen adrès piblik.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ajoute nan Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Kopye.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Aksepte yon nouvo asistan wèb</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Kòmanse aksepte</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Sispann aksepte</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Ap aksepte jiska {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Pa aksepte. Kòmanse aksepte louvri l pou senk minit.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Ajoute adrès la nan asistan an epi konekte. Chak koneksyon montre pwòp kòd sis chif li sou paj koneksyon li ak sou kat kesyon PadForge la. Pèmèt li sèlman lè de kòd yo menm. Lòt lè, yon koneksyon refize epi anyen pa mande w.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Pèmèt sou wèb la</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Poko genyen.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Koneksyon li te retounen sou {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Li rele tèt li {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Pèmèt {0}, dènye itilizasyon {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Pèmèt {0}, poko itilize.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoke</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Pwòp Secure MCP Tunnel li lanse PadForge dirèkteman, san adrès ni koneksyon isit la. Kopye kòmand lan nan konfigirasyon tinèl sa a.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopye kòmand lan</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge pa telechaje okenn pwogram tinèl epi li pa kenbe kle okenn lòt konpayi. Yon asistan wèb travay nan nivo ki anwo a.</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Koneksyon li retounen sou {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Li rele tèt li {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Pèmèt sèlman si paj koneksyon li montre kòd sa a:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Kòd sis chif li parèt sou kat kesyon PadForge la. Pèmèt sèlman si paj koneksyon li montre menm kòd la.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Li travay nan {0}, atravè {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Koneksyon li retounen sou PC sa a, epi nenpòt pwogram isit la ta ka reklame adrès sa a.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Konekte nan PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} mande pou travay ak PadForge sou PC ou.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Li rele tèt li {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Sou PC ou, kat kesyon PadForge la mande w sou koneksyon sa a. Pèmèt li la sèlman si kat la montre kòd sa a:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Paj sa a kontinye pou kont li depi ou reponn sou PC a.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Koneksyon sa a retounen sou yon pwogram sou PC ou, epi nenpòt pwogram la ta ka reklame adrès sa a.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge pa aksepte nouvo asistan wèb kounye a. Sou PC ou, louvri PadForge, ale nan Ekstra, Otomatizasyon, epi anba Asistan sou wèb la peze Kòmanse aksepte. Apre sa, konekte ankò.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Koneksyon sa a pa ka kontinye. Ajoute adrès PadForge la nan asistan an ankò epi konekte.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Koneksyon sa a fini. Konekte ankò depi asistan an.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows pa t demare l</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>li fini ak kòd {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Otomatizasyon dezaktive, kidonk okenn asistan wèb pa rive jwenn PadForge. Asistan wèb la demare depi Otomatizasyon limen.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ap verifye…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Pa enstale.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Enstale epi ajou. Yon script kòmanse ak {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Enstale pou {0} epi ajou. Yon script kòmanse ak {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Enstale. PadForge sa a gen yon kopi ki pi nouvo.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Enstale pou {0}. PadForge sa a gen yon kopi ki pi nouvo.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Ap enstale…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge pa t ka verifye l: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Enstale mete bibliyotèk PadForge la kote langaj sa a jwenn li. Yon script ki chaje l li aparèy yo epi kontwole asiyasyon yo nan nivo ki anwo a.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Anrejistre yon bibliyotèk nenpòt kote</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kopi enstale yo</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Retire tout</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Retire.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID script li</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script yo rele kontwòl li yo {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script yo rele touch li yo KeyA, KeySpace, KeyLeftShift ak lòt konsa, epi chak touch pa kòd li, Vk0 rive Vk255.</value></data>
 </root>

@@ -788,28 +788,27 @@
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Sópwelo le Tiinnóó</value></data>
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} a mwúchútiw. Esor device a chuen nom ren {1}.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Chón Álillis</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Pacheei ei non ekkewe MCP settings an emén chón álillis. Mwirin, ewe chón álillis epwe angang ngeni PadForge won ewe level asan.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kapiini usun TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Chón Álillis mi álleani TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Apachaatá a isóni PadForge, fiti an skill, non ena chón álillis. Mwirin, a angang won ewe level asan, me an kapas a pwá ünükün met a ewei ngeni, fán itan.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Library ren Script</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Isóni eu Library…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Eu chök file ren AutoHotkey v2, Python are PowerShell. Eu script mi uwei epwe álleani ekkewe device me emmweni ekkewe mapping won ewe level asan.</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill ren Chón Álillis</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Isóni ewe Skill…</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Eu chök file ren AutoHotkey v2, Python are PowerShell, mi makketiw ia ka filata.</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Esor plugin a angang.</value></data>
   <data name="Plugins_Replay_Play" xml:space="preserve"><value>Poputá</value></data>
   <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Áliwini</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Epwe poputá fiti ewe engine</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>A etittina ewe file me mwen an epwe poputá</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin mi angang: {0}. Device ra apacha: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} a úkútiw mwirin an mwáál limu fán.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} a siwil mwirin ka mwúttiri.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ese tongeni poputá.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Isóni ewe Plugin Kit…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Eu kúkkún plugin non C#, me ewe chök plugin ren AutoHotkey, Python me PowerShell, iteiten file a pachenó usun ifa usun epwe fératá are angangééni.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Eu kapas ren iteiten verb, event me sókkun setting, eu build script ren ewe C# plugin, me ewe chök plugin ren AutoHotkey, Python me PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Filatá eu plugin pwe kopwe kúna nóun log.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Esor mwo met non nóun log ei plugin.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Esor program a riri.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>A on. Esor program a riri.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>A riri: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program ese silles</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, a sain ren {1}</value></data>
@@ -837,7 +836,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Esor pwal ekkeei tori PadForge epwe poputá sefál</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Esor ena tool ren PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Ewe program a álleani eu state mi ochufesen</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Esor ena setting</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Esor met a wor ena ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Ewe value a nó lúkún met ewe setting a etiwa</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>En ka ese mwútátá</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Esor emén a pólúweni non fansoun</value></data>
@@ -854,6 +853,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Pwáraeló ewe window</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Isóni ewe window non ewe system tray</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Akúkkúnú ewe window</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Awatteeló ewe window</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Kúnú PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Poputá ewe engine</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Aúkú ewe engine</value></data>
@@ -879,6 +879,12 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Apacha ewe device {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Akkota ekkewe control an device {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Atoui ewe device {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Akkota control meinisin an device {0} pwe repwe asösö</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>A ereni PadForge pwe epwe angangééni eu program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>A suuki eu file, eu folder are eu web page.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>A ereni PadForge pwe epwe tinaló key are mouse input ngeni Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>A uwato eu profile seni lukun PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge a eis reom me mwen an eu program féri ei.</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Amwéchú ekkewe control an device {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Likitano ekkewe control an device {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Akkota ewe value {0}</value></data>
@@ -887,25 +893,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Siwili profile</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Poputá are aúkú ewe engine</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kawora are aúkú virtual controller</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Isóni eu diagnostics snapshot</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Álleani ewe polling rate me ekkewe driver</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lista ekkewe profile</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Álleani eu profile</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lista ekkewe virtual controller</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lista ekkewe device</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Álleani eu device</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Witiwiti óm input</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Álleani ekkewe mapping an eu controller</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lista ekkewe macro an eu controller</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekoti eu osukosuk</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Kútta setting</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Álleani eu setting</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Áiti ngonuk eu leeni</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Kútta leeni non PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Álleani eu leeni non PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Álleani met ka kúna</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Apacha eu device pwisin nóun</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Emmweni nóun device</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Atoui nóun device</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Amwéchú are likitano eu control</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Akkota eu value ren ekkewe macro trigger</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Siwili eu setting</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Tiki eu button</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Fératá eu profile</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Siwili iten eu profile</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ataieló eu profile</value></data>
@@ -916,7 +921,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Siwili sókkun eu controller</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Ewiisa eu device</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Akkota mapping row</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Limeti mapping row</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Akkota mapping an eu controller pwisin</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Isóni eu macro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ataieló eu macro</value></data>
@@ -936,6 +940,7 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>A fératá eu keyboard me mouse controller</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>A kawora {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Siwili “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Tiki “{0}”</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>A akkota {0} ngeni {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>A rongorong won ewe network, pwe ekkoch device ra tongeni tori ei PC.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>A siwili eu driver are HidHide, ekkewe ekkoch program me kéém ra nounou.</value></data>
@@ -961,4 +966,198 @@
   <data name="About_McpSdkDesc" xml:space="preserve"><value>Ewe Model Context Protocol server me client mi nom tuun ewe riri ngeni chón álillis me PadForge.exe --mcp, ren Model Context Protocol a Series of LF Projects.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions me DependencyInjection.Abstractions, ekkewe ewe MCP C# SDK a pwo won, ren Microsoft.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>A angang.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>A angang, ren pöúm.</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Esissina ewe Recording</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Device mi Ese Riri</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Meinisin a riri</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ewe screen a pwáraatá ekkewe device mi map nge ese riri, ren ekkewe it won ewe page Devices, me a apasa Meinisin a riri lupwen esor eu mi mano.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Ewe overlay a pwáraatá ekkewe device mi map nge ese riri, ren ekkewe it won ewe page Devices, me a apasa Meinisin a riri lupwen esor eu mi mano.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>A off. Esor program a tongeni tori PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} me {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Suuki</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Afööló</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge ese kúna eu program chón álillis won ei PC mi wor an chón féri ar kapas usun ifa usun epwe akkotá won Windows. Copy Settings fán More a angang ren ekkoch meinisin.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge ese tongeni etittina ekkewe program chón álillis: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Ese mwo apachaatá.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>A apachaatá ren pwal eu PadForge. Afööló epwe ewei ngeni ei PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>A apachaatá. An PadForge skill a chinnap seni ei PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>A apachaatá, nge esor an PadForge skill.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>A apachaatá. An PadForge skill a feito seni eu PadForge mi fö.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Ekkewe chón álillis mi apachaatá repwe tori PadForge lupwen Automation a on.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Iei a apachaatá…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Iei a atoui…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Iei a afööló…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ese unusoló: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>A kapiiniló.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ese kapiiniló: {0}</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Eu gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Eu joystick. Esor an SDL mapping ren.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Eu joystick. PadForge a álleani ren raw, ina minne ese aea ewe mapping an SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Eu joystick, mi akkota usun eu gamepad ren om row.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL a álleani device lupwen ewe engine a angang.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ewe kapi an community mi nóm non, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A download {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Pwisin file an PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Pwisin om, mi apachaatá {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ewe variable SDL_GAMECONTROLLERCONFIG, ewe SDL a aúchea asan row meinisin ka apachaatá</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kapiini SDL Mapping</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>A isóni ewe mapping an ewe device won ewe clipboard usun eu row non ewe community database, fán ewe ID an ewe device, nge an checksum me version ra seró.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Pacheei SDL Mapping…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>A angei eu row ren ei device, a etittina, a isóni usun om, me a aea iei chök.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Kútta eu Mapping…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>A kútta non row meinisin PadForge a uwei ren itan, me a aea ewe ka filata ngeni ei device, ren eu clone mi sokkopat an ID.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Ekieki eu Layout</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>A ekieki eu layout ren gamepad seni ekkewe axis, button me hat an ewe device, ren eu device esor database a sinei. Etittina non Test Inputs.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Atoowu Ai</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Atoowu Ai a aliwinitiw ewe row me ekkewe row ren controller seni me mwan.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Map Sefál</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>A féri sefál ekkewe row an ewe device won iteiten controller a nóm won seni ewe layout an SDL, usun a fis lupwen ka assign.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Page an ewe Community Database</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Ewe row, me ia a sokkopat seni {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Ewe row</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Row an {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>An input iei</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Met ewe row an SDL a apasa</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>ese nóm non ewe row an SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, a sokkopat</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge ese aea: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Ewe row</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>A kapiiniló.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>A kapiiniló. Ewe form an SDL ese tongeni amwéch {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>curve</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>dead zone</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>keyboard me mouse output</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle me ekkoch action</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} me {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Esor met epwe kapiiniló: esor an SDL mapping ren ei device, me ese nóm won eu controller.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Pwal eu program a aea ewe clipboard. Esor met a kapiiniló.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Om row a atouló. Ewe device a álleani usun me mwan.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>A map sefál seni ewe layout an SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>A aea iei. Ewe row om, me a akkomw ren ei device.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>A isóni usun om. Epwe aea lupwen ewe engine a angang me ewe device a riri.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>A isóni usun om, nge ewe variable SDL_GAMECONTROLLERCONFIG a amwéch eu row ren ei device, me SDL a akkomwa ena asan om.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ese etiwa ewe row. Esor met a siwil ren ei device.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pacheei eu SDL Mapping</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pacheei eu SDL Mapping ren {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Kútta eu Mapping ren {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Ekieki eu Layout ren {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Apachaatá Row seni eu File are ewe Clipboard</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Suuki eu File…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>File ren mapping (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Ewe file a lap seni 4 MB. Unusen ewe file an ewe community a arapakkan 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Kútta ren it, ID are VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Row PadForge a uwei</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Esor row a tipeew ngeni.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ewe row ka filata epwe aea ngeni {0} fán pwisin an ID, fiti ewe chök etittin me ewe chök filata usun Paste.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Row ren SDL mapping</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Eu row ren ei device.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Eu layout mi ekieki.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} field, an ID a tipeew ngeni ei device.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} field, seni ewe chök vendor me product won pwal eu bus are version. A isóni fán pwisin an ID ei device.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} field, an pwal eu device row. A isóni fán pwisin an ID ei device.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} field. SDL ese álleani ei device, ina minne PadForge a akkota an kewe input ren ewe row.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} field, seni ekkewe axis, button me hat an ewe device. Etittina non Test Inputs, mwirin isóni are siwili ikei.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} field, an ID a tipeew ngeni ei device.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} field, seni ewe chök vendor me product won pwal eu bus are version. A isóni fán pwisin an ID ei device.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} field, an pwal eu device row. A isóni fán pwisin an ID ei device.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} field. SDL ese álleani ei device, ina minne PadForge a akkota an kewe input ren ewe row.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} field, seni ekkewe axis, button me hat an ewe device. Etittina non Test Inputs, mwirin isóni are siwili ikei.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ei a siwili ifa usun ra álleani {0}. An kewe row non {1} ra map sefál seni ewe layout mi fö.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ei a siwili ifa usun ra álleani {0}. Ese nóm won eu controller, ina minne esor row a siwil.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profile shortcut mi álleani {0} ra amwéch ekkewe input ra akkota ngeni.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Ewe row a isóni usun om non PadForge.xml me a akkomw asan source meinisin ren ei device. Atoowu Ai a aliwinitiw ewe row mi chinnap me ekkewe row mi chinnap.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ekkewe row ra isóni usun om non PadForge.xml me ra akkomw ren ar kewe device asan source meinisin. Clear, fán More an ewe row Controller Database, a atoui.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} row ren Windows. {1} ren ekkoch system ra likitiló.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row ren Windows. {1} ren ekkoch system ra likitiló.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ese etiwa. Ewe akkomw: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Pacheei eu row, are ewe kapas non eu file gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ewe kapas sap eu row non ewe controller database an SDL: eu ID mi 32 hex digit, eu it, mwirin field usun a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ekkewe row ra ren ekkoch system. PadForge a álleani row ren Windows, are ren esor system mi chék.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Ewe ID an ewe row sap an eu device. A mwochen 32 hex digit.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Ewe it an ewe row a pon, a lap seni 128 character, are a amwéch eu character SDL a álleani usun eu field.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Ewe row a uwei eu hint are eu field an Android, PadForge ese etiwa.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Ewe row a wor eu field SDL ese sinei.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Eu binding ese nóm non ewe form an SDL, usun b3, a2, +a2, a2~ are h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ewe row a awora eu field fán ruu.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ewe row a lap seni 1,024 character.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Ewe row ese bind eu control.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Om kewe Row</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Chón Álillis won ewe Web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Esor</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Eu Address Ua Pacheei</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>A poputá, fiti om tufich.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>A angang, fiti om tufich. An address a chök ewe chök iteiten fán a poputá.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>A angang, fiti om tufich. Eu quick tunnel a angei eu address mi fö iteiten fán a poputá, ina minne ewe chón álillis epwe apachaatá sefál.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>A úkútiw.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>A úkútiw. An kapas mi le sópwólóón: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ese tongeni poputá.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ese chüen nóm won ei PC.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Esor program ren tunnel a kúnóó won ei PC. PadForge a angang fiti cloudflared, devtunnel, ngrok me Tailscale Funnel, are fiti ewe address an pwisin om tunnel.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Filata eu tunnel pwe PadForge epwe wor an eu public address.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Pwal won ei PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, mi an address a chök ewe chök</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, mi an kewe quick tunnel ra angei eu address mi fö iteiten fán</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Angangééni pwisin om tunnel ngeni http://127.0.0.1:{0} me pacheei an https address. Eu Cloudflare tunnel mi wor itan, eu dev tunnel mi nómottam, Tailscale Funnel me pwisin domain an ngrok ra amwéch ar address.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Pacheei eu https address esor path chiwen /mcp, usun om tunnel a ngonuk.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Iei a poputá ewe web helper an PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ewe web helper an PadForge a úkútiw ({0}). Akkota Reach PadForge From the Web ngeni off me on pwe epwe poputá sefál.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Address</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Esor mwo public address.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Apachaatá ngeni Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>A kapiiniló.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Etiwa eu Chón Álillis mi Fö won ewe Web</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Poputá Etiwa</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Úkútiw Etiwa</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>A etiwa tori {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Ese etiwa. Poputá Etiwa a suuki ren limu minit.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Apachaatá ewe address non ewe chón álillis me sign in. Iteiten sign in a pwáraatá pwisin an kóót mi wone digit won an page ren sign in me won ewe kaat ren eis an PadForge. Tiki Allow chök lupwen ekkewe ruu kóót ra chék ewe chök. Non ekkoch fansoun, a ppii eu sign in, me esor met epwe eis reom.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Mi Mwúttir won ewe Web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Esor mwo.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>An sign in a liwiniti {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>A apasa pwe itan {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>A mwúttir {0}, a aea le sópwólóón {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>A mwúttir {0}, ese mwo aea.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Atoui</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Pwisin an Secure MCP Tunnel a angangééni PadForge, esor address are sign in ikei. Kapiini ewe command non ewe setup an ena tunnel.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kapiini Command</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ese download eu program ren tunnel me ese isóni an pwal eu company key. Eu web chón álillis a angang won ewe level asan.</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>An sign in a liwiniti {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>A apasa pwe itan {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Tiki Allow chök ika ewe page ren sign in a pwáraatá ei kóót:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>An kóót mi wone digit a pwá won ewe kaat ren eis an PadForge. Tiki Allow chök ika ewe page ren sign in a pwáraatá ewe chök kóót.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>A angang won {0}, fiti {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>An sign in a liwiniti ei PC, me eu program ikei a tongeni angei ena address.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Sign in ngeni PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} a tingor pwe epwe angang fiti PadForge won om PC.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>A apasa pwe itan {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Won om PC, ewe kaat ren eis an PadForge a eis usun ei sign in. Tiki Allow ikena chök ika ewe kaat a pwáraatá ei kóót:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Ei page epwe feiló pwisin lupwen ka pélúweni won ewe PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Ei sign in a liwiniti eu program won om PC, me eu program ikena a tongeni angei ena address.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge ese etiwa eu web chón álillis mi fö iei. Won om PC, suuki PadForge, feino Extras, Automation, me fán Chón Álillis won ewe Web, tiki Poputá Etiwa. Mwirin, sign in sefál.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Ei sign in ese tongeni sopwólóó. Apachaatá sefál ewe address an PadForge non ewe chón álillis me sign in.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Ei sign in a muchuló. Sign in sefál seni ewe chón álillis.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows ese poputá</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>a muchuló fiti kóót {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation a off, ina minne esor web chón álillis a tori PadForge. Ewe web helper epwe poputá lupwen Automation a on.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>A install me a fö. Eu script a poputá fiti {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>A install ren {0} me a fö. Eu script a poputá fiti {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>A install. Ei PadForge a wor eu kapi mi fö.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>A install ren {0}. Ei PadForge a wor eu kapi mi fö.</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ese tongeni etittina: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Install a isóni ewe library an PadForge ia ena fós a kúna. Eu script mi uwei epwe álleani ekkewe device me emmweni ekkewe mapping won ewe level asan.</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kapi mi Install</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Atoui Meinisin</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>A atouló.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Script ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>An script ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script ra áeita an kewe control {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script ra áeita an kewe key KeyA, KeySpace, KeyLeftShift me ekkewe ra usun, me iteiten key ren an kóót, Vk0 tori Vk255.</value></data>
 </root>

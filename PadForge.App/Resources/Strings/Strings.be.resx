@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} адключана. У {1} не засталося прылад.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} падключана</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} падключана, зарад {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Адключана прылад: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Падключана прылад: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Адключана прылад: {0} ({1})</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Падключана прылад: {0} ({1})</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} раз за разам адключаецца</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (макс. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (макс. {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Аўтаперападключэнне, порт, ідэнтыфікатар спалучэння, падключэнне па адрасе</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, замена DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Парты, Поўная хуткасць, Уласныя фарматы</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, навык</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Іншыя памочнікі, памочнікі ў вэбе</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Аглядайцеся галавой з трэкерам галавы або VR-шлемам, пакуль абодва вялікія пальцы застаюцца на кнопках.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Прызначайце хуткасць, педалі і перадачы, якія адпраўляе гоначная гульня, як любы ўвод.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Адпраўляйце рух кантролера ў эмулятары, якія чытаюць крыніцу руху DSU.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Кола, сетка або панэль меню, пакуль яно адкрыта.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Назва слоя, калі слой зруху ўключаецца, на час, які задае гэты слой.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Назва профілю, калі профіль змяняецца.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Ці толькі што ўключыліся або выключыліся віртуальныя кантролеры, праз спалучэнне клавіш або макрас.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Назва прызначанай прылады, калі яна адключаецца.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Назва прызначанай прылады, калі яна падключаецца.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Капіраваць адрас</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Праграмы могуць пераключаць профілі і вызваляць іх, запускаць і спыняць рухавік, уключаць і выключаць віртуальныя кантролеры, паказваць і хаваць акно, закрываць PadForge, захоўваць здымак дыягностыкі і пытацца, што працуе.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Усё, што на ўзроўні Каманды, а таксама праграмы бачаць прылады, віртуальныя кантролеры, супастаўленні, профілі і налады, сочаць за ўводам кожнай прылады ў рэальным часе і паказваюць вам месца ў PadForge. Праграма на ўзроўні Чытанне бачыць кожную націснутую клавішу на кожнай прыладзе, у тым ліку клавішы, набраныя ў вокнах, што працуюць ад імя адміністратара.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Усё, што на ўзроўні Чытанне, а таксама праграмы могуць дадаваць уласныя прылады і кіраваць імі, утрымліваць элемент кіравання любой прылады і перадаваць трыгерам макрасаў значэнні з імёнамі.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Усё, што на ўзроўні Адпраўка ўводу, а таксама праграмы могуць змяняць тое, што вы можаце змяняць на старонках.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Усё, што на ўзроўні «Адпраўка ўводу», а таксама праграмы могуць змяняць тое, што вы можаце змяняць на старонках. Некаторыя змены заўсёды спачатку пытаюцца ў вас на картцы пытанняў PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Памочнікі</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Устаўце гэта ў налады MCP памочніка. Тады памочнік працуе з PadForge на ўзроўні, абраным вышэй.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Капіраваць як TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Памочнікі, што чытаюць TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Кнопка «Дадаць» змяшчае PadForge разам з яго навыкам у гэтага памочніка. Тады ён працуе на ўзроўні вышэй, а яго словы паказваюцца побач з тым, на што ён паказвае, пад яго імем.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Скрыпты</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Бібліятэка скрыптоў</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Захаваць бібліятэку…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Адзін файл для AutoHotkey v2, Python або PowerShell. Скрыпт, які яго загружае, чытае прылады і кіруе супастаўленнямі на ўзроўні, абраным вышэй.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Адзін файл для AutoHotkey v2, Python або PowerShell, запісаны там, дзе вы выбярэце.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Чакаюць вас</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Актыўнасць</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Пакуль ніводная праграма не звярталася. Кожны выклік паказваецца тут з вынікам.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Адмяніць</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Навык для памочнікаў</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Захаваць навык…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge не ўдалося захаваць: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Пакуль падключана праграма з узроўнем Чытанне або вышэй, яна бачыць, што націснута на кожнай прыладзе, уключаючы клавіятуры.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Плагіны</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Запускаць плагіны</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ніводны плагін не працуе.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Плагін працуе з вашымі правамі, а не з правамі PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Убудаваныя</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Тэставы кантролер</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Кантролер, які рухаецца сам, па адным элеменце кіравання, каб можна было паспрабаваць супастаўленне без прылады пад рукой.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Хуткасць</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Павольна</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Звычайна</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Хутка</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Найхутчэй</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Прайграванне</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Прайгрывае запіс праблемы так, як быццам яго зрабілі прылады, якія яго запісалі, з тым жа часам. Гэта новыя прылады на гэтым ПК, і яны прызначаюцца так, як прызначаеце вы або профіль.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Запіс</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Запісы праблем|*.zip;*.log|Усе файлы|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge не можа прайграць {0}. Гэта не запіс праблемы, або ў ім няма ўводу прылады.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Вашы плагіны</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Плагін гэта праграма, якая дадае прылады ў PadForge. PadForge запускае яе з вашымі звычайнымі правамі, пакуль працуе рухавік.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Дадаць плагін…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Праграмы і скрыпты|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Усе файлы|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Ухваліць…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Ухваліць і перазапусціць…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Запускаецца з рухавіком</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Праверка файла перад запускам</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Завершана з кодам {0}. Паўторны запуск праз {1} с.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ужо ў спісе.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge запускае не больш за 16 плагінаў. Выдаліце адзін, каб дадаць іншы.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Плагінаў працуе: {0}. Дададзена імі прылад: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} спынены пасля пяці збояў.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} змяніўся пасля вашага ўхвалення.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} не ўдалося запусціць.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Дададзена: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Падпісана: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Без подпісу.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Яго налады паказваюцца тут, пакуль ён працуе.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Ён не абвяшчае налад.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge не ўдалося прачытаць яго налады: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Завершаны пасля хвіліны маўчання</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Яго файл змяніўся падчас працы</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Дададзена плагінам {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Налады: {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Выбраць</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Націсніце элемент кіравання…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Не выбрана</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Дадайце плагін або перацягніце яго файл на гэтую старонку. PadForge паказвае яго шлях, падпісанта і SHA-256 і пытаецца ў вас перад запускам. Плагін працуе з вашымі правамі, а не з правамі PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Прайгрывае запіс праблемы так, як быццам яго зрабілі прылады, якія яго запісалі, з іх часам.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Працуе.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Працуе, уручную.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Што рухаецца</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Стыкі і трыгеры</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Стыкі</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Трыгеры</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Узор</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Развёртка</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Круг</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Час руху</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Час спакою</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Націскаць кнопкі</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Націскаць кнопкі навігацыі</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Праграмы Windows рэагуюць на A, B, Back, Start і D-pad віртуальнага кантролера Xbox у акне наперадзе, а Guide адкрывае Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Круціць крыжак</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>З той самай прычыны.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Час націскання</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Кантролеры</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Уручную</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Спыняе рух. Задайце яго ўваходы ніжэй мышшу.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Левы стык</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Правы стык</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Левы трыгер</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Правы трыгер</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Чытанняў за секунду</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Камплект для плагінаў і журнал выбранага плагіна</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Камплект для плагінаў</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Захаваць камплект для плагінаў…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Невялікі плагін на C# і той самы плагін для AutoHotkey, Python і PowerShell, а ў кожным файле сказана, як яго сабраць або запусціць.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Кіраўніцтва па кожным дзеяслове, падзеі і віде налад, скрыпт зборкі для плагіна на C# і той самы плагін для AutoHotkey, Python і PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Журнал</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Абярыце плагін, каб убачыць яго журнал.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>У журнале гэтага плагіна пакуль нічога няма.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Мод гульні</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Іншая праграма займае назву канала {0}. Закрыйце гэту праграму.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows адмовіла ў стварэнні канала {0}, таму праграмы не могуць падключыцца.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ніводная праграма не падключана.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Уключана. Ніводная праграма не падключана.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Падключана: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Невядомая праграма</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, падпісана: {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Больш такіх запытаў да наступнага запуску PadForge не будзе</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>У PadForge няма такога інструмента</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Праграма прачытала састарэлы стан</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Такой налады няма</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Нічога з такім ID няма</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Значэнне выходзіць за межы налады</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Вы не дазволілі</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ніхто не адказаў своечасова</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Паказаць акно</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Адправіць акно ў вобласць апавяшчэнняў</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Згарнуць акно</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Разгарнуць акно</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Закрыць PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Запусціць рухавік</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Спыніць рухавік</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Дадаць прыладу {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Задаць элементы кіравання прылады {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Выдаліць прыладу {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Вярнуць кожны элемент кіравання прылады {0} у спакой</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Прымушае PadForge запусціць праграму.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Адкрывае файл, папку або вэб-старонку.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Прымушае PadForge адпраўляць у Windows націсканні клавіш або ўвод мышы.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Імпартуе профіль па-за PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge пытаецца ў вас, перш чым праграма зробіць гэта.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Дыялогі</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Макрасы</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Утрымліваць элементы кіравання прылады {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Адпусціць элементы кіравання прылады {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Задаць значэнне {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Пераключыць профілі</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Запусціць або спыніць рухавік</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Уключыць або выключыць віртуальныя кантролеры</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Захаваць здымак дыягностыкі</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Прачытаць частату апытання і драйверы</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Паказаць спіс профіляў</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Прачытаць профіль</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Паказаць спіс віртуальных кантролераў</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Паказаць спіс прылад</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Прачытаць прыладу</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Чакаць вашага ўводу</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Прачытаць супастаўленні кантролера</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Паказаць спіс макрасаў кантролера</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Запісаць праблему</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Знайсці налады</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Прачытаць наладу</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Паказаць вам месца</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Шукаць месцы ў PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Прачытаць месца ў PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Прачытаць тое, што вы бачыце</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Дадаць уласную прыладу</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Кіраваць сваёй прыладай</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Выдаліць сваю прыладу</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Утрымліваць або адпусціць элемент кіравання</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Задаць значэнне для трыгераў макрасаў</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Змяніць наладу</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Націснуць кнопку</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Стварыць профіль</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Перайменаваць профіль</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Выдаліць профіль</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Змяніць тып кантролера</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Прызначыць прыладу</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Задаць радкі супастаўлення</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Ачысціць радкі супастаўлення</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Аўтаматычна супаставіць кантролер</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Захаваць макрас</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Выдаліць макрас</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Стварае кантролер клавіятуры і мышы</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Уключае {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Змяніць «{0}»</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Націснуць «{0}»</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} хоча паказаць вам: {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Дзе: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Дазволіць {0} працаваць з PadForge на ўзроўні {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} выконвае {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Запушчана праграмай {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Падпісана: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Без подпісу.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>На ўзроўні «Чытанне» і вышэй яна бачыць кожную націснутую клавішу на кожнай прыладзе, уключаючы клавіятуры.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Яна пытаецца адзін раз. Вы можаце выдаліць яе на старонцы «Аўтаматызацыя».</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>камандны радок PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Задае для {0} значэнне {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Праслухоўвае сетку, таму іншыя прылады могуць дасягнуць гэтага ПК.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Змяняе драйвер або HidHide, на якія спадзяюцца іншыя праграмы і гульні.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Модулі PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Дазволіць</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Не дазваляць</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Не зараз</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Паказаць</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Крок {0} з {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Націсніце на гэта, каб працягнуць.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Адкрыйце: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Адкрыйце «Больш».</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Ад {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Ад {1}, якая называе сябе «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Ад праграмы, якая называе сябе «{0}»</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Усталяваць і перазапусціць</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Нататкі да выпуску</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>База даных кантролераў</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Абнавіць зараз» спампоўвае з GitHub базу даных кантролераў супольнасці (SDL_GameControllerDB) і захоўвае ў файле налад супастаўленні, якіх няма ў гэтай версіі PadForge. Новае супастаўленне выкарыстоўваецца толькі для кантролера, які нічым іншым не чытаецца як геймпад, не прызначаны і не знаходзіцца ў прымусовым рэжыме сырога джойсціка. Скід выдаляе ўсе спампаваныя супастаўленні.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Абнавіць зараз» спампоўвае з GitHub базу даных кантролераў супольнасці (SDL_GameControllerDB) і захоўвае ў файле налад супастаўленні, якіх няма ў гэтай версіі PadForge. Яны выкарыстоўваюцца адразу. Новае супастаўленне выкарыстоўваецца толькі для кантролера, які нічым іншым не чытаецца як геймпад, не прызначаны і не знаходзіцца ў «Прымусовы рэжым сырога джойсціка (без перапрызначэння геймпада)». Скід выдаляе ўсе спампаваныя супастаўленні. Вашы ўласныя радкі пад «Больш» застаюцца.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Абнавіць зараз</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Абнаўленне…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Праверка абнаўленняў…</value></data>
@@ -1045,12 +1100,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Усталяванне абнаўлення да PadForge {0} не завяршылася. Каб паспрабаваць зноў, усталюйце яго ў наладах.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge абноўлены да версіі {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Убудавана супастаўленняў: {0}, копія супольнасці ад {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Убудавана супастаўленняў: {0}, копія супольнасці ад {1}. Абноўлена {2}: новых {3}, змененых {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Убудавана супастаўленняў: {0}, копія супольнасці ад {1}. Спампавана {2}: новых радкоў {3}, змененых {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>База даных супольнасці не змянялася з апошняга абнаўлення.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Не ўдалося злучыцца з GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge адхіліў спампаваны файл, бо гэта не тая база даных кантролераў, якую ён чакае. Нічога не змянілася.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Новае супастаўленне выкарыстоўваецца пры наступным падключэнні яго кантролера.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Змененае супастаўленне выкарыстоўваецца пры наступным запуску PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Запускаць згорнутым</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Запускаць пры ўваходзе</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Звесткі пра версію і журнал падзей рухавіка для пошуку непаладак.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Весці журнал дыягностыкі</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Бесперапынна запісвае падзеі рухавіка ў diagnostics.log у папцы журнала, якую адкрывае «Адкрыць папку журнала». Застаецца ўключаным пасля перазапускаў. Калі файл дасягае 8 МБ, ён перайменоўваецца ў diagnostics.log.old і пачынаецца новы.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Захаваць здымак</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Захоўвае апошнія падзеі рухавіка ў новы файл. Працуе, нават калі журнал дыягностыкі выключаны.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Захаваць здымак…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Бярэ праграму, Windows, вашы прылады і налады такімі, якімі яны зараз, з апошнімі падзеямі рухавіка, і адкрывае іх, каб вы прачыталі перад захаваннем. Працуе, нават калі журнал дыягностыкі выключаны.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Адкрыць папку журнала</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Запісаць праблему</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Пачаць запіс</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Спыніць запіс ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Запісвае, пакуль вы не націсніце «Спыніць запіс», 10 хвілін або 20 MB у zip, а потым вылучае zip у Explorer, каб яго можна было далучыць да справаздачы.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Пачніце, выклічце праблему, а потым спыніце. Адзін файл побач з PadForge змяшчае ўсё, што PadForge прачытаў, адправіў і запісаў у журнал, і кароткі пераказ таго, што пайшло не так. У файл трапляе кожная клавіша і кнопка, націснутая на кожнай прыладзе падчас запісу, уключаючы клавіятуры і мышы. Імёны карыстальнікаў, серыйныя нумары, адрасы і набраныя імёны замяняюцца да таго, як нешта запісваецца.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Запісвае, пакуль вы не націсніце «Спыніць запіс», 30 хвілін або 20 МБ у zip, а потым адкрывае запіс, каб вы прачыталі яго перад захаваннем.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Пачніце, выклічце праблему, а потым спыніце. Потым прачытайце, што ў запісе, частку за часткай, і захавайце яго, дзе вам зручна. Кожная клавіша, націснутая на кожнай прыладзе падчас запісу, трапляе ў яго, уключаючы клавіятуры і мышы. Імёны карыстальнікаў, серыйныя нумары, адрасы і набраныя імёны замяняюцца да таго, як нешта запісваецца.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Запісваецца пераказ…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Захавана {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Запіс не пачаўся. Праверка выявіла прыватнае значэнне гэтага PC, якое не ўдалося б утрымаць па-за файлам.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Запіс не пачаўся. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Папярэдні запіс яшчэ завяршаецца.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Параметр «Захоўваць апошнія 60 секунд» выключаны, таму захоўваць няма чаго.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Завершаны запіс, які PadForge не спыніў: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Запіс, які PadForge не спыніў, чакае, калі вы прачытаеце яго на «Галоўная»: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Захоўваць апошнія 60 секунд</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Пакуль працуе рухавік, трымае ў памяці апошнюю хвіліну таго, што ўтрымлівае запіс, на выпадак праблемы, якая здараецца раз за вечар. «Захаваць апошнія 60 секунд» запісвае яе ў файл.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Пакуль працуе рухавік, трымае ў памяці апошнюю хвіліну таго, што ўтрымлівае запіс, на выпадак праблемы, якая здараецца раз за вечар. «Захаваць апошнія 60 секунд» адкрывае яе, каб вы прачыталі перад захаваннем.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Захаваць апошнія 60 секунд</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Запісваць набраныя літары і лічбы як адну клавішу</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Запіс падае літарныя і лічбавыя клавішы, якіх не чытае ніводнае супастаўленне або макрас, як адну клавішу, кожнае націсканне ў свой час. Кожная іншая клавіша і кожная клавіша, якую чытае супастаўленне або макрас, запісваецца як націснутая.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Захоўваць апошнія 60 секунд, Запісваць набраныя літары і лічбы як адну клавішу</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Што запісваць, апошнія 60 секунд, набраныя літары</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Захаваць здымак</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, вашы прылады і налады такімі, якімі яны зараз, з той самай праверкай.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log побач з PadForge.exe, дзе вы можаце яго прачытаць.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Што запісваць</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Усё ўключана. Выключаная частка не трапіць у наступны запіс, а файл скажа, якія часткі ў ім ёсць.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Для праблемы, якая здараецца раз за вечар.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Запіс чакае, калі вы прачытаеце яго на «Галоўная».</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Пераказ</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Налады і прылады</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Увод</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Вывад</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Зваротная сувязь</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Часавыя параметры</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Акно і памылкі</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Актыўнасць</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Радкі дыягностыкі</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Прачытайце свой запіс</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>З {0} да {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Здымак у {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 хвіліна</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>хвілін: {0}</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 секунда</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>секунд: {0}</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Спынена вамі.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Спынілася само праз {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Спынілася само пры памеры {0} у zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Спынена макрасам.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Спынена праграмай або --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Спынена памочнікам, які яго запусціў.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Спынілася, бо PadForge закрыўся.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Апошнія 60 секунд, якія захоўваліся ў памяці.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Прачытайце тое, чым вы падзеліцеся. Выключыце частку, каб не ўключаць яе, а потым захавайце. Нішто не пакідае гэты ПК, пакуль вы самі гэта не апублікуеце.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, як гэта будзе перададзена</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Паказаць: {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>не ўключана</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>не запісана</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} тэкстам, {1} у zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} тэкстам, {1} у zip, якім вы дзеліцеся. Запіс спыняецца пры памеры {2} у zip або праз {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Праверка ачысткі: PadForge замяніў прыватныя даныя ({0}, {1}). Ніводнай назвы, серыйнага нумара або адраса гэтага ПК у частках, якія вы пакідаеце, няма.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>значэнняў: {0}</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 значэнне</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>відаў прыватных даных: {0}</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 від прыватных даных</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Праверка ачысткі: уласных значэнняў гэтага ПК, што засталіся ў частках, якія вы пакідаеце: {0}. Выключыце гэтыя часткі або выдаліце запіс. «Захаваць…» недаступна да таго часу.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Праверка ачысткі: адно ўласнае значэнне гэтага ПК засталося ў частках, якія вы пакідаеце. Выключыце гэтыя часткі або выдаліце запіс. «Захаваць…» недаступна да таго часу.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Падчас запісу нічога з гэтай часткі не адбылося.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Выдаліць</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Скапіраваць пераказ</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Скапіравана</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Захаваць…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Захаваць запіс</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Файлы zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Не захавана. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Захоўваецца ад вашага імя, першы раз у папку «Загрузкі», потым туды, дзе вы захоўвалі ў апошні раз, і паказваецца ў «Правадыр». Запіс, які спыніўся, пакуль нікога не было на старонцы (яго ліміт, макрас, праграма, інструмент памочніка або --record stop), чакае гэтага прагляду на старонцы «Галоўная» і выдаляецца праз 7 дзён, калі яго не захаваць. Праграме паведамляюць, што ён чакае, але не дзе.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Запіс праблемы ад {0} чакае, калі вы яго прачытаеце.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Прагляд</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Адзначыць запіс</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Версія праграмы</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Асяроддзе выканання .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Версія SDL</value></data>
@@ -3128,31 +3238,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Пазіцыя мышы X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Пазіцыя мышы Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Адчувальнасць</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Адчувальнасць курсора для крыніцы. Пры 1.0 поўнае адхіленне стыка дасягаецца на адлегласці 10% шырыні экрана ад цэнтра. Значэнні вышэй за 1.0 даюць поўнае адхіленне пры меншым руху курсора. Значэнням ніжэй за 1.0 патрэбна больш.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Адчувальнасць курсора для крыніцы. Пры 1.0 поўнае адхіленне стыка дасягаецца на адлегласці 10% шырыні манітора паказальніка ад яго цэнтра. Значэнні вышэй за 1.0 даюць поўнае адхіленне пры меншым руху курсора. Значэнням ніжэй за 1.0 патрэбна больш.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ход мышы X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ход мышы Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ход да ўпора</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Наколькі мыш рухаецца ад цэнтра да ўпора, у адзінках, якія паведамляе мыш. Большая лічба рулявое кіраванне робіць больш дакладным і патрабуе большага руху рукі.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Наколькі мыш або колца рухаецца ад цэнтра да ўпора, у адзінках, якія яно паведамляе. Большая лічба рулявое кіраванне робіць больш дакладным і патрабуе большага руху рукі.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Калі на панэлі прылады мышы задана DPI, ход таксама паказваецца ў сантыметрах.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>адзінак</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Цэнтраванне</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Выключана» пакідае руль там, дзе яго пакінула рука. «Спружына» вяртае яго за Час вяртання. «З тэлеметрыі» цягне яго назад, як пярэднія шыны машыны пры хуткасці і счапленні з гульні: на месцы руль нерухомы, з хуткасцю цвярдзейшы, лёгкі, калі шыны слізгаюць. Калі гульня не шле тэлеметрыю, гэта спружына. «Ад сілы гульні» дазваляе павярнуць яго ўласнай зваротнай сілай віртуальнага руля.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Выключана» пакідае руль там, дзе яго пакінула рука. «Спружына» вяртае яго за Час вяртання. «З тэлеметрыі» цягне яго назад так, як рулявое кіраванне машыны пры хуткасці і счапленні з гульні: моцна каля цэнтра і мякчэй далей, на месцы руль нерухомы, з хуткасцю цвярдзейшы, лёгкі, калі шыны слізгаюць. Калі гульня не шле тэлеметрыю, ён цягне так, як пры 100 km/h на сухой дарозе. «Ад сілы гульні» дазваляе павярнуць яго ўласнай зваротнай сілай віртуальнага руля.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Выключана</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Спружына</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>З тэлеметрыі</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Ад сілы гульні</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Час вяртання</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Колькі «Спружына» вяртае руль на 95% шляху назад. «З тэлеметрыі» займае гэты час пры 100 km/h на сухой дарозе.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Колькі «Спружына» вяртае руль на 95% шляху назад. 0 вяртае яго ў цэнтр адразу. «З тэлеметрыі» займае гэты час ад месца каля цэнтра пры 100 km/h на сухой дарозе.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Кіраванне</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Заўсёды» дазваляе мышы кіраваць увесь час. «Пакуль утрымліваецца» дазваляе кіраваць, толькі пакуль утрымліваецца Увод кіравання. «Пераключэнне» ўключае або выключае кіраванне пры кожным націсканні Уводу кіравання. Пакуль мыш не кіруе, руль застаецца на месцы або вяртаецца ў цэнтр, таму адной мышшу можна і кіраваць, і азірацца.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Заўсёды» дазваляе мышы кіраваць увесь час. «Пакуль утрымліваецца, з вяртаннем» дазваляе кіраваць, толькі пакуль утрымліваецца «Увод кіравання», а потым вяртае яго ў цэнтр, праз «Цэнтраванне», калі ў крыніцы яно ёсць, і адразу, калі няма. «Пакуль утрымліваецца, без вяртання» дазваляе кіраваць, толькі пакуль утрымліваецца ўвод, і пакідае там, дзе яго адпусцілі. «Пераключэнне» ўключае або выключае кіраванне пры кожным націсканні «Увод кіравання». Таму адной мышшу можна і кіраваць, і азірацца.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Заўсёды</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Пакуль утрымліваецца</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Пакуль утрымліваецца, з вяртаннем</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Пераключэнне</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Увод кіравання</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Кнопка, якая дазваляе мышы кіраваць, на той жа прыладзе, што і ход мышы. Калі нічога не абрана, мыш кіруе заўсёды.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Кнопка, якая дазваляе мышы кіраваць, на той жа прыладзе, што і крыніца. Калі нічога не абрана, мыш кіруе заўсёды.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Згладжванне</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Згладжвае мыш, якая паведамляе нераўнамерна. Руль адстае ад рукі прыкладна на гэты час. 0 выключае.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Згладжвае мыш, якая паведамляе нераўнамерна. Стык адстае ад рукі прыкладна на гэты час. 0 выключае.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Ход на хуткасці</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Калі ўключана «Гульнявая тэлеметрыя», колькі ходу застаецца пры 200 km/h. На 100% увесь ход даступны на любой хуткасці.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Ход кола</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Ход кола ўбок</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Наколькі хутка рухаецца мыш. Адпускае, калі рука спыняецца.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Дзе знаходзіцца паказальнік на сваім маніторы, ад цэнтра або ад месца, дзе ён быў, калі пачалося кіраванне.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Наколькі зрушылася мыш, з утрыманнем там, дзе рука яе пакінула, як у руля.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Крокі пракруткі, якія ўтрымліваюцца як пазіцыя, з поўнай дакладнасцю на колцы з плаўнай пракруткай.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Крокі бакавога колцы, якія ўтрымліваюцца як пазіцыя, з поўнай дакладнасцю на колцы з плаўнай пракруткай.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Штуршок на кожны крок, з імгненным вяртаннем у спакой.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Пакуль утрымліваецца, без вяртання</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Адчувальнасць</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Якую долю стыка дае хуткасць. Пры 1.00 стык дасягае поўнага адхілення пры 16 000 адзінак у секунду, пры любой частаце апытання і частаце справаздач мышы.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Вяртанне ў цэнтр</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Калі мыш запавольваецца або спыняецца, стык вяртаецца не хутчэй за гэта. 0 дазваляе яму вяртацца разам з мышшу.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Пачынаць там, дзе пачалося кіраванне</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Пры «Увод кіравання» стык адлічваецца ад месца, дзе быў паказальнік, калі пачалося кіраванне, як стык на экране тэлефона пачынаецца там, куды лёг палец. Калі выключана, адлік ідзе ад цэнтра манітора паказальніка.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Гэтая вось рухаецца адносна</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Для трэкбола або спінера, якія паведамляюць, на колькі яны павярнуліся. Калі ўключана, вось утрымлівае пазіцыю, як «Ход мышы», і прымае налады ходу. Windows не паведамляе, якія восі рухаюцца так.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} см</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Праглядзець</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Паказвае, як гэта сямейства сочыць за вашай мышшу. Нічога не прызначаецца, пакуль вы яго не абярэце.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Прагляд. Пакрыце мышшу.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Утрымліваецца: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Пазіцыя: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% управа</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% улева</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% уверх</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% уніз</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>цэнтр</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Рухаецца, пакуль утрымліваецца {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI мышы</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Колькасць адзінак, якую мыш паведамляе на кожны дюйм руху, як гэта задае праграма яе вытворцы.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Калі DPI задана, «Ход мышы» паказвае ход таксама ў сантыметрах. 0 азначае, што не задана.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>ІЧ-паказальнік X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>ІЧ-паказальнік Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Яркасць ІЧ</value></data>
@@ -4923,6 +5066,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Экранныя індыкатары, якія PadForge паказвае падчас гульні. Выключэнне індыкатара ніколі не змяняе паводзіны, толькі тое, ці паказваецца ён.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Усплывае слой зруху</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Накладка пераключэння профілю</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Кантролеры ўключаны або выключаны</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Апавяшчэнне пра адключэнне прылады</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Апавяшчэнне пра падключэнне прылады</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Паказваць экраннае кола або сетку, пакуль актыўнае радыяльнае або сэнсарнае меню. Меню спрацоўваюць і пры выключанай накладцы.</value></data>
@@ -5651,6 +5795,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Выключана</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Секундамер</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Колер светлавой панэлі</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Прылады без сувязі</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Усё падключана</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>выключана</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>праз Logitech Gaming Software</value></data>
@@ -5693,6 +5839,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Экран паказвае выбраную вамі выяву ў яе ўласным памеры. Калі выява большая за экран, паказваецца акно памеру экрана, якое перасоўвае макрас «Зрух выявы экрана клавіятуры». На S.T.R.I.K.E. 7 яго таксама перасоўвае палец, праведзены па экране.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Экран паказвае секундамер, які макрас «Секундамер» запускае, прыпыняе і скідае. Усе экраны паказваюць адзін і той жа секундамер.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Экран паказвае колер светлавой панэлі DualShock 4 або DualSense у слоце з найменшым нумарам, у які падае даныя гэты экран, а калі ён не падае даныя ні ў адзін слот, то ў слоце з найменшым нумарам з усіх. Манахромны экран паказвае яе яркасць узорам кропак. Пакуль колер не дасягнуў светлавой панэлі, PadForge нічога не паказвае.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Экран паказвае спіс прызначаных прылад, якія не падключаны, пад назвамі са старонкі «Прылады», а калі ўсе на месцы, піша «Усё падключана».</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Выявы (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Усе файлы (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Зрух</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Зрух X</value></data>
@@ -5944,6 +6091,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Язда (не 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Гульнявая тэлеметрыя</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Значэнне скрыпта</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Падключэнне прылады</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Хуткасць (міль/гадз)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Абароты (% ад макс.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Перадача (-1 задні ход, 0 нейтраль)</value></data>
@@ -6049,6 +6197,7 @@
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Накладка паказвае выбраную вамі выяву, якая запаўняе яе акно з захаваннем прапорцый. Пры маштабе вышэй за 100 працэнтаў паказваецца частка выявы, напрыклад карты. Гэтую частку перасоўвае макрас «Зрух выявы экрана клавіятуры», а таксама перацягванне левай кнопкай мышы, пакуль PadForge знаходзіцца на пярэднім плане.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Накладка паказвае секундамер, які макрас «Секундамер» запускае, прыпыняе і скідае. Гэта той жа секундамер, што паказваюць усе экраны клавіятуры.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Накладка паказвае колер светлавой панэлі DualShock 4 або DualSense ў слоце, які вы тут выбралі, або ў слоце з найменшым нумарам, у якога ёсць колер. Пакуль колер не дасягнуў светлавой панэлі, яна нічога не паказвае.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Накладка паказвае спіс прызначаных прылад, якія не падключаны, пад назвамі са старонкі «Прылады», а калі ўсе на месцы, піша «Усё падключана».</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Накладка экрана {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Дадаць накладку</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Слот з найменшым нумарам, у якога ёсць колер</value></data>
@@ -6391,6 +6540,245 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз адпушчана раней, чым мінуў час утрымання. Больш доўгі націск нічога не робіць.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі Адкрываецца праз націснута тройчы ў акне націску.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Адкрывае або закрывае клавіятуру, калі акно націску заканчваецца пасля аднаго націску Адкрываецца праз. Другі націск у акне скасоўвае гэта.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Выключана. Ніводная праграма не можа дасягнуць PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} і {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Актыўнасць: выклікаў: {0}, спачатку старэйшыя. Выклікаў да іх: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Актыўнасць: выклікаў: {0}. Выклікаў да яго: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Старэйшых выклікаў выдалена: {0:N0}. «Актыўнасць» захоўвае апошнія: {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Выдалены старэйшы выклік: {0:N0}. «Актыўнасць» захоўвае апошнія: {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Экспарт…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Экспарт актыўнасці</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Тэкставы файл</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Адкрыць</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Абнавіць</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Яшчэ для {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Захаваць навык як ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Адкрыць яго файл налад</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Захавана. У {0} дадайце {1} у раздзеле {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>У {0} яшчэ няма файла налад. Яго стварае «Дадаць».</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge не знаходзіць на гэтым ПК ніводнай праграмы памочніка, чый вытворца апісвае наладу ў Windows. «Скапіраваць налады» пад «Больш» працуе для любога іншага.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge не ўдалося праверыць праграмы памочнікаў: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Не дададзена.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Дададзена.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Дададзена. Падключана зараз.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Дададзена. З таго часу не падключалася. Памочнік, які быў адкрыты, бачыць PadForge пасля таго, як яго закрыць і адкрыць зноў.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Дададзена для іншага PadForge. «Абнавіць» накіроўвае яго на гэты.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Дададзена. Яго навык PadForge старэйшы за гэты PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Дададзена, без яго навыку PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Дададзена. Яго навык PadForge паходзіць з навейшага PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Ён прымае навыкі толькі праз загрузку.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Дададзеныя памочнікі дасягаюць PadForge, калі «Аўтаматызацыя» уключана.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Дадаецца…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Выдаляецца…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Абнаўляецца…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Не завяршылася: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Іншыя памочнікі</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Для памочніка, якога няма вышэй: «Скапіраваць налады» дае запіс для яго налад MCP, а «Скапіраваць паведамленне» дае кароткі тэкст для любога чата, у якім сказана, як падключыцца і што спытаць спачатку.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Скапіраваць налады</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Скапіраваць паведамленне</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Скапіравана.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Не скапіравана: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Падключыся да PadForge, мапера кантролераў на маім ПК. Гэта лакальны сервер MCP, які працуе праз stdio: каманда {0}, з аргументам --mcp. Налады ў выглядзе JSON: {1} Пасля падключэння спачатку выклікай яго інструмент status, а потым спытай мяне, што я хачу наладзіць, напрыклад: «Пакажы, дзе супаставіць трыгеры майго кантролера.»</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>«Аўтаматызацыя» у PadForge цяпер выключана: спачатку ўключыце яе ў PadForge ў раздзеле «Дадаткова», «Аўтаматызацыя».</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Дазволеныя праграмы</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Праграма, якой патрэбны «Чытанне» або вышэй, пытаецца адзін раз, пры першым падключэнні, і атрымлівае ўзровень, які просіць, але не вышэй за ўзровень вышэй. Памочнік, якога вы дадалі вышэй, дазволены гэтым.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Падключана зараз.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Апошні раз выкарыстана {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Яшчэ не выкарыстоўвалася.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Падключана: {0}. Націсніце, каб адкрыць «Аўтаматызацыя».</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>На гэтым ПК: {0}. З вэба: {1}. Націсніце, каб адкрыць «Аўтаматызацыя».</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Падключана з вэба: {0}. Націсніце, каб адкрыць «Аўтаматызацыя».</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Супастаўленне SDL</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Чытаецца як</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Крыніца</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Геймпад «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Джойсцік. У SDL няма для яго супастаўлення.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Джойсцік. PadForge чытае яго як ёсць, таму супастаўленне SDL не выкарыстоўваецца.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Джойсцік, размечаны як геймпад вашым радком.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL чытае прылады, пакуль працуе рухавік.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Копія супольнасці, убудаваная ў праграму, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Спампавана {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Уласны файл PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ваш, дададзены {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Зменная SDL_GAMECONTROLLERCONFIG, якую SDL трымае вышэй за любы дададзены вамі радок</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Скапіраваць супастаўленне SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Змяшчае супастаўленне прылады ў буфер абмену як радок базы даных супольнасці, пад ID прылады з абнуленымі кантрольнай сумай і версіяй.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Уставіць супастаўленне SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Бярэ радок для гэтай прылады, правярае яго, захоўвае як ваш і адразу ўжывае.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Знайсці супастаўленне…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Шукае па назве сярод усіх радкоў, якія ёсць у PadForge, і ўжывае абраны да гэтай прылады, для клона з іншымі ID.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Здагадацца пра раскладку</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Здагадваецца пра раскладку геймпада па восях, кнопках і хатах прылады, для прылады, якой няма ў базах. Праверце яе ў «Праверка ўводу».</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Выдаліць маё</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>«Выдаліць маё» вяртае папярэднія радок і радкі кантролераў.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Супаставіць зноў</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Нанова робіць радкі прылады на кожным кантролеры, дзе яна ёсць, па раскладцы SDL, як пры прызначэнні.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Старонка базы даных супольнасці</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Радок і дзе ён адрозніваецца ад {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Радок</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Кантролер</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Радок {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Яго ўваход зараз</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Што кажа радок SDL</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>няма ў радку SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, адрозніваецца</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge не выкарыстоўвае: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Радок</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Скапіравана.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Скапіравана. Форма SDL не можа змясціць: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>макрасы</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>крывыя</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>мёртвыя зоны</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>вывады клавіятуры і мышы</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>турба, пераключальнікі і іншыя дзеянні</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} і {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Капіраваць няма чаго: у SDL няма супастаўлення для гэтай прылады, і яна не ўваходзіць ні ў адзін кантролер.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Іншая праграма выкарыстоўвае буфер абмену. Нічога не скапіравана.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Ваш радок выдалены. Прылада чытаецца так, як да яго.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Супастаўлена зноў па раскладцы SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Выкарыстоўваецца зараз. Радок ваш і мае перавагу для гэтай прылады.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Захавана як ваш. Ён выкарыстоўваецца, калі рухавік працуе і прылада падключана.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Захавана як ваш, але зменная SDL_GAMECONTROLLERCONFIG мае радок для гэтай прылады, які SDL трымае вышэй за ваш.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL не прыняў радок. Для гэтай прылады нічога не змянілася.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Уставіць супастаўленне SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Уставіць супастаўленне SDL для {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Знайсці супастаўленне для {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Здагадацца пра раскладку для {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Дадаць радкі з файла або буфера абмену</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Уставіць</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Адкрыць файл…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Файлы супастаўленняў (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Файл большы за 4 МБ. Увесь файл супольнасці займае каля 0.6 МБ.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Пошук па назве, ID або VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Радкі, якія ёсць у PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ніводны радок не падыходзіць.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Абраны радок ужываецца да {0} пад ID самой прылады, праз тую ж праверку і той самы выбар, што і ў «Уставіць».</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Радок SDL mapping</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Радок для гэтай прылады.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Здагаданая раскладка.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, палёў: {0}, яго ID супадае з гэтай прыладай.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, палёў: {0}, ад таго ж вытворцы і прадукту на іншай шыне або ў іншай версіі. Ён захоўваецца пад ID самой гэтай прылады.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, палёў: {0}, радок іншай прылады. Ён захоўваецца пад ID самой гэтай прылады.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Палёў: {0}. SDL не чытае гэтую прыладу, таму PadForge размяшчае яе ўваходы па радку.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Палёў: {0}, па восях, кнопках і хатах прылады. Праверце яе ў «Праверка ўводу», потым пакіньце або змяніце тут.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, поле: {0}, яго ID супадае з гэтай прыладай.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, поле: {0}, ад таго ж вытворцы і прадукту на іншай шыне або ў іншай версіі. Ён захоўваецца пад ID самой гэтай прылады.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, поле: {0}, радок іншай прылады. Ён захоўваецца пад ID самой гэтай прылады.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Поле: {0}. SDL не чытае гэтую прыладу, таму PadForge размяшчае яе ўваходы па радку.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Поле: {0}, па восях, кнопках і хатах прылады. Праверце яе ў «Праверка ўводу», потым пакіньце або змяніце тут.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Гэта змяняе спосаб чытання {0}. Яго радкі ў {1} супастаўляюцца нанова па новай раскладцы.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Гэта змяняе спосаб чытання {0}. Яна не ўваходзіць ні ў адзін кантролер, таму радкі не змяняюцца.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Спалучэнні клавіш профілю, якія чытаюць {0}, захоўваюць уводы, на якія яны былі настроены.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Радок захоўваецца як ваш у PadForge.xml і мае перавагу над усімі іншымі крыніцамі для гэтай прылады. «Выдаліць маё» вяртае стары радок і старыя радкі.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Радкі захоўваюцца як вашы ў PadForge.xml і маюць перавагу для сваіх прылад над усімі іншымі крыніцамі. «Ачысціць» пад «Больш» радка «База даных кантролераў» выдаляе іх.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Радкоў для Windows: {0}. Радкоў для іншых сістэм, якія прапушчаны: {1}.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Радок для Windows: {0}. Радкоў для іншых сістэм, якія прапушчаны: {1}.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Адхілена: {0}. Першая прычына: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Устаўце радок або тэкст файла gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Гэты тэкст не радок базы кантролераў SDL: ID з 32 шаснаццатковых лічбаў, назва, потым палі, напрыклад a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Гэтыя радкі для іншых сістэм. PadForge чытае радкі для Windows або без указання сістэмы.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID радка не належыць прыладзе. Патрэбна 32 шаснаццатковыя лічбы.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Назва радка пустая, даўжэйшая за 128 знакаў або змяшчае знак, які SDL чытае як поле.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Радок мае падказку або поле Android, якія PadForge не прымае.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>У радку ёсць поле, якога SDL не ведае.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Прывязка не ў форме SDL, напрыклад b3, a2, +a2, a2~ або h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Радок двойчы задае адно поле.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Радок даўжэйшы за 1 024 знакі.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Радок не прывязвае ніводнага элемента кіравання.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Вашы радкі</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Вашы радкі</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Радкі, якія вы дадаяце тут або ўстаўляеце на картцы «Супастаўленне SDL» прылады, маюць перавагу для сваіх прылад над усімі іншымі крыніцамі і застаюцца пасля скіду.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Дадаць радкі з файла або буфера абмену…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Радкоў: {0}, вашых над усімі іншымі крыніцамі для іх прылад.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Радкоў: {0}, ваш над усімі іншымі крыніцамі для яго прылады.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Пакуль няма.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Выкарыстоўваецца адразу.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Дасягаць PadForge з вэба</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Памочнік, які працуе на вэбсайце, дасягае PadForge праз праграму тунэля на гэтым ПК. Уключэнне спачатку пытаецца ў вас.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Дасягаць PadForge з вэба?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge запускае памочную праграму без правоў адміністратара, якая слухае толькі на гэтым ПК, а абраная вамі праграма тунэля дае ёй публічны адрас. Вэб-памочнік трапляе ўнутр толькі пасля таго, як вы дазволіце яго ўваход на картцы пытанняў PadForge, і працуе на ўзроўні вышэй.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Уключыць</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Памочнікі ў вэбе</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Тунэль</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Няма</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Адрас, які я ўстаўлю</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Запускаецца, з вашымі правамі.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Працуе, з вашымі правамі. Яго адрас застаецца той самы пры кожным запуску.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Працуе, з вашымі правамі. Хуткі тунэль атрымлівае новы адрас пры кожным запуску, таму памочніка давялося б дадаваць зноў.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Спынена.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Спынена. Яго апошнія словы: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Яго не ўдалося запусціць.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Яго больш няма на гэтым ПК.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>На гэтым ПК не знойдзена праграмы тунэля. PadForge працуе з cloudflared, devtunnel, ngrok і Tailscale Funnel або з адрасам вашага ўласнага тунэля.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Абярыце тунэль, каб даць PadForge публічны адрас.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Таксама на гэтым ПК: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, адрас якога застаецца той самы</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, хуткія тунэлі якога атрымліваюць новы адрас кожны раз</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Запусціце свой тунэль да http://127.0.0.1:{0} і ўстаўце яго адрас https. Названы тунэль Cloudflare, пастаянны тунэль распрацоўкі, Tailscale Funnel і ўласны дамен ngrok захоўваюць свой адрас.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Устаўце адрас https без шляху, акрамя /mcp, як яго дае ваш тунэль.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Запускаецца вэб-памочная праграма PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Вэб-памочная праграма PadForge спынілася ({0}). Выключыце і зноў уключыце «Дасягаць PadForge з вэба», каб запусціць яе зноў.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Адрас</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Публічнага адраса пакуль няма.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Скапіравана.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Прыняць новага вэб-памочніка</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Пачаць прыём</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Спыніць прыём</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Прыём да {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Не прымае. «Пачаць прыём» адкрывае яго на пяць хвілін.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Дадайце адрас у памочніку і ўвайдзіце. Кожны ўваход паказвае свой шасцізначны код на сваёй старонцы ўваходу і на картцы пытанняў PadForge. «Дазволіць» націскайце, толькі калі абодва коды супадаюць. У іншы час уваход адхіляецца, і вас ніхто не пытае.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Дазволена ў вэбе</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Пакуль няма.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Яго ўваход вяртаецца на {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Ён называе сябе {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Дазволена {0}, апошні раз выкарыстана {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Дазволена {0}, яшчэ не выкарыстоўвалася.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Адклікаць</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Яго ўласны Secure MCP Tunnel запускае PadForge наўпрост, без адраса і ўваходу тут. Скапіруйце каманду ў налады гэтага тунэля.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Скапіраваць каманду</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge не спампоўвае праграм тунэля і не захоўвае ключа іншай кампаніі. Вэб-памочнік працуе на ўзроўні вышэй.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Дазволіць {0} працаваць з PadForge праз вэб?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Яго ўваход вяртаецца на {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ён называе сябе {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Націскайце «Дазволіць», толькі калі на яго старонцы ўваходу паказаны гэты код:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Яго шасцізначны код паказаны на картцы пытанняў PadForge. Націскайце «Дазволіць», толькі калі на яго старонцы ўваходу паказаны той самы код.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Ён працуе на ўзроўні {0}, праз {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Яго ўваход вяртаецца на гэты ПК, і любая праграма тут можа заняць гэты адрас.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Уваход у PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} просіць працаваць з PadForge на вашым ПК.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Ён называе сябе {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>На вашым ПК картка пытанняў PadForge пытаецца пра гэты ўваход. Націсніце там «Дазволіць», толькі калі картка паказвае гэты код:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Гэтая старонка пяройдзе далей сама, як толькі вы адкажаце на ПК.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Гэты ўваход вяртаецца да праграмы на вашым ПК, і любая праграма там можа заняць гэты адрас.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge цяпер не прымае новага вэб-памочніка. На вашым ПК адкрыйце PadForge, перайдзіце ў «Дадаткова», «Аўтаматызацыя» і пад «Памочнікі ў вэбе» націсніце «Пачаць прыём». Потым увайдзіце зноў.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Гэты ўваход нельга працягнуць. Дадайце адрас PadForge ў памочніку зноў і ўвайдзіце.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Гэты ўваход завершаны. Увайдзіце зноў з памочніка.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows не запусціла яе</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>яна завяршылася з кодам {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>«Аўтаматызацыя» выключана, таму ніводны вэб-памочнік не дасягае PadForge. Вэб-памочная праграма запускаецца, калі «Аўтаматызацыя» уключана.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Праверка…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Не ўсталявана.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Усталявана і актуальна. Скрыпт пачынаецца з {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Усталявана для {0} і актуальна. Скрыпт пачынаецца з {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Усталявана. У гэтага PadForge ёсць навейшая копія.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Усталявана для {0}. У гэтага PadForge ёсць навейшая копія.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Усталёўваецца…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge не ўдалося праверыць: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>«Усталяваць» змяшчае бібліятэку PadForge туды, дзе яе знаходзіць гэтая мова. Скрыпт, які яе загружае, чытае прылады і кіруе супастаўленнямі на ўзроўні вышэй.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Захаваць бібліятэку ў любым месцы</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Усталяваныя копіі</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Прыбраць усе</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Прыбрана.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID скрыпта</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Яго ID скрыпта</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скрыпты называюць яго элементы кіравання так: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скрыпты называюць яго клавішы KeyA, KeySpace, KeyLeftShift і гэтак далей, а кожную клавішу па яе кодзе, ад Vk0 да Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Колеры ідуць напрамую на {0}. Зменлівыя колеры, напрыклад цыкл колераў або колеры, што залежаць ад гуку, на яго не трапляюць. Колер, які не змяняецца, трапляе.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Усе файлы (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Профіль PadForge (*{0})|*{0}</value></data>

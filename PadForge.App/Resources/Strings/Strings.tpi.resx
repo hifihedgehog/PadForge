@@ -141,8 +141,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} i no konek moa. {1} i no gat masin i stap.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} i konek</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} i konek, bateri {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} masin i no konek moa</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} masin i konek</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} masin i no konek moa: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} masin i konek: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} i no konek planti taim</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (inap {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (inap {0})</value></data>
@@ -246,7 +246,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Wanpela mod bilong gem</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Narapela program i holim nem bilong paip {0}. Pasim dispela program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows i no orait long paip {0}, olsem na ol program i no inap konek.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>I no gat program i konek.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>On. I no gat program i konek.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>I konek: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program i no gat nem</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1} i sainim</value></data>
@@ -280,7 +280,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>I no gat moa long dispela kain inap PadForge i stat gen</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge i no gat kain tul olsem</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program i ritim wanpela olpela stet</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>I no gat kain seting olsem</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>I no gat samting i gat dispela ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Namba i stap ausait long wanem seting i kisim</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Yu no bin orait long en</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>I no gat wanpela i bekim long taim</value></data>
@@ -297,6 +297,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Soim windo</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Salim windo i go long system tray</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Mekim windo i liklik</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Mekim windo i bikpela olgeta</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Pasim PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Statim injin</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stopim injin</value></data>
@@ -322,6 +323,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Putim masin {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Setim ol kontrol bilong masin {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Rausim masin {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Putim olgeta kontrol bilong masin {0} i stap isi</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>I mekim PadForge i ranim wanpela program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>I opim wanpela fail, folda o pes long web.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>I mekim PadForge i salim ki o input bilong maus i go long Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>I bringim wanpela profail i kam long ausait long PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge i askim yu pastaim long taim wanpela program i mekim dispela.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Ol daialog</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Ol makro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Holim ol kontrol bilong masin {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lusim ol kontrol bilong masin {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setim namba {0}</value></data>
@@ -330,25 +339,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Senisim profail</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Statim o stopim injin</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Onim o ofim ol virtual kontrola</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Seivim snapshot bilong diagnostics</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Ritim polling reit na ol draiva</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Soim lis bilong ol profail</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Ritim wanpela profail</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Soim lis bilong ol virtual kontrola</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Soim lis bilong ol masin</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Ritim wanpela masin</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Wetim samting yu presim</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Ritim ol mep bilong wanpela kontrola</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Soim lis bilong ol makro bilong wanpela kontrola</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekodim wanpela hevi</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Painim ol seting</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Ritim wanpela seting</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Soim yu wanpela hap</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Painim ol hap long PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Ritim wanpela hap long PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Ritim samting yu lukim</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Putim masin bilong em yet</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Kontrolim masin bilong en</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Rausim masin bilong en</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Holim o lusim wanpela kontrol</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Setim namba bilong ol trika bilong makro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Senisim wanpela seting</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Presim wanpela baten</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Wokim wanpela profail</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Senisim nem bilong wanpela profail</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Rausim wanpela profail</value></data>
@@ -359,7 +367,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Senisim kain bilong wanpela kontrola</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Putim wanpela masin i go long kontrola</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Setim ol lain bilong mep</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Klinim ol lain bilong mep</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapim wanpela kontrola otomatik</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Seivim wanpela makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Rausim wanpela makro</value></data>
@@ -379,6 +386,9 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Wokim kontrola bilong ki na maus</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Onim {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Senisim “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Presim “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} i laik soim yu {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Long {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setim {0} long {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>I harim netwok, olsem na ol narapela masin i ken kamap long dispela PC.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>I senisim draiva o HidHide, we ol narapela program na gem i bilip long en.</value></data>
@@ -1905,6 +1915,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Of</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Kala bilong lait</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Ol masin i no konek</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Olgeta i konek</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>of</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>long rot bilong Logitech Gaming Software</value></data>
@@ -1944,6 +1956,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Skrin i soim piksa yu makim, long sais bilong en yet. Sapos piksa i bikpela long skrin, skrin i soim wanpela hap bilong en i gat sais olsem skrin, na makro Muvim piksa bilong skrin bilong kibod i muvim dispela hap. Long S.T.R.I.K.E. 7, sapos yu pulim pinga long skrin, em tu i muvim.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Skrin i soim stopwatch, em makro Stopwatch i statim, i stopim liklik, na i resetim. Olgeta skrin i soim wankain stopwatch.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Skrin i soim kala bilong lait long DualShock 4 o DualSense i stap long slot i gat namba i liklik tru we dispela skrin i givim input long en, o long slot i gat namba i liklik tru long olgeta slot sapos em i no givim input long wanpela slot. Skrin blak na wait i soim lait i strong olsem ol liklik dot. Inap long taim wanpela kala i kamap long lait, PadForge i no soim wanpela samting.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Skrin i soim ol masin i mapim we i no konek, long ol nem pes Ol masin i soim, na i tok Olgeta i konek taim i no gat wanpela i lus.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Ol piksa (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Olgeta fail (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Muvim</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Muvim X</value></data>
@@ -2340,27 +2353,21 @@
   <data name="Settings_ThemeAddMissing" xml:space="preserve"><value>PadForge i no inap painim dispela fail.</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Larim ol launcher, skrip na asistan i wok wantaim PadForge.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Putim ol masin we ol program i givim.</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skil</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Ol narapela asistan, ol asistan long web</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nem bilong masin i mapim taim em i no konek moa.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nem bilong masin i mapim taim em i konek.</value></data>
   <data name="Extras_Automation_Switch" xml:space="preserve"><value>Larim ol program long ausait</value></data>
   <data name="Extras_Automation_Card_Level" xml:space="preserve"><value>Wanem samting ol program i ken mekim</value></data>
   <data name="Extras_Automation_Level" xml:space="preserve"><value>Lewel</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Ol asistan</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Pestim dispela i go insait long ol MCP seting bilong wanpela asistan. Bihain asistan i wok wantaim PadForge long lewel antap.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopim olsem TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Ol asistan i ritim TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Putim i putim PadForge, wantaim skil bilong en, i go insait long dispela asistan. Bihain em i wok long lewel antap, na ol tok bilong en i soim long sait bilong samting em i poinim, aninit long nem bilong en.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Ol skrip</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Laibreri bilong skrip</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Seivim wanpela laibreri…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Wanpela fail bilong AutoHotkey v2, Python o PowerShell. Skrip i lodim em i ken ritim ol masin na kontrolim ol mep long lewel antap.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Wanpela fail bilong AutoHotkey v2, Python o PowerShell, i stap long hap yu makim.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>I wetim yu</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Ol wok</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>I no gat program i singaut yet. Olgeta singaut i kamap hia wantaim wanem samting i kamap long en.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Tekewe senis</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skil bilong ol asistan</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Seivim skil…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge i no inap seivim: {0}</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ranim ol plagin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>I no gat plagin i ran.</value></data>
@@ -2371,15 +2378,20 @@
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>I stat wantaim injin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Sekim fail bipo em i stat</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Ol plagin i ran: {0}. Ol masin ol i putim: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} i stop bihain long faivpela taim em i no wok.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} i senis bihain long taim yu orait long en.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} i no inap stat.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit bilong plagin, na log bilong plagin yu makim</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit bilong plagin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Seivim kit bilong plagin…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Wanpela liklik plagin long C#, na wankain plagin bilong AutoHotkey, Python na PowerShell, na olgeta fail i tok long olsem wanem long wokim o ranim.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Gaid bilong olgeta verb, ivent na kain seting, skrip bilong wokim plagin long C#, na wankain plagin bilong AutoHotkey, Python na PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Makim wanpela plagin long lukim log bilong en.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>I no gat wanpela samting long log bilong dispela plagin yet.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Orait</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>No ken</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Nogat nau</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Soim</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Long {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Long {1}, we i kolim em yet “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Long wanpela program i kolim em yet “{0}”</value></data>
@@ -2388,27 +2400,26 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} long {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Sapos i no gat bekim insait long {0}, em i olsem no.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Data bilong ol kontrola</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdeitim nau i daunlodim data bilong ol kontrola bilong komuniti (SDL_GameControllerDB) long GitHub na i holim, long fail bilong ol seting, ol mep dispela vesen bilong PadForge i no gat. Nupela mep i wok tasol long kontrola we narapela samting i no ritim olsem gempet, we i no putim i go long virtual kontrola, na we i no stap long Force Raw Joystick Mode. Reset i rausim olgeta mep i bin daunlod.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Apdeitim nau i daunlodim data bilong ol kontrola bilong komuniti (SDL_GameControllerDB) long GitHub na i holim, long fail bilong ol seting, ol mep dispela vesen bilong PadForge i no gat. Ol i wok kwiktaim. Nupela mep i wok tasol long kontrola we narapela samting i no ritim olsem gempet, we i no putim i go long virtual kontrola, na we i no stap long Force Raw Joystick Mode. Reset i rausim olgeta mep i bin daunlod. Ol lain bilong yu yet, aninit long Moa, i stap.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Apdeitim nau</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Apdeitim…</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Insait pinis: mep {0}, kopi bilong komuniti long {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Insait pinis: mep {0}, kopi bilong komuniti long {1}. Apdeit long {2}: {3} nupela, {4} i senis.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Insait pinis: mep {0}, kopi bilong komuniti long {1}. Daunlod long {2}: {3} nupela lain, {4} i senis.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Data bilong komuniti i no senis bihain long las apdeit.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>I no inap kamap long GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge i no kisim daunlod long wanem em i no data bilong ol kontrola em i wetim. I no gat samting i senis.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Nupela mep i wok long neks taim kontrola bilong en i konek.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Mep i senis i wok long neks taim PadForge i stat.</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Wokabaut i go long las hap</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hamas maus i muv long namel i go long las hap, long ol kaunt maus i salim. Namba i antap moa i stia gut moa na i nidim han i muv longpela moa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hamas maus o wil i muv long namel i go long las hap, long ol kaunt em i salim. Namba i antap moa i stia gut moa na i nidim han i muv longpela moa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Taim yu setim DPI bilong maus long pes bilong masin, wokabaut i soim long sentimita tu.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kaunt</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Go bek long namel</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Of i holim wil long hap han i lusim. Spring i bringim i go bek insait long Taim bilong kam bek. Long telemetri i pulim i go bek olsem ol fran taia bilong ka i mekim long spit na holim bilong gem: i no muv taim ka i sanap, i strong moa wantaim spit, i no strong taim ol taia i slip. Sapos i no gat gem i salim telemetri, em i Spring. Long pos bilong gem i larim force feedback bilong virtual wil yet i tanim em.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Off i holim wil long hap han i lusim. Spring i bringim i go bek insait long Return Time. Long telemetri i pulim i go bek olsem stia bilong ka i mekim long spit na holim bilong gem: i strong tru klostu long namel na i no strong tumas longwe liklik, i no muv taim ka i sanap, i strong moa wantaim spit, i no strong taim ol taia i slip. Sapos i no gat gem i salim telemetri, em i pul olsem long 100 km/h long rot i drai. Long pos bilong gem i larim force feedback bilong virtual wil yet i tanim em.</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Long telemetri</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Long pos bilong gem</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hamas taim Spring i kisim long bringim wil 95% bilong rot i go bek. Long telemetri i kisim wankain taim long 100 km/h long rot i drai.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hamas taim Spring i kisim long bringim wil 95% bilong rot i go bek. 0 i putim long namel kwiktaim. Long telemetri i kisim wankain taim long klostu namel long 100 km/h long rot i drai.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Oltaim</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taim yu holim</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Taim yu holim na i go long namel</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Tanim on o of</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Las hap long spit</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
@@ -2418,4 +2429,246 @@
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Tok taim masin i no konek moa</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Tok taim masin i konek</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Namba bilong skrip</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Konek bilong masin</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Sapos ol virtual kontrola i on o of nau tasol, long shotkat o long makro.</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>{0} i putim dispela.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Ol seting bilong {0}</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>I ran.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>I ran, long han.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Opim {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Opim Moa.</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Makim rekoding</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Taim yu holim na i stap</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Stat long hap stia i stat</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Wantaim Steer Input, stik i mesa long hap poinda i stap taim stia i stat, olsem stik long skrin bilong fon i stat long hap pinga i putim. Taim em i of, em i mesa long namel bilong monita bilong poinda.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Dispela eksis i salim hamas em i muv</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Bilong trakbol o spina i salim hamas em i tanim. Taim em i on, eksis i holim ples olsem Wokabaut bilong maus i mekim na i kisim ol seting bilong wokabaut. Windows i no tok wanem eksis i muv olsem.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontrola i on o of</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Overlay i soim ol masin i mapim we i no konek, long ol nem pes Ol masin i soim, na i tok Olgeta i konek taim i no gat wanpela i lus.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Of. I no gat program i ken kamap long PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} na {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Ol wok bilong PadForge: {0} kol, namba wan i olpela tru. Ol kol i kam paslain long ol: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Ol wok bilong PadForge: {0} kol. Ol kol i kam paslain long en: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} olpela kol i go pinis. Ol wok i holim {1:N0} nupela tru.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} olpela kol i go pinis. Ol wok i holim {1:N0} nupela tru.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Eksportim…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Eksportim Ol wok</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Fail bilong tekst</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Opim</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Apdeitim</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Moa bilong {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Seivim skil olsem ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Opim fail bilong ol seting bilong en</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Seivim pinis. Long {0}, putim {1} aninit long {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} i no gat fail bilong ol seting yet. Putim i wokim wanpela.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge i no painim wanpela asistan program long dispela PC we man i wokim i raitim olsem wanem long setim long Windows. Copy Settings aninit long Moa i wok long olgeta narapela.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge i no inap sekim ol asistan program: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>I no putim yet.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>I putim pinis.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>I putim pinis. I konek nau.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>I putim pinis. Em i no konek yet bihain long dispela. Asistan we i op pinis i lukim PadForge bihain long yu pasim na opim gen.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>I putim pinis bilong narapela PadForge. Apdeitim i tanim em i kam long dispela wan.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>I putim pinis. Skil bilong PadForge bilong en i olpela moa long dispela PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>I putim pinis, tasol i no gat skil bilong PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>I putim pinis. Skil bilong PadForge bilong en i kam long nupela PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Em i kisim skil long aplod tasol.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Ol asistan i putim pinis i kamap long PadForge taim Automation i on.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Putim…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Rausim…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Apdeitim…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Em i no pinisim: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopim pinis.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>I no kopim: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Ol program i gat orait</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Program i laik Read o moa i askim wanpela taim, long taim em i konek pastaim, na i kisim lewel em i askim, inap long lewel antap. Asistan yu putim antap i kisim orait long dispela.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>I konek nau.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Las yusim {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>I no yusim yet.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>I konek: {0}. Klik long opim Automation.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Long dispela PC: {0}. Long web: {1}. Klik long opim Automation.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>I konek long web: {0}. Klik long opim Automation.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Mep bilong SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gempet, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joistik. SDL i no gat mep bilong en.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joistik. PadForge i ritim stret, olsem na mep bilong SDL i no wok.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joistik, lain bilong yu i putim olsem gempet.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL i ritim ol masin taim injin i ran.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopi bilong komuniti i stap insait, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Daunlod long {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fail bilong PadForge yet</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Bilong yu, i putim long {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabol SDL_GAMECONTROLLERCONFIG, we SDL i holim antap long olgeta lain yu putim</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopim Mep bilong SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>I putim mep bilong masin long klipbod olsem lain bilong data bilong komuniti, aninit long ID bilong masin, na checksum na vesen i kamap 0.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Pestim Mep bilong SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>I kisim lain bilong dispela masin, i sekim, i holim olsem bilong yu na i yusim kwiktaim.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Painim wanpela mep…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>I painim long nem olgeta lain PadForge i karim na i yusim lain yu makim long dispela masin, bilong kopi masin we ol ID i narakain.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Gesim leaut</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>I gesim leaut bilong gempet long ol eksis, baten na hat bilong masin, bilong masin we i no gat data i save long en. Sekim long Test Inputs.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Rausim bilong mi</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Rausim bilong mi i putim bek lain na ol lain bilong kontrola bilong bipo.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Mepim gen</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>I wokim gen ol lain bilong masin long olgeta kontrola em i stap long en, long leaut bilong SDL, olsem taim yu putim em.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Pes bilong data bilong komuniti</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Lain, na hap em i narakain long {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Lain</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontrola</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Lain bilong {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Input bilong en nau</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Lain bilong SDL i tok</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>i no stap long lain bilong SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, i narakain</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge i no yusim: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Lain</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Kopim pinis.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Kopim pinis. Fom bilong SDL i no inap holim {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>ol makro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>ol kev</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>ol dedson</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>ol output bilong ki na maus</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, tanim on o of na ol narapela aksen</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} na {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>I no gat samting long kopim: SDL i no gat mep bilong dispela masin, na em i no stap long wanpela kontrola.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Narapela program i yusim klipbod. I no kopim wanpela samting.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Lain bilong yu i go pinis. Masin i ritim olsem bipo.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>I mepim gen long leaut bilong SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>I wok nau. Lain i bilong yu na i winim ol narapela long dispela masin.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>I holim olsem bilong yu. Em i wok taim injin i ran na masin i konek.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>I holim olsem bilong yu, tasol variabol SDL_GAMECONTROLLERCONFIG i holim lain bilong dispela masin, na SDL i holim dispela antap long bilong yu.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL i no kisim lain. Dispela masin i no senis.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Pestim Mep bilong SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Pestim Mep bilong SDL long {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Painim wanpela mep long {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Gesim leaut long {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Putim ol lain long fail o klipbod</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Pestim</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Opim wanpela fail…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Ol fail bilong mep (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Fail i winim 4 MB. Olgeta fail bilong komuniti i klostu 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Painim long nem, ID o VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Ol lain PadForge i karim</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>I no gat lain i stret.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Lain yu makim i go long {0} aninit long ID bilong en yet, long wankain sekim na wankain makim olsem Pestim.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Lain bilong mep bilong SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Lain bilong dispela masin.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Leaut i gesim.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} fil, ID bilong en i stret long dispela masin.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} fil, long wankain kampani na prodak long narapela bas o vesen. Em i stap aninit long ID bilong dispela masin yet.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} fil, lain bilong narapela masin. Em i stap aninit long ID bilong dispela masin yet.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} fil. SDL i no ritim dispela masin, olsem na PadForge i putim ol input bilong en long lain.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} fil, long ol eksis, baten na hat bilong masin. Sekim long Test Inputs, na bihain holim o senisim long hia.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} fil, ID bilong en i stret long dispela masin.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} fil, long wankain kampani na prodak long narapela bas o vesen. Em i stap aninit long ID bilong dispela masin yet.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} fil, lain bilong narapela masin. Em i stap aninit long ID bilong dispela masin yet.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} fil. SDL i no ritim dispela masin, olsem na PadForge i putim ol input bilong en long lain.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} fil, long ol eksis, baten na hat bilong masin. Sekim long Test Inputs, na bihain holim o senisim long hia.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Dispela i senisim pasin bilong ritim {0}. Ol lain bilong en long {1} i mep gen long nupela leaut.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Dispela i senisim pasin bilong ritim {0}. Em i no stap long wanpela kontrola, olsem na i no gat lain i senis.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ol shotkat bilong profail i ritim {0} i holim yet ol input ol i bin setim.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Lain i stap olsem bilong yu long PadForge.xml na i winim olgeta narapela hap bilong dispela masin. Rausim bilong mi i putim bek olpela lain na ol olpela lain.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Ol lain i stap olsem bilong yu long PadForge.xml na i winim olgeta narapela hap bilong ol masin bilong ol. Klinim, aninit long Moa bilong lain Data bilong ol kontrola, i rausim ol.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} lain bilong Windows. {1} bilong ol narapela sistem i no kisim.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} lain bilong Windows. {1} bilong ol narapela sistem i no kisim.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Ol i no kisim {0}. Namba wan: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Pestim wanpela lain, o tekst bilong fail gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Tekst i no lain bilong data bilong kontrola bilong SDL: ID i gat 32 hex dijit, nem, na bihain ol fil olsem a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ol lain i bilong ol narapela sistem. PadForge i ritim ol lain bilong Windows, o bilong i no gat wanpela sistem.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID bilong lain i no ID bilong masin. Em i mas gat 32 hex dijit.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Nem bilong lain i nating, i winim 128 leta, o i gat leta SDL i ritim olsem fil.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Lain i karim hint o fil bilong Android, na PadForge i no kisim dispela.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Lain i gat fil SDL i no save long en.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Wanpela binding i no stap long fom bilong SDL, olsem b3, a2, +a2, a2~ o h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Lain i givim wanpela fil tupela taim.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Lain i winim 1,024 leta.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Lain i no joinim wanpela kontrol.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ol lain bilong yu</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ol lain bilong yu</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ol lain yu putim hia, o pestim long kad Mep bilong SDL bilong masin, i winim olgeta narapela hap bilong ol masin bilong ol na i stap yet bihain long reset.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Putim ol lain long fail o klipbod…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} lain, bilong yu, i winim olgeta narapela hap bilong ol masin bilong ol.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} lain, bilong yu, i winim olgeta narapela hap bilong masin bilong en.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Nogat yet.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>I wok kwiktaim.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Tanim i on</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Ol asistan long web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tanel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Nogat</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Adres mi pestim</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>I stat, wantaim rait bilong yu.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>I ran, wantaim rait bilong yu. Adres bilong en i stap wankain olgeta taim em i stat.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>I ran, wantaim rait bilong yu. Kwik tanel i kisim nupela adres olgeta taim em i stat, olsem na yu mas putim asistan gen.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>I stop pinis.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>I stop pinis. Las tok bilong en: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Em i no inap stat.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Em i no stap long dispela PC moa.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>I no painim tanel program long dispela PC. PadForge i wok wantaim cloudflared, devtunnel, ngrok na Tailscale Funnel, o wantaim adres bilong tanel bilong yu yet.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Makim wanpela tanel long givim PadForge wanpela adres long pablik.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Tu long dispela PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, we adres i stap wankain</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, we ol kwik tanel i kisim nupela adres olgeta taim</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Ranim tanel bilong yu yet i go long http://127.0.0.1:{0} na pestim adres https bilong en. Cloudflare tanel i gat nem, dev tanel i stap oltaim, Tailscale Funnel na domein bilong ngrok yet i holim adres bilong ol.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Pestim adres https we rot bilong en em /mcp tasol o nogat rot, olsem tanel bilong yu i givim.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Helpa bilong web bilong PadForge i stat.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Helpa bilong web bilong PadForge i stop ({0}). Tanim Reach PadForge From the Web i of na i on gen long statim gen.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adres</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>I no gat adres long pablik yet.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Putim long Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Kopim pinis.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Kisim nupela asistan long web</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Stat long kisim</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Stop long kisim</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>I kisim inap long {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>I no kisim. Stat long kisim i opim long faivpela minit.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Putim adres long asistan na sain in. Olgeta sain in i soim kod bilong en yet i gat sikispela dijit long pes bilong sain in na long kad askim bilong PadForge. Orait long en tasol taim tupela kod i wankain. Long ol narapela taim, sain in i no inap na i no gat samting i askim yu.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Orait long web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Nogat yet.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Sain in bilong en i go bek long {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Em i kolim em yet {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Orait long {0}, las yusim {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Orait long {0}, i no yusim yet.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Rausim orait</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel bilong en yet i ranim PadForge stret, i no gat adres o sain in long hia. Kopim komand i go long setap bilong dispela tanel.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopim komand</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge i no daunlodim tanel program na i no holim ki bilong narapela kampani. Asistan long web i wok long lewel antap.</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sain in bilong en i go bek long {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Em i kolim em yet {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Orait tasol sapos pes bilong sain in i soim dispela kod:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Kod bilong en i gat sikispela dijit i stap long kad askim bilong PadForge. Orait tasol sapos pes bilong sain in i soim wankain kod.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Em i wok long {0}, i kam long {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Sain in bilong en i go bek long dispela PC, na olgeta program long hia i ken kisim dispela adres.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Sain in long PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} i askim long wok wantaim PadForge long PC bilong yu.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Em i kolim em yet {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Long PC bilong yu, kad askim bilong PadForge i askim long dispela sain in. Orait long en long hap tasol sapos kad i soim dispela kod:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Dispela pes i go het em yet taim yu bekim long PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Dispela sain in i go bek long wanpela program long PC bilong yu, na olgeta program long hap i ken kisim dispela adres.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge i no kisim nupela asistan long web nau. Long PC bilong yu, opim PadForge, go long Ol ekstra, Automation, na aninit long Ol asistan long web presim Stat long kisim. Bihain sain in gen.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Dispela sain in i no inap go het. Putim adres bilong PadForge long asistan gen na sain in.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Dispela sain in i pinis. Sain in gen long asistan.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows i no statim</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>em i pinis wantaim kod {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation i of, olsem na i no gat asistan long web i kamap long PadForge. Helpa bilong web i stat taim Automation i on.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>I sekim…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>I no instolim.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>I instol pinis na i nupela. Skrip i stat wantaim {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>I instol pinis bilong {0} na i nupela. Skrip i stat wantaim {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>I instol pinis. Dispela PadForge i gat nupela kopi.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>I instol pinis bilong {0}. Dispela PadForge i gat nupela kopi.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>I instolim…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge i no inap sekim: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instolim i putim laibreri bilong PadForge long hap dispela tok bilong programing i painim. Skrip i lodim em i ritim ol masin na kontrolim ol mep long lewel antap.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Seivim laibreri long wanem hap</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Ol kopi i instol pinis</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Rausim olgeta</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Rausim pinis.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID bilong skrip</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID bilong skrip bilong en</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Ol skrip i kolim ol kontrol bilong en {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Ol skrip i kolim ol ki bilong en KeyA, KeySpace, KeyLeftShift na kain olsem, na olgeta ki long kod bilong en, Vk0 i go long Vk255.</value></data>
 </root>

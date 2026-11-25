@@ -226,12 +226,10 @@
   <data name="Update_CheckFailed_Format" xml:space="preserve"><value>Haaromsa barbaaduu hin dandeenye: {0}</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge gara {0}tti haaromfameera.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Keessa jiru: walqabsiisa {0}, garagalcha hawaasaa {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Keessa jiru: walqabsiisa {0}, garagalcha hawaasaa {1}. Haaromfame {2}: haaraa {3}, jijjiirame {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Keessa jiru: walqabsiisa {0}, garagalcha hawaasaa {1}. Buufatame {2}: tarree haaraa {3}, jijjiirame {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Kuusni odeeffannoo hawaasaa haaromsa dhumaa as hin jijjiiramne.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub ga'uu hin dandeenye: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge buufata sana dideera, sababni isaas kuusa odeeffannoo kontirolaa inni eegu miti. Homtuu hin jijjiiramne.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Walqabsiisni haaraan yeroo itti aanu kontirolaan isaa wal qunnamu fayyadama.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Walqabsiisni jijjiirame yeroo itti aanu PadForge jalqabu fayyadama.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>HIDMaestro haqi</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Kun waan PC kana irraa haqamuudha. PadForge kontirolaa fakkeessaa itti aanuun HIDMaestro deebisee fe'a.</value></data>
   <data name="HIDMaestroUninstall_IncludeUsbip" xml:space="preserve"><value>usbip-win2 illee haqi</value></data>
@@ -1608,6 +1606,7 @@
   <data name="Menu_NotRecorded" xml:space="preserve"><value>(hin qindoofne)</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Oovarleeyii baafataa</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Oovarleeyii jijjiirraa piroofaayilii</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontirolaawwan banaa ykn cufaa</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Beeksisa meeshaan wal qunnamtii kute</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Beeksisa meeshaan wal qunname</value></data>
   <data name="Pad_Tab_Output" xml:space="preserve"><value>Bahiinsa</value></data>
@@ -1856,6 +1855,8 @@
   <data name="KeyboardScreens_Kind_Strike7" xml:space="preserve"><value>S.T.R.I.K.E. 7</value></data>
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Cufaa</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Halluu lightbar</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Meeshaalee wal hin qunnamne</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Hundi wal qunnameera</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>cufaa</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>karaa Logitech Gaming Software</value></data>
@@ -1887,6 +1888,7 @@
   <data name="KeyboardScreen_Hint_ProfilePicture" xml:space="preserve"><value>Iskiriiniin suuraa piroofaayilii hojii irra jiruu agarsiisa, yoo suuraa hin qabaanne immoo maqaa isaa. Piroofaayiliin tokkoon tokkoon suuraa mataa isaa qaba.</value></data>
   <data name="KeyboardScreen_Hint_Clock" xml:space="preserve"><value>Iskiriiniin yeroo guyyaa agarsiisa.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Iskiriiniin kun halluu lightbar DualShock 4 ykn DualSense kan iddoo lakkoofsa xiqqaa qabu, iddoowwan iskiriiniin kun galtee kennuuf keessaa, agarsiisa. Yoo iddoo tokkoofuu galtee hin kennine, iddoowwan hunda keessaa kan lakkoofsa xiqqaa qabu fudhata. Iskiriiniin halluu tokkoo ifa halluu sanaa akka bifa tuqaalee agarsiisa. Hanga halluun tokko lightbar bira ga'utti, PadForge homaa hin agarsiisu.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Iskiriiniin kun meeshaalee walqabsiifaman kan wal hin qunnamne maqaa fuulli Meeshaalee agarsiisuun tarreessa, yoo homtuu hin dhabamne immoo Hundi wal qunnameera jedha.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Fakkiiwwan (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Faayiloota hunda (*.*)|*.*</value></data>
   <data name="Status_DownloadingStrike7" xml:space="preserve"><value>SDK S.T.R.I.K.E. 7 kan Mad Catz buufachaa jira…</value></data>
   <data name="Status_Strike7LibraryPicked_Format" xml:space="preserve"><value>S.T.R.I.K.E. 7 amma {0} fe'a.</value></data>
@@ -2026,6 +2028,7 @@
   <data name="Extras_HeadTracking_Sources" xml:space="preserve"><value>Maddoota</value></data>
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Geengoo, kaarqaa ykn baarii meenuu yeroo inni banamee jiru.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Maqaa piroofaayilii yeroo piroofaayiliin jijjiiramu.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Kontirolaawwan fakkeessaa amma banamuu ykn cufamuu isaanii, karaa gabaabaa ykn maakroo irraa.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Maqaa meeshaa walqabsiifamee yeroo inni wal qunnamtii kutu.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Maqaa meeshaa walqabsiifamee yeroo inni wal qunnamu.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Teessoo garagalchi</value></data>
@@ -2174,24 +2177,19 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} wal qunnamtii kuteera. {1} meeshaan itti hafe hin jiru.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} wal qunnameera</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} wal qunnameera, baatirii {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamtii kutaniiru</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamaniiru</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamtii kutaniiru: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Meeshaaleen {0} wal qunnamaniiru: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} irra deddeebiin wal qunnamtii kutaa jira</value></data>
   <data name="Extras_Group_Programs" xml:space="preserve"><value>Sagantaalee biroo wajjin</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Gargaartota</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Kana qindaa'ina MCP gargaaraa tokkoo keessa maxxansi. Gargaaraan sun sana booda sadarkaa olii irratti PadForge wajjin hojjeta.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Bifa TOML irratti garagalchi</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Gargaartota TOML dubbisan</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ida'i PadForge, ogummaa isaa wajjin, gargaaraa sana keessa kaa'a. Sana booda sadarkaa olii irratti hojjeta, jechoonni isaas waan inni akeeku cinaatti, maqaa isaa jalatti mul'atu.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Iskiriptoota</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Mana kitaabaa iskiriptii</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Mana kitaabaa olkaa'i…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faayilii tokko kan AutoHotkey v2, Python ykn PowerShell. Iskiriptiin isa fe'u meeshaalee dubbisa, walqabsiisa immoo sadarkaa olii irratti oofa.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faayilii tokko kan AutoHotkey v2, Python ykn PowerShell, bakka ati filattutti barreeffame.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Si eeggachaa jira</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Sochii</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ammaaf sagantaan tokkollee hin waamne. Waamichi hundi bu'aa isaa wajjin as tarreeffama.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Duubatti deebisi</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Dandeettii gargaartotaaf</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Dandeettii olkaa'i…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Pilaagiin tokkollee hin hojjetu.</value></data>
   <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, dheerina {1}</value></data>
   <data name="Plugins_Replay_Play" xml:space="preserve"><value>Taphachiisi</value></data>
@@ -2200,16 +2198,19 @@
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Injinii wajjin jalqaba</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Osoo hin jalqabin faayilii mirkaneessaa jira</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Pilaagiiwwan hojjechaa jiran: {0}. Meeshaalee isaan dabalan: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} kufaatii shan booda dhaabbateera.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} erga ati hayyamtee booda jijjiirameera.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} jalqabuu hin dandeenye.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Kiitii pilaagii, fi galmee pilaagii ati filattu</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kiitii pilaagii</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Kiitii pilaagii olkaa'i…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Pilaagii xiqqaa kan C#, fi pilaagii sanuma kan AutoHotkey, Python fi PowerShell, faayiliin hundi akkaataa itti ijaaramu ykn hojjetu wajjin.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Qajeelfama gocha, taatee fi gosa qindaa'inaa hundaa, iskiriptii ijaarsaa pilaagii C#, fi pilaagii sanuma kan AutoHotkey, Python fi PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Galmee</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Galmee isaa ilaaluuf pilaagii tokko filadhu.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Galmee pilaagii kanaa keessa ammaaf homtuu hin jiru.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Sagantaan biraa maqaa paayippii {0} qabateera. Sagantaa sana cufi.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows paayippii {0} dideera, kanaaf sagantaaleen wal qunnamuu hin danda'an.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Sagantaan wal qunname hin jiru.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Banaa. Sagantaan wal qunname hin jiru.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wal qunnamaa: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Sagantaa hin beekamne</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, mallattoo {1} qaba</value></data>
@@ -2243,7 +2244,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Hanga PadForge irra deebi'ee jalqabutti kana caalaa hin jiru</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge meeshaa hojii akkasii hin qabu</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Sagantaan haala durii dubbise</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Qindaa'inni akkasii hin jiru</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Wanti ID sana qabu hin jiru</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Gatiin waan qindaa'inni fudhatu ala ture</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ati hin hayyamne</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Namni yeroo isaatti deebii hin kennine</value></data>
@@ -2260,6 +2261,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Foddaa agarsiisi</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Foddaa gara naannoo beeksisaa sirnaa ergi</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Foddaa xiqqeessi</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Foddaa guddisi</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge cufi</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Injinii jalqabi</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Injinii dhaabi</value></data>
@@ -2285,6 +2287,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Meeshaa {0} ida'i</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} qindeessi</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Meeshaa {0} balleessi</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} hunda boqonnaa irra kaa'i</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge akka sagantaa tokko hojjechiisu godha.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Faayilii, galmee ykn fuula weebii tokko bana.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge akka furtuuwwan ykn galtee maawusii gara Windows ergu godha.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Piroofaayilii PadForge ala jiru tokko galcha.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge osoo sagantaan tokko kana hin godhin dura si gaafata.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Daayilogiiwwan</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Maakroowwan</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} qabadhu</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>To'annoowwan meeshaa {0} gadi lakkisi</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Gatii {0} kaa'i</value></data>
@@ -2293,25 +2303,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Piroofaayilii jijjiiri</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Injinii jalqabi ykn dhaabi</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Kontirolaawwan fakkeessaa bani ykn cufi</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Suuraa qorannoo rakkoo olkaa'i</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Saffisa sakatta'iinsaa fi sagantaalee fe'insaa dubbisi</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Piroofaayiliiwwan tarreessi</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Piroofaayilii tokko dubbisi</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Kontirolaawwan fakkeessaa tarreessi</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Meeshaalee tarreessi</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Meeshaa tokko dubbisi</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Galtee kee eeggadhu</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Walqabsiisa kontirolaa tokkoo dubbisi</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Maakiroowwan kontirolaa tokkoo tarreessi</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rakkoo galmeessi</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Qindaa'ina barbaadi</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Qindaa'ina tokko dubbisi</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Bakka tokko si agarsiisi</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge keessatti bakkeewwan barbaadi</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge keessaa bakka tokko dubbisi</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Waan ati argitu dubbisi</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Meeshaa mataa isaa ida'i</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Meeshaa isaa oofi</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Meeshaa isaa balleessi</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>To'annoo tokko qabadhu ykn gadi lakkisi</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Kakaasaa maakroof gatii kaa'i</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Qindaa'ina tokko jijjiiri</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Qabduu tokko tuqi</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Piroofaayilii uumi</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Maqaa piroofaayilii jijjiiri</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Piroofaayilii haqi</value></data>
@@ -2322,7 +2331,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Gosa kontirolaa jijjiiri</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Meeshaa ramadi</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Tarreewwan walqabsiisaa qindeessi</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Tarreewwan walqabsiisaa qulqulleessi</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Kontirolaa ofumaan walqabsiisi</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Maakiroo olkaa'i</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Maakiroo haqi</value></data>
@@ -2342,6 +2350,9 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Kontirolaa kiiboordii fi maawusii uuma</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} bana</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” jijjiiri</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” tuqi</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} {1} si agarsiisuu barbaada</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} irratti.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} gara {1} kaa'a</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Neetworkii irratti dhaggeeffata, kanaaf meeshaaleen biroo PC kana ga'uu danda'u.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Sagantaa fe'insaa ykn HidHide jijjiira, kan sagantaaleen biroo fi taphoonni irratti hirkatan.</value></data>
@@ -2357,6 +2368,8 @@
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, isa dhumaa kan {1} akkasii</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Hayyami</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Hin hayyamin</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Amma miti</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Agarsiisi</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} irraa</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} irraa, kan ofiin “{0}” jedhu</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Sagantaa ofiin “{0}” jedhu irraa</value></data>
@@ -2366,35 +2379,297 @@
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Deebiin {0} keessatti hin kennamne akka lakkii lakkaa'ama.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge mirga bulchaatiin {0} irraa hojjeta, kunis kuusaa sagantaaleen biroo jijjiiruu danda'anidha. Isaan achitti qindaa'ina PadForge jijjiiruu danda'u, PadForge immoo mirga isaatiin irratti hojjeta.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kuusa odeeffannoo kontirolaa</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Amma haaromsi kuusa odeeffannoo kontirolaa hawaasaa (SDL_GameControllerDB) GitHub irraa buufata, walqabsiisa veershiniin PadForge kun hin qabne immoo faayilii qindaa'inaa keessatti kuusa. Walqabsiisni haaraan kan fayyadamu kontirolaa wanti biraa akka gamepad hin dubbisne, hin ramadamne fi Haala joystick dheedhii dirqisiisi keessa hin jirreef qofa. Deebisuun walqabsiisa buufatame hunda haqa.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Amma haaromsi kuusa odeeffannoo kontirolaa hawaasaa (SDL_GameControllerDB) GitHub irraa buufata, walqabsiisa veershiniin PadForge kun hin qabne immoo faayilii qindaa'inaa keessatti kuusa. Isaan achumaan hojii irra oolu. Walqabsiisni haaraan kan fayyadamu kontirolaa wanti biraa akka gamepad hin dubbisne, hin ramadamne fi Haala joystick dheedhii dirqisiisi keessa hin jirreef qofa. Deebisuun walqabsiisa buufatame hunda haqa. Tarreewwan kee, Dabalata jala jiran, ni turu.</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Haaromsaa jira…</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Deemsa maawusii X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Deemsa maawusii Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Deemsa hanga daangaa guutuu</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Maawusiin giddu-galeessa irraa hanga daangaa guutuu hammam akka socho'u, lakkoofsa maawusiin gabaasuun. Lakkoofsi ol'aanaan sirriitti oofa, harka immoo caalaa sochoosa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Maawusiin ykn geengoon iskiroolii giddu-galeessa irraa hanga daangaa guutuu hammam akka socho'u, lakkoofsa inni gabaasuun. Lakkoofsi ol'aanaan sirriitti oofa, harka immoo caalaa sochoosa.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>DPI maawusii paanela meeshaa isaa irratti yoo kaa'ame, deemsi sentimeetiraanis ni mul'ata.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>lakkoofsa</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Giddu-galeessatti deebisuu</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Cufaa geengoo bakka harki itti dhiise qabata. Sipiriingii Yeroo deebii keessatti deebisa. Telemeetirii irraa akka gommaa fuulduraa konkolaataa saffisaa fi qabannaa tapha irratti hundaa'ee deebisa: dhaabbii irratti hin harkisu, saffisaan cimaa ta'a, yeroo gommaan mucucaatu salphaa ta'a. Yoo taphi telemeetirii hin ergine, Sipiriingii ta'a. Humna tapha irraa force feedback geengoo fakkeessaa mataa isaa akka isa garagalchu hayyama.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Cufaa geengoo bakka harki itti dhiise qabata. Sipiriingii Yeroo deebii keessatti deebisa. Telemeetirii irraa akkuma qajeelchaa konkolaataa saffisaa fi qabannaa tapha irratti deebisa: giddu-galeessa bira cimaatti, fagootti immoo laafaatti, dhaabbii irratti hin harkisu, saffisaan cimaa ta'a, yeroo gommaan mucucaatu salphaa ta'a. Yoo taphi telemeetirii hin ergine, akka 100 km/h irratti karaa gogaa irratti harkisa. Humna tapha irraa force feedback geengoo fakkeessaa mataa isaa akka isa garagalchu hayyama.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Cufaa</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Sipiriingii</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemeetirii irraa</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Humna tapha irraa</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Yeroo deebii</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Sipiriingiin geengoo karaa 95% deebisuuf yeroo hammamii akka fudhatu. Telemeetirii irraa 100 km/h irratti karaa gogaa irratti yeroo kana fudhata.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Sipiriingiin geengoo karaa 95% deebisuuf yeroo hammamii akka fudhatu. 0 achumaan giddu-galeessatti deebisa. Telemeetirii irraa giddu-galeessa bira irraa 100 km/h irratti karaa gogaa irratti yeroo kana fudhata.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Oofi</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Yeroo hunda maawusiin yeroo hunda akka oofu hayyama. Yeroo qabamee jiru yeroo Galtee oofuu qabamee jiru qofa akka oofu hayyama. Jijjiiri tuqaa Galtee oofuu hundaan oofuu bana ykn cufa. Yeroo maawusiin hin oofne, geengoon bakka isaa irra tura ykn giddu-galeessatti deebi'a, kanaaf maawusiin tokko oofuu fi naannoo ilaaluu danda'a.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Yeroo hunda maawusiin yeroo hunda akka oofu hayyama. Yeroo qabamee fi giddu-galeessatti yeroo Galtee oofuu qabamee jiru qofa akka oofu hayyama, sana booda giddu-galeessatti deebisa, yoo maddi Giddu-galeessatti deebisuu qabaate isaan, yoo hin qabaanne immoo achumaan. Yeroo qabamee fi achumatti yeroo galteen qabamee jiru qofa akka oofu hayyama, bakka itti gadi lakkifametti dhiisa. Jijjiiri tuqaa Galtee oofuu hundaan oofuu bana ykn cufa. Kanaaf maawusiin tokko oofuu fi naannoo ilaaluu danda'a.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Yeroo hunda</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Yeroo qabamee jiru</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Yeroo qabamee fi giddu-galeessatti</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Jijjiiri</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Galtee oofuu</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Qabduu maawusiin akka oofu hayyamu, meeshaa deemsa maawusii wajjin tokko irratti. Yoo homtuu hin filatamne, maawusiin yeroo hunda oofa.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Qabduu maawusiin akka oofu hayyamu, meeshaa madda wajjin tokko irratti. Yoo homtuu hin filatamne, maawusiin yeroo hunda oofa.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Lallaafsuu</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maawusii wal qixa hin taane gabaasu wal qixxeessa. Geengoon harka gara yeroo kanaan duubaan hordofa. 0 jechuun cufaa.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maawusii wal qixa hin taane gabaasu wal qixxeessa. Istikiin harka gara yeroo kanaan duubaan hordofa. 0 jechuun cufaa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Daangaa saffisa irratti</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Game Telemetry yoo banaa ta'e, daangaan hammam 200 km/h irratti akka hafu. 100% irratti daangaan guutuun saffisa hunda irratti jira.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Deemsa geengoo iskiroolii</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Deemsa geengoo iskiroolii cinaa</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Maawusiin hammam saffisaan akka socho'u. Yeroo harki dhaabbatu gadi lakkisa.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Akeekaan monitara isaa irratti eessa akka jiru, giddu-galeessa isaa irraa ykn bakka oofuun itti jalqabe irraa.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Maawusiin hammam akka socho'e, bakka harki itti dhiisetti qabamee, akkuma geengoo.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Tarkaanfiiwwan iskiroolii akka bakka tokkootti qabaman, geengoo iskiroolii qaqqaalii irratti sirrummaa guutuun.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Tarkaanfiiwwan geengoo iskiroolii cinaa akka bakka tokkootti qabaman, geengoo iskiroolii qaqqaalii irratti sirrummaa guutuun.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Tarkaanfii hundaaf dhiibbaa tokko, achumaan boqonnaatti deebi'a.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Yeroo qabamee fi achumatti</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Miira</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Saffisni tokko hammam istikii akka sochoosu. 1.00 irratti istikiin lakkoofsa 16,000 sekondii tokkotti sochii guutuu ga'a, saffisa sakatta'insaa fi saffisa gabaasa maawusii kamiyyuu irratti.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Giddu-galeessatti deebii</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Akkuma maawusiin suuta jedhee ykn dhaabbateen, istikiin kana caalaa saffisaan hin deebi'u. 0 maawusii wajjin akka deebi'u hayyama.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Bakka oofuun itti jalqabe irraa jalqabi</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Galtee oofuu yoo jiraate, istikiin bakka akeekaan yeroo oofuun jalqabe ture irraa safara, akkuma istikiin iskiriinii bilbilaa bakka quba itti bu'u irraa jalqabu. Yoo cufaa ta'e, giddu-galeessa monitara akeekaa irraa safara.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Aksisiin kun hariiroodhaan socho'a</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Trackball ykn spinner hammam akka garagale gabaasuuf. Yoo banaa ta'e, aksisiin akkuma Deemsa maawusii bakka qabata, qindaa'ina deemsaas fudhata. Windows aksisiiwwan akkasitti socho'an hin himu.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Duraan ilaali</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Maatiin kun maawusii kee akkamitti akka hordofu agarsiisa. Hanga ati filattutti homtuu hin walqabsiifamu.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Duraan ilaalaa jira. Maawusii kee sochoosi.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Bakka qabame: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Bakka amma: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% gara mirgaa</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% gara bitaa</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% gara olii</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% gara gadii</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>giddu-galeessa</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Yeroo {0} qabamu socho'a.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI maawusii</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Lakkoofsa maawusiin kun inchii socho'u hundaaf gabaasu, akkuma sooftiweeriin hojjetaa isaa kaa'e.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI yoo kaa'ame, Deemsi maawusii deemsa isaa sentimeetiraanis agarsiisa. 0 jechuun hin kaa'amne.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
   <data name="About_McpSdkDesc" xml:space="preserve"><value>Sarvarii fi maamilaa Model Context Protocol kan wal qunnamtii gargaaraa fi PadForge.exe --mcp duuba jiran, kan Model Context Protocol a Series of LF Projects.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions fi DependencyInjection.Abstractions, kanneen MCP C# SDK irratti ijaarame, kan Microsoft.</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Gatii iskiriptii</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Walqunnamtii meeshaa</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Kan {0} dabale.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Qindaa'ina {0}</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Hojjechaa jira.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Hojjechaa jira, harkaan.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} bani.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Dabalata bani.</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Waraabbii mallatteessi</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Oovarleeyiin kun meeshaalee walqabsiifaman kan wal hin qunnamne maqaa fuulli Meeshaalee agarsiisuun tarreessa, yoo homtuu hin dhabamne immoo Hundi wal qunnameera jedha.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Cufaa. Sagantaan kamiyyuu PadForge ga'uu hin danda'u.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} fi {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Sochii PadForge: waamicha {0}, kan durii dura. Waamichaalee isaan dura turan: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Sochii PadForge: waamicha {0}. Waamichaalee isa dura turan: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Waamichaaleen durii {0:N0} haqamaniiru. Sochiin kan haaraa {1:N0} qofa qabata.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Waamichi durii {0:N0} haqameera. Sochiin kan haaraa {1:N0} qofa qabata.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Gara alaatti ergi…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Sochii gara alaatti ergi</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Faayilii barreeffamaa</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Bani</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Haaromsi</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Dabalata kan {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Ogummaa sana akka ZIP olkaa'i…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Faayilii qindaa'ina isaa bani</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Olkaa'ameera. {0} keessatti, {1} {2} jalatti dabali.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} ammaaf faayilii qindaa'inaa hin qabu. Ida'i tokko uuma.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge sagantaa gargaaraa PC kana irratti kan hojjetaan isaa qindaa'ina Windows irratti ibse hin argu. Copy Settings kan Dabalata jala jiru kan biroo kamiifuu ni hojjeta.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge sagantaalee gargaaraa sakatta'uu hin dandeenye: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Hin dabalamne.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Dabalameera.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Dabalameera. Amma wal qunnameera.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Dabalameera. Sana booda wal hin qunnamne. Gargaaraan banaa ture erga cufamee irra deebi'ee banamee booda PadForge arga.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>PadForge biraatiif dabalame. Haaromsi isa gara isa kanaatti qajeelcha.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Dabalameera. Ogummaan PadForge isaa PadForge kana caalaa moofaa dha.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Dabalameera, ogummaa PadForge isaa malee.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Dabalameera. Ogummaan PadForge isaa PadForge haaraa irraa dhufe.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Ogummaa olfe'uun qofa fudhata.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Gargaartonni dabalaman yeroo Automation banaa ta'u PadForge ga'u.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Dabalaa jira…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Balleessaa jira…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Haaromsaa jira…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Hin xumuramne: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Garagalfameera.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Hin garagalfamne: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Sagantaalee hayyamaman</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Sagantaan Read ykn isaa ol barbaadu tokko yeroo jalqabaa wal qunnamu al tokko gaafata, sadarkaa gaafate immoo hanga sadarkaa oliitti argata. Gargaaraan ati olitti dabaltu sanaan hayyamameera.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Amma wal qunnameera.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Yeroo dhumaaf {0} itti fayyadame.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Ammaaf itti hin fayyadamne.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Wal qunnamaa: {0}. Automation banuuf cuqaasi.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>PC kana irraa: {0}. Weebii irraa: {1}. Automation banuuf cuqaasi.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Weebii irraa wal qunnamaa: {0}. Automation banuuf cuqaasi.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Walqabsiisa SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick. SDL walqabsiisa isaaf hin qabu.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge dheedhiitti dubbisa, kanaaf walqabsiisni SDL hin fayyadamu.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, tarree keetiin akka gamepad qindaa'e.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL meeshaalee kan dubbisu yeroo injiniin hojjetu qofa.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Garagalcha hawaasaa keessa jiru, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Buufatame {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faayilii PadForge mataa isaa</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Kan kee, dabalame {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Jijjiiramaa SDL_GAMECONTROLLERCONFIG, kan SDL tarree ati dabaltu kamiyyuu ol qabatu</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Walqabsiisa SDL garagalchi</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Walqabsiisa meeshaa akka tarree kuusa odeeffannoo hawaasaatti kilippboordii irra kaa'a, ID meeshaa jalatti checksum fi veershinii isaa zeeroo godhee.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Walqabsiisa SDL maxxansi…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Tarree meeshaa kanaa fudhata, sakatta'a, akka kan keetii kuusa, achumaan hojii irra oolcha.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Walqabsiisa barbaadi…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Tarree PadForge qabu hunda maqaan barbaada, kan ati filattu immoo meeshaa kana irratti hojii irra oolcha, garagalcha ID isaa adda ta'eef.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Caasaa tilmaami</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Aksisii, qabduu fi hat meeshaa irraa caasaa gamepad tilmaama, meeshaa kuusni odeeffannoo kamiyyuu hin beekneef. Test Inputs keessatti mirkaneessi.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Kan koo balleessi</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Kan koo balleessi tarree fi tarreewwan kontirolaa duraanii deebisa.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Irra deebi'ii walqabsiisi</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Tarreewwan meeshaa kontirolaa inni irra jiru hunda irratti caasaa SDL irraa irra deebi'ee uuma, akkuma ramaduun godhu.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Fuula kuusa odeeffannoo hawaasaa</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Tarree, fi bakka inni {0} irraa adda ta'u</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Tarree</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontirolaa</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Tarree {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Galtee isaa amma</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Tarreen SDL kan jedhu</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>tarree SDL keessa hin jiru</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, adda</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge itti hin fayyadamu: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Tarree</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Garagalfameera.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Garagalfameera. Bifni SDL {0} qabachuu hin danda'u.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>maakroo</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>kurvii</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zoonii du'aa</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>bahaa kiiboordii fi maawusii</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turboo, jijjiirtota fi gochoota biroo</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} fi {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Wanti garagalfamu hin jiru: SDL walqabsiisa meeshaa kanaaf hin qabu, kontirolaa kamiyyuu irras hin jiru.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Sagantaan biraa kilippboordii fayyadamaa jira. Homtuu hin garagalfamne.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Tarreen kee haqameera. Meeshaan akkuma duraan dubbifamaa ture dubbifama.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Caasaa SDL irraa irra deebi'ee walqabsiifame: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Amma hojii irra jira. Tarreen kan kee ti, meeshaa kanaaf immoo dursa qaba.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Akka kan keetti kuufameera. Yeroo injiniin hojjetuu fi meeshaan wal qunnamu hojii irra oola.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Akka kan keetti kuufameera, garuu jijjiiramaan SDL_GAMECONTROLLERCONFIG tarree meeshaa kanaa qaba, kan SDL kan kee ol kaa'u.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tarree sana hin fudhanne. Meeshaa kanaaf wanti jijjiirame hin jiru.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Walqabsiisa SDL maxxansi</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Walqabsiisa SDL kan {0} maxxansi</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Walqabsiisa kan {0} barbaadi</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Caasaa tilmaami: {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Faayilii ykn kilippboordii irraa tarreewwan ida'i</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Maxxansi</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Faayilii bani…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Faayilii walqabsiisaa (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Faayiliin kun 4 MB ol. Faayiliin hawaasaa guutuun gara 0.6 MB ta'a.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Barbaadi: maqaa, ID ykn VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Tarreewwan PadForge qabu</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Tarreen walsimu hin jiru.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Tarreen filatame ID mataa isaa jalatti {0} irratti hojii irra oola, sakatta'iinsa fi filannoo Maxxansi wajjin tokko ta'een.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Tarree walqabsiisa SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Tarree meeshaa kanaa.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Caasaa tilmaamame.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, dirree {0}, ID isaa meeshaa kana wajjin wal sima.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, dirree {0}, hojjetaa fi oomisha tokko irraa, bus ykn veershinii biraa irratti. ID meeshaa kanaa mataa isaa jalatti kuufama.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, dirree {0}, tarree meeshaa biraa. ID meeshaa kanaa mataa isaa jalatti kuufama.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Dirree {0}. SDL meeshaa kana hin dubbisu, kanaaf PadForge galtee isaa tarree sanaan qindeessa.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Dirree {0}, aksisii, qabduu fi hat meeshaa irraa. Test Inputs keessatti mirkaneessi, sana booda kuusi ykn asitti jijjiiri.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, dirree {0}, ID isaa meeshaa kana wajjin wal sima.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, dirree {0}, hojjetaa fi oomisha tokko irraa, bus ykn veershinii biraa irratti. ID meeshaa kanaa mataa isaa jalatti kuufama.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, dirree {0}, tarree meeshaa biraa. ID meeshaa kanaa mataa isaa jalatti kuufama.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Dirree {0}. SDL meeshaa kana hin dubbisu, kanaaf PadForge galtee isaa tarree sanaan qindeessa.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Dirree {0}, aksisii, qabduu fi hat meeshaa irraa. Test Inputs keessatti mirkaneessi, sana booda kuusi ykn asitti jijjiiri.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Kun akkaataa {0} itti dubbifamu jijjiira. Tarreewwan isaa {1} keessa jiran caasaa haaraa irraa irra deebi'anii walqabsiifamu.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Kun akkaataa {0} itti dubbifamu jijjiira. Kontirolaa kamiyyuu irra hin jiru, kanaaf tarreen tokkollee hin jijjiiramu.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Karaawwan gabaabaa piroofaayilii kan {0} dubbisan galtee itti qindaa'an eeggatu.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Tarreen akka kan keetti PadForge.xml keessatti kuufama, meeshaa kanaaf madda biraa hunda irra dursa qaba. Kan koo balleessi tarree duraanii fi tarreewwan duraanii deebisa.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Tarreewwan akka kan keetti PadForge.xml keessatti kuufamu, meeshaalee isaaniitiif madda biraa hunda irra dursa qabu. Qulqulleessi, Dabalata tarree Kuusa odeeffannoo kontirolaa jala jiru, isaan haqa.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Tarree {0} kan Windows. Kan sirnoota biroo {1} ni dabarfamu.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Tarree {0} kan Windows. Kan sirnoota biroo {1} ni dabarfamu.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} didameera. Kan jalqabaa: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Tarree tokko, ykn barreeffama faayilii gamecontrollerdb.txt maxxansi.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Barreeffamni kun tarree kuusa odeeffannoo kontirolaa SDL miti: ID dijiitii hex 32, maqaa, sana booda dirreewwan akka a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Tarreewwan kun sirnoota biroof. PadForge tarreewwan Windows ykn sirna addaa kamiifuu hin taane dubbisa.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID tarree sanaa kan meeshaa miti. Dijiitii hex 32 barbaada.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Maqaan tarree duwwaa dha, qubee 128 ol qaba, ykn qubee SDL akka dirreetti dubbisu qaba.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Tarreen akeeka ykn dirree Android qaba, PadForge immoo isa hin fudhatu.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Tarreen dirree SDL hin beekne qaba.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Hidhaan tokko bifa SDL keessa hin jiru, akka b3, a2, +a2, a2~ ykn h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Tarreen dirree tokko al lama kenna.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Tarreen qubee 1,024 ol qaba.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Tarreen to'annoo tokkollee hin hidhu.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Tarreewwan kee</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Tarreewwan kee</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Tarreewwan ati asitti dabaltu, ykn kaardii Walqabsiisa SDL meeshaa irratti maxxansitu, meeshaalee isaaniitiif madda biraa hunda irra dursa qabu, deebisuu booda illee ni turu.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Faayilii ykn kilippboordii irraa tarreewwan ida'i…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Tarree {0}, meeshaalee isaaniitiif madda biraa hunda irra kan kee.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Tarree {0}, meeshaa isaatiif madda biraa hunda irra kan kee.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ammaaf hin jiru.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Achumaan hojii irra jira.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Bani</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Gargaartota weebii irratti</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunelii</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Homaa</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Teessoo ani maxxansu</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Jalqabaa jira, mirga kee wajjin.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Hojjechaa jira, mirga kee wajjin. Teessoon isaa yeroo jalqabu hunda tokkuma.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Hojjechaa jira, mirga kee wajjin. Tuneliin saffisaa yeroo jalqabu hunda teessoo haaraa fudhata, kanaaf gargaaraan irra deebi'ee dabalamuu qaba.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Dhaabbateera.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Dhaabbateera. Jechoota isaa dhumaa: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Jalqabuu hin dandeenye.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Kana booda PC kana irra hin jiru.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Sagantaan tunelii PC kana irratti hin argamne. PadForge cloudflared, devtunnel, ngrok fi Tailscale Funnel wajjin, ykn teessoo tunelii kee wajjin hojjeta.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge teessoo ummataa akka qabaatuuf tunelii filadhu.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>PC kana irras: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, kan teessoon isaa hin jijjiiramne</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, kan tuneliin isaa saffisaa yeroo hunda teessoo haaraa fudhatu</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Tunelii kee gara http://127.0.0.1:{0} hojjechiisi, teessoo https isaa immoo maxxansi. Tuneliin Cloudflare maqaa qabu, dev tunnel dhaabbataa, Tailscale Funnel fi domain ngrok mataa isaa teessoo isaanii eeggatu.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Teessoo https daandii /mcp malee hin qabne, akkuma tuneliin kee kennutti maxxansi.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Deeggaraan weebii PadForge jalqabaa jira.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Deeggaraan weebii PadForge dhaabbate ({0}). Irra deebi'ee jalqabuuf Reach PadForge From the Web cufiitii bani.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Teessoo</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Ammaaf teessoon ummataa hin jiru.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude irratti ida'i</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Garagalfameera.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Gargaaraa weebii haaraa fudhadhu</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Fudhachuu jalqabi</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Fudhachuu dhaabi</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Hanga {0} fudhachaa jira.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Hin fudhatu. Fudhachuu jalqabi daqiiqaa shaniif bana.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Teessoo gargaaraa keessatti dabaliitii seeni. Seensi hundi koodii dijiitii jaha mataa isaa fuula seensaa isaa fi kaardii gaaffii PadForge irratti agarsiisa. Yoo koodiiwwan lamaan wal siman qofa Hayyami. Yeroo biraa seensi ni didama, wanti si gaafatus hin jiru.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Weebii irratti hayyamaman</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Ammaaf hin jiru.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Seensi isaa gara {0} deebi'e.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Of {0} jedhee waama.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Hayyamame {0}, yeroo dhumaaf itti fayyadame {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Hayyamame {0}, ammaaf itti hin fayyadamne.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Hayyama kaasi</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel mataa isaa PadForge kallattiin hojjechiisa, asitti teessoo ykn seensa malee. Ajaja sana qindaa'ina tunelii sanaa keessa garagalchi.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Ajaja garagalchi</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge sagantaa tunelii tokkollee hin buufatu, furtuu dhaabbata biraa kamiyyuu hin kuusu. Gargaaraan weebii sadarkaa olii irratti hojjeta.</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Seensi isaa gara {0} deebi'a.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Of {0} jedhee waama.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Yoo fuulli seensa isaa koodii kana agarsiise qofa Hayyami:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Koodiin isaa dijiitii jaha kaardii gaaffii PadForge irratti mul'ata. Yoo fuulli seensa isaa koodii walfakkaataa agarsiise qofa Hayyami.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Inni {0} irratti, karaa {1} hojjeta.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Seensi isaa gara PC kanaatti deebi'a, sagantaan as jiru kamiyyuu teessoo sana fudhachuu danda'a.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge seeni</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} PC kee irratti PadForge wajjin hojjechuu gaafata.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Of {0} jedhee waama.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>PC kee irratti, kaardiin gaaffii PadForge waa'ee seensa kanaa gaafata. Yoo kaardiin koodii kana agarsiise qofa achitti Hayyami:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Yeroo ati PC irratti deebiste fuulli kun ofumaan itti fufa.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Seensi kun gara sagantaa PC kee irra jiruutti deebi'a, sagantaan achi jiru kamiyyuu teessoo sana fudhachuu danda'a.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge amma gargaaraa weebii haaraa hin fudhatu. PC kee irratti PadForge bani, gara Dabalataalee, Automation deemi, Gargaartota weebii irratti jalatti immoo Fudhachuu jalqabi tuqi. Sana booda irra deebi'ii seeni.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Seensi kun itti fufuu hin danda'u. Teessoo PadForge gargaaraa keessatti irra deebi'ii dabaliitii seeni.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Seensi kun xumurameera. Gargaaraa irraa irra deebi'ii seeni.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows isa hin jalqabne</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>koodii {0} wajjin xumurame</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation cufaa dha, kanaaf gargaaraan weebii kamiyyuu PadForge hin ga'u. Deeggaraan weebii yeroo Automation banaa ta'u jalqaba.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Galfameera. PadForge kun garagalcha haaraa qaba.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Kan {0} galfameera. PadForge kun garagalcha haaraa qaba.</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge isa sakatta'uu hin dandeenye: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Install mana kitaabaa PadForge bakka afaan sun itti argatu kaa'a. Iskiriptiin isa fe'u meeshaalee dubbisa, walqabsiisa immoo sadarkaa olii irratti oofa.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Mana kitaabaa bakka kamittuu olkaa'i</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Garagalchawwan galfaman</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Hunda balleessi</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Balleeffameera.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID iskiriptii</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID iskiriptii isaa</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Iskiriptoonni to'annoowwan isaa {0} jedhanii waamu.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Iskiriptoonni furtuuwwan isaa KeyA, KeySpace, KeyLeftShift fi kan akkasii jedhanii waamu, furtuu hunda immoo koodii isaatiin, Vk0 hanga Vk255.</value></data>
 </root>

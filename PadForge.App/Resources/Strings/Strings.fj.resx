@@ -872,7 +872,6 @@
   <data name="FlydigiScreen_KeepSending" xml:space="preserve"><value>Tomana na Vakau</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} sa semati</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} sa semati, bateri {1}%</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Sa semati e {0} na iyaya</value></data>
   <data name="Plugins_Replay_Play" xml:space="preserve"><value>Vakaraitaka</value></data>
   <data name="Plugins_Replay_Repeat" xml:space="preserve"><value>Vakaruataka</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>wiliwili</value></data>
@@ -882,4 +881,128 @@
   <data name="About_McpSdkDesc" xml:space="preserve"><value>Na server kei na client ni Model Context Protocol e vakayagataki ena ivakasemati ni dauveivuke kei na PadForge.exe --mcp, mai vei Model Context Protocol a Series of LF Projects.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions kei na DependencyInjection.Abstractions, ka tara kina na MCP C# SDK, mai vei Microsoft.</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Sa semati e {0} na iyaya: {1}</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Vakuri mai vei {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Setting ni {0}</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Ni tabaki tiko ka tiko ga</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Iyaya e sega ni semati</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Sa semati kece</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Na screen e vakaraitaka na iyaya e mapped ka sega ni semati, ena yaca e vakaraitaka na tabana Devices, ka tukuna Sa semati kece ni sega ni dua e yali.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Na overlay e vakaraitaka na iyaya e mapped ka sega ni semati, ena yaca e vakaraitaka na tabana Devices, ka tukuna Sa semati kece ni sega ni dua e yali.</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Dolava</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Vakavoui</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Eso tale me baleta na {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Maroroya na Skill me ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Dolava na Faile ni Setting</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Sa maroroi. Ena {0}, vakuria na {1} ena ruku ni {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>E sega ni se tu e dua na faile ni setting ni {0}. Na Vakuria e cakava e dua.</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>E sega ni vakuri.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Sa vakuri.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Sa vakuri. Sa semati tiko qo.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Sa vakuri. E se bera ni semati mai kina. E dua na assistant e dola tiko ena raica na PadForge ni sa sogoti ka dolavi tale.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Vakuri me baleta e dua tale na PadForge. Na Vakavoui e vakatusaka ki na PadForge oqo.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Sa vakuri. Na nona skill ni PadForge e makawa cake mai na PadForge oqo.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Sa vakuri, ia e sega na nona skill ni PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Sa vakuri. Na nona skill ni PadForge e lako mai e dua na PadForge vou cake.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>E taura ga na skill ni vakaukauti cake.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Na assistant sa vakuri era na yacova na PadForge ni sa vakayagataki na Automation.</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>E dua na gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>E dua na joystick. E sega na mapping ni SDL me baleta.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>E dua na joystick. E wilika vakadodonu na PadForge, sa sega kina ni vakayagataki na mapping ni SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>E dua na joystick, vakarautaki me vaka e dua na gamepad ena nomu laini.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>E wilika na SDL na iyaya ni sa cici tiko na engine.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Na ilavelave ni community e tu vata kei na parokaramu, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Lavei mai ena {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Na faile ni PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Nomu, vakuri ena {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Na variable SDL_GAMECONTROLLERCONFIG, e vakaliuca na SDL mai na laini kece o vakuria</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopitaka na SDL Mapping</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Biuta na mapping ni iyaya ena clipboard me vaka e dua na laini ni community database, ena ruku ni ID ni iyaya ka sa vakaoqo na checksum kei na version.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Vakotora na SDL Mapping…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Taura e dua na laini me baleta na iyaya oqo, vakadikeva, maroroya me nomu ka vakayagataka sara.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Vakasaqara e dua na Mapping…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Vakasaqara ena yaca na laini kece e tu ena PadForge ka vakayagataka na kena o digitaka ena iyaya oqo, me baleta e dua na ivakatautauvata e duidui na kena ID.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Vakatovotovotaka e dua na Ituvatuva</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Vakatovotovotaka e dua na ituvatuva ni gamepad mai na axis, na bulukau kei na hat ni iyaya, me baleta e dua na iyaya e sega ni kilai ena database. Vakadikeva ena Test Inputs.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Kauta tani na Noqu</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Na Kauta tani na Noqu e vakalesuya na laini kei na laini ni controller e liu.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Map Tale</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Cakava tale na laini ni iyaya ena controller kece e tu kina mai na ituvatuva ni SDL, me vaka ni vakarautaki.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Tabana ni Community Database</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Na laini, kei na vanua e duidui kina mai na {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Na laini</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Laini ni {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Na kena input qo</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Na ka e tukuna na laini ni SDL</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>e sega ena laini ni SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, e duidui</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>E sega ni vakayagataka na PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Na laini</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Sa kopitaki.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Sa kopitaki. E sega ni rawa ni taura na ivakarau ni SDL na {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>curve</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>dead zone</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>output ni keyboard kei na mouse</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle kei na cakacaka tale eso</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} kei na {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>E sega ni dua na ka me kopitaki: e sega na mapping ni SDL me baleta na iyaya oqo, ka sega ni tu ena dua na controller.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>E dua tale na parokaramu e vakayagataka tiko na clipboard. E sega ni dua na ka e kopitaki.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Sa kauta tani na nomu laini. Na iyaya e wilika me vaka e liu.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Sa map tale mai na ituvatuva ni SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Sa vakayagataki tiko qo. Na laini e nomu ka liu me baleta na iyaya oqo.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Sa maroroi me nomu. Ena vakayagataki ni sa cici na engine ka semati na iyaya.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Sa maroroi me nomu, ia e tu ena variable SDL_GAMECONTROLLERCONFIG e dua na laini me baleta na iyaya oqo, ka vakaliuca na SDL mai na nomu.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>E sega ni taura na SDL na laini. E sega ni dua na ka e veisau me baleta na iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Vakotora e dua na SDL Mapping</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Vakotora e dua na SDL Mapping me baleta na {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Vakasaqara e dua na Mapping me baleta na {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Vakatovotovotaka e dua na Ituvatuva me baleta na {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Vakuria na Laini mai na Faile se na Clipboard</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Dolava e dua na Faile…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Faile ni mapping (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Na faile e levu cake mai na 4 MB. Na faile taucoko ni community e rauta ni 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Vakasaqara ena yaca, ID se VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Laini e tu ena PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>E sega ni dua na laini e veiraurau.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Na laini o digitaka e vakayagataki ena {0} ena ruku ni nona ID, ena vakadidike vata kei na digidigi vata me vaka na Paste.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Laini ni mapping ni SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>E dua na laini me baleta na iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>E dua na ituvatuva vakatovotovotaki.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, field: {0}, na kena ID e veiraurau kei na iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, field: {0}, mai na vendor kei na product vata ena dua tale na bus se version. E maroroi ena ruku ni ID ni iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, field: {0}, na laini ni dua tale na iyaya. E maroroi ena ruku ni ID ni iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Field: {0}. E sega ni wilika na SDL na iyaya oqo, sa vakarautaka kina na PadForge na kena input ena laini.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Field: {0}, mai na axis, na bulukau kei na hat ni iyaya. Vakadikeva ena Test Inputs, qai maroroya se veisautaka eke.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} na field, na kena ID e veiraurau kei na iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} na field, mai na vendor kei na product vata ena dua tale na bus se version. E maroroi ena ruku ni ID ni iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} na field, na laini ni dua tale na iyaya. E maroroi ena ruku ni ID ni iyaya oqo.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} na field. E sega ni wilika na SDL na iyaya oqo, sa vakarautaka kina na PadForge na kena input ena laini.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} na field, mai na axis, na bulukau kei na hat ni iyaya. Vakadikeva ena Test Inputs, qai maroroya se veisautaka eke.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Oqo e veisautaka na kena wiliki na {0}. Na kena laini ena {1} era map tale mai na ituvatuva vou.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Oqo e veisautaka na kena wiliki na {0}. E sega ni tu ena dua na controller, sa sega kina ni veisau e dua na laini.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Na shortcut ni profile e wilika na {0} era maroroya ga na input a vakarautaki kina.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Na laini e maroroi me nomu ena PadForge.xml ka liu mai na ivurevure tale eso kece me baleta na iyaya oqo. Na Kauta tani na Noqu e vakalesuya na laini makawa kei na laini makawa tale eso.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Na laini e maroroi me nomu ena PadForge.xml ka liu me baleta na nodra iyaya mai na ivurevure tale eso kece. Na Clear, ena ruku ni More ni laini Controller Database, e kauta tani.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Laini me baleta na Windows: {0}. E {1} me baleta na system tale eso era biuti.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} na laini me baleta na Windows. E {1} me baleta na system tale eso era biuti.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>E {0} e cakitaki. Na imatai: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Vakotora e dua na laini, se na vosa ni dua na faile gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Na vosa e sega ni laini ni controller database ni SDL: e dua na ID ni 32 na naba hex, e dua na yaca, qai field me vaka na a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Na laini e baleta na system tale eso. Na PadForge e wilika na laini me baleta na Windows, se sega ni baleta e dua na system.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Na ID ni laini e sega ni ID ni dua na iyaya. E gadrevi kina e 32 na naba hex.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Na yaca ni laini e lala, e sivia na 128 na matanivola, se tu kina e dua na matanivola e wilika na SDL me field.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>E tu ena laini e dua na hint se dua na field ni Android, ka sega ni taura na PadForge.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>E tu ena laini e dua na field e sega ni kila na SDL.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>E dua na binding e sega ni tu ena ivakarau ni SDL, me vaka na b3, a2, +a2, a2~ se h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Na laini e solia vakarua e dua na field.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Na laini e sivia na 1,024 na matanivola.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Na laini e sega ni vauca e dua na control.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Nomu Laini</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Sa vakacurumi. E tu ena PadForge oqo e dua na ilavelave vou cake.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Sa vakacurumi me baleta na {0}. E tu ena PadForge oqo e dua na ilavelave vou cake.</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Na kena ID ni script</value></data>
 </root>

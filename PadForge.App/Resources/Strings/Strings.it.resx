@@ -191,8 +191,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Scollegato: {0}. {1} non ha più dispositivi.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Collegato: {0}</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Collegato: {0}, batteria {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} dispositivi scollegati</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} dispositivi collegati</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} dispositivi scollegati: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} dispositivi collegati: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} continua a scollegarsi</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max {0})</value></data>
@@ -384,7 +384,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Una mod di gioco</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Un altro programma usa il nome di pipe {0}. Chiudi quel programma.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ha rifiutato la pipe {0}, quindi i programmi non possono connettersi.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Nessun programma è connesso.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Attiva. Nessun programma è connesso.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connessi: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programma sconosciuto</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, firmato da {1}</value></data>
@@ -418,7 +418,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Non ce ne sono altri finché PadForge non si riavvia</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge non ha uno strumento simile</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Il programma ha letto uno stato precedente</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Impostazione inesistente</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nessuno ha questo ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Il valore era fuori da ciò che l'impostazione accetta</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Non l'hai consentito</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nessuno ha risposto in tempo</value></data>
@@ -435,6 +435,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Mostra la finestra</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Manda la finestra nell'area di notifica</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Riduci a icona la finestra</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Ingrandisci la finestra</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Chiudi PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Avvia il motore</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Arresta il motore</value></data>
@@ -460,6 +461,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Aggiungi il dispositivo {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Imposta i controlli del dispositivo {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Rimuovi il dispositivo {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Porta a riposo ogni controllo del dispositivo {0}</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Fa eseguire un programma a PadForge.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Apre un file, una cartella o una pagina web.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Fa inviare a PadForge tasti o input del mouse a Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Importa un profilo da fuori PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge ti chiede conferma prima che un programma lo faccia.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Finestre di dialogo</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Macro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tieni premuti i controlli del dispositivo {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Rilascia i controlli del dispositivo {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Imposta il valore {0}</value></data>
@@ -468,25 +477,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Cambia profilo</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Avvia o arresta il motore</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Attiva o disattiva i controller virtuali</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Salva un'istantanea diagnostica</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Leggi la frequenza di polling e i driver</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Elenca i profili</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Leggi un profilo</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Elenca i controller virtuali</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Elenca i dispositivi</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Leggi un dispositivo</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Attendi un tuo ingresso</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Leggi le mappature di un controller</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Elenca le macro di un controller</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Registra un problema</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Trova impostazioni</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Leggi un'impostazione</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Mostrati un punto</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Cerca punti in PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Leggi un punto in PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Leggi ciò che vedi</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Aggiungi un dispositivo proprio</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Pilota il proprio dispositivo</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Rimuovi il proprio dispositivo</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Tieni premuto o rilascia un controllo</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Imposta un valore per i trigger delle macro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Cambia un'impostazione</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Premi un pulsante</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Crea un profilo</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Rinomina un profilo</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Elimina un profilo</value></data>
@@ -497,7 +505,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Cambia il tipo di un controller</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Assegna un dispositivo</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Imposta righe di mappatura</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Cancella righe di mappatura</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mappa un controller automaticamente</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Salva una macro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Elimina una macro</value></data>
@@ -517,6 +524,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Crea un controller tastiera e mouse</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Attiva {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Cambia “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Premi “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vuole mostrarti {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>In {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Consenti a {0} di lavorare con PadForge al livello {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} esegue {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Avviato da {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Firmato da {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Non firmato.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Dal livello Lettura in su vede ogni tasto premuto su ogni dispositivo, tastiere comprese.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Lo chiede una volta sola. Puoi rimuoverlo nella pagina Automazione.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>la riga di comando di PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Imposta {0} su {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Resta in ascolto sulla rete, quindi altri dispositivi possono raggiungere questo PC.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Cambia un driver o HidHide, su cui si basano altri programmi e giochi.</value></data>
@@ -538,6 +556,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduli PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Consenti</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Non consentire</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Non ora</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Mostra</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Passo {0} di {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Fai clic per proseguire.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Apri {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Apri Altro.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Da {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Da {1}, che si presenta come “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Da un programma che si presenta come “{0}”</value></data>
@@ -683,7 +707,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installa e riavvia</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Note di rilascio</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Database dei controller</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aggiorna ora scarica da GitHub il database dei controller della community (SDL_GameControllerDB) e conserva, nel file impostazioni, le mappature che questa versione di PadForge non ha. Una nuova mappatura viene usata solo per un controller che nient'altro legge come gamepad, che non è assegnato e che non ha attivo Forza modalità joystick raw. Il pulsante di reimpostazione rimuove ogni mappatura scaricata.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aggiorna ora scarica da GitHub il database dei controller della community (SDL_GameControllerDB) e conserva, nel file impostazioni, le mappature che questa versione di PadForge non ha. Sono in uso subito. Una nuova mappatura viene usata solo per un controller che nient'altro legge come gamepad, che non è assegnato e che non è in Forza modalità joystick raw. Il pulsante di reimpostazione rimuove ogni mappatura scaricata. Le tue righe, sotto Altro, restano.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Aggiorna ora</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Aggiornamento…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Ricerca aggiornamenti in corso…</value></data>
@@ -712,12 +736,10 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>L'aggiornamento a PadForge {0} non ha completato l'installazione. Installalo dalle Impostazioni per riprovare.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge è stato aggiornato alla versione {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Integrato: {0} mappature, copia della community del {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Integrato: {0} mappature, copia della community del {1}. Aggiornato il {2}: {3} nuove, {4} modificate.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Integrato: {0} mappature, copia della community del {1}. Scaricato il {2}: {3} righe nuove, {4} modificate.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Il database della community non è cambiato dall'ultimo aggiornamento.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Impossibile raggiungere GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ha rifiutato il download perché non è il database dei controller che si aspetta. Nulla è cambiato.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Una nuova mappatura viene usata alla prossima connessione del suo controller.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Una mappatura modificata viene usata al prossimo avvio di PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Avvia ridotto a icona</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Avvia all'accesso</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -815,28 +837,85 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informazioni sulle versioni e registrazione degli eventi del motore per la diagnostica.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Mantieni un registro diagnostico</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Scrive continuamente gli eventi del motore in diagnostics.log, nella cartella dei registri che si apre con Apri cartella dei registri. Resta attivo dopo ogni riavvio. A 8 MB il file ruota in diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salva istantanea</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Salva gli eventi più recenti del motore in un nuovo file. Funziona anche con il registro diagnostico disattivato.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salva un'istantanea…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Prende l'app, Windows, i tuoi dispositivi e le impostazioni come sono ora, con gli eventi più recenti del motore, e li apre perché tu possa leggerli prima di salvarli. Funziona anche con il registro diagnostico disattivato.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Apri cartella dei registri</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Registra un problema</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Avvia registrazione</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Arresta registrazione ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Registra finché non arresti la registrazione, fino a 10 minuti o a uno zip da 20 MB, poi seleziona lo zip in Explorer, pronto da allegare a una segnalazione.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Avvia, fai accadere il problema, poi arresta. Un solo file accanto a PadForge contiene tutto ciò che PadForge ha letto, inviato e registrato, con un riepilogo di ciò che è andato storto. Nel file c'è ogni tasto e pulsante premuto su ogni dispositivo durante la registrazione, tastiere e mouse compresi. Nomi utente, numeri di serie, indirizzi e nomi digitati vengono sostituiti prima che venga scritto qualsiasi cosa.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Registra finché non arresti la registrazione, fino a 30 minuti o a uno zip da 20 MB, poi apre la registrazione perché tu possa leggerla prima di salvarla.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Avvia, fai accadere il problema, poi arresta. Poi leggi cosa contiene, parte per parte, e salvalo dove vuoi. Contiene ogni tasto premuto su ogni dispositivo durante la registrazione, tastiere e mouse compresi. Nomi utente, numeri di serie, indirizzi e nomi digitati vengono sostituiti prima che venga scritto qualsiasi cosa.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Scrittura del riepilogo…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvato {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>La registrazione non è partita. Un controllo ha trovato un valore privato di questo PC che non sarebbe rimasto fuori dal file.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>La registrazione non è partita. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>L'ultima registrazione è ancora in fase di completamento.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Mantieni gli ultimi 60 secondi è disattivato, quindi non c'è nulla da salvare.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Completata una registrazione che PadForge non aveva arrestato: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Una registrazione che PadForge non aveva arrestato ti aspetta in Home, da leggere: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Mantieni gli ultimi 60 secondi</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mentre il motore è in esecuzione, tiene in memoria l'ultimo minuto di ciò che contiene una registrazione, per un problema che si presenta una volta a sera. Salva gli ultimi 60 secondi lo scrive come file.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mentre il motore è in esecuzione, tiene in memoria l'ultimo minuto di ciò che contiene una registrazione, per un problema che si presenta una volta a sera. Salva gli ultimi 60 secondi lo apre perché tu possa leggerlo prima di salvarlo.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Salva gli ultimi 60 secondi</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Scrivi lettere e numeri digitati come un solo tasto</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Una registrazione scrive come un solo tasto i tasti di lettere e numeri che nessuna mappatura o macro legge, ogni pressione al suo momento. Ogni altro tasto, e ogni tasto che una mappatura o una macro legge, viene scritto com'è stato premuto.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Mantieni gli ultimi 60 secondi, Scrivi lettere e numeri digitati come un solo tasto</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Cosa registrare, gli ultimi 60 secondi, le lettere digitate</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Salva un'istantanea</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, i tuoi dispositivi e le impostazioni come sono ora, con la stessa revisione.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log accanto a PadForge.exe, dove puoi leggerlo.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Cosa registrare</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Tutto attivo. Una parte disattivata resta fuori dalla prossima registrazione, e il file dice quali parti contiene.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Per un problema che si presenta una volta a sera.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>La registrazione ti aspetta in Home, da leggere.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Riepilogo</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Impostazioni e dispositivi</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Feedback</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Tempi</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Finestra ed errori</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Attività</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Righe di diagnostica</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Leggi la tua registrazione</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>Dalle {0} alle {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Un'istantanea delle {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minuto</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minuti</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 secondo</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} secondi</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Arrestata da te.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Arrestata da sola a {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Arrestata da sola a {0} nello zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Arrestata da una macro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Arrestata da un programma o da --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Arrestata dall'assistente che l'ha avviata.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Arrestata alla chiusura di PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Gli ultimi 60 secondi, tenuti in memoria.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Leggi ciò che condividerai. Disattiva una parte per escluderla, poi salva. Niente lascia questo PC a meno che tu non lo pubblichi.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, come verrà condiviso</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Mostra {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>esclusa</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>non registrata</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} come testo, {1} nello zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} come testo, {1} nello zip che condividi. Una registrazione si arresta a {2} nello zip o dopo {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Controllo di pulizia: PadForge ha sostituito {0} in {1}. Nelle parti che conservi non c'è nessun nome, numero di serie o indirizzo di questo PC.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} valori</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 valore</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} tipi privati</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 tipo privato</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Controllo di pulizia: {0} valori di questo PC sono ancora nelle parti che conservi. Disattiva quelle parti o elimina la registrazione. Salva resta disattivato fino ad allora.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Controllo di pulizia: un valore di questo PC è ancora nelle parti che conservi. Disattiva quelle parti o elimina la registrazione. Salva resta disattivato fino ad allora.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Di questa parte non è successo nulla durante la registrazione.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Elimina</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Copia il riepilogo</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Copiato</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Salva…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Salva la registrazione</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>File zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Non salvata. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Salvata come te, la prima volta nella cartella Downloads, poi dove hai salvato l'ultima volta, e mostrata in Explorer. Una registrazione che si arresta mentre nessuno è alla pagina (il suo limite, una macro, un programma, lo strumento dell'assistente o --record stop) ti aspetta in Home per questa revisione, e dopo 7 giorni viene eliminata se non è salvata. Un programma sa che aspetta, mai dove.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Una registrazione di un problema delle {0} ti aspetta, da leggere.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Rivedi</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Segna la registrazione</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versione app</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versione SDL</value></data>
@@ -2293,31 +2372,64 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posizione mouse X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posizione mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilità del cursore per sorgente. 1.0 raggiunge la deflessione completa dello stick al 10% della larghezza dello schermo dal centro. Valori superiori a 1.0 raggiungono la deflessione completa con meno movimento del cursore. Valori inferiori a 1.0 ne richiedono di più.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilità del cursore per sorgente. 1.0 raggiunge la deflessione completa dello stick al 10% della larghezza dello schermo del puntatore a partire dal suo centro. Valori superiori a 1.0 raggiungono la deflessione completa con meno movimento del cursore. Valori inferiori a 1.0 ne richiedono di più.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Corsa mouse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Corsa mouse Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Corsa fino al fine corsa</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quanto si sposta il mouse dal centro al fine corsa, nei conteggi che il mouse riporta. Un numero più alto sterza con più finezza e richiede più movimento della mano.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quanto si sposta il mouse o la rotellina dal centro al fine corsa, nei conteggi che riporta. Un numero più alto sterza con più finezza e richiede più movimento della mano.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Con i DPI del mouse impostati nel pannello del suo dispositivo, la corsa compare anche in centimetri.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>conteggi</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centraggio</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Disattivato lascia il volante dove la mano lo ha lasciato. Molla lo riporta nel tempo di ritorno. Dalla telemetria lo richiama come farebbero gli pneumatici anteriori di un'auto, in base alla velocità e all'aderenza del gioco: fermo da fermi, più deciso con la velocità, leggero quando gli pneumatici scivolano. Se nessun gioco invia telemetria, vale Molla. Dalla forza del gioco lascia che a girarlo sia il force feedback del volante virtuale.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Disattivato lascia il volante dove la mano lo ha lasciato. Molla lo riporta nel tempo di ritorno. Dalla telemetria lo richiama come farebbe lo sterzo di un'auto, alla velocità e all'aderenza del gioco: deciso vicino al centro e più morbido più in là, fermo da fermi, più deciso con la velocità, leggero quando gli pneumatici scivolano. Se nessun gioco invia telemetria lo richiama come a 100 km/h su strada asciutta. Dalla forza del gioco lascia che a girarlo sia il force feedback del volante virtuale.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Disattivato</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Molla</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Dalla telemetria</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Dalla forza del gioco</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Tempo di ritorno</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Quanto impiega Molla a riportare il volante al 95% della strada. Dalla telemetria impiega questo tempo a 100 km/h su strada asciutta.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Quanto impiega Molla a riportare il volante al 95% della strada. 0 lo centra subito. Dalla telemetria impiega questo tempo da vicino al centro a 100 km/h su strada asciutta.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Sterza</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre lascia sterzare il mouse in ogni momento. Mentre premuto lo lascia sterzare solo mentre l'ingresso sterzo è premuto. Alterna attiva o disattiva lo sterzo a ogni pressione dell'ingresso sterzo. Quando il mouse non sterza, il volante resta dov'è o si centra, così un solo mouse può sterzare e guardarsi intorno.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre lascia sterzare il mouse in ogni momento. Mentre premuto e al centro lo lascia sterzare solo mentre l'Ingresso sterzo è premuto, poi lo riporta al centro, con il Centraggio dove la sorgente ne ha uno e subito dove non ne ha. Mentre premuto e fermo lo lascia sterzare solo mentre l'ingresso è premuto e lo lascia dove era quando è stato rilasciato. Alterna attiva o disattiva lo sterzo a ogni pressione dell'Ingresso sterzo. Così un solo mouse può sterzare e guardarsi intorno.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempre</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mentre premuto</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mentre premuto e al centro</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Alterna</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ingresso sterzo</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Il pulsante che permette al mouse di sterzare, sullo stesso dispositivo del movimento del mouse. Se non ne scegli nessuno, il mouse sterza sempre.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Il pulsante che permette al mouse di sterzare, sullo stesso dispositivo della sorgente. Se non ne scegli nessuno, il mouse sterza sempre.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Smussatura</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Uniforma un mouse che riporta in modo irregolare. Il volante segue la mano con circa questo ritardo. 0 la disattiva.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Uniforma un mouse che riporta in modo irregolare. Lo stick segue la mano con circa questo ritardo. 0 la disattiva.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Blocco alla velocità</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Con la telemetria di gioco attiva, quanta parte del fine corsa resta a 200 km/h. Al 100% tutto il fine corsa è disponibile a ogni velocità.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Corsa rotellina</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Corsa rotellina laterale</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Quanto veloce si muove il mouse. Si rilascia quando la mano si ferma.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Dove si trova il puntatore sul suo schermo, dal centro o dal punto in cui era quando è iniziato lo sterzo.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Quanto si è spostato il mouse, mantenuto dove la mano lo lascia, come un volante.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Le tacche della rotellina mantenute come posizione, a piena precisione su una rotellina a scorrimento fine.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Le tacche della rotellina laterale mantenute come posizione, a piena precisione su una rotellina a scorrimento fine.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Una spinta per ogni tacca, poi subito a riposo.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Mentre premuto e fermo</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Quanto dello stick dà una velocità. A 1.00 lo stick raggiunge la deflessione completa a 16.000 conteggi al secondo, a ogni frequenza di polling e di report del mouse.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Ritorno al centro</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Quando il mouse rallenta o si ferma, lo stick torna indietro non più in fretta di così. 0 lo lascia tornare insieme al mouse.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Parti da dove è iniziato lo sterzo</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Con uno Ingresso sterzo, lo stick misura dal punto in cui era il puntatore quando è iniziato lo sterzo, come uno stick sullo schermo di un telefono parte da dove si posa il dito. Disattivato, misura dal centro dello schermo del puntatore.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Questo asse si muove in modo relativo</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Per un trackball o uno spinner che riporta quanto ha girato. Attivo, l'asse mantiene una posizione come fa Corsa mouse e usa le impostazioni della corsa. Windows non dice quali assi si muovono così.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Anteprima</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Mostra come questa famiglia segue il tuo mouse. Niente viene mappato finché non la scegli.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Anteprima in corso. Muovi il mouse.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Mantenuto a {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>A {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% a destra</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% a sinistra</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% in alto</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% in basso</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>il centro</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Si muove mentre {0} è premuto.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI del mouse</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>I conteggi che questo mouse riporta per ogni pollice di spostamento, come li imposta il software del produttore.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Con i DPI impostati, Corsa mouse mostra anche la sua corsa in centimetri. 0 significa non impostato.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>Clic touchpad</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>Touchpad {0} dito {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>Touchpad {0} dito {1} Y</value></data>
@@ -3982,8 +4094,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Riconnessione automatica, porta, identità di abbinamento, connetti tramite indirizzo</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, sostituto di DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porte, velocità massima e formati personalizzati</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Altri assistenti, assistenti sul web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Guardati attorno con un head tracker o un visore VR mentre entrambi i pollici restano sui pulsanti.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mappa velocità, pedali e marce inviati da un gioco di guida, come qualsiasi input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Invia il movimento del controller agli emulatori che leggono una sorgente di movimento DSU.</value></data>
@@ -4004,6 +4115,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anello, la griglia o la barra di un menu mentre è aperto.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Il nome del livello quando un livello shift si attiva, per il tempo impostato da quel livello.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Il nome del profilo quando il profilo cambia.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Se i controller virtuali si sono appena attivati o disattivati, dalla scorciatoia o da una macro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Il nome di un dispositivo mappato quando si scollega.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Il nome di un dispositivo mappato quando si collega.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copia indirizzo</value></data>
@@ -4111,35 +4223,24 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>I programmi possono cambiare profilo e rilasciarlo, avviare e arrestare il motore, attivare e disattivare i controller virtuali, mostrare e nascondere la finestra, chiudere PadForge, salvare un'istantanea diagnostica e chiedere che cosa è in esecuzione.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tutto ciò che è possibile a livello Comandi, e i programmi possono vedere dispositivi, controller virtuali, mappature, profili e impostazioni, seguire gli ingressi di ogni dispositivo mentre avvengono e mostrarti un punto di PadForge. Un programma a livello Lettura vede ogni tasto premuto su ogni dispositivo, compresi i tasti digitati in finestre eseguite come amministratore.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tutto ciò che è possibile a livello Lettura, e i programmi possono aggiungere dispositivi propri e pilotarli, tenere premuto un controllo di qualsiasi dispositivo e passare valori con nome ai trigger delle macro.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tutto ciò che è possibile a livello Invio ingressi, e i programmi possono cambiare ciò che puoi cambiare nelle pagine.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tutto ciò che è possibile a livello Invio ingressi, e i programmi possono cambiare ciò che puoi cambiare nelle pagine. Alcune modifiche chiedono sempre prima conferma sulla scheda delle domande di PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistenti</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Incolla questo nelle impostazioni MCP di un assistente. L'assistente lavora poi con PadForge al livello indicato sopra.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copia come TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistenti che leggono TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Aggiungi mette PadForge, con la sua skill, in quell'assistente. Poi lavora al livello indicato sopra, e le sue parole compaiono accanto a ciò che indica, sotto il suo nome.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Libreria di script</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Salva una libreria…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un file per AutoHotkey v2, Python o PowerShell. Uno script che lo carica legge i dispositivi e pilota le mappature al livello indicato sopra.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un file per AutoHotkey v2, Python o PowerShell, scritto dove scegli tu.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>In attesa di te</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Attività</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Nessun programma ha ancora fatto richieste. Ogni richiesta è elencata qui con il suo esito.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Annulla</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill per assistenti</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Salva la skill…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge non è riuscito a salvarlo: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Finché è connesso un programma a livello Lettura o superiore, vede ciò che viene premuto su ogni dispositivo, tastiere comprese.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Esegui plugin</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Nessun plugin in esecuzione.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un plugin viene eseguito con i tuoi diritti, non con quelli di PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integrati</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Controller di prova</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un controller che si muove da solo, un controllo alla volta, così si può provare una mappatura senza hardware a portata di mano.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Velocità</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lenta</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normale</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Veloce</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Velocissima</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Riproduzione</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Riproduce una registrazione di un problema come i dispositivi che l'hanno prodotta, con gli stessi tempi. Sono nuovi dispositivi su questo PC, mappati come li mappi tu o un profilo.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Registrazione</value></data>
@@ -4154,10 +4255,9 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Registrazioni di problemi|*.zip;*.log|Tutti i file|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge non può riprodurre {0}. Non è una registrazione di un problema, oppure non contiene ingressi di dispositivi.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>I tuoi plugin</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Un plugin è un programma che aggiunge dispositivi a PadForge. PadForge lo avvia con i tuoi diritti ordinari ogni volta che il motore è in esecuzione.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Aggiungi un plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmi e script|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tutti i file|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Approva…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Approva e riavvia…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Si avvia con il motore</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Controllo del file prima dell'avvio</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Terminato con codice {0}. Riparte tra {1} s.</value></data>
@@ -4188,10 +4288,53 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} è già nell'elenco.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge esegue fino a 16 plugin. Rimuovine uno per aggiungerne un altro.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin in esecuzione: {0}. Dispositivi aggiunti: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} si è fermato dopo cinque errori.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} è stato modificato dopo la tua approvazione.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} non è partito.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Aggiunti: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Firmato da {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Non firmato.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Le sue impostazioni compaiono qui mentre è in esecuzione.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Non dichiara impostazioni.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge non è riuscito a leggere le sue impostazioni: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Terminato dopo un minuto di silenzio</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Il suo file è cambiato mentre era in esecuzione</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Aggiunto da {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Impostazioni di {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Scegli</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Premi un controllo…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Nessuno scelto</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Aggiungi un plugin, o trascina il suo file su questa pagina. PadForge mostra il suo percorso, chi l'ha firmato e il suo SHA-256 e ti chiede conferma prima di avviarlo. Un plugin gira con i tuoi diritti, non con quelli di PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Riproduce una registrazione di un problema come i dispositivi che l'hanno prodotta, con i loro tempi.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>In esecuzione.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>In esecuzione, a mano.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Cosa si muove</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Stick e grilletti</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Stick</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Grilletti</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Schema</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Scansione</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Cerchio</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Tempo di movimento</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Tempo di riposo</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Premi i pulsanti</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Premi i pulsanti di navigazione</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Le app di Windows reagiscono ad A, B, Indietro, Avvio e alla croce direzionale di un controller Xbox virtuale nella finestra in primo piano, e Guida apre Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Gira la croce direzionale</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Per lo stesso motivo.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Tempo di pressione</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Controller</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>A mano</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Ferma il movimento. Imposta i suoi ingressi qui sotto con il mouse.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Stick sinistro</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Stick destro</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Grilletto sinistro</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Grilletto destro</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Letture al secondo</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Il kit per plugin e il registro di un plugin a scelta</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit per plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Salva il kit per plugin…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un piccolo plugin in C# e lo stesso plugin per AutoHotkey, Python e PowerShell, ogni file con le istruzioni per compilarlo o eseguirlo.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Una guida a ogni verbo, evento e tipo di impostazione, uno script di compilazione per il plugin in C# e lo stesso plugin per AutoHotkey, Python e PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Registro</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Scegli un plugin per vederne il registro.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Il registro di questo plugin è ancora vuoto.</value></data>
@@ -4889,6 +5032,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicatori a schermo che PadForge mostra durante il gioco. Disattivarne uno non cambia mai il comportamento, solo se viene mostrato.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Riquadro livello Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sovrapposizione cambio profilo</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Controller attivi o disattivi</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nota di dispositivo scollegato</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nota di dispositivo collegato</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anello o la griglia su schermo mentre un menu radiale o touch è attivo. I menu si attivano anche con l'overlay disattivato.</value></data>
@@ -5628,6 +5772,8 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Disattivato</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Cronometro</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Colore della barra luminosa</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Dispositivi offline</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Tutti connessi</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>disattivato</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>tramite Logitech Gaming Software</value></data>
@@ -5670,6 +5816,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Lo schermo mostra un'immagine a tua scelta, alle sue dimensioni. Un'immagine più grande dello schermo ne mostra una finestra della dimensione dello schermo, che la macro Sposta immagine dello schermo della tastiera muove. Sulla S.T.R.I.K.E. 7 la si muove anche trascinando un dito sullo schermo.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Lo schermo mostra il cronometro, che la macro Cronometro avvia, mette in pausa e azzera. Tutti gli schermi mostrano lo stesso cronometro.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Lo schermo mostra il colore della barra luminosa del DualShock 4 o DualSense nello slot più basso che questo schermo alimenta, oppure nello slot più basso in assoluto se non ne alimenta nessuno. Uno schermo monocromatico ne mostra la luminosità come un motivo di punti. Finché nessun colore raggiunge una barra luminosa, PadForge non mostra nulla.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Lo schermo elenca i dispositivi mappati che non sono connessi, con i nomi che mostra la pagina Dispositivi, e dice Tutti connessi quando non ne manca nessuno.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Immagini (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tutti i file (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Sposta</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Sposta X</value></data>
@@ -5921,6 +6068,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>In guida (diverso da 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria di gioco</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Valore script</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Connessione del dispositivo</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velocità (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Giri/min (% del massimo)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Marcia (-1 retromarcia, 0 folle)</value></data>
@@ -6026,6 +6174,7 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>L'overlay mostra un'immagine a tua scelta, ridimensionata per riempire la sua finestra mantenendo le proporzioni. Con uno zoom superiore al 100 percento mostra una parte dell'immagine, ad esempio per una mappa. La macro Sposta immagine dello schermo della tastiera sposta quella parte, così come il trascinamento con il pulsante sinistro del mouse mentre PadForge è in primo piano.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>L'overlay mostra il cronometro, che la macro Cronometro avvia, mette in pausa e azzera. È lo stesso cronometro che mostra ogni schermo di tastiera.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>L'overlay mostra il colore della barra luminosa del DualShock 4 o DualSense nello slot che scegli qui, oppure nello slot più basso con un colore. Finché nessun colore raggiunge una barra luminosa, non mostra nulla.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>L'overlay elenca i dispositivi mappati che non sono connessi, con i nomi che mostra la pagina Dispositivi, e dice Tutti connessi quando non ne manca nessuno.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Overlay schermo {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Aggiungi overlay</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Slot più basso con un colore</value></data>
@@ -6368,6 +6517,245 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene rilasciato prima del tempo di mantenimento. Una pressione più lunga non fa nulla.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando «Si apre con» viene premuto tre volte entro la finestra di pressione.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Apre o chiude la tastiera quando la finestra di pressione termina dopo una sola pressione di «Si apre con». Una seconda pressione dentro la finestra la annulla.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Disattivata. Nessun programma può raggiungere PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} e {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Attività di PadForge: {0} chiamate, le più vecchie per prime. Chiamate precedenti: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Attività di PadForge: {0} chiamata. Chiamate precedenti: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} chiamate più vecchie sono andate perse. Attività conserva le {1:N0} più recenti.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} chiamata più vecchia è andata persa. Attività conserva le {1:N0} più recenti.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Esporta…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Esporta attività</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>File di testo</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Apri</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Aggiorna</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Altro per {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Salva la skill come ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Apri il suo file delle impostazioni</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Salvato. In {0}, aggiungi {1} sotto {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} non ha ancora un file delle impostazioni. Aggiungi ne crea uno.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge non trova su questo PC nessun programma assistente la cui azienda documenti una configurazione su Windows. Copia le impostazioni sotto Altro funziona per qualsiasi altro.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge non è riuscito a controllare i programmi assistenti: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Non aggiunto.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Aggiunto.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Aggiunto. Connesso ora.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Aggiunto. Da allora non si è connesso. Un assistente rimasto aperto vede PadForge dopo essere stato chiuso e riaperto.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Aggiunto per un altro PadForge. Aggiorna lo punta a questo.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Aggiunto. La sua skill di PadForge è più vecchia di questo PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Aggiunto, senza la sua skill di PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Aggiunto. La sua skill di PadForge viene da un PadForge più recente.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Accetta le skill solo come caricamento.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Gli assistenti aggiunti raggiungono PadForge quando Automazione è attiva.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Aggiunta in corso…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Rimozione in corso…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Aggiornamento in corso…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Non è finita: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Altri assistenti</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Per un assistente non elencato sopra: Copia le impostazioni dà la voce per le sue impostazioni MCP, e Copia un messaggio dà un breve testo per qualsiasi chat che dice come connettersi e cosa chiedere per prima cosa.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Copia le impostazioni</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Copia un messaggio</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copiato.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Non copiato: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Connettiti a PadForge, il mappatore di controller sul mio PC. È un server MCP locale che gira su stdio: il comando è {0}, con l'argomento --mcp. Come impostazioni JSON: {1} Una volta connesso, chiama prima il suo strumento status, poi chiedimi cosa voglio configurare, per esempio: “Mostrami dove mappare i grilletti del mio controller.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automazione di PadForge è disattivata ora: attivala prima in PadForge, sotto Extra, Automazione.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programmi consentiti</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Un programma che vuole il livello Lettura o più lo chiede una volta, alla prima connessione, e ottiene il livello che chiede, fino al livello indicato sopra. Un assistente che aggiungi sopra è consentito da questo.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Connesso ora.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Ultimo uso {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Non ancora usato.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Connessi: {0}. Fai clic per aprire Automazione.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Su questo PC: {0}. Dal web: {1}. Fai clic per aprire Automazione.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Connessi dal web: {0}. Fai clic per aprire Automazione.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Mappatura SDL</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Letto come</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Da</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Un gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Un joystick. SDL non ha una mappatura per esso.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Un joystick. PadForge lo legge raw, quindi la mappatura di SDL non viene usata.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Un joystick, disposto come un gamepad dalla tua riga.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL legge i dispositivi mentre il motore è in esecuzione.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>La copia della community integrata, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Scaricata il {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Il file di PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Tua, aggiunta il {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>La variabile SDL_GAMECONTROLLERCONFIG, che SDL tiene sopra ogni riga che aggiungi</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Copia mappatura SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Mette la mappatura del dispositivo negli appunti come riga del database della community, sotto l'ID del dispositivo con checksum e versione azzerati.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Incolla mappatura SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Prende una riga per questo dispositivo, la controlla, la conserva come tua e la applica subito.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Trova una mappatura…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Cerca per nome tra tutte le righe che PadForge ha e applica a questo dispositivo quella che scegli, per un clone i cui ID differiscono.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Indovina una disposizione</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Indovina una disposizione da gamepad dagli assi, pulsanti e hat del dispositivo, per un dispositivo che nessun database conosce. Controllala in Test input.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Rimuovi la mia</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Rimuovi la mia rimette la riga e le righe dei controller di prima.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Mappa di nuovo</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Rifà le righe del dispositivo su ogni controller in cui si trova dalla disposizione di SDL, come fa l'assegnazione.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Pagina del database della community</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>La riga, e dove differisce da {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>La riga</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Riga {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Il suo input ora</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>La riga di SDL dice</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>non nella riga di SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, differisce</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Non usati da PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>La riga</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Copiato.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Copiato. La forma di SDL non può contenere {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>curve</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zone morte</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>output di tastiera e mouse</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, interruttori e altre azioni</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} e {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Niente da copiare: SDL non ha una mappatura per questo dispositivo, e non è su nessun controller.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Un altro programma sta usando gli appunti. Non è stato copiato nulla.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>La tua riga è stata rimossa. Il dispositivo viene letto come prima.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mappato di nuovo dalla disposizione di SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>In uso ora. La riga è tua e prevale per questo dispositivo.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Conservata come tua. Sarà in uso quando il motore è in esecuzione e il dispositivo è connesso.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Conservata come tua, ma la variabile SDL_GAMECONTROLLERCONFIG contiene una riga per questo dispositivo, che SDL tiene sopra la tua.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL non ha accettato la riga. Per questo dispositivo non è cambiato nulla.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Incolla una mappatura SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Incolla una mappatura SDL per {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Trova una mappatura per {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Indovina una disposizione per {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Aggiungi righe da un file o dagli appunti</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Incolla</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Apri un file…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>File di mappatura (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Il file supera 4 MB. L'intero file della community è circa 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Cerca per nome, ID o VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Righe che PadForge ha</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Nessuna riga corrisponde.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>La riga scelta viene applicata a {0} con il suo ID, con lo stesso controllo e la stessa scelta di Incolla.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Riga di mappatura SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Una riga per questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Una disposizione indovinata.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} campi, il suo ID corrisponde a questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} campi, dallo stesso produttore e prodotto su un altro bus o un'altra versione. Viene conservata con l'ID di questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} campi, la riga di un altro dispositivo. Viene conservata con l'ID di questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} campi. SDL non legge questo dispositivo, quindi PadForge dispone i suoi input secondo la riga.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} campi, dagli assi, pulsanti e hat del dispositivo. Controllala in Test input, poi conservala o cambiala qui.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} campo, il suo ID corrisponde a questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} campo, dallo stesso produttore e prodotto su un altro bus o un'altra versione. Viene conservata con l'ID di questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} campo, la riga di un altro dispositivo. Viene conservata con l'ID di questo dispositivo.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} campo. SDL non legge questo dispositivo, quindi PadForge dispone i suoi input secondo la riga.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} campo, dagli assi, pulsanti e hat del dispositivo. Controllala in Test input, poi conservala o cambiala qui.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Questo cambia come viene letto {0}. Le sue righe in {1} vengono mappate di nuovo dalla nuova disposizione.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Questo cambia come viene letto {0}. Non è su nessun controller, quindi nessuna riga cambia.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Le scorciatoie di profilo che leggono {0} mantengono gli input a cui erano impostate.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>La riga è conservata come tua in PadForge.xml e prevale su ogni altra fonte per questo dispositivo. Rimuovi la mia rimette la vecchia riga e le vecchie righe.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Le righe sono conservate come tue in PadForge.xml e prevalgono per i loro dispositivi su ogni altra fonte. Cancella, sotto Altro della riga Database dei controller, le rimuove.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} righe per Windows. {1} per altri sistemi vengono saltate.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} riga per Windows. {1} per altri sistemi vengono saltate.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} rifiutate. La prima: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Incolla una riga, o il testo di un file gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Il testo non è una riga del database dei controller di SDL: un ID di 32 cifre esadecimali, un nome, poi campi come a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Le righe sono per altri sistemi. PadForge legge righe per Windows, o per nessun sistema in particolare.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>L'ID della riga non è quello di un dispositivo. Servono 32 cifre esadecimali.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Il nome della riga è vuoto, supera 128 caratteri, o contiene un carattere che SDL legge come campo.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>La riga contiene un hint o un campo Android, che PadForge non accetta.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>La riga ha un campo che SDL non conosce.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Un'assegnazione non è nella forma di SDL, come b3, a2, +a2, a2~ o h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>La riga indica un campo due volte.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>La riga supera 1.024 caratteri.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>La riga non assegna nessun controllo.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Le tue righe</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Le tue righe</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Le righe che aggiungi qui, o incolli nella scheda Mappatura SDL di un dispositivo, prevalgono per i loro dispositivi su ogni altra fonte e restano dopo la reimpostazione.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Aggiungi righe da un file o dagli appunti…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} righe, tue su ogni altra fonte per i loro dispositivi.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} riga, tua su ogni altra fonte per il suo dispositivo.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ancora nessuna.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>In uso subito.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Raggiungi PadForge dal web</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Un assistente che gira su un sito web raggiunge PadForge tramite un programma di tunnel su questo PC. Attivarlo ti chiede prima conferma.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Raggiungere PadForge dal web?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge avvia un helper senza diritti di amministratore che ascolta solo su questo PC, e il programma di tunnel che scegli gli dà un indirizzo pubblico. Un assistente web entra solo dopo che consenti il suo accesso sulla scheda delle domande di PadForge, e lavora al livello indicato sopra.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Attiva</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Assistenti sul web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Nessuno</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Un indirizzo che incollo</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Avvio in corso, con i tuoi diritti.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>In esecuzione, con i tuoi diritti. Il suo indirizzo resta lo stesso a ogni avvio.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>In esecuzione, con i tuoi diritti. Un tunnel rapido prende un nuovo indirizzo a ogni avvio, quindi l'assistente andrebbe aggiunto di nuovo.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Arrestato.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Arrestato. Le sue ultime parole: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Non è stato possibile avviarlo.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Non è più su questo PC.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Su questo PC non è stato trovato nessun programma di tunnel. PadForge funziona con cloudflared, devtunnel, ngrok e Tailscale Funnel, o con l'indirizzo del tuo tunnel.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Scegli un tunnel per dare a PadForge un indirizzo pubblico.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Presenti anche su questo PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, il cui indirizzo resta lo stesso</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, i cui tunnel rapidi prendono ogni volta un nuovo indirizzo</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Avvia il tuo tunnel verso http://127.0.0.1:{0} e incolla il suo indirizzo https. Un tunnel Cloudflare con nome, un dev tunnel persistente, Tailscale Funnel e il dominio proprio di ngrok mantengono il loro indirizzo.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Incolla un indirizzo https senza percorso tranne /mcp, come lo dà il tuo tunnel.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Avvio dell'helper web di PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>L'helper web di PadForge si è arrestato ({0}). Disattiva e riattiva Raggiungi PadForge dal web per avviarlo di nuovo.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Indirizzo</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Ancora nessun indirizzo pubblico.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Copiato.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Accetta un nuovo assistente web</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Inizia ad accettare</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Smetti di accettare</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Accetta fino alle {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Non accetta. Inizia ad accettare lo apre per cinque minuti.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Aggiungi l'indirizzo nell'assistente e accedi. Ogni accesso mostra il proprio codice di sei cifre sulla sua pagina di accesso e sulla scheda delle domande di PadForge. Consentilo solo quando i due codici coincidono. Negli altri momenti un accesso viene rifiutato e nulla ti chiede niente.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Consentiti sul web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Ancora nessuno.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Il suo accesso torna a {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Si chiama {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Consentito {0}, ultimo uso {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Consentito {0}, non ancora usato.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoca</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Il suo Secure MCP Tunnel esegue PadForge direttamente, senza indirizzo né accesso qui. Copia il comando nella configurazione di quel tunnel.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copia il comando</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge non scarica nessun programma di tunnel e non conserva la chiave di nessun'altra azienda. Un assistente web lavora al livello indicato sopra.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Consentire a {0} di lavorare con PadForge dal web?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Il suo accesso torna a {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Si chiama {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Consenti solo se la sua pagina di accesso mostra questo codice:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Il suo codice di sei cifre compare sulla scheda delle domande di PadForge. Consenti solo se la sua pagina di accesso mostra lo stesso codice.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Lavora al livello {0}, tramite {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Il suo accesso torna a questo PC, e qualsiasi programma qui potrebbe rivendicare quell'indirizzo.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Accedi a PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} chiede di lavorare con PadForge sul tuo PC.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Si chiama {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Sul tuo PC, la scheda delle domande di PadForge chiede di questo accesso. Consentilo lì solo se la scheda mostra questo codice:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Questa pagina prosegue da sola quando rispondi sul PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Questo accesso torna a un programma sul tuo PC, e qualsiasi programma lì potrebbe rivendicare quell'indirizzo.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge non accetta ora un nuovo assistente web. Sul tuo PC apri PadForge, vai su Extra, Automazione, e sotto Assistenti sul web premi Inizia ad accettare. Poi accedi di nuovo.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Questo accesso non può proseguire. Aggiungi di nuovo l'indirizzo di PadForge nell'assistente e accedi.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Questo accesso è terminato. Accedi di nuovo dall'assistente.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows non l'ha avviato</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>è terminato con codice {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automazione è disattivata, quindi nessun assistente web raggiunge PadForge. L'helper web si avvia quando Automazione è attiva.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Controllo in corso…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Non installata.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Installata e aggiornata. Uno script inizia con {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Installata per {0} e aggiornata. Uno script inizia con {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Installata. Questo PadForge ha una copia più recente.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Installata per {0}. Questo PadForge ha una copia più recente.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Installazione in corso…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge non è riuscito a controllarla: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Installa mette la libreria di PadForge dove quel linguaggio la trova. Uno script che la carica legge i dispositivi e pilota le mappature al livello indicato sopra.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Salva una libreria dove vuoi</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Copie installate</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Rimuovi tutte</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Rimosse.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID dello script</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Il suo ID dello script</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Gli script chiamano i suoi controlli {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Gli script chiamano i suoi tasti KeyA, KeySpace, KeyLeftShift e simili, e ogni tasto con il suo codice, da Vk0 a Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>I colori arrivano direttamente a {0}. I colori che cambiano, come un ciclo di colori o colori che seguono il suono, non lo raggiungono. Un colore fisso sì.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tutti i file (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profilo PadForge (*{0})|*{0}</value></data>

@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} துண்டிக்கப்பட்டது. {1}-இல் சாதனம் எதுவும் இல்லை.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} இணைக்கப்பட்டது</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} இணைக்கப்பட்டது, பேட்டரி {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>சாதனங்கள் துண்டிக்கப்பட்டவை: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>சாதனங்கள் இணைக்கப்பட்டவை: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>சாதனங்கள் துண்டிக்கப்பட்டவை: {0}. பெயர்கள்: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>சாதனங்கள் இணைக்கப்பட்டவை: {0}. பெயர்கள்: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} மீண்டும் மீண்டும் துண்டிக்கப்படுகிறது</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (அதிகபட்சம் {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (அதிகபட்சம் {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>தானியங்கி மறுஇணைப்பு, போர்ட், இணைசேர்ப்பு அடையாளம், முகவரி மூலம் இணை</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>போர்ட், DSX.exe மாற்றுநிரல்</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>போர்ட்டுகள், முழு வேகம், தனிப்பயன் வடிவங்கள்</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, திறன்</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>பிற உதவியாளர்கள், இணையத்தில் உள்ள உதவியாளர்கள்</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>இரு கட்டைவிரல்களும் பொத்தான்களிலேயே இருக்க, ஹெட் டிராக்கர் அல்லது VR ஹெட்செட் மூலம் சுற்றிப் பார்க்கலாம்.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ஓட்டுதல் கேம் அனுப்பும் வேகம், பெடல்கள், கியர்களை எந்த உள்ளீட்டையும் போல மேப் செய்யலாம்.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU அசைவு மூலத்தைப் படிக்கும் எமுலேட்டர்களுக்குக் கட்டுப்படுத்தியின் அசைவை அனுப்பும்.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>திறந்திருக்கும் போது மெனுவின் வளையம், கட்டம் அல்லது பட்டை.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஆன் ஆகும்போது அடுக்கின் பெயர், அந்த அடுக்கு அமைக்கும் நேரத்திற்கு.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>சுயவிவரம் மாறும்போது அதன் பெயர்.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகள் இப்போதுதான் இயக்கப்பட்டனவா அல்லது அணைக்கப்பட்டனவா என்பது, ஷார்ட்கட் அல்லது மேக்ரோ மூலம்.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>மேப் செய்யப்பட்ட சாதனம் துண்டிக்கப்படும்போது அதன் பெயர்.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>மேப் செய்யப்பட்ட சாதனம் இணைக்கப்படும்போது அதன் பெயர்.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>முகவரியை நகலெடு</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>நிரல்கள் சுயவிவரங்களை மாற்றவும் விடுவிக்கவும், இன்ஜினைத் தொடங்கவும் நிறுத்தவும், மெய்நிகர் கட்டுப்படுத்திகளை இயக்கவும் அணைக்கவும், சாளரத்தைக் காட்டவும் மறைக்கவும், PadForge-ஐ மூடவும், பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமிக்கவும், என்ன இயங்குகிறது என்று கேட்கவும் முடியும்.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>கட்டளைகள் நிலையில் உள்ள அனைத்தும், மேலும் நிரல்கள் சாதனங்கள், மெய்நிகர் கட்டுப்படுத்திகள், மேப்பிங்குகள், சுயவிவரங்கள், அமைப்புகளைப் பார்க்கவும், ஒவ்வொரு சாதனத்தின் உள்ளீடுகளையும் நடக்கும்போதே பின்தொடரவும், PadForge-இல் ஓர் இடத்தை உங்களுக்குக் காட்டவும் முடியும். படித்தல் நிலையில் உள்ள நிரல், நிர்வாகியாக இயங்கும் சாளரங்களில் தட்டச்சு செய்த விசைகள் உட்பட, ஒவ்வொரு சாதனத்திலும் அழுத்தப்படும் ஒவ்வொரு விசையையும் பார்க்கும்.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>படித்தல் நிலையில் உள்ள அனைத்தும், மேலும் நிரல்கள் தங்களுக்கே உரிய சாதனங்களைச் சேர்த்து இயக்கவும், எந்தச் சாதனத்தின் கட்டுப்பாட்டையும் பிடித்து வைக்கவும், மேக்ரோ தூண்டிகளுக்குப் பெயரிட்ட மதிப்புகளை வழங்கவும் முடியும்.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>உள்ளீடுகளை அனுப்புதல் நிலையில் உள்ள அனைத்தும், மேலும் பக்கங்களில் நீங்கள் மாற்றக்கூடியவற்றை நிரல்களும் மாற்ற முடியும்.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>உள்ளீடுகளை அனுப்புதல் நிலையில் உள்ள அனைத்தும், மேலும் பக்கங்களில் நீங்கள் மாற்றக்கூடியவற்றை நிரல்களும் மாற்ற முடியும். சில மாற்றங்கள் எப்போதும் PadForge-இன் கேள்வி அட்டையில் முதலில் உங்களிடம் கேட்கும்.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>உதவியாளர்கள்</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>இதை ஓர் உதவியாளரின் MCP அமைப்புகளில் ஒட்டவும். அப்போது உதவியாளர் மேலே உள்ள நிலையில் PadForge உடன் செயல்படும்.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML ஆக நகலெடு</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML படிக்கும் உதவியாளர்கள்</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>சேர் என்பது PadForge-ஐ, அதன் திறனுடன், அந்த உதவியாளரில் சேர்க்கும். பிறகு அது மேலே உள்ள நிலையில் செயல்படும், அதன் சொற்கள் அது சுட்டிக்காட்டுவதன் அருகே அதன் பெயரின் கீழ் தெரியும்.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ஸ்கிரிப்ட்கள்</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>ஸ்கிரிப்ட் நூலகம்</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>நூலகத்தைச் சேமி…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python அல்லது PowerShell க்கான ஒரு கோப்பு. இதை ஏற்றும் ஸ்கிரிப்ட் மேலே உள்ள நிலையில் சாதனங்களைப் படித்து மேப்பிங்குகளை இயக்கும்.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python அல்லது PowerShell க்கான ஒரு கோப்பு, நீங்கள் தேர்ந்தெடுக்கும் இடத்தில் எழுதப்படும்.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>உங்கள் பதிலுக்காகக் காத்திருக்கிறது</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>செயல்பாடு</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>இன்னும் எந்த நிரலும் அழைக்கவில்லை. ஒவ்வொரு அழைப்பும் அதன் விளைவுடன் இங்கே பட்டியலிடப்படும்.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>செயல்தவிர்</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>உதவியாளர்களுக்கான திறன்</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>திறனைச் சேமி…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ஆல் அதைச் சேமிக்க முடியவில்லை: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>படித்தல் நிலையில் அல்லது அதற்கு மேல் உள்ள நிரல் இணைந்திருக்கும்போது, விசைப்பலகைகள் உட்பட ஒவ்வொரு சாதனத்திலும் அழுத்துவதை அது பார்க்கும்.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>செருகுநிரல்கள்</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>செருகுநிரல்களை இயக்கு</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>எந்தச் செருகுநிரலும் இயங்கவில்லை.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>செருகுநிரல் PadForge-இன் உரிமைகளில் அல்ல, உங்கள் உரிமைகளுடன் இயங்கும்.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>உள்ளமைந்தவை</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>சோதனைக் கட்டுப்படுத்தி</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>தானே நகரும் கட்டுப்படுத்தி, ஒரு நேரத்தில் ஒரு கட்டுப்பாடு, எனவே கையில் வன்பொருள் இல்லாமலே மேப்பிங்கைச் சோதிக்கலாம்.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>வேகம்</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>மெதுவாக</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>இயல்பு</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>வேகமாக</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>மிக வேகமாக</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>மறுஇயக்கம்</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ஒரு சிக்கல் பதிவை, அதை உருவாக்கிய சாதனங்களாக, அவற்றின் நேரத்துடன் மீண்டும் இயக்கும். அவை இந்த PC-யில் புதிய சாதனங்கள், நீங்களோ சுயவிவரமோ மேப் செய்வது போல மேப் செய்யப்படும்.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>பதிவு</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>சிக்கல் பதிவுகள்|*.zip;*.log|அனைத்துக் கோப்புகள்|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ஆல் {0} கோப்பை இயக்க முடியவில்லை. அது சிக்கல் பதிவு அல்ல, அல்லது அதில் எந்தச் சாதனத்தின் உள்ளீடும் இல்லை.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>உங்கள் செருகுநிரல்கள்</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>செருகுநிரல் என்பது PadForge-க்குச் சாதனங்களைச் சேர்க்கும் நிரல். இன்ஜின் இயங்கும்போதெல்லாம் PadForge அதை உங்கள் சாதாரண உரிமைகளுடன் தொடங்கும்.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>செருகுநிரலைச் சேர்…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>நிரல்களும் ஸ்கிரிப்ட்களும்|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|அனைத்துக் கோப்புகள்|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>அங்கீகரி…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>அங்கீகரித்து மறுதொடங்கு…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>இன்ஜினுடன் தொடங்கும்</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>தொடங்கும் முன் கோப்பைச் சரிபார்க்கிறது</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>குறியீடு {0} உடன் வெளியேறியது. {1} வினாடியில் மீண்டும் தொடங்கும்.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ஏற்கனவே பட்டியலில் உள்ளது.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge அதிகபட்சம் 16 செருகுநிரல்களை இயக்கும். இன்னொன்றைச் சேர்க்க ஒன்றை நீக்கவும்.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>இயங்கும் செருகுநிரல்கள்: {0}. அவை சேர்த்த சாதனங்கள்: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ஐந்து தோல்விகளுக்குப் பிறகு நின்றது.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} நீங்கள் அங்கீகரித்த பிறகு மாறிவிட்டது.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} தொடங்க முடியவில்லை.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>சேர்த்தவை: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>கையொப்பமிட்டவர்: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>கையொப்பமிடப்படவில்லை.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>இது இயங்கும்போது இதன் அமைப்புகள் இங்கே தெரியும்.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>இது எந்த அமைப்பையும் அறிவிக்கவில்லை.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-ஆல் இதன் அமைப்புகளைப் படிக்க முடியவில்லை: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>ஒரு நிமிடம் பதில் இல்லாததால் முடிக்கப்பட்டது</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>இயங்கும்போது இதன் கோப்பு மாறியது</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>சேர்த்தது: {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} அமைப்புகள்</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>தேர்ந்தெடு</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>ஒரு கட்டுப்பாட்டை அழுத்தவும்…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>தேர்ந்தெடுக்கப்படவில்லை</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>ஒரு செருகுநிரலைச் சேர்க்கவும் அல்லது அதன் கோப்பை இந்தப் பக்கத்தில் இழுத்து விடவும். PadForge அதன் பாதை, கையொப்பமிட்டவர், SHA-256 ஆகியவற்றைக் காட்டி, இயக்கும் முன் உங்களிடம் கேட்கும். செருகுநிரல் PadForge-இன் உரிமைகளுடன் அல்ல, உங்கள் உரிமைகளுடன் இயங்கும்.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>ஒரு சிக்கல் பதிவை, அதை உருவாக்கிய சாதனங்களாக, அவற்றின் நேரத்துடன் மீண்டும் இயக்கும்.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>இயங்குகிறது.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>இயங்குகிறது, கையால்.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>எது நகர்கிறது</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>ஸ்டிக்குகளும் டிரிகர்களும்</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>ஸ்டிக்குகள்</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>டிரிகர்கள்</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>வடிவம்</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>வீச்சு</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>வட்டம்</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>நகரும் நேரம்</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>ஓய்வு நேரம்</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>பொத்தான்களை அழுத்து</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>வழிசெலுத்தல் பொத்தான்களை அழுத்து</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>முன்னால் உள்ள சாளரத்தில் Windows பயன்பாடுகள் மெய்நிகர் Xbox கட்டுப்படுத்தியின் A, B, Back, Start, D-pad ஆகியவற்றுக்குச் செயல்படும், Guide பொத்தான் Xbox Game Bar-ஐத் திறக்கும்.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>D-pad-ஐத் திருப்பு</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>அதே காரணத்துக்காக.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>அழுத்தும் நேரம்</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>கட்டுப்படுத்திகள்</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>கையால்</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>இயக்கத்தை நிறுத்தும். இதன் உள்ளீடுகளைக் கீழே சுட்டியால் அமைக்கவும்.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>இடது ஸ்டிக்</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>வலது ஸ்டிக்</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>இடது டிரிகர்</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>வலது டிரிகர்</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>வினாடிக்குப் படிப்புகள்</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>செருகுநிரல் கருவித்தொகுப்பு, நீங்கள் தேர்ந்தெடுக்கும் செருகுநிரலின் பதிவு</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>செருகுநிரல் கருவித்தொகுப்பு</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>செருகுநிரல் கருவித்தொகுப்பைச் சேமி…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# இல் ஒரு சிறிய செருகுநிரல், அதே செருகுநிரல் AutoHotkey, Python, PowerShell க்கும், ஒவ்வொரு கோப்பிலும் அதை எப்படி உருவாக்குவது அல்லது இயக்குவது என்பதுடன்.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>ஒவ்வொரு கட்டளை, நிகழ்வு, அமைப்பு வகைக்கான வழிகாட்டி, C# செருகுநிரலுக்கான உருவாக்கும் ஸ்கிரிப்ட், மற்றும் அதே செருகுநிரல் AutoHotkey, Python, PowerShell க்கும்.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>பதிவு</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>பதிவைப் பார்க்க ஒரு செருகுநிரலைத் தேர்ந்தெடுக்கவும்.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>இந்தச் செருகுநிரலின் பதிவில் இன்னும் எதுவும் இல்லை.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ஒரு கேம் மோட்</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>வேறொரு நிரல் {0} என்ற குழாய்ப் பெயரை வைத்திருக்கிறது. அந்த நிரலை மூடவும்.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} குழாயை மறுத்துவிட்டது, எனவே நிரல்களால் இணைய முடியாது.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>எந்த நிரலும் இணைக்கப்படவில்லை.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ஆன். எந்த நிரலும் இணைக்கப்படவில்லை.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>இணைந்தவை: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>அறியப்படாத நிரல்</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, கையொப்பமிட்டவர் {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge மீண்டும் தொடங்கும் வரை இவை இனி இல்லை</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-இல் அப்படி ஒரு கருவி இல்லை</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>நிரல் பழைய நிலையைப் படித்தது</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>அப்படி ஒரு அமைப்பு இல்லை</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>அந்த ID எதற்கும் இல்லை</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>மதிப்பு அமைப்பு ஏற்கும் வரம்புக்கு வெளியே இருந்தது</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>நீங்கள் அனுமதிக்கவில்லை</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>நேரத்துக்குள் யாரும் பதிலளிக்கவில்லை</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>சாளரத்தைக் காட்டு</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>சாளரத்தை சிஸ்டம் ட்ரேக்கு அனுப்பு</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>சாளரத்தைச் சிறிதாக்கு</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>சாளரத்தைப் பெரிதாக்கு</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ஐ மூடு</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>இன்ஜினைத் தொடங்கு</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>இன்ஜினை நிறுத்து</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>சாதனம் {0}-ஐச் சேர்</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளை அமை</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>சாதனம் {0}-ஐ நீக்கு</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>சாதனம் {0}-இன் ஒவ்வொரு கட்டுப்பாட்டையும் ஓய்வு நிலையில் வை</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge-ஐ ஒரு நிரலை இயக்கச் செய்யும்.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ஒரு கோப்பு, கோப்புறை அல்லது வலைப்பக்கத்தைத் திறக்கும்.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge-ஐ Windows க்கு விசைகள் அல்லது சுட்டி உள்ளீட்டை அனுப்பச் செய்யும்.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge-க்கு வெளியிலிருந்து ஒரு சுயவிவரத்தை இறக்குமதி செய்யும்.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>ஒரு நிரல் இதைச் செய்யும் முன் PadForge உங்களிடம் கேட்கும்.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>உரையாடல்கள்</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>மேக்ரோக்கள்</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளைப் பிடித்து வை</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>சாதனம் {0}-இன் கட்டுப்பாடுகளை விடு</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>மதிப்பை அமை: {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>சுயவிவரங்களை மாற்று</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>இன்ஜினைத் தொடங்கு அல்லது நிறுத்து</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகளை இயக்கு அல்லது அணை</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>பிழையறிதல் ஸ்னாப்ஷாட்டைச் சேமி</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>வாக்கெடுப்பு விகிதத்தையும் இயக்கிகளையும் படி</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>சுயவிவரங்களைப் பட்டியலிடு</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தைப் படி</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>மெய்நிகர் கட்டுப்படுத்திகளைப் பட்டியலிடு</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>சாதனங்களைப் பட்டியலிடு</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>ஒரு சாதனத்தைப் படி</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>உங்கள் உள்ளீட்டுக்காகக் காத்திரு</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் மேப்பிங்குகளைப் படி</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் மேக்ரோக்களைப் பட்டியலிடு</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ஒரு சிக்கலைப் பதிவுசெய்</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>அமைப்புகளைத் தேடு</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ஓர் அமைப்பைப் படி</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>உங்களுக்கு ஓர் இடத்தைக் காட்டு</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge-இல் இடங்களைத் தேடு</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge-இல் ஓர் இடத்தைப் படி</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>நீங்கள் பார்ப்பதைப் படி</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>தனக்கென ஒரு சாதனத்தைச் சேர்</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>அதன் சாதனத்தை இயக்கு</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>அதன் சாதனத்தை நீக்கு</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ஒரு கட்டுப்பாட்டைப் பிடித்து வை அல்லது விடு</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>மேக்ரோ தூண்டிகளுக்கு ஒரு மதிப்பை அமை</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ஓர் அமைப்பை மாற்று</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>ஒரு பொத்தானை அழுத்து</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தை உருவாக்கு</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தின் பெயரை மாற்று</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ஒரு சுயவிவரத்தை நீக்கு</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியின் வகையை மாற்று</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>ஒரு சாதனத்தை ஒதுக்கு</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>மேப்பிங் வரிசைகளை அமை</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>மேப்பிங் வரிசைகளை அழி</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>ஒரு கட்டுப்படுத்தியைத் தானாக மேப் செய்</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ஒரு மேக்ரோவைச் சேமி</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ஒரு மேக்ரோவை நீக்கு</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>விசைப்பலகை மற்றும் சுட்டிக் கட்டுப்படுத்தியை உருவாக்கும்</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>இயக்குவது: {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” ஐ மாற்று</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” ஐ அழுத்து</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} உங்களுக்கு {1} ஐக் காட்ட விரும்புகிறது</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} இல்.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>{0} PadForge உடன் {1} நிலையில் செயல்பட அனுமதிக்கவா?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} இயக்குவது {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>தொடங்கியது: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>கையொப்பமிட்டவர்: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>கையொப்பமிடப்படவில்லை.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>படித்தல் நிலையிலும் அதற்கு மேலும், ஒவ்வொரு சாதனத்திலும் அழுத்தும் ஒவ்வொரு விசையையும் அது பார்க்கும், விசைப்பலகைகள் உட்பட.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>இது ஒருமுறை மட்டுமே கேட்கும். தானியக்கம் பக்கத்தில் இதை நீக்கலாம்.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-இன் கட்டளை வரி</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ஐ {1} ஆக அமைக்கும்</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>நெட்வொர்க்கில் கேட்கும், எனவே பிற சாதனங்கள் இந்த PC-ஐ அடைய முடியும்.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>பிற நிரல்களும் கேம்களும் சார்ந்திருக்கும் இயக்கி அல்லது HidHide-ஐ மாற்றும்.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell தொகுதிகள் (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>அனுமதி</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>அனுமதிக்காதே</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>இப்போது வேண்டாம்</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>காட்டு</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>படி {0} / {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>தொடர அதைச் சொடுக்கவும்.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ஐத் திற.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>மேலும் என்பதைத் திற.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} இலிருந்து</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} இலிருந்து, அது தன்னை “{0}” என்று அழைத்துக்கொள்கிறது</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>தன்னை “{0}” என்று அழைத்துக்கொள்ளும் ஒரு நிரலிலிருந்து</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>நிறுவி மறுதொடக்கம் செய்</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>வெளியீட்டுக் குறிப்புகள்</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>கட்டுப்படுத்தி தரவுத்தளம்</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>இப்போது புதுப்பி என்பது சமூகக் கட்டுப்படுத்தி தரவுத்தளத்தை (SDL_GameControllerDB) GitHub-இலிருந்து பதிவிறக்கி, PadForge-இன் இந்தப் பதிப்பில் இல்லாத மேப்பிங்குகளை அமைப்புகள் கோப்பில் வைத்திருக்கும். புதிய மேப்பிங், வேறு எதுவும் கேம்பேடாகப் படிக்காத, ஒதுக்கப்படாத, மூல ஜாய்ஸ்டிக் பயன்முறையில் இல்லாத கட்டுப்படுத்திக்கு மட்டுமே பயன்படுத்தப்படும். மீட்டமைப்பு பதிவிறக்கிய ஒவ்வொரு மேப்பிங்கையும் நீக்கும்.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>இப்போது புதுப்பி சமூகக் கட்டுப்படுத்தி தரவுத்தளத்தை (SDL_GameControllerDB) GitHub-இலிருந்து பதிவிறக்கி, PadForge-இன் இந்தப் பதிப்பில் இல்லாத மேப்பிங்குகளை அமைப்புகள் கோப்பில் வைத்திருக்கும். அவை உடனே பயன்பாட்டுக்கு வரும். புதிய மேப்பிங், வேறு எதுவும் கேம்பேடாகப் படிக்காத, ஒதுக்கப்படாத, மூல ஜாய்ஸ்டிக் பயன்முறையைக் கட்டாயமாக்கு (கேம்பேட் மறுமேப்பிங்கைத் தவிர்) என்பதில் இல்லாத கட்டுப்படுத்திக்கு மட்டுமே பயன்படுத்தப்படும். மீட்டமைப்பு பதிவிறக்கிய ஒவ்வொரு மேப்பிங்கையும் நீக்கும். மேலும் என்பதன் கீழுள்ள உங்கள் சொந்த வரிசைகள் இருக்கும்.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>இப்போது புதுப்பி</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>புதுப்பிக்கிறது…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>புதுப்பிப்புகளைச் சரிபார்க்கிறது…</value></data>
@@ -1045,12 +1100,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}-க்கான புதுப்பிப்பு நிறுவி முடிக்கப்படவில்லை. மீண்டும் முயல, அமைப்புகளிலிருந்து அதை நிறுவவும்.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0}-க்குப் புதுப்பிக்கப்பட்டது.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>உள்ளமைந்தவை: {0} மேப்பிங்குகள், {1} தேதியின் சமூக நகல்.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>உள்ளமைந்தவை: {0} மேப்பிங்குகள், {1} தேதியின் சமூக நகல். புதுப்பித்தது {2}: புதியவை {3}, மாறியவை {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>உள்ளமைந்தவை: {0} மேப்பிங்குகள், {1} தேதியின் சமூக நகல். பதிவிறக்கியது {2}: புதிய வரிசைகள் {3}, மாறியவை {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>கடைசிப் புதுப்பிப்புக்குப் பிறகு சமூகத் தரவுத்தளம் மாறவில்லை.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-ஐ அடைய முடியவில்லை: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>பதிவிறக்கம் PadForge எதிர்பார்க்கும் கட்டுப்படுத்தி தரவுத்தளம் அல்ல என்பதால் PadForge அதை மறுத்தது. எதுவும் மாறவில்லை.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>புதிய மேப்பிங், அதன் கட்டுப்படுத்தி அடுத்த முறை இணையும்போது பயன்படுத்தப்படும்.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>மாறிய மேப்பிங், PadForge அடுத்த முறை தொடங்கும்போது பயன்படுத்தப்படும்.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>சிறிதாக்கப்பட்ட நிலையில் தொடங்கு</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>உள்நுழையும்போது தொடங்கு</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>பதிப்புத் தகவல், மேலும் சிக்கல் தீர்ப்பதற்கான இன்ஜின் நிகழ்வுப் பதிவேடு.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>பிழையறிதல் பதிவேட்டை வைத்திரு</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>பதிவுக் கோப்புறையில் உள்ள diagnostics.log கோப்பில் இன்ஜின் நிகழ்வுகளைத் தொடர்ந்து எழுதும், அந்தக் கோப்புறையைப் பதிவுக் கோப்புறையைத் திற என்பது திறக்கும். மறுதொடக்கங்களுக்குப் பிறகும் இயக்கத்திலேயே இருக்கும். கோப்பு 8 MB-ஐ எட்டும்போது, அது diagnostics.log.old என்ற கோப்புக்கு மாற்றப்படும்.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ஸ்னாப்ஷாட்டைச் சேமி</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>மிகச் சமீபத்திய இன்ஜின் நிகழ்வுகளை ஒரு புதிய கோப்பில் சேமிக்கும். பிழையறிதல் பதிவேடு ஆஃப் ஆக இருந்தாலும் வேலை செய்யும்.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ஸ்னாப்ஷாட்டைச் சேமி…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ஆப், Windows, உங்கள் சாதனங்கள், அமைப்புகளை இப்போது உள்ளபடி, மிகச் சமீபத்திய இன்ஜின் நிகழ்வுகளுடன் எடுத்து, சேமிக்கும் முன் நீங்கள் படிக்க அவற்றைத் திறக்கும். பிழையறிதல் பதிவேடு ஆஃப் ஆக இருந்தாலும் வேலை செய்யும்.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>பதிவேட்டுக் கோப்புறையைத் திற</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>சிக்கலைப் பதிவுசெய்</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>பதிவைத் தொடங்கு</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>பதிவை நிறுத்து ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>பதிவை நிறுத்து, 10 நிமிடங்கள் அல்லது 20 MB zip வரை பதிவுசெய்து, பிறகு அறிக்கையில் இணைக்கத் தயாராக Explorer-இல் அந்த zip-ஐத் தேர்ந்தெடுக்கும்.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>தொடங்கி, சிக்கலை நிகழச்செய்து, பிறகு நிறுத்தவும். PadForge-க்கு அருகில் உள்ள ஒரு கோப்பு, PadForge படித்தது, அனுப்பியது, பதிவுசெய்தது அனைத்தையும், என்ன தவறானது என்ற சுருக்கத்துடன் வைத்திருக்கும். பதிவுசெய்யும்போது ஒவ்வொரு சாதனத்திலும் அழுத்திய ஒவ்வொரு விசையும் பொத்தானும், விசைப்பலகைகள் மற்றும் சுட்டிகள் உட்பட, கோப்பில் இருக்கும். எதுவும் எழுதப்படும் முன் பயனர் பெயர்கள், வரிசை எண்கள், முகவரிகள், தட்டச்சு செய்த பெயர்கள் மாற்றப்படும்.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>பதிவை நிறுத்து, 30 நிமிடங்கள் அல்லது 20 MB zip வரை பதிவுசெய்து, பிறகு சேமிக்கும் முன் நீங்கள் படிக்க அந்தப் பதிவைத் திறக்கும்.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>தொடங்கி, சிக்கலை நிகழச்செய்து, பிறகு நிறுத்தவும். பிறகு அதில் உள்ளதை பகுதி பகுதியாகப் படித்து, விரும்பும் இடத்தில் சேமிக்கவும். பதிவுசெய்யும்போது ஒவ்வொரு சாதனத்திலும் அழுத்திய ஒவ்வொரு விசையும், விசைப்பலகைகள் மற்றும் சுட்டிகள் உட்பட, அதில் இருக்கும். எதுவும் எழுதப்படும் முன் பயனர் பெயர்கள், வரிசை எண்கள், முகவரிகள், தட்டச்சு செய்த பெயர்கள் மாற்றப்படும்.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>சுருக்கத்தை எழுதுகிறது…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>சேமிக்கப்பட்டது: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>பதிவு தொடங்கவில்லை. இந்த PC-யின் ஒரு தனிப்பட்ட மதிப்பு கோப்பிலிருந்து விலக்கப்படாது என்பதைச் சோதனை கண்டறிந்தது.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>பதிவு தொடங்கவில்லை. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>கடைசிப் பதிவு இன்னும் முடிக்கப்படுகிறது.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு அணைந்துள்ளது, எனவே சேமிக்க எதுவும் இல்லை.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge நிறுத்தாத ஒரு பதிவை முடித்தது: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge நிறுத்தாத ஒரு பதிவு, முகப்பில் நீங்கள் படிப்பதற்காகக் காத்திருக்கிறது: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>இன்ஜின் இயங்கும்போது, ஓர் இரவில் ஒருமுறை வரும் சிக்கலுக்காக, பதிவு வைத்திருக்கும் தகவலின் கடைசி நிமிடத்தை நினைவகத்தில் வைத்திருக்கும். கடைசி 60 வினாடிகளைச் சேமி அதைக் கோப்பாக எழுதும்.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>இன்ஜின் இயங்கும்போது, ஓர் இரவில் ஒருமுறை வரும் சிக்கலுக்காக, பதிவு வைத்திருக்கும் தகவலின் கடைசி நிமிடத்தை நினைவகத்தில் வைத்திருக்கும். கடைசி 60 வினாடிகளைச் சேமி அதைச் சேமிக்கும் முன் நீங்கள் படிக்கத் திறக்கும்.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>கடைசி 60 வினாடிகளைச் சேமி</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>தட்டச்சு செய்த எழுத்துகளையும் எண்களையும் ஒரே விசையாக எழுது</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>எந்த மேப்பிங்கும் மேக்ரோவும் படிக்காத எழுத்து மற்றும் எண் விசைகளை, ஒவ்வொரு அழுத்தத்தையும் அதன் நேரத்தில், ஒரே விசையாகப் பதிவு எழுதும். மற்ற ஒவ்வொரு விசையும், மேப்பிங் அல்லது மேக்ரோ படிக்கும் ஒவ்வொரு விசையும், அழுத்தியபடியே எழுதப்படும்.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>கடைசி 60 வினாடிகளை வைத்திரு, தட்டச்சு செய்த எழுத்துகளையும் எண்களையும் ஒரே விசையாக எழுது</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>எதைப் பதிவுசெய்வது, கடைசி 60 வினாடிகள், தட்டச்சு செய்த எழுத்துகள்</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>ஸ்னாப்ஷாட்டைச் சேமி</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, உங்கள் சாதனங்கள், அமைப்புகள் இப்போது உள்ளபடி, அதே மதிப்பாய்வு வழியாக.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe அருகில் உள்ள diagnostics.log, அங்கே நீங்கள் அதைப் படிக்கலாம்.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>எதைப் பதிவுசெய்வது</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>அனைத்தும் இயக்கத்தில். அணைக்கப்பட்ட பகுதி அடுத்த பதிவில் சேராது, எந்தப் பகுதிகள் உள்ளன என்பதை கோப்பு சொல்லும்.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>ஓர் இரவில் ஒருமுறை வரும் சிக்கலுக்காக.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>பதிவை முகப்பில் படிக்க அது உங்களுக்காகக் காத்திருக்கிறது.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>சுருக்கம்</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>அமைப்புகளும் சாதனங்களும்</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>உள்ளீடு</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>வெளியீடு</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>பின்னூட்டம்</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>நேரம்</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>சாளரமும் பிழைகளும்</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>செயல்பாடு</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>பிழையறிதல் வரிகள்</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>உங்கள் பதிவைப் படியுங்கள்</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} முதல் {1} வரை, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>{0} மணிக்கு எடுத்த ஸ்னாப்ஷாட்.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 நிமிடம்</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} நிமிடங்கள்</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 வினாடி</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} வினாடிகள்</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>நீங்கள் நிறுத்தினீர்கள்.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>{0} ஆனதும் தானாக நின்றது.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>zip-இல் {0} ஆனதும் தானாக நின்றது.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>ஒரு மேக்ரோ நிறுத்தியது.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>ஒரு நிரல் அல்லது --record stop நிறுத்தியது.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>இதைத் தொடங்கிய உதவியாளர் நிறுத்தினார்.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge மூடப்பட்டதால் நின்றது.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>கடைசி 60 வினாடிகள், நினைவகத்தில் வைக்கப்பட்டவை.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>நீங்கள் பகிரப்போவதைப் படியுங்கள். ஒரு பகுதியை விட்டுவிட அதை அணைத்து, பிறகு சேமியுங்கள். நீங்கள் பதிவிடாவிட்டால் எதுவும் இந்த PC-ஐ விட்டு வெளியே போகாது.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, பகிரப்படும் வடிவில்</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} ஐக் காட்டு</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>விடப்பட்டது</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>பதிவுசெய்யப்படவில்லை</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>உரையாக {0}, zip-இல் {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>உரையாக {0}, நீங்கள் பகிரும் zip-இல் {1}. zip-இல் {2} ஆனதும் அல்லது {3} கழிந்ததும் பதிவு நிற்கும்.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>சுத்திகரிப்புச் சோதனை: PadForge மாற்றியது: {0}, {1} இல். நீங்கள் வைத்திருக்கும் பகுதிகளில் இந்த PC-யின் பெயர்கள், வரிசை எண்கள், முகவரிகள் எதுவும் இல்லை.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} மதிப்பு</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 மதிப்பு</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} தனிப்பட்ட வகை</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 தனிப்பட்ட வகை</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>சுத்திகரிப்புச் சோதனை: இந்த PC-யின் சொந்த மதிப்புகளில் {0} நீங்கள் வைத்திருக்கும் பகுதிகளில் இன்னும் உள்ளன. அந்தப் பகுதிகளை அணைக்கவும் அல்லது பதிவை நீக்கவும். அதுவரை சேமிப்பு முடக்கத்தில் இருக்கும்.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>சுத்திகரிப்புச் சோதனை: இந்த PC-யின் சொந்த மதிப்பு ஒன்று நீங்கள் வைத்திருக்கும் பகுதிகளில் இன்னும் உள்ளது. அந்தப் பகுதிகளை அணைக்கவும் அல்லது பதிவை நீக்கவும். அதுவரை சேமிப்பு முடக்கத்தில் இருக்கும்.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>பதிவுசெய்யும்போது இந்தப் பகுதியில் எதுவும் நிகழவில்லை.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>நீக்கு</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>சுருக்கத்தை நகலெடு</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>நகலெடுக்கப்பட்டது</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>சேமி…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>பதிவைச் சேமி</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip கோப்புகள்</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>சேமிக்கப்படவில்லை. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>நீங்களாகச் சேமிக்கப்படும், முதல் முறை உங்கள் பதிவிறக்கங்கள் கோப்புறையில், பிறகு நீங்கள் கடைசியாகச் சேமித்த இடத்தில், கோப்பு எக்ஸ்ப்ளோரரில் காட்டப்படும். பக்கத்தில் யாரும் இல்லாதபோது நிற்கும் பதிவு (அதன் வரம்பு, ஒரு மேக்ரோ, ஒரு நிரல், உதவியாளர் கருவி அல்லது --record stop) இந்த மதிப்பாய்வுக்காக முகப்பில் காத்திருக்கும், சேமிக்காவிட்டால் 7 நாட்களுக்குப் பிறகு நீக்கப்படும். அது காத்திருக்கிறது என்று நிரலுக்குச் சொல்லப்படும், எங்கே என்று ஒருபோதும் சொல்லப்படாது.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} மணிக்கான ஒரு சிக்கல் பதிவு நீங்கள் படிப்பதற்காகக் காத்திருக்கிறது.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>மதிப்பாய்வு</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>பதிவில் குறியிடு</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>பயன்பாட்டுப் பதிப்பு</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ரன்டைம்</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL பதிப்பு</value></data>
@@ -3128,31 +3238,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>சுட்டி நிலை X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>சுட்டி நிலை Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான சுட்டிக்குறி உணர்திறன். 1.0 எனில், மையத்திலிருந்து திரை அகலத்தின் 10%-இல் முழு ஸ்டிக் விலகலை எட்டும். 1.0-க்கு மேலான மதிப்புகள் குறைவான சுட்டிக்குறி நகர்விலேயே முழு விலகலை எட்டும். 1.0-க்குக் கீழான மதிப்புகளுக்கு அதிக நகர்வு தேவை.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ஒவ்வொரு மூலத்துக்குமான சுட்டிக்குறி உணர்திறன். 1.0 எனில், சுட்டிக்குறி உள்ள திரையின் அகலத்தில் 10%-இல், அதன் மையத்திலிருந்து, முழு ஸ்டிக் விலகலை எட்டும். 1.0-க்கு மேலான மதிப்புகள் குறைவான சுட்டிக்குறி நகர்விலேயே முழு விலகலை எட்டும். 1.0-க்குக் கீழான மதிப்புகளுக்கு அதிக நகர்வு தேவை.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>சுட்டிப் பயணம் X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>சுட்டிப் பயணம் Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>முழு லாக் வரையிலான பயணம்</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>சுட்டி மையத்திலிருந்து முழு லாக் வரை நகரும் தூரம், சுட்டி தெரிவிக்கும் எண்ணிக்கைகளில். அதிக எண் நுணுக்கமாகத் திருப்பும், அதிகக் கை நகர்வு தேவைப்படும்.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>சுட்டி அல்லது வீல் மையத்திலிருந்து முழு லாக் வரை நகரும் தூரம், அது தெரிவிக்கும் எண்ணிக்கைகளில். அதிக எண் நுணுக்கமாகத் திருப்பும், அதிகக் கை நகர்வு தேவைப்படும்.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>சுட்டியின் DPI அதன் சாதனப் பலகத்தில் அமைக்கப்பட்டிருந்தால், பயணம் சென்டிமீட்டரிலும் காட்டப்படும்.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>எண்ணிக்கைகள்</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>மையப்படுத்தல்</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ஆஃப் வீலை கை விட்ட இடத்திலேயே வைத்திருக்கும். ஸ்பிரிங் திரும்பும் நேரத்தில் அதைத் திரும்பக் கொண்டுவரும். டெலிமெட்ரியிலிருந்து, கேமின் வேகம் மற்றும் பிடிப்பில் காரின் முன் டயர்கள் இழுப்பது போல இழுக்கும்: நின்றிருக்கும்போது அசையாமல், வேகத்துடன் உறுதியாக, டயர்கள் சறுக்கும்போது லேசாக. டெலிமெட்ரி அனுப்பும் கேம் இல்லையெனில் அது ஸ்பிரிங் ஆகும். கேமின் விசையிலிருந்து, மெய்நிகர் வீலின் சொந்த ஃபோர்ஸ் ஃபீட்பேக் அதைத் திருப்ப விடும்.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ஆஃப் வீலை கை விட்ட இடத்திலேயே வைத்திருக்கும். ஸ்பிரிங் திரும்பும் நேரத்தில் அதைத் திரும்பக் கொண்டுவரும். டெலிமெட்ரியிலிருந்து, கேமின் வேகம் மற்றும் பிடிப்பில் காரின் ஸ்டீயரிங் இழுப்பது போல இழுக்கும்: மையத்துக்கு அருகில் செங்குத்தாகவும் வெளியே செல்லச் செல்ல மென்மையாகவும், நின்றிருக்கும்போது அசையாமல், வேகத்துடன் உறுதியாக, டயர்கள் சறுக்கும்போது லேசாக. டெலிமெட்ரி அனுப்பும் கேம் இல்லையெனில், உலர்ந்த சாலையில் மணிக்கு 100 km/h வேகத்தில் இழுப்பது போல இழுக்கும். கேமின் விசையிலிருந்து, மெய்நிகர் வீலின் சொந்த ஃபோர்ஸ் ஃபீட்பேக் அதைத் திருப்ப விடும்.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ஆஃப்</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ஸ்பிரிங்</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>டெலிமெட்ரியிலிருந்து</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>கேமின் விசையிலிருந்து</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>திரும்பும் நேரம்</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>ஸ்பிரிங் வீலை 95% திரும்பக் கொண்டுவர எடுக்கும் நேரம். டெலிமெட்ரியிலிருந்து, உலர்ந்த சாலையில் மணிக்கு 100 km/h வேகத்தில் இவ்வளவு நேரம் எடுக்கும்.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>ஸ்பிரிங் வீலை 95% திரும்பக் கொண்டுவர எடுக்கும் நேரம். 0 என்றால் உடனே மையத்துக்கு வரும். டெலிமெட்ரியிலிருந்து, உலர்ந்த சாலையில் மணிக்கு 100 km/h வேகத்தில் மையத்துக்கு அருகிலிருந்து இவ்வளவு நேரம் எடுக்கும்.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>திருப்பு</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>எப்போதும் சுட்டியை எல்லா நேரமும் திருப்ப விடும். பிடித்திருக்கும்போது திருப்ப உள்ளீடு பிடிக்கப்பட்டிருக்கும்போது மட்டும் திருப்ப விடும். நிலைமாற்று திருப்ப உள்ளீட்டை ஒவ்வொரு முறை அழுத்தும்போதும் திருப்புதலை இயக்கும் அல்லது அணைக்கும். சுட்டி திருப்பாதபோது வீல் இருக்கும் இடத்திலேயே இருக்கும் அல்லது மையத்துக்கு வரும், எனவே ஒரே சுட்டியால் திருப்பவும் சுற்றிப் பார்க்கவும் முடியும்.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>எப்போதும் சுட்டியை எல்லா நேரமும் திருப்ப விடும். பிடித்திருக்கும்போது, மையத்துக்கு என்பது திருப்ப உள்ளீடு பிடிக்கப்பட்டிருக்கும்போது மட்டும் திருப்ப விட்டு, பிறகு அதை மையத்துக்குக் கொண்டுவரும், மூலத்தில் மையப்படுத்தல் இருந்தால் அதன்படி, இல்லையெனில் உடனே. பிடித்திருக்கும்போது, அப்படியே நிறுத்து என்பது உள்ளீடு பிடிக்கப்பட்டிருக்கும்போது மட்டும் திருப்ப விட்டு, விட்ட இடத்திலேயே விட்டுவிடும். நிலைமாற்று திருப்ப உள்ளீட்டை ஒவ்வொரு முறை அழுத்தும்போதும் திருப்புதலை இயக்கும் அல்லது அணைக்கும். எனவே ஒரே சுட்டியால் திருப்பவும் சுற்றிப் பார்க்கவும் முடியும்.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>எப்போதும்</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>பிடித்திருக்கும்போது</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>பிடித்திருக்கும்போது, மையத்துக்கு</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>நிலைமாற்று</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>திருப்ப உள்ளீடு</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>சுட்டியைத் திருப்ப விடும் பொத்தான், சுட்டியின் பயணம் உள்ள அதே சாதனத்தில். எதுவும் தேர்ந்தெடுக்காவிட்டால் சுட்டி எப்போதும் திருப்பும்.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>சுட்டியைத் திருப்ப விடும் பொத்தான், மூலம் உள்ள அதே சாதனத்தில். எதுவும் தேர்ந்தெடுக்காவிட்டால் சுட்டி எப்போதும் திருப்பும்.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>மென்மையாக்கம்</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>சீரற்றுத் தெரிவிக்கும் சுட்டியைச் சமப்படுத்தும். வீல் கையைவிட இவ்வளவு நேரம் பின்தங்கும். 0 என்றால் ஆஃப்.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>சீரற்றுத் தெரிவிக்கும் சுட்டியைச் சமப்படுத்தும். ஸ்டிக் கையைவிட இவ்வளவு நேரம் பின்தங்கும். 0 என்றால் ஆஃப்.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>வேகத்தில் லாக்</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>கேம் டெலிமெட்ரி ஆன் ஆக இருக்கும்போது, 200 km/h வேகத்தில் லாக்கில் எவ்வளவு மீதமிருக்கும். 100% என்றால் எந்த வேகத்திலும் முழு லாக்கும் இருக்கும்.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>வீல் பயணம்</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>வீல் பயணம் பக்கவாட்டு</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>சுட்டி எவ்வளவு வேகமாக நகர்கிறது. கை நின்றதும் விட்டுவிடும்.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>சுட்டிக்குறி அதன் திரையில் எங்கே உள்ளது, அதன் மையத்திலிருந்து அல்லது திருப்புதல் தொடங்கியபோது இருந்த இடத்திலிருந்து.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>சுட்டி எவ்வளவு தூரம் நகர்ந்துள்ளது, வீலைப் போல கை விடும் இடத்தில் பிடித்து வைக்கப்படும்.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>ஸ்க்ரோல் நாட்சுகள் ஒரு நிலையாகப் பிடித்து வைக்கப்படும், நுண்ணிய ஸ்க்ரோல் வீலில் முழுத் துல்லியத்தில்.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>பக்கவாட்டு வீலின் நாட்சுகள் ஒரு நிலையாகப் பிடித்து வைக்கப்படும், நுண்ணிய ஸ்க்ரோல் வீலில் முழுத் துல்லியத்தில்.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>ஒவ்வொரு நாட்சுக்கும் ஒரு தள்ளு, உடனே ஓய்வு நிலைக்குத் திரும்பும்.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>பிடித்திருக்கும்போது, அப்படியே நிறுத்து</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>உணர்திறன்</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>ஒரு வேகம் ஸ்டிக்கில் எவ்வளவு தருகிறது. 1.00 இல், ஒவ்வொரு போலிங் விகிதத்திலும் சுட்டி அறிக்கை விகிதத்திலும் வினாடிக்கு 16,000 எண்ணிக்கையில் ஸ்டிக் முழு விலகலை எட்டும்.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>மையத்துக்குத் திரும்புதல்</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>சுட்டி மெதுவாகி அல்லது நின்றபின், ஸ்டிக் இதைவிட வேகமாகத் திரும்பாது. 0 என்றால் சுட்டியுடன் சேர்ந்து திரும்பும்.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>திருப்புதல் தொடங்கிய இடத்திலிருந்து தொடங்கு</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>திருப்ப உள்ளீடு இருந்தால், தொலைபேசித் திரையில் ஸ்டிக் விரல் படும் இடத்தில் தொடங்குவது போல, திருப்புதல் தொடங்கியபோது சுட்டிக்குறி இருந்த இடத்திலிருந்து ஸ்டிக் அளவிடும். ஆஃப் எனில், சுட்டிக்குறியின் திரையின் மையத்திலிருந்து அளவிடும்.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>இந்த அச்சு சார்பு முறையில் நகர்கிறது</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>எவ்வளவு திரும்பியது என்று தெரிவிக்கும் டிராக்பால் அல்லது ஸ்பின்னருக்கு. ஆன் எனில், அச்சு சுட்டிப் பயணம் போல ஒரு நிலையைப் பிடித்து வைக்கும், பயண அமைப்புகளையும் எடுத்துக்கொள்ளும். எந்த அச்சுகள் இப்படி நகர்கின்றன என்று Windows சொல்வதில்லை.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} செ.மீ</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>முன்னோட்டம்</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>இந்த வகை உங்கள் சுட்டியை எப்படிப் பின்தொடர்கிறது என்பதைக் காட்டும். நீங்கள் தேர்ந்தெடுக்கும் வரை எதுவும் மேப் செய்யப்படாது.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>முன்னோட்டம் நடக்கிறது. உங்கள் சுட்டியை நகர்த்துங்கள்.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>{0} இல் பிடித்து வைக்கப்பட்டுள்ளது</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>{0} இல்</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>வலது {0}%</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>இடது {0}%</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>மேல் {0}%</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>கீழ் {0}%</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>மையம்</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} பிடித்திருக்கும்போது நகரும்.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>சுட்டி DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>இந்தச் சுட்டி நகரும் ஒவ்வொரு அங்குலத்துக்கும் தெரிவிக்கும் எண்ணிக்கைகள், அதன் தயாரிப்பாளரின் மென்பொருள் அமைத்தபடி.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI அமைக்கப்பட்டால், சுட்டிப் பயணம் தன் பயணத்தை சென்டிமீட்டரிலும் காட்டும். 0 என்றால் அமைக்கப்படவில்லை.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR சுட்டிக்குறி X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR சுட்டிக்குறி Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR ஒளிர்வு</value></data>
@@ -4923,6 +5066,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>நீங்கள் விளையாடும்போது PadForge காட்டும் திரைக் குறிகாட்டிகள். ஒன்றை ஆஃப் செய்வது நடத்தையை ஒருபோதும் மாற்றாது, அது காட்டப்படுகிறதா என்பதை மட்டுமே மாற்றும்.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ஷிஃப்ட் அடுக்கு ஃப்ளைஅவுட்</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>சுயவிவர மாற்ற மேலடுக்கு</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>கட்டுப்படுத்திகள் ஆன் அல்லது ஆஃப்</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>சாதனம் துண்டிப்புக் குறிப்பு</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>சாதனம் இணைப்புக் குறிப்பு</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ஆரவழி அல்லது தொடு மெனு செயலில் இருக்கும்போது திரையில் வளையத்தை அல்லது கட்டத்தைக் காட்டும். மேலடுக்கு ஆஃப் ஆக இருந்தாலும் மெனுக்கள் தொடர்ந்து தூண்டப்படும்.</value></data>
@@ -5651,6 +5795,8 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>ஆஃப்</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>ஸ்டாப்வாட்ச்</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>லைட்பார் நிறம்</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>இணைப்பற்ற சாதனங்கள்</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>அனைத்தும் இணைந்தன</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>ஆஃப்</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software வழியாக</value></data>
@@ -5693,6 +5839,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>திரை நீங்கள் தேர்ந்தெடுக்கும் படத்தை அதன் சொந்த அளவில் காட்டும். திரையை விடப் பெரிய படத்தில் திரையின் அளவுள்ள ஒரு சாளரம் காட்டப்படும், இதை "விசைப்பலகைத் திரைப் படத்தை நகர்த்து" மேக்ரோ நகர்த்தும். S.T.R.I.K.E. 7-இல் திரையின் குறுக்கே விரலை இழுத்தும் நகர்த்தலாம்.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>திரை ஸ்டாப்வாட்சைக் காட்டும். அதை ஸ்டாப்வாட்ச் மேக்ரோ தொடங்கும், இடைநிறுத்தும், மீட்டமைக்கும். ஒவ்வொரு திரையும் ஒரே ஸ்டாப்வாட்சைக் காட்டும்.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>இந்தத் திரை உள்ளீடு தரும் மிகக் குறைந்த ஸ்லாட்டிலுள்ள DualShock 4 அல்லது DualSense-இன் லைட்பாரின் நிறத்தை திரை காட்டும். எந்த ஸ்லாட்டுக்கும் உள்ளீடு தராவிட்டால், அனைத்திலும் மிகக் குறைந்த ஸ்லாட்டின் நிறத்தைக் காட்டும். ஒற்றை நிறத் திரை அதன் ஒளிர்வைப் புள்ளி வடிவமாகக் காட்டும். லைட்பாருக்கு நிறம் வரும் வரை PadForge எதையும் காட்டாது.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>இணைக்கப்படாத மேப் செய்யப்பட்ட சாதனங்களை, சாதனங்கள் பக்கம் காட்டும் பெயர்களால் திரை பட்டியலிடும், எதுவும் விடுபடாதபோது அனைத்தும் இணைந்தன என்று காட்டும்.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>படங்கள் (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>நகர்த்து</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>X நகர்வு</value></data>
@@ -5944,6 +6091,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ஓட்டுதல் (0 அல்ல)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>கேம் டெலிமெட்ரி</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>ஸ்கிரிப்ட் மதிப்பு</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>சாதன இணைப்பு</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>வேகம் (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (அதிகபட்சத்தின் %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>கியர் (-1 ரிவர்ஸ், 0 நியூட்ரல்)</value></data>
@@ -6049,6 +6197,7 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>மேலடுக்கு நீங்கள் தேர்ந்தெடுக்கும் படத்தைக் காட்டும்; அதன் விகிதம் மாறாமல், தனது சாளரத்தை நிரப்பும்படி அளவு மாற்றப்படும். 100 சதவீதத்துக்கு மேல் பெரிதாக்கினால், வரைபடத்துக்காக படத்தின் ஒரு பகுதியை மட்டும் காட்டும். விசைப்பலகைத் திரைப் படத்தை நகர்த்து மேக்ரோ அந்தப் பகுதியை நகர்த்தும்; PadForge முன்னால் இருக்கும்போது இடது சுட்டி பொத்தானால் இழுப்பதும் அதையே செய்யும்.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>மேலடுக்கு ஸ்டாப்வாட்சைக் காட்டும். அதை ஸ்டாப்வாட்ச் மேக்ரோ தொடங்கும், இடைநிறுத்தும், மீட்டமைக்கும். ஒவ்வொரு விசைப்பலகைத் திரையும் காட்டுவது இதே ஸ்டாப்வாட்ச்தான்.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>மேலடுக்கு இங்கே நீங்கள் தேர்ந்தெடுக்கும் ஸ்லாட்டிலோ, நிறம் உள்ள மிகக் குறைந்த ஸ்லாட்டிலோ உள்ள DualShock 4 அல்லது DualSense-இன் லைட்பாரின் நிறத்தைக் காட்டும். லைட்பாருக்கு நிறம் வரும் வரை அது எதையும் காட்டாது.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>இணைக்கப்படாத மேப் செய்யப்பட்ட சாதனங்களை, சாதனங்கள் பக்கம் காட்டும் பெயர்களால் மேலடுக்கு பட்டியலிடும், எதுவும் விடுபடாதபோது அனைத்தும் இணைந்தன என்று காட்டும்.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>திரை மேலடுக்கு {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>மேலடுக்கைச் சேர்</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>நிறம் உள்ள மிகக் குறைந்த ஸ்லாட்</value></data>
@@ -6391,6 +6540,245 @@ PadForge இப்போதே அவற்றை நிறுவல் நீ�
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>பிடிப்பு நேரத்துக்கு முன் திறக்கும் உள்ளீடு விடப்படும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும். நீண்ட அழுத்தம் எதுவும் செய்யாது.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>அழுத்தக் கால வரம்புக்குள் திறக்கும் உள்ளீடு மும்முறை அழுத்தப்படும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும்.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>திறக்கும் உள்ளீடு ஒருமுறை அழுத்தப்பட்டு அழுத்தக் கால வரம்பு முடியும்போது விசைப்பலகையைத் திறக்கும் அல்லது மூடும். வரம்புக்குள் இரண்டாவது அழுத்தம் அதை ரத்து செய்யும்.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>ஆஃப். எந்த நிரலும் PadForge-ஐ அடைய முடியாது.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} மற்றும் {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge செயல்பாடு: அழைப்புகள் {0}, பழையவை முதலில். இவற்றுக்கு முன் நடந்த அழைப்புகள்: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge செயல்பாடு: அழைப்பு {0}. இதற்கு முன் நடந்த அழைப்புகள்: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} பழைய அழைப்பு நீங்கியது. செயல்பாடு புதிய {1:N0} அழைப்பை வைத்திருக்கும்.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} பழைய அழைப்பு நீங்கியது. செயல்பாடு புதிய {1:N0} அழைப்பை வைத்திருக்கும்.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>ஏற்றுமதி செய்…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>செயல்பாட்டை ஏற்றுமதி செய்</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>உரைக் கோப்பு</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>திற</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>புதுப்பி</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>{0} க்கான மேலும்</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>திறனை ZIP ஆகச் சேமி…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>அதன் அமைப்புகள் கோப்பைத் திற</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>சேமிக்கப்பட்டது. {0} இல், {2} கீழ் {1} ஐச் சேர்க்கவும்.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} க்கு இன்னும் அமைப்புகள் கோப்பு இல்லை. சேர் ஒன்றை உருவாக்கும்.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>Windows இல் அமைப்பு முறையை அதன் தயாரிப்பாளர் ஆவணப்படுத்தியுள்ள எந்த உதவியாளர் நிரலையும் இந்த PC-யில் PadForge காணவில்லை. வேறு எதற்கும் மேலும் என்பதன் கீழுள்ள அமைப்புகளை நகலெடு வேலை செய்யும்.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge-ஆல் உதவியாளர் நிரல்களைச் சரிபார்க்க முடியவில்லை: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>சேர்க்கப்படவில்லை.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>சேர்க்கப்பட்டது.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>சேர்க்கப்பட்டது. இப்போது இணைந்துள்ளது.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>சேர்க்கப்பட்டது. அதன் பிறகு இணையவில்லை. திறந்திருந்த உதவியாளர் மூடி மீண்டும் திறந்தபின் PadForge-ஐப் பார்க்கும்.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>வேறொரு PadForge க்காகச் சேர்க்கப்பட்டது. புதுப்பி அதை இதன் பக்கம் திருப்பும்.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>சேர்க்கப்பட்டது. அதன் PadForge திறன் இந்த PadForge-ஐவிடப் பழையது.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>சேர்க்கப்பட்டது, அதன் PadForge திறன் இல்லாமல்.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>சேர்க்கப்பட்டது. அதன் PadForge திறன் புதிய PadForge-இலிருந்து வந்தது.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>இது திறன்களை பதிவேற்றமாக மட்டுமே ஏற்கும்.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>சேர்க்கப்பட்ட உதவியாளர்கள் தானியக்கம் இயக்கப்பட்டதும் PadForge-ஐ அடைவார்கள்.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>சேர்க்கிறது…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>அகற்றுகிறது…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>புதுப்பிக்கிறது…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>இது முடியவில்லை: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>பிற உதவியாளர்கள்</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>மேலே பட்டியலிடப்படாத உதவியாளருக்கு: அமைப்புகளை நகலெடு அதன் MCP அமைப்புகளுக்கான உள்ளீட்டைத் தரும், ஒரு செய்தியை நகலெடு எந்த அரட்டைக்கும் எப்படி இணைப்பது, முதலில் என்ன கேட்பது என்று சொல்லும் ஒரு சிறு உரையைத் தரும்.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>அமைப்புகளை நகலெடு</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>ஒரு செய்தியை நகலெடு</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>நகலெடுக்கப்பட்டது.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>நகலெடுக்கப்படவில்லை: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>என் PC-யில் உள்ள கட்டுப்படுத்தி மேப்பரான PadForge உடன் இணை. இது stdio வழியாக இயங்கும் உள்ளூர் MCP சேவையகம்: கட்டளை {0}, வாதம் --mcp. JSON அமைப்புகளாக: {1} இணைந்ததும் முதலில் அதன் status கருவியை அழை, பிறகு நான் எதை அமைக்க விரும்புகிறேன் என்று கேள், எடுத்துக்காட்டாக: “என் கட்டுப்படுத்தியின் டிரிகர்களை எங்கே மேப் செய்வது என்று காட்டு.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge-இன் தானியக்கம் இப்போது ஆஃப்: முதலில் PadForge-இல் கூடுதல், தானியக்கம் என்பதன் கீழ் அதை ஆன் செய்யவும்.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>அனுமதிக்கப்பட்ட நிரல்கள்</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>படித்தல் அல்லது அதற்கு மேல் விரும்பும் நிரல் முதல் முறை இணையும்போது ஒருமுறை கேட்கும், மேலே உள்ள நிலை வரை அது கேட்கும் நிலையைப் பெறும். மேலே நீங்கள் சேர்க்கும் உதவியாளர் அதனாலேயே அனுமதிக்கப்படுகிறது.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>இப்போது இணைந்துள்ளது.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>கடைசியாகப் பயன்படுத்தியது {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>இன்னும் பயன்படுத்தவில்லை.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>இணைந்தவை: {0}. தானியக்கம் பக்கத்தைத் திறக்கச் சொடுக்கவும்.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>இந்த PC-யில்: {0}. இணையத்திலிருந்து: {1}. தானியக்கம் பக்கத்தைத் திறக்கச் சொடுக்கவும்.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>இணையத்திலிருந்து இணைந்தவை: {0}. தானியக்கம் பக்கத்தைத் திறக்கச் சொடுக்கவும்.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL மேப்பிங்</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>படிக்கப்படுவது</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>மூலம்</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>ஒரு கேம்பேட், “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>ஒரு ஜாய்ஸ்டிக். அதற்கு SDL மேப்பிங் இல்லை.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ஒரு ஜாய்ஸ்டிக். PadForge அதை மூலமாகப் படிக்கிறது, எனவே SDL-இன் மேப்பிங் பயன்படுத்தப்படாது.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>உங்கள் வரிசையால் கேம்பேடாக அமைக்கப்பட்ட ஒரு ஜாய்ஸ்டிக்.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>இன்ஜின் இயங்கும்போது SDL சாதனங்களைப் படிக்கும்.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>உள்ளமைந்த சமூக நகல், {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} அன்று பதிவிறக்கப்பட்டது</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-இன் சொந்தக் கோப்பு</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>உங்களுடையது, {0} அன்று சேர்க்கப்பட்டது</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG மாறி, நீங்கள் சேர்க்கும் எந்த வரிசையையும்விட SDL இதற்கே முன்னுரிமை தரும்</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL மேப்பிங்கை நகலெடு</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>சாதனத்தின் மேப்பிங்கை, அதன் ID-யின் கீழ் செக்சம்மும் பதிப்பும் பூஜ்யமாக்கப்பட்டு, சமூகத் தரவுத்தளத்தின் ஒரு வரிசையாக கிளிப்போர்டில் வைக்கும்.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL மேப்பிங்கை ஒட்டு…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>இந்தச் சாதனத்துக்கான ஒரு வரிசையை எடுத்து, சரிபார்த்து, உங்களுடையதாக வைத்து, உடனே பயன்படுத்தும்.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>ஒரு மேப்பிங்கைத் தேடு…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge கொண்டுள்ள ஒவ்வொரு வரிசையையும் பெயரால் தேடி, நீங்கள் தேர்ந்தெடுப்பதை இந்தச் சாதனத்துக்குப் பயன்படுத்தும், ID-கள் வேறுபடும் ஒரு போலிக்காக.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>அமைப்பை ஊகி</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>எந்தத் தரவுத்தளமும் அறியாத சாதனத்துக்கு, அதன் அச்சுகள், பொத்தான்கள், ஹேட்களிலிருந்து ஒரு கேம்பேட் அமைப்பை ஊகிக்கும். அதை உள்ளீடுகளைச் சோதி என்பதில் சரிபார்க்கவும்.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>என்னுடையதை அகற்று</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>என்னுடையதை அகற்று முன்பிருந்த வரிசையையும் கட்டுப்படுத்தி வரிசைகளையும் திரும்பக் கொண்டுவரும்.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>மீண்டும் மேப் செய்</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>சாதனம் உள்ள ஒவ்வொரு கட்டுப்படுத்தியிலும் அதன் வரிசைகளை, ஒதுக்கும்போது செய்வது போல, SDL-இன் அமைப்பிலிருந்து மீண்டும் உருவாக்கும்.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>சமூகத் தரவுத்தளப் பக்கம்</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>வரிசை, மற்றும் {0} இலிருந்து அது எங்கே வேறுபடுகிறது</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>வரிசை</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>கட்டுப்படுத்தி</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} வரிசை</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>இப்போதைய உள்ளீடு</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL-இன் வரிசை சொல்வது</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL-இன் வரிசையில் இல்லை</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, வேறுபடுகிறது</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge பயன்படுத்தாதவை: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>வரிசை</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>நகலெடுக்கப்பட்டது.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>நகலெடுக்கப்பட்டது. SDL-இன் வடிவம் {0} ஐத் தாங்காது.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>மேக்ரோக்கள்</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>வளைவுகள்</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>டெட் ஜோன்கள்</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>விசைப்பலகை மற்றும் சுட்டி வெளியீடுகள்</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>டர்போ, நிலைமாற்றிகள் மற்றும் பிற செயல்கள்</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} மற்றும் {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>நகலெடுக்க எதுவும் இல்லை: இந்தச் சாதனத்துக்கு SDL மேப்பிங் இல்லை, இது எந்தக் கட்டுப்படுத்தியிலும் இல்லை.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>கிளிப்போர்டை வேறொரு நிரல் பயன்படுத்துகிறது. எதுவும் நகலெடுக்கப்படவில்லை.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>உங்கள் வரிசை நீக்கப்பட்டது. சாதனம் அதற்கு முன் இருந்தபடி படிக்கப்படும்.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-இன் அமைப்பிலிருந்து மீண்டும் மேப் செய்யப்பட்டது: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>இப்போது பயன்பாட்டில் உள்ளது. வரிசை உங்களுடையது, இந்தச் சாதனத்துக்கு அதுவே முன்னுரிமை பெறும்.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>உங்களுடையதாக வைக்கப்பட்டது. இன்ஜின் இயங்கி சாதனம் இணைந்ததும் பயன்பாட்டுக்கு வரும்.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>உங்களுடையதாக வைக்கப்பட்டது, ஆனால் SDL_GAMECONTROLLERCONFIG மாறியில் இந்தச் சாதனத்துக்கு ஒரு வரிசை உள்ளது, அதை SDL உங்களுடையதைவிட மேலாக வைக்கும்.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL வரிசையை ஏற்கவில்லை. இந்தச் சாதனத்துக்கு எதுவும் மாறவில்லை.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL மேப்பிங்கை ஒட்டு</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} க்கு SDL மேப்பிங்கை ஒட்டு</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} க்கு ஒரு மேப்பிங்கைத் தேடு</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>{0} க்கு அமைப்பை ஊகி</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>ஒரு கோப்பிலிருந்து அல்லது கிளிப்போர்டிலிருந்து வரிசைகளைச் சேர்</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>ஒட்டு</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>ஒரு கோப்பைத் திற…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>மேப்பிங் கோப்புகள் (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>கோப்பு 4 MB-ஐ விடப் பெரியது. சமூகத்தின் முழு கோப்பு சுமார் 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>பெயர், ID அல்லது VID:PID மூலம் தேடு</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge கொண்டுள்ள வரிசைகள்</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>எந்த வரிசையும் பொருந்தவில்லை.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>தேர்ந்தெடுத்த வரிசை, ஒட்டு என்பதில் உள்ள அதே சரிபார்ப்பு, அதே தேர்வுடன், {0} க்கு அதன் சொந்த ID-யின் கீழ் பயன்படுத்தப்படும்.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL மேப்பிங் வரிசை</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>இந்தச் சாதனத்துக்கான ஒரு வரிசை.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>ஊகித்த அமைப்பு.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} புலங்கள், அதன் ID இந்தச் சாதனத்துடன் பொருந்துகிறது.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} புலங்கள், வேறொரு பஸ் அல்லது பதிப்பில் உள்ள அதே தயாரிப்பாளர் மற்றும் பொருளிலிருந்து. இது இந்தச் சாதனத்தின் சொந்த ID-யின் கீழ் வைக்கப்படும்.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} புலங்கள், வேறொரு சாதனத்தின் வரிசை. இது இந்தச் சாதனத்தின் சொந்த ID-யின் கீழ் வைக்கப்படும்.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} புலங்கள். SDL இந்தச் சாதனத்தைப் படிப்பதில்லை, எனவே PadForge அதன் உள்ளீடுகளை வரிசைப்படி அமைக்கிறது.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} புலங்கள், சாதனத்தின் அச்சுகள், பொத்தான்கள், ஹேட்களிலிருந்து. உள்ளீடுகளைச் சோதி என்பதில் சரிபார்த்து, இங்கே வைத்துக்கொள்ளவும் அல்லது மாற்றவும்.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} புலம், அதன் ID இந்தச் சாதனத்துடன் பொருந்துகிறது.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} புலம், வேறொரு பஸ் அல்லது பதிப்பில் உள்ள அதே தயாரிப்பாளர் மற்றும் பொருளிலிருந்து. இது இந்தச் சாதனத்தின் சொந்த ID-யின் கீழ் வைக்கப்படும்.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} புலம், வேறொரு சாதனத்தின் வரிசை. இது இந்தச் சாதனத்தின் சொந்த ID-யின் கீழ் வைக்கப்படும்.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} புலம். SDL இந்தச் சாதனத்தைப் படிப்பதில்லை, எனவே PadForge அதன் உள்ளீடுகளை வரிசைப்படி அமைக்கிறது.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} புலம், சாதனத்தின் அச்சுகள், பொத்தான்கள், ஹேட்களிலிருந்து. உள்ளீடுகளைச் சோதி என்பதில் சரிபார்த்து, இங்கே வைத்துக்கொள்ளவும் அல்லது மாற்றவும்.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>இது {0} எப்படிப் படிக்கப்படுகிறது என்பதை மாற்றும். {1} இல் உள்ள அதன் வரிசைகள் புதிய அமைப்பிலிருந்து மீண்டும் மேப் செய்யப்படும்.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>இது {0} எப்படிப் படிக்கப்படுகிறது என்பதை மாற்றும். இது எந்தக் கட்டுப்படுத்தியிலும் இல்லை, எனவே எந்த வரிசையும் மாறாது.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} ஐப் படிக்கும் சுயவிவர ஷார்ட்கட்கள் தாங்கள் அமைக்கப்பட்ட உள்ளீடுகளையே வைத்திருக்கும்.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>வரிசை PadForge.xml இல் உங்களுடையதாக வைக்கப்படும், இந்தச் சாதனத்துக்கு மற்ற எல்லா மூலங்களையும்விட அதுவே முன்னுரிமை பெறும். என்னுடையதை அகற்று பழைய வரிசையையும் பழைய வரிசைகளையும் திரும்பக் கொண்டுவரும்.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>வரிசைகள் PadForge.xml இல் உங்களுடையதாக வைக்கப்படும், அவற்றின் சாதனங்களுக்கு மற்ற எல்லா மூலங்களையும்விட அவையே முன்னுரிமை பெறும். கட்டுப்படுத்தி தரவுத்தளம் வரிசையின் மேலும் என்பதன் கீழுள்ள அழி அவற்றை நீக்கும்.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows க்கான {0} வரிசைகள். பிற அமைப்புகளுக்கான {1} தவிர்க்கப்படுகின்றன.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows க்கான {0} வரிசை. பிற அமைப்புகளுக்கான {1} தவிர்க்கப்படுகின்றன.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>மறுக்கப்பட்டவை {0}. முதலாவது: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ஒரு வரிசையை அல்லது gamecontrollerdb.txt கோப்பின் உரையை ஒட்டவும்.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>இந்த உரை SDL-இன் கட்டுப்படுத்தித் தரவுத்தளத்தின் வரிசை அல்ல: 32 ஹெக்ஸ் இலக்கங்கள் கொண்ட ID, ஒரு பெயர், பிறகு a:b0 போன்ற புலங்கள் இருக்க வேண்டும்.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>வரிசைகள் பிற அமைப்புகளுக்கானவை. PadForge Windows க்கான அல்லது குறிப்பிட்ட அமைப்பு இல்லாத வரிசைகளைப் படிக்கும்.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>வரிசையின் ID ஒரு சாதனத்துடையது அல்ல. அதற்கு 32 ஹெக்ஸ் இலக்கங்கள் தேவை.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>வரிசையின் பெயர் காலியாக உள்ளது, 128 எழுத்துகளுக்கு மேல் உள்ளது, அல்லது SDL புலமாகப் படிக்கும் ஓர் எழுத்தைக் கொண்டுள்ளது.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>வரிசையில் PadForge ஏற்காத ஒரு குறிப்புப் புலம் அல்லது Android புலம் உள்ளது.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>வரிசையில் SDL அறியாத ஒரு புலம் உள்ளது.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>ஒரு பிணைப்பு SDL-இன் வடிவில் இல்லை, எடுத்துக்காட்டாக b3, a2, +a2, a2~ அல்லது h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>வரிசை ஒரு புலத்தை இருமுறை தருகிறது.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>வரிசை 1,024 எழுத்துகளுக்கு மேல் உள்ளது.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>வரிசை எந்தக் கட்டுப்பாட்டையும் பிணைக்கவில்லை.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>உங்கள் வரிசைகள்</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>உங்கள் வரிசைகள்</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>நீங்கள் இங்கே சேர்க்கும் அல்லது சாதனத்தின் SDL மேப்பிங் அட்டையில் ஒட்டும் வரிசைகள், அவற்றின் சாதனங்களுக்கு மற்ற எல்லா மூலங்களையும்விட முன்னுரிமை பெறும், மீட்டமைப்புக்குப் பிறகும் இருக்கும்.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ஒரு கோப்பிலிருந்து அல்லது கிளிப்போர்டிலிருந்து வரிசைகளைச் சேர்…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} வரிசைகள், அவற்றின் சாதனங்களுக்கு மற்ற எல்லா மூலங்களையும்விட உங்களுடையவை.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} வரிசை, அதன் சாதனத்துக்கு மற்ற எல்லா மூலங்களையும்விட உங்களுடையது.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>இன்னும் இல்லை.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>உடனே பயன்பாட்டில் உள்ளது.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>PadForge-ஐ இணையத்திலிருந்து அடை</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>ஒரு வலைத்தளத்தில் இயங்கும் உதவியாளர், இந்த PC-யில் உள்ள ஒரு சுரங்க நிரல் வழியாக PadForge-ஐ அடைகிறது. இதை இயக்கும் முன் உங்களிடம் கேட்கும்.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>PadForge-ஐ இணையத்திலிருந்து அடையவா?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge நிர்வாகி உரிமைகள் இல்லாமல் ஒரு உதவி நிரலைத் தொடங்கும், அது இந்த PC-யில் மட்டுமே கேட்கும், நீங்கள் தேர்ந்தெடுக்கும் சுரங்க நிரல் அதற்கு ஒரு பொது முகவரியைத் தரும். PadForge-இன் கேள்வி அட்டையில் ஒரு இணைய உதவியாளரின் உள்நுழைவை நீங்கள் அனுமதித்த பிறகே அது உள்ளே வரும், மேலே உள்ள நிலையில் செயல்படும்.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>இயக்கு</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>இணையத்தில் உதவியாளர்கள்</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>சுரங்கம்</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>எதுவும் இல்லை</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>நான் ஒட்டும் முகவரி</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>தொடங்குகிறது, உங்கள் உரிமைகளுடன்.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>இயங்குகிறது, உங்கள் உரிமைகளுடன். ஒவ்வொரு முறை தொடங்கும்போதும் அதன் முகவரி மாறாது.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>இயங்குகிறது, உங்கள் உரிமைகளுடன். விரைவு சுரங்கம் ஒவ்வொரு முறை தொடங்கும்போதும் புதிய முகவரியை எடுக்கும், எனவே உதவியாளரை மீண்டும் சேர்க்க வேண்டியிருக்கும்.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>நிறுத்தப்பட்டது.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>நிறுத்தப்பட்டது. அதன் கடைசி வார்த்தைகள்: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>அதைத் தொடங்க முடியவில்லை.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>அது இனி இந்த PC-யில் இல்லை.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>இந்த PC-யில் எந்தச் சுரங்க நிரலும் கிடைக்கவில்லை. PadForge cloudflared, devtunnel, ngrok, Tailscale Funnel ஆகியவற்றுடன் அல்லது உங்கள் சொந்தச் சுரங்கத்தின் முகவரியுடன் செயல்படும்.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge-க்கு ஒரு பொது முகவரி தர ஒரு சுரங்கத்தைத் தேர்ந்தெடுக்கவும்.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>இந்த PC-யில் மேலும்: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, அதன் முகவரி மாறாது</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, அதன் விரைவு சுரங்கங்கள் ஒவ்வொரு முறையும் புதிய முகவரியை எடுக்கும்</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>உங்கள் சொந்தச் சுரங்கத்தை http://127.0.0.1:{0} க்கு இயக்கி, அதன் https முகவரியை ஒட்டவும். பெயரிடப்பட்ட Cloudflare சுரங்கம், நிலையான dev tunnel, Tailscale Funnel, ngrok-இன் சொந்த டொமைன் ஆகியவை தங்கள் முகவரியை மாறாமல் வைத்திருக்கும்.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>உங்கள் சுரங்கம் தருவது போல, /mcp தவிர வேறு பாதை இல்லாத https முகவரியை ஒட்டவும்.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-இன் இணைய உதவி நிரலைத் தொடங்குகிறது.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-இன் இணைய உதவி நிரல் நின்றது ({0}). அதை மீண்டும் தொடங்க PadForge-ஐ இணையத்திலிருந்து அடை என்பதை அணைத்து மீண்டும் இயக்கவும்.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>முகவரி</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>இன்னும் பொது முகவரி இல்லை.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude-இல் சேர்</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>நகலெடுக்கப்பட்டது.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>புதிய இணைய உதவியாளரை ஏற்று</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>ஏற்கத் தொடங்கு</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>ஏற்பதை நிறுத்து</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>{0} வரை ஏற்கிறது.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>ஏற்கவில்லை. ஏற்கத் தொடங்கு ஐந்து நிமிடங்களுக்குத் திறக்கும்.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>உதவியாளரில் முகவரியைச் சேர்த்து உள்நுழையவும். ஒவ்வொரு உள்நுழைவும் தன் உள்நுழைவுப் பக்கத்திலும் PadForge-இன் கேள்வி அட்டையிலும் தனக்கான ஆறு இலக்கக் குறியீட்டைக் காட்டும். இரண்டு குறியீடுகளும் பொருந்தினால் மட்டும் அனுமதிக்கவும். மற்ற நேரங்களில் உள்நுழைவு மறுக்கப்படும், உங்களிடம் எதுவும் கேட்கப்படாது.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>இணையத்தில் அனுமதிக்கப்பட்டவை</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>இன்னும் இல்லை.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>அதன் உள்நுழைவு {0} க்குத் திரும்பியது.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>அது தன்னை {0} என்று அழைக்கிறது.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>அனுமதித்தது {0}, கடைசியாகப் பயன்படுத்தியது {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>அனுமதித்தது {0}, இன்னும் பயன்படுத்தவில்லை.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>திரும்பப்பெறு</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>அதன் சொந்த Secure MCP Tunnel PadForge-ஐ நேரடியாக இயக்கும், இங்கே முகவரி அல்லது உள்நுழைவு தேவையில்லை. கட்டளையை அந்தச் சுரங்கத்தின் அமைப்பில் நகலெடுக்கவும்.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>கட்டளையை நகலெடு</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge எந்தச் சுரங்க நிரலையும் பதிவிறக்குவதில்லை, வேறு எந்த நிறுவனத்தின் விசையையும் வைத்திருப்பதில்லை. இணைய உதவியாளர் மேலே உள்ள நிலையில் செயல்படும்.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} PadForge உடன் இணையத்திலிருந்து செயல்பட அனுமதிக்கவா?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>அதன் உள்நுழைவு {0} க்குத் திரும்புகிறது.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>அது தன்னை {0} என்று அழைக்கிறது.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>அதன் உள்நுழைவுப் பக்கம் இந்தக் குறியீட்டைக் காட்டினால் மட்டும் அனுமதிக்கவும்:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>அதன் ஆறு இலக்கக் குறியீடு PadForge-இன் கேள்வி அட்டையில் தெரியும். அதன் உள்நுழைவுப் பக்கம் அதே குறியீட்டைக் காட்டினால் மட்டும் அனுமதிக்கவும்.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>இது {0} நிலையில், {1} வழியாகச் செயல்படும்.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>அதன் உள்நுழைவு இந்த PC-க்கே திரும்புகிறது, இங்குள்ள எந்த நிரலும் அந்த முகவரியைக் கோரலாம்.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge-இல் உள்நுழை</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} உங்கள் PC-யில் PadForge உடன் செயல்பட கேட்கிறது.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>அது தன்னை {0} என்று அழைக்கிறது.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>உங்கள் PC-யில் PadForge-இன் கேள்வி அட்டை இந்த உள்நுழைவு பற்றிக் கேட்கும். அட்டை இந்தக் குறியீட்டைக் காட்டினால் மட்டும் அங்கே அனுமதிக்கவும்:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>PC-யில் நீங்கள் பதிலளித்ததும் இந்தப் பக்கம் தானாகத் தொடரும்.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>இந்த உள்நுழைவு உங்கள் PC-யில் உள்ள ஒரு நிரலுக்குத் திரும்புகிறது, அங்குள்ள எந்த நிரலும் அந்த முகவரியைக் கோரலாம்.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge இப்போது புதிய இணைய உதவியாளரை ஏற்கவில்லை. உங்கள் PC-யில் PadForge-ஐத் திறந்து, கூடுதல், தானியக்கம் என்பதற்குச் சென்று, இணையத்தில் உதவியாளர்கள் என்பதன் கீழ் ஏற்கத் தொடங்கு என்பதை அழுத்தவும். பிறகு மீண்டும் உள்நுழையவும்.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>இந்த உள்நுழைவு தொடர முடியாது. உதவியாளரில் PadForge-இன் முகவரியை மீண்டும் சேர்த்து உள்நுழையவும்.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>இந்த உள்நுழைவு முடிந்துவிட்டது. உதவியாளரிடமிருந்து மீண்டும் உள்நுழையவும்.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows அதைத் தொடங்கவில்லை</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>அது குறியீடு {0} உடன் முடிந்தது</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>தானியக்கம் ஆஃப் ஆக உள்ளது, எனவே எந்த இணைய உதவியாளரும் PadForge-ஐ அடைய முடியாது. தானியக்கம் இயக்கப்பட்டதும் இணைய உதவி நிரல் தொடங்கும்.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>சரிபார்க்கிறது…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>நிறுவப்படவில்லை.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>நிறுவப்பட்டது, புதியது. ஒரு ஸ்கிரிப்ட் {0} உடன் தொடங்கும்.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} க்காக நிறுவப்பட்டது, புதியது. ஒரு ஸ்கிரிப்ட் {1} உடன் தொடங்கும்.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>நிறுவப்பட்டது. இந்த PadForge-இல் புதிய நகல் உள்ளது.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} க்காக நிறுவப்பட்டது. இந்த PadForge-இல் புதிய நகல் உள்ளது.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>நிறுவுகிறது…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-ஆல் அதைச் சரிபார்க்க முடியவில்லை: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>நிறுவு PadForge-இன் நூலகத்தை அந்த மொழி காணும் இடத்தில் வைக்கும். அதை ஏற்றும் ஸ்கிரிப்ட் மேலே உள்ள நிலையில் சாதனங்களைப் படித்து மேப்பிங்குகளை இயக்கும்.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>நூலகத்தை எங்கும் சேமி</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>நிறுவிய நகல்கள்</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>அனைத்தையும் அகற்று</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>அகற்றப்பட்டது.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ஸ்கிரிப்ட் ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>அதன் ஸ்கிரிப்ட் ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>ஸ்கிரிப்ட்கள் அதன் கட்டுப்பாடுகளுக்குப் பெயரிடுவது {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>ஸ்கிரிப்ட்கள் அதன் விசைகளை KeyA, KeySpace, KeyLeftShift என்பவை போலவும், ஒவ்வொரு விசையையும் அதன் குறியீட்டால் Vk0 முதல் Vk255 வரையிலும் பெயரிடும்.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>நிறங்கள் நேரடியாக {0}-க்குச் செல்லும். நிறச் சுழற்சி அல்லது ஒலியைப் பின்தொடரும் நிறங்கள் போன்ற மாறும் நிறங்கள் அதைச் சென்றடையாது. மாறாத நிறம் சென்றடையும்.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>அனைத்துக் கோப்புகள் (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge சுயவிவரம் (*{0})|*{0}</value></data>

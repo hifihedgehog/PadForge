@@ -191,8 +191,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} 已断开连接。{1} 已没有设备。</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} 已连接</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} 已连接，电量 {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} 台设备已断开连接</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} 台设备已连接</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} 台设备已断开连接：{1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} 台设备已连接：{1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} 反复断开连接</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox（最多 {0} 台）</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation（最多 {0} 台）</value></data>
@@ -384,7 +384,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>某个游戏模组</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>另一个程序占用了管道名称 {0}。请关闭该程序。</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows 拒绝了管道 {0}，因此程序无法连接。</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>没有程序已连接。</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>开。没有程序已连接。</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>已连接：{0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>未知程序</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}，签名者：{1}</value></data>
@@ -418,7 +418,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>在 PadForge 再次启动之前不能再做这类操作</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge 没有这个工具</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>程序读取的是较旧的状态</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>没有这个设置</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>没有对应此 ID 的内容</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>该值超出了此设置可接受的范围</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>你没有允许</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>没有人及时回应</value></data>
@@ -435,6 +435,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>显示窗口</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>把窗口收到系统托盘</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>最小化窗口</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>最大化窗口</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>关闭 PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>启动引擎</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>停止引擎</value></data>
@@ -460,6 +461,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>添加设备 {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>设置设备 {0} 的控件</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>移除设备 {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>把设备 {0} 的所有控件归位</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>让 PadForge 运行一个程序。</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>打开文件、文件夹或网页。</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>让 PadForge 向 Windows 发送按键或鼠标输入。</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>从 PadForge 外部导入配置文件。</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>程序执行此操作前，PadForge 会先询问你。</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>对话框</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>宏</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>占用设备 {0} 的控件</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>释放设备 {0} 的控件</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>设置值 {0}</value></data>
@@ -468,25 +477,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>切换配置文件</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>启动或停止引擎</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>开启或关闭虚拟控制器</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>保存诊断快照</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>读取轮询率和驱动程序</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>列出配置文件</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>读取配置文件</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>列出虚拟控制器</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>列出设备</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>读取设备</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>等待你的输入</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>读取控制器的映射</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>列出控制器的宏</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>录制问题</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>查找设置</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>读取设置</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>向你展示某个位置</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>查找 PadForge 中的位置</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>读取 PadForge 中的某个位置</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>读取你看到的内容</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>添加自己的设备</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>操控它的设备</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>移除它的设备</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>按住或松开控件</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>为宏触发器设置值</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>更改设置</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>按下按钮</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>创建配置文件</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>重命名配置文件</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>删除配置文件</value></data>
@@ -497,7 +505,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>更改控制器的类型</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>分配设备</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>设置映射行</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>清除映射行</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>自动映射控制器</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>保存宏</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>删除宏</value></data>
@@ -517,6 +524,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>创建键盘和鼠标控制器</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>开启 {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>更改“{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>按下“{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} 想向你展示 {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>位于 {0}。</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>允许 {0} 以 {1} 级别与 PadForge 配合工作吗？</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} 正在运行 {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>由 {0} 启动</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>签名者：{0}。</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>未签名。</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>在“读取”及以上级别，它能看到每个设备上按下的每个按键，包括键盘。</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>它只询问一次。你可以在“自动化”页面移除它。</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge 的命令行</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>把 {0} 设为 {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>会在网络上监听，其他设备因此可以访问这台电脑。</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>更改驱动程序或 HidHide，其他程序和游戏依赖它们。</value></data>
@@ -538,6 +556,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell 模块 (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>允许</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>不允许</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>暂不</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>显示</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>第 {0} 步，共 {1} 步。</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>点击它以继续。</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>打开 {0}。</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>打开“更多”。</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>来自 {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>来自 {1}，它自称“{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>来自一个自称“{0}”的程序</value></data>
@@ -683,7 +707,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>安装并重启</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>发行说明</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>控制器数据库</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“立即更新”会从 GitHub 下载社区控制器数据库（SDL_GameControllerDB），并把此版本 PadForge 所缺少的映射保存在设置文件中。新映射只用于没有其他方式识别为手柄、尚未分配且不处于强制原始摇杆模式的控制器。重置会移除所有已下载的映射。</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>“立即更新”会从 GitHub 下载社区控制器数据库（SDL_GameControllerDB），并把此版本 PadForge 所缺少的映射保存在设置文件中。它们会立即生效。新映射只用于没有其他方式识别为手柄、尚未分配且不处于“强制原始摇杆模式（绕过手柄重映射）”的控制器。重置会移除所有已下载的映射。“更多”下你自己的行会保留。</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>立即更新</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>更新中…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>正在检查更新…</value></data>
@@ -712,12 +736,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} 的更新未完成安装。请在设置中安装以重试。</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge 已更新到 {0}。</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>内置：{0} 个映射，社区副本日期为 {1}。</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>内置：{0} 个映射，社区副本日期为 {1}。已于 {2} 更新：新增 {3} 个，更改 {4} 个。</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>内置：{0} 个映射，社区副本日期为 {1}。已于 {2} 下载：新增 {3} 行，更改 {4} 行。</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>自上次更新以来，社区数据库没有变化。</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>无法连接 GitHub：{0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge 拒绝了此次下载，因为它不是 PadForge 所期望的控制器数据库。没有任何更改。</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>新映射会在其控制器下次连接时使用。</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>更改后的映射会在 PadForge 下次启动时使用。</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>启动时最小化</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>登录时自动启动</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -815,28 +837,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>版本信息，以及用于排查问题的引擎事件日志。</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>保留诊断日志</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>将引擎事件持续写入日志文件夹中的 diagnostics.log，可用“打开日志文件夹”打开该文件夹。重启后保持启用。文件达到 8 MB 时滚动为 diagnostics.log.old。</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>保存快照</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>将最近的引擎事件保存到新文件。即使诊断日志已关闭也可使用。</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>保存快照…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>把应用、Windows、你的设备和设置的当前状态，连同最近的引擎事件，打开供你在保存前阅读。即使诊断日志已关闭也可使用。</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>打开日志文件夹</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>录制问题</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>开始录制</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>停止录制（{0}）</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}，{1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>录制到你点击“停止录制”、满 10 分钟或 zip 达到 20 MB 为止，然后在 Explorer 中选中该 zip，随时可以附到报告上。</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>先开始，让问题出现，再停止。PadForge 旁边的一个文件中保存了 PadForge 读取、发送和记录的全部内容，以及对出错情况的摘要。录制期间每个设备上按下的每个按键和按钮都在文件中，包括键盘和鼠标。用户名、序列号、地址和输入的名称在写入之前都会被替换。</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>录制到你点击“停止录制”、满 30 分钟或 zip 达到 20 MB 为止，然后打开该录制，供你在保存前阅读。</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>先开始，让问题出现，再停止。然后逐部分阅读其中的内容，并保存到你喜欢的位置。录制期间每个设备上按下的每个按键都在其中，包括键盘和鼠标。用户名、序列号、地址和输入的名称在写入之前都会被替换。</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>正在写入摘要…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>已保存 {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>录制没有开始。检查发现这台 PC 的一个私密值无法被排除在文件之外。</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>录制没有开始。{0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>上一次录制仍在完成中。</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>“保留最近 60 秒”已关闭，因此没有可保存的内容。</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>已完成一次 PadForge 未停止的录制：{0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge 未停止的一次录制正在“主页”等你阅读：{0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>保留最近 60 秒</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>引擎运行时，在内存中保留录制内容的最近一分钟，用于每晚才出现一次的问题。“保存最近 60 秒”会把它写成文件。</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>引擎运行时，在内存中保留录制内容的最近一分钟，用于每晚才出现一次的问题。“保存最近 60 秒”会打开它，供你在保存前阅读。</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>保存最近 60 秒</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>把输入的字母和数字记为同一个键</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>录制时，没有被任何映射或宏读取的字母键和数字键都记为同一个键，每次按下仍保留各自的时间。其他所有按键，以及被映射或宏读取的所有按键，都按实际按下的记录。</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>保留最近 60 秒、把输入的字母和数字记为同一个键</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>录制哪些内容、最近 60 秒、输入的字母</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>保存快照</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge、Windows、你的设备和设置当前的样子，同样要先经过审阅。</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log 位于 PadForge.exe 旁边，你可以在那里查看。</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>录制哪些内容</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>全部开启。关闭的部分不会进入下一次录制，文件会注明它包含哪些部分。</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>适用于每晚才出现一次的问题。</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>录制内容在等你到“主页”阅读。</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>摘要</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>设置和设备</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>输入</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>输出</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>反馈</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>时序</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>窗口和错误</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>活动</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>诊断日志行</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>阅读你的录制内容</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} 至 {1}，{2}。{3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>{0} 时的快照。</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 分钟</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} 分钟</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 秒</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} 秒</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>由你停止。</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>达到 {0} 后自动停止。</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>压缩包中达到 {0} 后自动停止。</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>由宏停止。</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>由程序或 --record stop 停止。</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>由启动它的助手停止。</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge 关闭时停止。</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>最近 60 秒，保存在内存中。</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>先阅读你将要分享的内容。关闭某个部分即可不包含它，然后保存。除非你自己发布，否则内容不会离开这台电脑。</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}，分享时的样子</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>显示 {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>已排除</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>未录制</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>文本 {0}，压缩后 {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>文本 {0}，你分享的压缩包中 {1}。录制在压缩包达到 {2} 或经过 {3} 后停止。</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>脱敏检查：PadForge 已替换 {0}，涉及 {1}。你保留的部分中没有这台电脑的名称、序列号或地址。</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} 个值</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 个值</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} 种私密类型</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 种私密类型</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>脱敏检查：你保留的部分中仍有 {0} 个这台电脑的自有值。请关闭这些部分或删除该录制。在此之前“保存…”不可用。</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>脱敏检查：你保留的部分中仍有一个这台电脑的自有值。请关闭该部分或删除该录制。在此之前“保存…”不可用。</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>录制期间此部分没有发生任何事。</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>删除</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>复制摘要</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>已复制</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>保存…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>保存录制内容</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>zip 文件</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>未保存。{0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>以你的用户身份保存，第一次保存到“下载”文件夹，之后保存到你上次保存的位置，并在文件资源管理器中显示。无人在此页面时停止的录制（达到上限、宏、程序、助手工具或 --record stop）会在“主页”等待此次审阅，7 天后若未保存则删除。程序只会被告知它在等待，不会被告知位置。</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} 的一份问题录制正在等你阅读。</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>审阅</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>标记录制</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>应用版本</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 运行时</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 版本</value></data>
@@ -2273,31 +2352,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>鼠标位置 X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>鼠标位置 Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>灵敏度</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>每个来源的光标灵敏度。1.0 时，从中心移动屏幕宽度的 10% 即可使摇杆完全偏转。大于 1.0 时用更少的光标移动即可完全偏转，小于 1.0 时需要更多。</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>每个来源的光标灵敏度。1.0 时，从指针所在显示器的中心移动该显示器宽度的 10% 即可使摇杆完全偏转。大于 1.0 时用更少的光标移动即可完全偏转，小于 1.0 时需要更多。</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>鼠标行程 X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>鼠标行程 Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>到极限的行程</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>鼠标从中心移动到极限的距离，以鼠标上报的计数为单位。数值越大，转向越细腻，手需要移动的距离也越长。</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>鼠标或滚轮从中心移动到极限的距离，以其上报的计数为单位。数值越大，转向越细腻，手需要移动的距离也越长。</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>在鼠标的设备面板上设置鼠标 DPI 后，行程也会以厘米显示。</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>计数</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>回中</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>“关”让方向盘停在手松开的位置。“弹簧”会在回位时间内把它拉回。“来自遥测”像汽车前轮那样按游戏的车速和抓地力把它拉回：静止时不动，车速越高越紧，轮胎打滑时变轻。没有游戏发送遥测时，效果同弹簧。“来自游戏的力”则让虚拟方向盘自己的力反馈来转动它。</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>“关”让方向盘停在手松开的位置。“弹簧”会在回位时间内把它拉回。“来自遥测”像汽车转向那样按游戏的车速和抓地力把它拉回：靠近中心时力度大，越往外越柔和，静止时不动，车速越高越紧，轮胎打滑时变轻。没有游戏发送遥测时，按干燥路面时速 100 km/h 的情形拉回。“来自游戏的力”则让虚拟方向盘自己的力反馈来转动它。</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>关</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>弹簧</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>来自遥测</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>来自游戏的力</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>回位时间</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>弹簧把方向盘拉回 95% 所需的时间。“来自遥测”在干燥路面时速 100 km/h 时需要这么长。</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>弹簧把方向盘拉回 95% 所需的时间。0 表示立即回中。“来自遥测”在干燥路面时速 100 km/h 且从接近中心开始时需要这么长。</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>转向</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>“始终”让鼠标随时转向。“按住时”只在按住转向输入时让它转向。“切换”每按一次转向输入就开启或关闭转向。鼠标不转向时，方向盘停在原处或回中，因此一只鼠标既能转向也能环顾四周。</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>“始终”让鼠标随时转向。“按住时并回中”只在按住“转向输入”时让它转向，然后把它带回中心：来源有回中设置时按回中进行，没有时立即回中。“按住时并保持”只在按住该输入时让它转向，松手后停在原处。“切换”每按一次“转向输入”就开启或关闭转向。因此一只鼠标既能转向也能环顾四周。</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>始终</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>按住时</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>按住时并回中</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>切换</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>转向输入</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>让鼠标转向的按钮，与鼠标行程在同一设备上。未选择时，鼠标始终转向。</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>让鼠标转向的按钮，与来源在同一设备上。未选择时，鼠标始终转向。</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>平滑</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>平稳处理上报不均匀的鼠标。方向盘会比手慢大约这么长时间。0 表示关闭。</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>平稳处理上报不均匀的鼠标。摇杆会比手慢大约这么长时间。0 表示关闭。</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>高速时的极限</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>开启游戏遥测时，在 200 km/h 时还剩多少极限行程。为 100% 时，任何车速下都有完整的极限行程。</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>滚轮行程</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>滚轮行程（横向）</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>鼠标移动的快慢。手停下时即松开。</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>指针在其所在显示器上的位置，相对于显示器中心或转向开始时的位置。</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>鼠标已移动的距离，停在手离开的位置，就像方向盘一样。</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>滚轮刻度累积为一个位置，在精细滚动的滚轮上精度完整。</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>横向滚轮刻度累积为一个位置，在精细滚动的滚轮上精度完整。</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>每个刻度推一下，随即回到静止位置。</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>按住时并保持</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>灵敏度</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>速度对应多少摇杆幅度。灵敏度为 1.00 时，无论轮询率和鼠标报告率如何，摇杆都会在每秒 16,000 计数时达到完全偏转。</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>回到中心</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>鼠标减速或停止后，摇杆回中的速度不会超过此值。0 表示随鼠标一起回中。</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>从开始转向的位置起算</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>有“转向输入”时，摇杆从转向开始时指针所在的位置起算，就像手机屏幕上的摇杆从手指落下处开始。关闭时，从指针所在显示器的中心起算。</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>此轴以相对方式移动</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>适用于报告转过多远的轨迹球或旋钮。开启后，此轴像鼠标行程一样保持一个位置，并采用行程设置。Windows 不会说明哪些轴以这种方式移动。</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}，{1} 厘米</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>预览</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>展示这一类如何跟随你自己的鼠标。选中之前不会映射任何内容。</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>预览中。请移动鼠标。</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>停在 {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>位于 {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>右 {0}%</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>左 {0}%</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>上 {0}%</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>下 {0}%</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>中心</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>在按住 {0} 时移动。</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>鼠标 DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>这只鼠标每移动一英寸所上报的计数，按其厂商软件的设置。</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>设置 DPI 后，鼠标行程也会以厘米显示它的行程。0 表示未设置。</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>触控板点击</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} Y</value></data>
@@ -3960,8 +4072,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>自动重连、端口、配对身份、通过地址连接</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>端口、DSX.exe 替身程序</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>端口、满速和自定义格式</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML、技能</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>其他助手、网络上的助手</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>用头部追踪器或 VR 头显环顾四周，双拇指不必离开按键。</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>把驾驶游戏发送的速度、踏板和档位映射为输入，与其他输入一样使用。</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>把控制器的体感数据发送给读取 DSU 体感源的模拟器。</value></data>
@@ -3982,6 +4093,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>菜单打开时显示其环形、网格或条形。</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Shift 层开启时显示该层的名称，时长由该层设定。</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>配置文件切换时显示配置文件的名称。</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>虚拟控制器是否刚刚通过快捷键或宏开启或关闭。</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>设备断开时显示已映射设备的名称。</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>设备连接时显示已映射设备的名称。</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>复制地址</value></data>
@@ -4089,35 +4201,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>程序可以切换和释放配置文件，启动和停止引擎，开启和关闭虚拟控制器，显示和隐藏窗口，关闭 PadForge，保存诊断快照，并询问当前运行的内容。</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>包含“命令”级别的全部权限，并且程序可以查看设备、虚拟控制器、映射、配置文件和设置，实时跟踪每个设备的输入，并在 PadForge 中向你展示某个位置。处于“读取”级别的程序能看到每个设备上按下的每个按键，包括输入到以管理员身份运行的窗口中的按键。</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>包含“读取”级别的全部权限，并且程序可以添加自己的设备并操控它们，按住任何设备的某个控件，并把指定的值交给宏触发器。</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>包含“发送输入”级别的全部权限，并且程序可以更改你在各页面上能更改的内容。</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>包含“发送输入”级别的全部权限，并且程序可以更改你在各页面上能更改的内容。有些更改总会先在 PadForge 的询问卡片上询问你。</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>助手</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>把这段内容粘贴到助手的 MCP 设置中。之后助手会按上方的级别与 PadForge 配合工作。</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>复制为 TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>读取 TOML 的助手</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>“添加”会把 PadForge 连同它的技能放进该助手。之后它会按上方的级别工作，它的话会显示在它所指位置的旁边，名称下方。</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>脚本</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>脚本库</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>保存脚本库…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>一个文件，适用于 AutoHotkey v2、Python 或 PowerShell。加载它的脚本可以按上方的级别读取设备并驱动映射。</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>一个文件，适用于 AutoHotkey v2、Python 或 PowerShell，保存在你选择的位置。</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>等你回应</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>活动</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>还没有程序发出过请求。每次请求都会列在这里，并附上处理结果。</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>撤销</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>助手技能</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>保存技能…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge 无法保存：{0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>当处于“读取”或更高级别的程序已连接时，它能看到每个设备上按下的内容，包括键盘。</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>插件</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>运行插件</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>没有插件在运行。</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>插件以你的权限运行，而不是 PadForge 的权限。</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>内置</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>测试控制器</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>一个自己动起来的控制器，每次动一个控件，这样没有硬件也能试用映射。</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>速度</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>慢</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>正常</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>快</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>最快</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>回放</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>按录制时的时间节奏，把问题录制内容作为原来的设备回放出来。它们是这台电脑上的新设备，按你或配置文件的设定进行映射。</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>录制内容</value></data>
@@ -4132,10 +4233,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>问题录制|*.zip;*.log|所有文件|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge 无法播放 {0}。它不是问题录制内容，或者其中没有任何设备的输入。</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>你的插件</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>插件是为 PadForge 添加设备的程序。只要引擎在运行，PadForge 就会以你的普通权限启动它。</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>添加插件…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>程序和脚本|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|所有文件|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>批准…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>批准并重启…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>随引擎启动</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>启动前正在检查文件</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>已退出，退出码 {0}。{1} 秒后重新启动。</value></data>
@@ -4166,10 +4266,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} 已在列表中。</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge 最多运行 16 个插件。请先移除一个，再添加新的。</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>运行中的插件：{0}。它们添加的设备：{1}。</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} 在连续失败五次后已停止。</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} 自你批准后已更改。</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} 无法启动。</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>已添加 {0}。</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>签名者：{0}。</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>未签名。</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>插件运行时，它的设置会显示在这里。</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>它没有声明任何设置。</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge 无法读取它的设置：{0}。</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>一分钟没有响应，已被结束</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>它的文件在运行期间已更改</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>由 {0} 添加。</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} 设置</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>选取</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>按下一个控件…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>未选取</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>添加一个插件，或把它的文件拖到此页面。PadForge 会显示它的路径、签名者和 SHA-256，并在运行前询问你。插件以你的权限运行，而不是 PadForge 的权限。</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>按原设备的时间节奏，把问题录制内容作为产生它的设备回放出来。</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>运行中。</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>运行中，手动。</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>移动内容</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>摇杆和扳机</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>摇杆</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>扳机</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>模式</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>扫描</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>圆周</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>移动时长</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>休息时长</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>按下按键</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>按下导航按键</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows 应用会在最前面的窗口中响应虚拟 Xbox 控制器的 A、B、返回、开始和十字键，指南键会打开 Xbox Game Bar。</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>转动十字键</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>原因同上。</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>按键时长</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>控制器</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>手动</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>停止自动运动。请在下方用鼠标设置它的输入。</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>左摇杆</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>右摇杆</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>左扳机</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>右扳机</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>每秒读取次数</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>插件工具包，以及所选插件的日志</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>插件工具包</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>保存插件工具包…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>一个 C# 小插件，以及适用于 AutoHotkey、Python 和 PowerShell 的同款插件，每个文件都附有构建或运行方法。</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>每个动词、事件和设置类型的指南，C# 插件的构建脚本，以及适用于 AutoHotkey、Python 和 PowerShell 的同款插件。</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>日志</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>选择一个插件以查看其日志。</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>此插件的日志中还没有内容。</value></data>
@@ -4867,6 +5010,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge 在游戏过程中显示的屏幕指示器。关闭任何一项都不会改变行为，只会改变是否显示。</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>切换层浮出控件</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>配置文件切换叠加层</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>控制器开启或关闭</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>设备断开提示</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>设备连接提示</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>在径向或触摸菜单激活期间显示屏幕上的环形或网格。即使关闭叠加层，菜单仍会触发。</value></data>
@@ -5606,6 +5750,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>秒表</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>灯条颜色</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>离线设备</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>全部已连接</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}：{1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>通过 Logitech Gaming Software</value></data>
@@ -5648,6 +5794,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>屏幕按原始大小显示你选择的图片。比屏幕大的图片会显示一个与屏幕等大的窗口，“平移键盘屏幕图片”宏可以移动该窗口。在 S.T.R.I.K.E. 7 上，用手指在屏幕上拖动也可以移动它。</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>屏幕显示秒表，秒表由“秒表”宏启动、暂停和重置。所有屏幕显示的是同一个秒表。</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>屏幕显示此屏幕所供给的最低编号插槽中 DualShock 4 或 DualSense 灯条的颜色；若它没有供给任何插槽，则显示所有插槽中最低编号者的灯条颜色。单色屏幕以点阵图案显示其亮度。在颜色传到灯条之前，PadForge 不显示任何内容。</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>屏幕列出尚未连接的已映射设备，名称与“设备”页面显示的相同，没有缺失时显示“全部已连接”。</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>图片 (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|所有文件 (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>平移</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>平移 X</value></data>
@@ -5899,6 +6046,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>行驶中（非 0）</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>游戏遥测</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>脚本值</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>设备连接</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>速度 (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>转速（占最大值的百分比）</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>档位（-1 为倒档，0 为空档）</value></data>
@@ -6004,6 +6152,7 @@
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>叠加层显示你选择的图片，按比例缩放以填满其窗口。缩放高于 100% 时，它只显示图片的一部分，例如用于地图。“平移键盘屏幕图片”宏可移动该部分，在 PadForge 位于前台时按住鼠标左键拖动也可以。</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>叠加层显示秒表，秒表由“秒表”宏启动、暂停和重置。所有键盘屏幕显示的是同一个秒表。</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>叠加层显示你在此处选择的槽位中 DualShock 4 或 DualSense 灯条的颜色，或有颜色的最低槽位中的灯条颜色。在颜色传到灯条之前，它不显示任何内容。</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>叠加层列出尚未连接的已映射设备，名称与“设备”页面显示的相同，没有缺失时显示“全部已连接”。</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>屏幕叠加层 {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>添加叠加层</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>有颜色的最低槽位</value></data>
@@ -6346,6 +6495,245 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>“打开方式”在保持时间之前松开时，打开或关闭键盘。更长的按压不起作用。</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>“打开方式”在连按时间内按下三次时，打开或关闭键盘。</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>“打开方式”按下一次后连按时间结束时，打开或关闭键盘。在该时间内再按第二次则取消。</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>关。没有程序能访问 PadForge。</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} 和 {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}、{1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge 活动：{0} 次调用，最早的在前。在这些之前的调用：{1} 次。</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge 活动：{0} 次调用。在它之前的调用：{1} 次。</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} 次更早的调用已丢弃。“活动”保留最新的 {1:N0} 次。</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} 次更早的调用已丢弃。“活动”保留最新的 {1:N0} 次。</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>导出…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>导出活动</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>文本文件</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>展开</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>更新</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>{0} 的更多选项</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>把技能另存为 ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>打开其设置文件</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>已保存。请在 {0} 中，到 {2} 下添加 {1}。</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} 还没有设置文件。“添加”会创建一个。</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge 在这台电脑上没有找到其厂商记录了 Windows 配置方法的助手程序。“更多”下的“复制设置”适用于其他任何助手。</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge 无法检查助手程序：{0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>未添加。</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>已添加。</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>已添加。当前已连接。</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>已添加。此后尚未连接。已打开的助手需要关闭再重新打开才能看到 PadForge。</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>已为另一个 PadForge 添加。“更新”会让它指向这一个。</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>已添加。它的 PadForge 技能比这个 PadForge 旧。</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>已添加，但缺少它的 PadForge 技能。</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>已添加。它的 PadForge 技能来自更新的 PadForge。</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>它只能通过上传方式接收技能。</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>“自动化”开启后，已添加的助手才能访问 PadForge。</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>正在添加…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>正在移除…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>正在更新…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>未能完成：{0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>其他助手</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>对于上面没有列出的助手，“复制设置”会给出可放入其 MCP 设置的条目，“复制消息”会给出一小段适用于任何聊天的文字，说明如何连接以及先问什么。</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>复制设置</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>复制消息</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>已复制。</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>未复制：{0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>请连接到 PadForge，我电脑上的控制器映射程序。它是一个在本机运行的 MCP 服务器，通过 stdio 通信：命令是 {0}，参数为 --mcp。JSON 设置如下：{1} 连接后，请先调用它的 status 工具，然后问我想设置什么，例如：“向我展示在哪里映射手柄的扳机。”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge 的“自动化”现在是关闭的：请先在 PadForge 的“附加功能”下的“自动化”中把它打开。</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>允许的程序</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>需要“读取”或更高级别的程序会在首次连接时询问一次，并获得它所请求的级别，最高不超过上方的级别。你在上方添加的助手会因此被允许。</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}。{1}。{2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>当前已连接。</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>上次使用 {0}。</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>尚未使用。</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>已连接：{0}。点击打开“自动化”。</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>这台电脑上：{0}。来自网络：{1}。点击打开“自动化”。</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>来自网络的连接：{0}。点击打开“自动化”。</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL 映射</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>识别为</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>来源</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>手柄“{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>摇杆。SDL 没有它的映射。</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>摇杆。PadForge 以原始方式读取它，因此不使用 SDL 的映射。</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>摇杆，按你的行布局为手柄。</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>引擎运行时，SDL 才会读取设备。</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>内置的社区副本，{0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>已下载 {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge 自己的文件</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>你的，添加于 {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 变量，SDL 会把它排在你添加的任何行之上</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>复制 SDL 映射</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>以社区数据库中一行的形式，把设备的映射放到剪贴板，使用设备的 ID，校验和与版本置零。</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>粘贴 SDL 映射…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>接受一行用于此设备的内容，检查后保存为你的，并立即应用。</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>查找映射…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>按名称搜索 PadForge 携带的每一行，并把你选中的一行应用到此设备，适用于 ID 不同的仿制品。</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>猜测布局</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>根据设备的轴、按键和方向帽猜测手柄布局，适用于没有数据库收录的设备。请在“测试输入”中检查。</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>移除我的行</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>“移除我的行”会恢复之前的行和控制器行。</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>重新映射</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>按 SDL 的布局，重新生成设备在其所在每个控制器上的行，与分配设备时相同。</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>社区数据库页面</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>该行，以及它与 {0} 的不同之处</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>该行</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>控制器</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} 的行</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>它现在的输入</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL 的行所说</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>不在 SDL 的行中</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}，不同</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge 未使用：{0}。</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>该行</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>已复制。</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>已复制。SDL 的格式无法容纳 {0}。</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>宏</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>曲线</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>死区</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>键盘和鼠标输出</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>连发、切换和其他动作</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} 和 {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>没有可复制的内容：SDL 没有此设备的映射，它也不在任何控制器上。</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>另一个程序正在使用剪贴板。没有复制任何内容。</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>你的行已移除。设备恢复为之前的读取方式。</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>已按 SDL 的布局重新映射：{0}。</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>已在使用。该行属于你，并对此设备优先生效。</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>已保存为你的。引擎运行且设备连接后即生效。</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>已保存为你的，但 SDL_GAMECONTROLLERCONFIG 变量中有此设备的一行，SDL 会优先使用它而不是你的。</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL 没有接受该行。此设备没有任何变化。</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>粘贴 SDL 映射</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>为 {0} 粘贴 SDL 映射</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>为 {0} 查找映射</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>为 {0} 猜测布局</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>从文件或剪贴板添加行</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>粘贴</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>打开文件…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>映射文件 (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>文件超过 4 MB。社区的整个文件约为 0.6 MB。</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>按名称、ID 或 VID:PID 搜索</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge 携带的行</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>没有匹配的行。</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>所选的行会以设备自己的 ID 应用到 {0}，经过与“粘贴”相同的检查和相同的选择。</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL 映射行</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>适用于此设备的一行。</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>猜测的布局。</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows，{0} 个字段，其 ID 与此设备匹配。</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows，{0} 个字段，来自另一总线或版本上的同一厂商和产品。它会以此设备自己的 ID 保存。</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows，{0} 个字段，是另一台设备的行。它会以此设备自己的 ID 保存。</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} 个字段。SDL 不读取此设备，因此 PadForge 按该行来布局它的输入。</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} 个字段，来自设备的轴、按键和方向帽。请在“测试输入”中检查，然后在此保留或修改。</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows，{0} 个字段，其 ID 与此设备匹配。</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows，{0} 个字段，来自另一总线或版本上的同一厂商和产品。它会以此设备自己的 ID 保存。</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows，{0} 个字段，是另一台设备的行。它会以此设备自己的 ID 保存。</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} 个字段。SDL 不读取此设备，因此 PadForge 按该行来布局它的输入。</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} 个字段，来自设备的轴、按键和方向帽。请在“测试输入”中检查，然后在此保留或修改。</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>这会改变 {0} 的读取方式。它在 {1} 中的行会按新布局重新映射。</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>这会改变 {0} 的读取方式。它不在任何控制器上，因此不会有行改变。</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>读取 {0} 的配置文件快捷方式会保留原先设置的输入。</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>该行会以你的名义保存在 PadForge.xml 中，并对此设备优先于其他所有来源。“移除我的行”会恢复旧的行。</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>这些行会以你的名义保存在 PadForge.xml 中，并对它们的设备优先于其他所有来源。“控制器数据库”行的“更多”下的“清除”会移除它们。</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>适用于 Windows 的有 {0} 行。适用于其他系统的 {1} 行被跳过。</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>适用于 Windows 的有 {0} 行。适用于其他系统的 {1} 行被跳过。</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} 行被拒绝。第一条原因：{1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>请粘贴一行，或 gamecontrollerdb.txt 文件的文本。</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>该文本不是 SDL 控制器数据库中的行：应为 32 位十六进制的 ID，然后是名称，再是 a:b0 这样的字段。</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>这些行属于其他系统。PadForge 读取适用于 Windows 或不限系统的行。</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>该行的 ID 不是设备的 ID。它需要 32 位十六进制数字。</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>该行的名称为空、超过 128 个字符，或含有 SDL 视为字段的字符。</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>该行带有提示或 Android 字段，PadForge 不接受。</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>该行有一个 SDL 不认识的字段。</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>有绑定不是 SDL 的格式，例如 b3、a2、+a2、a2~ 或 h0.4。</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>该行把同一个字段给出了两次。</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>该行超过 1,024 个字符。</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>该行没有绑定任何控件。</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>你的行</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>你的行</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>你在此添加的行，或在设备的“SDL 映射”卡片上粘贴的行，对它们的设备优先于其他所有来源，并在重置后保留。</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>从文件或剪贴板添加行…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} 行，对它们的设备优先于其他所有来源。</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} 行，对其设备优先于其他所有来源。</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>暂无。</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>立即生效。</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>从网络访问 PadForge</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>运行在网站上的助手会通过这台电脑上的隧道程序访问 PadForge。开启前会先询问你。</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>从网络访问 PadForge？</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge 会启动一个不带管理员权限、仅在这台电脑上监听的辅助程序，你选择的隧道程序会为它提供一个公开地址。网络助手只有在你于 PadForge 的询问卡片上允许其登录后才能进入，并以上方的级别工作。</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>开启</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>网络上的助手</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>隧道</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>无</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>我粘贴的地址</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>正在以你的权限启动。</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>正在以你的权限运行。它的地址每次启动都不变。</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>正在以你的权限运行。快速隧道每次启动都会换新地址，因此助手需要重新添加。</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>已停止。</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>已停止。它最后的输出：{0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>无法启动。</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>它已不在这台电脑上。</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>这台电脑上没有找到隧道程序。PadForge 可配合 cloudflared、devtunnel、ngrok 和 Tailscale Funnel 使用，也可使用你自己隧道的地址。</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>选择一个隧道，让 PadForge 获得公开地址。</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>这台电脑上还有：{0}。</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}，地址保持不变</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}，快速隧道每次都换新地址</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>请把你自己的隧道指向 http://127.0.0.1:{0}，然后粘贴它的 https 地址。具名的 Cloudflare 隧道、持久的 dev tunnel、Tailscale Funnel 和 ngrok 自己的域名会保持地址不变。</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>请粘贴 https 地址，路径只能是 /mcp，与你的隧道给出的一致。</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>正在启动 PadForge 的网络辅助程序。</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge 的网络辅助程序已停止（{0}）。请把“从网络访问 PadForge”关闭再打开以重新启动。</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>地址</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>还没有公开地址。</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>添加到 Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>已复制。</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>接受新的网络助手</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>开始接受</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>停止接受</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>接受至 {0}。</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>未接受。点击“开始接受”会开放五分钟。</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>在助手中添加该地址并登录。每次登录都会在其登录页面和 PadForge 的询问卡片上显示各自的六位数代码。只有两个代码一致时才点“允许”。其他时候登录会被拒绝，也不会询问你。</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>已允许的网络助手</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>暂无。</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>它的登录返回到 {0}。</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>它自称 {0}。</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>于 {0} 允许，上次使用 {1}。</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>于 {0} 允许，尚未使用。</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>撤销</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>它自己的 Secure MCP Tunnel 直接运行 PadForge，不需要这里的地址或登录。请把该命令复制到那个隧道的设置中。</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>复制命令</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge 不下载任何隧道程序，也不保存其他公司的密钥。网络助手以上方的级别工作。</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>允许 {0} 从网络与 PadForge 配合工作吗？</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>它的登录返回到 {0}。</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>它自称 {0}。</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>只有在它的登录页面显示此代码时才点“允许”：</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>它的六位数代码显示在 PadForge 的询问卡片上。只有在它的登录页面显示相同代码时才点“允许”。</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>它以 {0} 级别工作，经由 {1}。</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>它的登录返回到这台电脑，这里的任何程序都可能占用该地址。</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>登录 PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} 请求在你的电脑上与 PadForge 配合工作。</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>它自称 {0}。</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>在你的电脑上，PadForge 的询问卡片会询问此次登录。只有卡片显示此代码时才在那里点“允许”：</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>你在电脑上回答后，此页面会自动继续。</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>此登录返回到你电脑上的一个程序，那里的任何程序都可能占用该地址。</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge 现在不接受新的网络助手。请在你的电脑上打开 PadForge，进入“附加功能”的“自动化”，在“网络上的助手”下点击“开始接受”，然后重新登录。</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>此登录无法继续。请在助手中重新添加 PadForge 的地址并登录。</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>此登录已结束。请从助手重新登录。</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows 没有启动它</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>它已退出，代码为 {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>“自动化”已关闭，因此没有网络助手能访问 PadForge。“自动化”开启后，网络辅助程序才会启动。</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>正在检查…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>未安装。</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>已安装且为最新。脚本以 {0} 开头。</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>已为 {0} 安装且为最新。脚本以 {1} 开头。</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>已安装。此 PadForge 有更新的副本。</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>已为 {0} 安装。此 PadForge 有更新的副本。</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>正在安装…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge 无法检查它：{0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>“安装”会把 PadForge 的库放到该语言能找到的位置。加载它的脚本可以按上方的级别读取设备并驱动映射。</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>把库保存到任意位置</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>已安装的副本</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>全部移除</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>已移除。</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>脚本 ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>它的脚本 ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>脚本把它的控件命名为 {0}。</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>脚本把它的按键命名为 KeyA、KeySpace、KeyLeftShift 等，每个按键也可用代码指代，Vk0 到 Vk255。</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>颜色直接发送到 {0}。颜色循环、随声音变化的颜色等动态颜色无法送达。固定不变的颜色可以。</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>所有文件 (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge 配置文件 (*{0})|*{0}</value></data>

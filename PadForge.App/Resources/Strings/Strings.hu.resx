@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} lecsatlakozott. Nincs több eszköze: {1}.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} csatlakozott</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} csatlakozott, az akkumulátor töltöttsége {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} eszköz lecsatlakozott</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} eszköz csatlakozott</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} eszköz lecsatlakozott: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} eszköz csatlakozott: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} folyton lecsatlakozik</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (legfeljebb {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (legfeljebb {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Auto-újracsatlakozás, port, párosítási identitás, csatlakozás cím alapján</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe helyettesítő</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portok, Teljes sebesség, Egyéni formátumok</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Más asszisztensek, asszisztensek a weben</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Nézzen körül fejkövetővel vagy VR-headsettel, miközben mindkét hüvelykujja a gombokon marad.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Képezze le egy autós játék által küldött sebességet, pedálokat és sebességfokozatokat, mint bármely más bemenetet.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Kontrollermozgás küldése olyan emulátoroknak, amelyek DSU mozgásforrást olvasnak.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>A menü gyűrűje, rácsa vagy sávja, amíg nyitva van.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>A réteg neve, amikor egy váltóréteg bekapcsol, az adott réteg által megadott ideig.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>A profil neve, amikor a profil megváltozik.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Hogy a virtuális kontrollerek éppen bekapcsoltak vagy kikapcsoltak, a gyorsbillentyűből vagy egy makróból.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>A hozzárendelt eszköz neve, amikor lecsatlakozik.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>A hozzárendelt eszköz neve, amikor csatlakozik.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Cím másolása</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>A programok válthatnak profilt és elengedhetik azt, elindíthatják és leállíthatják a motort, be- és kikapcsolhatják a virtuális kontrollereket, megjeleníthetik és elrejthetik az ablakot, bezárhatják a PadForge-ot, menthetnek diagnosztikai pillanatképet, és megkérdezhetik, mi fut éppen.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Minden, ami a Parancsok szinten, ezen felül a programok láthatják az eszközöket, a virtuális kontrollereket, a leképezéseket, a profilokat és a beállításokat, valós időben követhetik minden eszköz bemeneteit, és megmutathatnak Önnek egy helyet a PadForge-ban. Az Olvasás szinten lévő program minden eszköz minden lenyomott billentyűjét látja, a rendszergazdaként futó ablakokba gépelteket is.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Minden, ami az Olvasás szinten, ezen felül a programok hozzáadhatnak saját eszközöket és vezérelhetik azokat, bármely eszköz egy vezérlőelemét lenyomva tarthatják, és megnevezett értékeket adhatnak át a makróindítóknak.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Minden, ami a Bemenetek küldése szinten, ezen felül a programok módosíthatják mindazt, amit Ön az oldalakon módosíthat.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Minden, ami a Bemenetek küldése szinten, ezen felül a programok módosíthatják mindazt, amit Ön az oldalakon módosíthat. Egyes módosítások előtt mindig megkérdezi Önt a PadForge kérdéskártyáján.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asszisztensek</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Illessze be ezt egy asszisztens MCP-beállításai közé. Az asszisztens ezután a fenti szinten dolgozik a PadForge-dzsal.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Másolás TOML formátumban</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML-t olvasó asszisztensek</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>A Hozzáadás a PadForge-ot a skilljével együtt beteszi az adott asszisztensbe. Az ezután a fenti szinten dolgozik, és a szavai annak mellett jelennek meg, amire mutat, a neve alatt.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Szkriptek</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Szkriptkönyvtár</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Könyvtár mentése…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Egyetlen fájl AutoHotkey v2, Python vagy PowerShell számára. Az azt betöltő szkript a fenti szinten olvassa az eszközöket és vezérli a leképezéseket.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Egyetlen fájl AutoHotkey v2, Python vagy PowerShell számára, oda írva, ahová Ön választja.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Az Ön válaszára vár</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Tevékenység</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Még egy program sem hívott. Minden hívás itt jelenik meg az eredményével együtt.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Visszavonás</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill asszisztensek számára</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>A Skill mentése…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>A PadForge nem tudta menteni: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Amíg egy Olvasás vagy magasabb szintű program csatlakozik, látja, mi van lenyomva minden eszközön, a billentyűzeteket is beleértve.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Bővítmények</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Bővítmények futtatása</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Egy bővítmény sem fut.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>A bővítmény az Ön jogaival fut, nem a PadForge jogaival.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Beépített</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Tesztkontroller</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Egy magától mozgó kontroller, egyszerre egy vezérlőelemmel, így egy leképezés hardver nélkül is kipróbálható.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Sebesség</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lassú</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normál</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Gyors</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Leggyorsabb</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Visszajátszás</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Egy problémafelvételt játszik vissza az azt készítő eszközökként, az eredeti időzítéssel. Ezek új eszközök ezen a számítógépen, és úgy vannak leképezve, ahogy Ön vagy egy profil leképezi őket.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Felvétel</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problémafelvételek|*.zip;*.log|Minden fájl|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>A PadForge nem tudja lejátszani a(z) {0} fájlt. Nem problémafelvétel, vagy nem tartalmaz egyetlen eszköz bemenetét sem.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Az Ön bővítményei</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>A bővítmény olyan program, amely eszközöket ad a PadForge-hoz. A PadForge a szokásos jogaival indítja el, valahányszor a motor fut.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Bővítmény hozzáadása…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programok és szkriptek|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Minden fájl|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Jóváhagyás…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Jóváhagyás és újraindítás…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>A motorral együtt indul</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Fájl ellenőrzése az indítás előtt</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Kilépett a(z) {0} kóddal. {1} mp múlva újraindul.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>A(z) {0} már szerepel a listán.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>A PadForge legfeljebb 16 bővítményt futtat. Egy újabb hozzáadásához távolítson el egyet.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Futó bővítmények: {0}. Általuk hozzáadott eszközök: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} öt hiba után leállt.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} a jóváhagyás óta megváltozott.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nem indult el.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Hozzáadott: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Aláíró: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Aláíratlan.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>A beállításai itt jelennek meg, amíg fut.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Nem deklarál beállításokat.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>A PadForge nem tudta beolvasni a beállításait: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Egy perc hallgatás után leállítva</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>A fájlja megváltozott futás közben</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Hozzáadta: {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} beállításai</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Kiválasztás</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Nyomjon meg egy vezérlőelemet…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Nincs kiválasztva</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Adjon hozzá egy bővítményt, vagy húzza a fájlját erre az oldalra. A PadForge megmutatja az elérési útját, az aláíróját és az SHA-256 értékét, és futtatás előtt megkérdezi Önt. A bővítmény az Ön jogosultságaival fut, nem a PadForge-éival.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Egy problémafelvételt játszik vissza az azt készítő eszközökként, azok időzítésével.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Fut.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Fut, kézi vezérléssel.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Mi mozog</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Karok és ravaszok</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Karok</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Ravaszok</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Minta</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Söprés</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Kör</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Mozgási idő</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Pihenési idő</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Gombok megnyomása</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Navigációs gombok megnyomása</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>A Windows-alkalmazások egy virtuális Xbox-kontroller A, B, Back, Start és D-pad gombjaira reagálnak az előtérben lévő ablakban, a Guide pedig megnyitja az Xbox Game Bar alkalmazást.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>A D-pad forgatása</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Ugyanezért.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Nyomvatartási idő</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Kontrollerek</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Kézzel</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Leállítja a mozgást. A bemeneteit lent, az egérrel állíthatja be.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Bal kar</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Jobb kar</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Bal ravasz</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Jobb ravasz</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Olvasások másodpercenként</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>A bővítménykészlet és egy kiválasztott bővítmény naplója</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Bővítménykészlet</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>A bővítménykészlet mentése…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Egy kis bővítmény C# nyelven, és ugyanez a bővítmény AutoHotkey, Python és PowerShell számára, minden fájlhoz leírással, hogyan kell lefordítani vagy futtatni.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Útmutató minden igéhez, eseményhez és beállításfajtához, egy fordítóscript a C# bővítményhez, és ugyanez a bővítmény AutoHotkey, Python és PowerShell számára.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Napló</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Válasszon egy bővítményt a naplója megtekintéséhez.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>A bővítmény naplójában még nincs semmi.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Egy játékmod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Egy másik program használja a(z) {0} csőnevet. Zárja be azt a programot.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>A Windows elutasította a(z) {0} csövet, ezért a programok nem tudnak csatlakozni.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Egy program sincs csatlakozva.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Be van kapcsolva. Egy program sincs csatlakozva.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Csatlakozva: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ismeretlen program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, aláírója: {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>A PadForge újraindulásáig több ilyen nem lehet</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>A PadForge nem rendelkezik ilyen eszközzel</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>A program régebbi állapotot olvasott</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nincs ilyen beállítás</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Semminek sincs ilyen azonosítója</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Az érték kívül esett a beállítás tartományán</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ön nem engedélyezte</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Senki nem válaszolt időben</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Az ablak megjelenítése</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Az ablak küldése az értesítési területre</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Az ablak minimalizálása</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Az ablak maximalizálása</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>A PadForge bezárása</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>A motor elindítása</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>A motor leállítása</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>A(z) {0} eszköz hozzáadása</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek beállítása</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>A(z) {0} eszköz eltávolítása</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>A(z) {0} eszköz minden vezérlőelemének alaphelyzetbe állítása</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Egy programot futtat a PadForge-dzsal.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Megnyit egy fájlt, egy mappát vagy egy weboldalt.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Billentyű- vagy egérbemenetet küldet a PadForge-dzsal a Windowsnak.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Profilt importál a PadForge-on kívülről.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>A PadForge megkérdezi Önt, mielőtt egy program ezt megteszi.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Párbeszédablakok</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makrók</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek tartása</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>A(z) {0} eszköz vezérlőelemeinek elengedése</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>A(z) {0} érték beállítása</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Profilváltás</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>A motor indítása vagy leállítása</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Virtuális kontrollerek be- vagy kikapcsolása</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Diagnosztikai pillanatkép mentése</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>A lekérdezési gyakoriság és a meghajtók olvasása</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>A profilok listázása</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Egy profil olvasása</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>A virtuális kontrollerek listázása</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Az eszközök listázása</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Egy eszköz olvasása</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Várakozás az Ön bemenetére</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Egy kontroller leképezéseinek olvasása</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Egy kontroller makróinak listázása</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Probléma felvétele</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Beállítások keresése</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Egy beállítás olvasása</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Egy hely megmutatása Önnek</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Helyek keresése a PadForge-ban</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Egy hely olvasása a PadForge-ban</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Az éppen látható olvasása</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Saját eszköz hozzáadása</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Az eszközének vezérlése</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Az eszközének eltávolítása</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Vezérlőelem tartása vagy elengedése</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Érték beállítása makróindítókhoz</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Egy beállítás módosítása</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Egy gomb megnyomása</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Profil létrehozása</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Profil átnevezése</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Profil törlése</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Egy kontroller típusának módosítása</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Eszköz hozzárendelése</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Leképezési sorok beállítása</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Leképezési sorok törlése</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Kontroller automatikus leképezése</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Makró mentése</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Makró törlése</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Billentyűzet és egér kontrollert hoz létre</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Bekapcsolja: {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>A(z) „{0}” módosítása</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>A(z) „{0}” megnyomása</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} meg akarja mutatni Önnek: {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Itt: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Engedélyezi, hogy a(z) {0} a PadForge-dzsal dolgozzon ezen a szinten: {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} futtatja: {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Indította: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Aláíró: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Aláíratlan.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Olvasás szinten és fölötte látja az összes eszközön lenyomott minden billentyűt, a billentyűzeteket is beleértve.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Egyszer kérdez. Az Automatizálás oldalon eltávolíthatja.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>a PadForge parancssora</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>A(z) {0} értéke ez lesz: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>A hálózaton figyel, így más eszközök elérhetik ezt a számítógépet.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Meghajtót vagy a HidHide-ot módosítja, amelyekre más programok és játékok támaszkodnak.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell modulok (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Engedélyezés</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Elutasítás</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Most nem</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Megmutatás</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>{0}. lépés, összesen: {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kattintson rá a folytatáshoz.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Nyissa meg: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Nyissa meg a Továbbiak sort.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Forrás: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Forrás: {1}, amely magát „{0}” néven nevezi</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Forrás: egy program, amely magát „{0}” néven nevezi</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Telepítés és újraindítás</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Kiadási megjegyzések</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrolleradatbázis</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>A Frissítés most letölti a közösségi kontrolleradatbázist (SDL_GameControllerDB) a GitHub webhelyéről, és a beállításfájlban megtartja azokat a leképezéseket, amelyek a PadForge ezen verziójából hiányoznak. Az új leképezést csak olyan kontrollerhez használja, amelyet semmi más nem olvas gamepadként, amely nincs hozzárendelve, és amely nincs Nyers joystick mód kényszerítése állapotban. A visszaállítás minden letöltött leképezést eltávolít.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>A Frissítés most letölti a közösségi kontrolleradatbázist (SDL_GameControllerDB) a GitHub webhelyéről, és a beállításfájlban megtartja azokat a leképezéseket, amelyek a PadForge ezen verziójából hiányoznak. Azonnal használatban vannak. Az új leképezést csak olyan kontrollerhez használja, amelyet semmi más nem olvas gamepadként, amely nincs hozzárendelve, és amely nincs Nyers joystick mód kényszerítése állapotban. A visszaállítás minden letöltött leképezést eltávolít. Az Ön saját sorai a Továbbiak alatt megmaradnak.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Frissítés most</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Frissítés…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Frissítések keresése…</value></data>
@@ -1045,12 +1100,10 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>A PadForge {0} frissítés telepítése nem fejeződött be. Az újrapróbálkozáshoz telepítse a Beállításokból.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>A PadForge frissült erre a verzióra: {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Beépített: {0} leképezés, a közösségi adatbázis másolata, {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Beépített: {0} leképezés, a közösségi adatbázis másolata, {1}. Frissítve: {2}, új: {3}, módosult: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Beépített: {0} leképezés, a közösségi adatbázis másolata, {1}. Letöltve: {2}, új sor: {3}, módosult: {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>A közösségi adatbázis az utolsó frissítés óta nem változott.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>A GitHub nem érhető el: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>A PadForge elutasította a letöltést, mert az nem az általa várt kontrolleradatbázis. Semmi sem változott.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Az új leképezést a kontroller következő csatlakozásakor használja.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A módosult leképezést a PadForge következő indításakor használja.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Indítás kis méretben</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Indítás bejelentkezéskor</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Verzióinformációk, valamint a bemeneti motor eseményeinek naplózása hibaelhárításhoz.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Diagnosztikai napló vezetése</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Folyamatosan írja a bemeneti motor eseményeit a naplómappában lévő diagnostics.log fájlba, amelyet a Naplómappa megnyitása gomb nyit meg. Újraindítások után is bekapcsolva marad. Amikor a fájl eléri a 8 MB-ot, a tartalma átkerül a diagnostics.log.old fájlba.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Pillanatkép mentése</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>A bemeneti motor legutóbbi eseményeit új fájlba menti. Akkor is működik, ha a diagnosztikai napló ki van kapcsolva.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Pillanatkép mentése…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Az alkalmazást, a Windowst, az eszközeit és a beállításait a jelenlegi állapotukban rögzíti a bemeneti motor legutóbbi eseményeivel együtt, és megnyitja őket, hogy mentés előtt elolvashassa. Akkor is működik, ha a diagnosztikai napló ki van kapcsolva.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Naplómappa megnyitása</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Probléma felvétele</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Felvétel indítása</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Felvétel leállítása ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>A Felvétel leállítása gombig, 10 percig vagy 20 MB méretű zip fájlig rögzít, majd kijelöli a zip fájlt az Explorerben, hogy csatolható legyen a hibajelentéshez.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Indítsa el, idézze elő a hibát, majd állítsa le. Egyetlen fájl a PadForge mellett tartalmaz mindent, amit a PadForge olvasott, küldött és naplózott, a hiba összefoglalójával. A fájlban benne van minden billentyű és gomb, amelyet a felvétel alatt bármely eszközön lenyomtak, a billentyűzeteket és egereket is beleértve. A felhasználóneveket, sorozatszámokat, címeket és begépelt neveket a rendszer az írás előtt lecseréli.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>A Felvétel leállítása gombig, 30 percig vagy 20 MB méretű zip fájlig rögzít, majd megnyitja a felvételt, hogy mentés előtt elolvashassa.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Indítsa el, idézze elő a hibát, majd állítsa le. Utána részenként olvassa el, mit tartalmaz, és mentse el, ahová szeretné. Benne van minden billentyű, amelyet a felvétel alatt bármely eszközön lenyomtak, a billentyűzeteket és egereket is beleértve. A felhasználóneveket, sorozatszámokat, címeket és begépelt neveket a rendszer az írás előtt lecseréli.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Az összefoglaló írása…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Elmentve: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>A felvétel nem indult el. Egy ellenőrzés talált egy olyan privát értéket ezen a PC-n, amely nem maradna ki a fájlból.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>A felvétel nem indult el. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Az utolsó felvétel lezárása még folyamatban van.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Az Utolsó 60 másodperc megőrzése ki van kapcsolva, ezért nincs mit menteni.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Egy olyan felvétel lezárva, amelyet a PadForge nem állított le: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Egy olyan felvétel, amelyet a PadForge nem állított le, a Kezdőlap oldalon vár, hogy elolvassa: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Utolsó 60 másodperc megőrzése</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Amíg a motor fut, a memóriában tartja a felvétel tartalmának utolsó percét, olyan hibához, amely csak esténként egyszer jelentkezik. Az Utolsó 60 másodperc mentése fájlba írja.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Amíg a motor fut, a memóriában tartja a felvétel tartalmának utolsó percét, olyan hibához, amely csak esténként egyszer jelentkezik. Az Utolsó 60 másodperc mentése megnyitja, hogy mentés előtt elolvashassa.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Utolsó 60 másodperc mentése</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Begépelt betűk és számok egyetlen billentyűként</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>A felvétel azokat a betű- és számbillentyűket, amelyeket semmilyen leképezés vagy makró nem olvas, egyetlen billentyűként rögzíti, minden lenyomást a saját idejével. Minden más billentyűt, és minden olyat, amelyet leképezés vagy makró olvas, lenyomottként rögzít.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Utolsó 60 másodperc megőrzése, Begépelt betűk és számok egyetlen billentyűként</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Mit rögzítsen, az utolsó 60 másodperc, a begépelt betűk</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Pillanatkép mentése</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>A PadForge, a Windows, az eszközei és a beállításai a jelenlegi állapotukban, ugyanazzal az átnézéssel.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log a PadForge.exe mellett, ott elolvashatja.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Mit rögzítsen</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Minden bekapcsolva. A kikapcsolt rész kimarad a következő felvételből, és a fájl megmondja, mely részeket tartalmazza.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Olyan hibához, amely csak esténként egyszer jelentkezik.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>A felvétel arra vár, hogy a Kezdőlap oldalon elolvassa.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Összefoglaló</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Beállítások és eszközök</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Bemenet</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Kimenet</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Visszajelzés</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Időzítés</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Ablak és hibák</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Tevékenység</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Diagnosztikai sorok</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Olvassa el a felvételt</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} és {1} között, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Pillanatkép, ekkor: {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 perc</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} perc</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 másodperc</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} másodperc</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Ön leállította.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Magától leállt ennyi után: {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Magától leállt, amikor a zip mérete elérte ezt: {0}.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Egy makró leállította.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Egy program vagy a --record stop leállította.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Az azt elindító asszisztens leállította.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Leállt, mert a PadForge bezárult.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Az utolsó 60 másodperc, a memóriában tartva.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Olvassa el, amit megoszt. Kapcsoljon ki egy részt, hogy kimaradjon, majd mentsen. Semmi sem hagyja el ezt a számítógépet, hacsak Ön közzé nem teszi.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, ahogyan meg lesz osztva</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} megjelenítése</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>kihagyva</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>nincs rögzítve</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} szövegként, {1} a zipben</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} szövegként, {1} a megosztott zipben. A felvétel leáll, ha a zip eléri ezt: {2}, vagy ennyi idő után: {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Megtisztítás ellenőrzése: a PadForge lecserélt {0} / {1}. Ennek a számítógépnek egyetlen neve, sorozatszáma vagy címe sincs a megtartott részekben.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} értéket, összesen</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 értéket, összesen</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} személyes fajtából</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 személyes fajtából</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Megtisztítás ellenőrzése: ennek a számítógépnek {0} saját értéke még mindig benne van a megtartott részekben. Kapcsolja ki ezeket a részeket, vagy törölje a felvételt. A mentés addig le van tiltva.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Megtisztítás ellenőrzése: ennek a számítógépnek egy saját értéke még mindig benne van a megtartott részekben. Kapcsolja ki ezeket a részeket, vagy törölje a felvételt. A mentés addig le van tiltva.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Ebből a részből semmi sem történt a felvétel alatt.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Törlés</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Összefoglaló másolása</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Másolva</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Mentés…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>A felvétel mentése</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-fájlok</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nincs mentve. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Az Ön nevében mentve, először a Letöltések mappába, utána oda, ahová legutóbb mentett, és megjelenítve a Fájlkezelőben. Az a felvétel, amely akkor áll le, amikor senki sincs az oldalon (a korlátja, egy makró, egy program, az asszisztenseszköz vagy a --record stop miatt), a Kezdőlap oldalon vár erre az átnézésre, és 7 nap után törlődik, ha nincs mentve. A program azt megtudja, hogy vár, azt nem, hogy hol.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Egy problémafelvétel ebből az időből ({0}) arra vár, hogy elolvassa.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Átnézés</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>A felvétel megjelölése</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Alkalmazásverzió</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-futtatókörnyezet</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-verzió</value></data>
@@ -3128,31 +3238,64 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Egérpozíció X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Egérpozíció Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Érzékenység</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti egérmutató-érzékenység. 1.0 esetén a teljes karkitérés a középponttól a képernyőszélesség 10%-ánál érhető el. Az 1.0 fölötti értékek kisebb egérmutató-elmozdulással érik el a teljes kitérést, az 1.0 alattiakhoz több kell.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Forrásonkénti egérmutató-érzékenység. 1.0 esetén a teljes karkitérés a mutató monitorának szélességéből a középponttól számított 10%-nál érhető el. Az 1.0 fölötti értékek kisebb egérmutató-elmozdulással érik el a teljes kitérést, az 1.0 alattiakhoz több kell.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Egérelmozdulás X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Egérelmozdulás Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Elmozdulás a végállásig</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Mennyit mozog az egér a középponttól a végállásig, az egér által jelentett számlálóértékekben. Magasabb érték finomabban kormányoz, és több kézmozgást igényel.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Mennyit mozog az egér vagy a kerék a középponttól a végállásig, az általa jelentett számlálóértékekben. Magasabb érték finomabban kormányoz, és több kézmozgást igényel.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Ha az egér DPI-értéke be van állítva az eszköz paneljén, az elmozdulás centiméterben is megjelenik.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>számláló</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Középre állítás</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>A Ki ott tartja a kormányt, ahol a kéz hagyta. A Rugó a Visszatérési idő alatt hozza vissza. A Telemetriából úgy húzza vissza, ahogy egy autó első kerekei tennék a játék sebességén és tapadásán: állva nyugodt, sebességgel keményebb, könnyű, ha a kerekek csúsznak. Ha egy játék sem küld telemetriát, ez a rugó. A Játék erejéből lehetővé teszi, hogy a virtuális kormány saját erővisszacsatolása fordítsa.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>A Ki ott tartja a kormányt, ahol a kéz hagyta. A Rugó a Visszatérési idő alatt hozza vissza. A Telemetriából úgy húzza vissza, ahogy egy autó kormányzása tenné a játék sebességén és tapadásán: a közép közelében meredeken, kijjebb lágyabban, állva nyugodt, sebességgel keményebb, könnyű, ha a kerekek csúsznak. Ha egy játék sem küld telemetriát, úgy húz, mint 100 km/h sebességnél, száraz úton. A Játék erejéből lehetővé teszi, hogy a virtuális kormány saját erővisszacsatolása fordítsa.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Ki</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Rugó</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriából</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>A játék erejéből</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Visszatérési idő</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Mennyi idő alatt hozza vissza a Rugó a kormányt az út 95%-ára. A Telemetriából ennyi ideig tart 100 km/h sebességnél, száraz úton.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Mennyi idő alatt hozza vissza a Rugó a kormányt az út 95%-ára. A 0 azonnal középre állítja. A Telemetriából ennyi ideig tart a középhez közelről, 100 km/h sebességnél, száraz úton.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kormányzás</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>A Mindig az egérrel mindenkor kormányozni enged. A Nyomva tartva csak a Kormányzó bemenet nyomva tartása alatt. A Kapcsoló a Kormányzó bemenet minden lenyomásával be- vagy kikapcsolja a kormányzást. Amíg az egér nem kormányoz, a kormány ott marad, ahol van, vagy középre áll, így egyetlen egérrel lehet kormányozni és körülnézni.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>A Mindig az egérrel mindenkor kormányozni enged. A Nyomva tartva és középre áll csak a Kormányzó bemenet nyomva tartása alatt enged kormányozni, aztán visszahozza középre, Középre állítással, ahol a forrásnak van ilyen, és azonnal, ahol nincs. A Nyomva tartva és helyben marad csak a bemenet nyomva tartása alatt enged kormányozni, és ott hagyja, ahol elengedték. A Kapcsoló a Kormányzó bemenet minden lenyomásával be- vagy kikapcsolja a kormányzást. Így egyetlen egérrel lehet kormányozni és körülnézni.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Mindig</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nyomva tartva</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nyomva tartva és középre áll</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Kapcsoló</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Kormányzó bemenet</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Az a gomb, amely lehetővé teszi az egér kormányzását, ugyanazon az eszközön, mint az egér elmozdulása. Ha egyet sem választ, az egér mindig kormányoz.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Az a gomb, amely lehetővé teszi az egér kormányzását, ugyanazon az eszközön, mint a forrás. Ha egyet sem választ, az egér mindig kormányoz.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Simítás</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Kiegyenlíti az egyenetlenül jelentő egeret. A kormány nagyjából ennyivel késik a kéz mögött. A 0 kikapcsolja.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Kiegyenlíti az egyenetlenül jelentő egeret. A kar nagyjából ennyivel késik a kéz mögött. A 0 kikapcsolja.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Végállás sebességnél</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Bekapcsolt Játéktelemetria mellett megmutatja, a végállás mekkora része marad meg 200 km/h sebességnél. 100%-nál a teljes végállás minden sebességnél elérhető.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Kormányelmozdulás</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Kormányelmozdulás oldalirányban</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Milyen gyorsan mozog az egér. Elengedi, amikor a kéz megáll.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Hol van a mutató a monitorján, a középpontjától vagy attól a helytől számítva, ahol a kormányzás kezdődött.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Mennyit mozdult az egér, ott tartva, ahol a kéz hagyja, mint egy kormányt.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>A görgetési fokozatok helyzetként tartva, finoman görgető kerék esetén teljes pontossággal.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Az oldalirányú kerék fokozatai helyzetként tartva, finoman görgető kerék esetén teljes pontossággal.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Egy lökés minden fokozatnál, majd azonnal vissza nyugalmi helyzetbe.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Nyomva tartva és helyben marad</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Érzékenység</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>A sebesség mekkora részét adja a karnak. 1.00 esetén a kar másodpercenként 16 000 számlálónál éri el a teljes kitérést, bármilyen lekérdezési gyakoriságnál és egérjelentési gyakoriságnál.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Vissza a középre</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Amint az egér lassul vagy megáll, a kar ennél gyorsabban nem tér vissza. A 0 engedi, hogy az egérrel együtt térjen vissza.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Indulás ott, ahol a kormányzás kezdődött</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Kormányzó bemenet esetén a kar attól a helytől mér, ahol a mutató a kormányzás kezdetén volt, ahogyan egy telefonképernyőn a kar ott indul, ahol az ujj leér. Kikapcsolva a mutató monitorának közepétől mér.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ez a tengely relatívan mozog</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Egy trackballhoz vagy egy forgatógombhoz, amely azt jelenti, mennyit fordult. Bekapcsolva a tengely helyzetet tart, ahogy az Egérelmozdulás, és átveszi az elmozdulás beállításait. A Windows nem mondja meg, mely tengelyek mozognak így.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Előnézet</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Megmutatja, hogyan követi ez a család az Ön saját egerét. Semmi sincs leképezve, amíg ki nem választja.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Előnézet. Mozgassa az egerét.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Tartva: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Itt: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% jobbra</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% balra</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% felfelé</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% lefelé</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>a középpont</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Akkor mozog, ha ezt tartják nyomva: {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Egér DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Az a számláló, amelyet ez az egér a megtett minden hüvelykre jelent, ahogy a gyártójának szoftvere beállítja.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>A DPI beállításával az Egérelmozdulás centiméterben is mutatja az elmozdulást. A 0 azt jelenti, hogy nincs beállítva.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-mutató X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-mutató Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-fényerő</value></data>
@@ -4923,6 +5066,7 @@ Az előző verzió egy példánya ebben a mappában található: {1}</value></da
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>A PadForge által játék közben megjelenített képernyős jelzések. Kikapcsolásuk soha nem változtat a működésen, csak azon, hogy megjelennek-e.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Váltóréteg felugró panelje</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profilváltási átfedés</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontrollerek be- vagy kikapcsolása</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Eszköz lecsatlakozásának jelzése</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Eszköz csatlakozásának jelzése</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>A képernyőn megjelenő gyűrű vagy rács megjelenítése, amíg egy radiális vagy érintőmenü aktív. A menük az átfedés kikapcsolt állapotában is működnek.</value></data>
@@ -5651,6 +5795,8 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Ki</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stopperóra</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Fénysáv színe</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Nem csatlakoztatott eszközök</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Mind csatlakozik</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>ki</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>a Logitech Gaming Software-en keresztül</value></data>
@@ -5693,6 +5839,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>A képernyő egy Ön által választott képet mutat, eredeti méretében. A képernyőnél nagyobb kép esetén a képernyő méretű ablakot mutat, amelyet a Billentyűzetképernyő-kép pásztázása makró mozgat. Az S.T.R.I.K.E. 7-en a képernyőn végighúzott ujj is mozgatja.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>A képernyő a stopperórát mutatja, amelyet a Stopperóra makró elindít, szüneteltet és visszaállít. Minden képernyő ugyanazt a stopperórát mutatja.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>A képernyő annak a DualShock 4 vagy DualSense fénysávjának színét mutatja, amely a legalacsonyabb olyan foglalatban van, amelyet ez a képernyő táplál. Ha egyet sem táplál, az összes foglalat közül a legalacsonyabban lévőét mutatja. A monokróm képernyő a fényerőt pontmintával jeleníti meg. Amíg nem érkezik szín a fénysávhoz, a PadForge nem jelenít meg semmit.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>A képernyő felsorolja a hozzárendelt, de nem csatlakoztatott eszközöket, az Eszközök oldal által mutatott nevükön, és a Mind csatlakozik feliratot mutatja, ha egy sem hiányzik.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Képek (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Minden fájl (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Pásztázás</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Pásztázás X</value></data>
@@ -5944,6 +6091,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Vezetés (nem 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Játéktelemetria</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Szkriptérték</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Eszközkapcsolat</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Sebesség (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Fordulatszám (a max. %-a)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Fokozat (-1 hátramenet, 0 üresjárat)</value></data>
@@ -6049,6 +6197,7 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Az átfedés egy Ön által választott képet mutat, az ablakát kitöltő méretre skálázva, az arányait megtartva. 100 százalék fölötti nagyításnál a kép egy részét mutatja, térképhez. A Billentyűzetképernyő-kép pásztázása makró mozgatja ezt a részt, és a bal egérgombbal húzva is mozgatható, amíg a PadForge van előtérben.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Az átfedés a stopperórát mutatja, amelyet a Stopperóra makró elindít, szüneteltet és visszaállít. Ez ugyanaz a stopperóra, amelyet minden billentyűzetképernyő mutat.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Az átfedés a DualShock 4 vagy DualSense fénysávjának színét mutatja abban a foglalatban, amelyet itt kiválaszt, vagy a legalacsonyabb színes foglalatban. Amíg nem érkezik szín a fénysávhoz, nem mutat semmit.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Az átfedés felsorolja a hozzárendelt, de nem csatlakoztatott eszközöket, az Eszközök oldal által mutatott nevükön, és a Mind csatlakozik feliratot mutatja, ha egy sem hiányzik.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Képernyő-átfedés {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Átfedés hozzáadása</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Legalacsonyabb színes foglalat</value></data>
@@ -6391,6 +6540,245 @@ Szeretné, hogy a PadForge most eltávolítsa őket? Ehhez rendszergazdai jogosu
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet a Tartási idő letelte előtt engedik fel. A hosszabb lenyomás nem csinál semmit.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, ha a Megnyitás ezzel bemenetet háromszor nyomják meg a Lenyomási időablakon belül.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Megnyitja vagy bezárja a billentyűzetet, amikor a Lenyomási időablak véget ér a Megnyitás ezzel bemenet egyszeri lenyomása után. Ha az időablakon belül másodszor is megnyomják, megszakad.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Ki. Egy program sem érheti el a PadForge-ot.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} és {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Tevékenység: {0} hívás, a legrégebbitől kezdve. Az ezeket megelőző hívások: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Tevékenység: {0} hívás. Az azt megelőző hívások: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} régebbi hívás elveszett. A Tevékenység a legújabb {1:N0} hívást őrzi meg.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} régebbi hívás elveszett. A Tevékenység a legújabb {1:N0} hívást őrzi meg.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Exportálás…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Tevékenység exportálása</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Szövegfájl</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Megnyitás</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Frissítés</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>További lehetőségek: {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>A skill mentése ZIP-ként…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>A beállításfájl megnyitása</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Elmentve. A(z) {0} programban adja hozzá ezt: {1}, itt: {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>A(z) {0} programnak még nincs beállításfájlja. A Hozzáadás létrehoz egyet.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>A PadForge nem talál ezen a számítógépen olyan asszisztensprogramot, amelynek a készítője dokumentálja a beállítását Windowson. A Továbbiak alatti Beállítások másolása bármely másikhoz működik.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>A PadForge nem tudta ellenőrizni az asszisztensprogramokat: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Nincs hozzáadva.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Hozzáadva.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Hozzáadva. Most csatlakozik.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Hozzáadva. Azóta nem csatlakozott. A megnyitva volt asszisztens a bezárás és újranyitás után látja a PadForge-ot.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Egy másik PadForge-hoz adva. A Frissítés erre a PadForge-ra irányítja.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Hozzáadva. A PadForge skillje régebbi, mint ez a PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Hozzáadva, a PadForge skillje nélkül.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Hozzáadva. A PadForge skillje egy újabb PadForge-ból származik.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>A skilleket csak feltöltéssel fogadja.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>A hozzáadott asszisztensek az Automatizálás bekapcsolása után érik el a PadForge-ot.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Hozzáadás…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Eltávolítás…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Frissítés…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nem fejeződött be: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Más asszisztensek</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>A fent nem szereplő asszisztensekhez: a Beállítások másolása megadja az MCP-beállításokba illő bejegyzést, az Üzenet másolása pedig rövid szöveget bármely csevegéshez, amely megmondja, hogyan kell csatlakozni, és mit kérjen először.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Beállítások másolása</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Üzenet másolása</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Másolva.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Nincs másolva: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Csatlakozz a PadForge-hoz, a számítógépemen lévő kontrollerleképezőhöz. Ez egy helyi MCP-kiszolgáló, amely stdio-n fut: a parancs {0}, a --mcp argumentummal. JSON-beállításként: {1} Csatlakozás után először a status eszközét hívd meg, aztán kérdezd meg, mit szeretnék beállítani, például: „Mutasd meg, hol képezhetem le a kontrollerem ravaszait.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>A PadForge Automatizálás szolgáltatása most ki van kapcsolva: előbb kapcsold be a PadForge-ban az Extrák, Automatizálás oldalon.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Engedélyezett programok</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Az a program, amely Olvasás vagy magasabb szintet kér, egyszer kérdez, az első csatlakozáskor, és megkapja a kért szintet, legfeljebb a fenti szintig. A fent hozzáadott asszisztens ezzel engedélyezett.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Most csatlakozik.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Legutóbb használva: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Még nem használták.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Csatlakozva: {0}. Kattintson az Automatizálás megnyitásához.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Ezen a számítógépen: {0}. A webről: {1}. Kattintson az Automatizálás megnyitásához.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Csatlakozva a webről: {0}. Kattintson az Automatizálás megnyitásához.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL-leképezés</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Olvasva mint</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Forrás</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>Azonosító</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad, „{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick. Az SDL-nek nincs hozzá leképezése.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. A PadForge nyersen olvassa, ezért az SDL leképezése nincs használatban.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, az Ön sora által gamepadként kiosztva.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>Az SDL a motor futása közben olvassa az eszközöket.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>A beépített közösségi másolat, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Letöltve: {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>A PadForge saját fájlja</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Az Öné, hozzáadva: {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Az SDL_GAMECONTROLLERCONFIG változó, amelyet az SDL minden Ön által hozzáadott sor fölött tart</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL-leképezés másolása</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>A vágólapra teszi az eszköz leképezését a közösségi adatbázis egy soraként, az eszköz azonosítója alatt, nullázott ellenőrzőösszeggel és verzióval.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL-leképezés beillesztése…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Átvesz egy sort ehhez az eszközhöz, ellenőrzi, az Öné lesz, és azonnal alkalmazza.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Leképezés keresése…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Név szerint átkeres minden sort, amelyet a PadForge hordoz, és a kiválasztottat alkalmazza erre az eszközre, olyan klónhoz, amelynek az azonosítói eltérnek.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Elrendezés tippelése</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Gamepad-elrendezést tippel az eszköz tengelyeiből, gombjaiból és hatjaiból, olyan eszközhöz, amelyet egy adatbázis sem ismer. Ellenőrizze a Bemenetek tesztelése oldalon.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Saját eltávolítása</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>A Saját eltávolítása visszaállítja a korábbi sort és a korábbi kontrollersorokat.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Újraleképezés</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Újra létrehozza az eszköz sorait minden kontrolleren, amelyen van, az SDL elrendezéséből, ahogy a hozzárendelés is teszi.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>A közösségi adatbázis oldala</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>A sor, és ahol eltér ettől: {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>A sor</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontroller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} sora</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Mostani bemenete</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Az SDL sora szerint</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>nincs az SDL sorában</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, eltér</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>A PadForge nem használja: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>A sor</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Másolva.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Másolva. Az SDL formátuma nem képes tárolni ezeket: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makrók</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>görbék</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>holtzónák</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>billentyűzet- és egérkimenetek</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbó, kapcsolók és egyéb műveletek</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} és {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nincs mit másolni: az SDL-nek nincs leképezése ehhez az eszközhöz, és egy kontrolleren sincs rajta.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Egy másik program használja a vágólapot. Semmi sem lett másolva.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Az Ön sora el lett távolítva. Az eszköz úgy olvasódik, ahogy előtte.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Újra leképezve az SDL elrendezéséből: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Most használatban. A sor az Öné, és ennél az eszköznél ez érvényesül.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Az Öné maradt. Használatba kerül, ha a motor fut, és az eszköz csatlakoztatva van.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Az Öné maradt, de az SDL_GAMECONTROLLERCONFIG változó tartalmaz egy sort ehhez az eszközhöz, amelyet az SDL az Öné fölött tart.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Az SDL nem fogadta el a sort. Ennél az eszköznél semmi sem változott.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL-leképezés beillesztése</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>SDL-leképezés beillesztése ehhez: {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Leképezés keresése ehhez: {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Elrendezés tippelése ehhez: {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Sorok hozzáadása fájlból vagy a vágólapról</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Beillesztés</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Fájl megnyitása…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Leképezésfájlok (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>A fájl 4 MB-nál nagyobb. A közösség teljes fájlja körülbelül 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Keresés név, azonosító vagy VID:PID szerint</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>A PadForge által hordozott sorok</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Egy sor sem egyezik.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>A kiválasztott sor alkalmazva lesz ehhez: {0}, a saját azonosítója alatt, ugyanazzal az ellenőrzéssel és ugyanazzal a választással, mint a Beillesztés esetén.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL-leképezéssor</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Egy sor ehhez az eszközhöz.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Egy tippelt elrendezés.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} mező, az azonosító egyezik ezzel az eszközzel.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} mező, ugyanattól a gyártótól és termékből, másik buszon vagy verzióban. Az eszköz saját azonosítója alatt marad meg.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} mező, egy másik eszköz sora. Az eszköz saját azonosítója alatt marad meg.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} mező. Az SDL nem olvassa ezt az eszközt, ezért a PadForge a sor szerint osztja ki a bemeneteit.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} mező, az eszköz tengelyeiből, gombjaiból és hatjaiból. Ellenőrizze a Bemenetek tesztelése oldalon, aztán tartsa meg vagy módosítsa itt.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} mező, az azonosító egyezik ezzel az eszközzel.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} mező, ugyanattól a gyártótól és termékből, másik buszon vagy verzióban. Az eszköz saját azonosítója alatt marad meg.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} mező, egy másik eszköz sora. Az eszköz saját azonosítója alatt marad meg.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} mező. Az SDL nem olvassa ezt az eszközt, ezért a PadForge a sor szerint osztja ki a bemeneteit.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} mező, az eszköz tengelyeiből, gombjaiból és hatjaiból. Ellenőrizze a Bemenetek tesztelése oldalon, aztán tartsa meg vagy módosítsa itt.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ez megváltoztatja, hogyan olvasódik a(z) {0}. A(z) {1} kontrollereken lévő sorai újra le lesznek képezve az új elrendezésből.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ez megváltoztatja, hogyan olvasódik a(z) {0}. Egy kontrolleren sincs rajta, ezért egy sor sem változik.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>A profil gyorsbillentyűi, amelyek a(z) {0} eszközt olvassák, megtartják a beállított bemeneteiket.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>A sor az Öné marad a PadForge.xml fájlban, és ennél az eszköznél minden más forrást felülír. A Saját eltávolítása visszaállítja a régi sort és a régi sorokat.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>A sorok az Önéi maradnak a PadForge.xml fájlban, és a saját eszközeiknél minden más forrást felülírnak. A Törlés, a Kontrolleradatbázis sor Továbbiak részében, eltávolítja őket.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} sor Windowshoz. {1} más rendszerekhez, ezeket kihagyjuk.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} sor Windowshoz. {1} más rendszerekhez, ezeket kihagyjuk.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} elutasítva. Az első: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Illesszen be egy sort vagy egy gamecontrollerdb.txt fájl szövegét.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>A szöveg nem az SDL kontrolleradatbázisának sora: egy 32 hexadecimális számjegyből álló azonosító, egy név, majd olyan mezők, mint az a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>A sorok más rendszerekhez valók. A PadForge a Windowshoz vagy bármely rendszerhez tartozó sorokat olvassa.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>A sor azonosítója nem egy eszközé. 32 hexadecimális számjegy kell hozzá.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>A sor neve üres, 128 karakternél hosszabb, vagy olyan karaktert tartalmaz, amelyet az SDL mezőként olvas.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>A sor hintet vagy Android-mezőt tartalmaz, amelyet a PadForge nem fogad el.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>A sorban van egy mező, amelyet az SDL nem ismer.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Egy kötés nem az SDL formájában van, például b3, a2, +a2, a2~ vagy h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>A sor egy mezőt kétszer ad meg.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>A sor hosszabb 1 024 karakternél.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>A sor egyetlen vezérlőelemet sem köt.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Saját sorok</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Saját sorok</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Az itt hozzáadott vagy egy eszköz SDL-leképezés kártyáján beillesztett sorok a saját eszközeiknél minden más forrást felülírnak, és a visszaállítás után is megmaradnak.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Sorok hozzáadása fájlból vagy a vágólapról…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} sor, az Öné, a saját eszközeinél minden más forrás fölött.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} sor, az Öné, a saját eszközénél minden más forrás fölött.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Még nincs.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Azonnal használatban.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>A PadForge elérése a webről</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Egy weboldalon futó asszisztens egy alagútprogramon keresztül éri el a PadForge-ot ezen a számítógépen. A bekapcsolás előtt megkérdezi Önt.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Eléri a PadForge-ot a webről?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>A PadForge rendszergazdai jogok nélkül elindít egy segédprogramot, amely csak ezen a számítógépen figyel, és az Ön által választott alagútprogram nyilvános címet ad neki. Egy webes asszisztens csak azután jut be, hogy Ön engedélyezi a bejelentkezését a PadForge kérdéskártyáján, és a fenti szinten dolgozik.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Bekapcsolás</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Asszisztensek a weben</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Alagút</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Nincs</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Egy beillesztett cím</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Indul, az Ön jogaival.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Fut, az Ön jogaival. A címe minden indításnál ugyanaz marad.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Fut, az Ön jogaival. A gyors alagút minden indításnál új címet kap, ezért az asszisztenst újra hozzá kell adni.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Leállt.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Leállt. Az utolsó szavai: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nem sikerült elindítani.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Már nincs ezen a számítógépen.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ezen a számítógépen nem található alagútprogram. A PadForge a cloudflared, a devtunnel, az ngrok és a Tailscale Funnel programmal működik, vagy a saját alagútja címével.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Válasszon egy alagutat, hogy a PadForge nyilvános címet kapjon.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ezen a számítógépen még: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, amelynek a címe ugyanaz marad</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, amelynek a gyors alagútjai minden alkalommal új címet kapnak</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Futtassa a saját alagútját a http://127.0.0.1:{0} címre, és illessze be az https címét. A névvel ellátott Cloudflare-alagút, a tartós fejlesztői alagút, a Tailscale Funnel és az ngrok saját tartománya megtartja a címét.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Illesszen be egy https címet, amelyben nincs más elérési út, csak /mcp, ahogyan az alagútja adja.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>A PadForge webes segédprogramja indul.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>A PadForge webes segédprogramja leállt ({0}). Kapcsolja ki, majd be a PadForge elérését a webről, hogy újra elinduljon.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Cím</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Még nincs nyilvános cím.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Hozzáadás a Claude-hoz</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Másolva.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Új webes asszisztens fogadása</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Fogadás indítása</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Fogadás leállítása</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Fogadás eddig: {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Nem fogad. A Fogadás indítása öt percre megnyitja.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Adja hozzá a címet az asszisztensben, és jelentkezzen be. Minden bejelentkezés saját hatjegyű kódot mutat a bejelentkezési oldalán és a PadForge kérdéskártyáján. Csak akkor engedélyezze, ha a két kód egyezik. Máskor a bejelentkezést elutasítja, és semmi sem kérdez Önt.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Engedélyezve a weben</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Még nincs.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>A bejelentkezése ide tér vissza: {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Magát így nevezi: {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Engedélyezve: {0}, legutóbb használva: {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Engedélyezve: {0}, még nem használták.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Visszavonás</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>A saját Secure MCP Tunnel közvetlenül futtatja a PadForge-ot, itt nincs cím vagy bejelentkezés. Másolja a parancsot az alagút beállításába.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Parancs másolása</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>A PadForge nem tölt le alagútprogramot, és nem tart meg más cég kulcsát. A webes asszisztens a fenti szinten dolgozik.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Engedélyezi, hogy a(z) {0} a webről dolgozzon a PadForge-dzsal?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>A bejelentkezése ide tér vissza: {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Magát így nevezi: {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Csak akkor engedélyezze, ha a bejelentkezési oldala ezt a kódot mutatja:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>A hatjegyű kódja a PadForge kérdéskártyáján látszik. Csak akkor engedélyezze, ha a bejelentkezési oldala ugyanazt a kódot mutatja.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Ezen a szinten dolgozik: {0}, ezen keresztül: {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>A bejelentkezése erre a számítógépre tér vissza, és bármely itteni program magáévá teheti ezt a címet.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Bejelentkezés a PadForge-ba</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>A(z) {0} a PadForge-dzsal szeretne dolgozni az Ön számítógépén.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Magát így nevezi: {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Az Ön számítógépén a PadForge kérdéskártyája kérdez erről a bejelentkezésről. Csak akkor engedélyezze ott, ha a kártya ezt a kódot mutatja:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Ez az oldal magától továbblép, amint a számítógépen válaszol.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Ez a bejelentkezés az Ön számítógépén lévő programhoz tér vissza, és bármely ottani program magáévá teheti ezt a címet.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>A PadForge most nem fogad új webes asszisztenst. Az Ön számítógépén nyissa meg a PadForge-ot, lépjen az Extrák, Automatizálás oldalra, és az Asszisztensek a weben alatt nyomja meg a Fogadás indítása gombot. Utána jelentkezzen be újra.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Ez a bejelentkezés nem folytatható. Adja hozzá újra a PadForge címét az asszisztensben, és jelentkezzen be.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Ez a bejelentkezés lejárt. Jelentkezzen be újra az asszisztensből.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>a Windows nem indította el</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>a(z) {0} kóddal fejeződött be</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Az Automatizálás ki van kapcsolva, ezért egy webes asszisztens sem éri el a PadForge-ot. A webes segédprogram az Automatizálás bekapcsolása után indul.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ellenőrzés…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Nincs telepítve.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Telepítve és naprakész. A szkript ezzel kezdődik: {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Telepítve ehhez: {0}, és naprakész. A szkript ezzel kezdődik: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Telepítve. Ennek a PadForge-nak újabb másolata van.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Telepítve ehhez: {0}. Ennek a PadForge-nak újabb másolata van.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Telepítés…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>A PadForge nem tudta ellenőrizni: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>A Telepítés oda teszi a PadForge könyvtárát, ahol az adott nyelv megtalálja. Az azt betöltő szkript a fenti szinten olvassa az eszközöket és vezérli a leképezéseket.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Könyvtár mentése bárhová</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Telepített másolatok</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Összes eltávolítása</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Eltávolítva.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Szkriptazonosító</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>A szkriptazonosítója</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>A szkriptek a vezérlőelemeit így nevezik: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>A szkriptek a billentyűit KeyA, KeySpace, KeyLeftShift és hasonló néven nevezik, minden billentyűt pedig a kódjával, Vk0-tól Vk255-ig.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>A színek közvetlenül ide jutnak: {0}. A változó színek, például a színváltás vagy a hangot követő színek nem jutnak el hozzá. Az állandó szín igen.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Minden fájl (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profil (*{0})|*{0}</value></data>

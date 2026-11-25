@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} frakoblet. {1} har ingen enhed tilbage.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} tilsluttet</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} tilsluttet, batteri {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} enheder frakoblet</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} enheder tilsluttet</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} enheder frakoblet: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} enheder tilsluttet: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} bliver ved med at miste forbindelsen</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatisk genforbindelse, port, parringsidentitet, forbindelse via adresse</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe-stedfortræder</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porte, Fuld hastighed, Brugerdefinerede formater</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Andre assistenter, assistenter på nettet</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Se dig omkring med en hovedsporer eller et VR-headset, mens begge tommelfingre bliver på knapperne.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Tildel hastighed, pedaler og gear, som et kørespil sender, som ethvert andet input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Send controllerens bevægelser til emulatorer, der læser en DSU-bevægelseskilde.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menuens ring, gitter eller bjælke, mens den er åben.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Lagets navn, når et skiftelag slås til, i den tid laget angiver.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilens navn, når profilen skifter.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Om de virtuelle controllere netop er slået til eller fra, med genvejen eller en makro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>En tildelt enheds navn, når den kobles fra.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>En tildelt enheds navn, når den tilsluttes.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopier adresse</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programmer kan skifte profiler og frigive dem, starte og stoppe motoren, slå virtuelle controllere til og fra, vise og skjule vinduet, lukke PadForge, gemme et diagnosticeringsøjebliksbillede og spørge, hvad der kører.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Alt på niveauet Kommandoer, og programmer kan se enheder, virtuelle controllere, tildelinger, profiler og indstillinger, følge hver enheds input, mens de sker, og vise dig et sted i PadForge. Et program på niveauet Læs ser hver tast, der trykkes på hver enhed, også taster, der skrives i vinduer, der kører som administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Alt på niveauet Læs, og programmer kan tilføje egne enheder og styre dem, holde en kontrol på en hvilken som helst enhed nede og give navngivne værdier videre til makrotriggere.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alt på niveauet Send input, og programmer kan ændre det, du selv kan ændre på siderne.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alt på niveauet Send input, og programmer kan ændre det, du selv kan ændre på siderne. Nogle ændringer spørger dig altid først på spørgsmålskortet i PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistenter</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Indsæt dette i en assistents MCP-indstillinger. Assistenten arbejder så sammen med PadForge på niveauet ovenfor.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopier som TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistenter, der læser TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Tilføj lægger PadForge med dens skill ind i den assistent. Den arbejder så på niveauet ovenfor, og dens ord vises ved det, den peger på, under dens navn.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Scriptbibliotek</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Gem et bibliotek…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Én fil til AutoHotkey v2, Python eller PowerShell. Et script, der indlæser den, læser enheder og styrer tildelinger på niveauet ovenfor.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Én fil til AutoHotkey v2, Python eller PowerShell, skrevet, hvor du vælger.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Venter på dig</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivitet</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Intet program har kaldt endnu. Hvert kald vises her med resultatet.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Fortryd</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill til assistenter</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Gem skillen…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kunne ikke gemme den: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Mens et program på niveauet Læs eller højere er tilsluttet, ser det, hvad der trykkes på hver enhed, også tastaturer.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugins</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Kør plugins</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ingen plugins kører.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Et plugin kører med dine rettigheder, ikke med de administratorrettigheder, PadForge har.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Indbygget</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Testcontroller</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>En controller, der bevæger sig af sig selv, én kontrol ad gangen, så en tildeling kan prøves uden hardware ved hånden.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Hastighed</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Langsom</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Hurtig</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Hurtigst</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Afspilning</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Afspiller en problemoptagelse igen som de enheder, der lavede den, med den timing, de havde. De er nye enheder på denne pc, tildelt, som du eller en profil tildeler dem.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Optagelse</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Problemoptagelser|*.zip;*.log|Alle filer|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kan ikke afspille {0}. Det er ingen problemoptagelse, eller den indeholder ingen enheds input.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Dine plugins</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Et plugin er et program, der tilføjer enheder til PadForge. PadForge starter det med dine almindelige rettigheder, hver gang motoren kører.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Tilføj et plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programmer og scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alle filer|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Godkend…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Godkend og genstart…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Starter med motoren</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Kontrollerer filen, før den starter</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Afsluttet med kode {0}. Starter igen om {1} s.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} er allerede på listen.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge kører op til 16 plugins. Fjern ét for at tilføje et andet.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugins, der kører: {0}. Enheder, de har tilføjet: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} stoppede efter fem fejl.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} er ændret, siden du godkendte den.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kunne ikke starte.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Tilføjede {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Underskrevet af {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ikke underskrevet.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Dets indstillinger vises her, mens det kører.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Det erklærer ingen indstillinger.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge kunne ikke læse dets indstillinger: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Afsluttet efter et minut uden et ord</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Dets fil blev ændret, mens det kørte</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Tilføjet af {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Indstillinger for {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Vælg</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Tryk på en kontrol…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Ikke valgt</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Tilføj et plugin, eller slip dets fil på denne side. PadForge viser dets sti, dets underskriver og dets SHA-256 og spørger dig, før det kører. Et plugin kører med dine rettigheder, ikke med dem, PadForge har.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Afspiller en problemoptagelse igen som de enheder, der lavede den, med deres timing.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Kører.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Kører, i hånden.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Hvad der bevæger sig</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Sticks og triggere</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Sticks</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Triggere</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Mønster</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Fejning</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Cirkel</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Bevægelsestid</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Hviletid</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Tryk på knapper</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Tryk på navigationsknapper</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows-apps reagerer på en virtuel Xbox-controllers A, B, Back, Start og D-pad i vinduet forrest, og Guide åbner Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Drej D-pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Af samme grund.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Trykketid</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Controllere</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>I hånden</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Stopper bevægelsen. Sæt dens input nedenfor med musen.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Venstre stick</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Højre stick</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Venstre trigger</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Højre trigger</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Aflæsninger pr. sekund</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Plugin-kittet og loggen for et plugin, du vælger</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin-kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Gem plugin-kittet…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Et lille plugin i C# og det samme plugin til AutoHotkey, Python og PowerShell, hver fil med vejledning i, hvordan den bygges eller køres.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>En vejledning til hvert verbum, hver hændelse og hver slags indstilling, et byggescript til C#-pluginet og det samme plugin til AutoHotkey, Python og PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Vælg et plugin for at se dets log.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Der er endnu intet i dette plugins log.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Et spilmod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Et andet program holder pipenavnet {0}. Luk det program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows afviste pipen {0}, så programmer kan ikke oprette forbindelse.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Intet program er tilsluttet.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Slået til. Intet program er tilsluttet.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Tilsluttet: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ukendt program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, underskrevet af {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ikke flere af disse, før PadForge starter igen</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge har intet sådant værktøj</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programmet læste en ældre tilstand</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ingen sådan indstilling</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Intet har det ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Værdien lå uden for, hvad indstillingen tager</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Du tillod det ikke</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ingen svarede i tide</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Vis vinduet</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Send vinduet til proceslinjens meddelelsesområde</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimer vinduet</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maksimer vinduet</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Luk PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Start motoren</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stop motoren</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tilføj enheden {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Sæt kontrollerne på enhed {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Fjern enheden {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Sæt hver kontrol på enhed {0} i hvile</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Får PadForge til at køre et program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Åbner en fil, en mappe eller en webside.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Får PadForge til at sende taster eller musinput til Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Importerer en profil udefra PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge spørger dig, før et program gør dette.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialoger</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makroer</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hold kontroller på enhed {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Slip kontroller på enhed {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Sæt værdien {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Skift profiler</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Start eller stop motoren</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Slå virtuelle controllere til eller fra</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Gem et diagnosticeringsøjebliksbillede</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Læs pollingfrekvensen og driverne</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Vis profilerne</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Læs en profil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Vis de virtuelle controllere</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Vis enhederne</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Læs en enhed</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Vent på dit input</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Læs en controllers tildelinger</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Vis en controllers makroer</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Optag et problem</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Find indstillinger</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Læs en indstilling</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Vis dig et sted</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Led efter steder i PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Læs et sted i PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Læs, hvad du ser</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Tilføj en enhed af egen slags</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Styr dens enhed</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Fjern dens enhed</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Hold eller slip en kontrol</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Sæt en værdi til makrotriggere</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ændr en indstilling</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Tryk på en knap</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Opret en profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Omdøb en profil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Slet en profil</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Skift en controllers type</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Tildel en enhed</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Sæt tildelingsrækker</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Ryd tildelingsrækker</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Tildel en controller automatisk</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Gem en makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Slet en makro</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Opretter en tastatur- og musecontroller</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Slår {0} til</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Ændr “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Tryk på “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vil vise dig {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>På {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Tillad {0} at arbejde sammen med PadForge på niveauet {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} kører {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Startet af {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Underskrevet af {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Ikke underskrevet.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>På niveauet Læs og derover ser det hver tast, der trykkes på hver enhed, også tastaturer.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Det spørger én gang. Du kan fjerne det på siden Automatisering.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>kommandolinjen til PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Sætter {0} til {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Lytter på netværket, så andre enheder kan nå denne pc.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ændrer en driver eller HidHide, som andre programmer og spil er afhængige af.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-moduler (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Tillad</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Tillad ikke</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Ikke nu</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Vis</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Trin {0} af {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik på det for at gå videre.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Åbn {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Åbn Mere.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Fra {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Fra {1}, som kalder sig “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Fra et program, der kalder sig “{0}”</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installer og genstart</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Udgivelsesnoter</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controllerdatabase</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdater nu henter den fælles controllerdatabase (SDL_GameControllerDB) fra GitHub og gemmer i indstillingsfilen de mappinger, som denne version af PadForge mangler. En ny mapping bruges kun til en controller, som intet andet læser som en gamepad, som ikke er tildelt, og som ikke er i Gennemtving rå joysticktilstand. Nulstillingen fjerner alle downloadede mappinger.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdater nu henter den fælles controllerdatabase (SDL_GameControllerDB) fra GitHub og gemmer i indstillingsfilen de mappinger, som denne version af PadForge mangler. De er i brug med det samme. En ny mapping bruges kun til en controller, som intet andet læser som en gamepad, som ikke er tildelt, og som ikke er i Gennemtving rå joysticktilstand (spring gamepad-omtildeling over). Nulstillingen fjerner alle downloadede mappinger. Dine egne rækker under Mere består.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Opdater nu</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Opdaterer…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Søger efter opdateringer…</value></data>
@@ -1045,12 +1100,10 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Opdateringen til PadForge {0} blev ikke færdiginstalleret. Installer den fra Indstillinger for at prøve igen.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge blev opdateret til {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Indbygget: {0} mappinger, fælles kopi fra {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Indbygget: {0} mappinger, fælles kopi fra {1}. Opdateret {2}: nye {3}, ændrede {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Indbygget: {0} mappinger, fælles kopi fra {1}. Downloadet {2}: {3} nye rækker, {4} ændrede.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Den fælles database er ikke ændret siden sidste opdatering.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Kunne ikke nå GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge afviste downloaden, fordi det ikke er den controllerdatabase, det forventer. Intet er ændret.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>En ny mapping bruges, næste gang dens controller tilsluttes.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>En ændret mapping bruges, næste gang PadForge starter.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Start minimeret</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Start ved logon</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Versionsoplysninger samt logføring af motorhændelser til fejlfinding.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Før en diagnosticeringslog</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Skriver løbende motorhændelser til diagnostics.log i logmappen, som Åbn logmappen åbner. Forbliver aktiveret på tværs af genstarter. Når filen når 8 MB, flyttes den over i diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Gem øjebliksbillede</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Gemmer de seneste motorhændelser i en ny fil. Virker, selv når diagnosticeringsloggen er slået fra.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Gem et øjebliksbillede…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Tager appen, Windows, dine enheder og indstillinger, som de er nu, med de seneste motorhændelser og åbner dem, så du kan læse dem, før du gemmer dem. Virker, selv når diagnosticeringsloggen er slået fra.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Åbn logmappe</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Optag et problem</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Start optagelse</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stop optagelse ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Optager indtil Stop optagelse, 10 minutter eller en zip på 20 MB og markerer så zip-filen i Explorer, klar til at blive vedhæftet en rapport.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, få problemet til at opstå, og stop så. Én fil ved siden af PadForge indeholder alt, hvad PadForge har læst, sendt og logget, med en oversigt over, hvad der gik galt. Hver tast og knap, der trykkes på en enhed under optagelsen, står i filen, også tastaturer og mus. Brugernavne, serienumre, adresser og indtastede navne erstattes, før noget skrives.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Optager indtil Stop optagelse, 30 minutter eller en zip på 20 MB og åbner så optagelsen, så du kan læse den, før du gemmer den.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Start, få problemet til at opstå, og stop så. Læs så, hvad den indeholder, del for del, og gem den, hvor du vil. Hver tast, der trykkes på en enhed under optagelsen, står i den, også tastaturer og mus. Brugernavne, serienumre, adresser og indtastede navne erstattes, før noget skrives.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skriver oversigten…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Gemt {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Optagelsen startede ikke. En kontrol fandt en privat værdi fra denne PC, som ikke ville blive holdt ude af filen.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Optagelsen startede ikke. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Den sidste optagelse bliver stadig gjort færdig.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Gem de sidste 60 sekunder er slået fra, så der er intet at gemme.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Gjorde en optagelse færdig, som PadForge ikke havde stoppet: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>En optagelse, PadForge ikke havde stoppet, venter på, at du læser den på Hjem: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Behold de sidste 60 sekunder</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mens motoren kører, holdes det sidste minut af det, en optagelse indeholder, i hukommelsen, til et problem, der kommer én gang om aftenen. Gem de sidste 60 sekunder skriver det som en fil.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mens motoren kører, holdes det sidste minut af det, en optagelse indeholder, i hukommelsen, til et problem, der kommer én gang om aftenen. Gem de sidste 60 sekunder åbner det, så du kan læse det, før du gemmer det.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Gem de sidste 60 sekunder</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skriv indtastede bogstaver og tal som én tast</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>En optagelse skriver de bogstav- og tal-taster, som ingen mapping eller makro læser, som én tast, hvert tryk på sit eget tidspunkt. Alle andre taster og hver tast, en mapping eller makro læser, skrives, som de blev trykket.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Behold de sidste 60 sekunder, Skriv indtastede bogstaver og tal som én tast</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Hvad der optages, de sidste 60 sekunder, indtastede bogstaver</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Gem et øjebliksbillede</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, dine enheder og indstillinger, som de er nu, gennem den samme gennemgang.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log ved siden af PadForge.exe, som du kan læse dér.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Hvad der optages</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Alt er slået til. En del, der slås fra, udelades af den næste optagelse, og filen siger, hvilke dele den indeholder.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Til et problem, der kommer én gang om aftenen.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Optagelsen venter på, at du læser den på Hjem.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Oversigt</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Indstillinger og enheder</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Feedback</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Timing</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Vindue og fejl</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Aktivitet</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Diagnosticeringslinjer</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Læs din optagelse</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} til {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Et øjebliksbillede kl. {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minut</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minutter</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 sekund</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} sekunder</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Stoppet af dig.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Stoppede af sig selv efter {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Stoppede af sig selv ved {0} i zip-filen.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Stoppet af en makro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Stoppet af et program eller --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Stoppet af den assistent, der startede den.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Stoppede, da PadForge blev lukket.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>De sidste 60 sekunder, holdt i hukommelsen.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Læs det, du vil dele. Slå en del fra for at udelade den, og gem så. Intet forlader denne pc, medmindre du slår det op.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, som det bliver delt</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Vis {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>udeladt</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>ikke optaget</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} som tekst, {1} i zip-filen</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} som tekst, {1} i den zip-fil, du deler. En optagelse stopper ved {2} i zip-filen eller efter {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Rensekontrol: PadForge erstattede {0} fordelt på {1}. Ingen af denne pcs navne, serienumre eller adresser er i de dele, du beholder.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} værdier</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 værdi</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} private slags</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 privat slags</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Rensekontrol: Der er stadig {0} egne værdier fra denne pc i de dele, du beholder. Slå de dele fra, eller slet optagelsen. Gem forbliver slået fra, indtil da.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Rensekontrol: Der er stadig én egen værdi fra denne pc i de dele, du beholder. Slå de dele fra, eller slet optagelsen. Gem forbliver slået fra, indtil da.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Intet af denne del skete, mens der blev optaget.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Slet</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopier oversigt</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Kopieret</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Gem…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Gem optagelsen</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-filer</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ikke gemt. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Gemt som dig, første gang i din mappe Overførsler, derefter dér, hvor du sidst gemte, og vist i Stifinder. En optagelse, der stopper, mens ingen er på siden (dens grænse, en makro, et program, assistentværktøjet eller --record stop), venter på denne gennemgang på Hjem og slettes efter 7 dage, medmindre den gemmes. Et program får at vide, at den venter, men aldrig hvor.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>En problemoptagelse fra {0} venter på, at du læser den.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Gennemgå</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Markér optagelsen</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Programversion</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-kørselsmiljø</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-version</value></data>
@@ -3128,31 +3238,64 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Museposition X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Museposition Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Følsomhed</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Markørfølsomhed pr. kilde. 1.0 når fuldt stickudslag ved 10% af skærmens bredde fra midten. Værdier over 1.0 når fuldt udslag med kortere markørbevægelse. Værdier under 1.0 kræver mere.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Markørfølsomhed pr. kilde. 1.0 når fuldt stickudslag ved 10% af bredden på markørens skærm fra dens midte. Værdier over 1.0 når fuldt udslag med kortere markørbevægelse. Værdier under 1.0 kræver mere.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Musebevægelse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Musebevægelse Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Bevægelse til fuldt udslag</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hvor langt musen bevæger sig fra midten til fuldt udslag, i de tællinger musen melder. Et højere tal styrer finere og kræver mere håndbevægelse.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hvor langt musen eller hjulet bevæger sig fra midten til fuldt udslag, i de tællinger, den melder. Et højere tal styrer finere og kræver mere håndbevægelse.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Når musens DPI er sat på dens enhedspanel, vises bevægelsen også i centimeter.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>tællinger</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrering</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Fra holder rattet, hvor hånden slap det. Fjeder bringer det tilbage over Returtid. Fra telemetri trækker det tilbage, som en bils forhjul ville, ved spillets hastighed og vejgreb: i ro ved stilstand, fastere med fart, let når hjulene glider. Uden et spil, der sender telemetri, er det fjederen. Fra spillets kraft lader en virtuel rats egen force feedback dreje det.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Fra holder rattet, hvor hånden slap det. Fjeder bringer det tilbage over Returtid. Fra telemetri trækker det tilbage, som en bils styring gør, ved spillets hastighed og vejgreb: stejlt nær midten og blødere længere ude, i ro ved stilstand, fastere med fart, let når hjulene glider. Uden et spil, der sender telemetri, trækker det som ved 100 km/h på tør vej. Fra spillets kraft lader en virtuel rats egen force feedback dreje det.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Fra</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Fjeder</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Fra telemetri</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Fra spillets kraft</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Returtid</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hvor lang tid Fjeder bruger på at bringe rattet 95% af vejen tilbage. Fra telemetri bruger så lang tid ved 100 km/h på tør vej.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hvor lang tid Fjeder bruger på at bringe rattet 95% af vejen tilbage. 0 centrerer det med det samme. Fra telemetri bruger så lang tid fra nær midten ved 100 km/h på tør vej.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Styring</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Altid lader musen styre hele tiden. Mens holdt nede lader den kun styre, mens Styreinput holdes nede. Skift slår styring til eller fra ved hvert tryk på Styreinput. Mens musen ikke styrer, bliver rattet, hvor det er, eller centreres, så én mus kan både styre og se sig omkring.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Altid lader musen styre hele tiden. Mens holdt nede og centrer lader den kun styre, mens Styreinput holdes nede, og bringer den så tilbage til midten, ved Centrering, hvor kilden har en, og med det samme, hvor den ikke har. Mens holdt nede og bliv lader den kun styre, mens inputtet holdes nede, og lader den blive, hvor den blev sluppet. Skift slår styring til eller fra ved hvert tryk på Styreinput. Så én mus kan både styre og se sig omkring.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Altid</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mens holdt nede</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mens holdt nede og centrer</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Skift</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Styreinput</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Knappen, der lader musen styre, på den samme enhed som musens bevægelse. Hvis ingen er valgt, styrer musen altid.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Knappen, der lader musen styre, på den samme enhed som kilden. Hvis ingen er valgt, styrer musen altid.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Udjævning</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jævner en mus ud, der melder uens. Rattet halter omtrent så længe efter hånden. 0 er slået fra.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Jævner en mus ud, der melder uens. Sticken halter omtrent så længe efter hånden. 0 er slået fra.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Udslag ved fart</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Med Spiltelemetri slået til: hvor meget af udslaget der er tilbage ved 200 km/h. Ved 100% er hele udslaget der ved enhver fart.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Hjulbevægelse</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Hjulbevægelse sidelæns</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Hvor hurtigt musen bevæger sig. Slipper, når hånden stopper.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Hvor markøren er på sin skærm, fra midten eller fra dér, hvor den var, da styringen begyndte.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Hvor langt musen er flyttet, holdt dér, hvor hånden slipper den, som et rat.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Rullehak holdt som en position, i fuld præcision på et fintrullende hjul.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Det sideværts hjuls hak holdt som en position, i fuld præcision på et fintrullende hjul.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Et skub for hvert hak, tilbage til hvile med det samme.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Mens holdt nede og bliv</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Følsomhed</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Hvor meget af sticken en hastighed giver. Ved 1.00 når sticken fuldt udslag ved 16.000 tællinger i sekundet, ved enhver pollingrate og musens rapporteringsrate.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Tilbage til midten</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Når musen bremser eller stopper, kommer sticken tilbage højst så hurtigt som dette. 0 lader den komme tilbage sammen med musen.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Start, hvor styringen begyndte</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Med et Styreinput måler sticken fra dér, hvor markøren var, da styringen begyndte, som en stick på en telefonskærm starter, hvor fingeren lander. Slået fra måler den fra midten af markørens skærm.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Denne akse bevæger sig relativt</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Til en trackball eller en spinner, der melder, hvor langt den er drejet. Slået til holder aksen en position, som Musebevægelse gør, og tager bevægelsesindstillingerne. Windows siger ikke, hvilke akser der bevæger sig sådan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Eksempel</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Viser, hvordan denne familie følger din egen mus. Intet tildeles, før du vælger den.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Viser eksempel. Flyt din mus.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Holdt ved {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Ved {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% til højre</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% til venstre</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% op</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% ned</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>midten</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Bevæger sig, mens {0} holdes nede.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Mus-DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>De tællinger, denne mus melder for hver tomme, den bevæger sig, som producentens software sætter dem.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Når DPI er sat, viser Musebevægelse også sin bevægelse i centimeter. 0 betyder ikke sat.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-markør X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-markør Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-lysstyrke</value></data>
@@ -4923,6 +5066,7 @@ Der ligger en kopi af den tidligere version i denne mappe: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikatorer på skærmen, som PadForge viser, mens du spiller. At slå en fra ændrer aldrig funktionen, kun om den bliver vist.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Pop op-panel for skiftelag</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay ved profilskift</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Controllere slået til eller fra</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Note om frakoblet enhed</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Note om tilsluttet enhed</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Vis ringen eller gitteret på skærmen, mens en radial menu eller berøringsmenu er aktiv. Menuer udløses stadig, når overlayet er slået fra.</value></data>
@@ -5651,6 +5795,8 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Fra</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stopur</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Lysbjælkefarve</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Frakoblede enheder</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Alle tilsluttet</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>fra</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>via Logitech Gaming Software</value></data>
@@ -5693,6 +5839,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Skærmen viser et billede, du vælger, i dets egen størrelse. Et billede, der er større end skærmen, vises som et udsnit i skærmens størrelse, som makroen Panorér tastaturskærmbillede flytter. På S.T.R.I.K.E. 7 flytter en finger, der trækkes hen over skærmen, det også.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Skærmen viser stopuret, som makroen Stopur starter, sætter på pause og nulstiller. Alle skærme viser det samme stopur.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Skærmen viser farven på lysbjælken på DualShock 4 eller DualSense i den laveste plads, som denne skærm forsyner, eller i den laveste plads overhovedet, hvis den ikke forsyner nogen. En monokrom skærm viser dens lysstyrke som et punktmønster. Indtil en farve når en lysbjælke, viser PadForge ingenting.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Skærmen viser de tildelte enheder, der ikke er tilsluttet, med de navne, siden Enheder viser, og siger Alle tilsluttet, når ingen mangler.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Billeder (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alle filer (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Panorér</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Panorér X</value></data>
@@ -5944,6 +6091,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Kører (ikke 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Spiltelemetri</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Scriptværdi</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Enhedsforbindelse</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hastighed (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% af maks.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gear (-1 bakgear, 0 frigear)</value></data>
@@ -6049,6 +6197,7 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Overlayet viser et billede, du vælger, skaleret til at fylde dets vindue med bevarede proportioner. Over 100 procent zoom viser det en del af billedet, til et kort. Makroen Panorér tastaturskærmbillede flytter den del, og det gør det også at trække med venstre museknap, mens PadForge er forrest.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Overlayet viser stopuret, som makroen Stopur starter, sætter på pause og nulstiller. Det er det samme stopur, som alle tastaturskærme viser.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Overlayet viser farven på lysbjælken på DualShock 4 eller DualSense i den plads, du vælger her, eller i den laveste plads med en farve. Indtil en farve når en lysbjælke, viser det ingenting.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Overlayet viser de tildelte enheder, der ikke er tilsluttet, med de navne, siden Enheder viser, og siger Alle tilsluttet, når ingen mangler.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Skærmoverlay {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Tilføj overlay</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Laveste plads med en farve</value></data>
@@ -6391,6 +6540,245 @@ Vil du have, at PadForge afinstallerer dem nu? Det kræver administratorrettighe
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med slippes inden holdetiden. Et længere tryk gør ingenting.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når Åbnes med trykkes tre gange inden for tryktidsvinduet.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Åbner eller lukker tastaturet, når tryktidsvinduet slutter efter ét tryk på Åbnes med. Et andet tryk inden for vinduet annullerer det.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Slået fra. Intet program kan nå PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} og {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Aktivitet: {0} kald, ældste først. Kald, der gik forud: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Aktivitet: {0} kald. Kald, der gik forud: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} ældre kald er væk. Aktivitet beholder de nyeste {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} ældre kald er væk. Aktivitet beholder de nyeste {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Eksportér…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Eksportér aktivitet</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Tekstfil</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Åbn</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Opdater</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Mere for {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Gem skillen som en ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Åbn dens indstillingsfil</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Gemt. Tilføj {1} i {0} under {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} har ingen indstillingsfil endnu. Tilføj opretter en.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge finder ingen assistentprogrammer på denne pc, hvis producent dokumenterer en opsætning på Windows. Kopier indstillinger under Mere virker til alle andre.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge kunne ikke kontrollere assistentprogrammerne: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Ikke tilføjet.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Tilføjet.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Tilføjet. Tilsluttet nu.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Tilføjet. Den har ikke tilsluttet siden. En assistent, der var åben, ser PadForge, efter at den er lukket og åbnet igen.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Tilføjet til en anden PadForge. Opdater peger den på denne.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Tilføjet. Dens PadForge-skill er ældre end denne PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Tilføjet, uden dens PadForge-skill.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Tilføjet. Dens PadForge-skill stammer fra en nyere PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Den tager kun imod skills som en upload.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Tilføjede assistenter når PadForge, når Automatisering er slået til.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Tilføjer…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Fjerner…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Opdaterer…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Det blev ikke færdigt: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Andre assistenter</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Til en assistent, der ikke er på listen ovenfor: Kopier indstillinger giver posten til dens MCP-indstillinger, og Kopier en besked giver en kort tekst til enhver chat, der siger, hvordan man forbinder, og hvad man først skal spørge om.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Kopier indstillinger</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Kopier en besked</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopieret.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ikke kopieret: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Forbind til PadForge, controllermapperen på min pc. Det er en lokal MCP-server, der kører over stdio: kommandoen er {0} med argumentet --mcp. Som JSON-indstillinger: {1} Når du er forbundet, så kald først dens status-værktøj og spørg mig så, hvad jeg vil sætte op, for eksempel: “Vis mig, hvor jeg tildeler min controllers triggere.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automatisering i PadForge er slået fra nu: slå den først til i PadForge under Ekstra, Automatisering.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Tilladte programmer</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Et program, der vil have Læs eller mere, spørger én gang, første gang det forbinder, og får det niveau, det beder om, op til niveauet ovenfor. En assistent, du tilføjer ovenfor, er tilladt af det.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Tilsluttet nu.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Sidst brugt {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Ikke brugt endnu.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Tilsluttet: {0}. Klik for at åbne Automatisering.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>På denne pc: {0}. Fra nettet: {1}. Klik for at åbne Automatisering.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Tilsluttet fra nettet: {0}. Klik for at åbne Automatisering.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL-mapping</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Læses som</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Fra</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>En gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>En joystick. SDL har ingen mapping til den.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>En joystick. PadForge læser den rå, så SDL-mappingen bruges ikke.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>En joystick, lagt ud som en gamepad af din række.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL læser enheder, mens motoren kører.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Den fælles kopi, der er bygget ind, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Downloadet {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Egen fil i PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Din, tilføjet {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variablen SDL_GAMECONTROLLERCONFIG, som SDL holder over enhver række, du tilføjer</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopier SDL-mapping</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Lægger enhedens mapping på udklipsholderen som en række i den fælles database, under enhedens ID med checksum og version sat til nul.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Indsæt SDL-mapping…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Tager en række til denne enhed, kontrollerer den, beholder den som din og bruger den med det samme.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Find en mapping…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Søger på navn i hver række, PadForge har, og bruger den, du vælger, til denne enhed, til en klon, hvis ID’er afviger.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Gæt et layout</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Gætter et gamepadlayout ud fra enhedens akser, knapper og hatte, til en enhed, ingen database kender. Kontrollér det i Test input.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Fjern min</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Fjern min sætter rækken og controllerrækkerne fra før tilbage.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Tildel igen</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Laver enhedens rækker på hver controller, den er på, igen ud fra SDL’s layout, som når man tildeler den.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Side for den fælles database</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Rækken og hvor den afviger fra {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Rækken</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Række for {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Dens input nu</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL’s række siger</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>ikke i SDL’s række</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, afviger</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Bruges ikke af PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Rækken</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Kopieret.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Kopieret. SDL’s form kan ikke rumme {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makroer</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>kurver</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>døde zoner</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>tastatur- og musoutput</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, skift og andre handlinger</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} og {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Intet at kopiere: SDL har ingen mapping til denne enhed, og den er ikke på nogen controller.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Et andet program bruger udklipsholderen. Intet blev kopieret.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Din række er fjernet. Enheden læses, som den blev før den.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Tildelt igen ud fra SDL’s layout: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>I brug nu. Rækken er din og har forrang for denne enhed.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Beholdt som din. Den er i brug, når motoren kører, og enheden er tilsluttet.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Beholdt som din, men variablen SDL_GAMECONTROLLERCONFIG har en række til denne enhed, som SDL holder over din.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tog ikke rækken. Intet ændrede sig for denne enhed.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Indsæt en SDL-mapping</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Indsæt en SDL-mapping til {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Find en mapping til {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Gæt et layout til {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Tilføj rækker fra en fil eller udklipsholderen</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Indsæt</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Åbn en fil…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Mappingfiler (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Filen er over 4 MB. Fællesskabets hele fil er omkring 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Søg på navn, ID eller VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rækker, PadForge har</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ingen række passer.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Den valgte række bruges til {0} under dens eget ID, gennem den samme kontrol og det samme valg som Indsæt.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL-mappingrække</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>En række til denne enhed.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Et gættet layout.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} felter, dens ID passer til denne enhed.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} felter, fra samme producent og produkt på en anden bus eller version. Den beholdes under denne enheds eget ID.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} felter, en anden enheds række. Den beholdes under denne enheds eget ID.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} felter. SDL læser ikke denne enhed, så PadForge lægger dens input ud efter rækken.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} felter, ud fra enhedens akser, knapper og hatte. Kontrollér det i Test input, og behold det eller ændr det her.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} felt, dens ID passer til denne enhed.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} felt, fra samme producent og produkt på en anden bus eller version. Den beholdes under denne enheds eget ID.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} felt, en anden enheds række. Den beholdes under denne enheds eget ID.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} felt. SDL læser ikke denne enhed, så PadForge lægger dens input ud efter rækken.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} felt, ud fra enhedens akser, knapper og hatte. Kontrollér det i Test input, og behold det eller ændr det her.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Dette ændrer, hvordan {0} læses. Dens rækker i {1} tildeles igen ud fra det nye layout.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Dette ændrer, hvordan {0} læses. Den er på ingen controller, så ingen rækker ændres.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profilgenveje, der læser {0}, beholder de input, de var sat til.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Rækken beholdes som din i PadForge.xml og har forrang for alle andre kilder for denne enhed. Fjern min sætter den gamle række og de gamle rækker tilbage.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rækkerne beholdes som dine i PadForge.xml og har forrang for deres enheder over alle andre kilder. Ryd under Mere på rækken Controllerdatabase fjerner dem.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rækker til Windows. {1} til andre systemer springes over.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} række til Windows. {1} til andre systemer springes over.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} afvist. Den første: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Indsæt en række eller teksten i en gamecontrollerdb.txt-fil.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teksten er ingen række i SDL’s controllerdatabase: et ID på 32 hex-cifre, et navn og så felter som a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Rækkerne er til andre systemer. PadForge læser rækker til Windows eller til intet bestemt system.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Rækkens ID hører ikke til en enhed. Det kræver 32 hex-cifre.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Rækkens navn er tomt, over 128 tegn eller har et tegn, SDL læser som et felt.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Rækken har et hint eller et Android-felt, som PadForge ikke tager imod.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Rækken har et felt, SDL ikke kender.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>En binding er ikke i SDL’s form, såsom b3, a2, +a2, a2~ eller h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Rækken angiver ét felt to gange.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Rækken er over 1.024 tegn.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Rækken binder ingen kontrol.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Dine rækker</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Dine rækker</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rækker, du tilføjer her eller indsætter på en enheds SDL-mapping-kort, har forrang for deres enheder over alle andre kilder og består gennem nulstillingen.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tilføj rækker fra en fil eller udklipsholderen…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rækker, dine over alle andre kilder for deres enheder.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} række, din over alle andre kilder for sin enhed.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ingen endnu.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>I brug med det samme.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Nå PadForge fra nettet</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>En assistent, der kører på et websted, når PadForge gennem et tunnelprogram på denne pc. Du bliver spurgt først, når du slår dette til.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Nå PadForge fra nettet?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge starter en hjælper uden administratorrettigheder, som kun lytter på denne pc, og det tunnelprogram, du vælger, giver den en offentlig adresse. En webassistent kommer kun ind, når du tillader dens login på spørgsmålskortet i PadForge, og den arbejder på niveauet ovenfor.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Slå til</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Assistenter på nettet</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Ingen</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>En adresse, jeg indsætter</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Starter, med dine rettigheder.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Kører, med dine rettigheder. Dens adresse er den samme, hver gang den starter.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Kører, med dine rettigheder. En hurtig tunnel får en ny adresse, hver gang den starter, så assistenten skulle tilføjes igen.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Stoppet.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Stoppet. Dens sidste ord: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Den kunne ikke startes.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Den er ikke længere på denne pc.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Der blev ikke fundet noget tunnelprogram på denne pc. PadForge virker med cloudflared, devtunnel, ngrok og Tailscale Funnel eller med adressen på din egen tunnel.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Vælg en tunnel for at give PadForge en offentlig adresse.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Også på denne pc: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, hvis adresse er den samme</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, hvis hurtige tunneler får en ny adresse hver gang</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Kør din egen tunnel til http://127.0.0.1:{0}, og indsæt dens https-adresse. En navngivet Cloudflare-tunnel, en vedvarende dev tunnel, Tailscale Funnel og ngroks eget domæne beholder deres adresse.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Indsæt en https-adresse uden anden sti end /mcp, som din tunnel giver den.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Starter webhjælperen til PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Webhjælperen til PadForge stoppede ({0}). Slå Nå PadForge fra nettet fra og til for at starte den igen.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adresse</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Ingen offentlig adresse endnu.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Tilføj til Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Kopieret.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Tag imod en ny webassistent</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Begynd at tage imod</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Hold op med at tage imod</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Tager imod til {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Tager ikke imod. Begynd at tage imod åbner i fem minutter.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Tilføj adressen i assistenten, og log ind. Hvert login viser sin egen sekscifrede kode på sin loginside og på spørgsmålskortet i PadForge. Tillad det kun, når de to koder er ens. På andre tidspunkter afvises et login, og intet spørger dig.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Tilladt på nettet</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Ingen endnu.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Dens login vendte tilbage til {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Den kalder sig {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Tilladt {0}, sidst brugt {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Tilladt {0}, ikke brugt endnu.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tilbagekald</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Dens egen Secure MCP Tunnel kører PadForge direkte, uden adresse eller login her. Kopier kommandoen ind i den tunnels opsætning.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopier kommando</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge downloader intet tunnelprogram og gemmer ingen anden virksomheds nøgle. En webassistent arbejder på niveauet ovenfor.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Tillad {0} at arbejde sammen med PadForge fra nettet?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Dens login vender tilbage til {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Den kalder sig {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Tillad kun, hvis dens loginside viser denne kode:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Dens sekscifrede kode vises på spørgsmålskortet i PadForge. Tillad kun, hvis dens loginside viser den samme kode.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Den arbejder på niveauet {0}, gennem {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Dens login vender tilbage til denne pc, og ethvert program her kunne gøre krav på den adresse.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Log ind på PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} beder om at arbejde sammen med PadForge på din pc.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Den kalder sig {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>På din pc spørger spørgsmålskortet i PadForge om dette login. Tillad det dér kun, hvis kortet viser denne kode:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Denne side går videre af sig selv, når du har svaret på pc’en.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Dette login vender tilbage til et program på din pc, og ethvert program dér kunne gøre krav på den adresse.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge tager ikke imod en ny webassistent nu. Åbn PadForge på din pc, gå til Ekstra, Automatisering, og tryk på Begynd at tage imod under Assistenter på nettet. Log så ind igen.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Dette login kan ikke fortsætte. Tilføj adressen til PadForge i assistenten igen, og log ind.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Dette login er udløbet. Log ind igen fra assistenten.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows startede den ikke</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>den sluttede med kode {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatisering er slået fra, så ingen webassistent når PadForge. Webhjælperen starter, når Automatisering er slået til.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Kontrollerer…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Ikke installeret.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Installeret og opdateret. Et script starter med {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Installeret til {0} og opdateret. Et script starter med {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Installeret. Denne PadForge har en nyere kopi.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Installeret til {0}. Denne PadForge har en nyere kopi.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Installerer…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge kunne ikke kontrollere det: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Installer lægger biblioteket fra PadForge, hvor det sprog finder det. Et script, der indlæser det, læser enheder og styrer tildelinger på niveauet ovenfor.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Gem et bibliotek et vilkårligt sted</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Installerede kopier</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Fjern alle</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Fjernet.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Script-ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Dens script-ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripts kalder dens kontroller {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripts kalder dens taster KeyA, KeySpace, KeyLeftShift og lignende og hver tast ved dens kode, Vk0 til Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Farverne sendes direkte til {0}. Skiftende farver, for eksempel et farveskift eller farver, der følger lyd, når den ikke. En farve, der forbliver den samme, gør.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Alle filer (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge-profil (*{0})|*{0}</value></data>

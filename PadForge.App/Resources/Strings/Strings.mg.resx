@@ -210,7 +210,7 @@
   <data name="Update_Downloading_Format" xml:space="preserve"><value>Maka ny fanavaozana: {0}%</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>Nohavaozina ho {0} ny PadForge.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tafiditra: mapping {0}, dika fiarahamonina tamin'ny {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tafiditra: mapping {0}, dika fiarahamonina tamin'ny {1}. Nohavaozina tamin'ny {2}: {3} vaovao, {4} niova.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tafiditra: mapping {0}, dika fiarahamonina tamin'ny {1}. Nalaina tamin'ny {2}: andalana vaovao {3}, {4} niova.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Tsy niova ny tahiry fiarahamonina hatramin'ny fanavaozana farany.</value></data>
   <data name="HIDMaestroUninstall_Title" xml:space="preserve"><value>Esory ny HIDMaestro</value></data>
   <data name="HIDMaestroUninstall_Message" xml:space="preserve"><value>Ireto no hesorina amin'ity PC ity. Apetraky ny PadForge indray ny HIDMaestro amin'ny contrôleur virtoaly manaraka.</value></data>
@@ -1852,6 +1852,8 @@
   <data name="KeyboardScreens_Kind_Strike7" xml:space="preserve"><value>S.T.R.I.K.E. 7</value></data>
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Tsy miasa</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Lokon'ny lightbar</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Fitaovana tsy mifandray</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Mifandray daholo</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>tsy miasa</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>amin'ny alalan'ny Logitech Gaming Software</value></data>
@@ -1889,6 +1891,7 @@
   <data name="KeyboardScreen_Hint_ProfilePicture" xml:space="preserve"><value>Mampiseho ny sarin'ny profil mavitrika ny efijery, na ny anarany raha tsy manana sary izy. Samy manana ny sariny ny profil tsirairay.</value></data>
   <data name="KeyboardScreen_Hint_Clock" xml:space="preserve"><value>Mampiseho ny ora ny efijery.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Mampiseho ny lokon'ny lightbar amin'ny DualShock 4 na DualSense ao amin'ny slot ambany indrindra mifandray aminy ny efijery, na ao amin'ny slot ambany indrindra amin'ny rehetra raha tsy misy slot mifandray aminy. Ny efijery mainty sy fotsy dia mampiseho ny hazavany amin'ny alalan'ny teboka. Raha tsy mbola misy loko tonga amin'ny lightbar, dia tsy mampiseho na inona na inona ny PadForge.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Mitanisa ny fitaovana voatendry tsy mifandray ny efijery, amin'ny anarana asehon'ny pejy Fitaovana, ary milaza hoe Mifandray daholo raha tsy misy tsy eo.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Sary (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Rakitra rehetra (*.*)|*.*</value></data>
   <data name="Status_KeyboardScreen_Format" xml:space="preserve"><value>Napetraka ho {1} ny {0}.</value></data>
   <data name="Status_FlydigiScreen_Sent" xml:space="preserve"><value>Tonga tany amin'ny efijerin'ny contrôleur ny sary.</value></data>
@@ -2024,6 +2027,7 @@
   <data name="Telemetry_Target_MaxRpm" xml:space="preserve"><value>RPM faratampony</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Télémétrie lalao</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Sandan'ny script</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Fifandraisan'ny fitaovana</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hafainganana (mph)</value></data>
   <data name="MacroAction_TriggerEffect_Side" xml:space="preserve"><value>Gâchette</value></data>
   <data name="MacroAction_TriggerEffect_SideRight" xml:space="preserve"><value>Ankavanana (R2)</value></data>
@@ -2315,27 +2319,21 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} tsy mifandray intsony. Tsy manana fitaovana intsony ny {1}.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} mifandray</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} mifandray, bateria {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Fitaovana {0} tsy mifandray intsony</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Fitaovana {0} mifandray</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Fitaovana {0} tsy mifandray intsony: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Fitaovana {0} mifandray: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Tapaka matetika ny fifandraisan'ny {0}</value></data>
   <data name="Extras_Group_Programs" xml:space="preserve"><value>Miaraka amin'ny programa hafa</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Avelao hiasa amin'ny PadForge ny launcher, ny script ary ny mpanampy.</value></data>
   <data name="Extras_Tile_Plugins" xml:space="preserve"><value>Ampio fitaovana omen'ny programa.</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Fahaizana</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Mpanampy</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Apetaho ao amin'ny fikirakirana MCP an'ny mpanampy iray ity. Hiasa amin'ny PadForge amin'ny ambaratonga etsy ambony ilay mpanampy avy eo.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Adikao ho TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Mpanampy mamaky TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ny Ampio dia mampiditra ny PadForge, miaraka amin'ny skill azy, ao amin'io mpanampy io. Miasa amin'ny ambaratonga etsy ambony izy avy eo, ary miseho eo anilan'izay tondroiny ny teniny, eo ambanin'ny anarany.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Tranomboky script</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Tehirizo tranomboky…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Rakitra iray ho an'ny AutoHotkey v2, Python na PowerShell. Ny script mampiditra azy dia mamaky ny fitaovana sy mitondra ny mapping amin'ny ambaratonga etsy ambony.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Rakitra iray ho an'ny AutoHotkey v2, Python na PowerShell, soratana amin'izay toerana fidinao.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Miandry anao</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Hetsika</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Mbola tsy nisy programa niantso. Voatanisa eto ny antso tsirairay sy ny vokany.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Esory ny fanovana</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Fahaizana ho an'ny mpanampy</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Tehirizo ny fahaizana…</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tsy misy plugin mandeha.</value></data>
   <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, faharetana {1}</value></data>
   <data name="Plugins_Replay_Play" xml:space="preserve"><value>Alefaso</value></data>
@@ -2344,15 +2342,18 @@
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Manomboka miaraka amin'ny motera</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Manamarina ny rakitra alohan'ny hanombohany</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Plugin mandeha: {0}. Fitaovana nampiany: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Najanona ny {0} taorian'ny tsy fahombiazana dimy.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Niova ny {0} hatramin'ny nankatoavanao azy.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Tsy afaka nanomboka ny {0}.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kitapo plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tehirizo ny kitapo plugin…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Plugin kely amin'ny C#, ary ilay plugin ihany ho an'ny AutoHotkey, Python ary PowerShell, samy milaza ny fomba hanorenana na hampandehanana azy ny rakitra tsirairay.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Torolalana momba ny baiko, ny tranga ary ny karazana fikirakirana rehetra, script fanorenana ho an'ny plugin C#, ary ilay plugin ihany ho an'ny AutoHotkey, Python ary PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Rakitsoratra</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Fidio plugin iray mba hahitana ny rakitsoratra.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Mbola tsy misy na inona na inona ao amin'ny rakitsoratr'ity plugin ity.</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programa hafa no mitazona ny anaran'ny pipe {0}. Akatony io programa io.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Nolavin'ny Windows ny pipe {0}, ka tsy afaka mifandray ny programa.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tsy misy programa mifandray.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Mandeha. Tsy misy programa mifandray.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Mifandray: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa tsy fantatra</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nosoniavin'ny {1}</value></data>
@@ -2386,7 +2387,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tsy hisy intsony izany raha tsy manomboka indray ny PadForge</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>Tsy manana tool toy izany ny PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Toetra efa taloha no novakian'ilay programa</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tsy misy fikirakirana toy izany</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tsy misy zavatra manana io ID io</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Tsy tao anatin'izay raisin'ny fikirakirana ny sanda</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Tsy navelanao</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Tsy nisy namaly tamin'ny fotoana</value></data>
@@ -2403,6 +2404,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Asehoy ny varavarankely</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Afeno ao amin'ny tray ny varavarankely</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Akelezo ny varavarankely</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Halehibeazo ny varavarankely</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Akatony ny PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Atombohy ny motera</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ajanony ny motera</value></data>
@@ -2428,6 +2430,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ampio ny fitaovana {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Apetraho ny bokotra sy axe an'ny fitaovana {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Esory ny fitaovana {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Avereno amin'ny toerana tsy mihetsika ny bokotra sy axe rehetra an'ny fitaovana {0}</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Mandidy ny PadForge hampandeha programa.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Manokatra rakitra, lahatahiry na pejy web.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Mandidy ny PadForge handefa kitendry na fidirana totozy any amin'ny Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Manafatra profil avy any ivelan'ny PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>Manontany anao ny PadForge alohan'ny hanaovan'ny programa izany.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Varavarankely fifanakalozana</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Macro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tazomy ny bokotra sy axe an'ny fitaovana {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Avelao ny bokotra sy axe an'ny fitaovana {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Apetraho ny sanda {0}</value></data>
@@ -2436,25 +2446,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Ovay ny profil</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Atombohy na ajanony ny motera</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Velomy na vonoy ny contrôleur virtoaly</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Tehirizo snapshot diagnostika</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Vakio ny hafainganan'ny polling sy ny pilote</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Tanisao ny profil</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Vakio profil iray</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Tanisao ny contrôleur virtoaly</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Tanisao ny fitaovana</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Vakio fitaovana iray</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Andraso ny fampidiranao</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Vakio ny mapping an'ny contrôleur iray</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Tanisao ny macro an'ny contrôleur iray</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Raketo olana iray</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Tadiavo fikirakirana</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Vakio fikirakirana iray</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Asehoy anao toerana iray</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Tadiavo toerana ao amin'ny PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Vakio toerana iray ao amin'ny PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Vakio izay hitanao</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ampio fitaovana ho azy manokana</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Tondrovy ny fitaovany</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Esory ny fitaovany</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Tazomy na avelao bokotra na axe iray</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Apetraho sanda ho an'ny trigger macro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ovay fikirakirana iray</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Tsindrio bokotra iray</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Mamorona profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Ovay anarana profil iray</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Fafao profil iray</value></data>
@@ -2465,7 +2474,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Ovay ny karazan'ny contrôleur iray</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Tendreo fitaovana iray</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Apetraho andalana mapping</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Fafao andalana mapping</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Ataovy mapping ho azy ny contrôleur iray</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Tehirizo macro iray</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Fafao macro iray</value></data>
@@ -2485,6 +2493,9 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Mamorona contrôleur fitendry sy totozy</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Mamelona {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Ovay «{0}»</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Tsindrio «{0}»</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>Te hampiseho anao {1} ny {0}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Ao amin'ny {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Mametraka {0} ho {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Mihaino amin'ny tambajotra, ka afaka mahatratra ity PC ity ny fitaovana hafa.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Manova pilote na HidHide, izay ianteheran'ny programa sy lalao hafa.</value></data>
@@ -2500,6 +2511,8 @@
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ny farany amin'ny {1} mitovy aminy</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Avelao</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Aza avela</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Aoka aloha</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Asehoy</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Avy amin'ny {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Avy amin'ny {1}, izay milaza ny tenany ho «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Avy amin'ny programa milaza ny tenany ho «{0}»</value></data>
@@ -2508,39 +2521,297 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} amin'ny {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Raha tsy misy valiny ao anatin'ny {0} dia heverina ho tsia.</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Tahiry contrôleur</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ny Havaozy izao dia maka ny tahiry contrôleur an'ny fiarahamonina (SDL_GameControllerDB) avy amin'ny GitHub ary mitahiry ao amin'ny rakitra fikirakirana ireo mapping tsy ananan'ity version PadForge ity. Ny mapping vaovao dia ampiasaina ho an'ny contrôleur tsy vakian'ny zavatra hafa ho gamepad, tsy voatendry ary tsy ao amin'ny Force Raw Joystick Mode ihany. Mamafa ny mapping rehetra nalaina ny famerenana.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ny Havaozy izao dia maka ny tahiry contrôleur an'ny fiarahamonina (SDL_GameControllerDB) avy amin'ny GitHub ary mitahiry ao amin'ny rakitra fikirakirana ireo mapping tsy ananan'ity version PadForge ity. Ampiasaina avy hatrany izy ireo. Ny mapping vaovao dia ampiasaina ho an'ny contrôleur tsy vakian'ny zavatra hafa ho gamepad, tsy voatendry ary tsy ao amin'ny Force Raw Joystick Mode (Bypass Gamepad Remapping) ihany. Mamafa ny mapping rehetra nalaina ny famerenana. Mijanona kosa ny andalanao, ao amin'ny More.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Havaozy izao</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Manavao…</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Nolavin'ny PadForge ilay rakitra nalaina satria tsy ilay tahiry contrôleur andrasany izy. Tsy nisy niova.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ampiasaina ny mapping vaovao amin'ny manaraka hifandraisan'ny contrôleur misy azy.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ampiasaina ny mapping niova amin'ny manaraka hanombohan'ny PadForge.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Dian'ny totozy X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Dian'ny totozy Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Dia hatramin'ny lock feno</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ny halaviran'ny dian'ny totozy avy eo afovoany hatramin'ny lock feno, amin'ny dingana tatiran'ny totozy. Ny isa ambony kokoa dia mamily amin'ny antsipiriany kokoa ary mila dia lavitra kokoa amin'ny tanana.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Ny halaviran'ny dian'ny totozy na ny kodiarana avy eo afovoany hatramin'ny lock feno, amin'ny dingana tatiriny. Ny isa ambony kokoa dia mamily amin'ny antsipiriany kokoa ary mila dia lavitra kokoa amin'ny tanana.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Rehefa voapetraka ao amin'ny tontonana fitaovany ny DPI an'ny totozy, dia miseho amin'ny santimetatra koa ny dia.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>dingana</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Famerenana eo afovoany</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ny Tsy miasa dia mitazona ny familiana eo amin'izay namelan'ny tanana azy. Ny Ressort dia mamerina azy ao anatin'ny Fotoana fiverenana. Ny Avy amin'ny Télémétrie dia misintona azy hiverina toy ny ataon'ny kodiarana aloha amin'ny fiara araka ny hafainganana sy ny fifikirana ao amin'ny lalao: tsy mihetsika rehefa mijanona, mafy kokoa rehefa haingana, maivana rehefa mikisaka ny kodiarana. Raha tsy misy lalao mandefa télémétrie dia ressort izy. Ny Avy amin'ny herin'ny lalao dia mamela ny force feedback an'ny familiana virtoaly hanodina azy.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Ny Tsy miasa dia mitazona ny familiana eo amin'izay namelan'ny tanana azy. Ny Ressort dia mamerina azy ao anatin'ny Fotoana fiverenana. Ny Avy amin'ny Télémétrie dia misintona azy hiverina toy ny ataon'ny familian'ny fiara araka ny hafainganana sy ny fifikirana ao amin'ny lalao: mafy be eo akaikin'ny afovoany ary malefaka kokoa rehefa lavitra, tsy mihetsika rehefa mijanona, mafy kokoa rehefa haingana, maivana rehefa mikisaka ny kodiarana. Raha tsy misy lalao mandefa télémétrie dia misintona toy ny amin'ny 100 km/h eny amin'ny lalana maina izy. Ny Avy amin'ny herin'ny lalao dia mamela ny force feedback an'ny familiana virtoaly hanodina azy.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Tsy miasa</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Ressort</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Avy amin'ny Télémétrie</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Avy amin'ny herin'ny lalao</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Fotoana fiverenana</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Ny fotoana ilain'ny Ressort hamerenana ny familiana 95% amin'ny lalana. Io fotoana io ihany no ilain'ny Avy amin'ny Télémétrie amin'ny 100 km/h eny amin'ny lalana maina.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Ny fotoana ilain'ny Ressort hamerenana ny familiana 95% amin'ny lalana. 0 dia mamerina azy eo afovoany avy hatrany. Io fotoana io ihany no ilain'ny Avy amin'ny Télémétrie avy eo akaikin'ny afovoany amin'ny 100 km/h eny amin'ny lalana maina.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Familio</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ny Mandrakariva dia mamela ny totozy hamily foana. Ny Raha mbola tazomina dia mamela azy hamily raha mbola tazomina ny Bokotra familiana ihany. Ny Toggle dia mamelona na mamono ny familiana isaky ny tsindry ny Bokotra familiana. Raha tsy mamily ny totozy dia mijanona eo amin'ny toerany na miverina eo afovoany ny familiana, ka totozy iray dia afaka mamily sy mijery manodidina.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Ny Mandrakariva dia mamela ny totozy hamily foana. Ny Raha mbola tazomina ary miverina eo afovoany dia mamela azy hamily raha mbola tazomina ny Bokotra familiana ihany, ary avy eo mamerina azy eo afovoany, amin'ny alalan'ny Famerenana eo afovoany raha manana izany ny loharano ary avy hatrany raha tsy manana. Ny Raha mbola tazomina ary mijanona dia mamela azy hamily raha mbola tazomina ny bokotra ihany ary mamela azy eo amin'izay namelana azy. Ny Toggle dia mamelona na mamono ny familiana isaky ny tsindry ny Bokotra familiana. Noho izany, totozy iray dia afaka mamily sy mijery manodidina.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Mandrakariva</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Raha mbola tazomina</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Raha mbola tazomina ary miverina eo afovoany</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Bokotra familiana</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ny bokotra mamela ny totozy hamily, ao amin'ny fitaovana misy ny dian'ny totozy ihany. Raha tsy misy voafidy dia mamily foana ny totozy.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Ny bokotra mamela ny totozy hamily, ao amin'ny fitaovana misy ny loharano ihany. Raha tsy misy voafidy dia mamily foana ny totozy.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Fanalefahana</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Mampitovy ny fihetsiky ny totozy tsy mitovy ny fitaterany. Manaraka ny tanana aorian'io fotoana io eo ho eo ny familiana. 0 dia tsy miasa.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Mampitovy ny fihetsiky ny totozy tsy mitovy ny fitaterany. Manaraka ny tanana aorian'io fotoana io eo ho eo ny stick. 0 dia tsy miasa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Lock amin'ny hafainganana</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Rehefa mandeha ny Télémétrie lalao, ny ampahany amin'ny lock sisa amin'ny 200 km/h. Amin'ny 100% dia eo foana ny lock manontolo na inona na inona hafainganana.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Dian'ny kodiarana</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Dian'ny kodiarana mitsivalana</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Ny hafainganan'ny fihetsiky ny totozy. Mivotsotra rehefa mijanona ny tanana.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Ny toerana misy ny tondro eo amin'ny efijeriny, avy eo afovoany na avy amin'izay nisy azy tamin'ny nanombohan'ny familiana.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Ny halaviran'ny nandehanan'ny totozy, tazonina eo amin'izay namelan'ny tanana azy, toy ny familiana.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Ny dingan'ny scroll tazonina ho toerana, amin'ny fahamarinana feno amin'ny kodiarana mikodia tsikelikely.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Ny dingan'ny kodiarana mitsivalana tazonina ho toerana, amin'ny fahamarinana feno amin'ny kodiarana mikodia tsikelikely.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Tosika iray isaky ny dingana, miverina avy hatrany amin'ny toerana tsy mihetsika.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Raha mbola tazomina ary mijanona</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Ny ampahan'ny stick omen'ny hafainganana iray. Amin'ny 1.00 dia tonga amin'ny fihetsehana feno ny stick amin'ny dingana 16,000 isaky ny segondra, na inona na inona polling rate sy report rate an'ny totozy.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Miverina eo afovoany</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Rehefa miadana na mijanona ny totozy, dia tsy miverina haingana noho izany ny stick. 0 dia mamela azy hiverina miaraka amin'ny totozy.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Manomboka amin'izay nanombohan'ny familiana</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Miaraka amin'ny Bokotra familiana, ny stick dia mandrefy avy amin'izay nisy ny tondro tamin'ny nanombohan'ny familiana, toy ny stick amin'ny efijerin'ny finday izay manomboka amin'izay ipetrahan'ny rantsantanana. Raha tsy miasa, dia mandrefy avy eo afovoan'ny efijery misy ny tondro izy.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Mihetsika amin'ny fomba relatif ity axe ity</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Ho an'ny trackball na spinner izay mitatitra ny halaviran'ny nihodinany. Raha miasa, ny axe dia mitazona toerana toy ny ataon'ny Dian'ny totozy ary mampiasa ny fikirakirana momba ny dia. Tsy milaza ny Windows hoe axe inona no mihetsika toy izany.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Topy maso</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Mampiseho ny fomba fanarahan'ity vondrona ity ny totozinao. Tsy misy voatendry raha tsy misafidy azy ianao.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Topy maso. Ahetsiho ny totozinao.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Tazonina amin'ny {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Amin'ny {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% ankavanana</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% ankavia</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% ambony</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% ambany</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>afovoany</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Mihetsika raha mbola tazomina ny {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI an'ny totozy</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Ny dingana tatirin'ity totozy ity isaky ny inch nandehanany, araka ny fametrahan'ny rindrankajy avy amin'ny mpanamboatra azy.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Rehefa voapetraka ny DPI, ny Dian'ny totozy dia mampiseho ny diany amin'ny santimetatra koa. 0 dia midika hoe tsy voapetraka.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
   <data name="About_McpSdkDesc" xml:space="preserve"><value>Ny mpizara sy mpanjifa Model Context Protocol ao ambadiky ny fifandraisana amin'ny mpanampy sy ny PadForge.exe --mcp, nataon'ny Model Context Protocol a Series of LF Projects.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions ary DependencyInjection.Abstractions, izay iorenan'ny MCP C# SDK, nataon'ny Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Programa</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Nampian'ny {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Fikirakirana {0}</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Mandeha.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Mandeha, amin'ny tanana.</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Asio marika ny firaketana</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Mitanisa ny fitaovana voatendry tsy mifandray ny overlay, amin'ny anarana asehon'ny pejy Fitaovana, ary milaza hoe Mifandray daholo raha tsy misy tsy eo.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Tsy mandeha. Tsy misy programa afaka mahatratra ny PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} sy {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Hetsika PadForge: antso {0}, ny tranainy indrindra aloha. Antso teo alohany: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Hetsika PadForge: antso {0}. Antso teo alohany: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Antso taloha {0:N0} no lasa. Ny Hetsika dia mitazona ireo {1:N0} vaovao indrindra.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Antso taloha {0:N0} no lasa. Ny Hetsika dia mitazona ireo {1:N0} vaovao indrindra.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Avoahy…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Avoahy ny Hetsika</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Rakitra soratra</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Sokafy</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Havaozy</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Bebe kokoa ho an'ny {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Tehirizo ho ZIP ny skill…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Sokafy ny rakitra fikirakiranany</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Voatahiry. Ao amin'ny {0}, ampio {1} ao amin'ny {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>Tsy mbola manana rakitra fikirakirana ny {0}. Ny Ampio no mamorona izany.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>Tsy mahita programa mpanampy eto amin'ity PC ity ny PadForge izay nanoratan'ny mpanamboatra azy fomba fametrahana amin'ny Windows. Ny Copy Settings ao amin'ny More dia mandeha amin'ny hafa rehetra.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>Tsy afaka nanamarina ireo programa mpanampy ny PadForge: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Tsy nampiana.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Nampiana.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Nampiana. Mifandray izao.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Nampiana. Tsy mbola nifandray hatramin'izay. Ny mpanampy efa nisokatra dia mahita ny PadForge rehefa nakatona ary nosokafana indray.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Nampiana ho an'ny PadForge hafa. Ny Havaozy dia manondro azy amin'ity iray ity.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Nampiana. Tranainy noho ity PadForge ity ny skill PadForge ananany.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Nampiana, tsy misy ny skill PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Nampiana. Avy amin'ny PadForge vaovao kokoa ny skill PadForge ananany.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Tsy mandray skill afa tsy amin'ny alalan'ny fandefasana izy.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Ny mpanampy nampiana dia mahatratra ny PadForge rehefa mandeha ny Automation.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Mampiditra…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Manala…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Manavao…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Tsy vita: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Voadika.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Tsy voadika: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programa navela</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ny programa mila Read na mihoatra dia manontany indray mandeha, amin'ny voalohany mifandray izy, ary mahazo ny ambaratonga angatahiny, hatramin'ny ambaratonga etsy ambony. Ny mpanampy ampianao etsy ambony dia navela amin'izany.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Mifandray izao.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Nampiasaina farany tamin'ny {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Tsy mbola nampiasaina.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Mifandray: {0}. Tsindrio hanokafana ny Automation.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Eto amin'ity PC ity: {0}. Avy amin'ny web: {1}. Tsindrio hanokafana ny Automation.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Mifandray avy amin'ny web: {0}. Tsindrio hanokafana ny Automation.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Mapping SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad, «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick. Tsy manana mapping ho azy ny SDL.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. Vakian'ny PadForge mivantana izy, ka tsy ampiasaina ny mapping an'ny SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, alahatra ho gamepad amin'ny andalanao.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>Mamaky fitaovana ny SDL raha mandeha ny motera.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ny dika fiarahamonina tafiditra, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Nalaina tamin'ny {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Ny rakitra an'ny PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Anao, nampiana tamin'ny {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ny variable SDL_GAMECONTROLLERCONFIG, izay tazonin'ny SDL ambonin'ny andalana rehetra ampianao</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Adikao ny Mapping SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Mametraka ny mapping an'ny fitaovana ao amin'ny clipboard ho andalana amin'ny tahiry fiarahamonina, eo ambanin'ny ID an'ny fitaovana, ary atao aotra ny checksum sy ny version.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Apetaho ny Mapping SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Mandray andalana ho an'ity fitaovana ity, manamarina azy, mitahiry azy ho anao ary mampihatra azy avy hatrany.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Tadiavo mapping…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Mitady araka ny anarana amin'ny andalana rehetra entin'ny PadForge ary mampihatra amin'ity fitaovana ity izay fidinao, ho an'ny clone tsy mitovy ID.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Vinavinao ny fandaharana</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Maminavina fandaharana gamepad avy amin'ny axe, bokotra ary hat an'ny fitaovana, ho an'ny fitaovana tsy fantatry ny tahiry rehetra. Hamarino ao amin'ny Test Inputs.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Esory ny ahy</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Ny Esory ny ahy dia mamerina ny andalana sy ny andalan'ny contrôleur teo aloha.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Ataovy mapping indray</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Mamorona indray ny andalan'ny fitaovana amin'ny contrôleur tsirairay misy azy avy amin'ny fandaharan'ny SDL, toy ny ataon'ny fanendrena azy.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Pejin'ny tahiry fiarahamonina</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Ny andalana, sy izay tsy itoviany amin'ny {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Ny andalana</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Contrôleur</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Andalana {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Ny fidirany izao</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Ny lazain'ny andalana SDL</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>tsy ao amin'ny andalana SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, tsy mitovy</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Tsy ampiasain'ny PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Ny andalana</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Voadika.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Voadika. Tsy mahazaka {0} ny endrika SDL.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>fiolahana</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>dead zone</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>fivoahana kitendry sy totozy</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle ary asa hafa</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} sy {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Tsy misy hadika: tsy manana mapping ho an'ity fitaovana ity ny SDL, ary tsy ao amin'ny contrôleur na iray aza izy.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Programa hafa no mampiasa ny clipboard. Tsy nisy voadika.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Voaesotra ny andalanao. Mamaky toy ny teo aloha ny fitaovana.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Natao mapping indray avy amin'ny fandaharan'ny SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Ampiasaina izao. Anao ny andalana ary izy no mandresy ho an'ity fitaovana ity.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Voatahiry ho anao. Ampiasaina izy rehefa mandeha ny motera ary mifandray ny fitaovana.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Voatahiry ho anao, saingy misy andalana ho an'ity fitaovana ity ao amin'ny variable SDL_GAMECONTROLLERCONFIG, izay tazonin'ny SDL ambonin'ny anao.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>Tsy noraisin'ny SDL ny andalana. Tsy nisy niova ho an'ity fitaovana ity.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Apetaho Mapping SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Apetaho Mapping SDL ho an'ny {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Tadiavo mapping ho an'ny {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Vinavinao ny fandaharana ho an'ny {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Ampio andalana avy amin'ny rakitra na ny clipboard</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Apetaho</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Sokafy rakitra…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Rakitra mapping (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Mihoatra ny 4 MB ny rakitra. Eo amin'ny 0.6 MB eo ho eo ny rakitra manontolon'ny fiarahamonina.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Tadiavo amin'ny anarana, ID na VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Andalana entin'ny PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Tsy misy andalana mifanaraka.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ampiharina amin'ny {0} eo ambanin'ny ID azy manokana ny andalana voafidy, amin'ny alalan'ny fanamarinana sy safidy mitovy amin'ny Apetaho.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Andalana mapping SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Andalana ho an'ity fitaovana ity.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Fandaharana novinavinaina.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, saha {0}, mifanaraka amin'ity fitaovana ity ny ID azy.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, saha {0}, avy amin'ny mpivarotra sy vokatra mitovy amin'ny bus na version hafa. Tahirizina eo ambanin'ny ID an'ity fitaovana ity izy.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, saha {0}, andalan'ny fitaovana hafa. Tahirizina eo ambanin'ny ID an'ity fitaovana ity izy.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Saha {0}. Tsy vakian'ny SDL ity fitaovana ity, ka alahatry ny PadForge araka ny andalana ny fidirany.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Saha {0}, avy amin'ny axe, bokotra ary hat an'ny fitaovana. Hamarino ao amin'ny Test Inputs, dia tahirizo na ovay eto.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, saha {0}, mifanaraka amin'ity fitaovana ity ny ID azy.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, saha {0}, avy amin'ny mpivarotra sy vokatra mitovy amin'ny bus na version hafa. Tahirizina eo ambanin'ny ID an'ity fitaovana ity izy.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, saha {0}, andalan'ny fitaovana hafa. Tahirizina eo ambanin'ny ID an'ity fitaovana ity izy.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Saha {0}. Tsy vakian'ny SDL ity fitaovana ity, ka alahatry ny PadForge araka ny andalana ny fidirany.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Saha {0}, avy amin'ny axe, bokotra ary hat an'ny fitaovana. Hamarino ao amin'ny Test Inputs, dia tahirizo na ovay eto.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Manova ny fomba famakiana ny {0} izany. Atao mapping indray avy amin'ny fandaharana vaovao ny andalany ao amin'ny {1}.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Manova ny fomba famakiana ny {0} izany. Tsy ao amin'ny contrôleur na iray aza izy, ka tsy misy andalana miova.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Ny fanafohezana profil mamaky ny {0} dia mitazona ny fidirana nametrahana azy.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Voatahiry ho anao ao amin'ny PadForge.xml ny andalana ary izy no mandresy noho ny loharano hafa rehetra ho an'ity fitaovana ity. Ny Esory ny ahy dia mamerina ny andalana taloha sy ireo andalana taloha.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Voatahiry ho anao ao amin'ny PadForge.xml ireo andalana ary mandresy noho ny loharano hafa rehetra ho an'ny fitaovany. Ny Fafao, ao amin'ny More an'ny andalana Tahiry contrôleur, no manala azy ireo.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Andalana {0} ho an'ny Windows. Andalana {1} ho an'ny rafitra hafa no tsy raisina.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Andalana {0} ho an'ny Windows. Andalana {1} ho an'ny rafitra hafa no tsy raisina.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Nolavina: {0}. Ny voalohany: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Apetaho andalana iray, na ny lahatsoratry ny rakitra gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Tsy andalana amin'ny tahiry contrôleur an'ny SDL ity lahatsoratra ity: ID misy isa hex 32, anarana, ary saha toy ny a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Ho an'ny rafitra hafa ireo andalana. Mamaky andalana ho an'ny Windows ny PadForge, na ho an'ny rafitra tsy voafaritra.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Tsy ID fitaovana ny ID an'ny andalana. Mila isa hex 32 izy.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Foana ny anaran'ny andalana, mihoatra ny litera 128, na misy litera vakian'ny SDL ho saha.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Misy hint na saha Android ny andalana, izay tsy raisin'ny PadForge.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Misy saha tsy fantatry ny SDL ny andalana.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Misy fatorana tsy amin'ny endrika SDL, toy ny b3, a2, +a2, a2~ na h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Manome saha iray indroa ny andalana.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Mihoatra ny litera 1,024 ny andalana.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Tsy mamatotra bokotra na axe na iray aza ny andalana.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ny andalanao</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ny andalanao</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Ny andalana ampianao eto, na apetakao ao amin'ny karatra Mapping SDL an'ny fitaovana, dia mandresy noho ny loharano hafa rehetra ho an'ny fitaovany ary mijanona na dia averina aza ny fikirakirana.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ampio andalana avy amin'ny rakitra na ny clipboard…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Andalana {0}, anao ary ambonin'ny loharano hafa rehetra ho an'ny fitaovany.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Andalana {0}, anao ary ambonin'ny loharano hafa rehetra ho an'ny fitaovany.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Tsy mbola misy.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ampiasaina avy hatrany.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Alefaso</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Mpanampy amin'ny web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Tsy misy</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Adiresy apetako</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Manomboka, miaraka amin'ny zonao.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Mandeha, miaraka amin'ny zonao. Mitovy foana ny adiresiny isaky ny manomboka izy.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Mandeha, miaraka amin'ny zonao. Ny quick tunnel dia maka adiresy vaovao isaky ny manomboka, ka tsy maintsy ampiana indray ny mpanampy.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Najanona.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Najanona. Ny teny farany nolazainy: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Tsy afaka natomboka izy.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Tsy eto amin'ity PC ity intsony izy.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Tsy nisy programa tunnel hita teto amin'ity PC ity. Miasa amin'ny cloudflared, devtunnel, ngrok ary Tailscale Funnel ny PadForge, na amin'ny adiresin'ny tunnel anao.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Misafidiana tunnel hanomezana adiresy ampahibemaso ny PadForge.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Eto amin'ity PC ity koa: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, izay mitovy foana ny adiresiny</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, izay ny quick tunnel dia maka adiresy vaovao isaky ny mandeha</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Ampandehano ny tunnel anao mankany amin'ny http://127.0.0.1:{0} ary apetaho ny adiresy https azony. Ny Cloudflare tunnel misy anarana, ny dev tunnel maharitra, ny Tailscale Funnel ary ny domain an'ny ngrok dia mitazona ny adiresiny.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Apetaho adiresy https tsy misy path afa tsy /mcp, araka ny omen'ny tunnel anao.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Manomboka ny programa web an'ny PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Nijanona ny programa web an'ny PadForge ({0}). Vonoy ary alefaso indray ny Reach PadForge From the Web mba hanombohana azy indray.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adiresy</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Tsy mbola misy adiresy ampahibemaso.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ampio amin'ny Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Voadika.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Raiso mpanampy web vaovao</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Atombohy ny fandraisana</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Atsaharo ny fandraisana</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Mandray hatramin'ny {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Tsy mandray. Ny Atombohy ny fandraisana dia manokatra azy mandritra ny dimy minitra.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Ampio ao amin'ny mpanampy ny adiresy ary midira. Ny fidirana tsirairay dia mampiseho kaody isa enina manokana eo amin'ny pejy fidirany sy eo amin'ny karatra fanontaniana an'ny PadForge. Avelao izy raha mitovy ny kaody roa ihany. Amin'ny fotoana hafa dia lavina ny fidirana ary tsy misy manontany anao.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Navela amin'ny web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Tsy mbola misy.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Niverina tany amin'ny {0} ny fidirany.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Miantso ny tenany hoe {0} izy.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Navela tamin'ny {0}, nampiasaina farany tamin'ny {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Navela tamin'ny {0}, tsy mbola nampiasaina.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Esory ny alalana</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Ny Secure MCP Tunnel azy no mampandeha mivantana ny PadForge, tsy mila adiresy na fidirana eto. Adikao ao amin'ny fametrahana io tunnel io ny baiko.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Adikao ny baiko</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>Tsy maka programa tunnel ny PadForge ary tsy mitahiry lakile an'ny orinasa hafa. Miasa amin'ny ambaratonga etsy ambony ny mpanampy web.</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Miverina any amin'ny {0} ny fidirany.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Miantso ny tenany hoe {0} izy.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Avelao raha mampiseho ity kaody ity ny pejy fidirany ihany:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Miseho eo amin'ny karatra fanontaniana an'ny PadForge ny kaody isa enina. Avelao raha mampiseho kaody mitovy ny pejy fidirany ihany.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Miasa amin'ny {0} izy, amin'ny alalan'ny {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Miverina eto amin'ity PC ity ny fidirany, ary afaka maka io adiresy io ny programa rehetra eto.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Midira ao amin'ny PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>Mangataka hiasa miaraka amin'ny PadForge ao amin'ny PC anao ny {0}.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Miantso ny tenany hoe {0} izy.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Ao amin'ny PC anao, manontany momba ity fidirana ity ny karatra fanontaniana an'ny PadForge. Avelao any izy raha mampiseho ity kaody ity ny karatra ihany:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Mitohy ho azy ity pejy ity rehefa mamaly ao amin'ny PC ianao.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Miverina any amin'ny programa ao amin'ny PC anao ity fidirana ity, ary afaka maka io adiresy io ny programa rehetra ao.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>Tsy mandray mpanampy web vaovao ny PadForge izao. Ao amin'ny PC anao, sokafy ny PadForge, mankanesa any amin'ny Fanampiny, Automation, ary ao amin'ny Mpanampy amin'ny web tsindrio ny Atombohy ny fandraisana. Avy eo midira indray.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Tsy afaka mitohy ity fidirana ity. Ampio indray ao amin'ny mpanampy ny adiresin'ny PadForge ary midira.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Tapitra ity fidirana ity. Midira indray avy amin'ny mpanampy.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>tsy natombok'ny Windows</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>nifarana tamin'ny kaody {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Tsy mandeha ny Automation, ka tsy misy mpanampy web mahatratra ny PadForge. Manomboka ny programa web rehefa mandeha ny Automation.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Voapetraka ary vaovao. Manomboka amin'ny {0} ny script.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Voapetraka ho an'ny {0} ary vaovao. Manomboka amin'ny {1} ny script.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Voapetraka. Manana dika vaovao kokoa ity PadForge ity.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Voapetraka ho an'ny {0}. Manana dika vaovao kokoa ity PadForge ity.</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>Tsy afaka nanamarina azy ny PadForge: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Ny Install dia mametraka ny tranomboky an'ny PadForge amin'izay toerana itadiavan'io fiteny io azy. Ny script mampiditra azy dia mamaky ny fitaovana sy mitondra ny mapping amin'ny ambaratonga etsy ambony.</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Dika voapetraka</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Esory daholo</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Voaesotra.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Ny ID script azy</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Antsoin'ny script hoe {0} ny bokotra sy axe ananany.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Antsoin'ny script hoe KeyA, KeySpace, KeyLeftShift sy ny toy izany ny kitendriny, ary ny kitendry tsirairay amin'ny kaodiny, Vk0 hatramin'ny Vk255.</value></data>
 </root>

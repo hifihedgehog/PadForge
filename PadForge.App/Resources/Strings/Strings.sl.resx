@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0}: odklopljeno. {1} nima več nobene naprave.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0}: povezano</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0}: povezano, baterija {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Odklopljenih naprav: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Povezanih naprav: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Odklopljenih naprav: {0} ({1})</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Povezanih naprav: {0} ({1})</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Naprava {0} se venomer odklaplja</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (največ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (največ {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Samodejna ponovna povezava, vrata, identiteta seznanjanja, povezava prek naslova</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Vrata, nadomestek DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Vrata, Polna hitrost, Formati po meri</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, veščina</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Drugi pomočniki, pomočniki v spletu</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Razgledujte se z glavo s sledilnikom glave ali slušalkami VR, medtem ko imate oba palca na gumbih.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Preslikajte hitrost, pedale in prestave, ki jih pošilja vozniška igra, kot vsak drug vnos.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Pošiljajte gibanje krmilnika emulatorjem, ki berejo vir gibanja DSU.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Obroč, mreža ali vrstica menija, medtem ko je odprt.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Ime plasti ob vklopu preklopne plasti, za čas, ki ga določi ta plast.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Ime profila ob zamenjavi profila.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Ali so se navidezni krmilniki pravkar vklopili ali izklopili, s bližnjico ali makrom.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Ime preslikane naprave ob prekinitvi povezave.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Ime preslikane naprave ob vzpostavitvi povezave.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiraj naslov</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programi lahko preklapljajo profile in jih sproščajo, zaženejo in ustavijo mehanizem, vklopijo in izklopijo navidezne krmilnike, pokažejo in skrijejo okno, zaprejo PadForge, shranijo posnetek diagnostike in vprašajo, kaj deluje.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Vse na ravni Ukazi, programi pa lahko tudi vidijo naprave, navidezne krmilnike, preslikave, profile in nastavitve, sproti spremljajo vnose vsake naprave in vam pokažejo mesto v programu PadForge. Program na ravni Branje vidi vsako tipko, pritisnjeno na kateri koli napravi, tudi tipke, vtipkane v okna, ki se izvajajo kot skrbnik.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Vse na ravni Branje, programi pa lahko tudi dodajo lastne naprave in jih upravljajo, držijo krmilni element katere koli naprave in predajo poimenovane vrednosti sprožilcem makrov.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Vse na ravni Pošiljanje vnosov, programi pa lahko tudi spreminjajo to, kar lahko spreminjate na straneh.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Vse na ravni Pošiljanje vnosov, programi pa lahko tudi spreminjajo to, kar lahko spreminjate na straneh. Nekatere spremembe vas vedno najprej vprašajo na kartici z vprašanjem programa PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Pomočniki</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Prilepite to v nastavitve MCP pomočnika. Pomočnik nato s programom PadForge sodeluje na zgornji ravni.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiraj kot TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Pomočniki, ki berejo TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Dodaj vstavi PadForge s spretnostjo v tega pomočnika. Nato deluje na zgornji ravni, njegove besede pa se prikažejo ob tem, na kar kaže, pod njegovim imenom.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skripte</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Knjižnica skript</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Shrani knjižnico …</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ena datoteka za AutoHotkey v2, Python ali PowerShell. Skripta, ki jo naloži, bere naprave in upravlja preslikave na zgornji ravni.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Ena datoteka za AutoHotkey v2, Python ali PowerShell, zapisana tja, kamor izberete.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Čakajo na vas</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Dejavnost</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Noben program še ni poklical. Vsak klic je naveden tukaj z izidom.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Razveljavi</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Veščina za pomočnike</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Shrani veščino …</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge tega ni mogel shraniti: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Dokler je povezan program na ravni Branje ali višji, vidi, kaj je pritisnjeno na vsaki napravi, tudi na tipkovnicah.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Vtičniki</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Zaženi vtičnike</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Noben vtičnik ne deluje.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Vtičnik se izvaja z vašimi pravicami, ne s pravicami programa PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Vgrajeni</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Preizkusni krmilnik</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Krmilnik, ki se sam premika, po en krmilni element naenkrat, da lahko preslikavo preizkusite brez naprave pri roki.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Hitrost</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Počasi</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Običajno</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Hitro</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Najhitreje</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Ponovno predvajanje</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Predvaja posnetek težave kot naprave, ki so ga ustvarile, z njihovim časovnim potekom. So nove naprave v tem računalniku, preslikane, kot jih preslikate vi ali profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Posnetek</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Posnetki težav|*.zip;*.log|Vse datoteke|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ne more predvajati datoteke {0}. Ni posnetek težave ali ne vsebuje vnosa nobene naprave.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Vaši vtičniki</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Vtičnik je program, ki doda naprave v PadForge. PadForge ga zažene z vašimi običajnimi pravicami, kadar deluje mehanizem.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Dodaj vtičnik …</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programi in skripte|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Vse datoteke|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Odobri …</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Odobri in znova zaženi …</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Zažene se z mehanizmom</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Preverjanje datoteke pred zagonom</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Končano s kodo {0}. Znova se zažene čez {1} s.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>Datoteka {0} je že na seznamu.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge zažene do 16 vtičnikov. Odstranite enega, da dodate drugega.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Vtičniki, ki delujejo: {0}. Naprave, ki so jih dodali: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Vtičnik {0} se je ustavil po petih napakah.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Vtičnik {0} je spremenjen po vaši odobritvi.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Vtičnika {0} ni bilo mogoče zagnati.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Dodano: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Podpisnik: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ni podpisano.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Njegove nastavitve se prikažejo tukaj, medtem ko deluje.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Ne razglasi nobenih nastavitev.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge ni mogel prebrati njegovih nastavitev: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Končano po minuti brez odziva</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Njegova datoteka se je spremenila med delovanjem</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Dodal vtičnik {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Nastavitve: {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Izberi</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Pritisnite krmilni element …</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Ni izbrano</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Dodajte vtičnik ali spustite njegovo datoteko na to stran. PadForge prikaže njegovo pot, podpisnika in SHA-256 ter vas vpraša, preden se zažene. Vtičnik deluje z vašimi pravicami, ne s pravicami programa PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Predvaja posnetek težave kot naprave, ki so ga ustvarile, z njihovim časovnim potekom.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Deluje.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Deluje, ročno.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Kaj se premika</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Palici in sprožilca</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Palici</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Sprožilca</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Vzorec</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Prečesavanje</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Krog</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Čas gibanja</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Čas počitka</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Pritiskaj gumbe</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Pritiskaj gumbe za krmarjenje</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Aplikacije za Windows se v oknu spredaj odzivajo na gumbe A, B, Back, Start in smerni križ navideznega krmilnika Xbox, Guide pa odpre Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Vrti smerni križ</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Iz istega razloga.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Čas pritiska</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Krmilniki</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Ročno</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Ustavi gibanje. Njegove vhode spodaj nastavite z miško.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Leva palica</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Desna palica</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Levi sprožilec</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Desni sprožilec</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Branj na sekundo</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Komplet za vtičnike in dnevnik vtičnika, ki ga izberete</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Komplet za vtičnike</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Shrani komplet za vtičnike …</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Majhen vtičnik v jeziku C# in isti vtičnik za AutoHotkey, Python in PowerShell, vsaka datoteka z navodilom za gradnjo ali zagon.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Vodnik po vseh glagolih, dogodkih in vrstah nastavitev, skripta za gradnjo vtičnika v jeziku C# in isti vtičnik za AutoHotkey, Python in PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Dnevnik</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Izberite vtičnik, da vidite njegov dnevnik.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>V dnevniku tega vtičnika še ni ničesar.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Modifikacija igre</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Drug program drži ime cevi {0}. Zaprite ta program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows je zavrnil cev {0}, zato se programi ne morejo povezati.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Noben program ni povezan.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Vklopljeno. Noben program ni povezan.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Povezano: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Neznan program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, podpisal {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Teh ne bo več, dokler se PadForge ne zažene znova</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nima takega orodja</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program je prebral starejše stanje</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ni take nastavitve</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nič nima tega ID-ja</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Vrednost je bila zunaj tistega, kar nastavitev sprejme</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Tega niste dovolili</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nihče ni odgovoril pravočasno</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Pokaži okno</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Pošlji okno v sistemsko vrstico</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimiziraj okno</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maksimiziraj okno</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Zapri PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Zaženi mehanizem</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ustavi mehanizem</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Dodaj napravo {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Nastavi krmilne elemente naprave {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Odstrani napravo {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Postavi vse krmilne elemente naprave {0} v mirovanje</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Povzroči, da PadForge zažene program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Odpre datoteko, mapo ali spletno stran.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Povzroči, da PadForge pošlje tipke ali vnos miške v Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Uvozi profil izven programa PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge vas vpraša, preden program to stori.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Pogovorna okna</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makri</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Drži krmilne elemente naprave {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Spusti krmilne elemente naprave {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastavi vrednost {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Zamenjaj profile</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Zaženi ali ustavi mehanizem</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Vklopi ali izklopi navidezne krmilnike</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Shrani posnetek diagnostike</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Preberi hitrost vzorčenja in gonilnike</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Naštej profile</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Preberi profil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Naštej navidezne krmilnike</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Naštej naprave</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Preberi napravo</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Počakaj na vaš vnos</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Preberi preslikave krmilnika</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Naštej makre krmilnika</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Posnemi težavo</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Poišči nastavitve</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Preberi nastavitev</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Pokaži vam mesto</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Poišči mesta v programu PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Preberi mesto v programu PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Preberi, kar vidite</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Dodaj lastno napravo</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Upravljaj svojo napravo</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Odstrani svojo napravo</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Drži ali spusti krmilni element</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Nastavi vrednost za sprožilce makrov</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Spremeni nastavitev</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Pritisni gumb</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Ustvari profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Preimenuj profil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Izbriši profil</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Spremeni vrsto krmilnika</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Dodeli napravo</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Nastavi vrstice preslikave</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Počisti vrstice preslikave</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Samodejno preslikaj krmilnik</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Shrani makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Izbriši makro</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ustvari krmilnik tipkovnice in miške</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Vklopi {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Spremeni „{0}“</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Pritisni „{0}“</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vam želi pokazati: {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Na: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Ali programu {0} dovolite sodelovanje s programom PadForge na ravni {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} izvaja {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Zagnal: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Podpisnik: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Ni podpisano.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Na ravni Branje in višje vidi vsako tipko, pritisnjeno na vsaki napravi, tudi na tipkovnicah.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Vpraša enkrat. Odstranite ga lahko na strani Avtomatizacija.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>ukazna vrstica programa PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastavi {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Posluša v omrežju, zato lahko druge naprave dosežejo ta računalnik.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Spremeni gonilnik ali HidHide, na katera se zanašajo drugi programi in igre.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduli PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Dovoli</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ne dovoli</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Ne zdaj</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Pokaži</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Korak {0} od {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kliknite, če želite nadaljevati.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Odprite: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Odprite Več.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od {1}, ki se imenuje „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programa, ki se imenuje „{0}“</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Namesti in znova zaženi</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Opombe ob izdaji</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Zbirka krmilnikov</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Posodobi zdaj prenese skupnostno zbirko krmilnikov (SDL_GameControllerDB) iz storitve GitHub in v datoteki z nastavitvami hrani preslikave, ki jih ta različica programa PadForge nima. Nova preslikava se uporabi le za krmilnik, ki ga nič drugega ne bere kot igralni krmilnik, ki ni dodeljen in ni v načinu Vsili surovi način igralne palice. Ponastavitev odstrani vse prenesene preslikave.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Posodobi zdaj prenese skupnostno zbirko krmilnikov (SDL_GameControllerDB) iz storitve GitHub in v datoteki z nastavitvami hrani preslikave, ki jih ta različica programa PadForge nima. Takoj so v uporabi. Nova preslikava se uporabi le za krmilnik, ki ga nič drugega ne bere kot igralni krmilnik, ki ni dodeljen in ni v načinu Vsili surovi način igralne palice (zaobidi preslikavo igralnega krmilnika). Ponastavitev odstrani vse prenesene preslikave. Vaše vrstice, pod Več, ostanejo.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Posodobi zdaj</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Posodabljanje …</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Preverjanje posodobitev …</value></data>
@@ -1045,12 +1100,10 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Namestitev posodobitve na PadForge {0} se ni dokončala. Za ponovni poskus jo namestite v nastavitvah.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge je posodobljen na {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Vgrajeno: {0} preslikav, skupnostna kopija z dne {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Vgrajeno: {0} preslikav, skupnostna kopija z dne {1}. Posodobljeno {2}: novih {3}, spremenjenih {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Vgrajeno: {0} preslikav, skupnostna kopija z dne {1}. Preneseno {2}: novih vrstic {3}, spremenjenih {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Skupnostna zbirka se od zadnje posodobitve ni spremenila.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Storitve GitHub ni bilo mogoče doseči: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge je prenos zavrnil, ker ni zbirka krmilnikov, ki jo pričakuje. Nič se ni spremenilo.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Nova preslikava se uporabi ob naslednji povezavi njenega krmilnika.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Spremenjena preslikava se uporabi ob naslednjem zagonu programa PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Zaženi pomanjšano</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Zaženi ob vpisu</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Podatki o različici in beleženje dogodkov mehanizma za odpravljanje težav.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Vodi diagnostični dnevnik</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Dogodke mehanizma sproti zapisuje v diagnostics.log v mapi z dnevniki, ki jo odpre Odpri mapo z dnevniki. Ostane omogočeno tudi po ponovnem zagonu. Ko datoteka doseže 8 MB, se preimenuje v diagnostics.log.old in začne se nova.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Shrani posnetek stanja</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Shrani najnovejše dogodke mehanizma v novo datoteko. Deluje tudi, ko je diagnostični dnevnik izklopljen.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Shrani posnetek stanja …</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Vzame program, Windows, vaše naprave in nastavitve, kakršni so zdaj, z najnovejšimi dogodki mehanizma, in jih odpre, da jih preberete, preden jih shranite. Deluje tudi, ko je diagnostični dnevnik izklopljen.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Odpri mapo dnevnika</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Posnemi težavo</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Začni snemanje</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Ustavi snemanje ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Snema do ukaza Ustavi snemanje, 10 minut ali 20 MB velik zip, nato izbere zip v oknu Explorer, pripravljen za prilogo poročilu.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začnite, povzročite težavo in nato ustavite. Ena datoteka ob programu PadForge vsebuje vse, kar je PadForge prebral, poslal in zapisal, s povzetkom tega, kaj je šlo narobe. Vsaka tipka in gumb, pritisnjena na kateri koli napravi med snemanjem, je v datoteki, tudi s tipkovnic in miši. Uporabniška imena, serijske številke, naslovi in vtipkana imena se zamenjajo, preden se karkoli zapiše.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Snema do ukaza Ustavi snemanje, 30 minut ali 20 MB velik zip, nato odpre posnetek, da ga preberete, preden ga shranite.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začnite, povzročite težavo in nato ustavite. Nato preberite, kaj vsebuje, del za delom, in ga shranite, kamor želite. Vsaka tipka, pritisnjena na kateri koli napravi med snemanjem, je v njem, tudi s tipkovnic in miši. Uporabniška imena, serijske številke, naslovi in vtipkana imena se zamenjajo, preden se karkoli zapiše.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Pisanje povzetka …</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Shranjeno: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Snemanje se ni začelo. Preverjanje je odkrilo zasebno vrednost tega PC, ki ne bi bila izključena iz datoteke.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Snemanje se ni začelo. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Zadnji posnetek se še zaključuje.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Možnost Ohrani zadnjih 60 sekund je izklopljena, zato ni ničesar za shraniti.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Zaključen posnetek, ki ga PadForge ni ustavil: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Posnetek, ki ga PadForge ni ustavil, čaka, da ga preberete na strani Domov: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Ohrani zadnjih 60 sekund</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Medtem ko mehanizem deluje, v pomnilniku hrani zadnjo minuto tistega, kar vsebuje posnetek, za težavo, ki se pojavi enkrat na večer. Shrani zadnjih 60 sekund jo zapiše kot datoteko.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Medtem ko mehanizem deluje, v pomnilniku hrani zadnjo minuto tistega, kar vsebuje posnetek, za težavo, ki se pojavi enkrat na večer. Shrani zadnjih 60 sekund jo odpre, da jo preberete, preden jo shranite.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Shrani zadnjih 60 sekund</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Zapiši vtipkane črke in številke kot eno tipko</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Posnetek črkovne in številske tipke, ki jih nobena preslikava ali makro ne bere, zapiše kot eno tipko, vsak pritisk ob svojem času. Vsaka druga tipka in vsaka tipka, ki jo bere preslikava ali makro, je zapisana, kot je bila pritisnjena.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Ohrani zadnjih 60 sekund, Zapiši vtipkane črke in številke kot eno tipko</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Kaj posneti, zadnjih 60 sekund, vtipkane črke</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Shrani posnetek stanja</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, vaše naprave in nastavitve, kakršni so zdaj, z istim pregledom.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log ob PadForge.exe, ki ga lahko preberete tam.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Kaj posneti</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Vse vklopljeno. Izklopljen del ni vključen v naslednji posnetek, datoteka pa pove, katere dele vsebuje.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Za težavo, ki se pojavi enkrat na večer.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Posnetek čaka, da ga preberete na strani Domov.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Povzetek</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Nastavitve in naprave</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Vhod</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Izhod</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Povratna informacija</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Časovni potek</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Okno in napake</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Dejavnost</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Diagnostične vrstice</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Preberite svoj posnetek</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>Od {0} do {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Posnetek stanja ob {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minuta</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>Minut: {0}</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 sekunda</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>Sekund: {0}</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Ustavili ste ga vi.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Samodejno ustavljeno po {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Samodejno ustavljeno pri {0} v zipu.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Ustavil ga je makro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Ustavil ga je program ali --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Ustavil ga je pomočnik, ki ga je začel.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Ustavljeno ob zaprtju programa PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Zadnjih 60 sekund, shranjenih v pomnilniku.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Preberite, kar boste delili. Izklopite del, da ga izpustite, nato shranite. Nič ne zapusti tega računalnika, razen če ga objavite.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, kot bo deljeno</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Pokaži: {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>izpuščeno</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>ni posneto</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} kot besedilo, {1} v zipu</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} kot besedilo, {1} v zipu, ki ga delite. Posnetek se ustavi pri {2} v zipu ali po {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Preverjanje čiščenja: PadForge je zamenjal zasebne podatke ({0}, {1}). Nobeno ime, serijska številka ali naslov tega računalnika ni v delih, ki jih ohranite.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>vrednosti: {0}</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 vrednost</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>zasebnih vrst: {0}</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 zasebna vrsta</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Preverjanje čiščenja: v delih, ki jih ohranite, so še vedno lastne vrednosti tega računalnika: {0}. Izklopite te dele ali izbrišite posnetek. Do takrat shranjevanje ostane izklopljeno.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Preverjanje čiščenja: v delih, ki jih ohranite, je še vedno ena lastna vrednost tega računalnika. Izklopite te dele ali izbrišite posnetek. Do takrat shranjevanje ostane izklopljeno.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Med snemanjem se v tem delu ni zgodilo nič.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Izbriši</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopiraj povzetek</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Kopirano</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Shrani …</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Shrani posnetek</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Datoteke zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ni shranjeno. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Shranjeno kot vi, prvič v mapo Prenosi, nato tja, kamor ste nazadnje shranili, in prikazano v Raziskovalcu. Posnetek, ki se ustavi, ko nihče ni pri strani (omejitev, makro, program, orodje pomočnika ali --record stop), čaka na ta pregled na strani Domov in se po 7 dneh izbriše, če ni shranjen. Program izve, da čaka, nikoli pa kje.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Posnetek težave iz {0} čaka, da ga preberete.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Pregled</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Označi posnetek</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Različica programa</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Izvajalno okolje .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Različica SDL</value></data>
@@ -3128,31 +3238,64 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Položaj miške X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Položaj miške Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Občutljivost</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Občutljivost kazalca za posamezen vir. Pri 1.0 je poln odklon palice dosežen pri 10% širine zaslona od središča. Vrednosti nad 1.0 dosežejo poln odklon z manjšim premikom kazalca. Vrednosti pod 1.0 potrebujejo večjega.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Občutljivost kazalca za posamezen vir. Pri 1.0 je poln odklon palice dosežen pri 10% širine zaslona kazalca od njegovega središča. Vrednosti nad 1.0 dosežejo poln odklon z manjšim premikom kazalca. Vrednosti pod 1.0 potrebujejo večjega.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Pot miške X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Pot miške Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Pot do polnega zasuka</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kako daleč se miška premakne od središča do polnega zasuka, v točkah, ki jih miška poroča. Višje število krmili natančneje in zahteva več poti roke.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Kako daleč se miška ali kolesce premakne od središča do polnega zasuka, v točkah, ki jih poroča. Višje število krmili natančneje in zahteva več poti roke.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Če je DPI miške nastavljen na plošči njene naprave, se pot prikaže tudi v centimetrih.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>točk</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Središčenje</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Izklopljeno pusti volan tam, kjer ga je roka pustila. Vzmet ga vrne v času vračanja. Iz telemetrije ga vleče nazaj, kot bi ga vlekla sprednja kolesa avtomobila pri hitrosti in oprijemu igre: pri mirovanju nič, z hitrostjo trše, lahko, ko kolesa drsijo. Če nobena igra ne pošilja telemetrije, je to vzmet. Iz sile igre ga lahko zavrti lastna povratna sila navideznega volana.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Izklopljeno pusti volan tam, kjer ga je roka pustila. Vzmet ga vrne v Času vračanja. Iz telemetrije ga vleče nazaj, kot ga vleče krmiljenje avtomobila pri hitrosti in oprijemu igre: strmo blizu središča in mehkeje dlje od njega, pri mirovanju nič, z hitrostjo trše, lahko, ko kolesa drsijo. Če nobena igra ne pošilja telemetrije, vleče kot pri 100 km/h na suhi cesti. Iz sile igre ga lahko zavrti lastna povratna sila navideznega volana.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Izklopljeno</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Vzmet</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Iz telemetrije</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Iz sile igre</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Čas vračanja</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Koliko časa traja, da vzmet vrne volan 95% poti nazaj. Iz telemetrije traja toliko pri 100 km/h na suhi cesti.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Koliko časa traja, da Vzmet vrne volan 95% poti nazaj. 0 ga središči takoj. Iz telemetrije traja toliko iz bližine središča pri 100 km/h na suhi cesti.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Krmili</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vedno omogoči, da miška krmili ves čas. Med držanjem omogoči krmiljenje le, dokler držite vhod za krmiljenje. Preklop vklopi ali izklopi krmiljenje ob vsakem pritisku vhoda za krmiljenje. Ko miška ne krmili, volan ostane, kjer je, ali se središči, tako da ena miška lahko krmili in se tudi razgleduje.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vedno omogoči, da miška krmili ves čas. Med držanjem in središčenje omogoči krmiljenje le, dokler držite vhod za krmiljenje, nato jo vrne v središče, s središčenjem tam, kjer ga vir ima, in takoj tam, kjer ga nima. Med držanjem in obstanek omogoči krmiljenje le, dokler držite vhod, in jo pusti tam, kjer je bila izpuščena. Preklop vklopi ali izklopi krmiljenje ob vsakem pritisku vhoda za krmiljenje. Tako ena miška lahko krmili in se tudi razgleduje.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Vedno</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Med držanjem</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Med držanjem in središčenje</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Preklop</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vhod za krmiljenje</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Gumb, ki miški omogoči krmiljenje, na isti napravi kot pot miške. Če ni izbran noben, miška krmili vedno.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Gumb, ki miški omogoči krmiljenje, na isti napravi kot vir. Če ni izbran noben, miška krmili vedno.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Glajenje</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Zgladi miško, ki poroča neenakomerno. Volan zaostaja za roko za približno toliko časa. 0 je izklopljeno.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Zgladi miško, ki poroča neenakomerno. Palica zaostaja za roko za približno toliko časa. 0 je izklopljeno.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Zaklep pri hitrosti</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Ko je vklopljena Telemetrija iger, koliko zasuka ostane pri 200 km/h. Pri 100% je cel zasuk na voljo pri vsaki hitrosti.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Pot kolesca</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Pot kolesca vstran</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Kako hitro se miška premika. Popusti, ko se roka ustavi.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Kje je kazalec na svojem zaslonu, od središča ali od mesta, kjer je bil ob začetku krmiljenja.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Kako daleč se je miška premaknila, zadržano tam, kjer jo roka pusti, kot pri volanu.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Zareze kolesca, zadržane kot položaj, s polno natančnostjo na kolescu z drobnim drsenjem.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Zareze stranskega kolesca, zadržane kot položaj, s polno natančnostjo na kolescu z drobnim drsenjem.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Sunek za vsako zarezo, takoj nazaj v mirovanje.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Med držanjem in obstanek</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Občutljivost</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Koliko palice da hitrost. Pri 1.00 palica doseže poln odklon pri 16 000 točkah na sekundo, pri vsaki frekvenci poizvedovanja in poročanja miške.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Nazaj v središče</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Ko se miška upočasni ali ustavi, se palica vrne največ s to hitrostjo. 0 jo pusti, da se vrne skupaj z miško.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Začni tam, kjer se je krmiljenje začelo</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Pri vhodu za krmiljenje palica meri od mesta, kjer je bil kazalec ob začetku krmiljenja, kot palica na zaslonu telefona, ki se začne tam, kjer se dotakne prst. Ko je izklopljeno, meri od središča zaslona kazalca.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ta os se premika relativno</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Za sledilno kroglico ali vrtljivo ročico, ki poroča, koliko se je zasukala. Ko je vklopljeno, os drži položaj kot Pot miške in sprejme nastavitve poti. Windows ne pove, katere osi se premikajo tako.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Predogled</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Pokaže, kako ta družina sledi vaši miški. Nič ni preslikano, dokler je ne izberete.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Predogled. Premaknite miško.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Zadržano pri {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Pri {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% desno</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% levo</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% gor</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% dol</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>središču</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Premika se, dokler držite: {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI miške</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Točke, ki jih ta miška poroča za vsak palec premika, kot jih nastavi programska oprema njenega proizvajalca.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Ko je DPI nastavljen, Pot miške prikaže pot tudi v centimetrih. 0 pomeni ni nastavljeno.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Kazalec IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Kazalec IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Svetlost IR</value></data>
@@ -4923,6 +5066,7 @@ Kopija prejšnje različice je v tej mapi: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Zaslonski kazalniki, ki jih PadForge prikazuje med igranjem. Izklop kazalnika nikoli ne spremeni delovanja, le to, ali je prikazan.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Pojavno okno preklopne plasti</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Prekrivni prikaz zamenjave profila</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Krmilniki vklopljeni ali izklopljeni</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Obvestilo o odklopu naprave</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Obvestilo o povezavi naprave</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Prikaži zaslonski obroč ali mrežo, ko je vklopljen radialni meni ali meni na dotik. Meniji se sprožijo tudi, ko je prekrivni prikaz izklopljen.</value></data>
@@ -5651,6 +5795,8 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Izklopljeno</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Štoparica</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Barva svetlobnega traku</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Naprave brez povezave</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Vse povezano</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>izklopljeno</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>prek Logitech Gaming Software</value></data>
@@ -5693,6 +5839,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Zaslon prikazuje izbrano sliko v njeni velikosti. Slika, večja od zaslona, prikaže okno velikosti zaslona, ki ga premika makro Premakni sliko zaslona tipkovnice. Na S.T.R.I.K.E. 7 ga premakne tudi prst, vlečen čez zaslon.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Zaslon prikazuje štoparico, ki jo makro Štoparica zažene, začasno ustavi in ponastavi. Vsi zasloni prikazujejo isto štoparico.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Zaslon prikazuje barvo svetlobnega traku na krmilniku DualShock 4 ali DualSense v najnižji reži, ki jo ta zaslon napaja, ali v najnižji reži sploh, če ne napaja nobene. Enobarvni zaslon prikaže svetlost kot vzorec pik. Dokler barva ne doseže svetlobnega traku, PadForge ne prikaže ničesar.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Zaslon našteje preslikane naprave, ki niso povezane, z imeni, ki jih prikazuje stran Naprave, in prikaže Vse povezano, ko nobena ne manjka.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Slike (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Vse datoteke (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Premik</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Premik X</value></data>
@@ -5944,6 +6091,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Vožnja (ni 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetrija iger</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Vrednost skripte</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Povezava naprave</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hitrost (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% največjega)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Prestava (-1 vzvratna, 0 prosta)</value></data>
@@ -6049,6 +6197,7 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje izbrano sliko, prilagojeno tako, da zapolni njegovo okno, pri čemer ohrani razmerja. Pri povečavi nad 100 odstotki prikaže del slike, na primer zemljevida. Ta del premakne makro Premakni sliko zaslona tipkovnice, premakne pa ga tudi vlečenje z levim miškinim gumbom, medtem ko je PadForge v ospredju.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje štoparico, ki jo makro Štoparica zažene, začasno ustavi in ponastavi. To je ista štoparica, kot jo prikazuje vsak tipkovnični zaslon.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Prekrivni prikaz prikazuje barvo svetlobnega traku na krmilniku DualShock 4 ali DualSense v reži, ki jo izberete tukaj, ali v najnižji reži z barvo. Dokler barva ne doseže svetlobnega traku, ne prikaže ničesar.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Prekrivni prikaz našteje preslikane naprave, ki niso povezane, z imeni, ki jih prikazuje stran Naprave, in prikaže Vse povezano, ko nobena ne manjka.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Prekrivni prikaz zaslona {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Dodaj prekrivni prikaz</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Najnižja reža z barvo</value></data>
@@ -6391,6 +6540,245 @@ Ali želite, da jih PadForge zdaj odstrani? To zahteva skrbniške pravice in lah
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ spuščeno pred časom držanja. Daljši pritisk ne naredi nič.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko je „Odpre se z“ pritisnjeno trikrat znotraj okna pritiska.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Tipkovnico odpre ali zapre, ko se okno pritiska izteče po enem pritisku „Odpre se z“. Drugi pritisk znotraj okna to prekliče.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Izklopljeno. Noben program ne more doseči programa PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} in {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Dejavnost: klicev {0}, najstarejši najprej. Klicev pred njimi: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Dejavnost: klic {0}. Klicev pred njim: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Starejših klicev, ki so izginili: {0:N0}. Dejavnost hrani najnovejše, največ {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Izginil je {0:N0} starejši klic. Dejavnost hrani najnovejše, največ {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Izvozi …</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Izvoz dejavnosti</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Besedilna datoteka</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Odpri</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Posodobi</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Več za: {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Shrani spretnost kot ZIP …</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Odpri njegovo datoteko z nastavitvami</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Shranjeno. V programu {0} dodajte {1} pod: {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>Program {0} še nima datoteke z nastavitvami. Dodaj jo ustvari.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge v tem računalniku ne najde programa pomočnika, katerega proizvajalec dokumentira nastavitev v sistemu Windows. Za vsak drug deluje Kopiraj nastavitve pod Več.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge ni mogel preveriti programov pomočnikov: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Ni dodano.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Dodano.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Dodano. Zdaj povezano.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Dodano. Od takrat se ni povezal. Pomočnik, ki je bil odprt, vidi PadForge, ko ga zaprete in znova odprete.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Dodano za drug PadForge. Posodobi ga usmeri na ta PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Dodano. Njegova spretnost za PadForge je starejša od tega programa PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Dodano, brez njegove spretnosti za PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Dodano. Njegova spretnost za PadForge prihaja iz novejšega programa PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Spretnosti sprejme le kot nalaganje.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Dodani pomočniki dosežejo PadForge, ko je Avtomatizacija vklopljena.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Dodajanje …</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Odstranjevanje …</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Posodabljanje …</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ni se končalo: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Drugi pomočniki</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Za pomočnika, ki ni naveden zgoraj: Kopiraj nastavitve da vnos za njegove nastavitve MCP, Kopiraj sporočilo pa kratko besedilo za vsak klepet, ki pove, kako se povezati in kaj vprašati najprej.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Kopiraj nastavitve</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Kopiraj sporočilo</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopirano.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ni kopirano: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Poveži se s programom PadForge, preslikovalnikom krmilnikov v mojem računalniku. Je lokalni strežnik MCP, ki deluje prek stdio: ukaz je {0}, z argumentom --mcp. Kot nastavitve JSON: {1} Ko se povežeš, najprej pokliči njegovo orodje status, nato me vprašaj, kaj želim nastaviti, na primer: „Pokaži mi, kje preslikati sprožilca mojega krmilnika.“</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Avtomatizacija programa PadForge je zdaj izklopljena: najprej jo vklopite v programu PadForge pod Dodatki, Avtomatizacija.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Dovoljeni programi</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Program, ki želi Branje ali več, vpraša enkrat, ob prvi povezavi, in dobi raven, ki jo zahteva, do zgornje ravni. Pomočnik, ki ga dodate zgoraj, je s tem dovoljen.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Zdaj povezano.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Nazadnje uporabljeno: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Še ni bil uporabljen.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Povezano: {0}. Kliknite, da odprete stran Avtomatizacija.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>V tem računalniku: {0}. Iz spleta: {1}. Kliknite, da odprete stran Avtomatizacija.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Povezano iz spleta: {0}. Kliknite, da odprete stran Avtomatizacija.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Preslikava SDL</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Prebrano kot</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Iz</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Igralni krmilnik, „{0}“</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Igralna palica. SDL zanjo nima preslikave.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Igralna palica. PadForge jo bere surovo, zato se preslikava SDL ne uporablja.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Igralna palica, razporejena kot igralni krmilnik z vašo vrstico.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL bere naprave, medtem ko mehanizem deluje.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Vgrajena skupnostna kopija, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Preneseno {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Lastna datoteka programa PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Vaša, dodana {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Spremenljivka SDL_GAMECONTROLLERCONFIG, ki jo SDL drži nad vsako vrstico, ki jo dodate</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiraj preslikavo SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Da preslikavo naprave na odložišče kot vrstico skupnostne zbirke, pod ID-jem naprave z ničelno kontrolno vsoto in različico.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Prilepi preslikavo SDL …</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Vzame vrstico za to napravo, jo preveri, obdrži kot vašo in jo takoj uporabi.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Poišči preslikavo …</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Po imenu preišče vsako vrstico, ki jo nosi PadForge, in uporabi izbrano za to napravo, za klon z drugačnimi ID-ji.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Ugani razporeditev</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Ugane razporeditev igralnega krmilnika iz osi, gumbov in smernih stikal naprave, za napravo, ki je ne pozna nobena zbirka. Preverite jo v razdelku Preizkus vnosov.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Odstrani mojo</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Odstrani mojo povrne prejšnjo vrstico in prejšnje vrstice krmilnikov.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Preslikaj znova</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Vrstice naprave na vsakem krmilniku, na katerem je, znova naredi iz razporeditve SDL, kot ob dodelitvi.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Stran skupnostne zbirke</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Vrstica in kje se razlikuje od: {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Vrstica</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Krmilnik</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Vrstica: {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Njegov vhod zdaj</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Vrstica SDL pravi</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>ni v vrstici SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, se razlikuje</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge ne uporablja: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Vrstica</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Kopirano.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Kopirano. Oblika SDL ne more vsebovati: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makrov</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>krivulj</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>mrtvih con</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>izhodov tipkovnice in miške</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo načina, preklopov in drugih dejanj</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} in {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Ni kaj kopirati: SDL za to napravo nima preslikave in naprava ni na nobenem krmilniku.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Odložišče uporablja drug program. Nič ni bilo kopirano.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Vaša vrstica je odstranjena. Naprava se bere tako kot pred njo.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Znova preslikano iz razporeditve SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Zdaj v uporabi. Vrstica je vaša in za to napravo prevlada.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Obdržano kot vaša. V uporabi je, ko mehanizem deluje in je naprava povezana.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Obdržano kot vaša, vendar spremenljivka SDL_GAMECONTROLLERCONFIG vsebuje vrstico za to napravo, ki jo SDL drži nad vašo.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL vrstice ni sprejel. Za to napravo se ni spremenilo nič.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Prilepi preslikavo SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Prilepi preslikavo SDL za: {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Poišči preslikavo za: {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Ugani razporeditev za: {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Dodaj vrstice iz datoteke ali odložišča</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Prilepi</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Odpri datoteko …</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Datoteke preslikav (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Datoteka presega 4 MB. Celotna datoteka skupnosti ima okoli 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Iščite po imenu, ID-ju ali VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Vrstice, ki jih nosi PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Nobena vrstica se ne ujema.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Izbrana vrstica se uporabi za napravo {0} pod njenim lastnim ID-jem, z istim preverjanjem in isto izbiro kot pri ukazu Prilepi.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Vrstica preslikave SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Vrstica za to napravo.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Uganjena razporeditev.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, polj: {0}, njegov ID se ujema s to napravo.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, polj: {0}, od istega proizvajalca in izdelka na drugi povezavi ali različici. Obdržana je pod lastnim ID-jem te naprave.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, polj: {0}, vrstica druge naprave. Obdržana je pod lastnim ID-jem te naprave.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Polj: {0}. SDL te naprave ne bere, zato PadForge njene vhode razporedi po vrstici.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Polj: {0}, iz osi, gumbov in smernih stikal naprave. Preverite jo v razdelku Preizkus vnosov, nato jo obdržite ali spremenite tukaj.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} polje, njegov ID se ujema s to napravo.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} polje, od istega proizvajalca in izdelka na drugi povezavi ali različici. Obdržana je pod lastnim ID-jem te naprave.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} polje, vrstica druge naprave. Obdržana je pod lastnim ID-jem te naprave.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} polje. SDL te naprave ne bere, zato PadForge njene vhode razporedi po vrstici.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} polje, iz osi, gumbov in smernih stikal naprave. Preverite jo v razdelku Preizkus vnosov, nato jo obdržite ali spremenite tukaj.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>To spremeni, kako se bere naprava {0}. Njene vrstice v: {1} se znova preslikajo iz nove razporeditve.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>To spremeni, kako se bere naprava {0}. Ni na nobenem krmilniku, zato se nobena vrstica ne spremeni.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Bližnjice profilov, ki berejo napravo {0}, obdržijo vhode, na katere so bile nastavljene.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Vrstica se v datoteki PadForge.xml obdrži kot vaša in za to napravo prevlada nad vsakim drugim virom. Odstrani mojo povrne staro vrstico in stare vrstice.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Vrstice se v datoteki PadForge.xml obdržijo kot vaše in za svoje naprave prevladajo nad vsakim drugim virom. Počisti pod Več v vrstici Zbirka krmilnikov jih odstrani.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Vrstic za Windows: {0}. Vrstic za druge sisteme, ki so preskočene: {1}.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} vrstica za Windows. Vrstic za druge sisteme, ki so preskočene: {1}.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Zavrnjenih: {0}. Prva: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Prilepite vrstico ali besedilo datoteke gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Besedilo ni vrstica zbirke krmilnikov SDL: ID s 32 šestnajstiškimi števkami, ime, nato polja, kot je a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Vrstice so za druge sisteme. PadForge bere vrstice za Windows ali za noben poseben sistem.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID vrstice ni ID naprave. Potrebuje 32 šestnajstiških števk.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Ime vrstice je prazno, daljše od 128 znakov ali vsebuje znak, ki ga SDL bere kot polje.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Vrstica vsebuje namig ali polje Android, ki ga PadForge ne sprejme.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Vrstica ima polje, ki ga SDL ne pozna.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Vezava ni v obliki SDL, na primer b3, a2, +a2, a2~ ali h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Vrstica navaja eno polje dvakrat.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Vrstica je daljša od 1 024 znakov.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Vrstica ne veže nobenega krmilnega elementa.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Vaše vrstice</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Vaše vrstice</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Vrstice, ki jih dodate tukaj ali prilepite na kartici Preslikava SDL naprave, za svoje naprave prevladajo nad vsakim drugim virom in ostanejo po ponastavitvi.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Dodaj vrstice iz datoteke ali odložišča …</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Vrstic: {0}, vaše nad vsakim drugim virom za njihove naprave.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} vrstica, vaša nad vsakim drugim virom za svojo napravo.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Še nobene.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Takoj v uporabi.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Dosezi PadForge iz spleta</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Pomočnik, ki deluje na spletnem mestu, doseže PadForge prek programa za tunel v tem računalniku. Ob vklopu vas najprej vpraša.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Dosezi PadForge iz spleta?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge zažene pomožni program brez skrbniških pravic, ki posluša samo v tem računalniku, program za tunel, ki ga izberete, pa mu da javni naslov. Spletni pomočnik pride noter šele, ko dovolite njegovo prijavo na kartici z vprašanjem programa PadForge, in deluje na zgornji ravni.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Vklopi</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Pomočniki v spletu</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Brez</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Naslov, ki ga prilepim</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Zagon, z vašimi pravicami.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Deluje, z vašimi pravicami. Njegov naslov ostane enak ob vsakem zagonu.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Deluje, z vašimi pravicami. Hitri tunel ob vsakem zagonu dobi nov naslov, zato bi bilo treba pomočnika dodati znova.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Ustavljeno.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Ustavljeno. Njegove zadnje besede: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ni ga bilo mogoče zagnati.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ni ga več v tem računalniku.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>V tem računalniku ni najdenega programa za tunel. PadForge deluje s cloudflared, devtunnel, ngrok in Tailscale Funnel ali z naslovom vašega tunela.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Izberite tunel, da PadForge dobi javni naslov.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Tudi v tem računalniku: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, katerega naslov ostane enak</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, katerega hitri tuneli dobijo nov naslov ob vsakem zagonu</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Zaženite lasten tunel do http://127.0.0.1:{0} in prilepite njegov naslov https. Poimenovan tunel Cloudflare, trajen razvojni tunel, Tailscale Funnel in lastna domena ngrok obdržijo svoj naslov.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Prilepite naslov https brez poti, razen /mcp, kot ga da vaš tunel.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Zagon spletnega pomožnega programa PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Spletni pomožni program PadForge se je ustavil ({0}). Izklopite in znova vklopite Dosezi PadForge iz spleta, da ga znova zaženete.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Naslov</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Javnega naslova še ni.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Dodaj v Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Kopirano.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Sprejmi novega spletnega pomočnika</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Začni sprejemati</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Nehaj sprejemati</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Sprejemanje do {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Ne sprejema. Začni sprejemati ga odpre za pet minut.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Dodajte naslov v pomočnika in se prijavite. Vsaka prijava prikaže svojo šestmestno kodo na svoji strani za prijavo in na kartici z vprašanjem programa PadForge. Dovolite jo le, če se kodi ujemata. V drugih primerih je prijava zavrnjena in vas nič ne vpraša.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Dovoljeno v spletu</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Še nobenega.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Njegova prijava se vrne na {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Imenuje se {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Dovoljeno {0}, nazadnje uporabljeno {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Dovoljeno {0}, še ni bil uporabljen.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Prekliči</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Njegov lasten Secure MCP Tunnel zažene PadForge neposredno, brez naslova ali prijave tukaj. Kopirajte ukaz v nastavitev tega tunela.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiraj ukaz</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ne prenese nobenega programa za tunel in ne hrani ključa nobenega drugega podjetja. Spletni pomočnik deluje na zgornji ravni.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Ali programu {0} dovolite sodelovanje s programom PadForge iz spleta?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Njegova prijava se vrne na {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Imenuje se {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Dovolite le, če njegova stran za prijavo prikaže to kodo:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Njegova šestmestna koda je prikazana na kartici z vprašanjem programa PadForge. Dovolite le, če njegova stran za prijavo prikaže isto kodo.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Deluje na ravni {0}, prek: {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Njegova prijava se vrne v ta računalnik in vsak program tukaj bi lahko prevzel ta naslov.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Prijava v PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} prosi za sodelovanje s programom PadForge v vašem računalniku.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Imenuje se {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>V vašem računalniku kartica z vprašanjem programa PadForge sprašuje o tej prijavi. Tam jo dovolite le, če kartica prikazuje to kodo:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Ta stran se nadaljuje sama, ko odgovorite v računalniku.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Ta prijava se vrne v program v vašem računalniku in vsak program tam bi lahko prevzel ta naslov.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge zdaj ne sprejema novega spletnega pomočnika. V računalniku odprite PadForge, pojdite na Dodatki, Avtomatizacija in pod Pomočniki v spletu pritisnite Začni sprejemati. Nato se prijavite znova.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Te prijave ni mogoče nadaljevati. Znova dodajte naslov programa PadForge v pomočnika in se prijavite.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Ta prijava se je končala. Prijavite se znova iz pomočnika.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows ga ni zagnal</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>končal se je s kodo {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Avtomatizacija je izklopljena, zato noben spletni pomočnik ne doseže programa PadForge. Spletni pomožni program se zažene, ko je Avtomatizacija vklopljena.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Preverjanje …</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Ni nameščeno.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Nameščeno in aktualno. Skripta se začne z: {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Nameščeno za {0} in aktualno. Skripta se začne z: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Nameščeno. Ta PadForge ima novejšo kopijo.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Nameščeno za {0}. Ta PadForge ima novejšo kopijo.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Nameščanje …</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge tega ni mogel preveriti: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Namesti da knjižnico programa PadForge tja, kjer jo najde ta jezik. Skripta, ki jo naloži, bere naprave in upravlja preslikave na zgornji ravni.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Shrani knjižnico kamor koli</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Nameščene kopije</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Odstrani vse</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Odstranjeno.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID skripte</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Njegov ID skripte</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skripte poimenujejo njegove krmilne elemente: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skripte poimenujejo njegove tipke KeyA, KeySpace, KeyLeftShift in podobno, vsako tipko pa po njeni kodi, Vk0 do Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Barve gredo neposredno na {0}. Spreminjajoče se barve, na primer kroženje barv ali barve, ki sledijo zvoku, ne dosežejo naprave. Barva, ki ostane enaka, jo doseže.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Vse datoteke (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>

@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} u shkëput. {1} nuk ka më asnjë pajisje.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} u lidh</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} u lidh, bateria {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} pajisje u shkëputën</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} pajisje u lidhën</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} pajisje u shkëputën: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} pajisje u lidhën: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} vazhdon të shkëputet</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Rilidhja automatike, porta, identiteti i çiftimit, lidhja me adresë</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Porta, zëvendësuesi DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portat, Shpejtësia e plotë, Formate të personalizuara</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Aftësia</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Asistentë të tjerë, asistentë në ueb</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Shiko përreth me një gjurmues koke ose kufje VR ndërsa të dy gishtat e mëdhenj qëndrojnë te butonat.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Hartëzo shpejtësinë, pedalet dhe marshet që dërgon një lojë me makina, si çdo hyrje tjetër.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Dërgo lëvizjen e kontrolluesit te emulatorët që lexojnë një burim lëvizjeje DSU.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Unaza, rrjeta ose shiriti i një menuje ndërsa është e hapur.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Emri i shtresës kur aktivizohet një shtresë ndërrimi, për kohën që cakton ajo shtresë.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Emri i profilit kur ndryshon profili.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Nëse kontrolluesit virtualë sapo u ndezën ose u fikën, nga shkurtorja ose një makro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Emri i një pajisjeje të hartëzuar kur shkëputet.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Emri i një pajisjeje të hartëzuar kur lidhet.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopjo adresën</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programet mund të ndërrojnë profilet dhe t'i lirojnë, të nisin dhe ndalojnë motorin, të ndezin e fikin kontrolluesit virtualë, të shfaqin e fshehin dritaren, të mbyllin PadForge, të ruajnë një pamje çasti të diagnostikimit dhe të pyesin çfarë është në punë.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Gjithçka te Komandat, dhe programet mund të shohin pajisjet, kontrolluesit virtualë, hartëzimet, profilet dhe cilësimet, të ndjekin hyrjet e çdo pajisjeje në çast dhe të të shfaqin një vend në PadForge. Një program te Lexo sheh çdo tast të shtypur në çdo pajisje, edhe tastet e shkruara në dritare që punojnë si administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Gjithçka te Lexo, dhe programet mund të shtojnë pajisje të veta dhe t'i drejtojnë, të mbajnë një kontroll të çdo pajisjeje dhe t'u japin vlera me emër shkaktarëve të makrove.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Gjithçka te Dërgo hyrje, dhe programet mund të ndryshojnë çfarë mund të ndryshosh ti në faqe.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Gjithçka te Dërgo hyrje, dhe programet mund të ndryshojnë çfarë mund të ndryshosh ti në faqe. Disa ndryshime të pyesin gjithmonë së pari në kartën e pyetjes së PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistentët</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ngjite këtë te cilësimet MCP të një asistenti. Pastaj asistenti punon me PadForge në nivelin e mësipërm.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopjo si TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistentët që lexojnë TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Shto e vendos PadForge, me aftësinë e tij, te ai asistent. Pastaj asistenti punon në nivelin e mësipërm, dhe fjalët e tij shfaqen pranë asaj që tregon, nën emrin e tij.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skriptet</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Libraria e skripteve</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Ruaj një librari…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Një skedar për AutoHotkey v2, Python ose PowerShell. Një skript që e ngarkon lexon pajisjet dhe drejton hartëzimet në nivelin e mësipërm.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Një skedar për AutoHotkey v2, Python ose PowerShell, i shkruar ku e zgjedh ti.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Presin përgjigjen tënde</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Veprimtaria</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Asnjë program nuk ka thirrur ende. Çdo thirrje listohet këtu me atë që ndodhi.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Zhbëj</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Aftësia për asistentët</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Ruaj aftësinë…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge nuk mundi ta ruante: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Ndërsa një program në nivelin Lexo ose më lart është i lidhur, ai sheh çfarë shtypet në çdo pajisje, tastierat përfshirë.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Shtojcat</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ekzekuto shtojcat</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Asnjë shtojcë nuk është në punë.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Një shtojcë punon me të drejtat e tua, jo me ato të PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Të brendshme</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kontrolluesi provë</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Një kontrollues që lëviz vetë, një kontroll në herë, që një hartëzim të provohet pa pajisje në dorë.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Shpejtësia</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>E ngadaltë</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normale</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>E shpejtë</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Më e shpejta</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Riluajtja</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>E luan një regjistrim problemi si pajisjet që e bënë, me kohën që kishin. Janë pajisje të reja në këtë PC, të hartëzuara siç i hartëzon ti ose një profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Regjistrimi</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Regjistrime problemesh|*.zip;*.log|Të gjithë skedarët|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nuk mund ta luajë {0}. Nuk është regjistrim problemi, ose nuk përmban hyrje të asnjë pajisjeje.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Shtojcat e tua</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Një shtojcë është një program që shton pajisje te PadForge. PadForge e nis me të drejtat e tua të zakonshme sa herë që punon motori.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Shto një shtojcë…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programe dhe skripte|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Të gjithë skedarët|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Miratoje…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Miratoje dhe rinise…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Niset me motorin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Po kontrollohet skedari para nisjes</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Doli me kodin {0}. Niset sërish pas {1} s.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} është tashmë në listë.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge ekzekuton deri në 16 shtojca. Hiq një për të shtuar tjetrën.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Shtojca në punë: {0}. Pajisje që shtuan: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} u ndal pas pesë dështimeve.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ka ndryshuar që nga miratimi.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nuk mundi të niset.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Shtoi {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Nënshkruar nga {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>I panënshkruar.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Cilësimet e tij shfaqen këtu ndërsa punon.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Nuk deklaron asnjë cilësim.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge nuk mundi t'i lexonte cilësimet e tij: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>U ndal pas një minute pa asnjë fjalë</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Skedari i tij ndryshoi ndërsa punonte</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Shtuar nga {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Cilësimet e {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Zgjidh</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Shtyp një kontroll…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Pa zgjedhje</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Shto një shtojcë, ose hidhe skedarin e saj në këtë faqe. PadForge shfaq shtegun e saj, nënshkruesin dhe SHA-256 e saj dhe të pyet para se të niset. Një shtojcë punon me të drejtat e tua, jo me ato të PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>E luan një regjistrim problemi si pajisjet që e bënë, me kohën e tyre.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Në punë.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Në punë, me dorë.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Çfarë lëviz</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Leva dhe këmbëzat</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Leva</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Këmbëzat</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Modeli</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Fshirje</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Rreth</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Koha e lëvizjes</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Koha e pushimit</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Shtyp butonat</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Shtyp butonat e navigimit</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Aplikacionet e Windows veprojnë mbi A, B, Prapa, Start dhe D-pad të një kontrolluesi virtual Xbox në dritaren përpara, dhe Guide hap Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Rrotullo D-Pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Për të njëjtën arsye.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Koha e shtypjes</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Kontrolluesit</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Me dorë</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>E ndalon lëvizjen. Cakto hyrjet e tij më poshtë me mausin.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Leva e majtë</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Leva e djathtë</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Këmbëza e majtë</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Këmbëza e djathtë</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Lexime në sekondë</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Paketa e shtojcave dhe regjistri i një shtojce që zgjedh</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Paketa e shtojcave</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Ruaj paketën e shtojcave…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Një shtojcë e vogël në C# dhe e njëjta shtojcë për AutoHotkey, Python dhe PowerShell, çdo skedar me mënyrën si ndërtohet ose niset.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Një udhëzues për çdo folje, ngjarje dhe lloj cilësimi, një skript ndërtimi për shtojcën në C# dhe e njëjta shtojcë për AutoHotkey, Python dhe PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Regjistri</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Zgjidh një shtojcë për të parë regjistrin e saj.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Regjistri i kësaj shtojce është ende bosh.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Një mod loje</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Një program tjetër mban emrin e kanalit {0}. Mbylle atë program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows e refuzoi kanalin {0}, ndaj programet nuk mund të lidhen.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Asnjë program nuk është i lidhur.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Aktiv. Asnjë program nuk është i lidhur.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Të lidhur: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program i panjohur</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, nënshkruar nga {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nuk lejohen më të tilla derisa PadForge të niset sërish</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nuk ka një mjet të tillë</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programi lexoi një gjendje më të vjetër</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Nuk ka cilësim të tillë</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Asgjë nuk ka atë ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Vlera ishte jashtë asaj që pranon cilësimi</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Nuk e lejove</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Askush nuk u përgjigj në kohë</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Shfaq dritaren</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Dërgo dritaren te shiriti i sistemit</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizo dritaren</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maksimizo dritaren</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Mbyll PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Nis motorin</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Ndalo motorin</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Shto pajisjen {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Cakto kontrollet e pajisjes {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Hiq pajisjen {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Vendos çdo kontroll të pajisjes {0} në pushim</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Bën që PadForge të nisë një program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Hap një skedar, një dosje ose një faqe uebi.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Bën që PadForge t'i dërgojë Windows tastë ose hyrje mausi.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Importon një profil nga jashtë PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge të pyet para se një program ta bëjë këtë.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialogët</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makrot</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Mbaj kontrolle të pajisjes {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lësho kontrollet e pajisjes {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Cakto vlerën {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Ndërro profilet</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Nis ose ndalo motorin</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Ndiz ose fik kontrolluesit virtualë</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Ruaj një pamje çasti të diagnostikimit</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lexo shpejtësinë e pyetjes dhe drejtuesit</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Listo profilet</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lexo një profil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Listo kontrolluesit virtualë</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Listo pajisjet</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lexo një pajisje</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Prit hyrjen tënde</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lexo hartëzimet e një kontrolluesi</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Listo makrot e një kontrolluesi</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Regjistro një problem</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Gjej cilësime</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lexo një cilësim</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Të shfaq një vend</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Kërko vende në PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Lexo një vend në PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Lexo çfarë shikon</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Shto një pajisje të vetën</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Drejto pajisjen e vet</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Hiq pajisjen e vet</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Mbaj ose lësho një kontroll</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Cakto një vlerë për nxitësit e makrove</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ndrysho një cilësim</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Shtyp një buton</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Krijo një profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Riemëro një profil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Fshi një profil</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Ndrysho llojin e një kontrolluesi</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Cakto një pajisje</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Cakto rreshta hartëzimi</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Pastro rreshta hartëzimi</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Hartëzo një kontrollues automatikisht</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Ruaj një makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Fshi një makro</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Krijon një kontrollues tastiere dhe mausi</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ndez {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Ndrysho „{0}“</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Shtyp „{0}“</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} dëshiron të të tregojë {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Te {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>T'i lejosh {0} të punojë me PadForge në nivelin {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} që nis {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Nisur nga {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Nënshkruar nga {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>I panënshkruar.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Në nivelin Lexo e lart sheh çdo tast të shtypur në çdo pajisje, tastierat përfshirë.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Pyet vetëm një herë. Mund ta heqësh në faqen Automatizimi.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>rreshti i komandës i PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Cakton {0} në {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Dëgjon në rrjet, ndaj pajisje të tjera mund ta arrijnë këtë PC.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ndryshon një drejtues ose HidHide, nga të cilët varen programe dhe lojëra të tjera.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Module PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Lejo</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Mos lejo</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Jo tani</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Shfaq</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Hapi {0} nga {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kliko mbi të për të vazhduar.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Hap {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Hap Më shumë.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Nga {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Nga {1}, që e quan veten „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Nga një program që e quan veten „{0}“</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalo dhe rinis</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Shënimet e versionit</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Baza e kontrolluesve</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Përditëso tani shkarkon bazën e komunitetit të kontrolluesve (SDL_GameControllerDB) nga GitHub dhe mban, në skedarin e cilësimeve, hartëzimet që i mungojnë këtij versioni të PadForge. Një hartëzim i ri përdoret vetëm për një kontrollues që asgjë tjetër nuk e lexon si gamepad, që nuk është caktuar dhe që nuk është në Detyro modalitetin e papërpunuar të xhojstikut. Rivendosja i heq të gjitha hartëzimet e shkarkuara.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Përditëso tani shkarkon bazën e komunitetit të kontrolluesve (SDL_GameControllerDB) nga GitHub dhe mban, në skedarin e cilësimeve, hartëzimet që i mungojnë këtij versioni të PadForge. Ato përdoren menjëherë. Një hartëzim i ri përdoret vetëm për një kontrollues që asgjë tjetër nuk e lexon si gamepad, që nuk është caktuar dhe që nuk është në Detyro modalitetin e papërpunuar të xhojstikut (anashkalo hartëzimin e gamepad-it). Rivendosja i heq të gjitha hartëzimet e shkarkuara. Rreshtat e tu, nën Më shumë, mbeten.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Përditëso tani</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Po përditësohet…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Po kontrollohet për përditësime…</value></data>
@@ -994,12 +1049,10 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Përditësimi në PadForge {0} nuk përfundoi së instaluari. Instaloje nga Cilësimet për të provuar përsëri.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge u përditësua në {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}. Përditësuar më {2}: të reja {3}, të ndryshuara {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>E brendshme: {0} hartëzime, kopja e komunitetit e {1}. Shkarkuar më {2}: {3} rreshta të rinj, {4} të ndryshuar.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baza e komunitetit nuk ka ndryshuar që nga përditësimi i fundit.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Nuk u arrit GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge e refuzoi shkarkimin sepse nuk është baza e kontrolluesve që pret. Asgjë nuk ndryshoi.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Një hartëzim i ri përdoret herën tjetër që lidhet kontrolluesi i tij.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Një hartëzim i ndryshuar përdoret herën tjetër që niset PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Nise i minimizuar</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Nise me hyrjen në Windows</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informacioni i versionit, plus regjistrimi i ngjarjeve të motorit për zgjidhjen e problemeve.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Mbaj regjistër diagnostikimi</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Shkruan vazhdimisht ngjarjet e motorit te diagnostics.log në dosjen e regjistrit, që e hap Hap dosjen e regjistrit. Mbetet aktiv pas rinisjeve. Kur skedari arrin 8 MB, kalon te diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Ruaj pamjen e çastit</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Ruan ngjarjet më të fundit të motorit në një skedar të ri. Funksionon edhe kur regjistri i diagnostikimit është çaktivizuar.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Ruaj një pamje të çastit…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Merr aplikacionin, Windows, pajisjet dhe cilësimet e tua siç janë tani, me ngjarjet më të fundit të motorit, dhe i hap që t'i lexosh para se t'i ruash. Funksionon edhe kur regjistri i diagnostikimit është joaktiv.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Hap dosjen e regjistrit</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Regjistro një problem</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Nis regjistrimin</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Ndalo regjistrimin ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Regjistron deri te Ndalo regjistrimin, 10 minuta ose një zip 20 MB, pastaj e zgjedh zip-in në Explorer, gati për t'u bashkëngjitur te një raport.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Nise, bëje problemin të ndodhë, pastaj ndale. Një skedar pranë PadForge përmban çdo gjë që PadForge lexoi, dërgoi dhe regjistroi, me një përmbledhje të asaj që shkoi keq. Çdo tast dhe buton i shtypur në çdo pajisje gjatë regjistrimit është në skedar, tastierat dhe mausat përfshirë. Emrat e përdoruesve, numrat serialë, adresat dhe emrat e shkruar zëvendësohen para se të shkruhet çfarëdo.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Regjistron deri te Ndalo regjistrimin, 30 minuta ose një zip 20 MB, pastaj e hap regjistrimin që ta lexosh para se ta ruash.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Nise, bëje problemin të ndodhë, pastaj ndale. Pastaj lexo çfarë përmban, pjesë pjesë, dhe ruaje ku të duash. Çdo tast i shtypur në çdo pajisje gjatë regjistrimit është në të, tastierat dhe mausat përfshirë. Emrat e përdoruesve, numrat serialë, adresat dhe emrat e shkruar zëvendësohen para se të shkruhet çfarëdo.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Po shkruhet përmbledhja…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>U ruajt {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Regjistrimi nuk filloi. Një kontroll gjeti një vlerë private të këtij PC që nuk do të mbahej jashtë skedarit.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Regjistrimi nuk filloi. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Regjistrimi i fundit po përfundohet ende.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Mbaj 60 sekondat e fundit është i fikur, ndaj nuk ka çfarë të ruhet.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>U përfundua një regjistrim që PadForge nuk e kishte ndalur: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Një regjistrim që PadForge nuk e kishte ndalur pret që ta lexosh te Kreu: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Mbaj 60 sekondat e fundit</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Ndërsa punon motori, mban në kujtesë minutën e fundit të asaj që përmban një regjistrim, për një problem që vjen një herë në mbrëmje. Ruaj 60 sekondat e fundit e shkruan si skedar.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Ndërsa punon motori, mban në kujtesë minutën e fundit të asaj që përmban një regjistrim, për një problem që vjen një herë në mbrëmje. Ruaj 60 sekondat e fundit e hap që ta lexosh para se ta ruash.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Ruaj 60 sekondat e fundit</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Shkruaj shkronjat dhe numrat e shtypur si një tast</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Një regjistrim i shkruan tastet e shkronjave dhe numrave që asnjë hartëzim apo makro nuk i lexon si një tast, çdo shtypje në kohën e vet. Çdo tast tjetër, dhe çdo tast që e lexon një hartëzim ose makro, shkruhet siç u shtyp.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Mbaj 60 sekondat e fundit, Shkruaj shkronjat dhe numrat e shtypur si një tast</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Çfarë regjistrohet, 60 sekondat e fundit, shkronjat e shtypura</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Ruaj një pamje të çastit</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, pajisjet dhe cilësimet e tua siç janë tani, përmes të njëjtit shqyrtim.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log pranë PadForge.exe, që mund ta lexosh aty.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Çfarë regjistrohet</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Të gjitha aktive. Një pjesë e fikur lihet jashtë regjistrimit të radhës, dhe skedari thotë cilat pjesë i përmban.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Për një problem që vjen një herë në mbrëmje.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Regjistrimi pret që ta lexosh te Kreu.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Përmbledhja</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Cilësimet dhe pajisjet</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Hyrja</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Dalja</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Reagimi</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Koha</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Dritarja dhe gabimet</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Veprimtaria</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Rreshtat e diagnostikimit</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Lexo regjistrimin tënd</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} deri {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Një pamje e çastit në {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minutë</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minuta</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 sekondë</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} sekonda</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Ndalur nga ti.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Ndaluar vetë në {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Ndaluar vetë në {0} në zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Ndalur nga një makro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Ndalur nga një program ose --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Ndalur nga asistenti që e nisi.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Ndaluar kur u mbyll PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>60 sekondat e fundit, të mbajtura në kujtesë.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Lexo çfarë do të ndash. Fike një pjesë që ta lësh jashtë, pastaj ruaje. Asgjë nuk del nga ky PC përveç nëse e publikon.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, siç do të ndahet</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Shfaq {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>lënë jashtë</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>nuk u regjistrua</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} si tekst, {1} në zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} si tekst, {1} në zipin që ndan. Një regjistrim ndalon në {2} në zip ose pas {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Kontrolli i pastrimit: PadForge zëvendësoi {0} nga {1}. Asnjë emër, serial ose adresë e këtij PC nuk është në pjesët që mban.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} vlera</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 vlerë</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} lloje private</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 lloj privat</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Kontrolli i pastrimit: {0} vlera të vetë këtij PC janë ende në pjesët që mban. Fiki ato pjesë ose fshije regjistrimin. Ruaj… mbetet i fikur deri atëherë.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Kontrolli i pastrimit: një vlerë e vetë këtij PC është ende në pjesët që mban. Fiki ato pjesë ose fshije regjistrimin. Ruaj… mbetet i fikur deri atëherë.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Asgjë nga kjo pjesë nuk ndodhi gjatë regjistrimit.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Fshije</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopjo përmbledhjen</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>U kopjua</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Ruaj…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Ruaj regjistrimin</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Skedarë zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nuk u ruajt. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Ruhet si ti, te dosja Downloads herën e parë, pastaj aty ku ruajte së fundmi, dhe shfaqet në Explorer. Një regjistrim që ndalon ndërsa askush nuk është te faqja (kufiri i tij, një makro, një program, mjeti i asistentit ose --record stop) pret këtë shqyrtim te Kreu dhe fshihet pas 7 ditësh nëse nuk ruhet. Një programi i thuhet që pret, kurrë se ku.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Një regjistrim problemi nga {0} pret që ta lexosh.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Shqyrto</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Shëno regjistrimin</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versioni i aplikacionit</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versioni SDL</value></data>
@@ -2894,31 +3004,64 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Pozicioni i mausit X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozicioni i mausit Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Ndjeshmëri</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ndjeshmëria e kursorit për çdo burim. 1.0 arrin devijimin e plotë të levës në 10% të gjerësisë së ekranit nga qendra. Vlerat mbi 1.0 arrijnë devijimin e plotë me më pak lëvizje të kursorit. Vlerat nën 1.0 kërkojnë më shumë.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ndjeshmëria e kursorit për çdo burim. 1.0 arrin devijimin e plotë të levës në 10% të gjerësisë së monitorit të treguesit nga qendra e tij. Vlerat mbi 1.0 arrijnë devijimin e plotë me më pak lëvizje të kursorit. Vlerat nën 1.0 kërkojnë më shumë.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Lëvizja e mausit X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Lëvizja e mausit Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Lëvizja deri në kyçje të plotë</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Sa lëviz mausi nga qendra deri në kyçje të plotë, në njësitë që raporton mausi. Një numër më i lartë drejton më imët dhe kërkon më shumë lëvizje të dorës.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Sa lëviz mausi ose timoni nga qendra deri në kyçje të plotë, në njësitë që raporton. Një numër më i lartë drejton më imët dhe kërkon më shumë lëvizje të dorës.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Me DPI të mausit të caktuar te paneli i pajisjes së tij, lëvizja shfaqet edhe në centimetra.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>njësi</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Qendërzimi</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Joaktiv e mban timonin aty ku e la dora. Susta e kthen brenda Kohës së kthimit. Nga telemetria e tërheq si gomat e përparme të një makine, me shpejtësinë dhe ngjitjen e lojës: i palëvizur kur makina qëndron, më i fortë me shpejtësinë, i lehtë kur gomat rrëshqasin. Pa lojë që dërgon telemetri është susta. Nga forca e lojës lejon që reagimi i forcës i vetë timonit virtual ta kthejë.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Joaktiv e mban timonin aty ku e la dora. Susta e kthen brenda Kohës së kthimit. Nga telemetria e tërheq si drejtimi i një makine me shpejtësinë dhe ngjitjen e lojës: fort afër qendrës dhe më butë më larg, i palëvizur kur makina qëndron, më i fortë me shpejtësinë, i lehtë kur gomat rrëshqasin. Pa lojë që dërgon telemetri e tërheq si në 100 km/h në rrugë të thatë. Nga forca e lojës lejon që reagimi i forcës i vetë timonit virtual ta kthejë.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Joaktiv</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Susta</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Nga telemetria</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Nga forca e lojës</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Koha e kthimit</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Sa kohë i duhet Sustës për ta kthyer timonin 95% të rrugës mbrapsht. Nga telemetria e merr këtë kohë në 100 km/h në rrugë të thatë.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Sa kohë i duhet Sustës për ta kthyer timonin 95% të rrugës mbrapsht. 0 e qendërzon menjëherë. Nga telemetria e merr këtë kohë nga afër qendrës në 100 km/h në rrugë të thatë.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Drejto</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Gjithmonë e lë mausin të drejtojë çdo çast. Gjatë mbajtjes e lë të drejtojë vetëm ndërsa mbahet Hyrja e drejtimit. Ndërro e ndez ose e fik drejtimin me çdo shtypje të Hyrjes së drejtimit. Ndërsa mausi nuk drejton, timoni qëndron ku është ose qendërzohet, ndaj një maus mund të drejtojë dhe të shikojë përreth.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Gjithmonë e lë mausin të drejtojë çdo çast. Gjatë mbajtjes dhe qendërzimi e lë të drejtojë vetëm ndërsa mbahet Hyrja e drejtimit, pastaj e kthen në qendër, me Qendërzimin aty ku burimi e ka dhe menjëherë aty ku nuk e ka. Gjatë mbajtjes dhe qëndrimi e lë të drejtojë vetëm ndërsa hyrja mbahet dhe e lë aty ku e ke lëshuar. Ndërro e ndez ose e fik drejtimin me çdo shtypje të Hyrjes së drejtimit. Kështu një maus mund të drejtojë dhe të shikojë përreth.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Gjithmonë</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Gjatë mbajtjes</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Gjatë mbajtjes dhe qendërzimi</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Ndërro</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Hyrja e drejtimit</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butoni që e lejon mausin të drejtojë, në të njëjtën pajisje me lëvizjen e mausit. Pa asnjë të zgjedhur, mausi drejton gjithmonë.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butoni që e lejon mausin të drejtojë, në të njëjtën pajisje me burimin. Pa asnjë të zgjedhur, mausi drejton gjithmonë.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Zbutja</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Rregullon një maus që raporton në mënyrë të pabarabartë. Timoni mbetet pas dorës me afërsisht kaq kohë. 0 e çaktivizon.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Rregullon një maus që raporton në mënyrë të pabarabartë. Leva mbetet pas dorës me afërsisht kaq kohë. 0 e çaktivizon.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kyçja me shpejtësi</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Me Telemetrinë e lojës aktive, sa nga kyçja mbetet në 200 km/h. Në 100% e gjithë kyçja është aty në çdo shpejtësi.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Lëvizja e timonit</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Lëvizja anësore e timonit</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Sa shpejt lëviz mausi. Lëshohet kur dora ndalon.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Ku është treguesi në monitorin e tij, nga qendra e tij ose nga vendi ku ishte kur nisi drejtimi.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Sa ka lëvizur mausi, i mbajtur aty ku e lë dora, si një timon.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Çastet e rrotës të mbajtura si pozicion, me saktësi të plotë në një rrotë me lëvizje të imët.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Çastet e rrotës anash të mbajtura si pozicion, me saktësi të plotë në një rrotë me lëvizje të imët.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Një shtytje për çdo çast, kthim në pushim menjëherë.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Gjatë mbajtjes dhe qëndrimi</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Ndjeshmëri</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Sa nga leva e jep një shpejtësi. Në 1.00 leva arrin devijimin e plotë në 16,000 njësi në sekondë, në çdo shpejtësi sondazhi dhe raportimi të mausit.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Kthim në qendër</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Pasi mausi ngadalëson ose ndalon, leva kthehet jo më shpejt se kaq. 0 e lë të kthehet me mausin.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Nis ku nisi drejtimi</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Me Hyrjen e drejtimit, leva mat nga vendi ku ishte treguesi kur nisi drejtimi, siç nis një levë në ekranin e telefonit aty ku zbret gishti. Joaktiv, mat nga qendra e monitorit të treguesit.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ky bosht lëviz relativisht</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Për një trackball ose një spinner që raporton sa u rrotullua. Aktiv, boshti mban një pozicion si Mouse Travel dhe merr cilësimet e lëvizjes. Windows nuk thotë cilët boshte lëvizin kështu.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Shikim paraprak</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Tregon si e ndjek kjo familje mausin tënd. Asgjë nuk hartëzohet derisa ta zgjedhësh.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Shikim paraprak. Lëvize mausin.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>I mbajtur në {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Në {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% djathtas</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% majtas</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% lart</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% poshtë</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>qendër</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Lëviz ndërsa mbahet {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI e mausit</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Njësitë që raporton ky maus për çdo inç që lëviz, siç i cakton softueri i prodhuesit të tij.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Me DPI të caktuar, Mouse Travel e shfaq lëvizjen edhe në centimetra. 0 do të thotë i pacaktuar.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Treguesi IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Treguesi IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Shkëlqimi IR</value></data>
@@ -4607,6 +4750,7 @@ Një kopje e versionit të mëparshëm ndodhet në këtë dosje: {1}</value></da
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Treguesit në ekran që PadForge shfaq ndërsa luani. Fikja e njërit prej tyre nuk e ndryshon kurrë sjelljen, vetëm nëse ajo shfaqet.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Dalja e shtresës së ndërrimit</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Mbivendosja e ndërrimit të profilit</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontrolluesit aktivë ose joaktivë</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Njoftimi i shkëputjes së pajisjes</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Njoftimi i lidhjes së pajisjes</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Shfaq unazën ose rrjetën në ekran ndërsa një meny radiale ose me prekje është e aktivizuar. Menytë nisin edhe kur mbivendosja është e fikur.</value></data>
@@ -5273,6 +5417,8 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Fikur</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Kronometër</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Ngjyra e shiritit të dritës</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Pajisje jashtë linje</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Të gjitha të lidhura</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>fikur</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>përmes Logitech Gaming Software</value></data>
@@ -5315,6 +5461,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Ekrani shfaq një imazh që zgjidhni, në madhësinë e tij. Një imazh më i madh se ekrani shfaq një dritare sa ekrani, që e lëviz makroja Lëviz imazhin e ekranit të tastierës. Në S.T.R.I.K.E. 7, një gisht i zvarritur mbi ekran e lëviz gjithashtu.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Ekrani shfaq kronometrin, që e nis, e ndalon pak dhe e rivendos makroja Kronometër. Çdo ekran shfaq të njëjtin kronometër.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Ekrani shfaq ngjyrën e shiritit të dritës të DualShock 4 ose DualSense në slotin më të ulët që ushqen ky ekran, ose në slotin më të ulët nga të gjithë kur nuk ushqen asnjë. Një ekran monokrom e shfaq shkëlqimin si model pikash. Deri sa një ngjyrë të arrijë te një shirit drite, PadForge nuk shfaq asgjë.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ekrani liston pajisjet e hartëzuara që nuk janë të lidhura, me emrat që shfaq faqja Pajisjet, dhe thotë Të gjitha të lidhura kur nuk mungon asnjë.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Imazhet (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Të gjithë skedarët (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Lëviz</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Lëviz X</value></data>
@@ -5510,6 +5657,7 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Duke drejtuar (jo 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria e lojës</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Vlera e skriptit</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Lidhja e pajisjes</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Shpejtësia (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% e maksimumit)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Marshi (-1 mbrapa, 0 neutral)</value></data>
@@ -5663,4 +5811,231 @@ Doni që PadForge t'i çinstalojë tani? Kjo kërkon privilegje administratori d
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Regjistrimi i problemit</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Nis ose ndalo regjistrimin</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Shëno regjistrimin</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Mbivendosja liston pajisjet e hartëzuara që nuk janë të lidhura, me emrat që shfaq faqja Pajisjet, dhe thotë Të gjitha të lidhura kur nuk mungon asnjë.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Joaktiv. Asnjë program nuk mund të arrijë PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} dhe {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Veprimtaria e PadForge: {0} thirrje, më të vjetrat së pari. Thirrje që shkuan para tyre: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Veprimtaria e PadForge: {0} thirrje. Thirrje që shkuan para saj: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} thirrje më të vjetra u larguan. Veprimtaria mban {1:N0} më të reja.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} thirrje më e vjetër u largua. Veprimtaria mban {1:N0} më të reja.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Eksporto…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Eksporto veprimtarinë</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Skedar teksti</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Hap</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Përditëso</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Më shumë për {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Ruaj aftësinë si ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Hap skedarin e cilësimeve të tij</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>U ruajt. Te {0}, shto {1} nën {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} nuk ka ende skedar cilësimesh. Shto e krijon një.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge nuk gjen në këtë PC asnjë program asistenti që prodhuesi i tij të dokumentojë një konfigurim në Windows. Copy Settings te Më shumë punon për çdo tjetër.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge nuk mundi t'i kontrollonte programet e asistentëve: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Pa shtuar.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>I shtuar.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>I shtuar. I lidhur tani.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>I shtuar. Nuk është lidhur që atëherë. Një asistent që ishte i hapur e sheh PadForge pasi të mbyllet dhe të hapet përsëri.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>I shtuar për një PadForge tjetër. Përditëso e drejton te ky.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>I shtuar. Aftësia e tij PadForge është më e vjetër se ky PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>I shtuar, pa aftësinë e tij PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>I shtuar. Aftësia e tij PadForge vjen nga një PadForge më i ri.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>I merr aftësitë vetëm si ngarkim.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Asistentët e shtuar e arrijnë PadForge kur Automatizimi është aktiv.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Po shtohet…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Po hiqet…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Po përditësohet…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nuk përfundoi: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>U kopjua.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Nuk u kopjua: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programet e lejuara</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Një program që do nivelin Lexo ose më shumë pyet një herë, kur lidhet për herë të parë, dhe merr nivelin që kërkon, deri te niveli i mësipërm. Një asistent që shton më sipër lejohet me këtë.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>I lidhur tani.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Përdorur së fundmi {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Ende i papërdorur.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Të lidhur: {0}. Kliko për të hapur Automatizimin.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Në këtë PC: {0}. Nga uebi: {1}. Kliko për të hapur Automatizimin.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Të lidhur nga uebi: {0}. Kliko për të hapur Automatizimin.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Hartëzimi SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Një gamepad, „{0}“</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Një xhojstik. SDL nuk ka hartëzim për të.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Një xhojstik. PadForge e lexon të papërpunuar, ndaj hartëzimi i SDL nuk përdoret.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Një xhojstik, i rregulluar si gamepad nga rreshti yt.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL i lexon pajisjet ndërsa punon motori.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Kopja e komunitetit e brendshme, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Shkarkuar {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Skedari i vetë PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Yti, shtuar {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Ndryshorja SDL_GAMECONTROLLERCONFIG, që SDL e mban mbi çdo rresht që shton</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopjo hartëzimin SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>E vendos hartëzimin e pajisjes në clipboard si rresht të bazës së komunitetit, nën ID-në e pajisjes me checksum-in dhe versionin e zeruar.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Ngjit hartëzimin SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Merr një rresht për këtë pajisje, e kontrollon, e mban si të tuin dhe e zbaton menjëherë.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Gjej një hartëzim…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Kërkon çdo rresht që mban PadForge sipas emrit dhe e zbaton atë që zgjedh te kjo pajisje, për një klon me ID të ndryshme.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Hamendëso një skemë</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Hamendëson një skemë gamepadi nga boshtet, butonat dhe hat-et e pajisjes, për një pajisje që asnjë bazë nuk e njeh. Kontrolloje te Provo hyrjet.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Hiq të timin</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Hiq të timin e kthen rreshtin dhe rreshtat e kontrolluesve nga më parë.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Hartëzo përsëri</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>I bën përsëri rreshtat e pajisjes në çdo kontrollues ku është, nga skema e SDL, siç e bën caktimi i saj.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Faqja e bazës së komunitetit</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Rreshti, dhe ku ndryshon nga {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Rreshti</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontrollues</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Rreshti {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Hyrja e tij tani</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Rreshti i SDL thotë</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>jo në rreshtin e SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, ndryshon</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Nuk përdoret nga PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Rreshti</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>U kopjua.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>U kopjua. Forma e SDL nuk mund të mbajë {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>kurba</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zona të vdekura</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>dalje tastiere dhe mausi</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, ndërrime dhe veprime të tjera</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} dhe {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Asgjë për të kopjuar: SDL nuk ka hartëzim për këtë pajisje, dhe ajo nuk është në asnjë kontrollues.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Një program tjetër po e përdor clipboard-in. Asgjë nuk u kopjua.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Rreshti yt u hoq. Pajisja lexohet siç lexohej para tij.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>U hartëzua përsëri nga skema e SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Në përdorim tani. Rreshti është yti dhe fiton për këtë pajisje.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Mbahet si i yti. Përdoret kur motori punon dhe pajisja është e lidhur.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Mbahet si i yti, por ndryshorja SDL_GAMECONTROLLERCONFIG mban një rresht për këtë pajisje, që SDL e mban mbi të tuajin.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nuk e pranoi rreshtin. Asgjë nuk ndryshoi për këtë pajisje.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Ngjit një hartëzim SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Ngjit një hartëzim SDL për {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Gjej një hartëzim për {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Hamendëso një skemë për {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Shto rreshta nga një skedar ose clipboard-i</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Ngjit</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Hap një skedar…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Skedarë hartëzimi (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Skedari është mbi 4 MB. Skedari i plotë i komunitetit është rreth 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Kërko sipas emrit, ID ose VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rreshtat që mban PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Asnjë rresht nuk përputhet.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Rreshti i zgjedhur zbatohet te {0} nën ID-në e vet, përmes të njëjtit kontroll dhe të njëjtës zgjedhje si Ngjit.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Rreshti i hartëzimit SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Një rresht për këtë pajisje.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Një skemë e hamendësuar.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} fusha, ID-ja e tij përputhet me këtë pajisje.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} fusha, nga i njëjti prodhues dhe produkt në një bus ose version tjetër. Mbahet nën ID-në e vetë kësaj pajisjeje.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} fusha, rreshti i një pajisjeje tjetër. Mbahet nën ID-në e vetë kësaj pajisjeje.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} fusha. SDL nuk e lexon këtë pajisje, ndaj PadForge i rregullon hyrjet e saj sipas rreshtit.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} fusha, nga boshtet, butonat dhe hat-et e pajisjes. Kontrolloje te Provo hyrjet, pastaj mbaje ose ndryshoje këtu.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} fushë, ID-ja e tij përputhet me këtë pajisje.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} fushë, nga i njëjti prodhues dhe produkt në një bus ose version tjetër. Mbahet nën ID-në e vetë kësaj pajisjeje.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} fushë, rreshti i një pajisjeje tjetër. Mbahet nën ID-në e vetë kësaj pajisjeje.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} fushë. SDL nuk e lexon këtë pajisje, ndaj PadForge i rregullon hyrjet e saj sipas rreshtit.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} fushë, nga boshtet, butonat dhe hat-et e pajisjes. Kontrolloje te Provo hyrjet, pastaj mbaje ose ndryshoje këtu.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Kjo ndryshon mënyrën si lexohet {0}. Rreshtat e tij te {1} hartëzohen përsëri nga skema e re.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Kjo ndryshon mënyrën si lexohet {0}. Ai nuk është në asnjë kontrollues, ndaj asnjë rresht nuk ndryshon.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Shkurtoret e profilit që lexojnë {0} i mbajnë hyrjet që u ishin caktuar.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Rreshti mbahet si i yti në PadForge.xml dhe fiton mbi çdo burim tjetër për këtë pajisje. Hiq të timin e kthen rreshtin e vjetër dhe rreshtat e vjetër.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rreshtat mbahen si të tutë në PadForge.xml dhe fitojnë për pajisjet e tyre mbi çdo burim tjetër. Pastro, nën Më shumë të rreshtit Baza e kontrolluesve, i heq.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rreshta për Windows. {1} për sisteme të tjera anashkalohen.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rresht për Windows. {1} për sisteme të tjera anashkalohen.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} u refuzuan. I pari: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Ngjit një rresht, ose tekstin e një skedari gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teksti nuk është rresht i bazës së kontrolluesve të SDL: një ID me 32 shifra hex, një emër, pastaj fusha si a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Rreshtat janë për sisteme të tjera. PadForge lexon rreshta për Windows, ose për asnjë sistem në veçanti.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID-ja e rreshtit nuk është e një pajisjeje. Duhen 32 shifra hex.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Emri i rreshtit është bosh, mbi 128 shkronja, ose ka një shenjë që SDL e lexon si fushë.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Rreshti ka një hint ose një fushë Android, që PadForge nuk i pranon.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Rreshti ka një fushë që SDL nuk e njeh.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Një lidhje nuk është në formën e SDL, si b3, a2, +a2, a2~ ose h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Rreshti e jep një fushë dy herë.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Rreshti është mbi 1,024 shkronja.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Rreshti nuk lidh asnjë kontroll.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Rreshtat e tu</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Rreshtat e tu</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rreshtat që shton këtu, ose ngjit te karta Hartëzimi SDL e një pajisjeje, fitojnë për pajisjet e tyre mbi çdo burim tjetër dhe mbeten pas rivendosjes.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Shto rreshta nga një skedar ose clipboard-i…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rreshta, të tutë mbi çdo burim tjetër për pajisjet e tyre.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rresht, i yti mbi çdo burim tjetër për pajisjen e tij.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Ende asnjë.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Në përdorim menjëherë.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Ndize</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Asistentët në ueb</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tuneli</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Asnjë</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Një adresë që ngjit unë</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Po niset, me të drejtat e tua.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Në punë, me të drejtat e tua. Adresa e tij mbetet e njëjtë sa herë niset.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Në punë, me të drejtat e tua. Një tunel i shpejtë merr adresë të re sa herë niset, ndaj asistenti do të shtohej përsëri.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Ndaluar.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Ndaluar. Fjalët e tij të fundit: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nuk mundi të niset.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Nuk është më në këtë PC.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Në këtë PC nuk u gjet asnjë program tuneli. PadForge punon me cloudflared, devtunnel, ngrok dhe Tailscale Funnel, ose me adresën e tunelit tënd.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Zgjidh një tunel që t'i japësh PadForge një adresë publike.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Edhe në këtë PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, adresa e të cilit mbetet e njëjtë</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, tunelet e shpejta të të cilit marrin adresë të re sa herë</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Nise tunelin tënd te http://127.0.0.1:{0} dhe ngjit adresën e tij https. Një tunel i emërtuar Cloudflare, një tunel i përhershëm dev, Tailscale Funnel dhe domeni i vetë ngrok e mbajnë adresën.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Ngjit një adresë https pa shteg përveç /mcp, siç ta jep tuneli yt.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Po niset ndihmësi i PadForge për ueb.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ndihmësi i PadForge për ueb u ndal ({0}). Fike dhe ndize Reach PadForge From the Web që ta nisësh përsëri.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adresa</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Ende pa adresë publike.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Shto te Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>U kopjua.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Prano një asistent të ri në ueb</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Fillo pranimin</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Ndalo pranimin</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Pranon deri në {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Nuk pranon. Fillo pranimin e hap për pesë minuta.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Shto adresën te asistenti dhe hyr. Çdo hyrje shfaq kodin e vet me gjashtë shifra në faqen e hyrjes dhe në kartën e pyetjes së PadForge. Lejoje vetëm kur dy kodet përputhen. Në kohë të tjera një hyrje refuzohet dhe asgjë nuk të pyet.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Të lejuar në ueb</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Ende asnjë.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Hyrja e tij u kthye te {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Quhet {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Lejuar {0}, përdorur së fundmi {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Lejuar {0}, ende i papërdorur.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revokoje</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel i tij e nis PadForge drejtpërdrejt, pa adresë ose hyrje këtu. Kopjo komandën te konfigurimi i atij tuneli.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopjo komandën</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge nuk shkarkon asnjë program tuneli dhe nuk mban çelësin e asnjë kompanie tjetër. Një asistent në ueb punon në nivelin e mësipërm.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>T'i lejosh {0} të punojë me PadForge nga uebi?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Hyrja e tij kthehet te {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Quhet {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Lejoje vetëm nëse faqja e hyrjes së tij shfaq këtë kod:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Kodi i tij me gjashtë shifra shfaqet në kartën e pyetjes së PadForge. Lejoje vetëm nëse faqja e hyrjes së tij shfaq të njëjtin kod.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Punon në nivelin {0}, përmes {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Hyrja e tij kthehet te ky PC, dhe çdo program këtu mund ta marrë atë adresë.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Hyr në PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} kërkon të punojë me PadForge në PC-në tënde.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Quhet {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Në PC-në tënde, karta e pyetjes së PadForge pyet për këtë hyrje. Lejoje atje vetëm nëse karta shfaq këtë kod:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Kjo faqe vazhdon vetë sapo të përgjigjesh në PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Kjo hyrje kthehet te një program në PC-në tënde, dhe çdo program atje mund ta marrë atë adresë.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge nuk po pranon tani asistent të ri në ueb. Në PC-në tënde, hap PadForge, shko te Shtesa, Automatizimi, dhe nën Asistentët në ueb shtyp Fillo pranimin. Pastaj hyr përsëri.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Kjo hyrje nuk mund të vazhdojë. Shto përsëri adresën e PadForge te asistenti dhe hyr.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Kjo hyrje ka përfunduar. Hyr përsëri nga asistenti.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows nuk e nisi</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>përfundoi me kodin {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizimi është joaktiv, ndaj asnjë asistent në ueb nuk e arrin PadForge. Ndihmësi i uebit niset kur Automatizimi është aktiv.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Po kontrollohet…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Pa instaluar.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>I instaluar dhe i përditësuar. Një skript fillon me {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>I instaluar për {0} dhe i përditësuar. Një skript fillon me {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>I instaluar. Ky PadForge ka një kopje më të re.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>I instaluar për {0}. Ky PadForge ka një kopje më të re.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Po instalohet…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge nuk mundi ta kontrollonte: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instalo e vendos librarinë e PadForge aty ku e gjen ajo gjuhë. Një skript që e ngarkon lexon pajisjet dhe drejton hartëzimet në nivelin e mësipërm.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Ruaj një librari kudo</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kopjet e instaluara</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Hiqi të gjitha</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>U hoq.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID-ja e skriptit</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID-ja e skriptit të tij</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skriptet i emërtojnë kontrollet e tij {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skriptet i emërtojnë tastet e tij KeyA, KeySpace, KeyLeftShift e të ngjashme, dhe çdo tast sipas kodit të tij, Vk0 deri Vk255.</value></data>
 </root>

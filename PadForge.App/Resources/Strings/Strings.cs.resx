@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>Zařízení {0} bylo odpojeno. {1} už nemá žádné zařízení.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>Zařízení {0} bylo připojeno</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>Zařízení {0} bylo připojeno, baterie {1} %</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Odpojená zařízení: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Připojená zařízení: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Odpojená zařízení: {0} ({1})</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Připojená zařízení: {0} ({1})</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>Zařízení {0} se stále odpojuje</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max. {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Automatické opětovné připojení, port, identita párování, připojení pomocí adresy</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, zástupný DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porty, Plná rychlost, Vlastní formáty</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Dovednost</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Další asistenti, asistenti na webu</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Rozhlížejte se pomocí sledovače hlavy nebo VR headsetu a nechte oba palce na tlačítkách.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Namapujte rychlost, pedály a převodové stupně, které posílá závodní hra, jako jakýkoli jiný vstup.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Posílejte pohyb ovladače emulátorům, které čtou zdroj pohybu DSU.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Kruh, mřížka nebo lišta nabídky, dokud je otevřená.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Název vrstvy při zapnutí vrstvy Shift, po dobu, kterou si vrstva nastaví.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Název profilu při jeho změně.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Zda se virtuální ovladače právě zapnuly nebo vypnuly, ze zkratky nebo makra.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Název namapovaného zařízení při jeho odpojení.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Název namapovaného zařízení při jeho připojení.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopírovat adresu</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programy mohou přepínat profily a uvolňovat je, spouštět a zastavovat jádro, zapínat a vypínat virtuální ovladače, zobrazovat a skrývat okno, zavřít PadForge, uložit diagnostický snímek a zjistit, co běží.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Vše z úrovně Příkazy a programy navíc vidí zařízení, virtuální ovladače, mapování, profily a nastavení, sledují vstupy všech zařízení v reálném čase a mohou vám ukázat místo v programu PadForge. Program s úrovní Čtení vidí každou klávesu stisknutou na každém zařízení, včetně kláves psaných do oken spuštěných jako správce.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Vše z úrovně Čtení a programy navíc mohou přidávat vlastní zařízení a ovládat je, držet ovládací prvek libovolného zařízení a předávat pojmenované hodnoty spouštěčům maker.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Vše z úrovně Posílání vstupů a programy navíc mohou měnit to, co můžete měnit vy na jednotlivých stránkách.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Vše z úrovně Posílání vstupů a programy navíc mohou měnit to, co můžete měnit vy na jednotlivých stránkách. Některé změny se vás vždy nejdřív zeptají na kartě otázky programu PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistenti</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Vložte to do nastavení MCP asistenta. Asistent pak s programem PadForge pracuje na úrovni uvedené výše.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopírovat jako TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistenti čtoucí TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Přidat vloží do asistenta PadForge s jeho dovedností. Asistent pak pracuje na úrovni uvedené výše a jeho slova se ukazují vedle toho, na co ukazuje, pod jeho jménem.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skripty</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Knihovna skriptů</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Uložit knihovnu…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Jeden soubor pro AutoHotkey v2, Python nebo PowerShell. Skript, který ho načte, čte zařízení a ovládá mapování na úrovni uvedené výše.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Jeden soubor pro AutoHotkey v2, Python nebo PowerShell, zapsaný tam, kam určíte.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Čeká na vás</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktivita</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Zatím nevolal žádný program. Každé volání se zde zobrazí i s výsledkem.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Vrátit zpět</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Dovednost pro asistenty</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Uložit dovednost…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge to nemohl uložit: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Dokud je připojen program s úrovní Čtení nebo vyšší, vidí, co se stiskne na každém zařízení, včetně klávesnic.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pluginy</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Spouštět pluginy</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Neběží žádný plugin.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin běží s vašimi právy, ne s právy programu PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Vestavěné</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Zkušební ovladač</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Ovladač, který se hýbe sám, vždy jedním ovládacím prvkem, aby šlo vyzkoušet mapování bez hardwaru po ruce.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Rychlost</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Pomalu</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normálně</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rychle</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Nejrychleji</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Přehrávání</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Přehraje záznam problému jako zařízení, která ho vytvořila, se stejným časováním. Na tomto počítači jsou to nová zařízení, mapovaná tak, jak je mapujete vy nebo profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Záznam</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Záznamy problémů|*.zip;*.log|Všechny soubory|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nemůže přehrát {0}. Není to záznam problému, nebo neobsahuje vstup žádného zařízení.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Vaše pluginy</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin je program, který do programu PadForge přidává zařízení. PadForge ho spustí s vašimi běžnými právy vždy, když běží jádro.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Přidat plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programy a skripty|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Všechny soubory|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Schválit…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Schválit a restartovat…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Spustí se s jádrem</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Kontrola souboru před spuštěním</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Skončil s kódem {0}. Znovu se spustí za {1} s.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} už v seznamu je.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge spouští nejvýše 16 pluginů. Chcete li přidat další, jeden odeberte.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Běžící pluginy: {0}. Zařízení, která přidaly: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Plugin {0} se zastavil po pěti selháních.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Plugin {0} se změnil od vašeho schválení.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Plugin {0} se nepodařilo spustit.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Přidáno: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Podepsal: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nepodepsáno.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Jeho nastavení se zobrazí tady, dokud běží.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Nedeklaruje žádná nastavení.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge nemohl přečíst jeho nastavení: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Ukončeno po minutě bez odpovědi</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Jeho soubor se změnil za běhu</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Přidáno pluginem {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Nastavení pluginu {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Vybrat</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Stiskněte ovládací prvek…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Nevybráno</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Přidejte plugin nebo přetáhněte jeho soubor na tuto stránku. PadForge ukáže jeho cestu, podepisovatele a SHA-256 a před spuštěním se vás zeptá. Plugin běží s vašimi právy, ne s právy programu PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Přehraje záznam problému jako zařízení, která ho vytvořila, s jejich časováním.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Běží.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Běží, ručně.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Co se hýbe</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Páčky a spouště</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Páčky</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Spouště</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Vzor</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Přejíždění</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Kruh</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Doba pohybu</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Doba klidu</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Mačkat tlačítka</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Mačkat navigační tlačítka</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Aplikace Windows ovládají tlačítka A, B, Back, Start a křížek virtuálního ovladače Xbox v okně v popředí a tlačítko Guide otevře Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Otáčet křížkem</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Ze stejného důvodu.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Doba stisku</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Ovladače</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Ručně</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Zastaví pohyb. Jeho vstupy nastavte níže myší.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Levá páčka</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Pravá páčka</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Levá spoušť</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Pravá spoušť</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Čtení za sekundu</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Sada pro pluginy a protokol vybraného pluginu</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Sada pro pluginy</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Uložit sadu pro pluginy…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Malý plugin v C# a týž plugin pro AutoHotkey, Python a PowerShell, každý soubor s návodem, jak ho sestavit nebo spustit.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Průvodce každým příkazem, událostí a druhem nastavení, skript pro sestavení pluginu v C# a týž plugin pro AutoHotkey, Python a PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Protokol</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Vyberte plugin a zobrazí se jeho protokol.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Protokol tohoto pluginu je zatím prázdný.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Herní mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Jiný program drží název kanálu {0}. Zavřete ho.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows odmítl kanál {0}, takže se programy nemohou připojit.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Není připojen žádný program.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Zapnuto. Není připojen žádný program.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Připojeno: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Neznámý program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, podepsal {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Další takové žádosti až po novém spuštění programu PadForge</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge takový nástroj nemá</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program četl starší stav</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Takové nastavení neexistuje</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Toto ID nemá nic</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Hodnota byla mimo rozsah, který nastavení přijímá</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Nepovolili jste to</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nikdo neodpověděl včas</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Zobrazit okno</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Odeslat okno do oznamovací oblasti</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimalizovat okno</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maximalizovat okno</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Zavřít PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Spustit jádro</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Zastavit jádro</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Přidat zařízení {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Nastavit ovládací prvky zařízení {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Odebrat zařízení {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Uvést každý ovládací prvek zařízení {0} do klidu</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Způsobí, že PadForge spustí program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Otevře soubor, složku nebo webovou stránku.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Způsobí, že PadForge pošle systému Windows klávesy nebo vstup myši.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Importuje profil z vnějšku programu PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge se vás zeptá, než to program udělá.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialogy</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makra</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Držet ovládací prvky zařízení {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Pustit ovládací prvky zařízení {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Nastavit hodnotu {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Přepnout profily</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Spustit nebo zastavit jádro</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Zapnout nebo vypnout virtuální ovladače</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Uložit diagnostický snímek</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Přečíst vzorkovací frekvenci a ovladače</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Vypsat profily</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Přečíst profil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Vypsat virtuální ovladače</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Vypsat zařízení</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Přečíst zařízení</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Čekat na váš vstup</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Přečíst mapování ovladače</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Vypsat makra ovladače</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Nahrát problém</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Najít nastavení</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Přečíst nastavení</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Ukázat vám místo</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Hledat místa v programu PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Přečíst místo v programu PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Přečíst, co vidíte</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Přidat vlastní zařízení</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Ovládat své zařízení</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Odebrat své zařízení</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Držet nebo pustit ovládací prvek</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Nastavit hodnotu pro spouštěče maker</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Změnit nastavení</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Stisknout tlačítko</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Vytvořit profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Přejmenovat profil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Smazat profil</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Změnit typ ovladače</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Přiřadit zařízení</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Nastavit řádky mapování</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Vymazat řádky mapování</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Namapovat ovladač automaticky</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Uložit makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Smazat makro</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Vytvoří ovladač klávesnice a myši</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Zapne {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Změnit „{0}“</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Stisknout „{0}“</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vám chce ukázat {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Umístění: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Povolit {0} pracovat s programem PadForge na úrovni {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} spouští {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Spustil: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Podepsal: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Nepodepsáno.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Na úrovni Čtení a výše vidí každou klávesu stisknutou na každém zařízení, včetně klávesnic.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Zeptá se jednou. Můžete ho odebrat na stránce Automatizace.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>Příkazový řádek programu PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Nastaví {0} na {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Naslouchá v síti, takže se k tomuto počítači dostanou jiná zařízení.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mění ovladač nebo HidHide, na kterých závisejí jiné programy a hry.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduly PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Povolit</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Nepovolit</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Teď ne</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Zobrazit</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Krok {0} z {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kliknutím pokračujte.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Otevřít: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Otevřete Více.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od {1}, který se označuje jako „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programu, který se označuje jako „{0}“</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Nainstalovat a restartovat</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Poznámky k vydání</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Databáze ovladačů</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Tlačítko Aktualizovat teď stáhne komunitní databázi ovladačů (SDL_GameControllerDB) z webu GitHub a uloží do souboru nastavení mapování, která tato verze programu PadForge nemá. Nové mapování se použije jen pro ovladač, který nic jiného nečte jako gamepad, který není přiřazen a který není v režimu nezpracovaného joysticku. Reset odstraní všechna stažená mapování.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Aktualizovat teď stáhne komunitní databázi ovladačů (SDL_GameControllerDB) z webu GitHub a uloží do souboru nastavení mapování, která tato verze programu PadForge nemá. Používají se hned. Nové mapování se použije jen pro ovladač, který nic jiného nečte jako gamepad, který není přiřazen a který není v režimu Vynutit režim nezpracovaného joysticku. Reset odstraní všechna stažená mapování. Vaše vlastní řádky pod Více zůstanou.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Aktualizovat teď</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Aktualizace…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Kontrola aktualizací…</value></data>
@@ -1045,12 +1100,10 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Instalace aktualizace na PadForge {0} se nedokončila. Zkuste to znovu instalací z Nastavení.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge byl aktualizován na verzi {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Vestavěno: {0} mapování, komunitní kopie z {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Vestavěno: {0} mapování, komunitní kopie z {1}. Aktualizováno {2}: nových {3}, změněných {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Vestavěno: {0} mapování, komunitní kopie z {1}. Staženo {2}: nových řádků {3}, změněných {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Komunitní databáze se od poslední aktualizace nezměnila.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub se nepodařilo zastihnout: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge stažení odmítl, protože to není databáze ovladačů, kterou očekává. Nic se nezměnilo.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Nové mapování se použije při příštím připojení jeho ovladače.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Změněné mapování se použije při příštím spuštění programu PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Spouštět minimalizovaně</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Spouštět při přihlášení</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informace o verzi a protokolování událostí jádra pro řešení potíží.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Vést diagnostický protokol</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Průběžně zapisuje události jádra do souboru diagnostics.log ve složce protokolů, kterou otevře Otevřít složku protokolů. Zůstává zapnuté i po restartu. Jakmile soubor dosáhne 8 MB, přesune se do diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Uložit snímek</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Uloží nejnovější události jádra do nového souboru. Funguje i při vypnutém diagnostickém protokolu.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Uložit snímek…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Vezme program, Windows, vaše zařízení a nastavení tak, jak jsou teď, s nejnovějšími událostmi jádra a otevře je, abyste si je přečetli před uložením. Funguje i při vypnutém diagnostickém protokolu.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Otevřít složku protokolů</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Nahrát problém</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Začít nahrávat</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Zastavit nahrávání ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nahrává do stisku tlačítka Zastavit nahrávání, 10 minut nebo 20 MB souboru zip, pak soubor zip vybere v Exploreru, připravený k připojení ke hlášení.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začněte, vyvolejte problém a pak nahrávání zastavte. Jeden soubor vedle programu PadForge obsahuje vše, co PadForge četl, poslal a zaznamenal, se shrnutím toho, co se pokazilo. Každá klávesa a tlačítko stisknuté na kterémkoli zařízení během nahrávání jsou v souboru, včetně klávesnic a myší. Uživatelská jména, sériová čísla, adresy a zadaná jména se před zápisem nahradí.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Nahrává do stisku tlačítka Zastavit nahrávání, 30 minut nebo 20 MB souboru zip, pak nahrávku otevře, abyste si ji přečetli před uložením.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Začněte, vyvolejte problém a pak nahrávání zastavte. Potom si přečtěte, co obsahuje, část po části, a uložte to, kam chcete. Každá klávesa stisknutá na kterémkoli zařízení během nahrávání je v něm, včetně klávesnic a myší. Uživatelská jména, sériová čísla, adresy a zadaná jména se před zápisem nahradí.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Zapisuje se shrnutí…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Uloženo: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Nahrávání se nespustilo. Kontrola našla soukromou hodnotu tohoto PC, která by se do souboru dostala.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Nahrávání se nespustilo. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Poslední nahrávka se ještě dokončuje.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Volba Uchovávat posledních 60 sekund je vypnutá, takže není co uložit.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Dokončena nahrávka, kterou PadForge nezastavil: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Nahrávka, kterou PadForge nezastavil, čeká na přečtení na stránce Domů: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Uchovávat posledních 60 sekund</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Dokud běží jádro, drží v paměti poslední minutu toho, co obsahuje nahrávka, pro problém, který se objeví jednou za večer. Tlačítko Uložit posledních 60 sekund ji zapíše jako soubor.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Dokud běží jádro, drží v paměti poslední minutu toho, co obsahuje nahrávka, pro problém, který se objeví jednou za večer. Tlačítko Uložit posledních 60 sekund ji otevře, abyste si ji přečetli před uložením.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Uložit posledních 60 sekund</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Psaná písmena a číslice zapisovat jako jednu klávesu</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Nahrávka zapíše klávesy písmen a číslic, které žádné mapování ani makro nečte, jako jednu klávesu, každý stisk v jeho čase. Všechny ostatní klávesy a každá klávesa, kterou mapování nebo makro čte, se zapíšou tak, jak byly stisknuty.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Uchovávat posledních 60 sekund, Psaná písmena a číslice zapisovat jako jednu klávesu</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Co nahrávat, posledních 60 sekund, psaná písmena</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Uložit snímek</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, vaše zařízení a nastavení tak, jak jsou teď, stejnou kontrolou.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log vedle PadForge.exe, kde si ho můžete přečíst.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Co nahrávat</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Vše zapnuto. Vypnutá část se z příští nahrávky vynechá a soubor říká, které části obsahuje.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Pro problém, který se objeví jednou za večer.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Nahrávka čeká, až si ji přečtete na stránce Domů.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Shrnutí</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Nastavení a zařízení</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Vstup</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Výstup</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Zpětná vazba</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Časování</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Okno a chyby</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Aktivita</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Řádky diagnostiky</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Přečtěte si nahrávku</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} až {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Snímek v {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 min</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} min</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 s</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} s</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Zastaveno vámi.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Samo se zastavilo po {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Samo se zastavilo na {0} v souboru zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Zastaveno makrem.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Zastaveno programem nebo příkazem --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Zastaveno asistentem, který ji spustil.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Zastaveno při zavírání programu PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Posledních 60 sekund, držených v paměti.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Přečtěte si, co budete sdílet. Vypněte část, aby se vynechala, a pak uložte. Nic neopustí tento PC, dokud to nepošlete.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, jak se bude sdílet</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Zobrazit {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>vynecháno</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>nenahráno</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} jako text, {1} v souboru zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} jako text, {1} v souboru zip, který sdílíte. Nahrávání se zastaví na {2} v souboru zip nebo po {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Kontrola: PadForge nahradil soukromé údaje ({0}, {1}). V částech, které ponecháte, není žádný název, sériové číslo ani adresa tohoto PC.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>hodnot: {0}</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>hodnot: 1</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>druhů: {0}</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>druhů: 1</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Kontrola: v částech, které ponecháte, je stále hodnot z tohoto PC: {0}. Vypněte tyto části nebo nahrávku odstraňte. Do té doby je Uložit… vypnuto.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Kontrola: v částech, které ponecháte, je stále jedna hodnota z tohoto PC. Vypněte tyto části nebo nahrávku odstraňte. Do té doby je Uložit… vypnuto.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>V této části se během nahrávání nic nestalo.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Odstranit</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopírovat shrnutí</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Zkopírováno</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Uložit…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Uložit nahrávku</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Soubory zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Neuloženo. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Uloženo s vašimi právy, napoprvé do složky Stažené soubory, pak tam, kam jste uložili naposledy, a zobrazeno v Průzkumníku souborů. Nahrávka, která se zastaví, když u stránky nikdo není (limit, makro, program, nástroj asistenta nebo --record stop), čeká na toto přečtení na stránce Domů a po 7 dnech se smaže, pokud ji neuložíte. Program se dozví, že čeká, nikdy ne kde.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Nahrávka problému z {0} čeká, až si ji přečtete.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Zkontrolovat</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Označit nahrávku</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Verze aplikace</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Běhové prostředí .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Verze SDL</value></data>
@@ -3128,31 +3238,64 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Pozice myši X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Pozice myši Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Citlivost</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Citlivost kurzoru pro jednotlivý zdroj. 1.0 dosáhne plné výchylky páčky ve vzdálenosti 10 % šířky obrazovky od středu. Hodnoty nad 1.0 dosáhnou plné výchylky při kratší dráze kurzoru. Hodnoty pod 1.0 potřebují delší.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Citlivost kurzoru pro jednotlivý zdroj. 1.0 dosáhne plné výchylky páčky ve vzdálenosti 10 % šířky monitoru ukazatele od jeho středu. Hodnoty nad 1.0 dosáhnou plné výchylky při kratší dráze kurzoru. Hodnoty pod 1.0 potřebují delší.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Dráha myši X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Dráha myši Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Dráha k plnému rejdu</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Jak daleko se myš pohne od středu k plnému rejdu, v krocích, které myš hlásí. Vyšší číslo řídí jemněji a vyžaduje větší pohyb ruky.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Jak daleko se myš nebo kolečko pohne od středu k plnému rejdu, v krocích, které hlásí. Vyšší číslo řídí jemněji a vyžaduje větší pohyb ruky.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Je-li na panelu zařízení myši nastaveno DPI, dráha se zobrazí i v centimetrech.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kroků</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrování</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Vypnuto nechá volant tam, kde ho ruka nechala. Pružina ho vrátí během Doby návratu. Z telemetrie ho vrací, jako by to dělaly přední pneumatiky auta při rychlosti a přilnavosti, které posílá hra: na místě stojí, s rychlostí je pevnější, při smyku lehký. Bez telemetrie ze hry je to pružina. Ze síly hry nechá volant otáčet vlastní zpětnou vazbou virtuálního volantu.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Vypnuto nechá volant tam, kde ho ruka nechala. Pružina ho vrátí podle nastavení Doba návratu. Z telemetrie ho vrací, jako to dělá řízení auta při rychlosti a přilnavosti, které posílá hra: strmě poblíž středu a měkčeji dál, na místě stojí, s rychlostí je pevnější, při smyku lehký. Bez telemetrie ze hry táhne jako při 100 km/h na suché silnici. Ze síly hry nechá volant otáčet vlastní zpětnou vazbou virtuálního volantu.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Vypnuto</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Pružina</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Z telemetrie</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Ze síly hry</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Doba návratu</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Jak dlouho trvá Pružině vrátit volant z 95 % cesty. Z telemetrie to trvá tak dlouho při 100 km/h na suché silnici.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Jak dlouho trvá, než Pružina vrátí volant z 95 % cesty. 0 ho vystředí hned. Z telemetrie to trvá tak dlouho z blízkosti středu při 100 km/h na suché silnici.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Řízení</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vždy nechá myš řídit neustále. Při držení ji nechá řídit jen po dobu držení vstupu řízení. Přepínač zapíná nebo vypíná řízení každým stiskem vstupu řízení. Dokud myš neřídí, volant zůstane, kde je, nebo se vystředí, takže jedna myš může řídit i rozhlížet se.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Vždy nechá myš řídit neustále. Při držení a vystředění ji nechá řídit jen po dobu držení vstupu Vstup řízení, pak ji vrátí do středu, pomocí Centrování tam, kde ho zdroj má, a hned tam, kde ho nemá. Při držení a setrvání ji nechá řídit jen po dobu držení vstupu Vstup řízení a nechá ji tam, kde byla puštěna. Přepínač zapíná nebo vypíná řízení každým stiskem vstupu Vstup řízení. Takže jedna myš může řídit i rozhlížet se.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Vždy</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Při držení</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Při držení a vystředění</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Přepínač</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Vstup řízení</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Tlačítko, které myši dovolí řídit, na stejném zařízení jako dráha myši. Když není vybráno žádné, myš řídí vždy.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Tlačítko, které myši dovolí řídit, na stejném zařízení jako zdroj. Když není vybráno žádné, myš řídí vždy.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Vyhlazování</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Vyrovnává myš, která hlásí nerovnoměrně. Volant se za rukou zpožďuje zhruba o tuto dobu. 0 je vypnuto.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Vyrovnává myš, která hlásí nerovnoměrně. Páčka se za rukou zpožďuje zhruba o tuto dobu. 0 je vypnuto.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Rejd při rychlosti</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Při zapnuté herní telemetrii určuje, kolik rejdu zbývá při 200 km/h. Při 100 % je celý rejd dostupný při každé rychlosti.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Dráha volantu</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Dráha volantu do stran</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Jak rychle se myš pohybuje. Pustí, když se ruka zastaví.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Kde je ukazatel na svém monitoru, od jeho středu nebo od místa, kde řízení začalo.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Jak daleko se myš pohnula, držené tam, kde ho ruka nechá, jako u volantu.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Zářezy kolečka držené jako poloha, v plné přesnosti u kolečka s jemným rolováním.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Zářezy bočního kolečka držené jako poloha, v plné přesnosti u kolečka s jemným rolováním.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Tlak za každý zářez, hned zpět do klidu.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Při držení a setrvání</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Citlivost</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Kolik z páčky rychlost dává. Při 1.00 páčka dosáhne plné výchylky při 16 000 krocích za sekundu, při každé četnosti dotazování a hlášení myši.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Zpět do středu</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Jakmile myš zpomalí nebo se zastaví, páčka se vrací nejvýše touto rychlostí. 0 ji nechá vrátit se spolu s myší.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Začít tam, kde řízení začalo</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>S položkou Vstup řízení se páčka měří od místa, kde byl ukazatel, když řízení začalo, jako páčka na displeji telefonu začíná tam, kde dosedne prst. Vypnuto, měří se od středu monitoru ukazatele.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Tato osa se pohybuje relativně</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pro trackball nebo spinner, který hlásí, jak daleko se otočil. Zapnuto, osa drží polohu jako zdroj Dráha myši a bere nastavení dráhy. Windows neříká, které osy se takto pohybují.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Náhled</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ukáže, jak tato rodina sleduje vaši myš. Nic se nenamapuje, dokud ji nevyberete.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Náhled. Pohybujte myší.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Drženo na {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Na {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0} % vpravo</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0} % vlevo</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0} % nahoru</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0} % dolů</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>středu</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Pohybuje se, dokud držíte: {0}.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI myši</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Počet kroků, které tato myš hlásí na každý palec pohybu, jak ho nastavuje software jejího výrobce.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Je-li DPI nastaveno, Dráha myši ukazuje dráhu i v centimetrech. 0 znamená nenastaveno.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ukazatel X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ukazatel Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Jas IR</value></data>
@@ -4923,6 +5066,7 @@ Kopie předchozí verze je v této složce: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indikátory na obrazovce, které PadForge zobrazuje při hraní. Vypnutí některého z nich nikdy nezmění chování, jen to, zda se zobrazí.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Plovoucí panel vrstvy Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Překrytí při přepnutí profilu</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Zapnutí nebo vypnutí ovladačů</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Poznámka o odpojení zařízení</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Poznámka o připojení zařízení</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Zobrazí prstenec nebo mřížku na obrazovce, dokud je radiální nebo dotyková nabídka aktivní. Nabídky se spouštějí i s vypnutým překrytím.</value></data>
@@ -5651,6 +5795,8 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Vypnuto</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stopky</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Barva světelného panelu</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Odpojená zařízení</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Vše připojeno</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>vypnuto</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>přes Logitech Gaming Software</value></data>
@@ -5693,6 +5839,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Obrazovka zobrazuje obrázek, který vyberete, v jeho vlastní velikosti. Obrázek větší než obrazovka se zobrazí jako výřez velikosti obrazovky, který posouvá makro Posunout obrázek na obrazovce klávesnice. Na S.T.R.I.K.E. 7 ho posouvá i prst tažený po obrazovce.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Obrazovka zobrazuje stopky, které makro Stopky spouští, pozastavuje a resetuje. Všechny obrazovky zobrazují stejné stopky.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Obrazovka zobrazuje barvu světelného panelu ovladače DualShock 4 nebo DualSense v nejnižším slotu, který tato obrazovka napájí, nebo v nejnižším slotu vůbec, pokud nenapájí žádný. Monochromatická obrazovka zobrazuje jeho jas jako bodový vzor. Dokud barva nedorazí na světelný panel, PadForge nezobrazuje nic.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Obrazovka vypíše namapovaná zařízení, která nejsou připojená, pod názvy, které ukazuje stránka Zařízení, a řekne Vše připojeno, když žádné nechybí.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Obrázky (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Všechny soubory (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Posun</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Posun X</value></data>
@@ -5944,6 +6091,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Jízda (jiné než 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Herní telemetrie</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Hodnota skriptu</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Připojení zařízení</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Rychlost (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Otáčky (% maxima)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Převodový stupeň (-1 zpátečka, 0 neutrál)</value></data>
@@ -6049,6 +6197,7 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje obrázek, který vyberete, zvětšený tak, aby vyplnil okno při zachování poměru stran. Při zvětšení nad 100 procent zobrazuje jen část obrázku, například mapy. Tuto část posouvá makro Posunout obrázek na obrazovce klávesnice a také tažení levým tlačítkem myši, když je PadForge v popředí.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje stopky, které makro Stopky spouští, pozastavuje a resetuje. Jsou to stejné stopky, jaké zobrazují všechny obrazovky klávesnice.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Překryvná obrazovka zobrazuje barvu světelného panelu ovladače DualShock 4 nebo DualSense ve slotu, který zde vyberete, nebo v nejnižším slotu s barvou. Dokud barva nedorazí na světelný panel, nezobrazuje nic.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Překryvná obrazovka vypíše namapovaná zařízení, která nejsou připojená, pod názvy, které ukazuje stránka Zařízení, a řekne Vše připojeno, když žádné nechybí.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Překryvná obrazovka {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Přidat překryv</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Nejnižší slot s barvou</value></data>
@@ -6391,6 +6540,245 @@ Má je PadForge teď odinstalovat? Vyžaduje to zvýšená oprávnění a může
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Otevře nebo zavře klávesnici, když je „Otevírá se pomocí“ uvolněno před uplynutím doby podržení. Delší stisk nic neudělá.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Otevře nebo zavře klávesnici, když je „Otevírá se pomocí“ stisknuto třikrát v časovém okně stisku.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Otevře nebo zavře klávesnici, když skončí časové okno stisku po jednom stisku „Otevírá se pomocí“. Druhý stisk uvnitř okna to zruší.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Vypnuto. K programu PadForge se nedostane žádný program.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} a {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Aktivita: volání: {0}, od nejstaršího. Volání před nimi: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Aktivita: volání: {0}. Volání před ním: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Starších volání zahozeno: {0:N0}. Aktivita uchovává nejnovějších {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Starší volání zahozeno: {0:N0}. Aktivita uchovává nejnovějších {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Exportovat…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Exportovat aktivitu</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Textový soubor</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Otevřít</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Aktualizovat</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Více pro {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Uložit dovednost jako ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Otevřít jeho soubor nastavení</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Uloženo. V programu {0} přidejte {1} pod {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} zatím nemá soubor nastavení. Tlačítko Přidat ho vytvoří.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge na tomto PC nenašel žádný program asistenta, jehož výrobce dokumentuje nastavení ve Windows. Pro jakýkoli jiný funguje Kopírovat nastavení pod Více.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge nemohl zkontrolovat programy asistentů: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Nepřidáno.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Přidáno.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Přidáno. Nyní připojeno.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Přidáno. Od té doby se nepřipojil. Asistent, který byl otevřený, uvidí PadForge po zavření a novém otevření.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Přidáno pro jiný PadForge. Aktualizovat ho nasměruje na tento.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Přidáno. Jeho dovednost PadForge je starší než tento PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Přidáno, bez dovednosti PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Přidáno. Jeho dovednost PadForge pochází z novějšího PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Dovednosti bere jen jako nahrání.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Přidaní asistenti se k programu PadForge dostanou, až bude zapnutá Automatizace.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Přidává se…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Odebírá se…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Aktualizuje se…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nedokončilo se: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Další asistenti</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Pro asistenta, který není uveden výše: Kopírovat nastavení dá záznam pro jeho nastavení MCP a Kopírovat zprávu dá krátký text pro jakýkoli chat, který říká, jak se připojit a na co se zeptat jako na první.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Kopírovat nastavení</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Kopírovat zprávu</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Zkopírováno.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Nezkopírováno: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Připoj se k programu PadForge, mapovači ovladačů na mém PC. Je to místní server MCP, který běží přes stdio: příkaz je {0}, s argumentem --mcp. Jako nastavení JSON: {1} Po připojení nejdřív zavolej jeho nástroj status a pak se mě zeptej, co chci nastavit, například: „Ukaž mi, kde namapovat spouště mého ovladače.“</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automatizace v programu PadForge je teď vypnutá: nejdřív ji v PadForge zapněte pod Doplňky, Automatizace.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Povolené programy</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Program, který chce úroveň Čtení nebo vyšší, se zeptá jednou, při prvním připojení, a dostane úroveň, o kterou žádá, nejvýše úroveň uvedenou výše. Asistent, kterého přidáte výše, je tím povolen.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Nyní připojeno.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Naposledy použito {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Zatím nepoužito.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Připojeno: {0}. Kliknutím otevřete stránku Automatizace.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Na tomto PC: {0}. Z webu: {1}. Kliknutím otevřete stránku Automatizace.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Připojeno z webu: {0}. Kliknutím otevřete stránku Automatizace.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Mapování SDL</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Čteno jako</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Zdroj</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad „{0}“</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick. SDL pro něj nemá mapování.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge ho čte nezpracovaně, takže se mapování SDL nepoužije.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, rozložený jako gamepad podle vašeho řádku.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL čte zařízení, dokud běží jádro.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Komunitní kopie, která je součástí programu, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Staženo {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Vlastní soubor programu PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Váš, přidán {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Proměnná SDL_GAMECONTROLLERCONFIG, kterou SDL drží nad každým vaším řádkem</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopírovat mapování SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Vloží mapování zařízení do schránky jako řádek komunitní databáze, pod ID zařízení s nulovým kontrolním součtem a verzí.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Vložit mapování SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Převezme řádek pro toto zařízení, zkontroluje ho, ponechá ho jako váš a hned ho použije.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Najít mapování…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Prohledá podle názvu každý řádek, který nese PadForge, a vybraný použije pro toto zařízení, například pro klon s jinými ID.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Odhadnout rozložení</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Odhadne rozložení gamepadu z os, tlačítek a hat přepínačů zařízení, pro zařízení, které žádná databáze nezná. Zkontrolujte ho v části Test vstupů.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Odebrat moje</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Odebrat moje vrátí zpět řádek i řádky ovladačů z dřívějška.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Mapovat znovu</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Znovu vytvoří řádky zařízení na každém ovladači, na kterém je, podle rozložení SDL, jako při jeho přiřazení.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Stránka komunitní databáze</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Řádek a v čem se liší od {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Řádek</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Ovladač</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Řádek: {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Jeho vstup nyní</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Řádek SDL říká</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>není v řádku SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, liší se</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge nepoužívá: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Řádek</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Zkopírováno.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Zkopírováno. Formát SDL neumí pojmout: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makra</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>křivky</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>mrtvé zóny</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>výstupy klávesnice a myši</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, přepínače a další akce</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} a {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Není co kopírovat: SDL pro toto zařízení nemá mapování a zařízení není na žádném ovladači.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Schránku používá jiný program. Nic se nezkopírovalo.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Váš řádek je odebrán. Zařízení se čte tak jako předtím.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Znovu namapováno podle rozložení SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Používá se nyní. Řádek je váš a pro toto zařízení má přednost.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Ponecháno jako vaše. Použije se, jakmile jádro běží a zařízení je připojeno.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Ponecháno jako vaše, ale proměnná SDL_GAMECONTROLLERCONFIG obsahuje řádek pro toto zařízení, který SDL drží nad vaším.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL řádek nepřijalo. Pro toto zařízení se nic nezměnilo.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Vložit mapování SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Vložit mapování SDL pro {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Najít mapování pro {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Odhadnout rozložení pro {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Přidat řádky ze souboru nebo ze schránky</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Vložit</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Otevřít soubor…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Soubory mapování (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Soubor má přes 4 MB. Celý soubor komunity má asi 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Hledat podle názvu, ID nebo VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Řádky, které nese PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Žádný řádek neodpovídá.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Vybraný řádek se použije pro {0} pod jeho vlastním ID, stejnou kontrolou a stejnou volbou jako u tlačítka Vložit.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Řádek mapování SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Řádek pro toto zařízení.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Odhadnuté rozložení.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, polí: {0}, jeho ID odpovídá tomuto zařízení.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, polí: {0}, od stejného výrobce a produktu na jiné sběrnici nebo ve verzi. Ponechá se pod ID tohoto zařízení.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, polí: {0}, řádek jiného zařízení. Ponechá se pod ID tohoto zařízení.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Polí: {0}. SDL toto zařízení nečte, takže PadForge rozloží jeho vstupy podle řádku.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Polí: {0}, z os, tlačítek a hat přepínačů zařízení. Zkontrolujte ho v části Test vstupů a pak ho tady ponechte nebo změňte.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} pole, jeho ID odpovídá tomuto zařízení.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} pole, od stejného výrobce a produktu na jiné sběrnici nebo ve verzi. Ponechá se pod ID tohoto zařízení.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} pole, řádek jiného zařízení. Ponechá se pod ID tohoto zařízení.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} pole. SDL toto zařízení nečte, takže PadForge rozloží jeho vstupy podle řádku.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} pole, z os, tlačítek a hat přepínačů zařízení. Zkontrolujte ho v části Test vstupů a pak ho tady ponechte nebo změňte.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Tím se změní, jak se čte {0}. Jeho řádky na ovladačích {1} se znovu namapují z nového rozložení.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Tím se změní, jak se čte {0}. Není na žádném ovladači, takže se žádné řádky nemění.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Zkratky profilů, které čtou {0}, si ponechají vstupy, na které byly nastaveny.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Řádek se ponechá jako váš v souboru PadForge.xml a pro toto zařízení má přednost před každým jiným zdrojem. Odebrat moje vrátí starý řádek a staré řádky.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Řádky se ponechají jako vaše v souboru PadForge.xml a pro svá zařízení mají přednost před každým jiným zdrojem. Odstraní je Vymazat pod Více v řádku Databáze ovladačů.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Řádků pro Windows: {0}. Přeskočeno řádků pro jiné systémy: {1}.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Řádek pro Windows: {0}. Přeskočeno řádků pro jiné systémy: {1}.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Odmítnuto řádků: {0}. První důvod: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Vložte řádek nebo text souboru gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Text není řádkem databáze ovladačů SDL: ID o 32 šestnáctkových číslicích, název a pak pole, například a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Řádky jsou pro jiné systémy. PadForge čte řádky pro Windows nebo pro žádný systém zvlášť.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID řádku není ID zařízení. Potřebuje 32 šestnáctkových číslic.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Název řádku je prázdný, delší než 128 znaků, nebo obsahuje znak, který SDL čte jako pole.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Řádek nese nápovědu nebo pole pro Android, které PadForge nepřijímá.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Řádek má pole, které SDL nezná.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Vazba není ve tvaru SDL, například b3, a2, +a2, a2~ nebo h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Řádek uvádí jedno pole dvakrát.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Řádek má přes 1 024 znaků.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Řádek nenavazuje žádný ovládací prvek.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Vaše řádky</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Vaše řádky</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Řádky, které sem přidáte nebo vložíte na kartě Mapování SDL zařízení, mají pro svá zařízení přednost před každým jiným zdrojem a přežijí reset.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Přidat řádky ze souboru nebo ze schránky…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Řádků: {0}, mají přednost před jinými zdroji pro svá zařízení.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Řádek: {0}, má přednost před jinými zdroji pro své zařízení.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Zatím žádné.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Používá se hned.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Zpřístupnit PadForge z webu</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Asistent běžící na webu se k programu PadForge dostane přes tunelovací program na tomto PC. Zapnutí se vás nejdřív zeptá.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Zpřístupnit PadForge z webu?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge spustí pomocníka bez práv správce, který naslouchá jen na tomto PC, a tunelovací program, který vyberete, mu dá veřejnou adresu. Webový asistent se dostane dovnitř, až když povolíte jeho přihlášení na kartě otázky programu PadForge, a pracuje na úrovni uvedené výše.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Zapnout</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Asistenti na webu</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Žádný</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Adresa, kterou vložím</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Spouští se s vašimi právy.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Běží s vašimi právy. Adresa zůstává při každém spuštění stejná.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Běží s vašimi právy. Rychlý tunel dostane při každém spuštění novou adresu, takže by se asistent musel přidat znovu.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Zastaveno.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Zastaveno. Jeho poslední slova: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nepodařilo se ho spustit.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Už není na tomto PC.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Na tomto PC se nenašel žádný tunelovací program. PadForge funguje s cloudflared, devtunnel, ngrok a Tailscale Funnel nebo s adresou vašeho vlastního tunelu.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Vyberte tunel, který programu PadForge dá veřejnou adresu.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Také na tomto PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, jehož adresa zůstává stejná</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, jehož rychlé tunely dostávají pokaždé novou adresu</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Spusťte vlastní tunel na http://127.0.0.1:{0} a vložte jeho adresu https. Pojmenovaný tunel Cloudflare, trvalý vývojový tunel, Tailscale Funnel a vlastní doména ngrok si adresu ponechají.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Vložte adresu https bez cesty kromě /mcp, jak ji váš tunel dává.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Spouští se webový pomocník programu PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Webový pomocník programu PadForge se zastavil ({0}). Pro jeho opětovné spuštění vypněte a znovu zapněte volbu Zpřístupnit PadForge z webu.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adresa</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Zatím žádná veřejná adresa.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Přidat do Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Zkopírováno.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Přijmout nového webového asistenta</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Začít přijímat</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Přestat přijímat</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Přijímá se do {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Nepřijímá se. Začít přijímat to otevře na pět minut.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Přidejte adresu v asistentovi a přihlaste se. Každé přihlášení ukáže vlastní šestimístný kód na své přihlašovací stránce a na kartě otázky programu PadForge. Povolte ho, jen když se oba kódy shodují. Jindy se přihlášení odmítne a nic se vás nezeptá.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Povoleno na webu</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Zatím žádný.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Jeho přihlášení se vrací na {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Říká si {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Povoleno {0}, naposledy použito {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Povoleno {0}, zatím nepoužito.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Odvolat</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Jeho vlastní Secure MCP Tunnel spouští PadForge přímo, bez adresy a přihlášení tady. Zkopírujte příkaz do nastavení toho tunelu.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopírovat příkaz</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge nestahuje žádný tunelovací program a neuchovává klíč žádné jiné firmy. Webový asistent pracuje na úrovni uvedené výše.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Povolit {0} pracovat s programem PadForge z webu?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Jeho přihlášení se vrací na {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Říká si {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Povolte, jen když jeho přihlašovací stránka ukazuje tento kód:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Jeho šestimístný kód se ukazuje na kartě otázky programu PadForge. Povolte, jen když jeho přihlašovací stránka ukazuje stejný kód.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Pracuje na úrovni {0}, přes {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Jeho přihlášení se vrací na tento PC a kterýkoli tady běžící program by si tu adresu mohl přivlastnit.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Přihlášení k programu PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} žádá o práci s programem PadForge na vašem PC.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Říká si {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Na vašem PC se na toto přihlášení ptá karta otázky programu PadForge. Povolte ho tam, jen když karta ukazuje tento kód:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Tato stránka pokračuje sama, jakmile odpovíte na PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Toto přihlášení se vrací k programu na vašem PC a kterýkoli tamní program by si tu adresu mohl přivlastnit.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge teď nepřijímá nového webového asistenta. Na svém PC otevřete PadForge, přejděte do Doplňky, Automatizace, a pod Asistenti na webu stiskněte Začít přijímat. Pak se přihlaste znovu.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Toto přihlášení nemůže pokračovat. Přidejte v asistentovi adresu programu PadForge znovu a přihlaste se.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Toto přihlášení skončilo. Přihlaste se znovu z asistenta.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows ho nespustil</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>skončil s kódem {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizace je vypnutá, takže se k programu PadForge nedostane žádný webový asistent. Webový pomocník se spustí, až bude Automatizace zapnutá.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Kontroluje se…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Není nainstalováno.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Nainstalováno a aktuální. Skript začíná {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Nainstalováno pro {0} a aktuální. Skript začíná {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Nainstalováno. Tento program PadForge má novější kopii.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Nainstalováno pro {0}. Tento program PadForge má novější kopii.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Instaluje se…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge to nemohl zkontrolovat: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Tlačítko Nainstalovat umístí knihovnu programu PadForge tam, kde ji daný jazyk najde. Skript, který ji načte, čte zařízení a ovládá mapování na úrovni uvedené výše.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Uložit knihovnu kamkoli</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Nainstalované kopie</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Odebrat vše</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Odebráno.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID skriptu</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Jeho ID skriptu</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skripty pojmenovávají jeho ovládací prvky {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skripty pojmenovávají jeho klávesy KeyA, KeySpace, KeyLeftShift a podobně a každou klávesu jejím kódem, Vk0 až Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Barvy jdou přímo do zařízení {0}. Měnící se barvy, například cyklus barev nebo barvy reagující na zvuk, se k němu nedostanou. Barva, která se nemění, ano.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Všechny soubory (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>

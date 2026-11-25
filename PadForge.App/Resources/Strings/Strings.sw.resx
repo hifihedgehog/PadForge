@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} imetenganishwa. {1} haina kifaa tena.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} imeunganishwa</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} imeunganishwa, betri {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Vifaa {0} vimetenganishwa</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Vifaa {0} vimeunganishwa</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Vifaa {0} vimetenganishwa: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Vifaa {0} vimeunganishwa: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} inatenganishwa tena na tena</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (upeo {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (upeo {0})</value></data>
@@ -431,8 +431,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Unganisha upya kiotomatiki, mlango, utambulisho wa kuoanisha, unganisha kwa anwani</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Mlango, mbadala wa DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Milango, Kasi Kamili, Miundo Maalum</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ujuzi</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Wasaidizi wengine, wasaidizi kwenye wavuti</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Angalia pande zote kwa kifuatiliaji cha kichwa au headset ya VR huku vidole gumba vyote viwili vikibaki kwenye vitufe.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Weka ramani ya kasi, kanyagio na gia ambazo mchezo wa kuendesha hutuma, kama ingizo lolote.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Tuma mwendo wa kidhibiti kwa emulator zinazosoma chanzo cha mwendo cha DSU.</value></data>
@@ -453,6 +452,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Duara, gridi au upau wa menyu ikiwa wazi.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Jina la tabaka linapowashwa tabaka la shift, kwa muda ambao tabaka hilo huweka.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Jina la wasifu unapobadilika.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Iwapo vidhibiti pepe vimewashwa au kuzimwa tu, kutoka kwa njia ya mkato au makro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Jina la kifaa kilichoramaniwa kinapotenganishwa.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Jina la kifaa kilichoramaniwa kinapounganishwa.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Nakili Anwani</value></data>
@@ -560,35 +560,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programu zinaweza kubadilisha wasifu na kuuachilia, kuanzisha na kusimamisha injini, kuwasha na kuzima vidhibiti pepe, kuonyesha na kuficha dirisha, kufunga PadForge, kuhifadhi picha ya hali ya uchunguzi na kuuliza kinachoendesha.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Kila kitu cha Amri, na programu zinaweza kuona vifaa, vidhibiti pepe, ramani, wasifu na mipangilio, kufuata maingizo ya kila kifaa yanapotokea, na kukuonyesha mahali ndani ya PadForge. Programu ya kiwango cha Kusoma huona kila kitufe kinachobonyezwa kwenye kila kifaa, pamoja na vitufe vilivyoandikwa kwenye madirisha yanayoendeshwa kama msimamizi.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Kila kitu cha Kusoma, na programu zinaweza kuongeza vifaa vyake na kuviendesha, kushikilia kidhibiti cha kifaa chochote na kukabidhi thamani zenye majina kwa vichochezi vya makro.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Kila kitu cha Kutuma Maingizo, na programu zinaweza kubadilisha unachoweza kubadilisha kwenye kurasa.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Kila kitu cha Kutuma Maingizo, na programu zinaweza kubadilisha unachoweza kubadilisha kwenye kurasa. Baadhi ya mabadiliko hukuuliza kila mara kwanza kwenye kadi ya maswali ya PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Wasaidizi</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Bandika hii kwenye mipangilio ya MCP ya msaidizi. Msaidizi kisha hufanya kazi na PadForge kwa kiwango kilicho juu.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Nakili kama TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Wasaidizi Wanaosoma TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ongeza huweka PadForge, pamoja na ujuzi wake, kwenye msaidizi huyo. Kisha hufanya kazi kwa kiwango kilicho juu, na maneno yake huonekana kando ya anachoelekeza, chini ya jina lake.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Hati</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Maktaba ya Hati</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Hifadhi Maktaba…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faili moja ya AutoHotkey v2, Python au PowerShell. Hati inayoipakia husoma vifaa na kuendesha ramani kwa kiwango kilicho juu.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Faili moja ya AutoHotkey v2, Python au PowerShell, inayoandikwa unapochagua.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Inakusubiri</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Shughuli</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Hakuna programu iliyopiga simu bado. Kila simu huorodheshwa hapa pamoja na matokeo yake.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Tendua</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Ujuzi kwa Wasaidizi</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Hifadhi Ujuzi…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge haikuweza kuihifadhi: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Programu ya kiwango cha Kusoma au zaidi ikiwa imeunganishwa, huona kinachobonyezwa kwenye kila kifaa, pamoja na kibodi.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Programu jalizi</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Endesha Programu Jalizi</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hakuna programu jalizi inayoendesha.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Programu jalizi huendesha kwa haki zako, si za PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Zilizojengewa Ndani</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Kidhibiti cha Majaribio</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kidhibiti kinachosogea chenyewe, kidhibiti kimoja kwa wakati, ili ramani ijaribiwe bila kifaa halisi mkononi.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Kasi</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Polepole</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Kawaida</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Haraka</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Haraka Zaidi</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Cheza Tena</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Hucheza tena rekodi ya tatizo kama vifaa vilivyoitengeneza, kwa muda ule ule. Ni vifaa vipya kwenye kompyuta hii, vilivyoramaniwa kama unavyoviramani wewe au wasifu.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rekodi</value></data>
@@ -603,10 +592,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Rekodi za matatizo|*.zip;*.log|Faili zote|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge haiwezi kucheza {0}. Si rekodi ya tatizo, au haina ingizo la kifaa chochote.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Programu Jalizi Zako</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Programu jalizi ni programu inayoongeza vifaa kwenye PadForge. PadForge huianzisha kwa haki zako za kawaida kila injini inapoendesha.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Ongeza Programu Jalizi…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programu na hati|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Faili zote|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Idhinisha…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Idhinisha na Anzisha Upya…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Huanza na injini</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Inakagua faili kabla ya kuanza</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ilitoka kwa msimbo {0}. Huanza tena baada ya sekunde {1}.</value></data>
@@ -637,10 +625,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} tayari iko kwenye orodha.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge huendesha hadi programu jalizi 16. Ondoa moja ili kuongeza nyingine.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Programu jalizi zinazoendesha: {0}. Vifaa vilivyoongezwa nazo: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} imesimama baada ya kushindwa mara tano.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} imebadilika tangu uliporuhusu.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} haikuweza kuanza.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Vifaa vilivyoongezwa: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Imesainiwa na {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Haijasainiwa.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Mipangilio yake huonekana hapa inapoendesha.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Haitangazi mipangilio yoyote.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge haikuweza kusoma mipangilio yake: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Ilikatishwa baada ya dakika moja bila jibu</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Faili yake ilibadilika ilipokuwa ikiendesha</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Imeongezwa na {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Mipangilio ya {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Chagua</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Bonyeza kidhibiti…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Hakijachaguliwa</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Ongeza programu jalizi, au dondosha faili yake kwenye ukurasa huu. PadForge huonyesha njia yake, mwenye saini wake na SHA-256 yake, kisha hukuuliza kabla haijaendeshwa. Programu jalizi huendeshwa kwa haki zako, si za PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Hucheza tena rekodi ya tatizo kama vifaa vilivyoitengeneza, kwa muda wake.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Inaendesha.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Inaendesha, kwa mkono.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Kinachosogea</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Vijiti na Vichocheo</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Vijiti</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Vichocheo</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Muundo</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Kufagia</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Duara</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Muda wa Kusogea</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Muda wa Kupumzika</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Bonyeza Vitufe</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Bonyeza Vitufe vya Kusogeza</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Programu za Windows hutenda kwa A, B, Nyuma, Anza na vitufe vya mwelekeo vya kidhibiti pepe cha Xbox katika dirisha la mbele, na Guide hufungua Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Zungusha Vitufe vya Mwelekeo</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Kwa sababu hiyohiyo.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Muda wa Kubonyeza</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Vidhibiti</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Kwa Mkono</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Husimamisha mwendo. Weka ingizo lake hapa chini kwa kipanya.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Kijiti cha Kushoto</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Kijiti cha Kulia</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Kichocheo cha Kushoto</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Kichocheo cha Kulia</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Usomaji kwa Sekunde</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Seti ya programu jalizi, na kumbukumbu ya programu jalizi unayochagua</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Seti ya Programu Jalizi</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Hifadhi Seti ya Programu Jalizi…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Programu jalizi ndogo ya C#, na ileile kwa AutoHotkey, Python na PowerShell, kila faili ikiwa na maelezo ya jinsi ya kuijenga au kuiendesha.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Mwongozo wa kila kitenzi, tukio na aina ya mpangilio, hati ya kujenga programu jalizi ya C#, na programu jalizi ileile kwa AutoHotkey, Python na PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Kumbukumbu</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Chagua programu jalizi kuona kumbukumbu yake.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Hakuna kitu kwenye kumbukumbu ya programu jalizi hii bado.</value></data>
@@ -666,7 +697,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod ya mchezo</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Programu nyingine inashikilia jina la bomba {0}. Ifunge programu hiyo.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ilikataa bomba {0}, kwa hiyo programu haziwezi kuunganishwa.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Hakuna programu iliyounganishwa.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Imewashwa. Hakuna programu iliyounganishwa.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Zilizounganishwa: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programu isiyojulikana</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, imesainiwa na {1}</value></data>
@@ -700,7 +731,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Hakuna zaidi za hizi hadi PadForge ianze tena</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge haina zana kama hiyo</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programu ilisoma hali ya zamani</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Hakuna mpangilio kama huo</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Hakuna kitu chenye ID hiyo</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Thamani ilikuwa nje ya kile ambacho mpangilio unakubali</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Hukuruhusu</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Hakuna aliyejibu kwa wakati</value></data>
@@ -717,6 +748,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Onyesha dirisha</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Tuma dirisha kwenye trei ya mfumo</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Punguza dirisha</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Kuza dirisha</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Funga PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Anzisha injini</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Simamisha injini</value></data>
@@ -742,6 +774,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ongeza kifaa {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Weka vidhibiti vya kifaa {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Ondoa kifaa {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Weka kila kidhibiti cha kifaa {0} katika hali ya kupumzika</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Hufanya PadForge iendeshe programu.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Hufungua faili, folda au ukurasa wa wavuti.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Hufanya PadForge itume vitufe au ingizo la kipanya kwa Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Huingiza wasifu kutoka nje ya PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge hukuuliza kabla programu kufanya hivi.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Madirisha ya mazungumzo</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Shikilia vidhibiti vya kifaa {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Achilia vidhibiti vya kifaa {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Weka thamani {0}</value></data>
@@ -750,25 +790,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Badilisha wasifu</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Anzisha au simamisha injini</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Washa au zima vidhibiti pepe</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Hifadhi picha ya hali ya uchunguzi</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Soma kasi ya upigaji kura na viendeshi</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Orodhesha wasifu</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Soma wasifu</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Orodhesha vidhibiti pepe</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Orodhesha vifaa</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Soma kifaa</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Subiri ingizo lako</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Soma ramani za kidhibiti</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Orodhesha makro za kidhibiti</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rekodi tatizo</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Tafuta mipangilio</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Soma mpangilio</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Kuonyesha mahali</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Tafuta mahali kwenye PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Soma mahali kwenye PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Soma unachokiona</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ongeza kifaa chake</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Endesha kifaa chake</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Ondoa kifaa chake</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Shikilia au achilia kidhibiti</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Weka thamani kwa vichochezi vya makro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Badilisha mpangilio</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Bonyeza kitufe</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Unda wasifu</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Badilisha jina la wasifu</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Futa wasifu</value></data>
@@ -779,7 +818,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Badilisha aina ya kidhibiti</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Kabidhi kifaa</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Weka safu za ramani</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Futa safu za ramani</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Ramani kidhibiti kiotomatiki</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Hifadhi makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Futa makro</value></data>
@@ -799,6 +837,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Hutengeneza kidhibiti cha kibodi na kipanya</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Huwasha {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Badilisha “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Bonyeza “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} inataka kukuonyesha {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Kwenye {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Ruhusu {0} ifanye kazi na PadForge kwa kiwango cha {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} inaendesha {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Imeanzishwa na {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Imesainiwa na {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Haijasainiwa.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Kwa kiwango cha Kusoma na juu yake huona kila kitufe kilichobonyezwa kwenye kila kifaa, pamoja na kibodi.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Huuliza mara moja. Unaweza kuiondoa kwenye ukurasa wa Uendeshaji otomatiki.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>programu ya mstari wa amri wa PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Huweka {0} kuwa {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Husikiliza kwenye mtandao, kwa hiyo vifaa vingine vinaweza kufikia kompyuta hii.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Hubadilisha kiendeshi au HidHide, ambavyo programu na michezo mingine hutegemea.</value></data>
@@ -820,6 +869,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Moduli za PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Ruhusu</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Usiruhusu</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Si Sasa</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Onyesha</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Hatua {0} kati ya {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Bofya hapo ili kuendelea.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Fungua {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Fungua Zaidi.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kutoka {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Kutoka {1}, inayojiita “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Kutoka programu inayojiita “{0}”</value></data>
@@ -959,7 +1014,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Sakinisha na uanzishe upya</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Maelezo ya toleo</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Hifadhidata ya vidhibiti</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Sasisha sasa hupakua hifadhidata ya vidhibiti ya jamii (SDL_GameControllerDB) kutoka GitHub na kuhifadhi, kwenye faili ya mipangilio, ramani ambazo toleo hili la PadForge halina. Ramani mpya hutumiwa tu kwa kidhibiti ambacho hakuna kingine kinachokisoma kama gamepad, ambacho hakijakabidhiwa na ambacho hakiko kwenye Hali Ghafi ya Joystick. Kuweka upya huondoa kila ramani iliyopakuliwa.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Sasisha sasa hupakua hifadhidata ya vidhibiti ya jamii (SDL_GameControllerDB) kutoka GitHub na kuhifadhi, kwenye faili ya mipangilio, ramani ambazo toleo hili la PadForge halina. Zinatumika mara moja. Ramani mpya hutumiwa tu kwa kidhibiti ambacho hakuna kingine kinachokisoma kama gamepad, ambacho hakijakabidhiwa na ambacho hakiko kwenye Lazimisha Hali Ghafi ya Joystick (Epuka Ramani ya Gamepad). Kuweka upya huondoa kila ramani iliyopakuliwa. Safu zako mwenyewe, chini ya Zaidi, hubaki.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Sasisha sasa</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Inasasisha…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Inaangalia masasisho…</value></data>
@@ -988,12 +1043,10 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Sasisho la PadForge {0} halikumaliza kusakinishwa. Lisakinishe kutoka Mipangilio ili kujaribu tena.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ilisasishwa hadi {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Imejengewa ndani: ramani {0}, nakala ya jamii ya {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Imejengewa ndani: ramani {0}, nakala ya jamii ya {1}. Ilisasishwa {2}: mpya {3}, zilizobadilika {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Imejengewa ndani: ramani {0}, nakala ya jamii ya {1}. Imepakuliwa {2}: safu mpya {3}, zilizobadilika {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Hifadhidata ya jamii haijabadilika tangu sasisho la mwisho.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Imeshindwa kufikia GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ilikataa upakuaji kwa sababu si hifadhidata ya vidhibiti inayotarajia. Hakuna kilichobadilika.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Ramani mpya hutumiwa kidhibiti chake kitakapounganishwa wakati ujao.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Ramani iliyobadilika hutumiwa PadForge itakapoanza wakati ujao.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Anza ikiwa imepunguzwa</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Anza wakati wa kuingia</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1091,28 +1144,85 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Taarifa za toleo, pamoja na kumbukumbu za matukio ya injini kwa utatuzi.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Weka kumbukumbu ya uchunguzi</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Huandika matukio ya injini mfululizo kwenye diagnostics.log kwenye folda ya kumbukumbu, ambayo Open Log Folder huifungua. Hubaki imewashwa baada ya kuanzisha upya. Faili ikifikia MB 8 huhamia diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Hifadhi picha ya hali</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Huhifadhi matukio ya hivi karibuni ya injini kwenye faili mpya. Hufanya kazi hata kumbukumbu ya uchunguzi ikiwa imezimwa.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Hifadhi Picha ya Hali…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Huchukua programu, Windows, vifaa vyako na mipangilio kama ilivyo sasa, pamoja na matukio ya hivi karibuni ya injini, na kuvifungua ili uvisome kabla ya kuvihifadhi. Hufanya kazi hata kumbukumbu ya uchunguzi ikiwa imezimwa.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Fungua folda ya kumbukumbu</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Rekodi tatizo</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Anza kurekodi</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Acha kurekodi ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Hurekodi hadi Acha kurekodi, dakika 10 au zip ya MB 20, kisha huchagua zip kwenye Explorer, tayari kuambatishwa kwenye ripoti.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Anza, sababisha tatizo litokee, kisha acha. Faili moja kando ya PadForge ina kila kitu ambacho PadForge ilisoma, ilituma na kuandika kwenye kumbukumbu, pamoja na muhtasari wa kilichoharibika. Kila kitufe kilichobonyezwa kwenye kila kifaa wakati wa kurekodi kiko kwenye faili, pamoja na kibodi na panya. Majina ya watumiaji, nambari za ufuatiliaji, anwani na majina yaliyoandikwa hubadilishwa kabla ya chochote kuandikwa.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Hurekodi hadi Acha kurekodi, dakika 30 au zip ya 20 MB, kisha hufungua rekodi ili uisome kabla ya kuihifadhi.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Anza, sababisha tatizo litokee, kisha acha. Kisha soma kilichomo, sehemu kwa sehemu, na uihifadhi unapopenda. Kila kitufe kilichobonyezwa kwenye kila kifaa wakati wa kurekodi kiko ndani yake, pamoja na kibodi na panya. Majina ya watumiaji, nambari za ufuatiliaji, anwani na majina yaliyoandikwa hubadilishwa kabla ya chochote kuandikwa.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Inaandika muhtasari…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Imehifadhiwa {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Kurekodi hakukuanza. Ukaguzi uligundua thamani ya faragha ya PC hii ambayo isingezuiwa kutoka kwenye faili.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Kurekodi hakukuanza. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Rekodi ya mwisho bado inakamilishwa.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Weka Sekunde 60 za Mwisho imezimwa, kwa hiyo hakuna cha kuhifadhi.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Imekamilisha rekodi ambayo PadForge haikuisimamisha: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Rekodi ambayo PadForge haikuisimamisha inakusubiri uisome kwenye Mwanzo: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Weka Sekunde 60 za Mwisho</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Injini ikiendesha, huweka kwenye kumbukumbu dakika ya mwisho ya kile ambacho rekodi hubeba, kwa tatizo linalokuja mara moja jioni. Hifadhi Sekunde 60 za Mwisho huiandika kama faili.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Injini ikiendesha, huweka kwenye kumbukumbu dakika ya mwisho ya kile ambacho rekodi hubeba, kwa tatizo linalokuja mara moja jioni. Hifadhi Sekunde 60 za Mwisho huifungua ili uisome kabla ya kuihifadhi.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Hifadhi Sekunde 60 za Mwisho</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Andika Herufi na Namba Zilizoandikwa kama Kitufe Kimoja</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Rekodi huandika vitufe vya herufi na namba ambavyo hakuna ramani wala makro inayovisoma kama kitufe kimoja, kila mbonyezo kwa wakati wake. Kila kitufe kingine, na kila kitufe ambacho ramani au makro husoma, huandikwa kama kilivyobonyezwa.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Weka Sekunde 60 za Mwisho, Andika Herufi na Namba Zilizoandikwa kama Kitufe Kimoja</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Cha kurekodi, sekunde 60 za mwisho, herufi zilizoandikwa</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Hifadhi Picha ya Hali</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, vifaa vyako na mipangilio kama ilivyo sasa, kupitia ukaguzi uleule.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log kando ya PadForge.exe, ambayo unaweza kuisoma hapo.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Cha Kurekodi</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Vyote vimewashwa. Sehemu iliyozimwa huachwa nje ya rekodi inayofuata, na faili husema ni sehemu zipi ina.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Kwa tatizo linalokuja mara moja jioni.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Rekodi inakusubiri uisome kwenye Mwanzo.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Muhtasari</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Mipangilio na Vifaa</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Ingizo</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Towe</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Mrejesho</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Muda</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Dirisha na Hitilafu</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Shughuli</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Mistari ya Uchunguzi</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Soma Rekodi Yako</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} hadi {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Picha ya hali ya saa {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>dakika 1</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>dakika {0}</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>sekunde 1</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>sekunde {0}</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Imesimamishwa na wewe.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Imesimama yenyewe baada ya {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Imesimama yenyewe kwa {0} ndani ya zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Imesimamishwa na makro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Imesimamishwa na programu au --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Imesimamishwa na msaidizi aliyeianzisha.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Imesimama PadForge ilipofungwa.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Sekunde 60 za mwisho, zilizohifadhiwa kwenye kumbukumbu.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Soma unachokwenda kushiriki. Zima sehemu ili kuiacha nje, kisha hifadhi. Hakuna kinachoondoka kwenye kompyuta hii isipokuwa uchapishe.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, kama itakavyoshirikiwa</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Onyesha {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>imeachwa nje</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>haikurekodiwa</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} kama maandishi, {1} kwenye zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} kama maandishi, {1} kwenye zip unayoshiriki. Rekodi husimama kwa {2} kwenye zip au baada ya {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Ukaguzi wa usafishaji: PadForge ilibadilisha {0} kati ya {1}. Hakuna majina, namba za ufuatiliaji wala anwani za kompyuta hii zilizo kwenye sehemu unazobaki nazo.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>thamani {0}</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>thamani 1</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>aina {0} za faragha</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>aina 1 ya faragha</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Ukaguzi wa usafishaji: thamani {0} za kompyuta hii bado ziko kwenye sehemu unazobaki nazo. Zima sehemu hizo au futa rekodi. Hifadhi itabaki imezimwa hadi hapo.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Ukaguzi wa usafishaji: thamani moja ya kompyuta hii bado iko kwenye sehemu unazobaki nazo. Zima sehemu hizo au futa rekodi. Hifadhi itabaki imezimwa hadi hapo.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Hakuna kilichotokea cha sehemu hii wakati wa kurekodi.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Futa</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Nakili Muhtasari</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Imenakiliwa</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Hifadhi…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Hifadhi Rekodi</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Faili za zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Haikuhifadhiwa. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Huhifadhiwa kama wewe, kwenye folda yako ya Vipakuliwa mara ya kwanza, kisha mahali ulipohifadhi mwisho, na huonyeshwa kwenye Kichunguzi cha Faili. Rekodi inayosimama wakati hakuna mtu kwenye ukurasa (kikomo chake, makro, programu, zana ya msaidizi au --record stop) husubiri ukaguzi huu kwenye Mwanzo, na hufutwa baada ya siku 7 isipohifadhiwa. Programu huambiwa kwamba inasubiri, kamwe si mahali ilipo.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Rekodi ya tatizo ya {0} inakusubiri uisome.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Kagua</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Weka Alama kwenye Rekodi</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Toleo la programu</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime ya .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Toleo la SDL</value></data>
@@ -2893,31 +3003,64 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Mahali pa Kipanya X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Mahali pa Kipanya Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Unyeti</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Unyeti wa kielekezi kwa kila chanzo. 1.0 hufikia mkengeuko kamili wa kijiti kwa asilimia 10 ya upana wa skrini kutoka katikati. Thamani zaidi ya 1.0 hufikia mkengeuko kamili kwa mwendo mfupi wa kielekezi. Thamani chini ya 1.0 zinahitaji mwendo zaidi.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Unyeti wa kielekezi kwa kila chanzo. 1.0 hufikia mkengeuko kamili wa kijiti kwa asilimia 10 ya upana wa skrini ya kielekezi kutoka katikati yake. Thamani zaidi ya 1.0 hufikia mkengeuko kamili kwa mwendo mfupi wa kielekezi. Thamani chini ya 1.0 zinahitaji mwendo zaidi.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Mwendo wa Kipanya X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Mwendo wa Kipanya Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Mwendo hadi Kufunga Kikamilifu</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Umbali ambao kipanya husogea kutoka katikati hadi kufunga kikamilifu, kwa hesabu ambazo kipanya huripoti. Nambari ya juu huelekeza kwa ulaini zaidi na huhitaji mwendo mkubwa wa mkono.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Umbali ambao kipanya au gurudumu husogea kutoka katikati hadi kufunga kikamilifu, kwa hesabu inazoripoti. Nambari ya juu huelekeza kwa ulaini zaidi na huhitaji mwendo mkubwa wa mkono.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>DPI ya kipanya ikiwekwa kwenye paneli ya kifaa chake, mwendo huonyeshwa pia kwa sentimita.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>hesabu</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Kuelekeza Katikati</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Imezimwa huacha usukani pale mkono ulipouacha. Chemchemi huurudisha ndani ya Muda wa Kurudi. Kutoka Telemetria huuvuta nyuma kama matairi ya mbele ya gari yangefanya kwa kasi na mshiko wa mchezo: tulivu gari likiwa limesimama, mzito kasi inapoongezeka, mwepesi matairi yanapoteleza. Mchezo usipotuma telemetria ni chemchemi. Kutoka Nguvu ya Mchezo huruhusu mrejesho wa nguvu wa usukani pepe wenyewe kuugeuza.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Imezimwa huacha usukani pale mkono ulipouacha. Chemchemi huurudisha ndani ya Muda wa Kurudi. Kutoka Telemetria huuvuta nyuma kama usukani wa gari unavyofanya kwa kasi na mshiko wa mchezo: kwa nguvu karibu na katikati na laini zaidi nje, tulivu gari likiwa limesimama, mzito kasi inapoongezeka, mwepesi matairi yanapoteleza. Mchezo usipotuma telemetria huvuta kama kwa 100 km/h kwenye barabara kavu. Kutoka Nguvu ya Mchezo huruhusu mrejesho wa nguvu wa usukani pepe wenyewe kuugeuza.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Imezimwa</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Chemchemi</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Kutoka Telemetria</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Kutoka Nguvu ya Mchezo</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Muda wa Kurudi</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Muda ambao Chemchemi huchukua kurudisha usukani asilimia 95 ya njia. Kutoka Telemetria huchukua muda huu kwa 100 km/h kwenye barabara kavu.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Muda ambao Chemchemi huchukua kurudisha usukani asilimia 95 ya njia. 0 huuweka katikati mara moja. Kutoka Telemetria huchukua muda huu kutoka karibu na katikati kwa 100 km/h kwenye barabara kavu.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Elekeza</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Kila Wakati huruhusu kipanya kuelekeza wakati wote. Kinaposhikiliwa huruhusu kuelekeza tu Ingizo la Kuelekeza likishikiliwa. Badilisha huwasha au kuzima kuelekeza kwa kila mbonyezo wa Ingizo la Kuelekeza. Kipanya kisipoelekeza, usukani hubaki ulipo au huelekea katikati, kwa hiyo kipanya kimoja kinaweza kuelekeza na kutazama pande zote.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Kila Wakati huruhusu kipanya kuelekeza wakati wote. Kinaposhikiliwa na Katikati huruhusu kuelekeza tu Ingizo la Kuelekeza likishikiliwa, kisha hukirudisha katikati, kwa Kuelekeza Katikati pale chanzo kinapokuwa nacho na mara moja pale kisipokuwa nacho. Kinaposhikiliwa na Kubaki huruhusu kuelekeza tu ingizo likishikiliwa na huacha pale lilipoachwa. Badilisha huwasha au kuzima kuelekeza kwa kila mbonyezo wa Ingizo la Kuelekeza. Kwa hiyo kipanya kimoja kinaweza kuelekeza na kutazama pande zote.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Kila Wakati</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Kinaposhikiliwa</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Kinaposhikiliwa na Katikati</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Badilisha</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ingizo la Kuelekeza</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Kitufe kinachoruhusu kipanya kuelekeza, kwenye kifaa kilekile cha mwendo wa kipanya. Kisipochaguliwa, kipanya huelekeza kila wakati.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Kitufe kinachoruhusu kipanya kuelekeza, kwenye kifaa kilekile cha chanzo. Kisipochaguliwa, kipanya huelekeza kila wakati.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ulainishaji</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Hulainisha kipanya kinachoripoti bila usawa. Usukani hubaki nyuma ya mkono kwa takriban muda huu. 0 ni imezimwa.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Hulainisha kipanya kinachoripoti bila usawa. Kijiti hubaki nyuma ya mkono kwa takriban muda huu. 0 ni imezimwa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kufunga Kasi Inapopanda</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Telemetria ya Michezo ikiwashwa, ni kiasi gani cha kufunga kinabaki kwa 200 km/h. Kwa 100% kufunga kote kupo kwa kila kasi.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Mwendo wa Gurudumu</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Mwendo wa Gurudumu la Pembeni</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Kasi ambayo kipanya husogea. Huachilia mkono ukisimama.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Mahali kielekezi kilipo kwenye skrini yake, kutoka katikati yake au kutoka kilipokuwa uelekezaji ulipoanza.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Umbali ambao kipanya kimesogea, ukishikiliwa mahali mkono unapouacha, kama usukani.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Noti za kusogeza zikishikiliwa kama nafasi, kwa usahihi kamili kwenye gurudumu linalosogeza kwa ulaini.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Noti za gurudumu la pembeni zikishikiliwa kama nafasi, kwa usahihi kamili kwenye gurudumu linalosogeza kwa ulaini.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Msukumo kwa kila noti, kurudi kupumzika mara moja.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Kinaposhikiliwa na Kubaki</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Unyeti</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Kiasi cha kijiti ambacho kasi hutoa. Kwa 1.00 kijiti hufikia mkengeuko kamili kwa hesabu 16,000 kwa sekunde, kwa kila kiwango cha kuuliza na cha ripoti cha kipanya.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Rudi Katikati</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Kipanya kikipunguza kasi au kusimama, kijiti hurudi si haraka kuliko hii. 0 huruhusu kirudi pamoja na kipanya.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Anza Pale Uelekezaji Ulipoanza</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Kukiwa na Ingizo la Kuelekeza, kijiti hupima kutoka kielekezi kilipokuwa uelekezaji ulipoanza, kama kijiti kwenye skrini ya simu kinavyoanzia kidole kinapotua. Ikiwa imezimwa, hupima kutoka katikati ya skrini ya kielekezi.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Mhimili huu husogea kwa kulinganisha</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Kwa mpira wa kufuatilia au kizungushio kinachoripoti umbali kilichozungushwa. Ikiwa imewashwa, mhimili hushikilia nafasi kama Mwendo wa Kipanya inavyofanya na huchukua mipangilio ya mwendo. Windows haisemi ni mihimili ipi husogea hivi.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, sm {1}</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Hakiki</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Huonyesha jinsi familia hii inavyofuata kipanya chako. Hakuna kinachoramaniwa hadi uichague.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Inahakiki. Sogeza kipanya chako.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Imeshikiliwa: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Sasa: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% kulia</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% kushoto</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% juu</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% chini</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>katikati</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Husogea {0} ikishikiliwa.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI ya Kipanya</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Hesabu ambazo kipanya hiki huripoti kwa kila inchi inayosogea, kama programu ya mtengenezaji wake inavyoiweka.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI ikiwekwa, Mwendo wa Kipanya huonyesha pia mwendo wake kwa sentimita. 0 inamaanisha haijawekwa.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Kielekezi cha IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Kielekezi cha IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Mwangaza wa IR</value></data>
@@ -4597,6 +4740,7 @@ Nakala ya toleo la awali iko kwenye folda hii: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Viashiria vya skrini ambavyo PadForge huonyesha unapocheza. Kuzima kimoja hakubadilishi tabia kamwe, ila tu kama kinaonyeshwa au la.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Dirisha la Tabaka la Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Overlay ya Kubadilisha Wasifu</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Vidhibiti Vimewashwa au Kuzimwa</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Arifa ya Kifaa Kutenganishwa</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Arifa ya Kifaa Kuunganishwa</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Onyesha pete au gridi kwenye skrini wakati menyu ya mviringo au ya mguso inatumika. Menyu bado hutekelezwa ikiwa overlay imezimwa.</value></data>
@@ -5250,6 +5394,8 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Imezimwa</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stopwatch</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Rangi ya Lightbar</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Vifaa Visivyounganishwa</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Vyote vimeunganishwa</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>imezimwa</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>kupitia Logitech Gaming Software</value></data>
@@ -5292,6 +5438,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Skrini huonyesha picha unayochagua, kwa ukubwa wake. Picha kubwa kuliko skrini huonyesha dirisha lenye ukubwa wa skrini, ambalo makro ya Sogeza Picha ya Skrini ya Kibodi huliendesha. Kwenye S.T.R.I.K.E. 7, kidole kinachoburutwa kwenye skrini pia huisogeza.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Skrini huonyesha stopwatch, ambayo makro ya Stopwatch huanza, husitisha na kuweka upya. Kila skrini huonyesha stopwatch ile ile.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Skrini huonyesha rangi ya lightbar ya DualShock 4 au DualSense iliyo kwenye nafasi ya chini kabisa ambayo skrini hii inalisha, au kwenye nafasi ya chini kabisa ya zote iwapo haililishi nafasi yoyote. Skrini ya monochrome huonyesha mwangaza wake kama muundo wa nukta. Hadi rangi ifike kwenye lightbar, PadForge haonyeshi chochote.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Skrini huorodhesha vifaa vilivyoramaniwa ambavyo havijaunganishwa, kwa majina ambayo ukurasa wa Vifaa huonyesha, na husema Vyote vimeunganishwa pale hakuna kinachokosekana.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Picha (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Faili Zote (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Sogeza</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Sogeza X</value></data>
@@ -5488,6 +5635,7 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Kuendesha (Si 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria ya Michezo</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Thamani ya Hati</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Muunganisho wa Kifaa</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Kasi (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% ya Juu Zaidi)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gia (-1 Kurudi Nyuma, 0 Neutral)</value></data>
@@ -5649,4 +5797,231 @@ Ungependa PadForge iviondoe sasa? Hii inahitaji ruhusa za msimamizi na inaweza k
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Rekodi ya Tatizo</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Anza au Acha Kurekodi</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Weka Alama kwenye Rekodi</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Kifuniko huorodhesha vifaa vilivyoramaniwa ambavyo havijaunganishwa, kwa majina ambayo ukurasa wa Vifaa huonyesha, na husema Vyote vimeunganishwa pale hakuna kinachokosekana.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Imezimwa. Hakuna programu inayoweza kufikia PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} na {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Shughuli ya PadForge: miito {0}, ya zamani kwanza. Miito iliyotangulia: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Shughuli ya PadForge: mwito {0}. Miito iliyotangulia: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Miito ya zamani {0:N0} imeondolewa. Shughuli huweka {1:N0} mipya zaidi.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Mwito wa zamani {0:N0} umeondolewa. Shughuli huweka {1:N0} mipya zaidi.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Hamisha…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Hamisha Shughuli</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Faili ya maandishi</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Fungua</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Sasisha</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Zaidi kwa {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Hifadhi Ujuzi kama ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Fungua Faili Yake ya Mipangilio</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Imehifadhiwa. Katika {0}, ongeza {1} chini ya {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} haina faili ya mipangilio bado. Ongeza huitengeneza.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge haipati programu ya msaidizi kwenye kompyuta hii ambayo mtengenezaji wake ameandika usanidi wake kwenye Windows. Copy Settings chini ya Zaidi hufanya kazi kwa nyingine yoyote.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge haikuweza kukagua programu za wasaidizi: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Haijaongezwa.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Imeongezwa.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Imeongezwa. Imeunganishwa sasa.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Imeongezwa. Haijaunganishwa tangu hapo. Msaidizi aliyekuwa wazi huona PadForge baada ya kufungwa na kufunguliwa tena.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Imeongezwa kwa PadForge nyingine. Sasisha huielekeza kwa hii.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Imeongezwa. Ujuzi wake wa PadForge ni wa zamani kuliko PadForge hii.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Imeongezwa, bila ujuzi wake wa PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Imeongezwa. Ujuzi wake wa PadForge unatoka kwa PadForge mpya zaidi.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Hupokea ujuzi kama upakiaji tu.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Wasaidizi walioongezwa hufikia PadForge Uendeshaji otomatiki ukiwashwa.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Inaongeza…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Inaondoa…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Inasasisha…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Haikukamilika: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Imenakiliwa.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Haikunakiliwa: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programu Zilizoruhusiwa</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Programu inayotaka Kusoma au zaidi huuliza mara moja, inapounganisha mara ya kwanza, na hupata kiwango inachoomba, hadi kiwango kilicho juu. Msaidizi unayemwongeza hapo juu huruhusiwa kwa hilo.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Imeunganishwa sasa.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Ilitumika mwisho {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Haijatumika bado.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Zilizounganishwa: {0}. Bofya kufungua Uendeshaji otomatiki.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Kwenye kompyuta hii: {0}. Kutoka wavuti: {1}. Bofya kufungua Uendeshaji otomatiki.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Zilizounganishwa kutoka wavuti: {0}. Bofya kufungua Uendeshaji otomatiki.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Ramani ya SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick. SDL haina ramani yake.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge huisoma ghafi, kwa hiyo ramani ya SDL haitumiki.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, iliyopangwa kama gamepad na safu yako.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL husoma vifaa injini inapoendesha.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Nakala ya jamii iliyojengewa ndani, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Imepakuliwa {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Faili ya PadForge yenyewe</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Yako, imeongezwa {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Kigeu cha SDL_GAMECONTROLLERCONFIG, ambacho SDL huweka juu ya safu yoyote unayoongeza</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Nakili Ramani ya SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Huweka ramani ya kifaa kwenye ubao wa kunakili kama safu ya hifadhidata ya jamii, chini ya ID ya kifaa ikiwa na checksum na toleo vimewekwa sifuri.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Bandika Ramani ya SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Huchukua safu ya kifaa hiki, huikagua, huiweka kama yako na kuitumia mara moja.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Tafuta Ramani…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Hutafuta kwa jina kila safu ambayo PadForge inabeba na kutumia uliyochagua kwa kifaa hiki, kwa nakala yenye ID tofauti.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Kisia Mpangilio</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Hukisia mpangilio wa gamepad kutoka kwa mihimili, vitufe na vitufe vya mwelekeo vya kifaa, kwa kifaa ambacho hakuna hifadhidata inakijua. Kikague kwenye Jaribu Ingizo.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Ondoa Yangu</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Ondoa Yangu hurudisha safu na safu za vidhibiti za awali.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Ramani Tena</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Hutengeneza tena safu za kifaa kwenye kila kidhibiti kilichopo kutoka mpangilio wa SDL, kama kukikabidhi kunavyofanya.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Ukurasa wa Hifadhidata ya Jamii</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Safu, na inapotofautiana na {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Safu</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kidhibiti</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Safu ya {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Ingizo lake sasa</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Safu ya SDL inasema</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>haimo kwenye safu ya SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, hutofautiana</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Haitumiwi na PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Safu</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Imenakiliwa.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Imenakiliwa. Umbo la SDL haliwezi kubeba {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>mikunjo</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>kanda zilizokufa</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>matokeo ya kibodi na kipanya</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, vibadilishaji na vitendo vingine</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} na {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Hakuna cha kunakili: SDL haina ramani ya kifaa hiki, na hakiko kwenye kidhibiti chochote.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Programu nyingine inatumia ubao wa kunakili. Hakuna kilichonakiliwa.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Safu yako imeondolewa. Kifaa husomwa kama ilivyokuwa kabla yake.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Imeramaniwa tena kutoka mpangilio wa SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Inatumika sasa. Safu ni yako na inashinda kwa kifaa hiki.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Imehifadhiwa kama yako. Inatumika injini ikiendesha na kifaa kikiwa kimeunganishwa.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Imehifadhiwa kama yako, lakini kigeu cha SDL_GAMECONTROLLERCONFIG kina safu ya kifaa hiki, ambayo SDL huiweka juu ya yako.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL haikukubali safu. Hakuna kilichobadilika kwa kifaa hiki.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Bandika Ramani ya SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Bandika Ramani ya SDL kwa {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Tafuta Ramani kwa {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Kisia Mpangilio kwa {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Ongeza Safu Kutoka Faili au Ubao wa Kunakili</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Bandika</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Fungua Faili…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Faili za ramani (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Faili ni zaidi ya 4 MB. Faili nzima ya jamii ni takriban 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Tafuta kwa jina, ID au VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Safu ambazo PadForge inabeba</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Hakuna safu inayolingana.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Safu iliyochaguliwa hutumika kwa {0} chini ya ID yake yenyewe, kupitia ukaguzi uleule na chaguo lilelile la Bandika.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Safu ya ramani ya SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Safu ya kifaa hiki.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Mpangilio uliokisiwa.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, sehemu {0}, ID yake inalingana na kifaa hiki.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, sehemu {0}, kutoka kwa muuzaji na bidhaa ileile kwenye basi au toleo lingine. Imehifadhiwa chini ya ID ya kifaa hiki chenyewe.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, sehemu {0}, safu ya kifaa kingine. Imehifadhiwa chini ya ID ya kifaa hiki chenyewe.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Sehemu {0}. SDL haisomi kifaa hiki, kwa hiyo PadForge hupanga ingizo lake kwa safu.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Sehemu {0}, kutoka kwa mihimili, vitufe na vitufe vya mwelekeo vya kifaa. Kikague kwenye Jaribu Ingizo, kisha kihifadhi au kibadilishe hapa.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, sehemu {0}, ID yake inalingana na kifaa hiki.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, sehemu {0}, kutoka kwa muuzaji na bidhaa ileile kwenye basi au toleo lingine. Imehifadhiwa chini ya ID ya kifaa hiki chenyewe.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, sehemu {0}, safu ya kifaa kingine. Imehifadhiwa chini ya ID ya kifaa hiki chenyewe.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Sehemu {0}. SDL haisomi kifaa hiki, kwa hiyo PadForge hupanga ingizo lake kwa safu.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Sehemu {0}, kutoka kwa mihimili, vitufe na vitufe vya mwelekeo vya kifaa. Kikague kwenye Jaribu Ingizo, kisha kihifadhi au kibadilishe hapa.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Hii hubadilisha jinsi {0} inavyosomwa. Safu zake katika {1} huramaniwa tena kutoka mpangilio mpya.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Hii hubadilisha jinsi {0} inavyosomwa. Hakiko kwenye kidhibiti chochote, kwa hiyo hakuna safu inayobadilika.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Njia za mkato za wasifu zinazosoma {0} huweka ingizo walizowekewa.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Safu huhifadhiwa kama yako kwenye PadForge.xml na hushinda kila chanzo kingine kwa kifaa hiki. Ondoa Yangu hurudisha safu ya zamani na safu za zamani.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Safu huhifadhiwa kama zako kwenye PadForge.xml na hushinda kwa vifaa vyake juu ya kila chanzo kingine. Safisha, chini ya Zaidi ya safu ya Hifadhidata ya vidhibiti, huziondoa.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Safu {0} za Windows. {1} za mifumo mingine zimeachwa.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Safu {0} ya Windows. {1} za mifumo mingine zimeachwa.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Zilizokataliwa: {0}. Ya kwanza: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Bandika safu, au maandishi ya faili ya gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Maandishi si safu ya hifadhidata ya vidhibiti ya SDL: ID ya tarakimu 32 za hex, jina, kisha sehemu kama a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Safu ni za mifumo mingine. PadForge husoma safu za Windows, au zisizo za mfumo wowote maalum.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID ya safu si ya kifaa. Inahitaji tarakimu 32 za hex.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Jina la safu ni tupu, lina zaidi ya herufi 128, au lina herufi ambayo SDL husoma kama sehemu.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Safu ina kidokezo au sehemu ya Android, ambayo PadForge haikubali.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Safu ina sehemu ambayo SDL haijui.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Uhusiano si katika umbo la SDL, kama b3, a2, +a2, a2~ au h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Safu inatoa sehemu moja mara mbili.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Safu ina zaidi ya herufi 1,024.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Safu haihusishi kidhibiti chochote.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Safu Zako</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Safu Zako</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Safu unazoongeza hapa, au kubandika kwenye kadi ya Ramani ya SDL ya kifaa, hushinda kwa vifaa vyake juu ya kila chanzo kingine na hubaki baada ya kuweka upya.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ongeza Safu Kutoka Faili au Ubao wa Kunakili…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Safu {0}, zako juu ya kila chanzo kingine kwa vifaa vyake.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>Safu {0}, yako juu ya kila chanzo kingine kwa kifaa chake.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Hakuna bado.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Zinatumika mara moja.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Washa</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Wasaidizi kwenye Wavuti</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Handaki</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Hakuna</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Anwani Ninayobandika</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Inaanza, kwa haki zako.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Inaendesha, kwa haki zako. Anwani yake hubaki ileile kila inapoanza.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Inaendesha, kwa haki zako. Handaki la haraka hupata anwani mpya kila linapoanza, kwa hiyo msaidizi angeongezwa tena.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Imesimama.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Imesimama. Maneno yake ya mwisho: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Haikuweza kuanzishwa.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Haiko kwenye kompyuta hii tena.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Hakuna programu ya handaki iliyopatikana kwenye kompyuta hii. PadForge hufanya kazi na cloudflared, devtunnel, ngrok na Tailscale Funnel, au na anwani ya handaki lako mwenyewe.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Chagua handaki ili kuipa PadForge anwani ya umma.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Pia kwenye kompyuta hii: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ambayo anwani yake hubaki ileile</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, ambayo handaki zake za haraka hupata anwani mpya kila mara</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Endesha handaki lako mwenyewe hadi http://127.0.0.1:{0} na ubandike anwani yake ya https. Handaki lenye jina la Cloudflare, handaki la dev linalodumu, Tailscale Funnel na kikoa cha ngrok chenyewe huweka anwani yao.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Bandika anwani ya https isiyo na njia isipokuwa /mcp, kama handaki lako linavyoitoa.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Inaanzisha kisaidizi cha wavuti cha PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Kisaidizi cha wavuti cha PadForge kimesimama ({0}). Zima kisha washa Reach PadForge From the Web ili kukianzisha tena.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Anwani</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Bado hakuna anwani ya umma.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ongeza kwa Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Imenakiliwa.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Kubali Msaidizi Mpya wa Wavuti</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Anza Kukubali</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Acha Kukubali</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Inakubali hadi {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Haikubali. Anza Kukubali huifungua kwa dakika tano.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Ongeza anwani kwenye msaidizi na uingie. Kila kuingia huonyesha msimbo wake wa tarakimu sita kwenye ukurasa wake wa kuingia na kwenye kadi ya maswali ya PadForge. Ruhusu tu misimbo miwili ikilingana. Wakati mwingine kuingia hukataliwa na hakuna kinachokuuliza.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Walioruhusiwa kwenye Wavuti</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Hakuna bado.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Kuingia kwake kulirudi kwa {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Hujiita {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Iliruhusiwa {0}, ilitumika mwisho {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Iliruhusiwa {0}, haijatumika bado.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Batilisha</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel yake yenyewe huendesha PadForge moja kwa moja, bila anwani wala kuingia hapa. Nakili amri kwenye usanidi wa handaki hilo.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Nakili Amri</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge haipakui programu ya handaki na haihifadhi ufunguo wa kampuni nyingine. Msaidizi wa wavuti hufanya kazi kwa kiwango kilicho juu.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Ruhusu {0} ifanye kazi na PadForge kutoka wavuti?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Kuingia kwake kunarudi kwa {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Hujiita {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Ruhusu tu ikiwa ukurasa wake wa kuingia unaonyesha msimbo huu:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Msimbo wake wa tarakimu sita unaonekana kwenye kadi ya maswali ya PadForge. Ruhusu tu ikiwa ukurasa wake wa kuingia unaonyesha msimbo uleule.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Hufanya kazi kwa kiwango cha {0}, kupitia {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Kuingia kwake kunarudi kwenye kompyuta hii, na programu yoyote hapa inaweza kudai anwani hiyo.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Ingia kwenye PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} inaomba kufanya kazi na PadForge kwenye kompyuta yako.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Hujiita {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Kwenye kompyuta yako, kadi ya maswali ya PadForge inauliza kuhusu kuingia huku. Ruhusu hapo tu ikiwa kadi inaonyesha msimbo huu:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Ukurasa huu huendelea wenyewe ukishajibu kwenye kompyuta.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Kuingia huku kunarudi kwenye programu kwenye kompyuta yako, na programu yoyote huko inaweza kudai anwani hiyo.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge haikubali msaidizi mpya wa wavuti sasa. Kwenye kompyuta yako, fungua PadForge, nenda kwenye Vipengele vya ziada, Uendeshaji otomatiki, na chini ya Wasaidizi kwenye Wavuti bonyeza Anza Kukubali. Kisha ingia tena.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Kuingia huku hakuwezi kuendelea. Ongeza anwani ya PadForge kwenye msaidizi tena na uingie.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Kuingia huku kumeisha. Ingia tena kutoka kwa msaidizi.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows haikukianzisha</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>kilitoka kwa msimbo {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Uendeshaji otomatiki umezimwa, kwa hiyo hakuna msaidizi wa wavuti anayefikia PadForge. Kisaidizi cha wavuti huanza Uendeshaji otomatiki ukiwashwa.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Inakagua…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Haijasakinishwa.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Imesakinishwa na ya sasa. Hati huanza na {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Imesakinishwa kwa {0} na ya sasa. Hati huanza na {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Imesakinishwa. PadForge hii ina nakala mpya zaidi.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Imesakinishwa kwa {0}. PadForge hii ina nakala mpya zaidi.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Inasakinisha…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge haikuweza kuikagua: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Sakinisha huweka maktaba ya PadForge mahali ambapo lugha hiyo huipata. Hati inayoipakia husoma vifaa na kuendesha ramani kwa kiwango kilicho juu.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Hifadhi maktaba popote</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Nakala Zilizosakinishwa</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Ondoa Zote</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Imeondolewa.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID ya Hati</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID yake ya hati</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Hati hutaja vidhibiti vyake {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Hati hutaja vitufe vyake KeyA, KeySpace, KeyLeftShift na vinginevyo, na kila kitufe kwa msimbo wake, Vk0 hadi Vk255.</value></data>
 </root>

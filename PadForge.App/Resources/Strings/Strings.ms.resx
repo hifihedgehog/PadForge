@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} terputus. {1} tiada peranti lagi.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} bersambung</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} bersambung, bateri {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} peranti terputus</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} peranti bersambung</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} peranti terputus: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} peranti bersambung: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} terus terputus</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Sambung Semula Automatik, port, identiti penggandingan, sambung melalui alamat</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, pengganti DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Port, Kelajuan Penuh, Format Tersuai</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Kemahiran</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Pembantu lain, pembantu di web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Lihat sekeliling dengan penjejak kepala atau set kepala VR sementara kedua-dua ibu jari kekal pada butang.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Petakan kelajuan, pedal dan gear yang dihantar oleh permainan pemanduan, seperti mana-mana input.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Hantar gerakan pengawal kepada emulator yang membaca sumber gerakan DSU.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Cincin, grid atau bar sesuatu menu semasa ia terbuka.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Nama lapisan apabila lapisan shift dihidupkan, selama masa yang ditetapkan oleh lapisan itu.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Nama profil apabila profil bertukar.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Sama ada pengawal maya baru sahaja dihidupkan atau dimatikan, daripada pintasan atau makro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Nama peranti yang dipetakan apabila ia terputus.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Nama peranti yang dipetakan apabila ia bersambung.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Salin Alamat</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Program boleh menukar profil dan melepaskannya, memulakan dan menghentikan enjin, menghidupkan dan mematikan pengawal maya, menunjukkan dan menyembunyikan tetingkap, menutup PadForge, menyimpan syot kilat diagnostik dan bertanya apa yang sedang berjalan.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Semua pada tahap Arahan, dan program boleh melihat peranti, pengawal maya, pemetaan, profil dan tetapan, mengikuti input setiap peranti ketika ia berlaku, dan menunjukkan sesuatu tempat dalam PadForge kepada anda. Program pada tahap Baca melihat setiap kekunci yang ditekan pada setiap peranti, termasuk kekunci yang ditaip ke dalam tetingkap yang dijalankan sebagai pentadbir.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Semua pada tahap Baca, dan program boleh menambah peranti sendiri dan memandunya, menahan kawalan pada mana-mana peranti dan menyerahkan nilai bernama kepada pencetus makro.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Semua pada tahap Hantar Input, dan program boleh mengubah apa yang anda boleh ubah pada halaman.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Semua pada tahap Hantar Input, dan program boleh mengubah apa yang anda boleh ubah pada halaman. Sesetengah perubahan sentiasa bertanya anda dahulu pada kad soalan PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Pembantu</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Tampal ini ke dalam tetapan MCP pembantu. Pembantu itu kemudian berfungsi dengan PadForge pada tahap di atas.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Salin sebagai TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Pembantu yang Membaca TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Tambah memasukkan PadForge, bersama kemahirannya, ke dalam pembantu itu. Ia kemudian berfungsi pada tahap di atas, dan perkataannya dipaparkan di sebelah apa yang ditunjukkannya, di bawah namanya.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skrip</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Pustaka Skrip</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Simpan Pustaka…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Satu fail untuk AutoHotkey v2, Python atau PowerShell. Skrip yang memuatkannya membaca peranti dan memandu pemetaan pada tahap di atas.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Satu fail untuk AutoHotkey v2, Python atau PowerShell, ditulis di tempat yang anda pilih.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Menunggu Anda</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktiviti</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Belum ada program yang membuat panggilan. Setiap panggilan disenaraikan di sini bersama hasilnya.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Buat Asal</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Kemahiran untuk Pembantu</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Simpan Kemahiran…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge tidak dapat menyimpannya: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Semasa program pada tahap Baca atau lebih tinggi bersambung, ia melihat apa yang ditekan pada setiap peranti, termasuk papan kekunci.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pemalam</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Jalankan Pemalam</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Tiada pemalam berjalan.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Pemalam berjalan dengan hak anda, bukan hak PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Terbina Dalam</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Pengawal Ujian</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Pengawal yang bergerak sendiri, satu kawalan pada satu masa, supaya pemetaan boleh dicuba tanpa perkakasan di tangan.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Kelajuan</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Perlahan</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Biasa</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Laju</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Paling Laju</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Main Semula</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Memainkan semula rakaman masalah sebagai peranti yang menghasilkannya, dengan masa yang sama. Peranti itu ialah peranti baharu pada PC ini, dipetakan seperti yang anda atau profil petakan.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Rakaman</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Rakaman masalah|*.zip;*.log|Semua fail|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge tidak dapat memainkan {0}. Ia bukan rakaman masalah, atau ia tidak mengandungi input peranti.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Pemalam Anda</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Pemalam ialah program yang menambah peranti pada PadForge. PadForge memulakannya dengan hak biasa anda setiap kali enjin berjalan.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Tambah Pemalam…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Program dan skrip|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Semua fail|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Luluskan…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Luluskan dan Mulakan Semula…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Bermula bersama enjin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Menyemak fail sebelum bermula</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Keluar dengan kod {0}. Bermula semula dalam {1} s.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} sudah ada dalam senarai.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge menjalankan sehingga 16 pemalam. Buang satu untuk menambah yang lain.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Pemalam berjalan: {0}. Peranti yang ditambahnya: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} berhenti selepas lima kegagalan.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} berubah sejak anda meluluskannya.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} tidak dapat dimulakan.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ditambah {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Ditandatangani oleh {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Tidak ditandatangani.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Tetapannya dipaparkan di sini semasa ia berjalan.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Ia tidak mengisytiharkan sebarang tetapan.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge tidak dapat membaca tetapannya: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Ditamatkan selepas seminit tanpa sebarang jawapan</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Failnya berubah semasa ia berjalan</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Ditambah oleh {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Tetapan {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Pilih</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Tekan satu kawalan…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Belum dipilih</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Tambah pemalam, atau lepaskan failnya pada halaman ini. PadForge menunjukkan lokasi, penandatangan dan SHA-256 pemalam itu, dan bertanya kepada anda sebelum ia dijalankan. Pemalam berjalan dengan hak anda, bukan hak PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Memainkan semula rakaman masalah sebagai peranti yang menghasilkannya, dengan masa yang sama.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Berjalan.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Berjalan, dengan tangan.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Apa yang Bergerak</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Kayu Bedik dan Pencetus</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Kayu Bedik</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Pencetus</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Corak</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Sapuan</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Bulatan</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Masa Bergerak</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Masa Rehat</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Tekan Butang</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Tekan Butang Navigasi</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Aplikasi Windows bertindak pada A, B, Kembali, Mula dan D-pad pengawal Xbox maya dalam tetingkap di hadapan, dan Panduan membuka Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Putar D-Pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Atas sebab yang sama.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Masa Tekan</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Pengawal</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Dengan Tangan</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Menghentikan gerakan. Tetapkan inputnya di bawah dengan tetikus.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Kayu Bedik Kiri</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Kayu Bedik Kanan</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Pencetus Kiri</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Pencetus Kanan</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Bacaan Sesaat</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit pemalam, dan log pemalam yang anda pilih</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit Pemalam</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Simpan Kit Pemalam…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Satu pemalam kecil dalam C#, dan pemalam yang sama untuk AutoHotkey, Python dan PowerShell, setiap fail disertakan cara membina atau menjalankannya.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Panduan kepada setiap perintah, peristiwa dan jenis tetapan, skrip binaan untuk pemalam C#, dan pemalam yang sama untuk AutoHotkey, Python dan PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Log</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Pilih pemalam untuk melihat lognya.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Log pemalam ini belum ada apa-apa.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Sebuah mod permainan</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Program lain memegang nama paip {0}. Tutup program itu.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows menolak paip {0}, jadi program tidak dapat bersambung.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tiada program bersambung.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Hidup. Tiada program bersambung.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Bersambung: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program tidak dikenali</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ditandatangani oleh {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Tiada lagi yang seperti ini sehingga PadForge bermula semula</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge tiada alat sedemikian</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program itu membaca keadaan yang lebih lama</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tiada tetapan sedemikian</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Tiada yang mempunyai ID itu</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Nilai itu di luar apa yang diterima tetapan</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Anda tidak membenarkannya</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Tiada siapa menjawab tepat pada masanya</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Tunjukkan tetingkap</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Hantar tetingkap ke dulang sistem</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Kecilkan tetingkap</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Besarkan tetingkap</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Tutup PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Mulakan enjin</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Hentikan enjin</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Tambah peranti {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Tetapkan kawalan peranti {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Buang peranti {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Letakkan setiap kawalan peranti {0} pada keadaan rehat</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Membuat PadForge menjalankan program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Membuka fail, folder atau halaman web.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Membuat PadForge menghantar kekunci atau input tetikus kepada Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Mengimport profil dari luar PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge bertanya kepada anda sebelum program melakukan ini.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialog</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Tahan kawalan peranti {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Lepaskan kawalan peranti {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Tetapkan nilai {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Tukar profil</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Mulakan atau hentikan enjin</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Hidupkan atau matikan pengawal maya</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Simpan syot kilat diagnostik</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Baca kadar pengundian dan pemacu</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Senaraikan profil</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Baca profil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Senaraikan pengawal maya</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Senaraikan peranti</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Baca peranti</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Tunggu input anda</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Baca pemetaan pengawal</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Senaraikan makro pengawal</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Rakam masalah</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Cari tetapan</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Baca tetapan</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Tunjukkan satu tempat kepada anda</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Cari tempat dalam PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Baca satu tempat dalam PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Baca apa yang anda lihat</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Tambah peranti sendiri</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Pandu peranti itu</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Buang peranti itu</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Tahan atau lepaskan kawalan</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Tetapkan nilai untuk pencetus makro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Ubah tetapan</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Tekan satu butang</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Cipta profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Namakan semula profil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Padam profil</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Ubah jenis pengawal</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Umpuk peranti</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Tetapkan baris pemetaan</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Kosongkan baris pemetaan</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Petakan pengawal secara automatik</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Simpan makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Padam makro</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Membuat pengawal papan kekunci dan tetikus</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Menghidupkan {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Ubah “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Tekan “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} mahu menunjukkan {1} kepada anda</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Pada {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Benarkan {0} berfungsi dengan PadForge pada tahap {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} menjalankan {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Dimulakan oleh {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Ditandatangani oleh {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Tidak ditandatangani.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Pada tahap Baca dan ke atas, ia melihat setiap kekunci yang ditekan pada setiap peranti, termasuk papan kekunci.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Ia bertanya sekali. Anda boleh mengalih keluarnya pada halaman Automasi.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>baris perintah PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Menetapkan {0} kepada {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Mendengar pada rangkaian, jadi peranti lain boleh mencapai PC ini.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Mengubah pemacu atau HidHide, yang menjadi tumpuan program dan permainan lain.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Modul PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Benarkan</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Jangan Benarkan</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Bukan Sekarang</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Tunjukkan</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Langkah {0} daripada {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik untuk meneruskan.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Buka {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Buka Lagi.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Daripada {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Daripada {1}, yang menamakan dirinya “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Daripada program yang menamakan dirinya “{0}”</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Pasang dan Mulakan Semula</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Nota Keluaran</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Pangkalan Data Pengawal</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kemas Kini Sekarang memuat turun pangkalan data pengawal komuniti (SDL_GameControllerDB) daripada GitHub dan menyimpan, dalam fail tetapan, pemetaan yang tiada pada versi PadForge ini. Pemetaan baharu hanya digunakan untuk pengawal yang tidak dibaca sebagai pad permainan oleh apa-apa lain, yang tidak diumpukkan dan yang tidak berada dalam Paksa Mod Joystick Mentah. Tetapan semula membuang setiap pemetaan yang dimuat turun.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Kemas Kini Sekarang memuat turun pangkalan data pengawal komuniti (SDL_GameControllerDB) daripada GitHub dan menyimpan, dalam fail tetapan, pemetaan yang tiada pada versi PadForge ini. Ia digunakan dengan segera. Pemetaan baharu hanya digunakan untuk pengawal yang tidak dibaca sebagai pad permainan oleh apa pun yang lain, yang tidak ditetapkan dan yang tidak berada dalam Paksa Mod Joystick Mentah. Set semula mengalih keluar setiap pemetaan yang dimuat turun. Baris anda sendiri, di bawah Lagi, kekal.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Kemas Kini Sekarang</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Mengemas kini…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Menyemak kemas kini…</value></data>
@@ -994,12 +1049,10 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Kemas kini kepada PadForge {0} tidak selesai dipasang. Pasang daripada Tetapan untuk mencuba lagi.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge telah dikemas kini kepada {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Terbina dalam: {0} pemetaan, salinan komuniti pada {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Terbina dalam: {0} pemetaan, salinan komuniti pada {1}. Dikemas kini {2}: baharu {3}, berubah {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Terbina dalam: {0} pemetaan, salinan komuniti pada {1}. Dimuat turun {2}: {3} baris baharu, {4} berubah.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Pangkalan data komuniti tidak berubah sejak kemas kini terakhir.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Tidak dapat mencapai GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge menolak muat turun itu kerana ia bukan pangkalan data pengawal yang dijangkakannya. Tiada apa-apa yang berubah.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Pemetaan baharu digunakan pada kali berikutnya pengawalnya bersambung.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Pemetaan yang berubah digunakan pada kali berikutnya PadForge bermula.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Mulakan Dikecilkan</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Mulakan semasa Log Masuk</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Maklumat versi, serta pengelogan peristiwa enjin untuk penyelesaian masalah.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Simpan Log Diagnostik</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Menulis peristiwa enjin secara berterusan ke diagnostics.log dalam folder log, yang dibuka oleh Buka Folder Log. Kekal didayakan merentasi permulaan semula. Apabila fail mencapai 8 MB, ia bertukar ke diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Simpan Syot Kilat</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Menyimpan peristiwa enjin terkini ke fail baharu. Berfungsi walaupun log diagnostik dimatikan.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Simpan Syot Kilat…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Mengambil aplikasi, Windows, peranti dan tetapan anda seperti sekarang, bersama peristiwa enjin terkini, dan membukanya untuk anda baca sebelum anda menyimpannya. Berfungsi walaupun log diagnostik dimatikan.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Buka Folder Log</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Rakam Masalah</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Mula Merakam</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Henti Merakam ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Merakam sehingga Henti Merakam, 10 minit atau zip 20 MB, kemudian memilih zip dalam Explorer, sedia dilampirkan pada laporan.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Mulakan, jadikan masalah itu berlaku, kemudian hentikan. Satu fail di sebelah PadForge mengandungi semua yang dibaca, dihantar dan dilog PadForge, bersama ringkasan apa yang tidak kena. Setiap kekunci dan butang yang ditekan pada setiap peranti semasa merakam ada dalam fail itu, termasuk papan kekunci dan tetikus. Nama pengguna, nombor siri, alamat dan nama yang ditaip digantikan sebelum apa-apa ditulis.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Merakam sehingga Henti Merakam, 30 minit atau zip 20 MB, kemudian membuka rakaman untuk anda baca sebelum anda menyimpannya.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Mulakan, jadikan masalah itu berlaku, kemudian hentikan. Kemudian baca apa yang dimuatkannya, bahagian demi bahagian, dan simpan di tempat yang anda mahu. Setiap kekunci yang ditekan pada setiap peranti semasa merakam ada di dalamnya, termasuk papan kekunci dan tetikus. Nama pengguna, nombor siri, alamat dan nama yang ditaip digantikan sebelum sesuatu ditulis.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Menulis ringkasan…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Disimpan {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Rakaman tidak bermula. Satu semakan mendapati nilai peribadi PC ini yang tidak akan dikecualikan daripada fail.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Rakaman tidak bermula. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Rakaman terakhir masih sedang disiapkan.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Simpan 60 Saat Terakhir dimatikan, jadi tiada apa-apa untuk disimpan.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Menyiapkan rakaman yang tidak dihentikan PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Rakaman yang tidak dihentikan PadForge menunggu anda membacanya di Laman Utama: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Simpan 60 Saat Terakhir</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Semasa enjin berjalan, menyimpan dalam memori seminit terakhir apa yang dipegang rakaman, untuk masalah yang datang sekali setiap petang. Simpan 60 Saat Terakhir menulisnya sebagai fail.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Semasa enjin berjalan, menyimpan dalam memori seminit terakhir apa yang dipegang rakaman, untuk masalah yang datang sekali setiap petang. Simpan 60 Saat Terakhir membukanya untuk anda baca sebelum anda menyimpannya.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Simpan 60 Saat Terakhir</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Tulis Huruf dan Nombor yang Ditaip sebagai Satu Kekunci</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Rakaman menulis kekunci huruf dan nombor yang tidak dibaca oleh sebarang pemetaan atau makro sebagai satu kekunci, setiap tekanan pada masanya sendiri. Setiap kekunci lain, dan setiap kekunci yang dibaca pemetaan atau makro, ditulis seperti yang ditekan.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Simpan 60 Saat Terakhir, Tulis Huruf dan Nombor yang Ditaip sebagai Satu Kekunci</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Apa yang dirakam, 60 saat terakhir, huruf yang ditaip</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Simpan Syot Kilat</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, peranti dan tetapan anda seperti sekarang, melalui semakan yang sama.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log di sebelah PadForge.exe, yang boleh anda baca di sana.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Apa yang Dirakam</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Semua dihidupkan. Bahagian yang dimatikan ditinggalkan daripada rakaman seterusnya, dan fail menyatakan bahagian yang dimuatkannya.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Untuk masalah yang datang sekali setiap petang.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Rakaman menunggu anda membacanya di Laman Utama.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Ringkasan</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Tetapan dan Peranti</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Input</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Output</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Maklum Balas</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Masa</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Tetingkap dan Ralat</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Aktiviti</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Baris Diagnostik</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Baca Rakaman Anda</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} hingga {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Syot kilat pada {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minit</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minit</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 saat</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} saat</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Dihentikan oleh anda.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Berhenti sendiri pada {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Berhenti sendiri pada {0} dalam zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Dihentikan oleh makro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Dihentikan oleh program atau --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Dihentikan oleh pembantu yang memulakannya.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Dihentikan apabila PadForge ditutup.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>60 saat terakhir, disimpan dalam memori.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Baca apa yang akan anda kongsi. Matikan satu bahagian untuk meninggalkannya, kemudian simpan. Tiada data keluar daripada PC ini melainkan anda menyiarkannya.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, seperti yang akan dikongsi</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Tunjukkan {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>ditinggalkan</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>tidak dirakam</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} sebagai teks, {1} dalam zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} sebagai teks, {1} dalam zip yang anda kongsi. Rakaman berhenti pada {2} dalam zip atau selepas {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Semakan pembersihan: PadForge menggantikan {0} daripada {1}. Tiada nama, nombor siri atau alamat PC ini dalam bahagian yang anda simpan.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} nilai</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 nilai</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} jenis peribadi</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 jenis peribadi</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Semakan pembersihan: {0} nilai milik PC ini masih ada dalam bahagian yang anda simpan. Matikan bahagian itu atau padam rakaman. Simpan kekal dimatikan sehingga itu.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Semakan pembersihan: satu nilai milik PC ini masih ada dalam bahagian yang anda simpan. Matikan bahagian itu atau padam rakaman. Simpan kekal dimatikan sehingga itu.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Tiada apa berlaku dalam bahagian ini semasa merakam.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Padam</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Salin Ringkasan</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Disalin</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Simpan…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Simpan Rakaman</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Fail zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Tidak disimpan. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Disimpan sebagai anda, ke folder Downloads kali pertama, kemudian ke tempat anda menyimpan terakhir, dan ditunjukkan dalam Explorer. Rakaman yang berhenti ketika tiada sesiapa di halaman (hadnya, makro, program, alat pembantu atau --record stop) menunggu semakan ini di Laman Utama, dan dipadam selepas 7 hari melainkan disimpan. Program diberitahu bahawa ia menunggu, tidak pernah di mana.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Rakaman masalah dari {0} menunggu anda membacanya.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Semak</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Tandakan Rakaman</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versi Apl</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Masa Jalan .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versi SDL</value></data>
@@ -2900,31 +3010,64 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Kedudukan Tetikus X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Kedudukan Tetikus Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Kepekaan</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Kepekaan kursor bagi setiap sumber. 1.0 mencapai pesongan kayu bedik penuh pada 10% lebar skrin dari tengah. Nilai di atas 1.0 mencapai pesongan penuh dengan pergerakan kursor yang lebih sedikit. Nilai di bawah 1.0 memerlukan lebih banyak.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Kepekaan kursor bagi setiap sumber. 1.0 mencapai pesongan kayu bedik penuh pada 10% lebar monitor penuding dari tengahnya. Nilai di atas 1.0 mencapai pesongan penuh dengan pergerakan kursor yang lebih sedikit. Nilai di bawah 1.0 memerlukan lebih banyak.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Perjalanan Tetikus X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Perjalanan Tetikus Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Perjalanan ke Kunci Penuh</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Sejauh mana tetikus bergerak dari tengah ke kunci penuh, dalam kiraan yang dilaporkan tetikus. Nombor yang lebih tinggi mengemudi lebih halus dan memerlukan lebih banyak gerakan tangan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Sejauh mana tetikus atau roda bergerak dari tengah ke kunci penuh, dalam kiraan yang dilaporkannya. Nombor yang lebih tinggi mengemudi lebih halus dan memerlukan lebih banyak gerakan tangan.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Dengan DPI tetikus ditetapkan pada panel perantinya, perjalanan juga ditunjukkan dalam sentimeter.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>kiraan</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Pemusatan</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Mati menahan roda stereng di tempat tangan melepaskannya. Spring membawanya kembali sepanjang Masa Kembali. Daripada Telemetri menariknya kembali seperti tayar hadapan kereta pada kelajuan dan cengkaman permainan: diam ketika berhenti, lebih tegas dengan kelajuan, ringan apabila tayar tergelincir. Tanpa permainan yang menghantar telemetri, ia ialah spring. Daripada Daya Permainan membiarkan maklum balas daya roda stereng maya memutarkannya.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Mati menahan roda stereng di tempat tangan melepaskannya. Spring membawanya kembali sepanjang Masa Kembali. Daripada Telemetri menariknya kembali seperti stereng kereta pada kelajuan dan cengkaman permainan: curam berhampiran tengah dan lebih lembut semakin jauh, diam ketika berhenti, lebih tegas dengan kelajuan, ringan apabila tayar tergelincir. Tanpa permainan yang menghantar telemetri, ia menarik seperti pada 100 km/h di jalan kering. Daripada Daya Permainan membiarkan maklum balas daya roda stereng maya memutarkannya.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Mati</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Spring</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Daripada Telemetri</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Daripada Daya Permainan</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Masa Kembali</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Berapa lama Spring membawa roda stereng kembali 95% jaraknya. Daripada Telemetri mengambil masa sebegini pada 100 km/h di jalan kering.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Berapa lama Spring membawa roda stereng kembali 95% jaraknya. 0 memusatkannya dengan segera. Daripada Telemetri mengambil masa sebegini dari hampir tengah pada 100 km/h di jalan kering.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Kemudi</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sentiasa membenarkan tetikus mengemudi pada setiap masa. Semasa Ditahan membenarkannya mengemudi hanya semasa Input Kemudi ditahan. Togol menghidupkan atau mematikan kemudi pada setiap tekanan Input Kemudi. Semasa tetikus tidak mengemudi, roda stereng kekal di tempatnya atau ke tengah, jadi satu tetikus boleh mengemudi dan melihat sekeliling.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sentiasa membenarkan tetikus mengemudi pada setiap masa. Semasa Ditahan dan Ke Tengah membenarkannya mengemudi hanya semasa Input Kemudi ditahan, kemudian membawanya kembali ke tengah, dengan Pemusatan jika sumber mempunyainya dan dengan segera jika tidak. Semasa Ditahan dan Kekal membenarkannya mengemudi hanya semasa input ditahan dan membiarkannya di tempat ia dilepaskan. Togol menghidupkan atau mematikan kemudi pada setiap tekanan Input Kemudi. Jadi satu tetikus boleh mengemudi dan melihat sekeliling.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sentiasa</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Semasa Ditahan</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Semasa Ditahan dan Ke Tengah</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Togol</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Input Kemudi</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butang yang membolehkan tetikus mengemudi, pada peranti yang sama dengan perjalanan tetikus. Jika tiada yang dipilih, tetikus sentiasa mengemudi.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butang yang membolehkan tetikus mengemudi, pada peranti yang sama dengan sumber. Jika tiada yang dipilih, tetikus sentiasa mengemudi.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Pelicinan</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Melicinkan tetikus yang melapor secara tidak sekata. Roda stereng ketinggalan di belakang tangan selama kira-kira ini. 0 ialah mati.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Melicinkan tetikus yang melapor secara tidak sekata. Kayu bedik ketinggalan di belakang tangan selama kira kira ini. 0 ialah mati.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Kunci pada Kelajuan</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Dengan Telemetri Permainan dihidupkan, berapa banyak kunci yang tinggal pada 200 km/h. Pada 100%, seluruh kunci ada pada setiap kelajuan.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Perjalanan Roda</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Perjalanan Roda Sisi</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Seberapa laju tetikus bergerak. Dilepaskan apabila tangan berhenti.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Di mana penuding berada pada monitornya, dari tengahnya atau dari tempat ia berada apabila kemudi bermula.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Sejauh mana tetikus telah bergerak, ditahan di tempat tangan meninggalkannya, seperti roda stereng.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Takuk skrol ditahan sebagai kedudukan, pada ketepatan penuh pada roda yang menskrol dengan halus.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Takuk roda sisi ditahan sebagai kedudukan, pada ketepatan penuh pada roda yang menskrol dengan halus.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Satu tolakan bagi setiap takuk, kembali rehat dengan segera.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Semasa Ditahan dan Kekal</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Kepekaan</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Seberapa banyak kayu bedik yang diberikan oleh satu kelajuan. Pada 1.00 kayu bedik mencapai pesongan penuh pada 16,000 kiraan sesaat, pada setiap kadar tinjauan dan kadar laporan tetikus.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Kembali ke Tengah</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Setelah tetikus perlahan atau berhenti, kayu bedik kembali tidak lebih laju daripada ini. 0 membiarkannya kembali bersama tetikus.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Mula Di Tempat Kemudi Bermula</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Dengan Input Kemudi, kayu bedik mengukur dari tempat penuding berada apabila kemudi bermula, seperti kayu bedik pada skrin telefon bermula di tempat jari mendarat. Jika mati, ia mengukur dari tengah monitor penuding.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Paksi ini bergerak secara relatif</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Untuk bola jejak atau pemutar yang melaporkan seberapa jauh ia berputar. Jika hidup, paksi menahan kedudukan seperti Perjalanan Tetikus dan menggunakan tetapan perjalanan. Windows tidak menyatakan paksi mana yang bergerak begini.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Pratonton</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Menunjukkan bagaimana keluarga ini mengikuti tetikus anda sendiri. Tiada apa dipetakan sehingga anda memilihnya.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Pratonton. Gerakkan tetikus anda.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Ditahan pada {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Pada {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% kanan</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% kiri</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% atas</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% bawah</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>tengah</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Bergerak semasa {0} ditahan.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI Tetikus</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Kiraan yang dilaporkan tetikus ini bagi setiap inci yang digerakkannya, seperti yang ditetapkan oleh perisian pembuatnya.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Dengan DPI ditetapkan, Perjalanan Tetikus juga menunjukkan perjalanannya dalam sentimeter. 0 bermaksud tidak ditetapkan.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Penuding IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Penuding IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Kecerahan IR</value></data>
@@ -4656,6 +4799,7 @@ Salinan versi sebelumnya berada dalam folder ini: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Penunjuk atas skrin yang dipaparkan PadForge semasa anda bermain. Mematikan satu tidak pernah mengubah tingkah laku, hanya sama ada ia dipaparkan.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Tetingkap Timbul Lapisan Alih</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Tindihan Tukar Profil</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Pengawal Hidup atau Mati</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nota Peranti Terputus</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nota Peranti Bersambung</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Tunjukkan cincin atau grid atas skrin semasa menu jejari atau sentuh diaktifkan. Menu masih dicetuskan apabila tindihan dimatikan.</value></data>
@@ -5322,6 +5466,8 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Mati</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Jam Randik</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Warna Bar Cahaya</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Peranti Luar Talian</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Semua bersambung</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>mati</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>melalui Logitech Gaming Software</value></data>
@@ -5364,6 +5510,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Skrin memaparkan gambar pilihan anda, pada saiznya sendiri. Gambar yang lebih besar daripada skrin menunjukkan tetingkap seukuran skrin, yang digerakkan oleh makro Pan Gambar Skrin Papan Kekunci. Pada S.T.R.I.K.E. 7, jari yang diseret merentasi skrin juga menggerakkannya.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Skrin memaparkan jam randik, yang dimulakan, dijedakan dan ditetapkan semula oleh makro Jam Randik. Setiap skrin memaparkan jam randik yang sama.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Skrin memaparkan warna bar cahaya pada DualShock 4 atau DualSense dalam slot terendah yang dibekalkan oleh skrin ini, atau dalam slot terendah keseluruhan jika skrin ini tidak membekalkan mana-mana slot. Skrin monokrom memaparkan kecerahannya sebagai corak titik. Selagi tiada warna sampai ke bar cahaya, PadForge tidak memaparkan apa-apa.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Skrin menyenaraikan peranti dipetakan yang tidak bersambung, dengan nama yang dipaparkan halaman Peranti, dan menyatakan Semua bersambung apabila tiada yang hilang.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Gambar (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Semua Fail (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Pan</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Pan X</value></data>
@@ -5560,6 +5707,7 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Memandu (Bukan 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetri Permainan</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Nilai Skrip</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Sambungan Peranti</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Kelajuan (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% daripada Maks)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Gear (-1 Undur, 0 Neutral)</value></data>
@@ -5715,4 +5863,231 @@ Adakah anda mahu PadForge menyahpasangnya sekarang? Ini memerlukan peninggian ke
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Rakaman Masalah</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Mula atau Henti Merakam</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Tandakan Rakaman</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Tindihan menyenaraikan peranti dipetakan yang tidak bersambung, dengan nama yang dipaparkan halaman Peranti, dan menyatakan Semua bersambung apabila tiada yang hilang.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Mati. Tiada program boleh mencapai PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} dan {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Aktiviti: {0} panggilan, terlama dahulu. Panggilan sebelum itu: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Aktiviti: {0} panggilan. Panggilan sebelum itu: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} panggilan lebih lama telah hilang. Aktiviti menyimpan {1:N0} yang terbaharu.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} panggilan lebih lama telah hilang. Aktiviti menyimpan {1:N0} yang terbaharu.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Eksport…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Eksport Aktiviti</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Fail teks</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Buka</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Kemas Kini</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Lagi untuk {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Simpan Kemahiran sebagai ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Buka Fail Tetapannya</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Disimpan. Dalam {0}, tambah {1} di bawah {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} belum mempunyai fail tetapan. Tambah membuatnya.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge tidak menemui program pembantu pada PC ini yang pembuatnya mendokumenkan persediaan pada Windows. Copy Settings di bawah Lagi berfungsi untuk yang lain.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge tidak dapat memeriksa program pembantu: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Belum ditambah.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Ditambah.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Ditambah. Bersambung sekarang.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Ditambah. Ia belum bersambung sejak itu. Pembantu yang sedang dibuka melihat PadForge selepas ia ditutup dan dibuka semula.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Ditambah untuk PadForge lain. Kemas Kini mengarahkannya ke yang ini.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Ditambah. Kemahiran PadForge miliknya lebih lama daripada PadForge ini.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Ditambah, tanpa kemahiran PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Ditambah. Kemahiran PadForge miliknya datang daripada PadForge yang lebih baharu.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Ia hanya menerima kemahiran sebagai muat naik.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Pembantu yang ditambah mencapai PadForge setelah Automasi dihidupkan.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Menambah…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Mengalih keluar…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Mengemas kini…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ia tidak selesai: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Disalin.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Tidak disalin: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Program Dibenarkan</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Program yang mahu Baca atau lebih bertanya sekali, kali pertama ia bersambung, dan mendapat tahap yang diminta, sehingga tahap di atas. Pembantu yang anda tambah di atas dibenarkan dengan itu.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Bersambung sekarang.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Terakhir digunakan {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Belum digunakan.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Bersambung: {0}. Klik untuk membuka Automasi.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Pada PC ini: {0}. Dari web: {1}. Klik untuk membuka Automasi.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Bersambung dari web: {0}. Klik untuk membuka Automasi.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Pemetaan SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Pad permainan, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick. SDL tidak mempunyai pemetaan untuknya.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick. PadForge membacanya mentah, jadi pemetaan SDL tidak digunakan.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick, disusun sebagai pad permainan oleh baris anda.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL membaca peranti semasa enjin berjalan.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Salinan komuniti terbina dalam, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Dimuat turun {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fail PadForge sendiri</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Milik anda, ditambah {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Pemboleh ubah SDL_GAMECONTROLLERCONFIG, yang SDL pegang di atas sebarang baris yang anda tambah</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Salin Pemetaan SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Meletakkan pemetaan peranti pada papan keratan sebagai baris pangkalan data komuniti, di bawah ID peranti dengan checksum dan versinya dijadikan sifar.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Tampal Pemetaan SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Mengambil satu baris untuk peranti ini, menyemaknya, menyimpannya sebagai milik anda dan menggunakannya dengan segera.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Cari Pemetaan…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Mencari mengikut nama dalam setiap baris yang dibawa PadForge dan menggunakan baris yang anda pilih pada peranti ini, untuk klon yang ID-nya berbeza.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Teka Susun Atur</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Meneka susun atur pad permainan daripada paksi, butang dan hat peranti, untuk peranti yang tiada pangkalan data mengenalinya. Semaknya dalam Uji Input.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Alih Keluar Milik Saya</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Alih Keluar Milik Saya mengembalikan baris dan baris pengawal seperti sebelumnya.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Petakan Semula</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Membuat baris peranti pada setiap pengawal yang dipasangnya semula daripada susun atur SDL, seperti semasa menetapkannya.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Halaman Pangkalan Data Komuniti</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Baris itu, dan tempat ia berbeza daripada {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Baris itu</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Pengawal</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Baris {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Inputnya sekarang</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Baris SDL menyatakan</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>tiada dalam baris SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, berbeza</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Tidak digunakan oleh PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Baris itu</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Disalin.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Disalin. Bentuk SDL tidak dapat memuatkan {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>lengkung</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zon mati</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>output papan kekunci dan tetikus</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, togol dan tindakan lain</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} dan {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Tiada apa untuk disalin: SDL tidak mempunyai pemetaan untuk peranti ini, dan ia tidak berada pada mana mana pengawal.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Program lain sedang menggunakan papan keratan. Tiada apa disalin.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Baris anda dialih keluar. Peranti dibaca seperti sebelum itu.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Dipetakan semula daripada susun atur SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Digunakan sekarang. Baris itu milik anda dan diutamakan untuk peranti ini.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Disimpan sebagai milik anda. Ia digunakan setelah enjin berjalan dan peranti bersambung.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Disimpan sebagai milik anda, tetapi pemboleh ubah SDL_GAMECONTROLLERCONFIG memegang satu baris untuk peranti ini, yang SDL utamakan daripada baris anda.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL tidak menerima baris itu. Tiada apa berubah untuk peranti ini.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Tampal Pemetaan SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Tampal Pemetaan SDL untuk {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Cari Pemetaan untuk {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Teka Susun Atur untuk {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Tambah Baris Daripada Fail atau Papan Keratan</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Tampal</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Buka Fail…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Fail pemetaan (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Fail itu melebihi 4 MB. Keseluruhan fail komuniti sekitar 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Cari mengikut nama, ID atau VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Baris yang dibawa PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Tiada baris sepadan.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Baris yang dipilih digunakan pada {0} di bawah ID-nya sendiri, melalui semakan dan pilihan yang sama seperti Tampal.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Baris pemetaan SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Satu baris untuk peranti ini.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Susun atur yang diteka.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} medan, ID-nya sepadan dengan peranti ini.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} medan, daripada vendor dan produk yang sama pada bas atau versi lain. Ia disimpan di bawah ID peranti ini sendiri.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} medan, baris peranti lain. Ia disimpan di bawah ID peranti ini sendiri.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} medan. SDL tidak membaca peranti ini, jadi PadForge menyusun inputnya mengikut baris itu.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} medan, daripada paksi, butang dan hat peranti. Semaknya dalam Uji Input, kemudian simpan atau ubahnya di sini.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} medan, ID-nya sepadan dengan peranti ini.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} medan, daripada vendor dan produk yang sama pada bas atau versi lain. Ia disimpan di bawah ID peranti ini sendiri.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} medan, baris peranti lain. Ia disimpan di bawah ID peranti ini sendiri.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} medan. SDL tidak membaca peranti ini, jadi PadForge menyusun inputnya mengikut baris itu.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} medan, daripada paksi, butang dan hat peranti. Semaknya dalam Uji Input, kemudian simpan atau ubahnya di sini.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Ini mengubah cara {0} dibaca. Barisnya dalam {1} dipetakan semula daripada susun atur baharu.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Ini mengubah cara {0} dibaca. Ia tidak berada pada mana mana pengawal, jadi tiada baris berubah.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Pintasan profil yang membaca {0} mengekalkan input yang ditetapkan kepadanya.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Baris itu disimpan sebagai milik anda dalam PadForge.xml dan mengatasi setiap sumber lain untuk peranti ini. Alih Keluar Milik Saya mengembalikan baris lama dan baris pengawal lama.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Baris itu disimpan sebagai milik anda dalam PadForge.xml dan diutamakan untuk peranti mereka berbanding setiap sumber lain. Kosongkan, di bawah Lagi pada baris Pangkalan Data Pengawal, mengalih keluarnya.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} baris untuk Windows. {1} untuk sistem lain dilangkau.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} baris untuk Windows. {1} untuk sistem lain dilangkau.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ditolak. Yang pertama: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Tampal satu baris, atau teks fail gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Teks itu bukan baris pangkalan data pengawal SDL: ID 32 digit heks, satu nama, kemudian medan seperti a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Baris itu untuk sistem lain. PadForge membaca baris untuk Windows, atau untuk tiada sistem tertentu.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID baris itu bukan milik peranti. Ia memerlukan 32 digit heks.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Nama baris itu kosong, melebihi 128 aksara, atau mengandungi aksara yang SDL baca sebagai medan.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Baris itu membawa medan petunjuk atau medan Android, yang tidak diterima PadForge.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Baris itu mempunyai medan yang SDL tidak kenal.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Satu ikatan tidak dalam bentuk SDL, seperti b3, a2, +a2, a2~ atau h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Baris itu memberi satu medan dua kali.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Baris itu melebihi 1,024 aksara.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Baris itu tidak mengikat sebarang kawalan.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Baris Anda</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Baris Anda</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Baris yang anda tambah di sini, atau tampal pada kad Pemetaan SDL sesuatu peranti, diutamakan untuk peranti mereka berbanding setiap sumber lain dan kekal selepas set semula.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Tambah Baris Daripada Fail atau Papan Keratan…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} baris, milik anda mengatasi setiap sumber lain untuk peranti mereka.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} baris, milik anda mengatasi setiap sumber lain untuk perantinya.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Belum ada.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Digunakan dengan segera.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Hidupkan</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Pembantu di Web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Terowong</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Tiada</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Alamat yang Saya Tampal</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Bermula, dengan hak anda.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Berjalan, dengan hak anda. Alamatnya kekal sama setiap kali ia bermula.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Berjalan, dengan hak anda. Terowong pantas mengambil alamat baharu setiap kali ia bermula, jadi pembantu itu perlu ditambah semula.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Dihentikan.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Dihentikan. Kata terakhirnya: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ia tidak dapat dimulakan.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ia sudah tiada pada PC ini.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Tiada program terowong ditemui pada PC ini. PadForge berfungsi dengan cloudflared, devtunnel, ngrok dan Tailscale Funnel, atau dengan alamat terowong anda sendiri.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Pilih satu terowong untuk memberi PadForge alamat awam.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Juga pada PC ini: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, yang alamatnya kekal sama</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, yang terowong pantasnya mengambil alamat baharu setiap kali</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Jalankan terowong anda sendiri ke http://127.0.0.1:{0} dan tampal alamat https nya. Terowong Cloudflare bernama, terowong dev yang kekal, Tailscale Funnel dan domain ngrok sendiri mengekalkan alamat mereka.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Tampal alamat https tanpa laluan selain /mcp, seperti yang diberikan terowong anda.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Memulakan pembantu web PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Pembantu web PadForge berhenti ({0}). Matikan dan hidupkan semula Reach PadForge From the Web untuk memulakannya semula.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Alamat</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Belum ada alamat awam.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Tambah ke Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Disalin.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Terima Pembantu Web Baharu</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Mula Menerima</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Henti Menerima</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Menerima sehingga {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Tidak menerima. Mula Menerima membukanya selama lima minit.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Tambah alamat dalam pembantu dan log masuk. Setiap log masuk menunjukkan kod enam digitnya sendiri pada halaman log masuknya dan pada kad soalan PadForge. Benarkan hanya apabila kedua kod itu sepadan. Pada masa lain log masuk ditolak dan tiada apa bertanya kepada anda.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Dibenarkan di Web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Belum ada.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Log masuknya kembali ke {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Ia menamakan dirinya {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Dibenarkan {0}, terakhir digunakan {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Dibenarkan {0}, belum digunakan.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Tarik Balik</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel miliknya menjalankan PadForge terus, tanpa alamat atau log masuk di sini. Salin arahan ke dalam persediaan terowong itu.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Salin Arahan</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge tidak memuat turun sebarang program terowong dan tidak menyimpan kunci syarikat lain. Pembantu web berfungsi pada tahap di atas.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Benarkan {0} berfungsi dengan PadForge dari web?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Log masuknya kembali ke {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ia menamakan dirinya {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Benarkan hanya jika halaman log masuknya menunjukkan kod ini:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Kod enam digitnya dipaparkan pada kad soalan PadForge. Benarkan hanya jika halaman log masuknya menunjukkan kod yang sama.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Ia berfungsi pada tahap {0}, melalui {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Log masuknya kembali ke PC ini, dan mana mana program di sini boleh menuntut alamat itu.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Log masuk ke PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} meminta untuk berfungsi dengan PadForge pada PC anda.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Ia menamakan dirinya {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Pada PC anda, kad soalan PadForge bertanya tentang log masuk ini. Benarkan di sana hanya jika kad itu menunjukkan kod ini:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Halaman ini diteruskan sendiri setelah anda menjawab pada PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Log masuk ini kembali ke program pada PC anda, dan mana mana program di sana boleh menuntut alamat itu.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge tidak menerima pembantu web baharu sekarang. Pada PC anda, buka PadForge, pergi ke Tambahan, Automasi, dan di bawah Pembantu di Web tekan Mula Menerima. Kemudian log masuk semula.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Log masuk ini tidak boleh diteruskan. Tambah semula alamat PadForge dalam pembantu dan log masuk.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Log masuk ini telah tamat. Log masuk semula daripada pembantu.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows tidak memulakannya</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ia tamat dengan kod {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automasi mati, jadi tiada pembantu web mencapai PadForge. Pembantu web bermula setelah Automasi dihidupkan.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Memeriksa…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Belum dipasang.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Dipasang dan terkini. Skrip bermula dengan {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Dipasang untuk {0} dan terkini. Skrip bermula dengan {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Dipasang. PadForge ini mempunyai salinan yang lebih baharu.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Dipasang untuk {0}. PadForge ini mempunyai salinan yang lebih baharu.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Memasang…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge tidak dapat memeriksanya: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Pasang meletakkan pustaka PadForge di tempat bahasa itu menemuinya. Skrip yang memuatkannya membaca peranti dan memandu pemetaan pada tahap di atas.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Simpan pustaka di mana sahaja</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Salinan Dipasang</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Alih Keluar Semua</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Dialih keluar.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID Skrip</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID skripnya</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skrip menamakan kawalannya {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skrip menamakan kekuncinya KeyA, KeySpace, KeyLeftShift dan seumpamanya, dan setiap kekunci mengikut kodnya, Vk0 hingga Vk255.</value></data>
 </root>

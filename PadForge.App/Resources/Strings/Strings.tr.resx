@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} bağlantısı kesildi. {1} için cihaz kalmadı.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} bağlandı</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} bağlandı, pil %{1}</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} cihazın bağlantısı kesildi</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} cihaz bağlandı</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} cihazın bağlantısı kesildi: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} cihaz bağlandı: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} sürekli bağlantısını kaybediyor</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (en fazla {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (en fazla {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Otomatik yeniden bağlan, port, eşleştirme kimliği, adresle bağlan</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, DSX.exe vekili</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Portlar, Tam hız, Özel biçimler</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Beceri</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Diğer asistanlar, web'deki asistanlar</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Başparmaklarınız düğmelerde kalırken bir kafa izleyici veya VR gözlüğüyle etrafa bakın.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Sürüş oyununun gönderdiği hızı, pedalları ve vitesleri herhangi bir giriş gibi eşleyin.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Kontrolcü hareketini DSU hareket kaynağı okuyan öykünücülere gönderin.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Açıkken bir menünün halkası, ızgarası veya çubuğu.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Bir shift katmanı açıldığında katmanın adı, o katmanın belirlediği süre boyunca.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profil değiştiğinde profilin adı.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Sanal kontrolcülerin kısayol ya da makro ile az önce açıldığı veya kapandığı.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Eşlenmiş bir cihazın bağlantısı kesildiğinde adı.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Eşlenmiş bir cihaz bağlandığında adı.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Adresi kopyala</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programlar profil değiştirebilir ve bırakabilir, motoru başlatıp durdurabilir, sanal kontrolcüleri açıp kapatabilir, pencereyi gösterip gizleyebilir, PadForge'u kapatabilir, tanılama anlık görüntüsü kaydedebilir ve nelerin çalıştığını sorabilir.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Komutlar düzeyindeki her şey, ayrıca programlar cihazları, sanal kontrolcüleri, eşlemeleri, profilleri ve ayarları görebilir, her cihazın girişlerini anında izleyebilir ve size PadForge'da bir yer gösterebilir. Okuma düzeyindeki bir program, yönetici olarak çalışan pencerelere yazılan tuşlar dahil, her cihazda basılan her tuşu görür.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Okuma düzeyindeki her şey, ayrıca programlar kendi cihazlarını ekleyip sürebilir, herhangi bir cihazın bir kontrolünü basılı tutabilir ve makro tetikleyicilerine adlandırılmış değerler iletebilir.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Giriş gönderme düzeyindeki her şey, ayrıca programlar sayfalarda değiştirebildiğiniz her şeyi değiştirebilir.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Giriş gönderme düzeyindeki her şey, ayrıca programlar sayfalarda değiştirebildiğiniz her şeyi değiştirebilir. Bazı değişiklikler önce her zaman PadForge'un soru kartında size sorar.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistanlar</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Bunu bir asistanın MCP ayarlarına yapıştırın. Asistan bundan sonra PadForge ile yukarıdaki düzeyde çalışır.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML olarak kopyala</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML okuyan asistanlar</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Ekle, PadForge'u becerisiyle birlikte o asistana koyar. Asistan sonra yukarıdaki düzeyde çalışır ve sözleri, işaret ettiği yerin yanında, adının altında görünür.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Betikler</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Betik kitaplığı</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Kitaplık kaydet…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python veya PowerShell için tek dosya. Onu yükleyen bir betik, yukarıdaki düzeyde cihazları okur ve eşlemeleri yönetir.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python veya PowerShell için tek dosya, seçtiğiniz yere yazılır.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Sizi bekleyenler</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Etkinlik</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Henüz hiçbir program çağrı yapmadı. Her çağrı, sonucuyla birlikte burada listelenir.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Geri al</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Asistanlar için beceri</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Beceriyi kaydet…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kaydedemedi: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Okuma veya daha yüksek düzeyde bir program bağlıyken, klavyeler dahil her cihazda nelere basıldığını görür.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Eklentiler</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Eklentileri çalıştır</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Hiçbir eklenti çalışmıyor.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Bir eklenti, PadForge'un değil sizin haklarınızla çalışır.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Yerleşik</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Test kontrolcüsü</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Kendi kendine hareket eden, her seferinde tek bir kontrolü oynatan bir kontrolcü, böylece elinizde donanım yokken bir eşleme denenebilir.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Hız</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Yavaş</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Hızlı</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>En hızlı</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Yeniden oynatma</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Bir sorun kaydını, onu oluşturan cihazlar olarak, sahip oldukları zamanlamayla geri oynatır. Bunlar bu bilgisayarda yeni cihazlardır ve siz veya bir profil nasıl eşlerse öyle eşlenir.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Kayıt</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Sorun kayıtları|*.zip;*.log|Tüm dosyalar|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} dosyasını oynatamıyor. Bu bir sorun kaydı değil ya da hiçbir cihazın girişini içermiyor.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Eklentileriniz</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Eklenti, PadForge'a cihaz ekleyen bir programdır. PadForge, motor her çalıştığında onu sıradan haklarınızla başlatır.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Eklenti ekle…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programlar ve betikler|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tüm dosyalar|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Onayla…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Onayla ve yeniden başlat…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Motorla birlikte başlar</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Başlamadan önce dosya denetleniyor</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} koduyla çıktı. {1} sn sonra yeniden başlar.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} zaten listede.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge en fazla 16 eklenti çalıştırır. Yenisini eklemek için birini kaldırın.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Çalışan eklentiler: {0}. Eklediği cihazlar: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} beş hatadan sonra durdu.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0}, onayladığınızdan beri değişti.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} başlatılamadı.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Eklenenler: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>İmzalayan: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>İmzasız.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Ayarları, çalışırken burada görünür.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Hiç ayar bildirmiyor.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge ayarlarını okuyamadı: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Bir dakika yanıt vermediği için sonlandırıldı</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Dosyası çalışırken değişti</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Ekleyen: {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Ayarlar: {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Seç</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Bir kontrole basın…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Seçilmedi</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Bir eklenti ekleyin veya dosyasını bu sayfaya bırakın. PadForge yolunu, imzalayanını ve SHA-256 değerini gösterir ve çalıştırmadan önce size sorar. Eklenti, PadForge'un değil, sizin haklarınızla çalışır.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Bir sorun kaydını, onu oluşturan cihazlar olarak, zamanlamalarıyla geri oynatır.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Çalışıyor.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Çalışıyor, elle.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Ne hareket eder</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Çubuklar ve tetikler</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Çubuklar</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Tetikler</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Desen</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Süpürme</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Daire</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Hareket süresi</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Dinlenme süresi</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Düğmelere bas</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Gezinme düğmelerine bas</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows uygulamaları, öndeki pencerede sanal bir Xbox kontrolcüsünün A, B, Back, Start ve yön tuşlarına yanıt verir, Guide ise Xbox Game Bar'ı açar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Yön tuşlarını çevir</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Aynı nedenle.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Basma süresi</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Kontrolcüler</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Elle</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Hareketi durdurur. Girişlerini aşağıda fareyle ayarlayın.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Sol çubuk</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Sağ çubuk</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Sol tetik</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Sağ tetik</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Saniyedeki okuma</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Eklenti kiti ve seçtiğiniz bir eklentinin günlüğü</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Eklenti kiti</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Eklenti kitini kaydet…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# ile küçük bir eklenti ve aynı eklentinin AutoHotkey, Python ve PowerShell sürümleri, her dosyada nasıl derleneceği veya çalıştırılacağı yazılı.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Her komut, olay ve ayar türü için bir kılavuz, C# eklentisi için bir derleme betiği ve aynı eklentinin AutoHotkey, Python ve PowerShell sürümleri.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Günlük</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Günlüğünü görmek için bir eklenti seçin.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Bu eklentinin günlüğünde henüz bir şey yok.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Bir oyun modu</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Başka bir program {0} adlı kanalı tutuyor. O programı kapatın.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} kanalını reddetti, bu yüzden programlar bağlanamıyor.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Bağlı program yok.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Açık. Bağlı program yok.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Bağlı: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Bilinmeyen program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, imzalayan: {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge yeniden başlayana kadar bunlardan daha fazlası yok</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge'da böyle bir araç yok</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Program eski bir durumu okudu</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Böyle bir ayar yok</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Hiçbir şeyin bu kimliği yok</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Değer, ayarın kabul ettiği aralığın dışındaydı</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>İzin vermediniz</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Zamanında kimse yanıtlamadı</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Pencereyi göster</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Pencereyi sistem tepsisine gönder</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Pencereyi küçült</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Pencereyi büyüt</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge'u kapat</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Motoru başlat</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Motoru durdur</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Cihazı ekle: {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Cihazın kontrollerini ayarla: {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Cihazı kaldır: {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Cihazın her kontrolünü başlangıç konumuna getir: {0}</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge'a bir program çalıştırtır.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Bir dosya, klasör veya web sayfası açar.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge'un Windows'a tuş ya da fare girişi göndermesini sağlar.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge dışından bir profil içe aktarır.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>Bir program bunu yapmadan önce PadForge size sorar.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>İletişim kutuları</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makrolar</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Cihazın kontrollerini basılı tut: {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Cihazın kontrollerini bırak: {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Değeri ayarla: {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Profil değiştir</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Motoru başlat veya durdur</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Sanal kontrolcüleri aç veya kapat</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Tanılama anlık görüntüsü kaydet</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Yoklama hızını ve sürücüleri oku</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Profilleri listele</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Bir profili oku</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Sanal kontrolcüleri listele</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Cihazları listele</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Bir cihazı oku</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Girişinizi bekle</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Bir kontrolcünün eşlemelerini oku</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Bir kontrolcünün makrolarını listele</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Bir sorunu kaydet</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Ayar bul</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Bir ayarı oku</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Size bir yer göster</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge'ta yer ara</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge'ta bir yeri oku</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Gördüğünüzü oku</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Kendi cihazını ekle</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Cihazını sür</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Cihazını kaldır</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Bir kontrolü basılı tut veya bırak</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Makro tetikleyicileri için bir değer ayarla</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Bir ayarı değiştir</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Bir düğmeye bas</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Profil oluştur</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Profili yeniden adlandır</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Profili sil</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Kontrolcü türünü değiştir</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Cihaz ata</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Eşleme satırlarını ayarla</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Eşleme satırlarını temizle</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Kontrolcüyü otomatik eşle</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Makro kaydet</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Makroyu sil</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Klavye ve fare kontrolcüsü oluşturur</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Açar: {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” ayarını değiştir</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” düğmesine bas</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} size şunu göstermek istiyor: {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Yer: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>PadForge ile {1} düzeyinde çalışması için {0} programına izin verilsin mi?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} çalıştırıyor: {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Başlatan: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>İmzalayan: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>İmzasız.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Okuma düzeyinde ve üstünde, klavyeler dahil her cihazda basılan her tuşu görür.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Bir kez sorar. Otomasyon sayfasından kaldırabilirsiniz.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge'un komut satırı</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ayarını {1} yapar</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ağı dinler, böylece diğer cihazlar bu bilgisayara erişebilir.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Diğer programların ve oyunların dayandığı bir sürücüyü veya HidHide'ı değiştirir.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell modülleri (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>İzin ver</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>İzin verme</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Şimdi değil</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Göster</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>{1} adımdan {0}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Devam etmek için buna tıklayın.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Aç: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Daha fazla bölümünü aç.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Gönderen: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Gönderen: {1}, kendine “{0}” diyor</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Gönderen: kendine “{0}” diyen bir program</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Kur ve yeniden başlat</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Sürüm notları</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrolcü veritabanı</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Şimdi güncelle, topluluğun kontrolcü veritabanını (SDL_GameControllerDB) GitHub'dan indirir ve PadForge'un bu sürümünde olmayan eşlemeleri ayar dosyasında tutar. Yeni bir eşleme yalnızca başka hiçbir şeyin oyun kumandası olarak okumadığı, atanmamış ve Ham joystick modunu zorla ayarı açık olmayan bir kontrolcü için kullanılır. Sıfırlama, indirilen her eşlemeyi kaldırır.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Şimdi güncelle, topluluğun kontrolcü veritabanını (SDL_GameControllerDB) GitHub'dan indirir ve PadForge'un bu sürümünde olmayan eşlemeleri ayar dosyasında tutar. Bunlar hemen kullanıma girer. Yeni bir eşleme yalnızca başka hiçbir şeyin oyun kumandası olarak okumadığı, atanmamış ve Ham joystick modunu zorla içinde olmayan bir kontrolcü için kullanılır. Sıfırlama, indirilen her eşlemeyi kaldırır. Kendi satırlarınız, Daha fazla altında, kalır.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Şimdi güncelle</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Güncelleniyor…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Güncellemeler denetleniyor…</value></data>
@@ -1045,12 +1100,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} güncellemesinin kurulumu tamamlanmadı. Yeniden denemek için Ayarlar'dan kurun.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} sürümüne güncellendi.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Yerleşik: {0} eşleme, {1} tarihli topluluk kopyası.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Yerleşik: {0} eşleme, {1} tarihli topluluk kopyası. Güncellendi: {2}, yeni: {3}, değişen: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Yerleşik: {0} eşleme, {1} tarihli topluluk kopyası. {2} tarihinde indirildi: {3} yeni satır, {4} değişen satır.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Topluluk veritabanı son güncellemeden beri değişmedi.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub'a ulaşılamadı: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge, beklediği kontrolcü veritabanı olmadığı için indirmeyi reddetti. Hiçbir şey değişmedi.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Yeni bir eşleme, kontrolcüsü bir sonraki bağlandığında kullanılır.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Değişen bir eşleme, PadForge bir sonraki başladığında kullanılır.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Simge durumunda başlat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Oturum açılışında başlat</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Sürüm bilgileri ve sorun giderme için motor olay günlüğü.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Tanılama günlüğü tut</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Motor olaylarını günlük klasöründeki diagnostics.log dosyasına sürekli yazar, klasörü Günlük klasörünü aç düğmesi açar. Yeniden başlatmalarda etkin kalır. Dosya 8 MB'a ulaştığında diagnostics.log.old dosyasına devredilir.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Anlık görüntü kaydet</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>En son motor olaylarını yeni bir dosyaya kaydeder. Tanılama günlüğü kapalıyken de çalışır.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Anlık görüntü kaydet…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Uygulamayı, Windows'u, cihazlarınızı ve ayarlarınızı şu anki hâliyle, en son motor olaylarıyla birlikte alır ve kaydetmeden önce okuyabilmeniz için açar. Tanılama günlüğü kapalıyken de çalışır.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Günlük klasörünü aç</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Sorun kaydet</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Kaydı başlat</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Kaydı durdur ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Kaydı durdurana, 10 dakikaya veya 20 MB'lık zip dosyasına kadar kaydeder, sonra zip dosyasını Explorer'da seçer, rapora eklemeye hazır.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Başlatın, sorunu oluşturun, sonra durdurun. PadForge'un yanındaki tek bir dosya, PadForge'un okuduğu, gönderdiği ve günlüğe yazdığı her şeyi ve nelerin ters gittiğinin özetini içerir. Kayıt sırasında her cihazda basılan her tuş ve düğme, klavyeler ve fareler dahil, dosyadadır. Kullanıcı adları, seri numaraları, adresler ve yazılan adlar, hiçbir şey yazılmadan önce değiştirilir.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Kaydı durdurana, 30 dakikaya veya 20 MB'lık zip dosyasına kadar kaydeder, sonra kaydetmeden önce okuyabilmeniz için kaydı açar.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Başlatın, sorunu oluşturun, sonra durdurun. Ardından içindekileri parça parça okuyun ve istediğiniz yere kaydedin. Kayıt sırasında her cihazda basılan her tuş, klavyeler ve fareler dahil, içindedir. Kullanıcı adları, seri numaraları, adresler ve yazılan adlar, hiçbir şey yazılmadan önce değiştirilir.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Özet yazılıyor…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Kaydedildi: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Kayıt başlamadı. Bir denetim, bu PC'ye ait özel bir değerin dosyadan dışarıda tutulamayacağını gösterdi.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Kayıt başlamadı. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Son kaydın bitirilmesi sürüyor.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Son 60 saniyeyi tut kapalı, bu yüzden kaydedilecek bir şey yok.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge'un durdurmadığı bir kayıt bitirildi: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge'un durdurmadığı bir kayıt, Ana sayfada okumanızı bekliyor: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Son 60 saniyeyi tut</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Motor çalışırken, akşamda bir kez gelen bir sorun için, bir kaydın içerdiklerinin son dakikasını bellekte tutar. Son 60 saniyeyi kaydet bunu dosya olarak yazar.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Motor çalışırken, akşamda bir kez gelen bir sorun için, bir kaydın içerdiklerinin son dakikasını bellekte tutar. Son 60 saniyeyi kaydet bunu kaydetmeden önce okuyabilmeniz için açar.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Son 60 saniyeyi kaydet</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Yazılan harf ve rakamları tek tuş olarak yaz</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Kayıt, hiçbir eşlemenin veya makronun okumadığı harf ve rakam tuşlarını tek bir tuş olarak, her basışı kendi zamanında yazar. Diğer her tuş ve bir eşlemenin veya makronun okuduğu her tuş basıldığı gibi yazılır.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Son 60 saniyeyi tut, Yazılan harf ve rakamları tek tuş olarak yaz</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Neyin kaydedileceği, son 60 saniye, yazılan harfler</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Anlık görüntü kaydet</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, cihazlarınız ve ayarlarınız şu anki hâliyle, aynı inceleme üzerinden.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe'nin yanındaki diagnostics.log, orada okuyabilirsiniz.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Neyin kaydedileceği</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Hepsi açık. Kapatılan bir parça sonraki kayıttan çıkarılır ve dosya hangi parçaları içerdiğini söyler.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Akşamda bir kez gelen bir sorun için.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Kayıt, Ana sayfada okumanızı bekliyor.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Özet</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Ayarlar ve cihazlar</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Giriş</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Çıkış</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Geri bildirim</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Zamanlama</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Pencere ve hatalar</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Etkinlik</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Tanılama satırları</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Kaydınızı okuyun</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} ile {1} arası, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>{0} anındaki bir anlık görüntü.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 dakika</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} dakika</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 saniye</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} saniye</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Siz durdurdunuz.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>{0} sınırında kendiliğinden durdu.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Zip içinde {0} olunca kendiliğinden durdu.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Bir makro durdurdu.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Bir program veya --record stop durdurdu.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Onu başlatan asistan durdurdu.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge kapanırken durdu.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Bellekte tutulan son 60 saniye.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Paylaşacağınız şeyi okuyun. Dışarıda bırakmak için bir parçayı kapatın, sonra kaydedin. Siz paylaşmadıkça hiçbir şey bu bilgisayardan çıkmaz.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, paylaşılacağı hâliyle</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} göster</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>dışarıda</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>kaydedilmedi</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>metin olarak {0}, zip içinde {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>Metin olarak {0}, paylaştığınız zip içinde {1}. Kayıt, zip içinde {2} olunca veya {3} sonra durur.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Temizleme denetimi: PadForge {1} içinde {0} değiştirdi. Sakladığınız parçalarda bu bilgisayarın hiçbir adı, seri numarası veya adresi yok.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} değer</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 değer</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} özel tür</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 özel tür</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Temizleme denetimi: bu bilgisayara ait {0} değer hâlâ sakladığınız parçaların içinde. Bu parçaları kapatın veya kaydı silin. O zamana kadar Kaydet kapalı kalır.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Temizleme denetimi: bu bilgisayara ait bir değer hâlâ sakladığınız parçaların içinde. Bu parçaları kapatın veya kaydı silin. O zamana kadar Kaydet kapalı kalır.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Kayıt sırasında bu parçaya ait hiçbir şey olmadı.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Özeti kopyala</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Kopyalandı</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Kaydet…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Kaydı kaydet</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip dosyaları</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Kaydedilmedi. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Siz olarak, ilk seferde Downloads klasörüne, sonra en son kaydettiğiniz yere kaydedilir ve Explorer'da gösterilir. Sayfada kimse yokken duran bir kayıt (sınırı, bir makro, bir program, asistan aracı veya --record stop) bu inceleme için Ana sayfada bekler ve kaydedilmezse 7 gün sonra silinir. Bir programa kaydın beklediği söylenir, nerede olduğu söylenmez.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} tarihli bir sorun kaydı, sizin okumanızı bekliyor.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>İncele</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Kaydı işaretle</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Uygulama sürümü</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET çalışma zamanı</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL sürümü</value></data>
@@ -3128,31 +3238,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Fare konumu X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Fare konumu Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına imleç hassasiyeti. 1.0, merkezden ekran genişliğinin %10'u kadar uzakta tam çubuk itmesine ulaşır. 1.0'ın üzerindeki değerler tam itmeye daha az imleç hareketiyle ulaşır. 1.0'ın altındaki değerler daha fazlasını gerektirir.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Kaynak başına imleç hassasiyeti. 1.0, merkezden işaretçinin monitörü genişliğinin %10'u kadar uzakta tam çubuk itmesine ulaşır. 1.0'ın üzerindeki değerler tam itmeye daha az imleç hareketiyle ulaşır. 1.0'ın altındaki değerler daha fazlasını gerektirir.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Fare yolu X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Fare yolu Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Tam kilide kadar yol</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Farenin merkezden tam kilide kadar hareket ettiği mesafe, farenin bildirdiği sayımlarla. Daha yüksek bir sayı daha ince yönlendirir ve daha fazla el hareketi gerektirir.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Farenin veya tekerleğin merkezden tam kilide kadar hareket ettiği mesafe, bildirdiği sayımlarla. Daha yüksek bir sayı daha ince yönlendirir ve daha fazla el hareketi gerektirir.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Farenin DPI değeri cihaz panelinde ayarlıysa yol santimetre olarak da gösterilir.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>sayım</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Ortalama</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Kapalı, direksiyonu elin bıraktığı yerde tutar. Yay, onu Dönüş süresi boyunca geri getirir. Telemetriden, bir aracın ön lastiklerinin oyunun hızında ve tutuşunda yapacağı gibi geri çeker: duruyorken yerinde, hızla daha sert, lastikler kayarken hafif. Telemetri gönderen oyun yoksa yay gibi davranır. Oyunun kuvvetinden, sanal bir direksiyonun kendi kuvvet geri bildiriminin onu döndürmesine izin verir.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Kapalı, direksiyonu elin bıraktığı yerde tutar. Yay, onu Dönüş süresi boyunca geri getirir. Telemetriden, bir aracın direksiyonunun oyunun hızında ve tutuşunda yaptığı gibi geri çeker: merkez yakınında dik, daha uzakta yumuşak, duruyorken yerinde, hızla daha sert, lastikler kayarken hafif. Telemetri gönderen oyun yoksa kuru yolda 100 km/h hızdaki gibi çeker. Oyunun kuvvetinden, sanal bir direksiyonun kendi kuvvet geri bildiriminin onu döndürmesine izin verir.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Kapalı</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Yay</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriden</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Oyunun kuvvetinden</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Dönüş süresi</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Yay, direksiyonu yolun %95'ine kadar geri getirmek için bu kadar zaman alır. Telemetriden, kuru yolda 100 km/h hızda bu kadar sürer.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Yay, direksiyonu yolun %95'ine kadar geri getirmek için bu kadar zaman alır. 0 onu hemen ortalar. Telemetriden, kuru yolda 100 km/h hızda, merkeze yakınken bu kadar sürer.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Yönlendir</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Her zaman, farenin her an yönlendirmesine izin verir. Basılı tutulurken, yalnızca Yönlendirme girişi basılıyken yönlendirmesine izin verir. Aç/kapat, Yönlendirme girişine her basışta yönlendirmeyi açar veya kapatır. Fare yönlendirmediği sürece direksiyon olduğu yerde kalır ya da ortalanır, böylece tek bir fare hem yönlendirebilir hem etrafa bakabilir.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Her zaman, farenin her an yönlendirmesine izin verir. Basılı tutulurken ve ortala, yalnızca Yönlendirme girişi basılıyken yönlendirmesine izin verir, sonra direksiyonu merkeze getirir: kaynağın merkezlemesi varsa merkezlemeyle, yoksa hemen. Basılı tutulurken ve yerinde kal, yalnızca giriş basılıyken yönlendirmesine izin verir ve bırakıldığı yerde bırakır. Aç/kapat, Yönlendirme girişine her basışta yönlendirmeyi açar veya kapatır. Böylece tek bir fare hem yönlendirebilir hem etrafa bakabilir.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Her zaman</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Basılı tutulurken</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Basılı tutulurken ve ortala</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Aç/kapat</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Yönlendirme girişi</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Farenin yönlendirmesine izin veren düğme, farenin hareketiyle aynı cihazda. Hiçbiri seçilmezse fare her zaman yönlendirir.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Farenin yönlendirmesine izin veren düğme, kaynakla aynı cihazda. Hiçbiri seçilmezse fare her zaman yönlendirir.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Yumuşatma</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Düzensiz bildiren bir fareyi düzgünleştirir. Direksiyon, eli yaklaşık bu kadar geriden izler. 0 kapalıdır.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Düzensiz bildiren bir fareyi düzgünleştirir. Çubuk, eli yaklaşık bu kadar geriden izler. 0 kapalıdır.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Hızda kilit</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Oyun telemetrisi açıkken, 200 km/h hızda kilidin ne kadarının kaldığı. %100'de tüm kilit her hızda vardır.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Tekerlek yolu</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Yatay tekerlek yolu</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Farenin ne kadar hızlı hareket ettiği. El durunca bırakır.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>İşaretçinin kendi monitöründeki yeri, merkezden veya yönlendirme başladığında olduğu yerden.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Farenin ne kadar hareket ettiği, bir direksiyonda olduğu gibi elin bıraktığı yerde tutulur.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Kaydırma çentikleri bir konum olarak tutulur, ince kaydıran bir tekerlekte tam hassasiyetle.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Yatay tekerleğin çentikleri bir konum olarak tutulur, ince kaydıran bir tekerlekte tam hassasiyetle.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Her çentik için bir itme, hemen dinlenme konumuna döner.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Basılı tutulurken ve yerinde kal</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Hassasiyet</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Bir hızın çubuğun ne kadarını verdiği. 1.00 değerinde çubuk, her yoklama hızında ve fare rapor hızında saniyede 16.000 sayımda tam itmeye ulaşır.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Merkeze dönüş</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Fare yavaşlayıp durduktan sonra çubuk bundan daha hızlı geri gelmez. 0, çubuğun fareyle birlikte geri gelmesine izin verir.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Yönlendirmenin başladığı yerden başla</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Bir yönlendirme girişi ile çubuk, yönlendirme başladığında işaretçinin olduğu yerden ölçer, tıpkı telefon ekranındaki bir çubuğun parmağın değdiği yerden başlaması gibi. Kapalıyken işaretçinin monitörünün merkezinden ölçer.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Bu eksen göreli hareket eder</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Ne kadar döndüğünü bildiren bir izleme topu veya döner kontrol için. Açıkken eksen, Mouse Travel gibi bir konumu tutar ve yol ayarlarını kullanır. Windows hangi eksenlerin böyle hareket ettiğini söylemez.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Önizleme</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Bu ailenin kendi farenizi nasıl izlediğini gösterir. Siz seçene kadar hiçbir şey eşlenmez.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Önizleniyor. Farenizi hareket ettirin.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Tutulan konum: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Konum: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>%{0} sağ</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>%{0} sol</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>%{0} yukarı</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>%{0} aşağı</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>merkez</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} basılıyken hareket eder.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Fare DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Üreticisinin yazılımının ayarladığı şekilde, bu farenin hareket ettiği her inç için bildirdiği sayım.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI ayarlıysa Mouse Travel yolunu santimetre olarak da gösterir. 0, ayarlanmadı demektir.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR işaretçi X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR işaretçi Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR parlaklığı</value></data>
@@ -4923,6 +5066,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Oynarken PadForge'un gösterdiği ekran göstergeleri. Birini kapatmak davranışı asla değiştirmez, yalnızca gösterilip gösterilmeyeceğini değiştirir.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift katmanı açılır bildirimi</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profil değiştirme kaplaması</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontrolcüler açık veya kapalı</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Cihaz bağlantısı kesildi notu</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Cihaz bağlandı notu</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Dairesel veya dokunmatik bir menü devredeyken ekrandaki halkayı veya ızgarayı gösterir. Kaplama kapalıyken de menüler tetiklenir.</value></data>
@@ -5651,6 +5795,8 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Kapalı</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Kronometre</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Işık çubuğu rengi</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Çevrimdışı cihazlar</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Hepsi bağlı</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>kapalı</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software üzerinden</value></data>
@@ -5693,6 +5839,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Ekran, seçtiğiniz bir resmi kendi boyutunda gösterir. Ekrandan büyük bir resimde ekran boyutunda bir pencere görünür ve bu pencereyi Klavye ekranı resmini kaydır makrosu hareket ettirir. S.T.R.I.K.E. 7'de ekranda gezdirilen bir parmak da onu hareket ettirir.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Ekran, Kronometre makrosunun başlattığı, duraklattığı ve sıfırladığı kronometreyi gösterir. Her ekran aynı kronometreyi gösterir.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Ekran, bu ekranın beslediği en düşük yuvadaki DualShock 4 veya DualSense'in ışık çubuğunun rengini gösterir. Ekran hiçbir yuvayı beslemiyorsa tüm yuvalar arasındaki en düşük yuvaya bakar. Tek renkli ekran parlaklığı nokta deseni olarak gösterir. Bir ışık çubuğuna renk ulaşana kadar PadForge hiçbir şey göstermez.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ekran, bağlı olmayan eşlenmiş cihazları Cihazlar sayfasında görünen adlarıyla listeler ve eksik yoksa Hepsi bağlı der.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Resimler (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tüm Dosyalar (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Kaydır</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Kaydır X</value></data>
@@ -5944,6 +6091,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Sürüş (0 değil)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Oyun telemetrisi</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Betik değeri</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Cihaz bağlantısı</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Hız (mil/sa)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>Devir (maks. devrin yüzdesi)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Vites (-1 geri, 0 boş)</value></data>
@@ -6049,6 +6197,7 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Kaplama, seçtiğiniz bir resmi, oranlarını koruyarak penceresini dolduracak şekilde ölçeklenmiş olarak gösterir. Yüzde 100'ün üzerindeki yakınlaştırmada resmin bir bölümünü gösterir, örneğin bir harita için. Bu bölümü Klavye ekranı resmini kaydır makrosu hareket ettirir, PadForge öndeyken sol fare düğmesiyle sürüklemek de aynı işi yapar.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Kaplama, Kronometre makrosunun başlattığı, duraklattığı ve sıfırladığı kronometreyi gösterir. Bu, her klavye ekranının gösterdiği kronometrenin aynısıdır.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Kaplama, burada seçtiğiniz yuvadaki ya da rengi olan en düşük yuvadaki DualShock 4 veya DualSense'in ışık çubuğunun rengini gösterir. Bir ışık çubuğuna renk ulaşana kadar hiçbir şey göstermez.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Kaplama, bağlı olmayan eşlenmiş cihazları Cihazlar sayfasında görünen adlarıyla listeler ve eksik yoksa Hepsi bağlı der.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Ekran kaplaması {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Kaplama ekle</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Rengi olan en düşük yuva</value></data>
@@ -6391,6 +6540,245 @@ PadForge bunları şimdi kaldırsın mı? Bu işlem yönetici izni gerektirir ve
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Açan giriş basılı tutma süresi dolmadan bırakılınca klavyeyi açar veya kapatır. Daha uzun bir basış hiçbir şey yapmaz.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Açan giriş basma penceresi içinde üç kez basılınca klavyeyi açar veya kapatır.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Açan giriş bir kez basıldıktan sonra basma penceresi bitince klavyeyi açar veya kapatır. Pencere içindeki ikinci basış bunu iptal eder.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Kapalı. Hiçbir program PadForge'a ulaşamaz.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} ve {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Etkinlik: {0} çağrı, en eskiden başlayarak. Bunlardan önceki çağrılar: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Etkinlik: {0} çağrı. Ondan önceki çağrılar: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} eski çağrı gitti. Etkinlik en yeni {1:N0} çağrıyı tutar.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} eski çağrı gitti. Etkinlik en yeni {1:N0} çağrıyı tutar.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Dışa aktar…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Etkinliği dışa aktar</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Metin dosyası</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Aç</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Güncelle</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>{0} için daha fazlası</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Beceriyi ZIP olarak kaydet…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Ayar dosyasını aç</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Kaydedildi. {0} içinde, {2} altına {1} ekleyin.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} için henüz ayar dosyası yok. Ekle bir tane oluşturur.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge bu bilgisayarda, üreticisi Windows'ta kurulumunu belgelemiş bir asistan programı bulamıyor. Diğer asistanlar için Daha fazla altındaki Ayarları kopyala işe yarar.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge asistan programlarını denetleyemedi: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Eklenmedi.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Eklendi.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Eklendi. Şimdi bağlı.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Eklendi. O zamandan beri bağlanmadı. Açık olan bir asistan, kapatılıp yeniden açıldıktan sonra PadForge'u görür.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Başka bir PadForge için eklendi. Güncelle onu bunun üzerine yöneltir.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Eklendi. PadForge becerisi bu PadForge'dan eski.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Eklendi, PadForge becerisi olmadan.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Eklendi. PadForge becerisi daha yeni bir PadForge'dan geliyor.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Becerileri yalnızca yükleme olarak alır.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Eklenen asistanlar, Otomasyon açılınca PadForge'a ulaşır.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Ekleniyor…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Kaldırılıyor…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Güncelleniyor…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Bitmedi: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Diğer asistanlar</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Yukarıda listelenmeyen bir asistan için: Ayarları kopyala, MCP ayarları için girdiyi verir, Bir ileti kopyala ise herhangi bir sohbet için nasıl bağlanılacağını ve önce ne isteneceğini söyleyen kısa bir metin verir.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Ayarları kopyala</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Bir ileti kopyala</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopyalandı.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Kopyalanmadı: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>PadForge'a bağlanın, bilgisayarımdaki kontrolcü eşleyici. stdio üzerinden çalışan yerel bir MCP sunucusudur: komut {0}, argüman --mcp ile. JSON ayarı olarak: {1} Bağlandıktan sonra önce status aracını çağırın, sonra neyi kurmak istediğimi sorun, örneğin: “Kontrolcümün tetiklerini nereden eşleyeceğimi göster.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge'un Otomasyon özelliği şu an kapalı: önce PadForge içinde Ekstralar, Otomasyon altından açın.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>İzin verilen programlar</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Okuma veya daha yüksek düzey isteyen bir program, ilk bağlandığında bir kez sorar ve istediği düzeyi, yukarıdaki düzeye kadar alır. Yukarıdan eklediğiniz bir asistana bununla izin verilmiş olur.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Şimdi bağlı.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Son kullanım: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Henüz kullanılmadı.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Bağlı: {0}. Otomasyon sayfasını açmak için tıklayın.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Bu bilgisayarda: {0}. Web'den: {1}. Otomasyon sayfasını açmak için tıklayın.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Web'den bağlı: {0}. Otomasyon sayfasını açmak için tıklayın.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL eşlemesi</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Okunuşu</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Kaynak</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>Kimlik</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Bir oyun kumandası, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Bir joystick. SDL'nin bunun için eşlemesi yok.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Bir joystick. PadForge onu ham okur, bu yüzden SDL'nin eşlemesi kullanılmaz.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Bir joystick, sizin satırınızla oyun kumandası düzenine konmuş.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL, motor çalışırken cihazları okur.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Yerleşik topluluk kopyası, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} tarihinde indirildi</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge'un kendi dosyası</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Sizin, eklenme tarihi {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG değişkeni, SDL bunu eklediğiniz her satırın üstünde tutar</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL eşlemesini kopyala</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Cihazın eşlemesini, topluluk veritabanının bir satırı olarak, cihazın kimliği altında, sağlama toplamı ve sürümü sıfırlanmış hâlde panoya koyar.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL eşlemesini yapıştır…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Bu cihaz için bir satır alır, denetler, sizin olarak saklar ve hemen uygular.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Eşleme bul…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge'un taşıdığı her satırı adla arar ve seçtiğinizi bu cihaza uygular, kimlikleri farklı bir klon için.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Düzen tahmin et</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Hiçbir veritabanının tanımadığı bir cihaz için, cihazın eksenlerinden, düğmelerinden ve hat anahtarlarından bir oyun kumandası düzeni tahmin eder. Girişleri test et bölümünde denetleyin.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Benimkini kaldır</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Benimkini kaldır, önceki satırı ve kontrolcü satırlarını geri koyar.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Yeniden eşle</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Cihazın bulunduğu her kontrolcüdeki satırlarını, atamada olduğu gibi, SDL'nin düzeninden yeniden oluşturur.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Topluluk veritabanı sayfası</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Satır ve {0} ile farkı</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Satır</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontrolcü</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} satırı</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Şimdiki girişi</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL'nin satırı diyor ki</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL'nin satırında yok</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, farklı</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge tarafından kullanılmıyor: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Satır</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Kopyalandı.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Kopyalandı. SDL'nin biçimi şunları taşıyamaz: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makrolar</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>eğriler</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>ölü bölgeler</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>klavye ve fare çıkışları</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, aç/kapat ve diğer eylemler</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ve {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Kopyalanacak bir şey yok: SDL'nin bu cihaz için eşlemesi yok ve cihaz hiçbir kontrolcüde değil.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Başka bir program panoyu kullanıyor. Hiçbir şey kopyalanmadı.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Satırınız kaldırıldı. Cihaz, ondan önceki gibi okunur.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL'nin düzeninden yeniden eşlendi: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Şimdi kullanımda. Satır sizindir ve bu cihaz için geçerlidir.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Sizin olarak saklandı. Motor çalışıp cihaz bağlanınca kullanılır.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Sizin olarak saklandı, ancak SDL_GAMECONTROLLERCONFIG değişkeni bu cihaz için bir satır tutuyor ve SDL onu sizinkinin üstünde tutar.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL satırı almadı. Bu cihaz için hiçbir şey değişmedi.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL eşlemesi yapıştır</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} için SDL eşlemesi yapıştır</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} için eşleme bul</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>{0} için düzen tahmin et</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Dosyadan veya panodan satır ekle</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Yapıştır</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Dosya aç…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Eşleme dosyaları (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Dosya 4 MB'tan büyük. Topluluğun tüm dosyası yaklaşık 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Ada, kimliğe veya VID:PID'ye göre ara</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge'un taşıdığı satırlar</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Eşleşen satır yok.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Seçilen satır, Yapıştır ile aynı denetimden ve aynı seçimden geçerek {0} cihazına kendi kimliği altında uygulanır.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL eşleme satırı</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Bu cihaz için bir satır.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Tahmin edilmiş bir düzen.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} alan, kimliği bu cihazla eşleşiyor.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} alan, başka bir veri yolundaki veya sürümdeki aynı üretici ve üründen. Bu cihazın kendi kimliği altında saklanır.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} alan, başka bir cihazın satırı. Bu cihazın kendi kimliği altında saklanır.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} alan. SDL bu cihazı okumaz, bu yüzden PadForge girişlerini satıra göre düzenler.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} alan, cihazın eksenlerinden, düğmelerinden ve hat anahtarlarından. Girişleri test et bölümünde denetleyin, sonra burada saklayın veya değiştirin.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} alan, kimliği bu cihazla eşleşiyor.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} alan, başka bir veri yolundaki veya sürümdeki aynı üretici ve üründen. Bu cihazın kendi kimliği altında saklanır.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} alan, başka bir cihazın satırı. Bu cihazın kendi kimliği altında saklanır.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} alan. SDL bu cihazı okumaz, bu yüzden PadForge girişlerini satıra göre düzenler.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} alan, cihazın eksenlerinden, düğmelerinden ve hat anahtarlarından. Girişleri test et bölümünde denetleyin, sonra burada saklayın veya değiştirin.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Bu, {0} cihazının okunuşunu değiştirir. Şu kontrolcülerdeki satırları yeni düzenden yeniden eşlenir: {1}.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Bu, {0} cihazının okunuşunu değiştirir. Hiçbir kontrolcüde olmadığı için hiçbir satır değişmez.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} cihazını okuyan profil kısayolları, ayarlandıkları girişleri korur.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Satır, PadForge.xml içinde sizin olarak saklanır ve bu cihaz için her kaynağın üstünde geçerlidir. Benimkini kaldır, eski satırı ve eski satırları geri koyar.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Satırlar PadForge.xml içinde sizin olarak saklanır ve kendi cihazları için her kaynağın üstünde geçerlidir. Kontrolcü veritabanı satırının Daha fazla bölümündeki Temizle bunları kaldırır.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows için {0} satır. Diğer sistemler için {1} satır atlandı.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows için {0} satır. Diğer sistemler için {1} satır atlandı.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} reddedildi. İlk neden: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Bir satır veya gamecontrollerdb.txt dosyasının metnini yapıştırın.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Metin, SDL'nin kontrolcü veritabanının bir satırı değil: 32 onaltılık basamaktan oluşan bir kimlik, bir ad, sonra a:b0 gibi alanlar.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Satırlar başka sistemler için. PadForge Windows için veya belirli bir sistem belirtmeyen satırları okur.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Satırın kimliği bir cihaza ait değil. 32 onaltılık basamak gerekir.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Satırın adı boş, 128 karakterden uzun ya da SDL'nin alan olarak okuduğu bir karakter içeriyor.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Satır, PadForge'un kabul etmediği bir ipucu veya Android alanı taşıyor.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Satırda SDL'nin tanımadığı bir alan var.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Bir bağlama SDL'nin biçiminde değil, örneğin b3, a2, +a2, a2~ veya h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Satır bir alanı iki kez veriyor.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Satır 1.024 karakterden uzun.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Satır hiçbir kontrole bağlanmıyor.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Satırlarınız</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Satırlarınız</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Buraya eklediğiniz veya bir cihazın SDL eşlemesi kartına yapıştırdığınız satırlar, kendi cihazları için her kaynağın üstünde geçerlidir ve sıfırlamadan sonra da kalır.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Dosyadan veya panodan satır ekle…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} satır, kendi cihazları için diğer her kaynağın üstünde sizin.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} satır, cihazı için diğer her kaynağın üstünde sizin.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Henüz yok.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Hemen kullanımda.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>PadForge'a web'den ulaş</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Bir web sitesinde çalışan asistan, bu bilgisayardaki bir tünel programı üzerinden PadForge'a ulaşır. Bunu açmak önce size sorar.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>PadForge'a web'den ulaşılsın mı?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge, yönetici hakları olmadan çalışan ve yalnızca bu bilgisayarı dinleyen bir yardımcı başlatır, seçtiğiniz tünel programı ona genel bir adres verir. Bir web asistanı, ancak girişine PadForge'un soru kartında izin verdikten sonra içeri girer ve yukarıdaki düzeyde çalışır.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Aç</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Web'deki asistanlar</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tünel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Yok</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Yapıştırdığım bir adres</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Başlıyor, sizin haklarınızla.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Çalışıyor, sizin haklarınızla. Adresi her başlayışta aynı kalır.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Çalışıyor, sizin haklarınızla. Hızlı bir tünel her başlayışta yeni bir adres alır, bu yüzden asistan yeniden eklenmelidir.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Durdu.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Durdu. Son sözleri: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Başlatılamadı.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Artık bu bilgisayarda yok.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Bu bilgisayarda tünel programı bulunamadı. PadForge cloudflared, devtunnel, ngrok ve Tailscale Funnel ile ya da kendi tünelinizin adresiyle çalışır.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge'a genel bir adres vermek için bir tünel seçin.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Bu bilgisayarda ayrıca: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, adresi aynı kalan</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, hızlı tünelleri her seferinde yeni adres alan</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Kendi tünelinizi http://127.0.0.1:{0} adresine çalıştırın ve https adresini yapıştırın. Adlandırılmış bir Cloudflare tüneli, kalıcı bir geliştirici tüneli, Tailscale Funnel ve ngrok'un kendi alan adı adreslerini korur.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>/mcp dışında yolu olmayan bir https adresi yapıştırın, tünelinizin verdiği gibi.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge'un web yardımcısı başlıyor.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge'un web yardımcısı durdu ({0}). Yeniden başlatmak için PadForge'a web'den ulaş seçeneğini kapatıp açın.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adres</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Henüz genel adres yok.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude'a ekle</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Kopyalandı.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Yeni web asistanını kabul et</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Kabul etmeye başla</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Kabul etmeyi durdur</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>{0} saatine kadar kabul ediliyor.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Kabul edilmiyor. Kabul etmeye başla bunu beş dakikalığına açar.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Adresi asistana ekleyin ve oturum açın. Her oturum açma, kendi sayfasında ve PadForge'un soru kartında kendi altı basamaklı kodunu gösterir. Yalnızca iki kod eşleşirse izin verin. Başka zamanlarda oturum açma reddedilir ve size hiçbir şey sorulmaz.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Web'de izin verilenler</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Henüz yok.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Oturum açması şuraya döndü: {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Kendine {0} diyor.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>İzin verildi: {0}, son kullanım: {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>İzin verildi: {0}, henüz kullanılmadı.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Geri al</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Kendi Secure MCP Tunnel aracı PadForge'u doğrudan çalıştırır, burada adres veya oturum açma gerekmez. Komutu o tünelin kurulumuna kopyalayın.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Komutu kopyala</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge hiçbir tünel programı indirmez ve başka hiçbir şirketin anahtarını tutmaz. Bir web asistanı yukarıdaki düzeyde çalışır.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>PadForge ile web'den çalışması için {0} adresine izin verilsin mi?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Oturum açması şuraya döner: {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Kendine {0} diyor.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Yalnızca oturum açma sayfası bu kodu gösteriyorsa izin verin:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Altı basamaklı kodu PadForge'un soru kartında görünür. Yalnızca oturum açma sayfası aynı kodu gösteriyorsa izin verin.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>{0} düzeyinde, {1} üzerinden çalışır.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Oturum açması bu bilgisayara döner ve buradaki her program o adresi sahiplenebilir.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge'da oturum aç</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0}, bilgisayarınızda PadForge ile çalışmak istiyor.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Kendine {0} diyor.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Bilgisayarınızda PadForge'un soru kartı bu oturum açmayı sorar. Yalnızca kart şu kodu gösteriyorsa orada izin verin:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Bilgisayarda yanıtladığınızda bu sayfa kendiliğinden devam eder.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Bu oturum açma bilgisayarınızdaki bir programa döner ve oradaki her program o adresi sahiplenebilir.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge şu an yeni bir web asistanı kabul etmiyor. Bilgisayarınızda PadForge'u açın, Ekstralar, Otomasyon bölümüne gidin ve Web'deki asistanlar altında Kabul etmeye başla düğmesine basın. Sonra yeniden oturum açın.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Bu oturum açma devam edemez. PadForge'un adresini asistanda yeniden ekleyin ve oturum açın.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Bu oturum açma sona erdi. Asistandan yeniden oturum açın.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows başlatmadı</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>{0} koduyla sona erdi</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Otomasyon kapalı, bu yüzden hiçbir web asistanı PadForge'a ulaşamaz. Web yardımcısı, Otomasyon açılınca başlar.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Denetleniyor…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Kurulu değil.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Kurulu ve güncel. Bir betik {0} ile başlar.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} için kurulu ve güncel. Bir betik {1} ile başlar.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Kurulu. Bu PadForge'un daha yeni bir kopyası var.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} için kurulu. Bu PadForge'un daha yeni bir kopyası var.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Kuruluyor…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge bunu denetleyemedi: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Kur, PadForge'un kitaplığını o dilin bulacağı yere koyar. Onu yükleyen bir betik, yukarıdaki düzeyde cihazları okur ve eşlemeleri yönetir.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Kitaplığı istediğiniz yere kaydedin</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Kurulu kopyalar</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Tümünü kaldır</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Kaldırıldı.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Betik kimliği</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Betik kimliği</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Betikler kontrollerini şöyle adlandırır: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Betikler tuşlarını KeyA, KeySpace, KeyLeftShift gibi, her tuşu da koduyla adlandırır, Vk0 ile Vk255 arası.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Renkler doğrudan {0} cihazına gider. Renk döngüsü veya sese uyan renkler gibi değişen renkler ona ulaşmaz. Sabit kalan bir renk ulaşır.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Tüm dosyalar (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge profili (*{0})|*{0}</value></data>

@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} салгагдсан. {1}: төхөөрөмж үлдээгүй.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} холбогдсон</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} холбогдсон, батерей {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} төхөөрөмж салгагдсан</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} төхөөрөмж холбогдсон</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} төхөөрөмж салгагдсан: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} төхөөрөмж холбогдсон: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} дахин дахин салгагдаж байна</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (дээд тал нь {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (дээд тал нь {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Автомат дахин холболт, порт, хослуулалтын таних мэдээлэл, хаягаар холбогдох</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Порт, DSX.exe орлуулагч</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Портууд, Бүрэн хурд, Өөрийн форматууд</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ур чадвар</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Бусад туслахууд, вэб дээрх туслахууд</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Хоёр эрхий хуруу товчлуур дээрээ байх зуур толгой хянагч эсвэл VR дуулгаар эргэн тойрноо харна.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Уралдааны тоглоомын илгээдэг хурд, дөрөө, арааг бусад оролтын адил онооно.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU хөдөлгөөний эх үүсвэр уншдаг эмуляторуудад контроллерын хөдөлгөөнийг илгээнэ.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Цэс нээлттэй үед түүний цагираг, тор эсвэл зурвас.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Сэлгэх давхарга идэвхжихэд тухайн давхаргын тохируулсан хугацаанд түүний нэр.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Профайл солигдоход профайлын нэр.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Виртуал контроллерууд товчлол эсвэл макроор дөнгөж асаагдсан эсвэл унтарсан эсэх.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Оноосон төхөөрөмж салгагдахад түүний нэр.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Оноосон төхөөрөмж холбогдоход түүний нэр.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Хаягийг хуулах</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Програмууд профайл сольж чөлөөлөх, хөдөлгүүрийг эхлүүлж зогсоох, виртуал контроллеруудыг асааж унтраах, цонхыг харуулж нуух, PadForge-ийг хаах, оношилгооны агшин зураг хадгалах болон юу ажиллаж байгааг асуух боломжтой.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Тушаалууд түвшний бүх зүйл, мөн програмууд төхөөрөмж, виртуал контроллер, оноолт, профайл, тохиргоог харах, төхөөрөмж бүрийн оролтыг тухай бүрд нь дагах, PadForge доторх байршлыг танд үзүүлэх боломжтой. Унших түвшний програм төхөөрөмж бүр дээр дарагдсан товч бүрийг, тэр дундаа администраторын эрхээр ажиллаж буй цонхонд бичсэн товчнуудыг харна.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Унших түвшний бүх зүйл, мөн програмууд өөрийн төхөөрөмж нэмж удирдах, дурын төхөөрөмжийн удирдлагыг барих, макро гохуудад нэртэй утга дамжуулах боломжтой.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Оролт илгээх түвшний бүх зүйл, мөн програмууд таны хуудсууд дээр өөрчилж болох зүйлсийг өөрчлөх боломжтой.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Оролт илгээх түвшний бүх зүйл, мөн програмууд таны хуудсууд дээр өөрчилж болох зүйлсийг өөрчлөх боломжтой. Зарим өөрчлөлтийг хийхээс өмнө PadForge-ийн асуултын карт дээр танаас үргэлж асууна.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Туслахууд</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Үүнийг туслахын MCP тохиргоонд буулгана уу. Ингэснээр туслах дээрх түвшинд PadForge-тай ажиллана.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML хэлбэрээр хуулах</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML уншдаг туслахууд</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Нэмэх товч PadForge-ийг ур чадварын хамт тэр туслахад нэмнэ. Дараа нь туслах дээрх түвшинд ажиллах бөгөөд түүний үгс заасан зүйлийн хажууд, түүний нэрийн доор харагдана.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Скриптүүд</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Скриптийн сан</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Сан хадгалах…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python эсвэл PowerShell-д зориулсан нэг файл. Үүнийг ачаалсан скрипт дээрх түвшинд төхөөрөмжүүдийг уншиж, оноолтуудыг удирдана.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python эсвэл PowerShell-д зориулсан нэг файл, таны сонгосон газарт бичигдэнэ.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Таныг хүлээж байна</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Үйл ажиллагаа</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Одоогоор ямар ч програм хандаагүй байна. Хандалт бүр үр дүнгийн хамт энд жагсаагдана.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Буцаах</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Туслахуудад зориулсан ур чадвар</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Ур чадварыг хадгалах…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge үүнийг хадгалж чадсангүй: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Унших буюу түүнээс дээш түвшний програм холбогдсон үед гарыг оролцуулан төхөөрөмж бүр дээр юу дарагдаж байгааг харна.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Залгаасууд</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Залгаасуудыг ажиллуулах</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ажиллаж буй залгаас алга.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Залгаас PadForge-ийн биш, таны эрхээр ажиллана.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Суулгагдсан</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Туршилтын контроллер</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Нэг удаад нэг удирдлагыг өөрөө хөдөлгөдөг контроллер. Ингэснээр гартаа төхөөрөмжгүйгээр оноолтыг туршиж болно.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Хурд</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Удаан</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Хэвийн</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Хурдан</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Хамгийн хурдан</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Дахин тоглуулах</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Асуудлын бичлэгийг түүнийг үүсгэсэн төхөөрөмжүүдийн дүрээр, тэдний цаг хугацааны дагуу дахин тоглуулна. Тэдгээр нь энэ компьютер дээр шинэ төхөөрөмж болж, таны эсвэл профайлын оноосноор оноогдоно.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Бичлэг</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Асуудлын бичлэгүүд|*.zip;*.log|Бүх файл|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} файлыг тоглуулж чадахгүй. Энэ нь асуудлын бичлэг биш, эсвэл ямар ч төхөөрөмжийн оролт агуулаагүй байна.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Таны залгаасууд</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Залгаас нь PadForge-д төхөөрөмж нэмдэг програм юм. Хөдөлгүүр ажиллах бүрд PadForge үүнийг таны энгийн эрхээр эхлүүлнэ.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Залгаас нэмэх…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Програм ба скриптүүд|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Бүх файл|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Зөвшөөрөх…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Зөвшөөрөөд дахин эхлүүлэх…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Хөдөлгүүртэй хамт эхэлнэ</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Эхлэхээс өмнө файлыг шалгаж байна</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} кодоор дууссан. {1} с дараа дахин эхэлнэ.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} жагсаалтад аль хэдийн байна.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge 16 хүртэлх залгаас ажиллуулна. Өөр нэгийг нэмэхийн тулд нэгийг хасна уу.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Ажиллаж буй залгаас: {0}. Тэдний нэмсэн төхөөрөмж: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} таван удаа алдаа гарсны дараа зогссон.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} таныг зөвшөөрснөөс хойш өөрчлөгдсөн.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} эхэлж чадсангүй.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Нэмсэн: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Гарын үсэг зурсан: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Гарын үсэггүй.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Ажиллаж байх үед нь тохиргоо нь энд харагдана.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Энэ залгаас тохиргоо зарлаагүй.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge түүний тохиргоог уншиж чадсангүй: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Нэг минут хариу өгөөгүй тул зогсоосон</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Ажиллаж байх үед файл нь өөрчлөгдсөн</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Нэмсэн залгаас: {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} тохиргоо</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Сонгох</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Удирдлага дарна уу…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Сонгоогүй</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Залгаас нэмэх эсвэл түүний файлыг энэ хуудас руу чирж оруулна уу. PadForge түүний зам, гарын үсэг зурсан этгээд болон SHA-256 утгыг харуулж, ажиллуулахаас өмнө танаас асууна. Залгаас PadForge-ийн бус таны эрхээр ажиллана.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Асуудлын бичлэгийг түүнийг үүсгэсэн төхөөрөмжүүдийн дүрээр, тэдний цаг хугацааны дагуу дахин тоглуулна.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Ажиллаж байна.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Гараар ажиллаж байна.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Хөдлөх хэсэг</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Стик ба гох</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Стик</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Гох</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Хэв маяг</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Шүүрдэлт</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Тойрог</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Хөдлөх хугацаа</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Амрах хугацаа</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Товчлуур дарах</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Навигацын товчлуур дарах</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows-ийн аппууд виртуал Xbox контроллерын A, B, Back, Start товч болон D-pad-д урд талын цонхонд хариу үйлдэл үзүүлдэг бөгөөд Guide товч Xbox Game Bar-ийг нээнэ.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>D-pad эргүүлэх</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Мөн адил шалтгаанаар.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Дарах хугацаа</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Контроллерууд</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Гараар</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Хөдөлгөөнийг зогсооно. Доорх оролтыг хулганаар тохируулна уу.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Зүүн стик</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Баруун стик</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Зүүн гох</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Баруун гох</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Секундэд унших тоо</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Залгаасын багц болон сонгосон залгаасын бүртгэл</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Залгаасын багц</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Залгаасын багцыг хадгалах…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# хэл дээрх жижиг залгаас, мөн AutoHotkey, Python, PowerShell-д зориулсан ижил залгаас, файл бүр бүтээх эсвэл ажиллуулах зааврын хамт.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Үйл үг, үйл явдал, тохиргооны төрөл бүрийн гарын авлага, C# залгаасыг бүтээх скрипт, мөн AutoHotkey, Python, PowerShell-д зориулсан ижил залгаас.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Бүртгэл</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Бүртгэлийг нь харах залгаасаа сонгоно уу.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Энэ залгаасын бүртгэлд одоогоор юу ч алга.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Тоглоомын мод</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>{0} нэртэй хоолойг өөр програм эзэмшиж байна. Тэр програмыг хаана уу.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows {0} хоолойг үүсгэхээс татгалзсан тул програмууд холбогдож чадахгүй.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Холбогдсон програм алга.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Асаалттай. Холбогдсон програм алга.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Холбогдсон: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Үл мэдэгдэх програм</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, гарын үсэг зурсан: {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge дахин эхлэх хүртэл эдгээрийг дахин хийхгүй</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-д ийм хэрэгсэл алга</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Програм хуучин төлөвийг уншсан</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ийм тохиргоо алга</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ийм ID-тай зүйл алга</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Утга тохиргооны хүлээн авах хүрээнээс гадуур байсан</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Та үүнийг зөвшөөрөөгүй</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Хэн ч цагтаа хариулаагүй</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Цонхыг харуулах</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Цонхыг системийн тавиур руу илгээх</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Цонхыг багасгах</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Цонхыг томруулах</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ийг хаах</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Хөдөлгүүрийг эхлүүлэх</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Хөдөлгүүрийг зогсоох</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>{0} төхөөрөмжийг нэмэх</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг тохируулах</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>{0} төхөөрөмжийг хасах</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>{0} төхөөрөмжийн бүх удирдлагыг тайван байрлалд оруулах</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge програм ажиллуулна.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Файл, хавтас эсвэл вэб хуудас нээнэ.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge Windows руу товч эсвэл хулганы оролт илгээнэ.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge-ийн гаднаас профайл импортлоно.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>Програм үүнийг хийхээс өмнө PadForge танаас асууна.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Харилцах цонхнууд</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Макронууд</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг барих</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>{0} төхөөрөмжийн удирдлагуудыг суллах</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>{0} утгыг тохируулах</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Профайл солих</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Хөдөлгүүрийг эхлүүлэх эсвэл зогсоох</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Виртуал контроллеруудыг асаах эсвэл унтраах</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Оношилгооны агшин зураг хадгалах</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Шалгалтын давтамж болон драйверуудыг унших</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Профайлуудыг жагсаах</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Профайл унших</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Виртуал контроллеруудыг жагсаах</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Төхөөрөмжүүдийг жагсаах</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Төхөөрөмж унших</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Таны оролтыг хүлээх</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Контроллерын оноолтуудыг унших</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Контроллерын макронуудыг жагсаах</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Асуудал бичих</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Тохиргоо хайх</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Тохиргоо унших</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Танд байршил үзүүлэх</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge дотроос байршил хайх</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge дахь байршлыг унших</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Таны харж буйг унших</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Өөрийн төхөөрөмж нэмэх</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Өөрийн төхөөрөмжийг удирдах</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Өөрийн төхөөрөмжийг хасах</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Удирдлагыг барих эсвэл суллах</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Макроны өдөөгчид утга тохируулах</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Тохиргоо өөрчлөх</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Товчлуур дарах</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Профайл үүсгэх</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Профайлын нэрийг өөрчлөх</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Профайл устгах</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Контроллерын төрлийг өөрчлөх</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Төхөөрөмж оноох</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Оноолтын мөрүүдийг тохируулах</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Оноолтын мөрүүдийг цэвэрлэх</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Контроллерыг автоматаар оноох</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Макро хадгалах</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Макро устгах</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Гар болон хулганы контроллер үүсгэнэ</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Асаана: {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” тохиргоог өөрчлөх</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” дарах</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} танд байршил үзүүлэхийг хүсэж байна: {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} дээр.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>{0} нь PadForge-тай {1} түвшинд ажиллахыг зөвшөөрөх үү?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} ажиллуулж байна: {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Эхлүүлсэн: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Гарын үсэг зурсан: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Гарын үсэггүй.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Унших түвшин болон түүнээс дээш үед гарыг оролцуулан бүх төхөөрөмж дээр дарсан товч бүрийг харна.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Нэг л удаа асууна. Үүнийг Автоматжуулалт хуудсанд хасах боломжтой.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ийн командын мөр</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0}: {1} болгоно</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Сүлжээг сонсох тул бусад төхөөрөмж энэ компьютерт хандах боломжтой болно.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Бусад програм болон тоглоомуудын түшиглэдэг драйвер эсвэл HidHide-ийг өөрчилнө.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell модулиуд (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Зөвшөөрөх</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Зөвшөөрөхгүй</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Одоо биш</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Харуулах</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Нийт {1} алхмаас {0}-р алхам.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Үргэлжлүүлэхийн тулд түүн дээр дарна уу.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Нээнэ үү: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Бусад хэсгийг нээнэ үү.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Илгээгч: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Илгээгч: {1}, өөрийгөө “{0}” гэж нэрлэдэг</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Илгээгч: өөрийгөө “{0}” гэж нэрлэдэг програм</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Суулгаад дахин эхлүүлэх</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Хувилбарын тэмдэглэл</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Контроллерын мэдээллийн сан</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Одоо шинэчлэх товч нийгэмлэгийн контроллерын мэдээллийн санг (SDL_GameControllerDB) GitHub-аас татаж, PadForge-ийн энэ хувилбарт байхгүй оноолтуудыг тохиргооны файлд хадгална. Шинэ оноолтыг зөвхөн өөр юу ч геймпад гэж уншдаггүй, оноогдоогүй, Түүхий жойстикийн горимыг албадах тохиргоонд ороогүй контроллерт ашиглана. Дахин тохируулах товч татсан бүх оноолтыг устгана.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Одоо шинэчлэх товч нийгэмлэгийн контроллерын мэдээллийн санг (SDL_GameControllerDB) GitHub-аас татаж, PadForge-ийн энэ хувилбарт байхгүй оноолтуудыг тохиргооны файлд хадгална. Тэдгээр нь тэр дороо ашиглагдана. Шинэ оноолтыг зөвхөн өөр юу ч геймпад гэж уншдаггүй, оноогдоогүй, Түүхий жойстикийн горимыг албадах тохиргоонд ороогүй контроллерт ашиглана. Дахин тохируулах товч татсан бүх оноолтыг устгана. Бусад доторх таны өөрийн мөрүүд үлдэнэ.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Одоо шинэчлэх</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Шинэчилж байна…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Шинэчлэлт шалгаж байна…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} шинэчлэлтийн суулгалт дуусаагүй. Дахин оролдохын тулд Тохиргооноос суулгана уу.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge шинэчлэгдлээ: {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Суулгагдсан: {0} оноолт, нийгэмлэгийн хуулбар {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Суулгагдсан: {0} оноолт, нийгэмлэгийн хуулбар {1}. Шинэчилсэн {2}: шинэ {3}, өөрчлөгдсөн {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Суулгагдсан: {0} оноолт, нийгэмлэгийн хуулбар {1}. Татсан {2}: шинэ мөр {3}, өөрчлөгдсөн {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Сүүлийн шинэчлэлтээс хойш нийгэмлэгийн мэдээллийн сан өөрчлөгдөөгүй.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-д хүрч чадсангүй: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>Татсан файл PadForge-ийн хүлээж буй контроллерын мэдээллийн сан биш тул PadForge үүнийг хүлээн авсангүй. Юу ч өөрчлөгдөөгүй.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Шинэ оноолтыг түүний контроллер дараагийн удаа холбогдоход ашиглана.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Өөрчлөгдсөн оноолтыг PadForge дараагийн удаа эхлэхэд ашиглана.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Багасгасан байдлаар эхлэх</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Нэвтрэхэд эхлэх</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Хувилбарын мэдээлэл, мөн алдаа засахад зориулсан хөдөлгүүрийн үйл явдлын бүртгэл.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Оношилгооны бүртгэл хөтлөх</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Хөдөлгүүрийн үйл явдлыг бүртгэлийн хавтас дахь diagnostics.log файлд тасралтгүй бичнэ. Тэр хавтсыг Бүртгэлийн хавтас нээх товч нээнэ. Дахин эхлүүлсэн ч идэвхтэй хэвээр байна. Файл 8 МБ хүрэхэд diagnostics.log.old болж солигдоно.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Агшин зураг хадгалах</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Хөдөлгүүрийн хамгийн сүүлийн үйл явдлуудыг шинэ файлд хадгална. Оношилгооны бүртгэл унтраалттай үед ч ажиллана.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Агшин зураг хадгалах…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Апп, Windows, таны төхөөрөмж, тохиргоог одоогийн байдлаар нь хөдөлгүүрийн хамгийн сүүлийн үйл явдлын хамт авч, хадгалахаас өмнө уншихад тань зориулж нээнэ. Оношилгооны бүртгэл унтраалттай үед ч ажиллана.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Бүртгэлийн хавтас нээх</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Асуудлыг бичих</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Бичлэг эхлүүлэх</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Бичлэг зогсоох ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Бичлэг зогсоох товч дарах, 10 минут болох эсвэл zip 20 MB хүрэх хүртэл бичээд, тайланд хавсаргахад бэлэн zip файлыг Explorer дээр сонгоно.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Эхлүүлж, асуудлыг гаргаад, дараа нь зогсооно уу. PadForge-ийн хажууд байх нэг файлд PadForge-ийн уншсан, илгээсэн, бүртгэсэн бүх зүйл юу буруу болсон тухай хураангуйн хамт хадгалагдана. Бичиж байх үед төхөөрөмж бүр дээр дарагдсан товч бүр, гар болон хулганыг оролцуулан файлд орно. Хэрэглэгчийн нэр, серийн дугаар, хаяг болон бичсэн нэрсийг юу ч бичихээс өмнө орлуулна.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Бичлэг зогсоох товч дарах, 30 минут болох эсвэл zip 20 МБ хүрэх хүртэл бичээд, хадгалахаас өмнө уншихад тань зориулж бичлэгийг нээнэ.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Эхлүүлж, асуудлыг гаргаад, дараа нь зогсооно уу. Дараа нь түүний агуулгыг хэсэг хэсгээр нь уншаад, хүссэн газраа хадгална уу. Бичиж байх үед төхөөрөмж бүр дээр дарагдсан товч бүр, гар болон хулганыг оролцуулан үүнд орно. Хэрэглэгчийн нэр, серийн дугаар, хаяг болон бичсэн нэрсийг юу ч бичихээс өмнө орлуулна.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Хураангуйг бичиж байна…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Хадгалсан: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Бичлэг эхэлсэнгүй. Шалгалтаар энэ PC-ийн хувийн утга файлаас хасагдахгүй болох нь илэрсэн.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Бичлэг эхэлсэнгүй. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Өмнөх бичлэгийг дуусгаж байна.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Сүүлийн 60 секундийг санах ойд байлгах унтраалттай тул хадгалах зүйл алга.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge-ийн зогсоогоогүй бичлэгийг дуусгалаа: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge-ийн зогсоогоогүй бичлэг таныг Нүүр хуудсанд уншихыг хүлээж байна: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Сүүлийн 60 секундийг санах ойд байлгах</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Хөдөлгүүр ажиллаж байх үед бичлэгт орох зүйлсийн сүүлийн нэг минутыг санах ойд байлгана. Орой бүр нэг удаа гардаг асуудалд зориулсан. Сүүлийн 60 секундийг хадгалах товч үүнийг файл болгон бичнэ.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Хөдөлгүүр ажиллаж байх үед бичлэгт орох зүйлсийн сүүлийн нэг минутыг санах ойд байлгана. Орой бүр нэг удаа гардаг асуудалд зориулсан. Сүүлийн 60 секундийг хадгалах товч үүнийг хадгалахаас өмнө уншихад тань зориулж нээнэ.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Сүүлийн 60 секундийг хадгалах</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Бичсэн үсэг ба тоог нэг товч болгон бичих</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Бичлэг нь ямар ч оноолт эсвэл макро уншдаггүй үсэг ба тооны товчнуудыг нэг товч болгон, дарсан бүрийг өөрийн цагт нь бичнэ. Бусад бүх товч болон оноолт эсвэл макро уншдаг бүх товчийг дарсан ёсоор нь бичнэ.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Сүүлийн 60 секундийг санах ойд байлгах, Бичсэн үсэг ба тоог нэг товч болгон бичих</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Юуг бичих, сүүлийн 60 секунд, бичсэн үсэг</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Агшин зураг хадгалах</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, таны төхөөрөмж ба тохиргоо одоогийн байдлаараа, мөн адил хянан үзэлтээр дамжина.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe-ийн хажууд байх diagnostics.log файл, үүнийг тэндээс унших боломжтой.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Юуг бичих</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Бүгд асаалттай. Унтраасан хэсгийг дараагийн бичлэгт оруулахгүй бөгөөд файл аль хэсгүүдийг агуулж буйгаа заана.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Орой бүр нэг удаа гардаг асуудалд зориулсан.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Бичлэг таныг Нүүр хуудсанд уншихыг хүлээж байна.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Хураангуй</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Тохиргоо ба төхөөрөмжүүд</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Оролт</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Гаралт</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Хариу үйлдэл</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Цаг хугацаа</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Цонх ба алдаа</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Үйл ажиллагаа</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Оношилгооны мөрүүд</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Бичлэгээ унших</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>Эхэлсэн {0}, дууссан {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Агшин зураг: {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 минут</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} минут</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 секунд</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} секунд</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Та зогсоосон.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>{0} болоход өөрөө зогссон.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Zip {0} хүрэхэд өөрөө зогссон.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Макро зогсоосон.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Програм эсвэл --record stop зогсоосон.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Үүнийг эхлүүлсэн туслах зогсоосон.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge хаагдахад зогссон.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Санах ойд хадгалсан сүүлийн 60 секунд.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Хуваалцах зүйлээ уншина уу. Аль нэг хэсгийг оруулахгүй бол унтрааж, дараа нь хадгална уу. Та нийтлэхгүй л бол энэ компьютероос юу ч гарахгүй.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, хуваалцах байдлаараа</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Харуулах: {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>оруулаагүй</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>бичигдээгүй</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>Текстээр {0}, zip дотор {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>Текстээр {0}, таны хуваалцах zip дотор {1}. Бичлэг zip {2} хүрэх эсвэл {3} өнгөрөхөд зогсоно.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Цэвэрлэгээний шалгалт: PadForge {0} сольсон ({1}). Энэ компьютерийн нэр, серийн дугаар, хаяг таны үлдээх хэсгүүдэд алга.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} утга</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 утга</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} төрлийн хувийн мэдээлэл</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 төрлийн хувийн мэдээлэл</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Цэвэрлэгээний шалгалт: энэ компьютерийн өөрийн {0} утга таны үлдээх хэсгүүдэд байсаар байна. Тэдгээр хэсгийг унтраах эсвэл бичлэгийг устгана уу. Тэр хүртэл Хадгалах… идэвхгүй байна.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Цэвэрлэгээний шалгалт: энэ компьютерийн өөрийн нэг утга таны үлдээх хэсгүүдэд байсаар байна. Тэдгээр хэсгийг унтраах эсвэл бичлэгийг устгана уу. Тэр хүртэл Хадгалах… идэвхгүй байна.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Бичлэг хийх үед энэ хэсэгт юу ч болоогүй.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Устгах</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Хураангуйг хуулах</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Хуулсан</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Хадгалах…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Бичлэгийг хадгалах</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip файлууд</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Хадгалсангүй. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Таны хэрэглэгчийн эрхээр, эхний удаа Татан авалтууд хавтас руу, дараа нь хамгийн сүүлд хадгалсан газар руу хадгалж, Файл судлагч дээр харуулна. Хуудсыг хэн ч үзээгүй үед зогссон бичлэг (хязгаар, макро, програм, туслахын хэрэгсэл эсвэл --record stop) Нүүр хуудсанд энэ хянан үзэлтийг хүлээх бөгөөд хадгалаагүй бол 7 хоногийн дараа устгагдана. Програмд хүлээж буйг нь мэдэгдэх боловч хаана байгааг хэзээ ч хэлэхгүй.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Асуудлын бичлэг ({0}) таныг уншихыг хүлээж байна.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Хянах</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Бичлэгт тэмдэг тавих</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Програмын хувилбар</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ажиллах орчин</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL хувилбар</value></data>
@@ -2900,31 +3010,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Хулганы байрлал X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Хулганы байрлал Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн курсорын мэдрэмж. 1.0 бол төвөөс дэлгэцийн өргөний 10%-д стикийн бүтэн хазайлтад хүрнэ. 1.0-ээс их утга курсорын бага шилжилтээр бүтэн хазайлтад хүрнэ. 1.0-ээс бага утгад илүү их шилжилт хэрэгтэй.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Эх үүсвэр тус бүрийн курсорын мэдрэмж. 1.0 бол заагчийн мониторын төвөөс түүний өргөний 10%-д стикийн бүтэн хазайлтад хүрнэ. 1.0-ээс их утга курсорын бага шилжилтээр бүтэн хазайлтад хүрнэ. 1.0-ээс бага утгад илүү их шилжилт хэрэгтэй.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Хулганы шилжилт X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Хулганы шилжилт Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Бүрэн эргэлт хүртэлх шилжилт</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Хулгана төвөөс бүрэн эргэлт хүртэл хэр хол хөдлөхийг хулганы мэдээлдэг тоолуураар заана. Их тоо илүү нарийн жолоодож, гарыг илүү их хөдөлгөнө.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Хулгана эсвэл дугуй төвөөс бүрэн эргэлт хүртэл хэр хол хөдлөхийг түүний мэдээлдэг тоолуураар заана. Их тоо илүү нарийн жолоодож, гарыг илүү их хөдөлгөнө.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Хулганы DPI-г түүний төхөөрөмжийн самбарт тохируулсан бол шилжилт сантиметрээр бас харагдана.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>тоолуур</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Төвлөрөл</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Унтраалттай нь жолоог гар орхисон байрлалд нь барина. Пүрш нь Буцах хугацааны туршид төвд буцаана. Телеметрээс нь тоглоомын хурд ба наалдалтад машины урд дугуй татах шиг буцаана: зогсож байхад хөдөлгөөнгүй, хурдтай хамт чангарч, дугуй гулсахад хөнгөрнө. Телеметр илгээх тоглоом байхгүй бол пүрш болно. Тоглоомын хүчнээс нь виртуал жолооны өөрийн хүчний хариу үйлдлээр жолоог эргүүлнэ.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Унтраалттай нь жолоог гар орхисон байрлалд нь барина. Пүрш нь Буцах хугацааны туршид төвд буцаана. Телеметрээс нь тоглоомын хурд ба наалдалтад машины жолоо татах шиг буцаана: төвийн ойролцоо огцом, холдох тусам зөөлөн, зогсож байхад хөдөлгөөнгүй, хурдтай хамт чангарч, дугуй гулсахад хөнгөрнө. Телеметр илгээх тоглоом байхгүй бол хуурай зам дээр 100 km/h хурдтай үеийнх шиг татна. Тоглоомын хүчнээс нь виртуал жолооны өөрийн хүчний хариу үйлдлээр жолоог эргүүлнэ.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Унтраалттай</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Пүрш</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Телеметрээс</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Тоглоомын хүчнээс</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Буцах хугацаа</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Пүрш жолоог замын 95% хүртэл буцаахад зарцуулах хугацаа. Телеметрээс нь хуурай зам дээр 100 km/h хурдтай үед ийм хугацаа зарцуулна.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Пүрш жолоог замын 95% хүртэл буцаахад зарцуулах хугацаа. 0 үед тэр дороо төвд буцаана. Телеметрээс нь хуурай зам дээр 100 km/h хурдтай үед төвийн ойроос ийм хугацаа зарцуулна.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Жолоодох</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Үргэлж нь хулганаар байнга жолоодох боломж олгоно. Дарж барих үед нь Жолоодох оролтыг дарж байх үед л жолоодох боломж олгоно. Сэлгэх нь Жолоодох оролтыг дарах бүрд жолоодлогыг асааж эсвэл унтраана. Хулгана жолоодоогүй үед жолоо байрандаа үлдэх эсвэл төвд буцдаг тул нэг хулганаар жолоодож, мөн эргэн тойрноо харж болно.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Үргэлж нь хулганаар байнга жолоодох боломж олгоно. Дарж барих үед ба төвд буцах нь Жолоодох оролтыг дарж байх үед л жолоодох боломж олгож, дараа нь Төвлөрөл байгаа бол түүгээр, байхгүй бол тэр дороо төвд буцаана. Дарж барих үед ба хэвээр үлдэх нь оролтыг дарж байх үед л жолоодох боломж олгож, суллагдсан байрлалд нь үлдээнэ. Сэлгэх нь Жолоодох оролтыг дарах бүрд жолоодлогыг асааж эсвэл унтраана. Ингэснээр нэг хулганаар жолоодож, мөн эргэн тойрноо харж болно.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Үргэлж</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Дарж барих үед</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Дарж барих үед ба төвд буцах</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Сэлгэх</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Жолоодох оролт</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Хулганаар жолоодох боломж олгох товч, хулганы шилжилттэй ижил төхөөрөмж дээр. Сонгоогүй бол хулгана үргэлж жолооддог.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Хулганаар жолоодох боломж олгох товч, эх үүсвэртэй ижил төхөөрөмж дээр. Сонгоогүй бол хулгана үргэлж жолооддог.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Зөөллөлт</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Жигд бус мэдээлдэг хулганыг жигдрүүлнэ. Жолоо гараас ойролцоогоор энэ хугацаагаар хоцорно. 0 бол унтраалттай.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Жигд бус мэдээлдэг хулганыг жигдрүүлнэ. Стик гараас ойролцоогоор энэ хугацаагаар хоцорно. 0 бол унтраалттай.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Хурдан үеийн эргэлтийн хязгаар</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Тоглоомын телеметр асаалттай үед 200 km/h хурдтай байхад эргэлтийн хэдэн хувь үлдэхийг заана. 100% бол бүх хурдад бүтэн эргэлт хүртээмжтэй.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Дугуйн шилжилт</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Дугуйн шилжилт хажуу тийш</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Хулгана хэр хурдан хөдөлж буй. Гар зогсоход суллагдана.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Заагч мониторынхоо төвөөс эсвэл жолоодлого эхэлсэн цэгээс хаана байгаа.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Хулгана хэр хол хөдөлсөн, жолооны хүрд шиг гар орхисон байрлалдаа хадгалагдана.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Гүйлгэх шатуудыг байрлал болгон хадгална. Нарийн гүйлгэдэг дугуйд бүрэн нарийвчлалтай.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Хажуугийн дугуйн шатуудыг байрлал болгон хадгална. Нарийн гүйлгэдэг дугуйд бүрэн нарийвчлалтай.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Шат бүрт нэг түлхэлт, тэр дороо тайван байрлалдаа буцна.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Дарж барих үед ба хэвээр үлдэх</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Мэдрэмж</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Хурд стикэнд хэр их нөлөөлөхийг заана. 1.00 үед стик секундэд 16 000 тоолуурт бүрэн хазайлтад хүрнэ, ямар ч уншилтын давтамж болон хулганы тайлангийн давтамжид.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Төв рүү буцах</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Хулгана удаашрах эсвэл зогсоход стик үүнээс хурдан буцахгүй. 0 үед хулганатай хамт буцна.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Жолоодлого эхэлсэн цэгээс эхлэх</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Жолоодох оролттой үед стик жолоодлого эхлэх үед заагч байсан цэгээс хэмжинэ, утасны дэлгэц дээрх стик хуруу хүрсэн газраас эхэлдэгтэй адил. Унтраалттай үед заагчийн мониторын төвөөс хэмжинэ.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Энэ тэнхлэг харьцангуй хөдөлнө</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Хэр их эргэснээ мэдээлдэг трекбол эсвэл эргэлдэгчид зориулсан. Асаалттай үед тэнхлэг Хулганы шилжилт шиг байрлал хадгалж, шилжилтийн тохиргоог авна. Аль тэнхлэг ингэж хөдөлдгийг Windows хэлдэггүй.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} см</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Урьдчилан харах</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Энэ бүлэг таны хулганыг хэрхэн дагахыг харуулна. Сонгох хүртэл юу ч оноогдохгүй.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Урьдчилан харж байна. Хулганаа хөдөлгөнө үү.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Барьсан байрлал: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Одоо: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% баруун</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% зүүн</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% дээш</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% доош</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>төв</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} дарж байх үед хөдөлнө.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Хулганы DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Үйлдвэрлэгчийн програмаар тохируулсан, энэ хулгана инч тутамд мэдээлдэг тоолуур.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI тохируулсан үед Хулганы шилжилт шилжилтээ сантиметрээр бас харуулна. 0 нь тохируулаагүй гэсэн үг.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR заагч X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR заагч Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR тод байдал</value></data>
@@ -4662,6 +4805,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Таныг тоглож байхад PadForge-ийн харуулах дэлгэц дээрх заагчууд. Аль нэгийг унтраах нь ажиллагааг өөрчлөхгүй, зөвхөн харагдах эсэхийг өөрчилнө.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Давхарга сэлгэх гарч ирэх цонх</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Профайл солих оверлей</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Контроллерууд асаалттай эсвэл унтраалттай</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Төхөөрөмж салгагдсан тухай мэдэгдэл</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Төхөөрөмж холбогдсон тухай мэдэгдэл</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Радиал эсвэл мэдрэгч цэс идэвхтэй үед дэлгэц дээрх цагираг эсвэл торыг харуулна. Оверлей унтраалттай байсан ч цэс ажилласаар байна.</value></data>
@@ -5308,6 +5452,8 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Унтраалттай</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Секундомер</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Гэрлийн зурвасын өнгө</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Холбогдоогүй төхөөрөмжүүд</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Бүгд холбогдсон</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>унтраалттай</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software-ээр дамжуулан</value></data>
@@ -5350,6 +5496,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Дэлгэц таны сонгосон зургийг өөрийнх нь хэмжээгээр харуулна. Дэлгэцээс том зургийн хувьд дэлгэцийн хэмжээтэй цонх харагдах бөгөөд түүнийг "Гарын дэлгэцийн зургийг гүйлгэх" макро хөдөлгөнө. S.T.R.I.K.E. 7 дээр дэлгэцэн дээгүүр хуруугаа чирэхэд мөн хөдөлнө.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Дэлгэц секундомерыг харуулах бөгөөд түүнийг "Секундомер" макро эхлүүлж, түр зогсоож, тэглэнэ. Бүх дэлгэц ижил секундомерыг харуулна.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Дэлгэц өөрийн тэжээдэг хамгийн бага дугаартай слот дахь, харин аль ч слотыг тэжээхгүй бол бүх слотоос хамгийн бага дугаартай слот дахь DualShock 4 эсвэл DualSense-ийн гэрлийн зурвасын өнгийг харуулна. Хар цагаан дэлгэц түүний тод байдлыг цэгэн хээгээр харуулна. Гэрлийн зурваст өнгө ирэх хүртэл PadForge юу ч харуулахгүй.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Дэлгэц холбогдоогүй оноосон төхөөрөмжүүдийг Төхөөрөмжүүд хуудсанд харагдах нэрээр нь жагсааж, дутуу төхөөрөмж байхгүй бол Бүгд холбогдсон гэж харуулна.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Зургууд (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Бүх файл (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Гүйлгэх</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Гүйлгэх X</value></data>
@@ -5545,6 +5692,7 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Жолоодож байна (0 биш)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Тоглоомын телеметр</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Скриптийн утга</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Төхөөрөмжийн холболт</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Хурд (миль/ц)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (дээд утгын %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Араа (-1 ухрах, 0 сул)</value></data>
@@ -5700,4 +5848,231 @@ PadForge одоо тэдгээрийг устгах уу? Үүнд админи�
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Асуудлын бичлэг</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Бичлэг эхлүүлэх эсвэл зогсоох</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Бичлэгт тэмдэг тавих</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Оверлей холбогдоогүй оноосон төхөөрөмжүүдийг Төхөөрөмжүүд хуудсанд харагдах нэрээр нь жагсааж, дутуу төхөөрөмж байхгүй бол Бүгд холбогдсон гэж харуулна.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Унтраалттай. Ямар ч програм PadForge-д хандаж чадахгүй.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} ба {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Үйл ажиллагаа: {0} дуудлага, хуучнаас нь эхлэн. Тэдгээрээс өмнөх дуудлага: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Үйл ажиллагаа: {0} дуудлага. Түүнээс өмнөх дуудлага: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} хуучин дуудлага устсан. Үйл ажиллагаа хамгийн шинэ {1:N0} дуудлагыг хадгална.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} хуучин дуудлага устсан. Үйл ажиллагаа хамгийн шинэ {1:N0} дуудлагыг хадгална.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Экспортлох…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Үйл ажиллагааг экспортлох</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Текст файл</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Нээх</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Шинэчлэх</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Бусад: {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Ур чадварыг ZIP болгон хадгалах…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Түүний тохиргооны файлыг нээх</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Хадгалсан. {0} програмын {2} хэсэгт {1} файлыг нэмнэ үү.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} програмд тохиргооны файл одоогоор алга. Нэмэх товч нэгийг үүсгэнэ.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge энэ компьютер дээр үйлдвэрлэгч нь Windows дээрх тохируулгыг баримтжуулсан туслах програм олсонгүй. Бусад доторх Copy Settings өөр ямар ч програмд ажиллана.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge туслах програмуудыг шалгаж чадсангүй: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Нэмээгүй.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Нэмсэн.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Нэмсэн. Одоо холбогдсон.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Нэмсэн. Түүнээс хойш холбогдоогүй. Нээлттэй байсан туслах хаагдаад дахин нээгдсэний дараа PadForge-ийг харна.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Өөр PadForge-д зориулж нэмсэн. Шинэчлэх товч үүнийг энэ рүү чиглүүлнэ.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Нэмсэн. Түүний PadForge ур чадвар энэ PadForge-ийн хувилбараас хуучин.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Нэмсэн, PadForge ур чадваргүй.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Нэмсэн. Түүний PadForge ур чадвар илүү шинэ PadForge-ийн хувилбараас ирсэн.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Энэ програм ур чадварыг зөвхөн байршуулалтаар авдаг.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Нэмсэн туслахууд Автоматжуулалт асаалттай үед PadForge-д хандана.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Нэмж байна…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Хасаж байна…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Шинэчилж байна…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Дуусаагүй: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Хуулсан.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Хуулсангүй: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Зөвшөөрсөн програмууд</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Унших болон түүнээс дээш түвшин хүссэн програм анх холбогдохдоо нэг удаа асууж, хүссэн түвшнээ дээрх түвшин хүртэл авна. Дээр нэмсэн туслах түүгээр зөвшөөрөгдсөн байна.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Одоо холбогдсон.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Сүүлд ашигласан: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Одоогоор ашиглаагүй.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Холбогдсон: {0}. Автоматжуулалт хуудсыг нээхийн тулд дарна уу.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Энэ компьютер дээр: {0}. Вэбээс: {1}. Автоматжуулалт хуудсыг нээхийн тулд дарна уу.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Вэбээс холбогдсон: {0}. Автоматжуулалт хуудсыг нээхийн тулд дарна уу.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL оноолт</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Геймпад, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Жойстик. SDL-д үүнд зориулсан оноолт алга.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Жойстик. PadForge үүнийг түүхийгээр уншдаг тул SDL-ийн оноолтыг ашиглахгүй.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Жойстик, таны мөрөөр геймпад болгон байрлуулсан.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL хөдөлгүүр ажиллаж байх үед төхөөрөмжүүдийг уншина.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Суулгасан нийгэмлэгийн хуулбар, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Татсан: {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ийн өөрийн файл</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Таных, нэмсэн: {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG хувьсагч, SDL үүнийг таны нэмсэн аливаа мөрөөс дээгүүр тавьдаг</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL оноолтыг хуулах</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Төхөөрөмжийн оноолтыг нийгэмлэгийн мэдээллийн сангийн мөр болгон, төхөөрөмжийн ID-аар, шалгах нийлбэр ба хувилбарыг тэглэж санах ойд хуулна.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL оноолтыг буулгах…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Энэ төхөөрөмжийн мөрийг авч, шалгаад, таных болгон хадгалж, тэр дороо хэрэглэнэ.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Оноолт хайх…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge-ийн агуулдаг бүх мөрөөс нэрээр хайж, сонгосон мөрийг энэ төхөөрөмжид хэрэглэнэ. ID нь өөр хуулбар төхөөрөмжид зориулсан.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Бүтэц таах</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Ямар ч мэдээллийн сан мэдэхгүй төхөөрөмжийн тэнхлэг, товчлуур, малгайгаас геймпадын бүтэц таана. Үүнийг Оролтыг турших хэсэгт шалгана уу.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Минийхийг хасах</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Минийхийг хасах нь өмнөх мөр болон контроллерын мөрүүдийг буцааж тавина.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Дахин оноох</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Төхөөрөмжийн байгаа контроллер бүр дээрх мөрүүдийг оноох үеийнх шиг SDL-ийн бүтцээс дахин үүсгэнэ.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Нийгэмлэгийн мэдээллийн сангийн хуудас</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Мөр болон {0}-оос ялгаатай хэсэг</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Мөр</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Контроллер</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} мөр</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Одоогийн оролт</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL-ийн мөрөнд</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL-ийн мөрөнд алга</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, ялгаатай</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge ашигладаггүй: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Мөр</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Хуулсан.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Хуулсан. SDL-ийн хэлбэрт багтахгүй: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>макро</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>муруй</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>үхсэн бүс</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>гар ба хулганы гаралт</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>турбо, сэлгэлт болон бусад үйлдэл</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} ба {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Хуулах зүйл алга: SDL-д энэ төхөөрөмжийн оноолт байхгүй бөгөөд энэ нь ямар ч контроллер дээр байхгүй.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Өөр програм санах ойг ашиглаж байна. Юу ч хуулагдсангүй.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Таны мөрийг хассан. Төхөөрөмж өмнөх шигээ уншигдана.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-ийн бүтцээс дахин оноосон: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Одоо ашиглагдаж байна. Мөр таных бөгөөд энэ төхөөрөмжид давуу эрхтэй.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Таных болгон хадгалсан. Хөдөлгүүр ажиллаж, төхөөрөмж холбогдоход ашиглагдана.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Таных болгон хадгалсан боловч SDL_GAMECONTROLLERCONFIG хувьсагчид энэ төхөөрөмжийн мөр байгаа бөгөөд SDL түүнийг таныхаас дээгүүр тавина.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL мөрийг хүлээж авсангүй. Энэ төхөөрөмжид юу ч өөрчлөгдсөнгүй.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL оноолт буулгах</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} төхөөрөмжид SDL оноолт буулгах</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} төхөөрөмжид оноолт хайх</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>{0} төхөөрөмжийн бүтэц таах</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Файл эсвэл санах ойгоос мөр нэмэх</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Буулгах</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Файл нээх…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Оноолтын файлууд (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Файл 4 МБ-аас том байна. Нийгэмлэгийн бүтэн файл ойролцоогоор 0.6 МБ.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Нэр, ID эсвэл VID:PID-аар хайх</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge-ийн агуулдаг мөрүүд</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Тохирох мөр алга.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Сонгосон мөрийг {0} төхөөрөмжид өөрийнх нь ID-аар, Буулгах-тай ижил шалгалт ба сонголтоор дамжуулан хэрэглэнэ.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL оноолтын мөр</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Энэ төхөөрөмжийн мөр.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Таасан бүтэц.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, талбар: {0}, ID нь энэ төхөөрөмжтэй таарч байна.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, талбар: {0}, өөр шугам эсвэл хувилбар дээрх ижил үйлдвэрлэгч ба бүтээгдэхүүнийх. Үүнийг энэ төхөөрөмжийн өөрийн ID-аар хадгална.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, талбар: {0}, өөр төхөөрөмжийн мөр. Үүнийг энэ төхөөрөмжийн өөрийн ID-аар хадгална.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Талбар: {0}. SDL энэ төхөөрөмжийг уншдаггүй тул PadForge түүний оролтуудыг мөрийн дагуу байрлуулна.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Талбар: {0}, төхөөрөмжийн тэнхлэг, товчлуур, малгайгаас. Үүнийг Оролтыг турших хэсэгт шалгаад, хадгалах эсвэл энд өөрчилнө үү.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} талбар, ID нь энэ төхөөрөмжтэй таарч байна.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} талбар, өөр шугам эсвэл хувилбар дээрх ижил үйлдвэрлэгч ба бүтээгдэхүүнийх. Үүнийг энэ төхөөрөмжийн өөрийн ID-аар хадгална.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} талбар, өөр төхөөрөмжийн мөр. Үүнийг энэ төхөөрөмжийн өөрийн ID-аар хадгална.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} талбар. SDL энэ төхөөрөмжийг уншдаггүй тул PadForge түүний оролтуудыг мөрийн дагуу байрлуулна.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} талбар, төхөөрөмжийн тэнхлэг, товчлуур, малгайгаас. Үүнийг Оролтыг турших хэсэгт шалгаад, хадгалах эсвэл энд өөрчилнө үү.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Энэ нь {0} хэрхэн уншигдахыг өөрчилнө. Түүний мөрүүдийг ({1}) шинэ бүтцээс дахин онооно.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Энэ нь {0} хэрхэн уншигдахыг өөрчилнө. Энэ нь ямар ч контроллер дээр байхгүй тул ямар ч мөр өөрчлөгдөхгүй.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} төхөөрөмжийг уншдаг профайлын товчлолууд тохируулсан оролтоо хэвээр хадгална.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Мөрийг PadForge.xml-д таных болгон хадгалах бөгөөд энэ төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй. Минийхийг хасах нь хуучин мөр болон хуучин мөрүүдийг буцааж тавина.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Мөрүүдийг PadForge.xml-д таных болгон хадгалах бөгөөд өөрсдийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй. Контроллерын мэдээллийн сан мөрийн Бусад доторх Цэвэрлэх тэдгээрийг хасна.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows-д зориулсан мөр: {0}. Бусад системийн {1} мөрийг алгассан.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows-д зориулсан {0} мөр. Бусад системийн {1} мөрийг алгассан.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Татгалзсан: {0}. Эхнийх нь: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Мөр эсвэл gamecontrollerdb.txt файлын текстийг буулгана уу.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Энэ текст SDL-ийн контроллерын мэдээллийн сангийн мөр биш: 32 оронтой арван зургаатын ID, нэр, дараа нь a:b0 зэрэг талбарууд байх ёстой.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Мөрүүд бусад системд зориулагдсан. PadForge Windows-д эсвэл тодорхой системд хамаарахгүй мөрүүдийг уншдаг.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Мөрийн ID төхөөрөмжийн ID биш. 32 оронтой арван зургаатын тоо шаардлагатай.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Мөрийн нэр хоосон, 128 тэмдэгтээс урт, эсвэл SDL талбар гэж уншдаг тэмдэгт агуулж байна.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Мөрөнд PadForge хүлээж авдаггүй сануулга эсвэл Android талбар байна.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Мөрөнд SDL мэдэхгүй талбар байна.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Нэг холболт SDL-ийн хэлбэрт биш байна, жишээ нь b3, a2, +a2, a2~ эсвэл h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Мөрөнд нэг талбар хоёр удаа байна.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Мөр 1 024 тэмдэгтээс урт байна.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Мөр ямар ч удирдлага холбодоггүй.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Таны мөрүүд</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Таны мөрүүд</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Энд нэмсэн эсвэл төхөөрөмжийн SDL оноолт карт дээр буулгасан мөрүүд өөрсдийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй бөгөөд дахин тохируулсны дараа ч үлдэнэ.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Файл эсвэл санах ойгоос мөр нэмэх…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Мөр: {0}, өөрсдийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} мөр, өөрийн төхөөрөмжид бусад бүх эх сурвалжаас давуу эрхтэй.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Одоогоор алга.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Тэр дороо ашиглагдаж байна.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Асаах</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Вэб дээрх туслахууд</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Туннель</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Байхгүй</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Миний буулгах хаяг</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Таны эрхээр эхэлж байна.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Таны эрхээр ажиллаж байна. Эхлэх бүрд хаяг нь ижил хэвээр байна.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Таны эрхээр ажиллаж байна. Түргэн туннель эхлэх бүрдээ шинэ хаяг авдаг тул туслахыг дахин нэмэх шаардлагатай болно.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Зогссон.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Зогссон. Сүүлчийн мөр нь: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Эхлүүлж чадсангүй.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Энэ компьютер дээр байхаа больсон.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Энэ компьютер дээр туннелийн програм олдсонгүй. PadForge нь cloudflared, devtunnel, ngrok, Tailscale Funnel эсвэл таны өөрийн туннелийн хаягтай ажилладаг.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge-д нийтийн хаяг өгөхийн тулд туннель сонгоно уу.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Энэ компьютер дээр мөн байгаа: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, хаяг нь ижил хэвээр байдаг</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, түргэн туннель нь бүрдээ шинэ хаяг авдаг</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>http://127.0.0.1:{0} руу өөрийн туннелийг ажиллуулж, түүний https хаягийг буулгана уу. Нэрлэсэн Cloudflare туннель, байнгын dev tunnel, Tailscale Funnel болон ngrok-ийн өөрийн домэйн хаягаа хадгалдаг.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Туннелийн тань өгсөн ёсоор зөвхөн /mcp замтай https хаяг буулгана уу.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-ийн вэб туслагчийг эхлүүлж байна.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ийн вэб туслагч зогссон ({0}). Дахин эхлүүлэхийн тулд Reach PadForge From the Web-ийг унтрааж асаана уу.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Хаяг</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Нийтийн хаяг одоогоор алга.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude-д нэмэх</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Хуулсан.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Шинэ вэб туслах хүлээн авах</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Хүлээн авч эхлэх</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Хүлээн авахыг зогсоох</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>{0} хүртэл хүлээн авна.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Хүлээн авахгүй байна. Хүлээн авч эхлэх товч үүнийг таван минутын турш нээнэ.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Туслах дээр хаягийг нэмээд нэвтэрнэ үү. Нэвтрэлт бүр өөрийн зургаан оронтой кодыг нэвтрэх хуудас болон PadForge-ийн асуултын карт дээр харуулна. Хоёр код таарсан үед л Зөвшөөрөх товчийг дарна уу. Бусад үед нэвтрэлтийг татгалзаж, танаас юу ч асуухгүй.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Вэб дээр зөвшөөрсөн</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Одоогоор алга.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Нэвтрэлт нь {0} руу буцсан.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Өөрийгөө {0} гэж нэрлэдэг.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Зөвшөөрсөн: {0}, сүүлд ашигласан: {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Зөвшөөрсөн: {0}, одоогоор ашиглаагүй.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Цуцлах</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Түүний өөрийн Secure MCP Tunnel нь PadForge-ийг энд хаяг эсвэл нэвтрэлтгүйгээр шууд ажиллуулдаг. Командыг тэр туннелийн тохиргоонд хуулна уу.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Командыг хуулах</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ямар ч туннелийн програм татдаггүй бөгөөд өөр компанийн түлхүүр хадгалдаггүй. Вэб туслах дээрх түвшинд ажиллана.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} нь вэбээс PadForge-тай ажиллахыг зөвшөөрөх үү?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Нэвтрэлт нь {0} руу буцна.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Өөрийгөө {0} гэж нэрлэдэг.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Нэвтрэх хуудас нь энэ кодыг харуулж байгаа үед л зөвшөөрнө үү:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Түүний зургаан оронтой код PadForge-ийн асуултын карт дээр харагдана. Нэвтрэх хуудас нь ижил кодыг харуулж байгаа үед л зөвшөөрнө үү.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>{0} түвшинд, {1}-ээр дамжин ажиллана.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Нэвтрэлт нь энэ компьютер руу буцах бөгөөд энд байгаа аль ч програм тэр хаягийг өөрийнх гэж зарлаж болно.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge-д нэвтрэх</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} таны компьютер дээрх PadForge-тай ажиллахыг хүсэж байна.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Өөрийгөө {0} гэж нэрлэдэг.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Таны компьютер дээр PadForge-ийн асуултын карт энэ нэвтрэлтийн талаар асууна. Карт энэ кодыг харуулж байгаа үед л тэнд зөвшөөрнө үү:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Та компьютер дээр хариулмагц энэ хуудас өөрөө үргэлжилнэ.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Энэ нэвтрэлт таны компьютер дээрх програм руу буцах бөгөөд тэнд байгаа аль ч програм тэр хаягийг өөрийнх гэж зарлаж болно.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge одоогоор шинэ вэб туслах хүлээн авахгүй байна. Компьютер дээрээ PadForge-ийг нээж, Нэмэлтүүд, Автоматжуулалт руу ороод Вэб дээрх туслахууд хэсэгт Хүлээн авч эхлэх товчийг дарна уу. Дараа нь дахин нэвтэрнэ үү.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Энэ нэвтрэлтийг үргэлжлүүлэх боломжгүй. Туслах дээр PadForge-ийн хаягийг дахин нэмээд нэвтэрнэ үү.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Энэ нэвтрэлтийн хугацаа дууссан. Туслахаас дахин нэвтэрнэ үү.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows үүнийг эхлүүлсэнгүй</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>{0} кодоор дууссан</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Автоматжуулалт унтраалттай тул ямар ч вэб туслах PadForge-д хандахгүй. Автоматжуулалт асахад вэб туслагч эхэлнэ.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Шалгаж байна…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Суулгаагүй.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Суулгасан, хамгийн сүүлийн хувилбар. Скрипт {0} мөрөөр эхэлнэ.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0}-д суулгасан, хамгийн сүүлийн хувилбар. Скрипт {1} мөрөөр эхэлнэ.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Суулгасан. Энэ PadForge-д илүү шинэ хуулбар бий.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0}-д суулгасан. Энэ PadForge-д илүү шинэ хуулбар бий.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Суулгаж байна…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge үүнийг шалгаж чадсангүй: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Суулгах товч PadForge-ийн санг тухайн хэлний олох газарт байрлуулна. Үүнийг ачаалсан скрипт төхөөрөмжүүдийг уншиж, оноолтуудыг дээрх түвшинд удирдана.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Санг хүссэн газраа хадгалах</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Суулгасан хуулбарууд</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Бүгдийг хасах</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Хассан.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Скриптийн ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Түүний скриптийн ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Скриптүүд түүний удирдлагуудыг {0} гэж нэрлэнэ.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Скриптүүд түүний товчнуудыг KeyA, KeySpace, KeyLeftShift гэх мэтээр, мөн товч бүрийг кодоор нь Vk0-оос Vk255 хүртэл нэрлэнэ.</value></data>
 </root>

@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} پەیوەندیی پچڕا. {1} هیچ ئامێرێکی بۆ نەماوە.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} پەیوەست بوو</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} پەیوەست بوو، پاتری {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} ئامێر پەیوەندییان پچڕا</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} ئامێر پەیوەست بوون</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} ئامێر پەیوەندییان پچڕا: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} ئامێر پەیوەست بوون: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} بەردەوام پەیوەندیی دەپچڕێت</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (زۆرترین {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (زۆرترین {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>دووبارە پەیوەستبوونەوەی خۆکار، پۆرت، ناسنامەی جووتکردن، پەیوەستبوون بە ناونیشان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پۆرت، جێگرەوەی DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پۆرت، خێرایی تەواو، فۆرماتە دڵخوازەکان</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML، کارامەیی</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>یاریدەدەرەکانی تر، یاریدەدەرەکان لەسەر وێب</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>بە شوێنپێهەڵگری سەر یان هێدسێتی VR بە دەوروبەردا بڕوانە و هەردوو پەنجە گەورەکەت لەسەر دوگمەکان بمێننەوە.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>خێرایی، پێدالەکان و گێڕەکان کە یارییەکی شۆفێری دەینێرێت وەک هەر تێخستنێکی تر ببەستەوە.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>جووڵەی کۆنترۆڵەر بنێرە بۆ ئەو ئیمولەیتەرانەی سەرچاوەی جووڵەی DSU دەخوێننەوە.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>بازنە، تۆڕ یان شریتی مێنیوێک کاتێک کراوەیە.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ناوی چینەکە کاتێک چینێکی شیفت چالاک دەبێت، بۆ ئەو ماوەیەی ئەو چینە دیاری دەکات.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>ناوی پرۆفایلەکە کاتێک پرۆفایل دەگۆڕێت.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>ئایا کۆنترۆڵەرە مەجازییەکان ئێستا هەڵکران یان کوژانەوە، لە ڕێی کورتەڕێگاکە یان ماکرۆیەکەوە.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>ناوی ئامێرێکی بەستراو کاتێک پەیوەندیی دەپچڕێت.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>ناوی ئامێرێکی بەستراو کاتێک پەیوەست دەبێت.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>لەبەرگرتنەوەی ناونیشان</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>بەرنامەکان دەتوانن پرۆفایل بگۆڕن و بەریان بدەن، بزوێنەر دەست پێبکەن و بیوەستێنن، کۆنترۆڵەرە مەجازییەکان هەڵبکەن و بکوژێننەوە، پەنجەرەکە پیشان بدەن و بیشارنەوە، PadForge دابخەن، دۆخی ئێستای دەستنیشانکردن پاشەکەوت بکەن و بپرسن چی کاردەکات.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی فەرمانەکاندایە، و بەرنامەکان دەتوانن ئامێر، کۆنترۆڵەرە مەجازییەکان، بەستنەوەکان، پرۆفایل و ڕێکخستنەکان ببینن، تێخەرەکانی هەموو ئامێرێک لە کاتی ڕوودانیاندا بەدوادا بچن، و شوێنێک لە PadForge پیشانت بدەن. بەرنامەیەک لە ئاستی خوێندنەوە هەموو کلیلێک دەبینێت کە لەسەر هەموو ئامێرێک دادەگیرێت، تەنانەت ئەو کلیلانەی لە پەنجەرەیەکدا دەنووسرێن کە وەک بەڕێوەبەر کاردەکات.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی خوێندنەوەدایە، و بەرنامەکان دەتوانن ئامێری خۆیان زیاد بکەن و بەڕێوەیان ببەن، کۆنترۆڵێکی هەر ئامێرێک ڕابگرن و بەهای ناودار بدەن بە تریگەرەکانی ماکرۆ.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی ناردنی تێخەرەکاندایە، و بەرنامەکان دەتوانن ئەوە بگۆڕن کە تۆ دەتوانیت لە پەڕەکاندا بیگۆڕیت.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>هەموو ئەوەی لە ئاستی «ناردنی تێخەرەکان» دایە، و بەرنامەکان دەتوانن ئەوە بگۆڕن کە تۆ دەتوانیت لە پەڕەکاندا بیگۆڕیت. هەندێک گۆڕانکاری هەمیشە سەرەتا لەسەر کارتی پرسیاری PadForge لە تۆ دەپرسن.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>یاریدەدەرەکان</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ئەمە لە ڕێکخستنەکانی MCP ی یاریدەدەرێکدا دابنێ. پاشان یاریدەدەرەکە لە ئاستی سەرەوەدا لەگەڵ PadForge کار دەکات.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>لەبەرگرتنەوە وەک TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ئەو یاریدەدەرانەی TOML دەخوێننەوە</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>«زیادکردن» PadForge و کارامەییەکەی دەخاتە ناو ئەو یاریدەدەرەوە. پاشان لە ئاستی سەرەوەدا کار دەکات، و قسەکانی لە تەنیشت ئەوەی ئاماژەی پێدەکات، لە ژێر ناوەکەیدا دەردەکەون.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>سکریپتەکان</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>کتێبخانەی سکریپت</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>پاشەکەوتکردنی کتێبخانەیەک…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>یەک فایل بۆ AutoHotkey v2، Python یان PowerShell. سکریپتێک کە باری دەکات ئامێرەکان دەخوێنێتەوە و بەستنەوەکان لە ئاستی سەرەوەدا بەڕێوە دەبات.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>یەک فایل بۆ AutoHotkey v2، Python یان PowerShell، لەو شوێنەدا دەنووسرێت کە هەڵیدەبژێریت.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>چاوەڕێی تۆیە</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>چالاکی</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>هێشتا هیچ بەرنامەیەک داوای نەکردووە. هەر داوایەک لێرە لەگەڵ ئەنجامەکەی ڕیز دەکرێت.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>پاشگەزبوونەوە</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>کارامەیی بۆ یاریدەدەرەکان</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>پاشەکەوتکردنی کارامەییەکە…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge نەیتوانی پاشەکەوتی بکات: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>تا بەرنامەیەک لە ئاستی خوێندنەوە یان سەرووتر پەیوەستە، ئەوە دەبینێت کە لەسەر هەموو ئامێرێک دادەگیرێت، کیبۆردەکانیش.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>پلەگینەکان</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>کارپێکردنی پلەگینەکان</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>هیچ پلەگینێک کار ناکات.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلەگین بە مافەکانی تۆ کار دەکات، نەک بە مافەکانی PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ناوخۆیی</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>کۆنترۆڵەری تاقیکردنەوە</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>کۆنترۆڵەرێک کە خۆی دەجووڵێت، یەک کۆنترۆڵ لە یەک کاتدا، بۆ ئەوەی بەستنەوەیەک بەبێ ئامێری ڕاستەقینە تاقی بکرێتەوە.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>خێرایی</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>هێواش</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ئاسایی</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>خێرا</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>خێراترین</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>لێدانەوە</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>تۆماری کێشەیەک وەک ئەو ئامێرانەی دروستیان کردووە، بە هەمان کاتبەندی، لێدەداتەوە. ئەوان ئامێری نوێن لەسەر ئەم کۆمپیوتەرە و بەو شێوەیە دەبەسترێنەوە کە تۆ یان پرۆفایلێک دەیانبەستێتەوە.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>تۆمار</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>تۆمارەکانی کێشە|*.zip;*.log|هەموو فایلەکان|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge ناتوانێت {0} لێبداتەوە. تۆماری کێشە نییە، یان تێخەری هیچ ئامێرێکی تێدا نییە.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>پلەگینەکانی تۆ</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>پلەگین بەرنامەیەکە کە ئامێر بۆ PadForge زیاد دەکات. PadForge هەر کاتێک بزوێنەر کار بکات بە مافە ئاساییەکانی تۆ دەستی پێدەکات.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>زیادکردنی پلەگینێک…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>بەرنامە و سکریپتەکان|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|هەموو فایلەکان|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>پەسەندکردن…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>پەسەندکردن و دەستپێکردنەوە…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>لەگەڵ بزوێنەر دەست پێدەکات</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>پشکنینی فایلەکە پێش دەستپێکردنی</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>بە کۆدی {0} داخرا. لە ماوەی {1} چرکەدا دووبارە دەست پێدەکاتەوە.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} پێشتر لە لیستەکەدایە.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge تا 16 پلەگین کار پێدەکات. یەکێک لاببە بۆ ئەوەی یەکێکی تر زیاد بکەیت.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>پلەگینی کاراو: {0}. ئەو ئامێرانەی زیادیان کردووە: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} دوای پێنج شکست وەستا.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} لەوەتەی پەسەندت کردووە گۆڕاوە.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} نەیتوانی دەست پێبکات.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>زیادی کرد: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>واژووکراو لەلایەن {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>واژوونەکراوە.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>ڕێکخستنەکانی لێرە دەردەکەون لە کاتێکدا کار دەکات.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>هیچ ڕێکخستنێک ڕاناگەیەنێت.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge نەیتوانی ڕێکخستنەکانی بخوێنێتەوە: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>دوای خولەکێک بێ هیچ وەڵامێک کۆتایی پێهات</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>فایلەکەی لە کاتی کارکردندا گۆڕا</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>زیادکراو لەلایەن {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>ڕێکخستنەکانی {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>هەڵبژاردن</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>کۆنترۆڵێک دابگرە…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>هەڵنەبژێردراوە</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>پلەگینێک زیاد بکە، یان فایلەکەی بخەرە سەر ئەم پەڕەیە. PadForge ڕێڕەوەکەی، واژووکەرەکەی و SHA-256 ەکەی پیشان دەدات و پێش کارپێکردنی لە تۆ دەپرسێت. پلەگین بە مافەکانی تۆ کار دەکات، نەک بە هی PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>تۆماری کێشەیەک وەک ئەو ئامێرانەی دروستیان کردووە، بە کاتبەندییەکەیان، لێدەداتەوە.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>کار دەکات.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>کار دەکات، بە دەست.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>چی دەجووڵێت</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>ستیکەکان و پەلەپیتکەکان</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>ستیکەکان</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>پەلەپیتکەکان</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>نەخش</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>ڕاماڵین</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>بازنە</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>کاتی جووڵە</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>کاتی پشوو</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>داگرتنی دوگمەکان</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>داگرتنی دوگمەکانی ڕێنیشاندان</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>بەرنامەکانی Windows لە پەنجەرەی پێشەوەدا کار لەسەر A، B، «گەڕانەوە»، «دەستپێکردن» و D-pad ی کۆنترۆڵەرێکی مەجازیی Xbox دەکەن، و «ڕێبەر» بەرنامەی Xbox Game Bar دەکاتەوە.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>سووڕاندنی D-Pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>هەر بە هەمان هۆکار.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>کاتی داگرتن</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>کۆنترۆڵەرەکان</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>بە دەست</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>جووڵەکە دەوەستێنێت. تێخستنەکانی لە خوارەوە بە ماوس دابنێ.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>ستیکی چەپ</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>ستیکی ڕاست</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>پەلەپیتکەی چەپ</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>پەلەپیتکەی ڕاست</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>خوێندنەوە لە چرکەیەکدا</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>کیتی پلەگین، و تۆماری ئەو پلەگینەی هەڵیدەبژێریت</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>کیتی پلەگین</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>پاشەکەوتکردنی کیتی پلەگین…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>پلەگینێکی بچووک بە C#، و هەمان پلەگین بۆ AutoHotkey، Python و PowerShell، هەر فایلێک لەگەڵ چۆنیەتی دروستکردن یان کارپێکردنی.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>ڕێبەرێک بۆ هەموو کردار، ڕووداو و جۆرێکی ڕێکخستن، سکریپتێکی دروستکردن بۆ پلەگینی C#، و هەمان پلەگین بۆ AutoHotkey، Python و PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>تۆمار</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>پلەگینێک هەڵبژێرە بۆ بینینی تۆمارەکەی.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>هێشتا هیچ شتێک لە تۆماری ئەم پلەگینەدا نییە.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>مۆدێکی یاری</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>بەرنامەیەکی تر ناوی پایپی {0} ی گرتووە. ئەو بەرنامەیە دابخە.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows پایپی {0} ی ڕەت کردەوە، بۆیە بەرنامەکان ناتوانن پەیوەست بن.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>هیچ بەرنامەیەک پەیوەست نییە.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>هەڵکراوە. هیچ بەرنامەیەک پەیوەست نییە.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>پەیوەستکراو: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>بەرنامەی نەناسراو</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}، واژووکراو لەلایەن {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>تا PadForge دووبارە دەست پێدەکاتەوە چیتر لەمانە نا</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge ئامرازی وای نییە</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>بەرنامەکە دۆخێکی کۆنتری خوێندبووەوە</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ڕێکخستنی وا نییە</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>هیچ شتێک ئەو ناسنامەیەی نییە</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>بەهاکە لە دەرەوەی ئەوە بوو کە ڕێکخستنەکە وەریدەگرێت</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>تۆ ڕێگەت پێنەدا</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>کەس لە کاتی خۆیدا وەڵامی نەدایەوە</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>پیشاندانی پەنجەرەکە</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>ناردنی پەنجەرەکە بۆ سینیی سیستەم</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>بچووککردنەوەی پەنجەرەکە</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>گەورەکردنی پەنجەرەکە</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>داخستنی PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>دەستپێکردنی بزوێنەر</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>وەستاندنی بزوێنەر</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>زیادکردنی ئامێری {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>دانانی کۆنترۆڵەکانی ئامێری {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>لابردنی ئامێری {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>دانانی هەموو کۆنترۆڵەکانی ئامێری {0} لە دۆخی پشوودا</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>وا لە PadForge دەکات بەرنامەیەک کار پێبکات.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>فایلێک، بوخچەیەک یان پەڕەیەکی وێب دەکاتەوە.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>وا لە PadForge دەکات کلیل یان تێخستنی ماوس بۆ Windows بنێرێت.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>پرۆفایلێک لە دەرەوەی PadForge هاوردە دەکات.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge پێش ئەوەی بەرنامەیەک ئەمە بکات لە تۆ دەپرسێت.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>دیالۆگەکان</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>ماکرۆکان</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>ڕاگرتنی کۆنترۆڵەکانی ئامێری {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>بەردانی کۆنترۆڵەکانی ئامێری {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>دانانی بەهای {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>گۆڕینی پرۆفایل</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>دەستپێکردن یان وەستاندنی بزوێنەر</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>هەڵکردن یان کوژاندنەوەی کۆنترۆڵەرە مەجازییەکان</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستای دەستنیشانکردن</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>خوێندنەوەی ڕێژەی وەرگرتن و درایڤەرەکان</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>ڕیزکردنی پرۆفایلەکان</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>خوێندنەوەی پرۆفایلێک</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ڕیزکردنی کۆنترۆڵەرە مەجازییەکان</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>ڕیزکردنی ئامێرەکان</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>خوێندنەوەی ئامێرێک</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>چاوەڕوانی تێخەری تۆ</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>خوێندنەوەی بەستنەوەکانی کۆنترۆڵەرێک</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ڕیزکردنی ماکرۆکانی کۆنترۆڵەرێک</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>تۆمارکردنی کێشەیەک</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>دۆزینەوەی ڕێکخستنەکان</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>خوێندنەوەی ڕێکخستنێک</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>پیشاندانی شوێنێک بە تۆ</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>گەڕان بەدوای شوێنەکان لە PadForge دا</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>خوێندنەوەی شوێنێک لە PadForge دا</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>خوێندنەوەی ئەوەی دەیبینیت</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>زیادکردنی ئامێرێکی خۆی</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>بەڕێوەبردنی ئامێرەکەی</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>لابردنی ئامێرەکەی</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ڕاگرتن یان بەردانی کۆنترۆڵێک</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>دانانی بەهایەک بۆ پەلەپیتکەکانی ماکرۆ</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>گۆڕینی ڕێکخستنێک</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>داگرتنی دوگمەیەک</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>دروستکردنی پرۆفایلێک</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ناوگۆڕینی پرۆفایلێک</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>سڕینەوەی پرۆفایلێک</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>گۆڕینی جۆری کۆنترۆڵەرێک</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>دیاریکردنی ئامێرێک</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>دانانی ڕیزەکانی بەستنەوە</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>پاککردنەوەی ڕیزەکانی بەستنەوە</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>بەستنەوەی خۆکاری کۆنترۆڵەرێک</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>پاشەکەوتکردنی ماکرۆیەک</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>سڕینەوەی ماکرۆیەک</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>کۆنترۆڵەرێکی کیبۆرد و ماوس دروست دەکات</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} هەڵدەکات</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>گۆڕینی «{0}»</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>داگرتنی «{0}»</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} دەیەوێت {1} پیشانی تۆ بدات</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>لە {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>ڕێگە بە {0} دەدەیت لە ئاستی {1} لەگەڵ PadForge کار بکات؟</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} کە {1} کار پێدەکات</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>دەستپێکراو لەلایەن {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>واژووکراو لەلایەن {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>واژوونەکراوە.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>لە ئاستی «خوێندنەوە» و سەرووتر، هەموو کلیلێک دەبینێت کە لەسەر هەر ئامێرێک دادەگیرێت، کیبۆردەکانیش.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>تەنها یەک جار دەپرسێت. دەتوانیت لە پەڕەی خۆکارکردن لای ببەیت.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>هێڵی فەرمانی PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} دەکاتە {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>گوێ لە تۆڕ دەگرێت، بۆیە ئامێرەکانی تر دەتوانن بگەنە ئەم کۆمپیوتەرە.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>درایڤەرێک یان HidHide دەگۆڕێت کە بەرنامە و یارییەکانی تر پشتیان پێدەبەستن.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>مۆدیولەکانی PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ڕێگەدان</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>ڕێگە نەدان</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>ئێستا نا</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>پیشاندان</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>هەنگاوی {0} لە {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>کرتەی لێ بکە بۆ بەردەوامبوون.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} بکەرەوە.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>«زیاتر» بکەرەوە.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>لەلایەن {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>لەلایەن {1}، کە خۆی ناو دەنێت «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>لەلایەن بەرنامەیەک کە خۆی ناو دەنێت «{0}»</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>دامەزراندن و دەستپێکردنەوە</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>تێبینییەکانی وەشان</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>بنکەدراوەی کۆنترۆڵەر</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«ئێستا نوێ بکەرەوە» بنکەدراوەی کۆنترۆڵەری کۆمەڵگە (SDL_GameControllerDB) لە GitHub ەوە دادەگرێت و ئەو بەستنەوانەی ئەم وەشانەی PadForge نییەتی لە فایلی ڕێکخستنەکاندا هەڵدەگرێت. بەستنەوەیەکی نوێ تەنها بۆ کۆنترۆڵەرێک بەکاردێت کە هیچ شتێکی تر وەک گەیمپاد نایخوێنێتەوە، دیاری نەکراوە و لە ناچارکردنی دۆخی خاوی جۆیستیکدا نییە. گەڕاندنەوە هەموو بەستنەوە داگیراوەکان لادەبات.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«ئێستا نوێ بکەرەوە» بنکەدراوەی کۆنترۆڵەری کۆمەڵگە (SDL_GameControllerDB) لە GitHub ەوە دادەگرێت و ئەو بەستنەوانەی ئەم وەشانەی PadForge نییەتی لە فایلی ڕێکخستنەکاندا هەڵدەگرێت. یەکسەر بەکاردێن. بەستنەوەیەکی نوێ تەنها بۆ کۆنترۆڵەرێک بەکاردێت کە هیچ شتێکی تر وەک گەیمپاد نایخوێنێتەوە، دیاری نەکراوە و لە «ناچارکردنی دۆخی خاوی جۆیستیک» دا نییە. گەڕاندنەوە هەموو بەستنەوە داگیراوەکان لادەبات. ڕیزەکانی خۆت، لە ژێر «زیاتر»، دەمێننەوە.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ئێستا نوێ بکەرەوە</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>نوێکردنەوە…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>پشکنین بۆ نوێکاری…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>دامەزراندنی نوێکاری بۆ PadForge {0} تەواو نەبوو. لە ڕێکخستنەکانەوە دایبمەزرێنە بۆ هەوڵدانەوە.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge نوێکرایەوە بۆ {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ناوخۆیی: {0} بەستنەوە، کۆپیی کۆمەڵگە لە {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ناوخۆیی: {0} بەستنەوە، کۆپیی کۆمەڵگە لە {1}. نوێکرایەوە لە {2}: {3} نوێ، {4} گۆڕاو.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ناوخۆیی: {0} بەستنەوە، کۆپیی کۆمەڵگە لە {1}. داگیرا لە {2}: {3} ڕیزی نوێ، {4} گۆڕاو.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>بنکەدراوەی کۆمەڵگە لە دوای دوایین نوێکردنەوەوە نەگۆڕاوە.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>نەتوانرا بگاتە GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge داگیراوەکەی ڕەت کردەوە چونکە ئەو بنکەدراوەی کۆنترۆڵەرە نییە کە چاوەڕێی دەکات. هیچ شتێک نەگۆڕا.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>بەستنەوەیەکی نوێ جاری داهاتوو کە کۆنترۆڵەرەکەی پەیوەست دەبێت بەکاردێت.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>بەستنەوەیەکی گۆڕاو جاری داهاتوو کە PadForge دەست پێدەکات بەکاردێت.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>دەستپێکردن بە بچووککراوەیی</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>دەستپێکردن لە کاتی چوونەژوورەوە</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>زانیاری وەشان، لەگەڵ تۆمارکردنی ڕووداوەکانی بزوێنەر بۆ چارەسەرکردنی کێشە.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>تۆمارێکی دەستنیشانکردن بهێڵەوە</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>بەردەوام ڕووداوەکانی بزوێنەر دەنووسێت لە diagnostics.log لە بوخچەی لۆگ، کە دوگمەی کردنەوەی بوخچەی لۆگ دەیکاتەوە. دوای دەستپێکردنەوەش چالاک دەمێنێتەوە. کاتێک فایلەکە دەگاتە 8 MB دەگوازرێتەوە بۆ diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستا</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>نوێترین ڕووداوەکانی بزوێنەر لە فایلێکی نوێدا پاشەکەوت دەکات. تەنانەت کاتێک تۆماری دەستنیشانکردن کوژاوەیە کاردەکات.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستا…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>بەرنامەکە، Windows، ئامێرەکان و ڕێکخستنەکانت وەک ئێستا هەن وەردەگرێت، لەگەڵ نوێترین ڕووداوەکانی بزوێنەر، و دەیانکاتەوە بۆ ئەوەی پێش پاشەکەوتکردن بیانخوێنیتەوە. تەنانەت کاتێک تۆماری دەستنیشانکردن کوژاوەیە کاردەکات.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>کردنەوەی بوخچەی تۆمار</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>تۆمارکردنی کێشەیەک</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>دەستپێکردنی تۆمارکردن</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>وەستاندنی تۆمارکردن ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}، {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>تا «وەستاندنی تۆمارکردن»، 10 خولەک یان zip ێکی 20 MB تۆمار دەکات، پاشان zip ەکە لە Explorer دا دیاری دەکات، ئامادە بۆ هاوپێچکردن بە ڕاپۆرتێکەوە.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>دەست پێبکە، وا بکە کێشەکە ڕووبدات، پاشان بیوەستێنە. یەک فایل لە تەنیشت PadForge هەموو ئەوەی PadForge خوێندوویەتییەوە، ناردوویەتی و تۆماری کردووە لەگەڵ کورتەیەک لەوەی چی هەڵە بوو لەخۆ دەگرێت. هەموو کلیل و دوگمەیەک کە لە کاتی تۆمارکردندا لەسەر هەموو ئامێرێک دادەگیرێت لە فایلەکەدایە، کیبۆرد و ماوسیش. ناوی بەکارهێنەر، ژمارە زنجیرەییەکان، ناونیشانەکان و ناوە نووسراوەکان پێش ئەوەی هیچ شتێک بنووسرێت دەگۆڕدرێن.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>تا «وەستاندنی تۆمارکردن»، 30 خولەک یان zip ێکی 20 MB تۆمار دەکات، پاشان تۆمارەکە دەکاتەوە بۆ ئەوەی پێش پاشەکەوتکردن بیخوێنیتەوە.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>دەست پێبکە، وا بکە کێشەکە ڕووبدات، پاشان بیوەستێنە. پاشان بەش بە بەش بخوێنەوە چی تێدایە، و لە هەر شوێنێک کە دەتەوێت پاشەکەوتی بکە. هەموو کلیلێک کە لە کاتی تۆمارکردندا لەسەر هەموو ئامێرێک دادەگیرێت تێیدایە، کیبۆرد و ماوسیش. ناوی بەکارهێنەر، ژمارە زنجیرەییەکان، ناونیشانەکان و ناوە نووسراوەکان پێش ئەوەی هیچ شتێک بنووسرێت دەگۆڕدرێن.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>نووسینی کورتەکە…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>پاشەکەوتکرا: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>تۆمارکردن دەستی پێنەکرد. پشکنینێک بەهایەکی تایبەتی ئەم PC یەی دۆزییەوە کە لە فایلەکە دوور نەدەخرایەوە.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>تۆمارکردن دەستی پێنەکرد. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>دوایین تۆمار هێشتا تەواو دەکرێت.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«هێشتنەوەی دوایین 60 چرکە» کوژاوەیە، بۆیە هیچ شتێک نییە بۆ پاشەکەوتکردن.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>تۆمارێک تەواو کرا کە PadForge نەیوەستاندبوو: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>تۆمارێک کە PadForge نەیوەستاندبوو چاوەڕێتە لە پەڕەی ماڵەوە بیخوێنیتەوە: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>هێشتنەوەی دوایین 60 چرکە</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>تا بزوێنەر کار دەکات، دوایین خولەکی ئەوەی تۆمارێک لەخۆی دەگرێت لە بیرگەدا ڕادەگرێت، بۆ کێشەیەک کە ئێوارەیەک جارێک دێت. «پاشەکەوتکردنی دوایین 60 چرکە» وەک فایلێک دەینووسێت.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>تا بزوێنەر کار دەکات، دوایین خولەکی ئەوەی تۆمارێک لەخۆی دەگرێت لە بیرگەدا ڕادەگرێت، بۆ کێشەیەک کە ئێوارەیەک جارێک دێت. «پاشەکەوتکردنی دوایین 60 چرکە» دەیکاتەوە بۆ ئەوەی پێش پاشەکەوتکردن بیخوێنیتەوە.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>پاشەکەوتکردنی دوایین 60 چرکە</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>نووسینی پیت و ژمارە نووسراوەکان وەک یەک کلیل</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>تۆمارێک ئەو کلیلە پیت و ژمارانەی کە هیچ بەستنەوە یان ماکرۆیەک نایانخوێنێتەوە وەک یەک کلیل دەنووسێت، هەر داگرتنێک لە کاتی خۆیدا. هەموو کلیلێکی تر، و هەموو کلیلێک کە بەستنەوە یان ماکرۆیەک دەیخوێنێتەوە، وەک داگیراو دەنووسرێت.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>هێشتنەوەی دوایین 60 چرکە، نووسینی پیت و ژمارە نووسراوەکان وەک یەک کلیل</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>چی تۆمار بکرێت، دوایین 60 چرکە، پیتە نووسراوەکان</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>پاشەکەوتکردنی دۆخی ئێستا</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge، Windows، ئامێرەکان و ڕێکخستنەکانت وەک ئێستا هەن، بە هەمان پێداچوونەوە.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log لە تەنیشت PadForge.exe، کە دەتوانیت لەوێ بیخوێنیتەوە.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>چی تۆمار بکرێت</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>هەموویان هەڵکراون. بەشێکی کوژاوە لە تۆماری داهاتوودا دەردەهێنرێت، و فایلەکە دەڵێت کام بەشەکانی تێدایە.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>بۆ کێشەیەک کە ئێوارەی جارێک دێت.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>تۆمارەکە چاوەڕێتە لە پەڕەی ماڵەوە بیخوێنیتەوە.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>پوختە</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>ڕێکخستنەکان و ئامێرەکان</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>تێخستن</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>دەرخستن</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>کاردانەوە</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>کاتبەندی</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>پەنجەرە و هەڵەکان</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>چالاکی</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>هێڵەکانی دەستنیشانکردن</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>تۆمارەکەت بخوێنەوە</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} تا {1}، {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>دۆخێکی ئێستا لە {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 خولەک</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} خولەک</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 چرکە</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} چرکە</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>لەلایەن تۆوە وەستێنرا.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>خۆی لە {0} وەستا.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>خۆی لە {0} لە ناو zip دا وەستا.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>لەلایەن ماکرۆیەکەوە وەستێنرا.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>لەلایەن بەرنامەیەک یان --record stop وەستێنرا.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>لەلایەن ئەو یاریدەدەرەوە وەستێنرا کە دەستی پێکرد.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>لە کاتی داخستنی PadForge دا وەستا.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>دوایین 60 چرکە، لە بیرگەدا هەڵگیراو.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>ئەوەی هاوبەشی دەکەیت بخوێنەوە. بەشێک بکوژێنەوە بۆ ئەوەی دەری بهێنیت، پاشان پاشەکەوت بکە. هیچ شتێک ئەم کۆمپیوتەرە جێناهێڵێت مەگەر خۆت بڵاوی بکەیتەوە.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}، وەک ئەوەی هاوبەش دەکرێت</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>پیشاندانی {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>دەرهێنراوە</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>تۆمار نەکراوە</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} وەک دەق، {1} لە ناو zip دا</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} وەک دەق، {1} لەو zip ەی هاوبەشی دەکەیت. تۆمارێک لە {2} لە ناو zip دا یان دوای {3} دەوەستێت.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>پشکنینی پاککردنەوە: PadForge {0} لە {1} گۆڕی. هیچ ناو، ژمارەی زنجیرەیی یان ناونیشانێکی ئەم کۆمپیوتەرە لەو بەشانەدا نییە کە دەیانهێڵیتەوە.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} بەها</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 بەها</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} جۆری تایبەت</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 جۆری تایبەت</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>پشکنینی پاککردنەوە: {0} لە بەهاکانی خودی ئەم کۆمپیوتەرە هێشتا لەو بەشانەدان کە دەیانهێڵیتەوە. ئەو بەشانە بکوژێنەوە یان تۆمارەکە بسڕەوە. تا ئەو کاتە «پاشەکەوتکردن» ناچالاک دەمێنێتەوە.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>پشکنینی پاککردنەوە: یەکێک لە بەهاکانی خودی ئەم کۆمپیوتەرە هێشتا لەو بەشانەدایە کە دەیانهێڵیتەوە. ئەو بەشانە بکوژێنەوە یان تۆمارەکە بسڕەوە. تا ئەو کاتە «پاشەکەوتکردن» ناچالاک دەمێنێتەوە.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>لە کاتی تۆمارکردندا هیچ شتێکی ئەم بەشە ڕووی نەدا.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>سڕینەوە</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>لەبەرگرتنەوەی پوختە</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>لەبەرگیرایەوە</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>پاشەکەوتکردن…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>پاشەکەوتکردنی تۆمارەکە</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>فایلەکانی Zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>پاشەکەوت نەکرا. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>بە ناوی تۆوە پاشەکەوت دەکرێت، جاری یەکەم لە بوخچەی Downloads، پاشان لەو شوێنەی دوایین جار پاشەکەوتت کرد، و لە Explorer پیشان دەدرێت. تۆمارێک کە لە کاتێکدا دەوەستێت کە کەس لەسەر پەڕەکە نییە (سنوورەکەی، ماکرۆیەک، بەرنامەیەک، ئامرازی یاریدەدەر یان --record stop) لە پەڕەی ماڵەوە چاوەڕێی ئەم پێداچوونەوەیە دەکات، و دوای 7 ڕۆژ دەسڕدرێتەوە مەگەر پاشەکەوت کرابێت. بە بەرنامە دەوترێت کە چاوەڕێ دەکات، بەڵام هەرگیز نا لە کوێ.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>تۆماری کێشەیەک لە {0} چاوەڕێتە بیخوێنیتەوە.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>پێداچوونەوە</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>نیشانەکردنی تۆمارەکە</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>وەشانی بەرنامە</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>ڕەنتایمی .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>وەشانی SDL</value></data>
@@ -2897,31 +3007,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>پێگەی ماوس X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>پێگەی ماوس Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>هەستیاری</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>هەستیاری نیشاندەر بۆ هەر سەرچاوەیەک. 1.0 لە 10%ی پانی شاشە لە ناوەندەوە دەگاتە تەواوی لادانی ستیک. بەهاکانی سەرووی 1.0 بە جووڵەی کەمتری نیشاندەر دەگەنە تەواوی لادان. بەهاکانی خوار 1.0 جووڵەی زیاتریان پێویستە.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>هەستیاری نیشاندەر بۆ هەر سەرچاوەیەک. 1.0 لە 10%ی پانی شاشەی نیشاندەرەکە لە ناوەندەکەیەوە دەگاتە تەواوی لادانی ستیک. بەهاکانی سەرووی 1.0 بە جووڵەی کەمتری نیشاندەر دەگەنە تەواوی لادان. بەهاکانی خوار 1.0 جووڵەی زیاتریان پێویستە.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ڕێڕەوی ماوس X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ڕێڕەوی ماوس Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>ڕێڕەو تا کۆتایی سووڕان</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماوس چەند لە ناوەندەوە دەجووڵێت تا کۆتایی سووڕان، بەو هەنگاوانەی ماوسەکە ڕاپۆرتیان دەکات. ژمارەیەکی بەرزتر وردتر ئاراستە دەکات و جووڵەی دەستی زیاتری دەوێت.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماوس یان چەرخەکە چەند لە ناوەندەوە دەجووڵێت تا کۆتایی سووڕان، بەو هەنگاوانەی ڕاپۆرتیان دەکات. ژمارەیەکی بەرزتر وردتر ئاراستە دەکات و جووڵەی دەستی زیاتری دەوێت.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>کاتێک DPI ی ماوسەکە لە پانێڵی ئامێرەکەیدا دانرابێت، ڕێڕەوەکە بە سانتیمەتریش پیشان دەدرێت.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>هەنگاو</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ناوەندکردن</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>داخراوە سوکانەکە لەو شوێنە ڕادەگرێت کە دەست جێی هێشت. فەنەر لە ماوەی کاتی گەڕانەوەدا دەیگەڕێنێتەوە. لە تێلێمەترییەوە وەک تایەی پێشەوەی ئۆتۆمبێلێک بە خێرایی و گرتنی یارییەکە ڕایدەکێشێتەوە: لە وەستاندا جێگیر، بە خێرایی توندتر، سووک کاتێک تایەکان دەخلیسکێن. ئەگەر هیچ یارییەک تێلێمەتری نەنێرێت فەنەرەکەیە. لە هێزی یارییەکەوە ڕێگە دەدات هێزی گەڕانەوەی سوکانێکی مەجازی خۆی بیسووڕێنێت.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>داخراوە سوکانەکە لەو شوێنە ڕادەگرێت کە دەست جێی هێشت. فەنەر لە ماوەی کاتی گەڕانەوەدا دەیگەڕێنێتەوە. لە تێلێمەترییەوە وەک سوکانی ئۆتۆمبێلێک بە خێرایی و گرتنی یارییەکە ڕایدەکێشێتەوە: لە نزیک ناوەند توند و لە دوورتر نەرمتر، لە وەستاندا جێگیر، بە خێرایی توندتر، سووک کاتێک تایەکان دەخلیسکێن. ئەگەر هیچ یارییەک تێلێمەتری نەنێرێت وەک لە 100 km/h لەسەر ڕێگایەکی وشک ڕادەکێشێت. لە هێزی یارییەکەوە ڕێگە دەدات هێزی گەڕانەوەی سوکانێکی مەجازی خۆی بیسووڕێنێت.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>داخراوە</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>فەنەر</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>لە تێلێمەترییەوە</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>لە هێزی یارییەکەوە</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>کاتی گەڕانەوە</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>فەنەر چەند کاتی پێدەچێت تا سوکانەکە 95% ی ڕێگاکە بگەڕێنێتەوە. لە تێلێمەترییەوە لە 100 km/h لەسەر ڕێگایەکی وشک ئەوەندە کات دەبات.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>فەنەر چەند کاتی پێدەچێت تا سوکانەکە 95% ی ڕێگاکە بگەڕێنێتەوە. 0 یەکسەر دەیگەڕێنێتەوە ناوەند. لە تێلێمەترییەوە لە نزیک ناوەندەوە لە 100 km/h لەسەر ڕێگایەکی وشک ئەوەندە کات دەبات.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ئاراستەکردن</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«هەمیشە» ڕێگە دەدات ماوسەکە لە هەموو کاتێکدا ئاراستە بکات. «لە کاتی ڕاگرتن» تەنها کاتێک ڕێگەی پێدەدات کە «تێخەری ئاراستەکردن» ڕاگیراوە. «گۆڕین» بە هەر داگرتنێکی «تێخەری ئاراستەکردن» ئاراستەکردن هەڵدەکات یان دەیکوژێنێتەوە. تا ماوسەکە ئاراستە ناکات، سوکانەکە لە شوێنی خۆی دەمێنێتەوە یان دەگەڕێتەوە ناوەند، بۆیە یەک ماوس دەتوانێت ئاراستە بکات و بە دەوروبەردا بڕوانێت.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«هەمیشە» ڕێگە دەدات ماوسەکە لە هەموو کاتێکدا ئاراستە بکات. «لە کاتی ڕاگرتن و گەڕانەوە بۆ ناوەند» تەنها کاتێک ڕێگەی پێدەدات کە «تێخەری ئاراستەکردن» ڕاگیراوە، پاشان دەیگەڕێنێتەوە ناوەند، بە «ناوەندکردن» ئەگەر سەرچاوەکە هەیبێت و یەکسەر ئەگەر نەیبێت. «لە کاتی ڕاگرتن و مانەوە» تەنها کاتێک ڕێگەی پێدەدات کە تێخەرەکە ڕاگیراوە و لەو شوێنە جێی دەهێڵێت کە بەردرا. «گۆڕین» بە هەر داگرتنێکی «تێخەری ئاراستەکردن» ئاراستەکردن هەڵدەکات یان دەیکوژێنێتەوە. بۆیە یەک ماوس دەتوانێت ئاراستە بکات و بە دەوروبەردا بڕوانێت.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>هەمیشە</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>لە کاتی ڕاگرتن</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>لە کاتی ڕاگرتن و گەڕانەوە بۆ ناوەند</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>گۆڕین</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>تێخەری ئاراستەکردن</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ئەو دوگمەیەی ڕێگە بە ماوسەکە دەدات ئاراستە بکات، لەسەر هەمان ئامێری ڕێڕەوی ماوسەکە. ئەگەر هیچ نەهەڵبژێردرابێت، ماوسەکە هەمیشە ئاراستە دەکات.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ئەو دوگمەیەی ڕێگە بە ماوسەکە دەدات ئاراستە بکات، لەسەر هەمان ئامێری سەرچاوەکە. ئەگەر هیچ نەهەڵبژێردرابێت، ماوسەکە هەمیشە ئاراستە دەکات.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>نەرمکردن</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ماوسێک کە بە ناڕێکی ڕاپۆرت دەکات ڕێک دەکاتەوە. سوکانەکە نزیکەی ئەوەندە لە دوای دەستەوە دێت. 0 کوژاوەیە.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ماوسێک کە بە ناڕێکی ڕاپۆرت دەکات ڕێک دەکاتەوە. ستیکەکە نزیکەی ئەوەندە لە دوای دەستەوە دێت. 0 کوژاوەیە.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>کۆتایی سووڕان لە خێراییدا</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>کاتێک تێلێمەتریی یاری چالاکە، چەند لە سووڕانی تەواو لە 200 km/h دا دەمێنێتەوە. لە 100% دا هەموو سووڕانەکە لە هەموو خێراییەکدا هەیە.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>ڕێڕەوی چەرخ</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>ڕێڕەوی چەرخ بەلادا</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>ماوس چەند خێرا دەجووڵێت. کاتێک دەست دەوەستێت بەری دەدات.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>نیشاندەر لە کوێی شاشەکەیدایە، لە ناوەندەکەیەوە یان لەو شوێنەی کە ئاراستەکردن دەستی پێکرد.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>ماوس چەند جووڵاوە، لەو شوێنەدا ڕادەگیرێت کە دەست جێی دەهێڵێت، وەک سوکانێک.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>پلەکانی سکڕۆڵ وەک شوێنێک ڕادەگیرێن، بە وردیی تەواو لەسەر چەرخێکی سکڕۆڵی ورد.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>پلەکانی چەرخی لاتەنیشت وەک شوێنێک ڕادەگیرێن، بە وردیی تەواو لەسەر چەرخێکی سکڕۆڵی ورد.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>پاڵنانێک بۆ هەر پلەیەک، یەکسەر دەگەڕێتەوە دۆخی پشوو.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>لە کاتی ڕاگرتن و مانەوە</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>هەستیاری</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>خێراییەک چەند لە ستیکەکە دەدات. لە 1.00 دا ستیکەکە لە 16,000 هەنگاو لە چرکەیەکدا دەگاتە لادانی تەواو، لە هەموو خێراییەکی پشکنین و خێراییەکی ڕاپۆرتی ماوسدا.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>گەڕانەوە بۆ ناوەند</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>کاتێک ماوس خاو دەبێتەوە یان دەوەستێت، ستیکەکە لەمە خێراتر ناگەڕێتەوە. 0 وا دەکات لەگەڵ ماوسەکە بگەڕێتەوە.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>دەستپێکردن لەو شوێنەی ئاراستەکردن دەستی پێکرد</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>لەگەڵ «تێخەری ئاراستەکردن»، ستیکەکە لەو شوێنەوە دەپێوێت کە نیشاندەر لێی بوو کاتێک ئاراستەکردن دەستی پێکرد، وەک ستیکێک لەسەر شاشەی مۆبایل کە لەو شوێنە دەست پێدەکات کە پەنجە لێی دەکەوێت. کە کوژاوە بێت، لە ناوەندی شاشەی نیشاندەرەکەوە دەپێوێت.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>ئەم تەوەرە بە ڕێژەیی دەجووڵێت</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>بۆ تراکبۆڵ یان سپینەرێک کە ڕاپۆرت دەکات چەند سووڕاوە. کە هەڵکرابێت، تەوەرەکە وەک ڕێڕەوی ماوس شوێنێک ڕادەگرێت و ڕێکخستنەکانی ڕێڕەو وەردەگرێت. Windows نالێت کام تەوەرانە بەم شێوەیە دەجووڵێن.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}، {1} سم</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>پێشبینین</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>پیشان دەدات ئەم خێزانە چۆن شوێن ماوسەکەی خۆت دەکەوێت. هیچ شتێک نابەسترێتەوە تا هەڵیدەبژێریت.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>پێشبینین. ماوسەکەت بجووڵێنە.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>ڕاگیراو لە {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>لە {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% ڕاست</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% چەپ</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% سەرەوە</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% خوارەوە</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>ناوەند</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>لە کاتی ڕاگرتنی {0} دا دەجووڵێت.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI ی ماوس</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>ئەو هەنگاوانەی ئەم ماوسە بۆ هەر ئینجێک جووڵە ڕاپۆرتیان دەکات، وەک نەرمەکاڵای دروستکەرەکەی دایدەنێت.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>کاتێک DPI دانرابێت، ڕێڕەوی ماوس ڕێڕەوەکەی بە سانتیمەتریش پیشان دەدات. 0 واتە دانەنراوە.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>نیشاندەری IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>نیشاندەری IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>ئاستی ڕووناکی IR</value></data>
@@ -4646,6 +4789,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>نیشانەکانی سەر شاشە کە PadForge لە کاتی یاریکردندا پیشانیان دەدات. کوژاندنەوەی یەکێکیان هەرگیز ڕەفتار ناگۆڕێت، تەنها ئەوە کە ئایا پیشان دەدرێت.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>پەنجەرە بچووکەی چینی شیفت</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>ئۆڤەرلەی گۆڕینی پرۆفایل</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>کۆنترۆڵەرەکان هەڵکران یان کوژانەوە</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>تێبینیی پچڕانی ئامێر</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>تێبینیی پەیوەستبوونی ئامێر</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ئەڵقە یان تۆڕەکەی سەر شاشە پیشان بدە لە کاتێکدا مێنیوێکی بازنەیی یان دەستلێدان چالاکە. مێنیوەکان بە کوژاوەیی ئۆڤەرلەیەکەش هەر جێبەجێ دەبن.</value></data>
@@ -5321,6 +5465,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>کوژاوە</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>کاتپێو</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>ڕەنگی شریتی ڕووناکی</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>ئامێرە ناپەیوەستەکان</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>هەموو پەیوەستن</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>کوژاوە</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>لە ڕێگەی Logitech Gaming Software</value></data>
@@ -5363,6 +5509,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>شاشەکە وێنەیەک کە تۆ هەڵیدەبژێریت بە قەبارەی خۆی پیشان دەدات. وێنەیەک کە لە شاشەکە گەورەتر بێت پەنجەرەیەک بە قەبارەی شاشەکە پیشان دەدات، کە ماکرۆی «جووڵاندنی وێنەی شاشەی تەختەکلیل» دەیجووڵێنێت. لەسەر S.T.R.I.K.E. 7 ڕاکێشانی پەنجە بەسەر شاشەکەدا ئەویش دەجووڵێنێت.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>شاشەکە کاتپێوەکە پیشان دەدات، کە ماکرۆی «کاتپێو» دەستی پێدەکات، ڕایدەگرێت و سفری دەکاتەوە. هەموو شاشەکان هەمان کاتپێو پیشان دەدەن.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>شاشەکە ڕەنگی شریتی ڕووناکیی DualShock 4 یان DualSense لە نزمترین شوێندا کە ئەم شاشەیە پڕی دەکاتەوە پیشان دەدات، یان لە نزمترین شوێنی هەموویان کاتێک هیچ شوێنێک پڕ ناکاتەوە. شاشەی یەکڕەنگ ئاستی ڕووناکییەکەی وەک نەخشێکی خاڵ پیشان دەدات. تا ڕەنگێک نەگاتە شریتی ڕووناکی، PadForge هیچ پیشان نادات.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>شاشەکە ئەو ئامێرە بەستراوانە ڕیز دەکات کە پەیوەست نین، بەو ناوانەی پەڕەی ئامێرەکان پیشانیان دەدات، و کاتێک هیچیان ون نەبێت دەڵێت «هەموو پەیوەستن».</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>وێنەکان (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|هەموو پەڕگەکان (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>جووڵاندن</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>جووڵاندنی X</value></data>
@@ -5558,6 +5705,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>لێخوڕین (جگە لە 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>تێلێمەتریی یاری</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>بەهای سکریپت</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>پەیوەستبوونی ئامێر</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>خێرایی (میل/کاتژمێر)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (%ی زۆرترین)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>گێڕ (-1 دواوە، 0 بێلایەن)</value></data>
@@ -5711,4 +5859,231 @@
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>تۆماری کێشە</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>دەستپێکردن یان وەستاندنی تۆمارکردن</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>نیشانەکردنی تۆمارەکە</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>ئۆڤەرلەیەکە ئەو ئامێرە بەستراوانە ڕیز دەکات کە پەیوەست نین، بەو ناوانەی پەڕەی ئامێرەکان پیشانیان دەدات، و کاتێک هیچیان ون نەبێت دەڵێت «هەموو پەیوەستن».</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>داخراوە. هیچ بەرنامەیەک ناتوانێت بگاتە PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} و {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}، {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>چالاکیی PadForge: {0} بانگکردن، کۆنترین یەکەم. ئەو بانگکردنانەی پێش ئەوان ڕۆیشتن: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>چالاکیی PadForge: {0} بانگکردن. ئەو بانگکردنانەی پێش ئەو ڕۆیشتن: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} بانگکردنی کۆنتر ڕۆیشتن. «چالاکی» نوێترین {1:N0} دەهێڵێتەوە.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} بانگکردنی کۆنتر ڕۆیشت. «چالاکی» نوێترین {1:N0} دەهێڵێتەوە.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>هەناردەکردن…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>هەناردەکردنی چالاکی</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>فایلی دەق</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>کردنەوە</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>نوێکردنەوە</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>زیاتر بۆ {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>پاشەکەوتکردنی کارامەییەکە وەک ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>کردنەوەی فایلی ڕێکخستنەکانی</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>پاشەکەوت کرا. لە {0} دا، {1} لە ژێر {2} زیاد بکە.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} هێشتا فایلی ڕێکخستنی نییە. «زیادکردن» یەکێک دروست دەکات.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge هیچ بەرنامەیەکی یاریدەدەر لەم کۆمپیوتەرەدا نادۆزێتەوە کە دروستکەرەکەی ڕێکخستنێکی لەسەر Windows بەڵگەنامە کردبێت. Copy Settings لە ژێر «زیاتر» بۆ هەر یەکێکی تر کار دەکات.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge نەیتوانی بەرنامە یاریدەدەرەکان بپشکنێت: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>زیاد نەکراوە.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>زیادکراوە.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>زیادکراوە. ئێستا پەیوەستە.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>زیادکراوە. لەو کاتەوە پەیوەست نەبووە. یاریدەدەرێک کە کراوە بوو PadForge دەبینێت دوای ئەوەی دادەخرێت و دووبارە دەکرێتەوە.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>بۆ PadForge ێکی تر زیادکراوە. «نوێکردنەوە» ئاراستەی دەکات بۆ ئەم PadForge ە.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>زیادکراوە. کارامەیی PadForge ەکەی لەم PadForge ە کۆنترە.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>زیادکراوە، بەبێ کارامەیی PadForge ەکەی.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>زیادکراوە. کارامەیی PadForge ەکەی لە PadForge ێکی نوێترەوە هاتووە.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>کارامەییەکان تەنها وەک بارکردن وەردەگرێت.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>یاریدەدەرە زیادکراوەکان کاتێک خۆکارکردن هەڵکرابێت دەگەنە PadForge.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>زیادکردن…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>لابردن…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>نوێکردنەوە…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>تەواو نەبوو: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>لەبەرگیرایەوە.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>لەبەر نەگیرایەوە: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>بەرنامە ڕێگەپێدراوەکان</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>بەرنامەیەک کە ئاستی «خوێندنەوە» یان زیاتری دەوێت، تەنها یەک جار دەپرسێت، یەکەم جار کە پەیوەست دەبێت، و ئەو ئاستە وەردەگرێت کە داوای دەکات، تا ئاستی سەرەوە. یاریدەدەرێک کە لە سەرەوە زیادی دەکەیت بەوە ڕێگەی پێدراوە.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>ئێستا پەیوەستە.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>دوایین بەکارهێنان {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>هێشتا بەکارنەهاتووە.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>پەیوەستکراو: {0}. کرتە بکە بۆ کردنەوەی خۆکارکردن.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>لەم کۆمپیوتەرە: {0}. لە وێبەوە: {1}. کرتە بکە بۆ کردنەوەی خۆکارکردن.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>پەیوەستکراو لە وێبەوە: {0}. کرتە بکە بۆ کردنەوەی خۆکارکردن.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>نەخشەی SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>گەیمپادێک، «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>جۆیستیکێک. SDL هیچ نەخشەیەکی بۆی نییە.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>جۆیستیکێک. PadForge بە خاوی دەیخوێنێتەوە، بۆیە نەخشەی SDL بەکارناهێنرێت.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>جۆیستیکێک، کە ڕیزەکەی تۆ وەک گەیمپاد ڕێکی خستووە.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL لە کاتی کارکردنی بزوێنەردا ئامێرەکان دەخوێنێتەوە.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>کۆپیی ناوخۆیی کۆمەڵگە، {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>داگیراو {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>فایلی خودی PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>هی تۆ، زیادکراو {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>گۆڕاوی SDL_GAMECONTROLLERCONFIG، کە SDL لە سەرووی هەر ڕیزێکەوە دایدەنێت کە تۆ زیادی دەکەیت</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>لەبەرگرتنەوەی نەخشەی SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>نەخشەی ئامێرەکە وەک ڕیزێکی بنکەدراوەی کۆمەڵگە دەخاتە سەر کلیپبۆرد، لە ژێر ناسنامەی ئامێرەکە بە سفرکردنەوەی checksum و وەشانەکەی.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>لکاندنی نەخشەی SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>ڕیزێک بۆ ئەم ئامێرە وەردەگرێت، دەیپشکنێت، وەک هی تۆ هەڵیدەگرێت و یەکسەر جێبەجێی دەکات.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>دۆزینەوەی نەخشەیەک…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>بە ناو لە هەموو ئەو ڕیزانەدا دەگەڕێت کە PadForge هەیەتی و ئەوەی هەڵیدەبژێریت لەسەر ئەم ئامێرە جێبەجێ دەکات، بۆ کۆپییەک کە ناسنامەکانی جیاوازن.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>مەزەندەکردنی ڕێکخستنێک</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>ڕێکخستنێکی گەیمپاد لە تەوەر، دوگمە و کڵاوەکانی ئامێرەکەوە مەزەندە دەکات، بۆ ئامێرێک کە هیچ بنکەدراوەیەک نایناسێت. لە «تاقیکردنەوەی تێخستنەکان» بیپشکنە.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>لابردنی هی من</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>«لابردنی هی من» ڕیزەکە و ڕیزەکانی کۆنترۆڵەر وەک پێشتر دەگەڕێنێتەوە.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>دووبارە بەستنەوە</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>ڕیزەکانی ئامێرەکە لەسەر هەر کۆنترۆڵەرێک کە لەسەریەتی دووبارە لە ڕێکخستنی SDL ەوە دروست دەکاتەوە، وەک دیاریکردنی دەیکات.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>پەڕەی بنکەدراوەی کۆمەڵگە</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>ڕیزەکە، و ئەو شوێنانەی لە {0} جیاوازە</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>ڕیزەکە</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>کۆنترۆڵەر</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>ڕیزی {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>تێخستنی ئێستای</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>ڕیزی SDL دەڵێت</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>لە ڕیزی SDL دا نییە</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}، جیاوازە</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge بەکاری ناهێنێت: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>ڕیزەکە</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>لەبەرگیرایەوە.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>لەبەرگیرایەوە. شێوازی SDL ناتوانێت {0} لەخۆبگرێت.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>ماکرۆکان</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>چەماوەکان</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>ناوچە مردووەکان</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>دەرخستنەکانی کیبۆرد و ماوس</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>تێربۆ، گۆڕینەکان و کردارەکانی تر</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} و {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>هیچ شتێک نییە بۆ لەبەرگرتنەوە: SDL هیچ نەخشەیەکی بۆ ئەم ئامێرە نییە، و لەسەر هیچ کۆنترۆڵەرێک نییە.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>بەرنامەیەکی تر کلیپبۆردەکە بەکاردەهێنێت. هیچ شتێک لەبەر نەگیرایەوە.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>ڕیزەکەت لابرا. ئامێرەکە وەک پێش ئەو دەخوێنرێتەوە.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>دووبارە لە ڕێکخستنی SDL ەوە بەسترایەوە: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>ئێستا بەکاردێت. ڕیزەکە هی تۆیە و بۆ ئەم ئامێرە لە پێشترە.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>وەک هی تۆ هەڵگیرا. کاتێک بزوێنەر کار دەکات و ئامێرەکە پەیوەستە بەکاردێت.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>وەک هی تۆ هەڵگیرا، بەڵام گۆڕاوی SDL_GAMECONTROLLERCONFIG ڕیزێکی بۆ ئەم ئامێرە تێدایە، کە SDL لە جیاتی هی تۆ دەیهێڵێتەوە.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ڕیزەکەی وەرنەگرت. هیچ شتێک بۆ ئەم ئامێرە نەگۆڕا.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>لکاندنی نەخشەیەکی SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>لکاندنی نەخشەیەکی SDL بۆ {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>دۆزینەوەی نەخشەیەک بۆ {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>مەزەندەکردنی ڕێکخستنێک بۆ {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>زیادکردنی ڕیز لە فایلێک یان کلیپبۆردەوە</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>لکاندن</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>کردنەوەی فایلێک…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>فایلەکانی نەخشە (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>فایلەکە لە 4 MB زیاترە. هەموو فایلی کۆمەڵگە نزیکەی 0.6 MB ە.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>گەڕان بە ناو، ناسنامە یان VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>ئەو ڕیزانەی PadForge هەیەتی</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>هیچ ڕیزێک ناگونجێت.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>ڕیزی هەڵبژێردراو لە ژێر ناسنامەی خۆیدا لەسەر {0} جێبەجێ دەکرێت، بە هەمان پشکنین و هەمان هەڵبژاردنی «لکاندن».</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>ڕیزی نەخشەی SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>ڕیزێک بۆ ئەم ئامێرە.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>ڕێکخستنێکی مەزەندەکراو.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows، {0} خانە، ناسنامەکەی لەگەڵ ئەم ئامێرە دەگونجێت.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows، {0} خانە، لە هەمان فرۆشیار و بەرهەم لەسەر باس یان وەشانێکی تر. لە ژێر ناسنامەی خودی ئەم ئامێرەدا هەڵدەگیرێت.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows، {0} خانە، ڕیزی ئامێرێکی تر. لە ژێر ناسنامەی خودی ئەم ئامێرەدا هەڵدەگیرێت.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} خانە. SDL ئەم ئامێرە ناخوێنێتەوە، بۆیە PadForge تێخستنەکانی بەپێی ڕیزەکە ڕێکدەخات.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} خانە، لە تەوەر، دوگمە و کڵاوەکانی ئامێرەکەوە. لە «تاقیکردنەوەی تێخستنەکان» بیپشکنە، پاشان بیهێڵەوە یان لێرە بیگۆڕە.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows، {0} خانە، ناسنامەکەی لەگەڵ ئەم ئامێرە دەگونجێت.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows، {0} خانە، لە هەمان فرۆشیار و بەرهەم لەسەر باس یان وەشانێکی تر. لە ژێر ناسنامەی خودی ئەم ئامێرەدا هەڵدەگیرێت.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows، {0} خانە، ڕیزی ئامێرێکی تر. لە ژێر ناسنامەی خودی ئەم ئامێرەدا هەڵدەگیرێت.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} خانە. SDL ئەم ئامێرە ناخوێنێتەوە، بۆیە PadForge تێخستنەکانی بەپێی ڕیزەکە ڕێکدەخات.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} خانە، لە تەوەر، دوگمە و کڵاوەکانی ئامێرەکەوە. لە «تاقیکردنەوەی تێخستنەکان» بیپشکنە، پاشان بیهێڵەوە یان لێرە بیگۆڕە.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ئەمە شێوەی خوێندنەوەی {0} دەگۆڕێت. ڕیزەکانی لە {1} دووبارە لە ڕێکخستنە نوێیەکەوە دەبەسترێنەوە.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ئەمە شێوەی خوێندنەوەی {0} دەگۆڕێت. لەسەر هیچ کۆنترۆڵەرێک نییە، بۆیە هیچ ڕیزێک ناگۆڕێت.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>کورتەڕێگاکانی پرۆفایل کە {0} دەخوێننەوە ئەو تێخستنانە دەهێڵنەوە کە بۆیان دانراون.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>ڕیزەکە وەک هی تۆ لە PadForge.xml دا هەڵدەگیرێت و بۆ ئەم ئامێرە لە هەموو سەرچاوەیەکی تر لە پێشترە. «لابردنی هی من» ڕیزە کۆنەکە و ڕیزە کۆنەکان دەگەڕێنێتەوە.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>ڕیزەکان وەک هی تۆ لە PadForge.xml دا هەڵدەگیرێن و بۆ ئامێرەکانیان لە هەموو سەرچاوەیەکی تر لە پێشترن. «پاککردنەوە»، لە ژێر «زیاتر» ی ڕیزی بنکەدراوەی کۆنترۆڵەر، لایان دەبات.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} ڕیز بۆ Windows. {1} ڕیز بۆ سیستەمەکانی تر پشتگوێ دەخرێن.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ڕیز بۆ Windows. {1} ڕیز بۆ سیستەمەکانی تر پشتگوێ دەخرێن.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ڕیز ڕەتکرانەوە. یەکەمیان: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ڕیزێک بلکێنە، یان دەقی فایلێکی gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>دەقەکە ڕیزێکی بنکەدراوەی کۆنترۆڵەری SDL نییە: ناسنامەیەکی 32 ژمارەی شازدەیی، ناوێک، پاشان خانەگەلێکی وەک a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>ڕیزەکان بۆ سیستەمەکانی ترن. PadForge ڕیزەکانی Windows دەخوێنێتەوە، یان ئەوانەی بۆ هیچ سیستەمێکی دیاریکراو نین.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ناسنامەی ڕیزەکە هی ئامێرێک نییە. پێویستی بە 32 ژمارەی شازدەیی هەیە.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>ناوی ڕیزەکە بەتاڵە، لە 128 پیت زیاترە، یان پیتێکی تێدایە کە SDL وەک خانە دەیخوێنێتەوە.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>ڕیزەکە ئاماژەیەک یان خانەیەکی Android ی تێدایە، کە PadForge وەریناگرێت.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>ڕیزەکە خانەیەکی تێدایە کە SDL نایناسێت.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>بەستنەوەیەک بە شێوازی SDL نییە، وەک b3، a2، +a2، a2~ یان h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>ڕیزەکە یەک خانە دوو جار دەدات.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>ڕیزەکە لە 1,024 پیت زیاترە.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>ڕیزەکە هیچ کۆنترۆڵێک نابەستێتەوە.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>ڕیزەکانی تۆ</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>ڕیزەکانی تۆ</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>ئەو ڕیزانەی لێرە زیادیان دەکەیت، یان لەسەر کارتی نەخشەی SDL ی ئامێرێک دەیانلکێنیت، بۆ ئامێرەکانیان لە هەموو سەرچاوەیەکی تر لە پێشترن و لە دوای ڕیسێتکردنەوەش دەمێننەوە.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>زیادکردنی ڕیز لە فایلێک یان کلیپبۆردەوە…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} ڕیز، هی تۆن و بۆ ئامێرەکانیان لە هەموو سەرچاوەیەکی تر لە پێشترن.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ڕیز، هی تۆیە و بۆ ئامێرەکەی لە هەموو سەرچاوەیەکی تر لە پێشترە.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>هێشتا هیچ.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>یەکسەر بەکاردێت.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>هەڵکردن</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>یاریدەدەرەکان لەسەر وێب</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>تونێل</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>هیچ</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>ناونیشانێک کە دەیلکێنم</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>دەست پێدەکات، بە مافەکانی تۆ.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>کار دەکات، بە مافەکانی تۆ. ناونیشانەکەی هەر جارێک دەست پێدەکات وەک خۆی دەمێنێتەوە.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>کار دەکات، بە مافەکانی تۆ. تونێلی خێرا هەر جارێک دەست پێدەکات ناونیشانێکی نوێ وەردەگرێت، بۆیە دەبێت یاریدەدەرەکە دووبارە زیاد بکرێتەوە.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>وەستاوە.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>وەستاوە. دوایین قسەکانی: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>نەتوانرا دەست پێبکرێت.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>ئیتر لەسەر ئەم کۆمپیوتەرە نییە.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>هیچ بەرنامەیەکی تونێل لەسەر ئەم کۆمپیوتەرە نەدۆزرایەوە. PadForge لەگەڵ cloudflared، devtunnel، ngrok و Tailscale Funnel کار دەکات، یان لەگەڵ ناونیشانی تونێلی خۆت.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>تونێلێک هەڵبژێرە بۆ ئەوەی ناونیشانێکی گشتی بدەیت بە PadForge.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>هەروەها لەسەر ئەم کۆمپیوتەرە: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}، کە ناونیشانەکەی وەک خۆی دەمێنێتەوە</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}، کە تونێلە خێراکانی هەر جارێک ناونیشانێکی نوێ وەردەگرن</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>تونێلی خۆت بۆ http://127.0.0.1:{0} کار پێبکە و ناونیشانە https ەکەی بلکێنە. تونێلێکی ناودراوی Cloudflare، تونێلێکی dev ی هەمیشەیی، Tailscale Funnel و دۆمەینی خودی ngrok ناونیشانەکەیان دەهێڵنەوە.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>ناونیشانێکی https بلکێنە کە جگە لە /mcp هیچ ڕێڕەوێکی نەبێت، وەک تونێلەکەت دەیدات.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>یاریدەدەری وێبی PadForge دەست پێدەکات.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>یاریدەدەری وێبی PadForge وەستا ({0}). Reach PadForge From the Web بکوژێنەوە و هەڵیبکەرەوە بۆ ئەوەی دووبارە دەستی پێبکاتەوە.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>ناونیشان</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>هێشتا ناونیشانی گشتی نییە.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>زیادکردن بۆ Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>لەبەرگیرایەوە.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>وەرگرتنی یاریدەدەرێکی وێبی نوێ</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>دەستپێکردنی وەرگرتن</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>وەستاندنی وەرگرتن</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>وەردەگرێت تا {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>وەرناگرێت. «دەستپێکردنی وەرگرتن» بۆ پێنج خولەک دەیکاتەوە.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>ناونیشانەکە لە یاریدەدەرەکەدا زیاد بکە و بچۆ ژوورەوە. هەر چوونەژوورەوەیەک کۆدێکی شەش ژمارەیی خۆی لەسەر پەڕەی چوونەژوورەوەکەی و لەسەر کارتی پرسیاری PadForge پیشان دەدات. تەنها کاتێک «ڕێگەدان» دابگرە کە هەردوو کۆدەکە وەک یەک بن. لە کاتەکانی تردا چوونەژوورەوە ڕەتدەکرێتەوە و هیچ شتێک لە تۆ ناپرسێت.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>ڕێگەپێدراو لەسەر وێب</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>هێشتا هیچ.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>چوونەژوورەوەکەی گەڕایەوە بۆ {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>خۆی ناو دەنێت {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>ڕێگەپێدراو {0}، دوایین بەکارهێنان {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>ڕێگەپێدراو {0}، هێشتا بەکارنەهاتووە.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>هەڵوەشاندنەوەی ڕێگەپێدان</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel ی خۆی ڕاستەوخۆ PadForge کار پێدەکات، بەبێ ناونیشان یان چوونەژوورەوە لێرە. فەرمانەکە لەبەربگرەوە بۆ ناو ڕێکخستنی ئەو تونێلە.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>لەبەرگرتنەوەی فەرمان</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge هیچ بەرنامەیەکی تونێل دانابەزێنێت و کلیلی هیچ کۆمپانیایەکی تر هەڵناگرێت. یاریدەدەرێکی وێب لە ئاستی سەرەوەدا کار دەکات.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>ڕێگە بە {0} دەدەیت لە وێبەوە لەگەڵ PadForge کار بکات؟</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>چوونەژوورەوەکەی دەگەڕێتەوە بۆ {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>خۆی ناو دەنێت {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>تەنها ئەگەر پەڕەی چوونەژوورەوەکەی ئەم کۆدە پیشان بدات «ڕێگەدان» دابگرە:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>کۆدە شەش ژمارەییەکەی لەسەر کارتی پرسیاری PadForge دەردەکەوێت. تەنها ئەگەر پەڕەی چوونەژوورەوەکەی هەمان کۆد پیشان بدات «ڕێگەدان» دابگرە.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>لە ئاستی {0} کار دەکات، لە ڕێی {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>چوونەژوورەوەکەی دەگەڕێتەوە بۆ ئەم کۆمپیوتەرە، و هەر بەرنامەیەک لێرە دەتوانێت داوای ئەو ناونیشانە بکات.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>چوونەژوورەوە بۆ PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} داوا دەکات لەسەر کۆمپیوتەرەکەت لەگەڵ PadForge کار بکات.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>خۆی ناو دەنێت {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>لەسەر کۆمپیوتەرەکەت، کارتی پرسیاری PadForge دەربارەی ئەم چوونەژوورەوەیە دەپرسێت. تەنها ئەگەر کارتەکە ئەم کۆدە پیشان بدات لەوێ «ڕێگەدان» دابگرە:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>کاتێک لەسەر کۆمپیوتەرەکە وەڵام دەدەیتەوە، ئەم پەڕەیە خۆی بەردەوام دەبێت.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>ئەم چوونەژوورەوەیە دەگەڕێتەوە بۆ بەرنامەیەک لەسەر کۆمپیوتەرەکەت، و هەر بەرنامەیەک لەوێ دەتوانێت داوای ئەو ناونیشانە بکات.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge ئێستا یاریدەدەرێکی وێبی نوێ وەرناگرێت. لەسەر کۆمپیوتەرەکەت، PadForge بکەرەوە، بڕۆ بۆ زیادەکان، خۆکارکردن، و لە ژێر «یاریدەدەرەکان لەسەر وێب» «دەستپێکردنی وەرگرتن» دابگرە. پاشان دووبارە بچۆ ژوورەوە.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>ئەم چوونەژوورەوەیە ناتوانێت بەردەوام بێت. ناونیشانی PadForge دووبارە لە یاریدەدەرەکەدا زیاد بکە و بچۆ ژوورەوە.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>ئەم چوونەژوورەوەیە کۆتایی هات. دووبارە لە یاریدەدەرەکەوە بچۆ ژوورەوە.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows دەستی پێنەکرد</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>بە کۆدی {0} کۆتایی هات</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>خۆکارکردن داخراوە، بۆیە هیچ یاریدەدەرێکی وێب ناگاتە PadForge. یاریدەدەری وێب کاتێک خۆکارکردن هەڵکرا دەست پێدەکات.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>پشکنین…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>دانەمەزراوە.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>دامەزراوە و نوێیە. سکریپتێک بە {0} دەست پێدەکات.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>بۆ {0} دامەزراوە و نوێیە. سکریپتێک بە {1} دەست پێدەکات.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>دامەزراوە. ئەم PadForge ە کۆپییەکی نوێتری هەیە.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>بۆ {0} دامەزراوە. ئەم PadForge ە کۆپییەکی نوێتری هەیە.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>دامەزراندن…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge نەیتوانی بیپشکنێت: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>دامەزراندن کتێبخانەی PadForge لەو شوێنە دادەنێت کە ئەو زمانە دەیدۆزێتەوە. سکریپتێک کە باری دەکات ئامێرەکان دەخوێنێتەوە و بەستنەوەکان بەڕێوەدەبات لە ئاستی سەرەوەدا.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>پاشەکەوتکردنی کتێبخانەیەک لە هەر شوێنێک</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>کۆپییە دامەزراوەکان</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>لابردنی هەموو</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>لابران.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ناسنامەی سکریپت</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ناسنامەی سکریپتەکەی</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>سکریپتەکان کۆنترۆڵەکانی بەم ناوانە ناو دەنێن: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>سکریپتەکان کلیلەکانی بە KeyA، KeySpace، KeyLeftShift و هاوشێوەکانیان ناو دەنێن، و هەر کلیلێک بە کۆدەکەی، Vk0 تا Vk255.</value></data>
 </root>

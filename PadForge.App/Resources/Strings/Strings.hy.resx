@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0}-ը անջատվեց։ {1}-ում այլևս սարք չկա։</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0}-ը միացավ</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0}-ը միացավ, մարտկոց՝ {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} սարք անջատվեց</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} սարք միացավ</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} սարք անջատվեց՝ {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} սարք միացավ՝ {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0}-ը անընդհատ անջատվում է</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (առավելագույնը {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (առավելագույնը {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Ինքնավերամիացում, պորտ, զուգակցման ինքնություն, միանալ հասցեով</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Պորտ, DSX.exe փոխարինող</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Պորտեր, Լրիվ արագություն, Հարմարեցված ձևաչափեր</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Հմտություն</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Այլ օգնականներ, օգնականներ վեբում</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Նայեք շուրջը գլխի հետագծիչով կամ VR գլխադիրով, մինչ երկու բութ մատները մնում են կոճակների վրա։</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Կապակցեք մրցարշավային խաղի ուղարկած արագությունը, ոտնակները և փոխանցումները ինչպես ցանկացած մուտք։</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Ուղարկեք կառավարչի շարժումը էմուլյատորներին, որոնք կարդում են DSU շարժման աղբյուր։</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Ընտրացանկի օղակը, ցանցը կամ գոտին՝ բաց լինելու ժամանակ։</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Շերտի անունը, երբ տեղաշարժի շերտը միանում է, այդ շերտի սահմանած ժամանակով։</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Պրոֆիլի անունը, երբ պրոֆիլը փոխվում է։</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Վիրտուալ կառավարիչների հենց նոր միանալը կամ անջատվելը՝ դյուրանցումից կամ մակրոյից։</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Կապակցված սարքի անունը, երբ այն անջատվում է։</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Կապակցված սարքի անունը, երբ այն միանում է։</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Պատճենել հասցեն</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Ծրագրերը կարող են փոխել պրոֆիլները և ազատել դրանք, մեկնարկել ու կանգնեցնել մեխանիզմը, միացնել և անջատել վիրտուալ կառավարիչները, ցուցադրել և թաքցնել պատուհանը, փակել PadForge-ը, պահել ախտորոշման ակնթարթային պատկեր և հարցնել, թե ինչ է աշխատում։</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Այն ամենը, ինչ «Հրամաններ» մակարդակում է, և ծրագրերը կարող են տեսնել սարքերը, վիրտուալ կառավարիչները, կապակցումները, պրոֆիլներն ու կարգավորումները, իրական ժամանակում հետևել յուրաքանչյուր սարքի մուտքերին և ցույց տալ ձեզ PadForge-ի որևէ վայր։ «Կարդալ» մակարդակի ծրագիրը տեսնում է յուրաքանչյուր սարքի յուրաքանչյուր սեղմված ստեղն, այդ թվում՝ ադմինիստրատորի իրավունքներով աշխատող պատուհաններում մուտքագրվածները։</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Այն ամենը, ինչ «Կարդալ» մակարդակում է, և ծրագրերը կարող են ավելացնել իրենց սեփական սարքերը և կառավարել դրանք, պահել ցանկացած սարքի կառավարման տարր և մակրոների ակտիվացուցիչներին փոխանցել անվանված արժեքներ։</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Այն ամենը, ինչ «Ուղարկել մուտքեր» մակարդակում է, և ծրագրերը կարող են փոխել այն, ինչ դուք կարող եք փոխել էջերում։</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Այն ամենը, ինչ «Ուղարկել մուտքեր» մակարդակում է, և ծրագրերը կարող են փոխել այն, ինչ դուք կարող եք փոխել էջերում։ Որոշ փոփոխություններ միշտ նախ հարցնում են ձեզ PadForge-ի հարցման քարտում։</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Օգնականներ</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Տեղադրեք սա օգնականի MCP կարգավորումներում։ Այդ դեպքում օգնականը կաշխատի PadForge-ի հետ վերևի մակարդակով։</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Պատճենել որպես TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML կարդացող օգնականներ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>«Ավելացնել»-ը PadForge-ը իր հմտությամբ դնում է այդ օգնականի մեջ։ Այն ապա աշխատում է վերևի մակարդակով, և նրա խոսքերը ցուցադրվում են այն բանի կողքին, որի վրա նա մատնանշում է, նրա անվան տակ։</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Սկրիպտներ</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Սկրիպտների գրադարան</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Պահել գրադարան…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Մեկ ֆայլ AutoHotkey v2-ի, Python-ի կամ PowerShell-ի համար։ Այն բեռնող սկրիպտը կարդում է սարքերը և կառավարում կապակցումները վերևի մակարդակով։</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Մեկ ֆայլ AutoHotkey v2-ի, Python-ի կամ PowerShell-ի համար՝ գրված այնտեղ, որտեղ դուք ընտրեք։</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Սպասում է ձեզ</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Գործունեություն</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Դեռ ոչ մի ծրագիր չի կանչել։ Յուրաքանչյուր կանչ նշվում է այստեղ՝ իր արդյունքով։</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Հետարկել</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Օգնականների հմտություն</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Պահել հմտությունը…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ պահել այն՝ {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Քանի դեռ «Կարդալ» կամ ավելի բարձր մակարդակի ծրագիր է միացված, այն տեսնում է, թե ինչ է սեղմվում յուրաքանչյուր սարքում, ստեղնաշարերն էլ ներառյալ։</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Պլագիններ</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Գործարկել պլագինները</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ոչ մի պլագին չի աշխատում։</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Պլագինն աշխատում է ձեր իրավունքներով, ոչ թե PadForge-ի։</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ներկառուցված</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Փորձնական կառավարիչ</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Կառավարիչ, որը շարժվում է ինքնուրույն, մեկ կառավարման տարրով հերթով, որպեսզի կապակցումը կարելի լինի փորձել առանց սարքի։</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Արագություն</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Դանդաղ</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Նորմալ</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Արագ</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Ամենաարագ</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Վերարտադրում</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Վերարտադրում է խնդրի գրառումը որպես այն ստեղծած սարքեր՝ նույն ժամանակային ընթացքով։ Դրանք նոր սարքեր են այս համակարգչում և կապակցվում են այնպես, ինչպես կապակցում եք դուք կամ պրոֆիլը։</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Գրառում</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Խնդրի գրառումներ|*.zip;*.log|Բոլոր ֆայլերը|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ը չի կարող նվագարկել {0}։ Այն խնդրի գրառում չէ կամ սարքի մուտք չի պարունակում։</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Ձեր պլագինները</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Պլագինը ծրագիր է, որը սարքեր է ավելացնում PadForge-ին։ PadForge-ը այն մեկնարկում է ձեր սովորական իրավունքներով, երբ մեխանիզմն աշխատում է։</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Ավելացնել պլագին…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Ծրագրեր և սկրիպտներ|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Բոլոր ֆայլերը|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Հաստատել…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Հաստատել և վերագործարկել…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Մեկնարկում է մեխանիզմի հետ</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Ֆայլը ստուգվում է մեկնարկից առաջ</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ավարտվեց {0} կոդով։ Նորից մեկնարկում է {1} վ հետո։</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} արդեն ցանկում է։</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge-ը աշխատեցնում է մինչև 16 պլագին։ Մեկ այլ պլագին ավելացնելու համար հեռացրեք որևէ մեկը։</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Աշխատող պլագիններ՝ {0}։ Նրանց ավելացրած սարքերը՝ {1}։</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0}-ը կանգնեց հինգ ձախողումից հետո։</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0}-ը փոխվել է ձեր հաստատումից հետո։</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0}-ը չկարողացավ մեկնարկել։</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ավելացրել է՝ {0}։</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Ստորագրող՝ {0}։</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Չստորագրված է։</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Նրա կարգավորումները ցուցադրվում են այստեղ, քանի դեռ այն աշխատում է։</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Այն կարգավորումներ չի հայտարարում։</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ կարդալ նրա կարգավորումները՝ {0}։</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Ավարտվեց մեկ րոպե լուռ մնալուց հետո</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Նրա ֆայլը փոխվեց աշխատանքի ընթացքում</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Ավելացրել է՝ {0}։</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0}՝ կարգավորումներ</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Ընտրել</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Սեղմեք կառավարման տարր…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Չընտրված</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Ավելացրեք պլագին կամ քաշեք նրա ֆայլն այս էջ։ PadForge-ը ցույց է տալիս նրա ուղին, ստորագրողին և SHA-256-ը և հարցնում է ձեզ նախքան գործարկելը։ Պլագինն աշխատում է ձեր իրավունքներով, ոչ թե PadForge-ի։</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Վերարտադրում է խնդրի գրառումը որպես այն ստեղծած սարքեր՝ նրանց ժամանակային ընթացքով։</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Աշխատում է։</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Աշխատում է, ձեռքով։</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Ինչն է շարժվում</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Ձողեր և ձգաններ</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Ձողեր</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Ձգաններ</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Նախշ</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Սրբում</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Շրջան</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Շարժման ժամանակ</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Հանգստի ժամանակ</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Սեղմել կոճակները</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Սեղմել նավիգացիայի կոճակները</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows-ի հավելվածները գործում են վիրտուալ Xbox կառավարչի A, B, Հետ, Մեկնարկ և D-pad կոճակներով առջևի պատուհանում, իսկ Ուղեցույցը բացում է Xbox Game Bar-ը։</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Պտտել D-pad-ը</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Նույն պատճառով։</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Սեղմման ժամանակ</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Կառավարիչներ</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Ձեռքով</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Դադարեցնում է շարժումը։ Սահմանեք նրա մուտքերը ներքևում՝ մկնիկով։</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Ձախ ձող</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Աջ ձող</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Ձախ ձգան</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Աջ ձգան</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Ընթերցումներ վայրկյանում</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Պլագինների հավաքածուն և ձեր ընտրած պլագինի մատյանը</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Պլագինների հավաքածու</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Պահել պլագինների հավաքածուն…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Փոքր պլագին C#-ով և նույն պլագինը AutoHotkey-ի, Python-ի և PowerShell-ի համար, յուրաքանչյուր ֆայլում՝ ինչպես կառուցել կամ գործարկել։</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ուղեցույց յուրաքանչյուր հրամանի, իրադարձության և կարգավորման տեսակի համար, կառուցման սկրիպտ C# պլագինի համար և նույն պլագինը AutoHotkey-ի, Python-ի և PowerShell-ի համար։</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Մատյան</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Ընտրեք պլագին՝ նրա մատյանը տեսնելու համար։</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Այս պլագինի մատյանում դեռ ոչինչ չկա։</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Խաղի մոդ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Մեկ այլ ծրագիր զբաղեցրել է {0} խողովակի անունը։ Փակեք այդ ծրագիրը։</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-ը մերժեց {0} խողովակը, ուստի ծրագրերը չեն կարող միանալ։</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ոչ մի ծրագիր միացված չէ։</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Միացված է։ Ոչ մի ծրագիր միացված չէ։</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Միացված՝ {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Անհայտ ծրագիր</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ստորագրել է {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Այս տեսակից ավելին չկա, մինչև PadForge-ը նորից մեկնարկի</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-ը այդպիսի գործիք չունի</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Ծրագիրը կարդացել էր ավելի հին վիճակ</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Այդպիսի կարգավորում չկա</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ոչինչ չունի այդ ID-ն</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Արժեքը կարգավորման թույլատրելի սահմանից դուրս էր</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Դուք չթույլատրեցիք</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ոչ ոք ժամանակին չպատասխանեց</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Ցուցադրել պատուհանը</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Պատուհանը ուղարկել համակարգային սկուտեղ</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Ծալել պատուհանը</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Ընդարձակել պատուհանը</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Փակել PadForge-ը</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Մեկնարկել մեխանիզմը</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Կանգնեցնել մեխանիզմը</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Ավելացնել սարքը՝ {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Սահմանել {0} սարքի կառավարման տարրերը</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Հեռացնել սարքը՝ {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Դնել {0} սարքի բոլոր կառավարման տարրերը հանգստի վիճակում</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ստիպում է PadForge-ին գործարկել ծրագիր։</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Բացում է ֆայլ, թղթապանակ կամ վեբ էջ։</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ստիպում է PadForge-ին Windows-ին ուղարկել ստեղներ կամ մկնիկի մուտք։</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Ներմուծում է պրոֆիլ PadForge-ից դուրս։</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge-ը հարցնում է ձեզ, նախքան ծրագիրը դա անելը։</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Երկխոսություններ</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Մակրոներ</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Պահել {0} սարքի կառավարման տարրերը</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Բաց թողնել {0} սարքի կառավարման տարրերը</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Սահմանել արժեքը՝ {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Փոխել պրոֆիլները</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Մեկնարկել կամ կանգնեցնել մեխանիզմը</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Միացնել կամ անջատել վիրտուալ կառավարիչները</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Պահել ախտորոշման ակնթարթային պատկեր</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Կարդալ հարցման հաճախականությունը և դրայվերները</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Ցուցակագրել պրոֆիլները</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Կարդալ պրոֆիլ</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Ցուցակագրել վիրտուալ կառավարիչները</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Ցուցակագրել սարքերը</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Կարդալ սարք</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Սպասել ձեր մուտքին</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Կարդալ կառավարչի կապակցումները</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Ցուցակագրել կառավարչի մակրոները</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Գրանցել խնդիր</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Որոնել կարգավորումներ</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Կարդալ կարգավորում</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Ցույց տալ ձեզ մի վայր</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Որոնել վայրեր PadForge-ում</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Կարդալ վայր PadForge-ում</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Կարդալ, թե ինչ եք տեսնում</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Ավելացնել սեփական սարք</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Կառավարել իր սարքը</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Հեռացնել իր սարքը</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Պահել կամ բաց թողնել կառավարման տարր</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Սահմանել արժեք մակրոյի գործարկիչների համար</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Փոխել կարգավորում</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Սեղմել կոճակ</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Ստեղծել պրոֆիլ</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Վերանվանել պրոֆիլ</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ջնջել պրոֆիլ</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Փոխել կառավարչի տիպը</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Նշանակել սարք</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Սահմանել կապակցման տողեր</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Մաքրել կապակցման տողերը</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Կապակցել կառավարիչն ինքնաշխատ</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Պահել մակրո</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ջնջել մակրո</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ստեղծում է ստեղնաշարի և մկնիկի կառավարիչ</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Միացնում է {0}-ը</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Փոխել «{0}»</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Սեղմել «{0}»</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0}-ը ցանկանում է ձեզ ցույց տալ՝ {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Վայրը՝ {0}։</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Թույլատրե՞լ «{0}» ծրագրին աշխատել PadForge-ի հետ «{1}» մակարդակով։</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} գործարկում է՝ {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Մեկնարկել է՝ {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Ստորագրող՝ {0}։</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Չստորագրված է։</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>«Կարդալ» և ավելի բարձր մակարդակում այն տեսնում է յուրաքանչյուր սարքի վրա սեղմված յուրաքանչյուր ստեղն, ստեղնաշարերն ընդգրկյալ։</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Այն հարցնում է մեկ անգամ։ Կարող եք հեռացնել այն «Ավտոմատացում» էջում։</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ի հրամանային տողը</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Սահմանում է {0}՝ {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Լսում է ցանցը, ուստի այլ սարքեր կարող են հասնել այս համակարգչին։</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Փոխում է դրայվեր կամ HidHide, որոնց վրա հենվում են այլ ծրագրեր և խաղեր։</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell մոդուլներ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Թույլատրել</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Չթույլատրել</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Ոչ հիմա</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Ցույց տալ</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Քայլ {0}՝ {1}-ից։</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Սեղմեք դրա վրա՝ շարունակելու համար։</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Բացեք՝ {0}։</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Բացեք «Ավելին»-ը։</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Աղբյուր՝ {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Աղբյուր՝ {1}, որն իրեն անվանում է «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Աղբյուր՝ ծրագիր, որն իրեն անվանում է «{0}»</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Տեղադրել և վերամեկնարկել</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Թողարկման նշումներ</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Կառավարիչների տվյալների բազա</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա»-ն GitHub-ից ներբեռնում է համայնքի կառավարիչների տվյալների բազան (SDL_GameControllerDB) և կարգավորումների ֆայլում պահում այն կապակցումները, որոնք PadForge-ի այս տարբերակը չունի։ Նոր կապակցումն օգտագործվում է միայն այն կառավարչի համար, որը ոչ ոք այլ կերպ չի կարդում որպես խաղային կառավարիչ, որը նշանակված չէ և «Ստիպել հում ջոյստիկի ռեժիմ» ռեժիմում չէ։ Վերականգնումը հեռացնում է ներբեռնված բոլոր կապակցումները։</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«Թարմացնել հիմա»-ն GitHub-ից ներբեռնում է համայնքի կառավարիչների տվյալների բազան (SDL_GameControllerDB) և կարգավորումների ֆայլում պահում այն կապակցումները, որոնք PadForge-ի այս տարբերակը չունի։ Դրանք օգտագործվում են անմիջապես։ Նոր կապակցումն օգտագործվում է միայն այն կառավարչի համար, որը ոչ ոք այլ կերպ չի կարդում որպես խաղային կառավարիչ, որը նշանակված չէ և «Ստիպել հում ջոյստիկի ռեժիմ (շրջանցել կառավարչի վերակապակցումը)»-ում չէ։ Վերականգնումը հեռացնում է ներբեռնված բոլոր կապակցումները։ Ձեր սեփական տողերը «Ավելին»-ի տակ մնում են։</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Թարմացնել հիմա</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Թարմացվում է…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Թարմացումների ստուգում…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}-ի թարմացումը չավարտեց տեղադրվել։ Փորձելու համար նորից տեղադրեք այն Կարգավորումներից։</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge-ը թարմացվեց մինչև {0}։</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ներկառուցված՝ {0} կապակցում, համայնքի պատճենը՝ {1}։</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ներկառուցված՝ {0} կապակցում, համայնքի պատճենը՝ {1}։ Թարմացվել է {2}՝ նոր՝ {3}, փոխված՝ {4}։</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ներկառուցված՝ {0} կապակցում, համայնքի պատճենը՝ {1}։ Ներբեռնվել է {2}՝ նոր տողեր՝ {3}, փոխված՝ {4}։</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Համայնքի տվյալների բազան չի փոխվել վերջին թարմացումից հետո։</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Չհաջողվեց կապվել GitHub-ին՝ {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-ը մերժեց ներբեռնումը, քանի որ դա այն կառավարիչների տվյալների բազան չէ, որին սպասում է։ Ոչինչ չփոխվեց։</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Նոր կապակցումն օգտագործվում է հաջորդ անգամ, երբ նրա կառավարիչը միանա։</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Փոխված կապակցումն օգտագործվում է PadForge-ի հաջորդ մեկնարկից։</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Մեկնարկել ծալված</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Մեկնարկել մուտքի ժամանակ</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Տարբերակի տվյալներ և մեխանիզմի իրադարձությունների մատյան՝ խնդիրների լուծման համար։</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Վարել ախտորոշման մատյան</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Անընդհատ գրում է մեխանիզմի իրադարձությունները diagnostics.log-ում՝ մատյանի թղթապանակում, որը բացում է Բացել մատյանի թղթապանակը։ Մնում է միացված վերամեկնարկերի միջև։ Երբ ֆայլը հասնում է 8 ՄԲ-ի, այն տեղափոխվում է diagnostics.log.old։</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Պահել ակնթարթային պատկեր</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Պահում է մեխանիզմի վերջին իրադարձությունները նոր ֆայլում։ Աշխատում է նույնիսկ երբ ախտորոշման մատյանն անջատված է։</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Պահել ակնթարթային պատկեր…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Վերցնում է հավելվածը, Windows-ը, ձեր սարքերը և կարգավորումները՝ ինչպես են հիմա, մեխանիզմի վերջին իրադարձություններով, և բացում է դրանք՝ կարդալու համար, նախքան պահելը։ Աշխատում է նույնիսկ երբ ախտորոշման մատյանն անջատված է։</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Բացել մատյանի թղթապանակը</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Խնդրի գրառում</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Սկսել գրառումը</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Կանգնեցնել գրառումը ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Գրանցում է մինչև «Կանգնեցնել գրառումը», 10 րոպե կամ 20 MB zip, ապա Explorer-ում ընտրում է zip-ը՝ հաշվետվությանը կցելու պատրաստ։</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Սկսեք, առաջացրեք խնդիրը, ապա կանգնեցրեք։ PadForge-ի կողքին գտնվող մեկ ֆայլում կա այն ամենը, ինչ PadForge-ը կարդացել, ուղարկել և գրանցել է, խնդրի ամփոփագրով։ Գրառման ընթացքում ցանկացած սարքի վրա սեղմված յուրաքանչյուր ստեղն և կոճակ ֆայլում է, ստեղնաշարերն ու մկնիկները ներառյալ։ Օգտանունները, սերիական համարները, հասցեները և մուտքագրված անունները փոխարինվում են նախքան որևէ բան գրվելը։</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Գրանցում է մինչև «Կանգնեցնել գրառումը», 30 րոպե կամ 20 ՄԲ zip, ապա բացում է գրառումը՝ կարդալու համար, նախքան պահելը։</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Սկսեք, առաջացրեք խնդիրը, ապա կանգնեցրեք։ Հետո կարդացեք, թե ինչ է այն պարունակում՝ մաս առ մաս, և պահեք այնտեղ, որտեղ ցանկանում եք։ Գրառման ընթացքում ցանկացած սարքի վրա սեղմված յուրաքանչյուր ստեղն դրա մեջ է, ստեղնաշարերն ու մկնիկները ներառյալ։ Օգտանունները, սերիական համարները, հասցեները և մուտքագրված անունները փոխարինվում են նախքան որևէ բան գրվելը։</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Ամփոփագիրը գրվում է…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Պահվեց {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Գրառումը չսկսվեց։ Ստուգումը գտավ այս PC-ի մասնավոր արժեք, որը չէր մնա ֆայլից դուրս։</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Գրառումը չսկսվեց։ {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Վերջին գրառումը դեռ ավարտվում է։</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«Հիշել վերջին 60 վայրկյանը» անջատված է, ուստի պահելու բան չկա։</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Ավարտվեց գրառում, որը PadForge-ը չէր կանգնեցրել՝ {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Գրառումը, որը PadForge-ը չէր կանգնեցրել, սպասում է, որ կարդաք այն «Գլխավոր»-ում՝ {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Հիշել վերջին 60 վայրկյանը</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Մեխանիզմի աշխատանքի ընթացքում հիշողության մեջ պահում է գրառման վերջին րոպեն՝ այն խնդրի համար, որն առաջանում է երեկոյան մեկ անգամ։ «Պահել վերջին 60 վայրկյանը» այն գրում է ֆայլում։</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Մեխանիզմի աշխատանքի ընթացքում հիշողության մեջ պահում է գրառման վերջին րոպեն՝ այն խնդրի համար, որն առաջանում է երեկոյան մեկ անգամ։ «Պահել վերջին 60 վայրկյանը»-ն այն բացում է՝ կարդալու համար, նախքան պահելը։</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Պահել վերջին 60 վայրկյանը</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Տառերն ու թվերը գրել որպես մեկ ստեղն</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Գրառումը տառային և թվային այն ստեղները, որոնք ոչ մի կապակցում կամ մակրո չի կարդում, գրում է որպես մեկ ստեղն՝ յուրաքանչյուր սեղմումը իր ժամանակով։ Մնացած բոլոր ստեղները և այն ստեղները, որոնք կապակցումը կամ մակրոն կարդում է, գրվում են ինչպես սեղմվել են։</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Հիշել վերջին 60 վայրկյանը, Տառերն ու թվերը գրել որպես մեկ ստեղն</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Ինչ գրառել, վերջին 60 վայրկյանը, մուտքագրված տառերը</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Պահել ակնթարթային պատկեր</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge-ը, Windows-ը, ձեր սարքերը և կարգավորումները՝ ինչպես են հիմա, նույն վերանայմամբ։</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log՝ PadForge.exe-ի կողքին, որը կարող եք կարդալ այնտեղ։</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ինչ գրառել</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Բոլորը միացված են։ Անջատված մասը դուրս է մնում հաջորդ գրառումից, և ֆայլը նշում է, թե որ մասերն է պարունակում։</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Այն խնդրի համար, որն առաջանում է երեկոյան մեկ անգամ։</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Գրառումը սպասում է, որ կարդաք այն «Գլխավոր»-ում։</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Ամփոփագիր</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Կարգավորումներ և սարքեր</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Մուտք</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Ելք</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Հետադարձ կապ</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Ժամաչափում</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Պատուհան և սխալներ</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Գործունեություն</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Ախտորոշման տողեր</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Կարդացեք ձեր գրառումը</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0}-ից մինչև {1}, {2}։ {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Ակնթարթային պատկեր՝ {0}։</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 րոպե</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} րոպե</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 վայրկյան</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} վայրկյան</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Կանգնեցրել եք դուք։</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Ինքնաբերաբար կանգնեց՝ {0}-ից հետո։</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Ինքնաբերաբար կանգնեց zip-ում {0}-ի դեպքում։</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Կանգնեցվեց մակրոյով։</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Կանգնեցվեց ծրագրի կողմից կամ --record stop-ով։</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Կանգնեցվեց այն սկսած օգնականի կողմից։</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Կանգնեց, երբ PadForge-ը փակվեց։</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Վերջին 60 վայրկյանը՝ պահված հիշողության մեջ։</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Կարդացեք, թե ինչ եք կիսելու։ Անջատեք մասը՝ այն դուրս թողնելու համար, ապա պահեք։ Ոչինչ չի լքում այս համակարգիչը, քանի դեռ դուք այն չեք տեղադրել։</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}՝ ինչպես կիսվելու է</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Ցույց տալ՝ {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>դուրս թողնված</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>չգրառված</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} որպես տեքստ, {1} zip-ում</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} որպես տեքստ, {1} zip-ում, որը կիսվում եք։ Գրառումը կանգնում է zip-ում {2}-ի դեպքում կամ {3}-ից հետո։</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Մաքրման ստուգում՝ PadForge-ը փոխարինեց {0} ({1})։ Այս համակարգչի անուններից, սերիական համարներից կամ հասցեներից ոչ մեկը չկա ձեր պահած մասերում։</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} արժեք</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 արժեք</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} մասնավոր տեսակ</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 մասնավոր տեսակ</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Մաքրման ստուգում՝ այս համակարգչի սեփական {0} արժեք դեռ կա ձեր պահած մասերում։ Անջատեք այդ մասերը կամ ջնջեք գրառումը։ «Պահել…»-ը մնում է անջատված մինչև այդ։</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Մաքրման ստուգում՝ այս համակարգչի սեփական արժեքներից մեկը դեռ կա ձեր պահած մասերում։ Անջատեք այդ մասերը կամ ջնջեք գրառումը։ «Պահել…»-ը մնում է անջատված մինչև այդ։</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Այս մասից ոչինչ տեղի չի ունեցել գրառման ընթացքում։</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Ջնջել</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Պատճենել ամփոփագիրը</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Պատճենվեց</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Պահել…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Պահել գրառումը</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ֆայլեր</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Չպահվեց։ {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Պահվում է որպես դուք՝ առաջին անգամ ձեր Ներբեռնումներ թղթապանակում, հետո այնտեղ, որտեղ վերջին անգամ եք պահել, և ցուցադրվում է Explorer-ում։ Գրառումը, որը կանգնում է, երբ ոչ ոք էջի մոտ չէ (սահմանաչափը, մակրոն, ծրագիրը, օգնականի գործիքը կամ --record stop), սպասում է այս վերանայմանը «Գլխավոր»-ում և ջնջվում է 7 օր հետո, եթե չպահվի։ Ծրագրին ասվում է, որ այն սպասում է, բայց երբեք՝ որտեղ։</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Խնդրի գրառումը՝ {0}, սպասում է, որ կարդաք այն։</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Վերանայել</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Նշել գրառումը</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Հավելվածի տարբերակ</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-ի տարբերակ</value></data>
@@ -2900,31 +3010,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Մկնիկի դիրք X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Մկնիկի դիրք Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ցուցիչի զգայունությունը՝ յուրաքանչյուր աղբյուրի համար։ 1.0-ի դեպքում ձողի լրիվ շեղմանը համապատասխանում է կենտրոնից էկրանի լայնության 10%-ով հեռացած ցուցիչը։ 1.0-ից մեծ արժեքների դեպքում լրիվ շեղմանը հասնում է ցուցիչի ավելի փոքր տեղաշարժով։ 1.0-ից փոքր արժեքների դեպքում՝ ավելի մեծով։</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Ցուցիչի զգայունությունը՝ յուրաքանչյուր աղբյուրի համար։ 1.0-ի դեպքում ձողի լրիվ շեղմանը համապատասխանում է կենտրոնից ցուցիչի մոնիտորի լայնության 10%-ով հեռացած ցուցիչը։ 1.0-ից մեծ արժեքների դեպքում լրիվ շեղմանը հասնում է ցուցիչի ավելի փոքր տեղաշարժով։ 1.0-ից փոքր արժեքների դեպքում՝ ավելի մեծով։</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Մկնիկի ընթացք X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Մկնիկի ընթացք Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ընթացք մինչև լրիվ արգելափակում</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Որքան է մկնիկը շարժվում կենտրոնից մինչև լրիվ արգելափակում՝ մկնիկի հաղորդած հաշվարկներով։ Ավելի մեծ թիվը ղեկավարում է ավելի նուրբ և պահանջում է ձեռքի ավելի մեծ ընթացք։</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Որքան է մկնիկը կամ անիվը շարժվում կենտրոնից մինչև լրիվ արգելափակում՝ իր հաղորդած հաշվարկներով։ Ավելի մեծ թիվը ղեկավարում է ավելի նուրբ և պահանջում է ձեռքի ավելի մեծ ընթացք։</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Երբ մկնիկի DPI-ը սահմանված է նրա սարքի վահանակում, ընթացքը ցուցադրվում է նաև սանտիմետրերով։</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>հաշվարկ</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Կենտրոնացում</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Անջատված»-ը ղեկը թողնում է այնտեղ, որտեղ ձեռքը թողել է։ «Զսպանակը» այն հետ է բերում Վերադարձի ժամանակի ընթացքում։ «Հեռաչափությունից»-ը քաշում է այնպես, ինչպես մեքենայի առջևի անվադողերը կքաշեին խաղի արագության և կպման դեպքում՝ կանգառում անշարժ, արագության հետ ավելի ամուր, անվադողերի սահելիս թեթև։ Առանց հեռաչափություն ուղարկող խաղի այն զսպանակն է։ «Խաղի ուժից»-ը թույլ է տալիս վիրտուալ ղեկի սեփական հետադարձ ուժին պտտել այն։</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«Անջատված»-ը ղեկը թողնում է այնտեղ, որտեղ ձեռքը թողել է։ «Զսպանակ»-ը այն հետ է բերում «Վերադարձի ժամանակ»-ի ընթացքում։ «Հեռաչափությունից»-ը քաշում է այնպես, ինչպես մեքենայի ղեկավարումն է անում խաղի արագության և կպման դեպքում՝ կտրուկ կենտրոնի մոտ և ավելի մեղմ հեռվում, կանգառում անշարժ, արագության հետ ավելի ամուր, անվադողերի սահելիս թեթև։ Առանց հեռաչափություն ուղարկող խաղի այն քաշում է այնպես, ինչպես 100 km/h արագությամբ չոր ճանապարհին։ «Խաղի ուժից»-ը թույլ է տալիս վիրտուալ ղեկի սեփական հետադարձ ուժին պտտել այն։</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Անջատված</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Զսպանակ</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Հեռաչափությունից</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Խաղի ուժից</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Վերադարձի ժամանակ</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Որքան ժամանակ է պետք Զսպանակին ղեկը 95%-ով հետ բերելու համար։ «Հեռաչափությունից»-ը այդքան է տևում չոր ճանապարհին 100 km/h արագությամբ։</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Որքան ժամանակ է պետք «Զսպանակ»-ին ղեկը 95%-ով հետ բերելու համար։ 0-ն այն անմիջապես կենտրոնացնում է։ «Հեռաչափությունից»-ը այդքան է տևում կենտրոնի մոտից՝ չոր ճանապարհին 100 km/h արագությամբ։</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Ղեկավարել</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Միշտ»-ը մկնիկին թույլ է տալիս ղեկավարել ամբողջ ժամանակ։ «Պահելիս»-ը թույլ է տալիս ղեկավարել միայն Ղեկավարման մուտքը պահելու ընթացքում։ «Փոխանջատել»-ը ղեկավարումը միացնում կամ անջատում է Ղեկավարման մուտքի յուրաքանչյուր սեղմումով։ Երբ մկնիկը չի ղեկավարում, ղեկը մնում է իր տեղում կամ կենտրոնանում է, ուստի մեկ մկնիկով կարելի է և ղեկավարել, և շուրջը նայել։</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«Միշտ»-ը մկնիկին թույլ է տալիս ղեկավարել ամբողջ ժամանակ։ «Պահելիս և կենտրոն»-ը թույլ է տալիս ղեկավարել միայն «Ղեկավարման մուտք»-ը պահելու ընթացքում, ապա այն վերադարձնում է կենտրոն՝ «Կենտրոնացում»-ով, որտեղ աղբյուրն ունի այն, և անմիջապես, որտեղ չունի։ «Պահելիս և մնալ»-ը թույլ է տալիս ղեկավարել միայն մուտքը պահելու ընթացքում և թողնում է այնտեղ, որտեղ թողել են։ «Փոխանջատել»-ը ղեկավարումը միացնում կամ անջատում է «Ղեկավարման մուտք»-ի յուրաքանչյուր սեղմումով։ Այսպես մեկ մկնիկով կարելի է և ղեկավարել, և շուրջը նայել։</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Միշտ</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Պահելիս</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Պահելիս և կենտրոն</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Փոխանջատել</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ղեկավարման մուտք</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Կոճակը, որը թույլ է տալիս մկնիկին ղեկավարել, նույն սարքում, ինչ մկնիկի ընթացքը։ Եթե ոչինչ ընտրված չէ, մկնիկը միշտ ղեկավարում է։</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Կոճակը, որը թույլ է տալիս մկնիկին ղեկավարել, նույն սարքում, ինչ աղբյուրը։ Եթե ոչինչ ընտրված չէ, մկնիկը միշտ ղեկավարում է։</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Հարթեցում</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Հարթեցնում է անհավասար հաղորդող մկնիկը։ Ղեկը ձեռքից հետ է մնում մոտավորապես այդքան ժամանակով։ 0-ն անջատում է։</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Հարթեցնում է անհավասար հաղորդող մկնիկը։ Ձողը ձեռքից հետ է մնում մոտավորապես այդքան ժամանակով։ 0-ն անջատում է։</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Արգելափակում արագությամբ</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Երբ Խաղի հեռաչափությունը միացված է, արգելափակման որքան մասն է մնում 200 km/h արագության դեպքում։ 100%-ի դեպքում ամբողջ արգելափակումը կա ցանկացած արագությամբ։</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Անիվի ընթացք</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Կողային անիվի ընթացք</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Որքան արագ է շարժվում մկնիկը։ Բաց է թողնում, երբ ձեռքը կանգնում է։</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Որտեղ է ցուցիչը իր մոնիտորի վրա՝ նրա կենտրոնից կամ այն տեղից, որտեղ այն եղել է ղեկավարումը սկսվելիս։</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Որքան է մկնիկը շարժվել, պահված այնտեղ, որտեղ ձեռքը թողել է, ինչպես ղեկը։</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Ոլորման կտտոցները՝ պահված որպես դիրք, լրիվ ճշգրտությամբ նուրբ ոլորվող անիվի վրա։</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Կողային անիվի կտտոցները՝ պահված որպես դիրք, լրիվ ճշգրտությամբ նուրբ ոլորվող անիվի վրա։</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Հրում՝ յուրաքանչյուր կտտոցի համար, անմիջապես վերադարձ հանգստի վիճակի։</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Պահելիս և մնալ</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Զգայունություն</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Որքան ձող է տալիս արագությունը։ 1.00-ի դեպքում ձողը հասնում է լրիվ շեղման վայրկյանում 16,000 հաշվարկի դեպքում՝ հարցման և մկնիկի հաղորդման ցանկացած հաճախականության դեպքում։</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Վերադարձ կենտրոն</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Երբ մկնիկը դանդաղում կամ կանգնում է, ձողը վերադառնում է սրանից ոչ ավելի արագ։ 0-ն թույլ է տալիս նրան վերադառնալ մկնիկի հետ։</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Սկսել ղեկավարման սկսվելու տեղից</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>«Ղեկավարման մուտք»-ի դեպքում ձողը չափվում է այն տեղից, որտեղ ցուցիչն էր ղեկավարումը սկսվելիս, ինչպես հեռախոսի էկրանի ձողն է սկսվում այնտեղ, որտեղ մատը դիպչում է։ Անջատված դեպքում այն չափվում է ցուցիչի մոնիտորի կենտրոնից։</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Այս առանցքը շարժվում է հարաբերական կերպով</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Թրեքբոլի կամ սպիների համար, որը հաղորդում է, թե որքան է պտտվել։ Միացված դեպքում առանցքը պահում է դիրք, ինչպես «Մկնիկի ընթացք»-ը, և ընդունում է ընթացքի կարգավորումները։ Windows-ը չի ասում, թե որ առանցքներն են այսպես շարժվում։</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} սմ</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Նախադիտում</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ցույց է տալիս, թե ինչպես է այս ընտանիքը հետևում ձեր սեփական մկնիկին։ Ոչինչ չի կապակցվում, քանի դեռ չեք ընտրել այն։</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Նախադիտում։ Շարժեք ձեր մկնիկը։</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Պահված է՝ {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Դիրքը՝ {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% աջ</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% ձախ</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% վերև</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% ներքև</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>կենտրոն</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Շարժվում է, երբ պահվում է՝ {0}։</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Մկնիկի DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Հաշվարկները, որոնք այս մկնիկը հաղորդում է շարժման յուրաքանչյուր դյույմի համար, ինչպես սահմանում է արտադրողի ծրագիրը։</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Երբ DPI-ը սահմանված է, «Մկնիկի ընթացք»-ը ցույց է տալիս նաև իր ընթացքը սանտիմետրերով։ 0-ն նշանակում է՝ սահմանված չէ։</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR ցուցիչ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR ցուցիչ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR պայծառություն</value></data>
@@ -4620,6 +4763,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Էկրանային ցուցիչներ, որոնք PadForge-ը ցուցադրում է խաղալու ընթացքում։ Մեկն անջատելը երբեք չի փոխում վարքը, միայն այն, թե արդյոք այն ցուցադրվում է։</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Շիֆթ շերտի ծանուցում</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Պրոֆիլի փոխարկման վերադիր</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Կառավարիչները միացված կամ անջատված</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Սարքի անջատման ծանուցում</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Սարքի միացման ծանուցում</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Ցուցադրել էկրանային օղակը կամ ցանցը, երբ շառավղային կամ հպման ընտրացանկը ներգրավված է։ Ընտրացանկերը դարձյալ գործարկվում են վերադիրն անջատված ժամանակ։</value></data>
@@ -5286,6 +5430,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Անջատված</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Վայրկենաչափ</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Լուսաշերտի գույն</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Անցանց սարքեր</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Բոլորը միացված են</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}՝ {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>անջատված</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software-ի միջոցով</value></data>
@@ -5328,6 +5474,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Էկրանը ցույց է տալիս ձեր ընտրած պատկերը՝ իր չափով։ Էկրանից մեծ պատկերի դեպքում ցուցադրվում է էկրանի չափի պատուհան, որը շարժում է «Տեղաշարժել ստեղնաշարի էկրանի պատկերը» մակրոն։ S.T.R.I.K.E. 7-ի վրա էկրանով քաշված մատը նույնպես շարժում է այն։</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Էկրանը ցույց է տալիս վայրկենաչափը, որը «Վայրկենաչափ» մակրոն սկսում է, դադարեցնում և զրոյացնում։ Բոլոր էկրանները ցույց են տալիս նույն վայրկենաչափը։</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Էկրանը ցույց է տալիս DualShock 4-ի կամ DualSense-ի լուսաշերտի գույնը այս էկրանի սնուցած ամենացածր սլոթում, իսկ եթե այն ոչ մեկը չի սնուցում՝ բոլոր սլոթներից ամենացածրում։ Միագույն էկրանը պայծառությունը ցույց է տալիս կետային նախշով։ Քանի դեռ գույնը լուսաշերտին չի հասել, PadForge-ը ոչինչ չի ցուցադրում։</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Էկրանը թվարկում է կապակցված այն սարքերը, որոնք միացված չեն, «Սարքեր» էջում ցուցադրվող անուններով, և ասում է «Բոլորը միացված են», երբ ոչ մեկը չի պակասում։</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Պատկերներ (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Բոլոր ֆայլերը (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Տեղաշարժ</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Տեղաշարժ X</value></data>
@@ -5524,6 +5671,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Վարում (ոչ 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Խաղի հեռաչափություն</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Սկրիպտի արժեք</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Սարքի միացում</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Արագություն (մղոն/ժ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (առավելագույնի %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Փոխանցում (-1՝ հետընթաց, 0՝ չեզոք)</value></data>
@@ -5679,4 +5827,231 @@
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Խնդրի գրառում</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Սկսել կամ կանգնեցնել գրառումը</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Նշել գրառումը</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Վերադիրը թվարկում է կապակցված այն սարքերը, որոնք միացված չեն, «Սարքեր» էջում ցուցադրվող անուններով, և ասում է «Բոլորը միացված են», երբ ոչ մեկը չի պակասում։</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Անջատված է։ Ոչ մի ծրագիր չի կարող հասնել PadForge-ին։</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} և {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Գործունեություն՝ {0} կանչ, ամենահինը առաջինը։ Դրանցից առաջ եղած կանչեր՝ {1}։</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Գործունեություն՝ {0} կանչ։ Դրանից առաջ եղած կանչեր՝ {1}։</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} ավելի հին կանչ հեռացվեց։ «Գործունեություն»-ը պահում է ամենանորերը՝ {1:N0}։</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} ավելի հին կանչ հեռացվեց։ «Գործունեություն»-ը պահում է ամենանորերը՝ {1:N0}։</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Արտահանել…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Արտահանել գործունեությունը</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Տեքստային ֆայլ</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Բացել</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Թարմացնել</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Ավելին՝ {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Պահել հմտությունը որպես ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Բացել նրա կարգավորումների ֆայլը</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Պահվեց։ Ծրագրում՝ {0}, ավելացրեք {1} այստեղ՝ {2}։</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0}-ը դեռ չունի կարգավորումների ֆայլ։ «Ավելացնել»-ը ստեղծում է այն։</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge-ը այս համակարգչում չի գտնում օգնական ծրագիր, որի արտադրողը փաստաթղթավորում է տեղադրումը Windows-ում։ «Ավելին»-ի տակ Copy Settings աշխատում է ցանկացած այլի համար։</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստուգել օգնական ծրագրերը՝ {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Չի ավելացվել։</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Ավելացվել է։</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Ավելացվել է։ Միացված է հիմա։</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Ավելացվել է։ Այն դեռ չի միացել։ Բաց օգնականը տեսնում է PadForge-ը այն փակելուց և նորից բացելուց հետո։</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Ավելացվել է մեկ այլ PadForge-ի համար։ «Թարմացնել»-ը այն ուղղում է այս PadForge-ին։</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Ավելացվել է։ Նրա PadForge-ի հմտությունն ավելի հին է, քան այս PadForge-ը։</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Ավելացվել է՝ առանց PadForge-ի հմտության։</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Ավելացվել է։ Նրա PadForge-ի հմտությունը ավելի նոր PadForge-ից է։</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Այն ընդունում է հմտությունները միայն վերբեռնմամբ։</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Ավելացված օգնականները հասնում են PadForge-ին, երբ «Ավտոմատացում»-ը միացված է։</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Ավելացվում է…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Հեռացվում է…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Թարմացվում է…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Չավարտվեց՝ {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Պատճենվեց։</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Չպատճենվեց՝ {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Թույլատրված ծրագրեր</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ծրագիրը, որը ցանկանում է «Կարդալ» կամ ավելի, հարցնում է մեկ անգամ՝ առաջին միանալիս, և ստանում է խնդրած մակարդակը՝ մինչև վերևի մակարդակը։ Վերևում ավելացրած օգնականն այսպիսով թույլատրված է։</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}։ {1}։ {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Միացված է հիմա։</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Վերջին օգտագործումը՝ {0}։</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Դեռ չի օգտագործվել։</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Միացված՝ {0}։ Սեղմեք՝ «Ավտոմատացում»-ը բացելու համար։</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Այս համակարգչում՝ {0}։ Վեբից՝ {1}։ Սեղմեք՝ «Ավտոմատացում»-ը բացելու համար։</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Միացված է վեբից՝ {0}։ Սեղմեք՝ «Ավտոմատացում»-ը բացելու համար։</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL կապակցում</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Խաղային կառավարիչ՝ «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Ջոյստիկ։ SDL-ը կապակցում չունի դրա համար։</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Ջոյստիկ։ PadForge-ը կարդում է այն հում, ուստի SDL-ի կապակցումը չի օգտագործվում։</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Ջոյստիկ, դասավորված որպես խաղային կառավարիչ ձեր տողով։</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL-ը կարդում է սարքերը, մինչ մեխանիզմը աշխատում է։</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Համայնքի ներկառուցված պատճենը՝ {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Ներբեռնված՝ {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ի սեփական ֆայլը</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Ձերը՝ ավելացվել է {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG փոփոխականը, որը SDL-ը պահում է ձեր ավելացրած ցանկացած տողից վեր</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Պատճենել SDL կապակցումը</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Դնում է սարքի կապակցումը փոխանակման բուֆերում՝ որպես համայնքի տվյալների բազայի տող, սարքի ID-ով, ստուգիչ գումարը և տարբերակը զրոյացված։</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Տեղադրել SDL կապակցումը…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Վերցնում է այս սարքի տողը, ստուգում է այն, պահում է որպես ձերը և անմիջապես կիրառում։</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Գտնել կապակցում…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Որոնում է PadForge-ի կրած յուրաքանչյուր տող ըստ անվան և կիրառում է ձեր ընտրածը այս սարքի համար՝ այն կլոնի համար, որի ID-ները տարբեր են։</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Գուշակել դասավորություն</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Գուշակում է խաղային կառավարչի դասավորությունը սարքի առանցքներից, կոճակներից և ուղղորդ խաչերից՝ այն սարքի համար, որը ոչ մի տվյալների բազա չի ճանաչում։ Ստուգեք այն «Փորձարկել մուտքերը»-ում։</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Հեռացնել ձերը</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>«Հեռացնել ձերը»-ը վերադարձնում է նախկին տողը և կառավարիչների տողերը։</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Կապակցել նորից</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Սարքի տողերը յուրաքանչյուր կառավարչի վրա, որի վրա այն կա, նորից կազմում է SDL-ի դասավորությունից, ինչպես նշանակելիս։</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Համայնքի տվյալների բազայի էջ</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Տողը և այն, որտեղ այն տարբերվում է {0}-ից</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Տողը</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Կառավարիչ</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0}՝ տող</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Նրա մուտքն այժմ</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL-ի տողն ասում է</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL-ի տողում չկա</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, տարբերվում է</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge-ը չի օգտագործում՝ {0}։</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Տողը</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Պատճենվեց։</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Պատճենվեց։ SDL-ի ձևը չի կարող պահել՝ {0}։</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>մակրոներ</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>կորեր</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>մեռյալ գոտիներ</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>ստեղնաշարի և մկնիկի ելքեր</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>տուրբո, փոխանջատիչներ և այլ գործողություններ</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} և {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Պատճենելու բան չկա՝ SDL-ը այս սարքի համար կապակցում չունի, և այն ոչ մի կառավարչի վրա չէ։</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Մեկ այլ ծրագիր օգտագործում է փոխանակման բուֆերը։ Ոչինչ չպատճենվեց։</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Ձեր տողը հեռացվեց։ Սարքը կարդացվում է այնպես, ինչպես նախկինում։</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Նորից կապակցվեց SDL-ի դասավորությունից՝ {0}։</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Այժմ օգտագործվում է։ Տողը ձերն է և գերակայում է այս սարքի համար։</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Պահվեց որպես ձերը։ Այն օգտագործվում է, երբ մեխանիզմը աշխատում է և սարքը միացված է։</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Պահվեց որպես ձերը, բայց SDL_GAMECONTROLLERCONFIG փոփոխականը այս սարքի համար տող ունի, որը SDL-ը պահում է ձերից վեր։</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-ը չընդունեց տողը։ Այս սարքի համար ոչինչ չփոխվեց։</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Տեղադրել SDL կապակցում</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Տեղադրել SDL կապակցում՝ {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Գտնել կապակցում՝ {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Գուշակել դասավորություն՝ {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Ավելացնել տողեր ֆայլից կամ փոխանակման բուֆերից</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Տեղադրել</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Բացել ֆայլ…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Կապակցման ֆայլեր (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Ֆայլը 4 ՄԲ-ից մեծ է։ Համայնքի ամբողջ ֆայլը մոտ 0.6 ՄԲ է։</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Որոնել ըստ անվան, ID-ի կամ VID:PID-ի</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Տողեր, որոնք PadForge-ը կրում է</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ոչ մի տող չի համապատասխանում։</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Ընտրված տողը կիրառվում է {0}-ի վրա իր սեփական ID-ով՝ նույն ստուգմամբ և նույն ընտրությամբ, ինչ «Տեղադրել»-ը։</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL կապակցման տող</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Տող այս սարքի համար։</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Գուշակված դասավորություն։</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} դաշտ, նրա ID-ն համապատասխանում է այս սարքին։</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} դաշտ, նույն մատակարարից և արտադրանքից՝ մեկ այլ ինտերֆեյսով կամ տարբերակով։ Այն պահվում է այս սարքի սեփական ID-ով։</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} դաշտ, մեկ այլ սարքի տող։ Այն պահվում է այս սարքի սեփական ID-ով։</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} դաշտ։ SDL-ը չի կարդում այս սարքը, ուստի PadForge-ը դասավորում է նրա մուտքերը տողով։</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} դաշտ՝ սարքի առանցքներից, կոճակներից և ուղղորդ խաչերից։ Ստուգեք այն «Փորձարկել մուտքերը»-ում, ապա պահեք կամ փոխեք այստեղ։</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} դաշտ, նրա ID-ն համապատասխանում է այս սարքին։</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} դաշտ, նույն մատակարարից և արտադրանքից՝ մեկ այլ ինտերֆեյսով կամ տարբերակով։ Այն պահվում է այս սարքի սեփական ID-ով։</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} դաշտ, մեկ այլ սարքի տող։ Այն պահվում է այս սարքի սեփական ID-ով։</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} դաշտ։ SDL-ը չի կարդում այս սարքը, ուստի PadForge-ը դասավորում է նրա մուտքերը տողով։</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} դաշտ՝ սարքի առանցքներից, կոճակներից և ուղղորդ խաչերից։ Ստուգեք այն «Փորձարկել մուտքերը»-ում, ապա պահեք կամ փոխեք այստեղ։</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Սա փոխում է, թե ինչպես է կարդացվում {0}-ը։ Նրա տողերը՝ {1}, նորից կապակցվում են նոր դասավորությունից։</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Սա փոխում է, թե ինչպես է կարդացվում {0}-ը։ Այն ոչ մի կառավարչի վրա չէ, ուստի ոչ մի տող չի փոխվում։</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Պրոֆիլի դյուրանցումները, որոնք կարդում են {0}-ը, պահում են այն մուտքերը, որոնց սահմանվել են։</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Տողը պահվում է որպես ձերը PadForge.xml-ում և գերակայում է այս սարքի համար մյուս բոլոր աղբյուրներից։ «Հեռացնել ձերը»-ը վերադարձնում է հին տողը և հին տողերը։</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Տողերը պահվում են որպես ձերը PadForge.xml-ում և իրենց սարքերի համար գերակայում են մյուս բոլոր աղբյուրներից։ «Մաքրել»-ը՝ «Կառավարիչների տվյալների բազա» տողի «Ավելին»-ի տակ, հեռացնում է դրանք։</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} տող Windows-ի համար։ {1} այլ համակարգերի համար բաց են թողնվում։</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} տող Windows-ի համար։ {1} այլ համակարգերի համար բաց են թողնվում։</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} մերժվեց։ Առաջինը՝ {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Տեղադրեք տող կամ gamecontrollerdb.txt ֆայլի տեքստը։</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Տեքստը SDL-ի կառավարիչների տվյալների բազայի տող չէ՝ այն պետք է լինի 32 տասնվեցական թվանշանից բաղկացած ID, անուն, ապա դաշտեր, օրինակ՝ a:b0։</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Տողերը այլ համակարգերի համար են։ PadForge-ը կարդում է Windows-ի համար կամ առանց կոնկրետ համակարգի տողեր։</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Տողի ID-ն սարքի ID չէ։ Այն պետք է ունենա 32 տասնվեցական թվանշան։</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Տողի անունը դատարկ է, 128 նիշից երկար է կամ պարունակում է նիշ, որը SDL-ը կարդում է որպես դաշտ։</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Տողը պարունակում է hint կամ Android դաշտ, որը PadForge-ը չի ընդունում։</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Տողն ունի դաշտ, որը SDL-ը չի ճանաչում։</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Կապակցումը SDL-ի ձևով չէ, օրինակ՝ b3, a2, +a2, a2~ կամ h0.4։</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Տողը մեկ դաշտ երկու անգամ է տալիս։</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Տողը 1,024 նիշից երկար է։</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Տողը ոչ մի կառավարման տարր չի կապակցում։</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Ձեր տողերը</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Ձեր տողերը</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Այստեղ ավելացրած կամ սարքի «SDL կապակցում» քարտում տեղադրած տողերը իրենց սարքերի համար գերակայում են մյուս բոլոր աղբյուրներից և մնում են վերականգնումից հետո։</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Ավելացնել տողեր ֆայլից կամ փոխանակման բուֆերից…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} տող՝ ձերը, իրենց սարքերի համար մյուս բոլոր աղբյուրներից վեր։</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} տող՝ ձերը, իր սարքի համար մյուս բոլոր աղբյուրներից վեր։</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Դեռ չկան։</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Օգտագործվում է անմիջապես։</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Միացնել</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Օգնականներ վեբում</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Թունել</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Ոչ մեկը</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Իմ տեղադրած հասցեն</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Մեկնարկում է՝ ձեր իրավունքներով։</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Աշխատում է՝ ձեր իրավունքներով։ Նրա հասցեն նույնն է մնում ամեն մեկնարկի ժամանակ։</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Աշխատում է՝ ձեր իրավունքներով։ Արագ թունելը ամեն մեկնարկի ժամանակ նոր հասցե է ստանում, ուստի օգնականը պետք է նորից ավելացվի։</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Կանգնած է։</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Կանգնած է։ Նրա վերջին խոսքերը՝ {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Այն չհաջողվեց մեկնարկել։</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Այն այլևս այս համակարգչում չէ։</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Այս համակարգչում թունելի ծրագիր չի գտնվել։ PadForge-ը աշխատում է cloudflared-ի, devtunnel-ի, ngrok-ի և Tailscale Funnel-ի հետ կամ ձեր սեփական թունելի հասցեով։</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Ընտրեք թունել՝ PadForge-ին հանրային հասցե տալու համար։</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Նաև այս համակարգչում՝ {0}։</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}՝ հասցեն նույնն է մնում</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}՝ արագ թունելները ամեն անգամ նոր հասցե են ստանում</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Գործարկեք ձեր սեփական թունելը դեպի http://127.0.0.1:{0} և տեղադրեք նրա https հասցեն։ Անվանված Cloudflare թունելը, մշտական dev tunnel-ը, Tailscale Funnel-ը և ngrok-ի սեփական դոմենը պահում են իրենց հասցեն։</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Տեղադրեք https հասցե՝ առանց ուղու, բացի /mcp-ից, ինչպես տալիս է ձեր թունելը։</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-ի վեբ օգնականը մեկնարկում է։</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ի վեբ օգնականը կանգնեց ({0})։ Անջատեք և նորից միացրեք Reach PadForge From the Web՝ նորից սկսելու համար։</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Հասցե</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Դեռ հանրային հասցե չկա։</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Ավելացնել Claude-ին</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Պատճենվեց։</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Ընդունել նոր վեբ օգնական</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Սկսել ընդունումը</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Դադարեցնել ընդունումը</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Ընդունում է մինչև {0}։</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Չի ընդունում։ «Սկսել ընդունումը»-ը այն բացում է հինգ րոպեով։</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Ավելացրեք հասցեն օգնականում և մուտք գործեք։ Յուրաքանչյուր մուտք իր էջում և PadForge-ի հարցման քարտում ցույց է տալիս իր վեցանիշ կոդը։ Սեղմեք «Թույլատրել» միայն երբ երկու կոդերը համընկնում են։ Այլ ժամանակ մուտքը մերժվում է, և ոչինչ ձեզ չի հարցնում։</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Թույլատրված վեբում</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Դեռ չկան։</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Նրա մուտքը վերադառնում է {0}-ին։</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Այն իրեն անվանում է {0}։</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Թույլատրվել է {0}, վերջին օգտագործումը՝ {1}։</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Թույլատրվել է {0}, դեռ չի օգտագործվել։</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Հետ կանչել</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Նրա սեփական Secure MCP Tunnel-ը գործարկում է PadForge-ը ուղղակիորեն՝ առանց այստեղ հասցեի կամ մուտքի։ Պատճենեք հրամանը այդ թունելի կարգավորման մեջ։</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Պատճենել հրամանը</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge-ը ոչ մի թունելի ծրագիր չի ներբեռնում և այլ ընկերության բանալի չի պահում։ Վեբ օգնականը աշխատում է վերևի մակարդակով։</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Թույլատրե՞լ «{0}» հասցեին աշխատել PadForge-ի հետ վեբից։</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Նրա մուտքը վերադառնում է {0}-ին։</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Այն իրեն անվանում է {0}։</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Սեղմեք «Թույլատրել» միայն եթե նրա մուտքի էջը ցույց է տալիս այս կոդը՝</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Նրա վեցանիշ կոդը ցուցադրվում է PadForge-ի հարցման քարտում։ Սեղմեք «Թույլատրել» միայն եթե նրա մուտքի էջը ցույց է տալիս նույն կոդը։</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Այն աշխատում է {0} մակարդակով՝ {1}-ի միջոցով։</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Նրա մուտքը վերադառնում է այս համակարգչին, և այստեղ ցանկացած ծրագիր կարող է յուրացնել այդ հասցեն։</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Մուտք գործել PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0}-ը խնդրում է աշխատել PadForge-ի հետ ձեր համակարգչում։</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Այն իրեն անվանում է {0}։</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Ձեր համակարգչում PadForge-ի հարցման քարտը հարցնում է այս մուտքի մասին։ Սեղմեք այնտեղ «Թույլատրել» միայն եթե քարտը ցույց է տալիս այս կոդը՝</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Այս էջը ինքնուրույն շարունակում է, երբ պատասխանեք համակարգչում։</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Այս մուտքը վերադառնում է ձեր համակարգչի ծրագրին, և այնտեղ ցանկացած ծրագիր կարող է յուրացնել այդ հասցեն։</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge-ը հիմա նոր վեբ օգնական չի ընդունում։ Ձեր համակարգչում բացեք PadForge-ը, գնացեք Հավելումներ, Ավտոմատացում և «Օգնականներ վեբում»-ի տակ սեղմեք «Սկսել ընդունումը»։ Ապա նորից մուտք գործեք։</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Այս մուտքը չի կարող շարունակվել։ Նորից ավելացրեք PadForge-ի հասցեն օգնականում և մուտք գործեք։</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Այս մուտքը ավարտվել է։ Նորից մուտք գործեք օգնականից։</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows-ը չմեկնարկեց այն</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ավարտվեց {0} կոդով</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Ավտոմատացումը անջատված է, ուստի ոչ մի վեբ օգնական չի հասնում PadForge-ին։ Վեբ օգնականը մեկնարկում է, երբ Ավտոմատացումը միանա։</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ստուգվում է…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Տեղադրված չէ։</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Տեղադրված է և արդիական։ Սկրիպտը սկսվում է՝ {0}։</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Տեղադրված է {0}-ի համար և արդիական։ Սկրիպտը սկսվում է՝ {1}։</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Տեղադրված է։ Այս PadForge-ն ունի ավելի նոր պատճեն։</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Տեղադրված է {0}-ի համար։ Այս PadForge-ն ունի ավելի նոր պատճեն։</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Տեղադրվում է…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-ը չկարողացավ ստուգել այն՝ {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>«Տեղադրել»-ը դնում է PadForge-ի գրադարանը այնտեղ, որտեղ այդ լեզուն գտնում է այն։ Այն բեռնող սկրիպտը կարդում է սարքերը և կառավարում կապակցումները վերևի մակարդակով։</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Պահել գրադարանը ցանկացած տեղ</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Տեղադրված պատճեններ</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Հեռացնել բոլորը</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Հեռացվեց։</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Սկրիպտի ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Նրա սկրիպտի ID-ն</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Սկրիպտները նրա կառավարման տարրերն անվանում են՝ {0}։</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Սկրիպտները նրա ստեղներն անվանում են KeyA, KeySpace, KeyLeftShift և նմանները, իսկ յուրաքանչյուր ստեղն՝ իր կոդով, Vk0-ից Vk255։</value></data>
 </root>

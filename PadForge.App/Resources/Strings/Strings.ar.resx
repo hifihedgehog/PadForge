@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>انقطع اتصال {0}. لم يبق لدى {1} أي جهاز.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>اتصل {0}</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>اتصل {0}، البطارية {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>انقطع اتصال {0} من الأجهزة</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>اتصل {0} من الأجهزة</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>انقطع اتصال {0} من الأجهزة: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>اتصل {0} من الأجهزة: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>يتكرر انقطاع اتصال {0}</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (الحد الأقصى {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (الحد الأقصى {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>إعادة اتصال تلقائي، المنفذ، هوية الإقران، الاتصال بالعنوان</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>المنفذ، بديل DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>المنافذ، «السرعة الكاملة»، «تنسيقات مخصصة»</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML، المهارة</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>مساعدون آخرون، مساعدون على الويب</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>انظر حولك بمتتبع رأس أو نظارة واقع افتراضي بينما يبقى إبهاماك على الأزرار.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>عيّن السرعة والدواسات والتروس التي ترسلها لعبة قيادة، كأي إدخال.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>أرسل حركة وحدة التحكم إلى المحاكيات التي تقرأ مصدر حركة DSU.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>حلقة القائمة أو شبكتها أو شريطها ما دامت مفتوحة.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>اسم الطبقة عند تفعيل طبقة تحويل، للمدة التي تحددها تلك الطبقة.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>اسم ملف التعريف عند تغيّره.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>هل تم تشغيل وحدات التحكم الظاهرية أو إيقافها للتو، من الاختصار أو من ماكرو.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>اسم جهاز معين عند انقطاع اتصاله.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>اسم جهاز معين عند اتصاله.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>نسخ العنوان</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>يمكن للبرامج تبديل ملفات التعريف وتحريرها، وبدء المحرك وإيقافه، وتشغيل وحدات التحكم الظاهرية وإيقافها، وإظهار النافذة وإخفاءها، وإغلاق PadForge، وحفظ لقطة تشخيص، والسؤال عما يعمل.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>كل ما في مستوى الأوامر، ويمكن للبرامج أيضا رؤية الأجهزة ووحدات التحكم الظاهرية والتعيينات وملفات التعريف والإعدادات، ومتابعة مدخلات كل جهاز لحظة حدوثها، وعرض مكان في PadForge عليك. البرنامج في مستوى القراءة يرى كل مفتاح يُضغط على كل جهاز، بما فيه المفاتيح المكتوبة في نوافذ تعمل بصلاحيات المسؤول.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>كل ما في مستوى القراءة، ويمكن للبرامج إضافة أجهزة خاصة بها والتحكم فيها، والإمساك بعنصر تحكم في أي جهاز، وتمرير قيم مسماة إلى مشغلات الماكرو.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>كل ما في مستوى إرسال المدخلات، ويمكن للبرامج تغيير ما يمكنك تغييره في الصفحات.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>كل ما في مستوى إرسال المدخلات، ويمكن للبرامج تغيير ما يمكنك تغييره في الصفحات. تسألك بعض التغييرات دائما أولا على بطاقة أسئلة PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>المساعدون</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>الصق هذا في إعدادات MCP لدى المساعد. يعمل المساعد بعدها مع PadForge بالمستوى المذكور أعلاه.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>نسخ بصيغة TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>المساعدون الذين يقرؤون TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>إضافة تضع PadForge، مع مهارته، في ذلك المساعد. يعمل بعدها بالمستوى المذكور أعلاه، وتظهر كلماته بجوار ما يشير إليه، تحت اسمه.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>النصوص البرمجية</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>مكتبة النصوص</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>حفظ مكتبة…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ملف واحد من أجل AutoHotkey v2 أو Python أو PowerShell. النص الذي يحمّله يقرأ الأجهزة ويتحكم في التعيينات بالمستوى المذكور أعلاه.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ملف واحد لـ AutoHotkey v2 أو Python أو PowerShell، يُكتب حيث تختار.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>بانتظارك</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>النشاط</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>لم يستدع أي برنامج شيئا بعد. يُدرج هنا كل استدعاء مع نتيجته.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>تراجع</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>مهارة للمساعدين</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>حفظ المهارة…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>تعذر على PadForge حفظه: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>ما دام برنامج في مستوى القراءة أو أعلى متصلا، فإنه يرى ما يُضغط على كل جهاز، بما فيها لوحات المفاتيح.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>المكونات الإضافية</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>تشغيل المكونات الإضافية</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>لا يعمل أي مكون إضافي.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>يعمل المكون الإضافي بصلاحياتك أنت، لا بصلاحيات PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>المضمّنة</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>وحدة تحكم الاختبار</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>وحدة تحكم تتحرك من تلقاء نفسها، عنصر تحكم بعد آخر، فيمكن تجربة تعيين من دون جهاز في اليد.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>السرعة</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>بطيئة</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>عادية</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>سريعة</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>الأسرع</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>إعادة التشغيل</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>يعيد تشغيل تسجيل مشكلة كما لو كان من الأجهزة التي صنعته، وبالتوقيت نفسه. تظهر كأجهزة جديدة على هذا الكمبيوتر، وتُعيَّن كما تعيّنها أنت أو ملف تعريف.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>التسجيل</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>تسجيلات المشاكل|*.zip;*.log|كل الملفات|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>لا يستطيع PadForge تشغيل {0}. فهو ليس تسجيل مشكلة، أو لا يحوي مدخلات أي جهاز.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>مكوناتك الإضافية</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>المكون الإضافي برنامج يضيف أجهزة إلى PadForge. يشغله PadForge بصلاحياتك العادية كلما عمل المحرك.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>إضافة مكون إضافي…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>البرامج والنصوص البرمجية|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|كل الملفات|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>الموافقة…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>الموافقة وإعادة التشغيل…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>يبدأ مع المحرك</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>جارٍ فحص الملف قبل البدء</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>انتهى برمز {0}. يبدأ من جديد خلال {1} ث.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} موجود في القائمة بالفعل.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>يشغّل PadForge حتى 16 مكونا إضافيا. أزل واحدا لإضافة آخر.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>المكونات الإضافية قيد التشغيل: {0}. الأجهزة التي أضافتها: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>توقف {0} بعد خمس إخفاقات.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>تغيّر {0} منذ موافقتك عليه.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>تعذر بدء {0}.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>أضاف: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>موقّع من {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>غير موقّع.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>تظهر إعداداته هنا أثناء تشغيله.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>لا يعلن أي إعدادات.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>تعذر على PadForge قراءة إعداداته: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>أُنهي بعد دقيقة من دون أي رد</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>تغيّر ملفه أثناء تشغيله</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>أضافه {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>إعدادات {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>اختيار</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>اضغط على عنصر تحكم…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>لم يُختر شيء</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>أضف مكونا إضافيا، أو أفلت ملفه على هذه الصفحة. يعرض PadForge مساره وموقّعه وقيمة SHA-256 له، ويسألك قبل تشغيله. يعمل المكون الإضافي بصلاحياتك أنت، لا بصلاحيات PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>يعيد تشغيل تسجيل مشكلة كما لو كان من الأجهزة التي صنعته، وبتوقيتها.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>قيد التشغيل.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>قيد التشغيل، باليد.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>ما يتحرك</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>العصيّ والمحفزات</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>العصيّ</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>المحفزات</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>النمط</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>مسح</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>دائرة</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>زمن الحركة</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>زمن الراحة</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>ضغط الأزرار</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>ضغط أزرار التنقل</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>تتفاعل تطبيقات Windows مع A وB وBack وStart ولوحة الاتجاه في وحدة تحكم Xbox ظاهرية داخل النافذة الأمامية، ويفتح Guide شريط ألعاب Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>تدوير لوحة الاتجاه</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>للسبب نفسه.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>زمن الضغط</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>وحدات التحكم</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>باليد</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>يوقف الحركة. اضبط مدخلاته أدناه بالماوس.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>العصا اليسرى</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>العصا اليمنى</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>المحفز الأيسر</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>المحفز الأيمن</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>القراءات في الثانية</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>حزمة المكونات الإضافية، وسجل المكون الذي تختاره</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>حزمة المكونات الإضافية</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>حفظ حزمة المكونات الإضافية…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>مكون إضافي صغير بلغة C#، والمكون نفسه لـ AutoHotkey وPython وPowerShell، وفي كل ملف شرح طريقة بنائه أو تشغيله.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>دليل لكل أمر وحدث ونوع إعداد، ونص بناء للمكون الإضافي بلغة C#، والمكون نفسه لـ AutoHotkey وPython وPowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>السجل</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>اختر مكونا إضافيا لرؤية سجله.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>لا يوجد شيء في سجل هذا المكون الإضافي بعد.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>تعديل لعبة</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>برنامج آخر يحجز اسم القناة {0}. أغلق ذلك البرنامج.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>رفض Windows القناة {0}، لذا لا تستطيع البرامج الاتصال.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>لا يوجد برنامج متصل.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>قيد التشغيل. لا يوجد برنامج متصل.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>المتصلة: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>برنامج غير معروف</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}، موقّع من {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>لا مزيد من هذه الطلبات حتى يبدأ PadForge من جديد</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>لا توجد أداة بهذا الاسم في PadForge</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>قرأ البرنامج حالة أقدم</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>لا يوجد إعداد بهذا الاسم</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>لا شيء له هذا المعرّف</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>كانت القيمة خارج ما يقبله الإعداد</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>لم تسمح به</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>لم يجب أحد في الوقت المناسب</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>إظهار النافذة</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>إرسال النافذة إلى علبة النظام</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>تصغير النافذة</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>تكبير النافذة</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>إغلاق PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>بدء المحرك</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>إيقاف المحرك</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>إضافة الجهاز {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ضبط عناصر التحكم في الجهاز {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>إزالة الجهاز {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>وضع كل عناصر التحكم في الجهاز {0} على وضع الراحة</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>يجعل PadForge يشغّل برنامجا.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>يفتح ملفا أو مجلدا أو صفحة ويب.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>يجعل PadForge يرسل مفاتيح أو مدخلات ماوس إلى Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>يستورد ملف تعريف من خارج PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>يسألك PadForge قبل أن يفعل برنامج هذا.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>مربعات الحوار</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>الماكرو</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>الإمساك بعناصر تحكم في الجهاز {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ترك عناصر التحكم في الجهاز {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>ضبط القيمة {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>تبديل ملفات التعريف</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>بدء المحرك أو إيقافه</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>تشغيل وحدات التحكم الظاهرية أو إيقافها</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>حفظ لقطة تشخيص</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>قراءة معدل الاستطلاع وبرامج التشغيل</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>سرد ملفات التعريف</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>قراءة ملف تعريف</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>سرد وحدات التحكم الظاهرية</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>سرد الأجهزة</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>قراءة جهاز</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>انتظار مدخلك</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>قراءة تعيينات وحدة تحكم</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>سرد ماكروهات وحدة تحكم</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>تسجيل مشكلة</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>البحث عن إعدادات</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>قراءة إعداد</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>عرض مكان عليك</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>البحث عن أماكن في PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>قراءة مكان في PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>قراءة ما تراه</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>إضافة جهاز خاص به</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>التحكم في جهازه</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>إزالة جهازه</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>الإمساك بعنصر تحكم أو تركه</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>ضبط قيمة لمشغّلات الماكرو</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>تغيير إعداد</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>ضغط زر</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>إنشاء ملف تعريف</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>إعادة تسمية ملف تعريف</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>حذف ملف تعريف</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>تغيير نوع وحدة تحكم</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>تعيين جهاز</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>ضبط صفوف التعيين</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>مسح صفوف التعيين</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>تعيين وحدة تحكم تلقائيا</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>حفظ ماكرو</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>حذف ماكرو</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ينشئ وحدة تحكم للوحة المفاتيح والماوس</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>يشغّل {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>تغيير «{0}»</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>ضغط «{0}»</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>يريد {0} أن يعرض عليك {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>في {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>السماح لـ {0} بالعمل مع PadForge بمستوى {1}؟</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} يشغّل {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>بدأه {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>موقّع من {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>غير موقّع.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>عند القراءة وما فوقها يرى كل مفتاح يُضغط على كل جهاز، بما فيها لوحات المفاتيح.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>يسأل مرة واحدة. يمكنك إزالته من صفحة الأتمتة.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>سطر أوامر PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>يضبط {0} على {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>يستمع على الشبكة، فتستطيع أجهزة أخرى الوصول إلى هذا الكمبيوتر.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>يغيّر برنامج تشغيل أو HidHide، وتعتمد عليه برامج وألعاب أخرى.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>وحدات PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>السماح</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>عدم السماح</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>ليس الآن</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>عرض</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>الخطوة {0} من {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>انقر عليه للمتابعة.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>افتح {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>افتح المزيد.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>من {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>من {1}، الذي يسمي نفسه «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>من برنامج يسمي نفسه «{0}»</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>تثبيت وإعادة التشغيل</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ملاحظات الإصدار</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>قاعدة بيانات وحدات التحكم</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«التحديث الآن» ينزّل قاعدة بيانات وحدات التحكم التي يصنعها المجتمع (SDL_GameControllerDB) من GitHub، ويحتفظ في ملف الإعدادات بالتعيينات التي تنقص هذا الإصدار من PadForge. لا يُستخدم التعيين الجديد إلا لوحدة تحكم لا يقرؤها شيء آخر كذراع تحكم، وغير معينة، وليست في وضع عصا التحكم الخام. تحذف إعادة الضبط كل تعيين نُزّل.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>التحديث الآن ينزّل قاعدة بيانات وحدات التحكم التي يصنعها المجتمع (SDL_GameControllerDB) من GitHub، ويحتفظ في ملف الإعدادات بالتعيينات التي تنقص هذا الإصدار من PadForge. تُستخدم فورا. لا يُستخدم التعيين الجديد إلا لوحدة تحكم لا يقرؤها شيء آخر كذراع تحكم، وغير معينة، وليست في فرض وضع عصا التحكم الخام. تحذف إعادة الضبط كل تعيين نُزّل. صفوفك، تحت المزيد، تبقى.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>التحديث الآن</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>جارٍ التحديث…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>جارٍ التحقق من التحديثات…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>لم يكتمل تثبيت التحديث إلى PadForge {0}. ثبّته من الإعدادات للمحاولة مرة أخرى.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>تم تحديث PadForge إلى {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {0}، نسخة المجتمع بتاريخ {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {0}، نسخة المجتمع بتاريخ {1}. التحديث في {2}: الجديدة {3}، المتغيرة {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>مضمّنة: عدد التعيينات {0}، نسخة المجتمع بتاريخ {1}. التنزيل في {2}: الصفوف الجديدة {3}، المتغيرة {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>لم تتغير قاعدة بيانات المجتمع منذ التحديث الأخير.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>تعذر الوصول إلى GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>رفض PadForge التنزيل لأنه ليس قاعدة بيانات وحدات التحكم التي يتوقعها. لم يتغير شيء.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>يُستخدم التعيين الجديد عند اتصال وحدة التحكم الخاصة به في المرة التالية.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>يُستخدم التعيين المتغير عند بدء PadForge في المرة التالية.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>بدء التشغيل مصغرا</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>التشغيل عند تسجيل الدخول</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>معلومات الإصدار، وتسجيل أحداث المحرك لاستكشاف الأخطاء وإصلاحها.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>الاحتفاظ بسجل تشخيص</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>يكتب أحداث المحرك باستمرار في diagnostics.log في مجلد السجل، الذي يفتحه «فتح مجلد السجل». يبقى مفعلا بعد إعادة التشغيل. عندما يبلغ الملف 8 ميغابايت يتحول إلى diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>حفظ لقطة</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>يحفظ أحدث أحداث المحرك في ملف جديد. يعمل حتى لو كان سجل التشخيص متوقفا.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>حفظ لقطة…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>يأخذ التطبيق وWindows وأجهزتك وإعداداتك كما هي الآن، مع أحدث أحداث المحرك، ويفتحها لتقرأها قبل أن تحفظها. يعمل حتى لو كان سجل التشخيص متوقفا.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>فتح مجلد السجل</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>تسجيل مشكلة</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>بدء التسجيل</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>إيقاف التسجيل ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}، {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>يسجل حتى «إيقاف التسجيل» أو 10 دقائق أو ملف zip بحجم 20 MB، ثم يحدد ملف zip في Explorer، جاهزا للإرفاق بتقرير.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ابدأ، ثم أحدث المشكلة، ثم أوقف. يحوي ملف واحد بجوار PadForge كل ما قرأه PadForge وأرسله وسجّله، مع ملخص لما حدث. كل مفتاح وزر يُضغط على أي جهاز أثناء التسجيل يكون في الملف، بما فيها لوحات المفاتيح والفأرات. تُستبدل أسماء المستخدمين والأرقام التسلسلية والعناوين والأسماء المكتوبة قبل كتابة أي شيء.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>يسجل حتى «إيقاف التسجيل» أو 30 دقيقة أو ملف zip بحجم 20 ميغابايت، ثم يفتح التسجيل لتقرأه قبل أن تحفظه.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ابدأ، ثم أحدث المشكلة، ثم أوقف. بعدها اقرأ ما يحويه جزءا جزءا، واحفظه حيث تشاء. كل مفتاح يُضغط على أي جهاز أثناء التسجيل يكون فيه، بما فيها لوحات المفاتيح والفأرات. تُستبدل أسماء المستخدمين والأرقام التسلسلية والعناوين والأسماء المكتوبة قبل كتابة أي شيء.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>جارٍ كتابة الملخص…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>تم حفظ {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>لم يبدأ التسجيل. وجد فحص قيمة خاصة بهذا الـ PC لن يتم إبعادها عن الملف.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>لم يبدأ التسجيل. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>لا يزال التسجيل الأخير قيد الإنهاء.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«الاحتفاظ بآخر 60 ثانية» متوقف، فلا يوجد ما يمكن حفظه.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>أُنهي تسجيل لم يوقفه PadForge: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>تسجيل لم يوقفه PadForge ينتظر أن تقرأه في الرئيسية: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>الاحتفاظ بآخر 60 ثانية</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>أثناء عمل المحرك، يحتفظ في الذاكرة بآخر دقيقة مما يحويه التسجيل، لمشكلة تحدث مرة في المساء. «حفظ آخر 60 ثانية» يكتبها في ملف.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>أثناء عمل المحرك، يحتفظ في الذاكرة بآخر دقيقة مما يحويه التسجيل، لمشكلة تحدث مرة في المساء. «حفظ آخر 60 ثانية» يفتحها لتقرأها قبل أن تحفظها.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>حفظ آخر 60 ثانية</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>كتابة الأحرف والأرقام المطبوعة كمفتاح واحد</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>يكتب التسجيل مفاتيح الأحرف والأرقام التي لا يقرؤها أي تعيين أو ماكرو على أنها مفتاح واحد، وكل ضغطة في وقتها. أما كل مفتاح آخر، وكل مفتاح يقرؤه تعيين أو ماكرو، فيُكتب كما ضُغط.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>الاحتفاظ بآخر 60 ثانية، كتابة الأحرف والأرقام المطبوعة كمفتاح واحد</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>ما يُسجَّل، وآخر 60 ثانية، والأحرف المطبوعة</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>حفظ لقطة</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge وWindows وأجهزتك وإعداداتك كما هي الآن، عبر المراجعة نفسها.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log بجوار PadForge.exe، ويمكنك قراءته هناك.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>ما يُسجَّل</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>الكل مفعّل. الجزء الذي يُوقَف يُترك خارج التسجيل التالي، ويذكر الملف الأجزاء التي يحويها.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>لمشكلة تحدث مرة في المساء.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>ينتظر التسجيل أن تقرأه في الرئيسية.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>الملخص</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>الإعدادات والأجهزة</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>المدخلات</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>المخرجات</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>الارتجاع</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>التوقيت</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>النافذة والأخطاء</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>النشاط</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>أسطر التشخيص</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>اقرأ تسجيلك</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} إلى {1}، {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>لقطة في {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>دقيقة واحدة</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>الدقائق: {0}</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>ثانية واحدة</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>الثواني: {0}</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>أوقفته أنت.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>توقف من تلقاء نفسه عند {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>توقف من تلقاء نفسه عند {0} في ملف zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>أوقفه ماكرو.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>أوقفه برنامج أو الأمر --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>أوقفه المساعد الذي بدأه.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>توقف عند إغلاق PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>آخر 60 ثانية، محفوظة في الذاكرة.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>اقرأ ما ستشاركه. أوقف جزءا لتتركه خارج الملف، ثم احفظ. لا يغادر شيء هذا الكمبيوتر ما لم تنشره.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}، كما ستتم مشاركته</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>عرض {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>متروك</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>غير مسجّل</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} كنص، و{1} في ملف zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} كنص، و{1} في ملف zip الذي تشاركه. يتوقف التسجيل عند {2} في ملف zip أو بعد {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>فحص التنقية: استبدل PadForge {0} من {1}. لا يوجد في الأجزاء التي تحتفظ بها أي اسم أو رقم تسلسلي أو عنوان من هذا الكمبيوتر.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>القيم: {0}</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>قيمة واحدة</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>الأنواع الخاصة: {0}</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>نوع خاص واحد</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>فحص التنقية: ما زالت قيم من هذا الكمبيوتر، عددها {0}، في الأجزاء التي تحتفظ بها. أوقف تلك الأجزاء أو احذف التسجيل. يبقى الحفظ متوقفا حتى ذلك الحين.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>فحص التنقية: ما زالت قيمة واحدة من هذا الكمبيوتر في الأجزاء التي تحتفظ بها. أوقف تلك الأجزاء أو احذف التسجيل. يبقى الحفظ متوقفا حتى ذلك الحين.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>لم يحدث شيء من هذا الجزء أثناء التسجيل.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>حذف</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>نسخ الملخص</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>تم النسخ</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>حفظ…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>حفظ التسجيل</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>ملفات zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>لم يتم الحفظ. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>يُحفظ باسمك، في مجلد التنزيلات أول مرة، ثم حيث حفظت آخر مرة، ويظهر في مستكشف الملفات. التسجيل الذي يتوقف والصفحة غير مفتوحة (بسبب حده أو ماكرو أو برنامج أو أداة المساعد أو --record stop) ينتظر هذه المراجعة في الرئيسية، ويُحذف بعد 7 أيام ما لم يُحفظ. يُبلَّغ البرنامج بأنه ينتظر، ولا يُبلَّغ أبدا بمكانه.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>تسجيل مشكلة من {0} ينتظر أن تقرأه.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>مراجعة</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>وضع علامة في التسجيل</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>إصدار التطبيق</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>وقت تشغيل .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>إصدار SDL</value></data>
@@ -2900,31 +3010,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>موضع الماوس X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>موضع الماوس Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>الحساسية</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>حساسية المؤشر لكل مصدر. 1.0 تبلغ الانحراف الكامل للعصا عند 10% من عرض الشاشة بعيدا عن المركز. القيم فوق 1.0 تبلغ الانحراف الكامل بحركة مؤشر أقل. القيم دون 1.0 تحتاج إلى أكثر.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>حساسية المؤشر لكل مصدر. 1.0 تبلغ الانحراف الكامل للعصا عند 10% من عرض شاشة المؤشر بعيدا عن مركزها. القيم فوق 1.0 تبلغ الانحراف الكامل بحركة مؤشر أقل. القيم دون 1.0 تحتاج إلى أكثر.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>حركة الماوس X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>حركة الماوس Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>المسافة إلى أقصى انعطاف</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>المسافة التي يقطعها الماوس من المركز إلى أقصى انعطاف، بالنقاط التي يبلغ عنها الماوس. الرقم الأعلى يعطي توجيها أدق ويتطلب حركة يد أكبر.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>المسافة التي يقطعها الماوس أو العجلة من المركز إلى أقصى انعطاف، بالنقاط التي يبلغ عنها. الرقم الأعلى يعطي توجيها أدق ويتطلب حركة يد أكبر.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>عند ضبط DPI الماوس في لوحة جهازه، تظهر المسافة أيضا بالسنتيمترات.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>نقطة</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>التوسيط</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«إيقاف» يُبقي العجلة حيث تركتها اليد. «الزنبرك» يعيدها خلال «زمن العودة». «من بيانات القياس» يسحبها كما تفعل الإطارات الأمامية للسيارة بحسب سرعة اللعبة وتماسكها: ساكنة عند التوقف، وأشد مع السرعة، وخفيفة عند انزلاق الإطارات. إن لم ترسل لعبة بيانات القياس فهو الزنبرك. «من قوة اللعبة» يتيح لقوة الارتجاع في عجلة ظاهرية أن تديرها.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«إيقاف» يُبقي العجلة حيث تركتها اليد. «الزنبرك» يعيدها خلال «زمن العودة». «من بيانات القياس» يسحبها كما يفعل توجيه السيارة بحسب سرعة اللعبة وتماسكها: بشدة قرب المركز وبليونة أكثر كلما ابتعدت عنه، وساكنة عند التوقف، وأشد مع السرعة، وخفيفة عند انزلاق الإطارات. إن لم ترسل لعبة بيانات القياس فهو يسحبها كما عند 100 km/h على طريق جافة. «من قوة اللعبة» يتيح لقوة الارتجاع في عجلة ظاهرية أن تديرها.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>إيقاف</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>الزنبرك</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>من بيانات القياس</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>من قوة اللعبة</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>زمن العودة</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>المدة التي يحتاجها «الزنبرك» لإعادة العجلة 95% من الطريق. «من بيانات القياس» يستغرق هذه المدة عند 100 km/h على طريق جافة.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>المدة التي يحتاجها «الزنبرك» لإعادة العجلة 95% من الطريق. 0 يعيدها إلى المركز فورا. «من بيانات القياس» يستغرق هذه المدة من قرب المركز عند 100 km/h على طريق جافة.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>التوجيه</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«دائما» يتيح للماوس التوجيه في كل وقت. «أثناء الضغط المستمر» يتيحه فقط ما دام «مدخل التوجيه» مضغوطا. «تبديل» يشغّل التوجيه أو يوقفه مع كل ضغطة على «مدخل التوجيه». وما دام الماوس لا يوجّه، تبقى العجلة حيث هي أو تعود إلى المركز، فيستطيع ماوس واحد أن يوجّه وأن ينظر حوله.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«دائما» يتيح للماوس التوجيه في كل وقت. «أثناء الضغط والعودة إلى المركز» يتيحه فقط ما دام مدخل التوجيه مضغوطا، ثم يعيد العجلة إلى المركز، بالتوسيط حيث يكون للمصدر توسيط وفورا حيث لا يكون. «أثناء الضغط مع البقاء» يتيحه فقط ما دام المدخل مضغوطا، ويترك العجلة حيث انفلت. «تبديل» يشغّل التوجيه أو يوقفه مع كل ضغطة على مدخل التوجيه. فيستطيع ماوس واحد أن يوجّه وأن ينظر حوله.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>دائما</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>أثناء الضغط المستمر</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>أثناء الضغط والعودة إلى المركز</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>تبديل</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>مدخل التوجيه</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>الزر الذي يتيح للماوس التوجيه، على الجهاز نفسه الذي يتحرك عليه الماوس. إن لم يُختر شيء يوجّه الماوس دائما.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>الزر الذي يتيح للماوس التوجيه، على الجهاز نفسه الذي يحمل المصدر. إن لم يُختر شيء يوجّه الماوس دائما.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>التنعيم</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>يعدّل ماوسا يبلّغ بشكل غير منتظم. تتأخر العجلة عن اليد بهذه المدة تقريبا. 0 للإيقاف.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>يعدّل ماوسا يبلّغ بشكل غير منتظم. تتأخر العصا عن اليد بهذه المدة تقريبا. 0 للإيقاف.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>الانعطاف عند السرعة</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>مع تشغيل «بيانات قياس الألعاب»، المتبقي من الانعطاف عند 200 km/h. عند 100% يتوفر الانعطاف كله عند كل سرعة.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>حركة العجلة</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>حركة العجلة الجانبية</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>مدى سرعة حركة الماوس. يعود إلى الصفر عندما تتوقف اليد.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>مكان المؤشر على شاشته، من مركزها أو من حيث كان عند بدء التوجيه.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>مدى ما تحرك الماوس، ويبقى حيث تتركه اليد، كما في العجلة.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>نقرات عجلة التمرير محفوظة كموضع، وبدقة كاملة على عجلة ذات تمرير دقيق.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>نقرات العجلة الجانبية محفوظة كموضع، وبدقة كاملة على عجلة ذات تمرير دقيق.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>دفعة لكل نقرة، ثم عودة فورية إلى الراحة.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>أثناء الضغط مع البقاء</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>الحساسية</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>مقدار ما تعطيه السرعة من العصا. عند 1.00 تبلغ العصا الانحراف الكامل عند 16,000 نقطة في الثانية، مهما كان معدل الاستطلاع ومعدل تبليغ الماوس.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>العودة إلى المركز</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>بعد أن يبطئ الماوس أو يتوقف، تعود العصا بسرعة لا تزيد على هذه. 0 يتركها تعود مع الماوس.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>البدء من حيث بدأ التوجيه</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>مع مدخل التوجيه، تقيس العصا من حيث كان المؤشر عند بدء التوجيه، كما تبدأ عصا على شاشة هاتف من حيث يقع الإصبع. عند الإيقاف، تقيس من مركز شاشة المؤشر.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>يتحرك هذا المحور نسبيا</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>لكرة التتبع أو الدوّار الذي يبلّغ بمقدار ما دار. عند التشغيل يحتفظ المحور بموضع كما يفعل حركة الماوس ويأخذ إعدادات المسافة. لا يبيّن Windows أي المحاور تتحرك بهذه الطريقة.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}، {1} سم</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>معاينة</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>يعرض كيف تتبع هذه العائلة ماوسك. لا يُعيَّن شيء حتى تختارها.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>جارية المعاينة. حرّك الماوس.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>ثابت عند {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>عند {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% يمينا</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% يسارا</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% للأعلى</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% للأسفل</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>المركز</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>يتحرك ما دام {0} مضغوطا.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI الماوس</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>عدد النقاط التي يبلّغ عنها هذا الماوس لكل بوصة يتحركها، كما تضبطه برمجيات صانعه.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>مع ضبط DPI يعرض حركة الماوس مسافته بالسنتيمترات أيضا. 0 يعني غير مضبوط.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>مؤشر IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>مؤشر IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>سطوع IR</value></data>
@@ -4661,6 +4804,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>مؤشرات على الشاشة يعرضها PadForge أثناء اللعب. إيقاف أحدها لا يغيّر السلوك أبدا، بل يحدد فقط هل يتم عرضه.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>النافذة المنبثقة لطبقة Shift</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>تراكب تبديل ملف التعريف</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>تشغيل وحدات التحكم أو إيقافها</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ملاحظة انقطاع اتصال الجهاز</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ملاحظة اتصال الجهاز</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>إظهار الحلقة أو الشبكة على الشاشة ما دامت قائمة شعاعية أو قائمة لمس مفعلة. القوائم تظل تنطلق والتراكب متوقف.</value></data>
@@ -5336,6 +5480,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>إيقاف</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>ساعة إيقاف</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>لون شريط الإضاءة</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>الأجهزة غير المتصلة</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>الكل متصل</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>متوقف</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>عبر Logitech Gaming Software</value></data>
@@ -5378,6 +5524,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>تعرض الشاشة صورة تختارها بحجمها الأصلي. إذا كانت الصورة أكبر من الشاشة تُعرض نافذة بحجم الشاشة، ويحركها ماكرو تحريك صورة شاشة لوحة المفاتيح. وعلى S.T.R.I.K.E. 7 يحركها أيضا سحب الإصبع على الشاشة.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>تعرض الشاشة ساعة الإيقاف التي يبدأها ماكرو ساعة الإيقاف ويوقفها مؤقتا ويعيد ضبطها. تعرض كل الشاشات ساعة الإيقاف نفسها.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>تعرض الشاشة لون شريط الإضاءة في وحدة تحكم DualShock 4 أو DualSense في أدنى خانة تغذيها هذه الشاشة، أو في أدنى خانة بين كل الخانات إن لم تغذِّ أي خانة. تعرض الشاشة أحادية اللون سطوعه بنمط من النقاط. إلى أن يصل لون إلى شريط إضاءة لا يعرض PadForge شيئا.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>تعرض الشاشة الأجهزة المعينة غير المتصلة، بالأسماء التي تعرضها صفحة الأجهزة، وتقول «الكل متصل» حين لا ينقص جهاز.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>الصور (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|جميع الملفات (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>تحريك</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>تحريك X</value></data>
@@ -5574,6 +5721,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>القيادة (غير 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>بيانات قياس الألعاب</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>قيمة النص البرمجي</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>اتصال الجهاز</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>السرعة (ميل/س)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% من الأقصى)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>الترس (-1 رجوع، 0 محايد)</value></data>
@@ -5727,4 +5875,231 @@
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>تسجيل المشكلة</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>بدء التسجيل أو إيقافه</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>وضع علامة في التسجيل</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>يعرض التراكب الأجهزة المعينة غير المتصلة، بالأسماء التي تعرضها صفحة الأجهزة، ويقول «الكل متصل» حين لا ينقص جهاز.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>متوقف. لا يستطيع أي برنامج الوصول إلى PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} و{1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}، {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge النشاط: الاستدعاءات {0}، الأقدم أولا. الاستدعاءات التي سبقتها: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>النشاط في PadForge: استدعاء واحد ({0}). الاستدعاءات التي سبقته: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>ذهبت الاستدعاءات الأقدم: {0:N0}. يحتفظ النشاط بأحدث {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>ذهب استدعاء أقدم واحد: {0:N0}. يحتفظ النشاط بأحدث {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>تصدير…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>تصدير النشاط</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>ملف نصي</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>فتح</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>تحديث</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>المزيد لـ {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>حفظ المهارة كملف ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>فتح ملف إعداداته</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>تم الحفظ. في {0}، أضف {1} ضمن {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>لا يوجد لـ {0} ملف إعدادات بعد. إضافة تنشئه.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>لا يجد PadForge على هذا الكمبيوتر أي برنامج مساعد توثّق الجهة الصانعة له إعدادا على Windows. ينفع Copy Settings تحت المزيد لأي مساعد آخر.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>تعذر على PadForge فحص برامج المساعدين: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>غير مضاف.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>مضاف.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>مضاف. متصل الآن.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>مضاف. لم يتصل منذ ذلك. المساعد الذي كان مفتوحا يرى PadForge بعد إغلاقه وفتحه من جديد.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>مضاف لنسخة أخرى من PadForge. تحديث يوجهه إلى هذه النسخة.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>مضاف. مهارة PadForge فيه أقدم من هذه النسخة من PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>مضاف، من دون مهارة PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>مضاف. مهارة PadForge فيه من نسخة أحدث من PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>يقبل المهارات رفعا فقط.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>تصل المساعدات المضافة إلى PadForge متى كانت الأتمتة قيد التشغيل.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>جارٍ الإضافة…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>جارٍ الإزالة…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>جارٍ التحديث…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>لم يكتمل: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>تم النسخ.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>لم يتم النسخ: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>البرامج المسموح بها</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>البرنامج الذي يريد القراءة أو أكثر يسأل مرة واحدة، عند أول اتصال، ويحصل على المستوى الذي يطلبه، حتى المستوى المذكور أعلاه. المساعد الذي تضيفه أعلاه مسموح به بذلك.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>متصل الآن.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>آخر استخدام {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>لم يُستخدم بعد.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>المتصلة: {0}. انقر لفتح الأتمتة.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>على هذا الكمبيوتر: {0}. من الويب: {1}. انقر لفتح الأتمتة.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>المتصلة من الويب: {0}. انقر لفتح الأتمتة.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>تعيين SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>ذراع تحكم، «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>عصا تحكم. لا يملك SDL تعيينا لها.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>عصا تحكم. يقرؤها PadForge خاما، فلا يُستخدم تعيين SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>عصا تحكم، موزعة كذراع تحكم بحسب صفك.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>يقرأ SDL الأجهزة أثناء عمل المحرك.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>نسخة المجتمع المضمّنة، {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>نُزّل {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>ملف PadForge الخاص</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>لك، أُضيف {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>المتغير SDL_GAMECONTROLLERCONFIG، الذي يقدّمه SDL على أي صف تضيفه</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>نسخ تعيين SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>يضع تعيين الجهاز في الحافظة كصف من قاعدة بيانات المجتمع، تحت معرّف الجهاز مع تصفير المجموع الاختباري والإصدار.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>لصق تعيين SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>يأخذ صفا لهذا الجهاز، ويفحصه، ويحتفظ به كصف لك، ويطبقه فورا.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>البحث عن تعيين…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>يبحث بالاسم في كل صف يحمله PadForge، ويطبق الصف الذي تختاره على هذا الجهاز، لنسخة مقلدة تختلف معرّفاتها.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>تخمين تخطيط</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>يخمّن تخطيط ذراع تحكم من محاور الجهاز وأزراره وأسهمه، لجهاز لا تعرفه أي قاعدة بيانات. افحصه في اختبار المدخلات.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>إزالة تعييني</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>إزالة تعييني تعيد الصف وصفوف وحدة التحكم كما كانت من قبل.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>التعيين من جديد</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>يجعل صفوف الجهاز على كل وحدة تحكم هو عليها تُبنى من جديد من تخطيط SDL، كما يفعل تعيينه.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>صفحة قاعدة بيانات المجتمع</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>الصف، وأين يختلف عن {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>الصف</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>وحدة التحكم</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>صف {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>مدخله الآن</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>ما يقوله صف SDL</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>ليس في صف SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}، يختلف</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>لا يستخدمه PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>الصف</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>تم النسخ.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>تم النسخ. لا يتسع شكل SDL لـ {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>الماكرو</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>المنحنيات</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>المناطق الميتة</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>مخرجات لوحة المفاتيح والماوس</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>التسريع المتكرر والتبديل وغيرها من الإجراءات</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} و{1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>لا شيء للنسخ: لا يملك SDL تعيينا لهذا الجهاز، وهو ليس على أي وحدة تحكم.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>برنامج آخر يستخدم الحافظة. لم يُنسخ شيء.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>أُزيل صفك. يُقرأ الجهاز كما كان قبله.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>عُيّن من جديد من تخطيط SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>قيد الاستخدام الآن. الصف لك ويتقدم لهذا الجهاز.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>حُفظ كصف لك. يُستخدم متى عمل المحرك واتصل الجهاز.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>حُفظ كصف لك، لكن المتغير SDL_GAMECONTROLLERCONFIG يحمل صفا لهذا الجهاز، ويقدّمه SDL على صفك.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>لم يقبل SDL الصف. لم يتغير شيء لهذا الجهاز.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>لصق تعيين SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>لصق تعيين SDL لـ {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>البحث عن تعيين لـ {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>تخمين تخطيط لـ {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>إضافة صفوف من ملف أو من الحافظة</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>لصق</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>فتح ملف…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>ملفات التعيين (*.txt)|*.txt</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>الملف أكبر من 4 ميغابايت. ملف المجتمع كله نحو 0.6 ميغابايت.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>ابحث بالاسم أو المعرّف أو VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>الصفوف التي يحملها PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>لا يطابق أي صف.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>يُطبَّق الصف المختار على {0} تحت معرّفه الخاص، عبر الفحص نفسه والاختيار نفسه كما في «لصق».</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>صف تعيين SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>صف لهذا الجهاز.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>تخطيط مخمَّن.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows، الحقول: {0}، معرّفه الخاص يطابق هذا الجهاز.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows، الحقول: {0}، من الصانع والمنتج نفسيهما على ناقل أو إصدار آخر. يُحفظ تحت معرّف هذا الجهاز نفسه.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows، الحقول: {0}، صف جهاز آخر. يُحفظ تحت معرّف هذا الجهاز نفسه.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>الحقول: {0}. لا يقرأ SDL هذا الجهاز، فيوزع PadForge مدخلاته بحسب الصف.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>الحقول: {0}، من محاور الجهاز وأزراره وأسهمه. افحصه في اختبار المدخلات، ثم احتفظ به أو غيّره هنا.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows، حقل واحد ({0})، معرّفه الخاص يطابق هذا الجهاز.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows، حقل واحد ({0})، من الصانع والمنتج نفسيهما على ناقل أو إصدار آخر. يُحفظ تحت معرّف هذا الجهاز نفسه.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows، حقل واحد ({0})، صف جهاز آخر. يُحفظ تحت معرّف هذا الجهاز نفسه.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>حقل واحد ({0}). لا يقرأ SDL هذا الجهاز، فيوزع PadForge مدخلاته بحسب الصف.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>حقل واحد ({0})، من محاور الجهاز وأزراره وأسهمه. افحصه في اختبار المدخلات، ثم احتفظ به أو غيّره هنا.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>هذا يغيّر طريقة قراءة {0}. تُعيَّن صفوفه في {1} من جديد من التخطيط الجديد.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>هذا يغيّر طريقة قراءة {0}. وهو ليس على أي وحدة تحكم، فلا يتغير أي صف.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>اختصارات ملف التعريف التي تقرأ {0} تحتفظ بالمدخلات التي ضُبطت عليها.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>يُحفظ الصف كصف لك في PadForge.xml ويتقدم على كل مصدر آخر لهذا الجهاز. إزالة تعييني تعيد الصف القديم والصفوف القديمة.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>تُحفظ الصفوف كصفوف لك في PadForge.xml وتتقدم لأجهزتها على كل مصدر آخر. مسح، تحت المزيد في صف قاعدة بيانات وحدات التحكم، يزيلها.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} من الصفوف لـ Windows. يُتجاوز {1} لأنظمة أخرى.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>صف واحد لـ Windows ({0}). يُتجاوز {1} لأنظمة أخرى.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>رُفض {0}. الأول: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>الصق صفا، أو نص ملف gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>النص ليس صفا من قاعدة بيانات وحدات التحكم في SDL: معرّف من 32 رقما سداسيا عشريا، ثم اسم، ثم حقول مثل a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>الصفوف لأنظمة أخرى. يقرأ PadForge صفوف Windows، أو الصفوف التي لا تخص نظاما بعينه.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>معرّف الصف ليس لجهاز. يحتاج إلى 32 رقما سداسيا عشريا.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>اسم الصف فارغ، أو أطول من 128 حرفا، أو يحوي حرفا يقرؤه SDL كحقل.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>يحمل الصف تلميحا أو حقل Android، وPadForge لا يقبلهما.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>في الصف حقل لا يعرفه SDL.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>ربط ليس بصيغة SDL، مثل b3 أو a2 أو +a2 أو a2~ أو h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>يعطي الصف حقلا واحدا مرتين.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>الصف أطول من 1,024 حرفا.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>لا يربط الصف أي عنصر تحكم.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>صفوفك</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>صفوفك</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>الصفوف التي تضيفها هنا، أو تلصقها على بطاقة تعيين SDL في جهاز، تتقدم لأجهزتها على كل مصدر آخر وتبقى بعد إعادة الضبط.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>إضافة صفوف من ملف أو من الحافظة…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>الصفوف: {0}، لك قبل كل مصدر آخر لأجهزتها.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>صف واحد ({0})، لك قبل كل مصدر آخر لجهازه.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>لا شيء بعد.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>قيد الاستخدام فورا.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>تشغيل</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>المساعدون على الويب</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>النفق</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>بلا</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>عنوان ألصقه</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>جارٍ البدء، بصلاحياتك.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>يعمل، بصلاحياتك. يبقى عنوانه نفسه في كل مرة يبدأ فيها.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>يعمل، بصلاحياتك. يأخذ النفق السريع عنوانا جديدا في كل مرة يبدأ فيها، فيُضاف المساعد من جديد.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>متوقف.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>متوقف. آخر ما قاله: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>تعذر بدؤه.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>لم يعد موجودا على هذا الكمبيوتر.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>لم يُعثر على أي برنامج نفق على هذا الكمبيوتر. يعمل PadForge مع cloudflared وdevtunnel وngrok وTailscale Funnel، أو مع عنوان نفقك الخاص.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>اختر نفقا ليعطي PadForge عنوانا عاما.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>موجود أيضا على هذا الكمبيوتر: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}، ويبقى عنوانه نفسه</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}، وتأخذ أنفاقه السريعة عنوانا جديدا في كل مرة</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>شغّل نفقك الخاص إلى http://127.0.0.1:{0} والصق عنوان https الخاص به. نفق Cloudflare المسمى ونفق التطوير الدائم وTailscale Funnel ونطاق ngrok الخاص تحتفظ بعناوينها.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>الصق عنوان https بلا مسار سوى /mcp، كما يعطيه نفقك.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>جارٍ بدء مساعد الويب الخاص بـ PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>توقف مساعد الويب الخاص بـ PadForge ({0}). أوقف Reach PadForge From the Web ثم شغّله من جديد ليبدأ مرة أخرى.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>العنوان</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>لا عنوان عاما بعد.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>تم النسخ.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>قبول مساعد ويب جديد</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>بدء القبول</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>إيقاف القبول</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>القبول حتى {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>لا قبول حاليا. «بدء القبول» يفتحه لخمس دقائق.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>أضف العنوان في المساعد وسجّل الدخول. يعرض كل تسجيل دخول رمزه المكوّن من ستة أرقام في صفحة تسجيل دخوله وعلى بطاقة أسئلة PadForge. اسمح به فقط حين يتطابق الرمزان. في غير ذلك يُرفض تسجيل الدخول ولا يسألك شيء.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>المسموح به على الويب</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>لا شيء بعد.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>يعود تسجيل دخوله إلى {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>يسمّي نفسه {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>سُمح به {0}، وآخر استخدام {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>سُمح به {0}، ولم يُستخدم بعد.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>إلغاء السماح</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>يشغّل Secure MCP Tunnel الخاص به PadForge مباشرة، بلا عنوان ولا تسجيل دخول هنا. انسخ الأمر إلى إعداد ذلك النفق.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>نسخ الأمر</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>لا ينزّل PadForge أي برنامج نفق ولا يحتفظ بمفتاح أي شركة أخرى. يعمل مساعد الويب بالمستوى المذكور أعلاه.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>السماح لـ {0} بالعمل مع PadForge من الويب؟</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>يعود تسجيل دخوله إلى {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>يسمّي نفسه {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>اسمح به فقط إذا أظهرت صفحة تسجيل دخوله هذا الرمز:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>يظهر رمزه المكوّن من ستة أرقام على بطاقة أسئلة PadForge. اسمح به فقط إذا أظهرت صفحة تسجيل دخوله الرمز نفسه.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>يعمل بمستوى {0}، عبر {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>يعود تسجيل دخوله إلى هذا الكمبيوتر، ويستطيع أي برنامج هنا أن يطالب بذلك العنوان.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>تسجيل الدخول إلى PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>يطلب {0} العمل مع PadForge على جهازك.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>يسمّي نفسه {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>على جهازك، تسأل بطاقة أسئلة PadForge عن تسجيل الدخول هذا. اسمح به هناك فقط إذا أظهرت البطاقة هذا الرمز:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>تتابع هذه الصفحة من تلقاء نفسها بعد أن تجيب على الكمبيوتر.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>يعود تسجيل الدخول هذا إلى برنامج على جهازك، ويستطيع أي برنامج هناك أن يطالب بذلك العنوان.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge لا يقبل مساعد ويب جديدا الآن. على جهازك، افتح PadForge، وانتقل إلى الإضافات ثم الأتمتة، وتحت «المساعدون على الويب» اضغط «بدء القبول». ثم سجّل الدخول من جديد.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>لا يمكن متابعة تسجيل الدخول هذا. أضف عنوان PadForge في المساعد من جديد وسجّل الدخول.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>انتهى تسجيل الدخول هذا. سجّل الدخول من جديد من المساعد.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>لم يبدأه Windows</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>انتهى برمز {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>الأتمتة متوقفة، فلا يصل أي مساعد ويب إلى PadForge. يبدأ مساعد الويب متى كانت الأتمتة قيد التشغيل.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>جارٍ الفحص…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>غير مثبّت.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>مثبّت وحديث. يبدأ النص بـ {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>مثبّت لـ {0} وحديث. يبدأ النص بـ {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>مثبّت. لدى هذا PadForge نسخة أحدث.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>مثبّت لـ {0}. لدى هذا PadForge نسخة أحدث.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>جارٍ التثبيت…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>تعذر على PadForge فحصه: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>تثبيت يضع مكتبة PadForge حيث تجدها تلك اللغة. النص الذي يحمّلها يقرأ الأجهزة ويتحكم في التعيينات بالمستوى المذكور أعلاه.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>حفظ مكتبة في أي مكان</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>النسخ المثبّتة</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>إزالة الكل</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>تمت الإزالة.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>معرّف النص البرمجي</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>معرّفه للنصوص البرمجية</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>تسمّي النصوص البرمجية عناصر تحكمه {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>تسمّي النصوص البرمجية مفاتيحه KeyA وKeySpace وKeyLeftShift وما شابهها، وكل مفتاح برمزه، من Vk0 إلى Vk255.</value></data>
 </root>

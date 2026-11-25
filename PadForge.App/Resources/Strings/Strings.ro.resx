@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} s-a deconectat. {1} nu mai are niciun dispozitiv.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} s-a conectat</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} s-a conectat, baterie {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Dispozitive deconectate: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Dispozitive conectate: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Dispozitive deconectate ({0}): {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Dispozitive conectate ({0}): {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} se deconectează întruna</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (max. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (max. {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconectare automată, port, identitate de asociere, conectare după adresă</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Porturi, Viteză maximă, Formate personalizate</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Alți asistenți, asistenți pe web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Priviți în jur cu un dispozitiv de urmărire a capului sau cu o cască VR, în timp ce ambele degete mari rămân pe butoane.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Mapați viteza, pedalele și treptele de viteză trimise de un joc de condus, ca orice altă intrare.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Trimiteți mișcarea controlerului către emulatoarele care citesc o sursă de mișcare DSU.</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Inelul, grila sau bara unui meniu cât timp este deschis.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Numele stratului când se activează un strat de comutare, pe durata stabilită de acel strat.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Numele profilului când se schimbă profilul.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Dacă controlerele virtuale tocmai s-au pornit sau oprit, din comandă rapidă sau dintr-o macrocomandă.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Numele unui dispozitiv mapat când se deconectează.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Numele unui dispozitiv mapat când se conectează.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copiere adresă</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programele pot comuta și elibera profiluri, porni și opri motorul, activa și dezactiva controlerele virtuale, afișa și ascunde fereastra, închide PadForge, salva un instantaneu de diagnosticare și întreba ce rulează.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tot ce permite nivelul Comenzi, iar programele pot vedea dispozitivele, controlerele virtuale, mapările, profilurile și setările, pot urmări intrările fiecărui dispozitiv pe măsură ce apar și vă pot arăta un loc din PadForge. Un program de la nivelul Citire vede fiecare tastă apăsată pe fiecare dispozitiv, inclusiv tastele scrise în ferestre care rulează ca administrator.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tot ce permite nivelul Citire, iar programele pot adăuga dispozitive proprii și le pot comanda, pot ține apăsat un control al oricărui dispozitiv și pot transmite valori cu nume către declanșatoarele de macrocomenzi.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot ce permite nivelul Trimitere intrări, iar programele pot schimba ce puteți schimba dumneavoastră în pagini.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot ce permite nivelul Trimitere intrări, iar programele pot schimba ce puteți schimba dumneavoastră în pagini. Unele modificări vă întreabă mereu mai întâi pe cardul de întrebare al PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Asistenți</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Lipiți textul în setările MCP ale unui asistent. Asistentul lucrează apoi cu PadForge la nivelul de mai sus.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copiere ca TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Asistenți care citesc TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Adăugare pune PadForge, cu abilitatea sa, în acel asistent. Apoi lucrează la nivelul de mai sus, iar cuvintele sale apar lângă ce indică, sub numele lui.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripturi</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Bibliotecă de scripturi</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Salvare bibliotecă…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un singur fișier pentru AutoHotkey v2, Python sau PowerShell. Un script care îl încarcă citește dispozitivele și comandă mapările la nivelul de mai sus.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un singur fișier pentru AutoHotkey v2, Python sau PowerShell, scris unde alegeți.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Așteaptă răspunsul dumneavoastră</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activitate</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Niciun program nu a făcut încă vreo solicitare. Fiecare solicitare apare aici, cu rezultatul ei.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Anulare modificare</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill pentru asistenți</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Salvare skill…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge nu a putut salva: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Cât timp este conectat un program de la nivelul Citire sau mai sus, acesta vede ce se apasă pe fiecare dispozitiv, tastaturile incluse.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Pluginuri</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Rulare pluginuri</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Niciun plugin nu rulează.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un plugin rulează cu drepturile dumneavoastră, nu cu cele ale PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Încorporate</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Controler de test</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un controler care se mișcă singur, un control pe rând, ca să puteți încerca o mapare fără echipament la îndemână.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Viteză</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lent</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Rapid</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Foarte rapid</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Redare înregistrare</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Redă o înregistrare de problemă ca dispozitivele care au făcut-o, cu aceeași sincronizare. Sunt dispozitive noi pe acest PC, mapate așa cum le mapați dumneavoastră sau un profil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Înregistrare</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Înregistrări de probleme|*.zip;*.log|Toate fișierele|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge nu poate reda {0}. Nu este o înregistrare de problemă sau nu conține intrările niciunui dispozitiv.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Pluginurile dumneavoastră</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Un plugin este un program care adaugă dispozitive în PadForge. PadForge îl pornește cu drepturile dumneavoastră obișnuite ori de câte ori rulează motorul.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Adăugare plugin…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programe și scripturi|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Toate fișierele|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Aprobare…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprobare și repornire…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Pornește odată cu motorul</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Se verifică fișierul înainte de pornire</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>S-a încheiat cu codul {0}. Pornește din nou în {1} s.</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} se află deja în listă.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge rulează cel mult 16 pluginuri. Eliminați unul ca să adăugați altul.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Pluginuri în execuție: {0}. Dispozitive adăugate de ele: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} s-a oprit după cinci eșecuri.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} s-a modificat după aprobare.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nu a putut porni.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Adăugat: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Semnat de {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nesemnat.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Setările sale apar aici cât timp rulează.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Nu declară nicio setare.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge nu a putut citi setările sale: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Încheiat după un minut fără niciun răspuns</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Fișierul său s-a modificat cât timp rula</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Adăugat de {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Setări {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Alegere</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Apăsați un control…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Nealeasă</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Adăugați un plugin sau trageți fișierul lui pe această pagină. PadForge arată calea lui, semnatarul și SHA-256 și vă întreabă înainte să ruleze. Un plugin rulează cu drepturile dumneavoastră, nu cu cele ale PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Redă o înregistrare de problemă ca dispozitivele care au făcut-o, cu sincronizarea lor.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>În execuție.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>În execuție, manual.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Ce se mișcă</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Sticuri și trăgaci</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Sticuri</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Trăgaci</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Model</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Baleiere</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Cerc</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Durată mișcare</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Durată repaus</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Apăsare butoane</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Apăsare butoane de navigare</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Aplicațiile Windows acționează în fereastra din față la A, B, Back, Start și D-pad ale unui controler Xbox virtual, iar Guide deschide Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Rotire D-pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Din același motiv.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Durată apăsare</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Controlere</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Manual</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Oprește mișcarea. Setați intrările ei mai jos cu mouse-ul.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Stick stâng</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Stick drept</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Trăgaci stâng</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Trăgaci drept</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Citiri pe secundă</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Kitul pentru pluginuri și jurnalul unui plugin ales de dumneavoastră</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit pentru pluginuri</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Salvare kit pentru pluginuri…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un plugin mic în C# și același plugin pentru AutoHotkey, Python și PowerShell, fiecare fișier cu instrucțiuni de compilare sau de rulare.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un ghid al fiecărui verb, eveniment și fel de setare, un script de compilare pentru pluginul C# și același plugin pentru AutoHotkey, Python și PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Jurnal</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Alegeți un plugin ca să vedeți jurnalul lui.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Jurnalul acestui plugin este încă gol.</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>O modificare de joc</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Alt program deține numele de canal {0}. Închideți acel program.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows a refuzat canalul {0}, deci programele nu se pot conecta.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Niciun program nu este conectat.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Activată. Niciun program nu este conectat.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Conectate: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program necunoscut</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, semnat de {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nu se mai fac astfel de lucruri până la repornirea PadForge</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge nu are un astfel de instrument</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programul a citit o stare mai veche</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Setare inexistentă</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Niciun element nu are acest ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Valoarea era în afara celor acceptate de setare</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Nu ați permis</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Nimeni nu a răspuns la timp</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Afișare fereastră</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Trimitere fereastră în zona de notificare</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizare fereastră</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maximizare fereastră</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Închidere PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Pornire motor</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Oprire motor</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Adăugare dispozitiv {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Setare controale ale dispozitivului {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Eliminare dispozitiv {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Aducerea în repaus a fiecărui control al dispozitivului {0}</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Face ca PadForge să ruleze un program.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Deschide un fișier, un folder sau o pagină web.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Face ca PadForge să trimită taste sau intrări de mouse către Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Importă un profil din afara PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge vă întreabă înainte ca un program să facă asta.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialoguri</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Macrocomenzi</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Ținere controale ale dispozitivului {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Eliberare controale ale dispozitivului {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Setare valoare {0}</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Comutare profiluri</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Pornire sau oprire motor</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Activare sau dezactivare controlere virtuale</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Salvare instantaneu de diagnosticare</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Citire frecvență de interogare și drivere</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Listare profiluri</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Citire profil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Listare controlere virtuale</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Listare dispozitive</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Citire dispozitiv</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Așteptare intrare de la dumneavoastră</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Citire mapări ale unui controler</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Listare macrocomenzi ale unui controler</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Înregistrare problemă</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Căutare setări</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Citire setare</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Arătare a unui loc</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Căutare de locuri în PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Citirea unui loc din PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Citirea a ceea ce vedeți</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Adăugare dispozitiv propriu</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Comandare dispozitiv propriu</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Eliminare dispozitiv propriu</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Ținere sau eliberare control</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Setarea unei valori pentru declanșatoarele macrocomenzilor</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Modificare setare</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Apăsarea unui buton</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Creare profil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Redenumire profil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ștergere profil</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Schimbare tip de controler</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Atribuire dispozitiv</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Setare rânduri de mapare</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Golire rânduri de mapare</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapare automată a unui controler</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Salvare macrocomandă</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ștergere macrocomandă</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Creează un controler de tastatură și mouse</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Activează {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Modificare „{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Apăsare „{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vrea să vă arate {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>La {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Permiteți ca {0} să lucreze cu PadForge la nivelul {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} rulează {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Pornit de {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Semnat de {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Nesemnat.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>La nivelul Citire și peste, vede fiecare tastă apăsată pe fiecare dispozitiv, tastaturile incluse.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Întreabă o singură dată. Îl puteți elimina din pagina Automatizare.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>linia de comandă a PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Setează {0} la {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ascultă în rețea, deci alte dispozitive pot ajunge la acest PC.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Modifică un driver sau HidHide, de care depind alte programe și jocuri.</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Module PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Permitere</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Refuzare</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Nu acum</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Afișare</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Pasul {0} din {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Faceți clic pe el ca să continuați.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Deschideți {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Deschideți Mai multe.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De la {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De la {1}, care își spune „{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>De la un program care își spune „{0}”</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalare și repornire</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Note de lansare</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Bază de date de controlere</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualizare acum descarcă de pe GitHub baza de date comunitară de controlere (SDL_GameControllerDB) și păstrează, în fișierul de setări, mapările pe care această versiune de PadForge nu le are. O mapare nouă se folosește doar pentru un controler pe care nimic altceva nu îl citește ca gamepad, care nu este atribuit și care nu este în modul Forțare mod joystick brut. Resetarea șterge toate mapările descărcate.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualizare acum descarcă de pe GitHub baza de date comunitară de controlere (SDL_GameControllerDB) și păstrează, în fișierul de setări, mapările pe care această versiune de PadForge nu le are. Ele sunt în uz imediat. O mapare nouă se folosește doar pentru un controler pe care nimic altceva nu îl citește ca gamepad, care nu este atribuit și care nu este în modul Forțare mod joystick brut (fără remaparea de gamepad). Resetarea șterge toate mapările descărcate. Rândurile dumneavoastră, sub Mai multe, rămân.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Actualizare acum</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Se actualizează…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Se caută actualizări…</value></data>
@@ -1045,12 +1100,10 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Actualizarea la PadForge {0} nu s-a instalat complet. Instalați-o din Setări pentru a încerca din nou.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge a fost actualizat la {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Încorporate, mapări: {0}. Copia comunității din {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Încorporate, mapări: {0}. Copia comunității din {1}. Actualizat la {2}. Noi: {3}, modificate: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Încorporate, mapări: {0}. Copia comunității din {1}. Descărcat la {2}. Rânduri noi: {3}, modificate: {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Baza de date comunitară nu s-a schimbat de la ultima actualizare.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub nu a putut fi contactat: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge a refuzat descărcarea, deoarece nu este baza de date de controlere așteptată. Nimic nu s-a schimbat.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>O mapare nouă se folosește la următoarea conectare a controlerului ei.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>O mapare modificată se folosește la următoarea pornire a PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Pornire minimizată</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Pornire la conectare</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informații despre versiune, plus jurnalizarea evenimentelor motorului pentru depanare.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Păstrare jurnal de diagnosticare</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Scrie continuu evenimentele motorului în diagnostics.log, în folderul de jurnale, pe care îl deschide butonul de deschidere a folderului de jurnale. Rămâne activat după reporniri. Când fișierul ajunge la 8 MB, este redenumit în diagnostics.log.old și se începe unul nou.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salvare instantaneu</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Salvează cele mai recente evenimente ale motorului într-un fișier nou. Funcționează chiar și când jurnalul de diagnosticare este dezactivat.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salvare instantaneu…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Preia aplicația, Windows, dispozitivele și setările dumneavoastră așa cum sunt acum, cu cele mai recente evenimente ale motorului, și le deschide ca să le citiți înainte să le salvați. Funcționează chiar și când jurnalul de diagnosticare este dezactivat.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Deschidere folder jurnal</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Înregistrare problemă</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Pornire înregistrare</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Oprire înregistrare ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Înregistrează până la Oprire înregistrare, 10 minute sau un zip de 20 MB, apoi selectează zip-ul în Explorer, gata de atașat la un raport.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Porniți, provocați problema, apoi opriți. Un singur fișier lângă PadForge conține tot ce a citit, a trimis și a consemnat PadForge, cu un rezumat al ce a mers prost. Fiecare tastă și buton apăsate pe fiecare dispozitiv în timpul înregistrării se află în fișier, tastaturi și mouse-uri incluse. Numele de utilizator, numerele de serie, adresele și numele tastate sunt înlocuite înainte să se scrie ceva.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Înregistrează până la Oprire înregistrare, 30 de minute sau un zip de 20 MB, apoi deschide înregistrarea ca s-o citiți înainte să o salvați.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Porniți, provocați problema, apoi opriți. Apoi citiți ce conține, parte cu parte, și salvați-l unde doriți. Fiecare tastă apăsată pe fiecare dispozitiv în timpul înregistrării se află în el, tastaturi și mouse-uri incluse. Numele de utilizator, numerele de serie, adresele și numele tastate sunt înlocuite înainte să se scrie ceva.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Se scrie rezumatul…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>Salvat: {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Înregistrarea nu a pornit. O verificare a găsit o valoare privată a acestui PC care nu ar fi fost ținută în afara fișierului.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Înregistrarea nu a pornit. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Ultima înregistrare este încă în curs de finalizare.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Păstrare ultimele 60 de secunde este dezactivat, deci nu există nimic de salvat.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>S-a finalizat o înregistrare pe care PadForge nu o oprise: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>O înregistrare pe care PadForge nu o oprise așteaptă să o citiți în Acasă: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Păstrare ultimele 60 de secunde</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Cât timp rulează motorul, ține în memorie ultimul minut din ce conține o înregistrare, pentru o problemă care apare o dată pe seară. Salvare ultimele 60 de secunde îl scrie ca fișier.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Cât timp rulează motorul, ține în memorie ultimul minut din ce conține o înregistrare, pentru o problemă care apare o dată pe seară. Salvare ultimele 60 de secunde îl deschide ca să îl citiți înainte să îl salvați.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Salvare ultimele 60 de secunde</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Scriere litere și cifre tastate ca o singură tastă</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>O înregistrare scrie tastele de litere și cifre pe care nicio mapare sau macrocomandă nu le citește ca o singură tastă, fiecare apăsare la momentul ei. Orice altă tastă și orice tastă citită de o mapare sau de o macrocomandă este scrisă așa cum a fost apăsată.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Păstrare ultimele 60 de secunde, Scriere litere și cifre tastate ca o singură tastă</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Ce se înregistrează, ultimele 60 de secunde, litere tastate</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Salvare instantaneu</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, dispozitivele și setările dumneavoastră așa cum sunt acum, prin aceeași verificare.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log lângă PadForge.exe, pe care îl puteți citi acolo.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Ce se înregistrează</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Totul activat. O parte dezactivată rămâne în afara următoarei înregistrări, iar fișierul spune ce părți conține.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Pentru o problemă care apare o dată pe seară.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Înregistrarea așteaptă să o citiți în Acasă.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Rezumat</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Setări și dispozitive</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Intrare</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Ieșire</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Răspuns</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Sincronizare</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Fereastră și erori</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Activitate</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Linii de diagnosticare</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Citiți înregistrarea</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} până la {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Un instantaneu de la {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minut</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} min</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 secundă</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} s</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Oprită de dumneavoastră.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Oprită singură la {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Oprită singură la {0} în zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Oprită de o macrocomandă.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Oprită de un program sau de --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Oprită de asistentul care a pornit-o.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Oprită la închiderea PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Ultimele 60 de secunde, păstrate în memorie.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Citiți ce veți partaja. Dezactivați o parte ca s-o lăsați deoparte, apoi salvați. Nimic nu iese din acest PC decât dacă îl postați.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, așa cum va fi partajat</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Afișare {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>lăsat deoparte</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>neînregistrat</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} ca text, {1} în zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} ca text, {1} în zip-ul pe care îl partajați. O înregistrare se oprește la {2} în zip sau după {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Verificare de curățare: PadForge a înlocuit {0}, din {1}. Niciun nume, serie sau adresă a acestui PC nu se află în părțile păstrate.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>valori: {0}</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 valoare</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>tipuri private: {0}</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 tip privat</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Verificare de curățare: în părțile păstrate mai rămân valori proprii ale acestui PC, număr: {0}. Dezactivați acele părți sau ștergeți înregistrarea. Salvarea rămâne dezactivată până atunci.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Verificare de curățare: în părțile păstrate mai rămâne o valoare proprie a acestui PC. Dezactivați acele părți sau ștergeți înregistrarea. Salvarea rămâne dezactivată până atunci.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Nimic din această parte nu s-a petrecut cât timp s-a înregistrat.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Ștergere</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Copiere rezumat</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Copiat</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Salvare…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Salvarea înregistrării</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Fișiere zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nesalvat. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Salvat ca dumneavoastră, prima dată în folderul Descărcări, apoi acolo unde ați salvat ultima dată, și afișat în File Explorer. O înregistrare care se oprește cât timp nimeni nu e la pagină (limita ei, o macrocomandă, un program, instrumentul asistentului sau --record stop) așteaptă această citire în Acasă și se șterge după 7 zile dacă nu este salvată. Unui program i se spune că așteaptă, niciodată unde.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>O înregistrare de problemă din {0} așteaptă să o citiți.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Citire</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Marcare în înregistrare</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versiune aplicație</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Mediu de execuție .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versiune SDL</value></data>
@@ -3128,31 +3238,64 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Poziție mouse X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Poziție mouse Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilitate</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitatea cursorului pentru fiecare sursă. 1.0 atinge deplasarea completă a stickului la 10% din lățimea ecranului față de centru. Valorile peste 1.0 ating deplasarea completă cu o deplasare mai mică a cursorului. Valorile sub 1.0 necesită mai mult.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitatea cursorului pentru fiecare sursă. 1.0 atinge deplasarea completă a stickului la 10% din lățimea monitorului pointerului, față de centrul lui. Valorile peste 1.0 ating deplasarea completă cu o deplasare mai mică a cursorului. Valorile sub 1.0 necesită mai mult.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Cursă mouse X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Cursă mouse Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Cursă până la limită</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Cât se mișcă mouse-ul de la centru până la limită, în unitățile raportate de mouse. Un număr mai mare face direcția mai fină și cere mai multă mișcare a mâinii.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Cât se mișcă mouse-ul sau rotița de la centru până la limită, în unitățile pe care le raportează. Un număr mai mare face direcția mai fină și cere mai multă mișcare a mâinii.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Cu DPI-ul mouse-ului setat în panoul dispozitivului, cursa se arată și în centimetri.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>unități</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrare</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Dezactivat ține volanul unde l-a lăsat mâna. Arc îl readuce în timpul de revenire. Din telemetrie îl trage înapoi ca roțile din față ale unei mașini, la viteza și aderența din joc: nemișcat când mașina stă, mai ferm cu viteza, ușor când roțile alunecă. Fără un joc care trimite telemetrie, se comportă ca arcul. Din forța jocului lasă forța de reacție a unui volan virtual să îl rotească.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Dezactivat ține volanul unde l-a lăsat mâna. Arc îl readuce în timpul de revenire. Din telemetrie îl trage înapoi ca direcția unei mașini, la viteza și aderența din joc: abrupt lângă centru și mai blând mai departe, nemișcat când mașina stă, mai ferm cu viteza, ușor când roțile alunecă. Fără un joc care trimite telemetrie, trage ca la 100 km/h pe drum uscat. Din forța jocului lasă forța de reacție a unui volan virtual să îl rotească.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Dezactivat</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Arc</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Din telemetrie</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Din forța jocului</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Timp de revenire</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Cât durează ca Arc să readucă volanul 95% din drum. Din telemetrie durează atât la 100 km/h pe drum uscat.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Cât durează ca Arc să readucă volanul 95% din drum. 0 îl centrează imediat. Din telemetrie durează atât de lângă centru la 100 km/h pe drum uscat.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Direcție</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Întotdeauna lasă mouse-ul să conducă tot timpul. Cât timp este ținut apăsat îl lasă să conducă doar cât timp este ținută Intrarea de direcție. Comutare pornește sau oprește conducerea la fiecare apăsare a Intrării de direcție. Cât timp mouse-ul nu conduce, volanul rămâne pe loc sau se centrează, așa că același mouse poate conduce și privi în jur.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Întotdeauna lasă mouse-ul să conducă tot timpul. Cât timp este ținut apăsat și centrare îl lasă să conducă doar cât timp este ținută Intrarea de direcție, apoi îl readuce la centru, prin Centrare unde sursa are una și imediat unde nu are. Cât timp este ținut apăsat și rămâne îl lasă să conducă doar cât timp intrarea este ținută și îl lasă unde a fost eliberat. Comutare pornește sau oprește conducerea la fiecare apăsare a Intrării de direcție. Așa același mouse poate conduce și privi în jur.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Întotdeauna</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Cât timp este ținut apăsat</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Cât timp este ținut apăsat și centrare</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Comutare</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Intrare de direcție</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butonul care permite mouse-ului să conducă, de pe același dispozitiv cu mișcarea mouse-ului. Dacă nu este ales niciunul, mouse-ul conduce întotdeauna.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Butonul care permite mouse-ului să conducă, de pe același dispozitiv cu sursa. Dacă nu este ales niciunul, mouse-ul conduce întotdeauna.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Netezire</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Netezește un mouse care raportează neuniform. Volanul rămâne în urma mâinii cam cât această durată. 0 înseamnă dezactivat.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Netezește un mouse care raportează neuniform. Stickul rămâne în urma mâinii cam cât această durată. 0 înseamnă dezactivat.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Limită la viteză</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Cu Telemetrie de joc activată, cât din cursă rămâne la 200 km/h. La 100% toată cursa este disponibilă la orice viteză.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Cursa volanului</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Cursa volanului în lateral</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Cât de repede se mișcă mouse-ul. Se eliberează când mâna se oprește.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Unde se află pointerul pe monitorul său, față de centru sau față de locul în care era când a început conducerea.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Cât de departe s-a mișcat mouse-ul, ținut unde îl lasă mâna, ca un volan.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Crestăturile rotiței ținute ca poziție, la precizie maximă pe o rotiță cu derulare fină.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Crestăturile rotiței laterale ținute ca poziție, la precizie maximă pe o rotiță cu derulare fină.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>O împingere pentru fiecare crestătură, înapoi în repaus imediat.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Cât timp este ținut apăsat și rămâne</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sensibilitate</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Cât din stick dă o viteză. La 1.00 stickul atinge deplasarea completă la 16.000 de unități pe secundă, la orice frecvență de interogare și orice rată de raportare a mouse-ului.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Revenire la centru</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>După ce mouse-ul încetinește sau se oprește, stickul revine cel mult cu această viteză. 0 îl lasă să revină odată cu mouse-ul.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Pornire de unde a început conducerea</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Cu o Intrare de direcție, stickul măsoară de la locul în care era pointerul când a început conducerea, ca un stick pe ecranul unui telefon, care pornește de unde aterizează degetul. Dezactivat, măsoară de la centrul monitorului pointerului.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Această axă se mișcă relativ</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Pentru un trackball sau un spinner care raportează cât s-a rotit. Activat, axa ține o poziție ca Cursa mouse-ului și folosește setările de cursă. Windows nu spune care axe se mișcă astfel.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Previzualizare</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Arată cum urmărește această familie propriul dumneavoastră mouse. Nimic nu este mapat până nu o alegeți.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Previzualizare. Mișcați mouse-ul.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Ținut la {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>La {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% spre dreapta</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% spre stânga</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% în sus</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% în jos</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>centru</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Se mișcă cât timp {0} este ținut apăsat.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI mouse</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Unitățile pe care le raportează acest mouse pentru fiecare inch parcurs, așa cum le setează software-ul producătorului.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Cu DPI setat, Cursa mouse-ului își arată cursa și în centimetri. 0 înseamnă nesetat.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Indicator IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Indicator IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminozitate IR</value></data>
@@ -4923,6 +5066,7 @@ O copie a versiunii anterioare se află în acest folder: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicatoare pe ecran pe care PadForge le afișează în timp ce jucați. Dezactivarea unuia nu schimbă niciodată comportamentul, ci doar dacă acesta este afișat.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Panou flotant strat de comutare</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Suprapunere schimbare profil</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Controlere pornite sau oprite</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Notă deconectare dispozitiv</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Notă conectare dispozitiv</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Afișează inelul sau grila pe ecran cât timp un meniu radial sau tactil este activ. Meniurile se declanșează și cu suprapunerea dezactivată.</value></data>
@@ -5651,6 +5795,8 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Dezactivat</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Cronometru</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Culoarea barei luminoase</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Dispozitive deconectate</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Toate conectate</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>dezactivat</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>prin Logitech Gaming Software</value></data>
@@ -5693,6 +5839,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Ecranul afișează o imagine pe care o alegeți, la dimensiunea ei proprie. O imagine mai mare decât ecranul se afișează printr-o fereastră de dimensiunea ecranului, pe care o deplasează macrocomanda Panoramare imagine pe ecranul tastaturii. Pe S.T.R.I.K.E. 7, un deget tras pe ecran o deplasează și el.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Ecranul afișează cronometrul, pe care macrocomanda Cronometru îl pornește, îl întrerupe și îl resetează. Toate ecranele afișează același cronometru.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Ecranul afișează culoarea barei luminoase a DualShock 4 sau DualSense din cel mai mic slot alimentat de acest ecran, sau din cel mai mic slot dintre toate când ecranul nu alimentează niciunul. Un ecran monocrom îi afișează luminozitatea ca model de puncte. Până când o culoare ajunge la o bară luminoasă, PadForge nu afișează nimic.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ecranul listează dispozitivele mapate care nu sunt conectate, cu numele afișate de pagina Dispozitive, și scrie Toate conectate când nu lipsește niciunul.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Imagini (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Toate fișierele (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Panoramare</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Panoramare X</value></data>
@@ -5944,6 +6091,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Condus (diferit de 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetrie de joc</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Valoare script</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Conectare dispozitiv</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Viteză (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% din maxim)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Treaptă (-1 marșarier, 0 neutru)</value></data>
@@ -6049,6 +6197,7 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>Suprapunerea afișează o imagine pe care o alegeți, scalată pentru a umple fereastra suprapunerii, cu proporțiile păstrate. Peste 100 la sută zoom, afișează o parte din imagine, de exemplu pentru o hartă. Macroul Panoramare imagine pe ecranul tastaturii deplasează acea parte, la fel ca trasul cu butonul stâng al mouse-ului cât timp PadForge este în prim-plan.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>Suprapunerea afișează cronometrul, pe care macrocomanda Cronometru îl pornește, îl întrerupe și îl resetează. Este același cronometru pe care îl afișează fiecare ecran de tastatură.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>Suprapunerea afișează culoarea barei luminoase a DualShock 4 sau DualSense din slotul ales aici sau din cel mai mic slot cu o culoare. Până când o culoare ajunge la o bară luminoasă, nu afișează nimic.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Suprapunerea listează dispozitivele mapate care nu sunt conectate, cu numele afișate de pagina Dispozitive, și scrie Toate conectate când nu lipsește niciunul.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>Suprapunere ecran {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>Adăugare suprapunere</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>Cel mai mic slot cu o culoare</value></data>
@@ -6391,6 +6540,245 @@ Doriți ca PadForge să le dezinstaleze acum? Este nevoie de drepturi de adminis
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este eliberat înainte de timpul de menținere. O apăsare mai lungă nu face nimic.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când „Se deschide cu” este apăsat de trei ori în fereastra de apăsare.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>Deschide sau închide tastatura când fereastra de apăsare se încheie după o singură apăsare a lui „Se deschide cu”. O a doua apăsare în fereastră o anulează.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Dezactivată. Niciun program nu poate ajunge la PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} și {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Activitate PadForge: apeluri: {0}, cele mai vechi întâi. Apeluri anterioare: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Activitate PadForge: {0} apel. Apeluri anterioare: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Apeluri mai vechi eliminate: {0:N0}. Activitate păstrează cele mai noi apeluri, număr: {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} apel mai vechi a fost eliminat. Activitate păstrează cele mai noi apeluri, număr: {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Export…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Exportare activitate</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Fișier text</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Deschidere</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Actualizare</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Mai multe pentru {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Salvare abilitate ca ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Deschidere fișier de setări</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Salvat. În {0}, adăugați {1} la {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} nu are încă un fișier de setări. Adăugarea îl creează.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge nu găsește pe acest PC niciun program de asistent a cărui producător documentează o configurare pe Windows. Copiere setări, sub Mai multe, funcționează pentru oricare altul.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge nu a putut verifica programele de asistent: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Neadăugat.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Adăugat.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Adăugat. Conectat acum.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Adăugat. De atunci nu s-a conectat. Un asistent care era deschis vede PadForge după ce este închis și deschis din nou.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Adăugat pentru alt PadForge. Actualizarea îl îndreaptă spre acesta.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Adăugat. Abilitatea sa PadForge este mai veche decât acest PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Adăugat, fără abilitatea sa PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Adăugat. Abilitatea sa PadForge vine de la un PadForge mai nou.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Primește abilități doar prin încărcare.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Asistenții adăugați ajung la PadForge după ce Automatizare este activată.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Se adaugă…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Se elimină…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Se actualizează…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Nu s-a terminat: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>Alți asistenți</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>Pentru un asistent care nu apare mai sus: Copiere setări dă intrarea pentru setările sale MCP, iar Copiere mesaj dă un text scurt pentru orice conversație, care spune cum să vă conectați și ce să cereți mai întâi.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>Copiere setări</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>Copiere mesaj</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copiat.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Necopiat: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Conectează-te la PadForge, programul de mapare a controlerelor de pe PC-ul meu. Este un server MCP local care rulează prin stdio: comanda este {0}, cu argumentul --mcp. Ca setări JSON: {1} După conectare, apelează mai întâi instrumentul său status, apoi întreabă-mă ce vreau să configurez, de exemplu: „Arată-mi unde mapez trăgaciile controlerului meu.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>Automatizarea din PadForge este dezactivată acum: activați-o mai întâi în PadForge, la Extra, Automatizare.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programe permise</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Un program care vrea nivelul Citire sau mai mult întreabă o singură dată, la prima conectare, și primește nivelul pe care îl cere, până la nivelul de mai sus. Un asistent pe care îl adăugați mai sus este permis prin asta.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Conectat acum.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Folosit ultima dată {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Nefolosit încă.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Conectate: {0}. Faceți clic pentru a deschide Automatizare.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Pe acest PC: {0}. De pe web: {1}. Faceți clic pentru a deschide Automatizare.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Conectate de pe web: {0}. Faceți clic pentru a deschide Automatizare.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Mapare SDL</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>Citit ca</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>Din</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Un gamepad, „{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Un joystick. SDL nu are nicio mapare pentru el.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Un joystick. PadForge îl citește brut, deci maparea SDL nu este folosită.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Un joystick, aranjat ca gamepad de rândul dumneavoastră.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL citește dispozitivele cât timp rulează motorul.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Copia comunității încorporată, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Descărcat {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fișierul propriu al PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Al dumneavoastră, adăugat {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Variabila SDL_GAMECONTROLLERCONFIG, pe care SDL o ține deasupra oricărui rând adăugat de dumneavoastră</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Copiere mapare SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Pune pe clipboard maparea dispozitivului ca rând al bazei de date comunitare, sub ID-ul dispozitivului, cu suma de control și versiunea aduse la zero.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Lipire mapare SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Preia un rând pentru acest dispozitiv, îl verifică, îl păstrează ca al dumneavoastră și îl aplică imediat.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Căutare mapare…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Caută după nume în fiecare rând pe care îl poartă PadForge și aplică acestui dispozitiv rândul ales, pentru o clonă cu ID-uri diferite.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Estimare aranjament</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Estimează un aranjament de gamepad din axele, butoanele și hat-urile dispozitivului, pentru un dispozitiv necunoscut de nicio bază de date. Verificați-l în Testare intrări.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Eliminare rând propriu</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Eliminare rând propriu readuce rândul și rândurile controlerelor de dinainte.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Mapare din nou</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Reface rândurile dispozitivului pe fiecare controler pe care se află, din aranjamentul SDL, ca la atribuirea lui.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Pagina bazei de date comunitare</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Rândul și unde diferă de {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Rândul</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controler</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Rândul {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Intrarea sa acum</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Rândul SDL spune</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>nu este în rândul SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, diferă</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Nefolosite de PadForge: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Rândul</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Copiat.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Copiat. Forma SDL nu poate păstra {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macrocomenzi</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>curbe</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zone moarte</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>ieșiri de tastatură și mouse</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, comutări și alte acțiuni</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} și {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Nimic de copiat: SDL nu are nicio mapare pentru acest dispozitiv, iar el nu se află pe niciun controler.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Alt program folosește clipboardul. Nu s-a copiat nimic.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Rândul dumneavoastră este eliminat. Dispozitivul este citit ca înainte de el.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Mapat din nou din aranjamentul SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>În uz acum. Rândul este al dumneavoastră și are prioritate pentru acest dispozitiv.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Păstrat ca al dumneavoastră. Este în uz după ce rulează motorul și dispozitivul este conectat.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Păstrat ca al dumneavoastră, dar variabila SDL_GAMECONTROLLERCONFIG conține un rând pentru acest dispozitiv, pe care SDL îl ține deasupra al dumneavoastră.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL nu a preluat rândul. Nimic nu s-a schimbat pentru acest dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Lipire mapare SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Lipire mapare SDL pentru {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Căutare mapare pentru {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Estimare aranjament pentru {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Adăugare rânduri dintr-un fișier sau de pe clipboard</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Lipire</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Deschidere fișier…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Fișiere de mapare (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Fișierul are peste 4 MB. Fișierul întreg al comunității are cam 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Căutare după nume, ID sau VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rândurile purtate de PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Niciun rând nu se potrivește.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Rândul ales se aplică pentru {0} sub propriul ID, prin aceeași verificare și aceeași alegere ca la Lipire.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Rând de mapare SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Un rând pentru acest dispozitiv.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Un aranjament estimat.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, câmpuri: {0}, ID-ul său se potrivește cu acest dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, câmpuri: {0}, de la același producător și produs pe altă magistrală sau versiune. Este păstrat sub ID-ul propriu al acestui dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, câmpuri: {0}, rândul altui dispozitiv. Este păstrat sub ID-ul propriu al acestui dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Câmpuri: {0}. SDL nu citește acest dispozitiv, deci PadForge își aranjează intrările după rând.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Câmpuri: {0}, din axele, butoanele și hat-urile dispozitivului. Verificați-l în Testare intrări, apoi păstrați-l sau schimbați-l aici.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} câmp, ID-ul său se potrivește cu acest dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} câmp, de la același producător și produs pe altă magistrală sau versiune. Este păstrat sub ID-ul propriu al acestui dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} câmp, rândul altui dispozitiv. Este păstrat sub ID-ul propriu al acestui dispozitiv.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} câmp. SDL nu citește acest dispozitiv, deci PadForge își aranjează intrările după rând.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} câmp, din axele, butoanele și hat-urile dispozitivului. Verificați-l în Testare intrări, apoi păstrați-l sau schimbați-l aici.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Aceasta schimbă modul în care este citit {0}. Rândurile sale din {1} sunt mapate din nou din noul aranjament.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Aceasta schimbă modul în care este citit {0}. Nu se află pe niciun controler, deci niciun rând nu se schimbă.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Comenzile rapide de profil care citesc {0} își păstrează intrările la care au fost setate.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Rândul este păstrat ca al dumneavoastră în PadForge.xml și are prioritate față de orice altă sursă pentru acest dispozitiv. Eliminare rând propriu readuce vechiul rând și vechile rânduri.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Rândurile sunt păstrate ca ale dumneavoastră în PadForge.xml și au prioritate pentru dispozitivele lor față de orice altă sursă. Golire, sub Mai multe la rândul Bază de date de controlere, le elimină.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Rânduri pentru Windows: {0}. Rânduri pentru alte sisteme, omise: {1}.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} rând pentru Windows. Rânduri pentru alte sisteme, omise: {1}.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>Refuzate: {0}. Primul motiv: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Lipiți un rând sau textul unui fișier gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Textul nu este un rând al bazei de date de controlere SDL: un ID de 32 de cifre hexazecimale, un nume, apoi câmpuri precum a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Rândurile sunt pentru alte sisteme. PadForge citește rânduri pentru Windows sau pentru niciun sistem anume.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID-ul rândului nu aparține unui dispozitiv. Are nevoie de 32 de cifre hexazecimale.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Numele rândului este gol, are peste 128 de caractere sau conține un caracter pe care SDL îl citește ca pe un câmp.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Rândul poartă un hint sau un câmp Android, pe care PadForge nu le preia.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Rândul are un câmp pe care SDL nu îl cunoaște.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>O legătură nu este în forma SDL, precum b3, a2, +a2, a2~ sau h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Rândul dă același câmp de două ori.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Rândul are peste 1.024 de caractere.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Rândul nu leagă niciun control.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Rândurile dumneavoastră</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Rândurile dumneavoastră</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rândurile pe care le adăugați aici sau le lipiți pe cardul Mapare SDL al unui dispozitiv au prioritate pentru dispozitivele lor față de orice altă sursă și rămân după resetare.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Adăugare rânduri dintr-un fișier sau de pe clipboard…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>Rânduri: {0}, ale dumneavoastră în fața oricărei alte surse pentru dispozitivele lor.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} rând, al dumneavoastră în fața oricărei alte surse pentru dispozitivul său.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Încă niciunul.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>În uz imediat.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>Acces la PadForge de pe web</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>Un asistent care rulează pe un site ajunge la PadForge printr-un program de tunel de pe acest PC. Activarea vă întreabă mai întâi.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>Acces la PadForge de pe web?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge pornește un ajutor fără drepturi de administrator, care ascultă doar pe acest PC, iar programul de tunel ales îi dă o adresă publică. Un asistent web intră doar după ce permiteți autentificarea lui pe cardul de întrebare al PadForge și lucrează la nivelul de mai sus.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Activare</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Asistenți pe web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Niciunul</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>O adresă pe care o lipesc</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Pornire, cu drepturile dumneavoastră.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>În execuție, cu drepturile dumneavoastră. Adresa sa rămâne aceeași la fiecare pornire.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>În execuție, cu drepturile dumneavoastră. Un tunel rapid primește o adresă nouă la fiecare pornire, deci asistentul ar trebui adăugat din nou.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Oprit.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Oprit. Ultimele sale cuvinte: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Nu a putut fi pornit.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Nu mai este pe acest PC.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Pe acest PC nu s-a găsit niciun program de tunel. PadForge funcționează cu cloudflared, devtunnel, ngrok și Tailscale Funnel sau cu adresa propriului tunel.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Alegeți un tunel care să dea PadForge o adresă publică.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Tot pe acest PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, a cărui adresă rămâne aceeași</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, ai cărui tuneluri rapide primesc de fiecare dată o adresă nouă</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Porniți propriul tunel către http://127.0.0.1:{0} și lipiți adresa lui https. Un tunel Cloudflare cu nume, un tunel de dezvoltare persistent, Tailscale Funnel și domeniul propriu al ngrok își păstrează adresa.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Lipiți o adresă https fără altă cale decât /mcp, așa cum o dă tunelul dumneavoastră.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Pornire ajutor web al PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ajutorul web al PadForge s-a oprit ({0}). Dezactivați și activați din nou Acces la PadForge de pe web ca să îl porniți iar.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adresă</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Încă nicio adresă publică.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Adăugare la Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Copiat.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Acceptare asistent web nou</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Începe acceptarea</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Oprește acceptarea</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Se acceptă până la {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Nu se acceptă. Începe acceptarea o deschide pentru cinci minute.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Adăugați adresa în asistent și autentificați-vă. Fiecare autentificare arată propriul cod de șase cifre pe pagina ei și pe cardul de întrebare al PadForge. Permiteți-o doar când cele două coduri coincid. În alte momente o autentificare este refuzată și nimic nu vă întreabă.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Permiși pe web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Încă niciunul.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Autentificarea sa se întoarce la {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Se numește {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permis {0}, folosit ultima dată {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permis {0}, nefolosit încă.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revocare</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Propriul său Secure MCP Tunnel rulează PadForge direct, fără adresă sau autentificare aici. Copiați comanda în configurarea acelui tunel.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copiere comandă</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge nu descarcă niciun program de tunel și nu păstrează cheia altei companii. Un asistent web lucrează la nivelul de mai sus.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Permiteți ca {0} să lucreze cu PadForge de pe web?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Autentificarea sa se întoarce la {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Se numește {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Permiteți doar dacă pagina sa de autentificare arată acest cod:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Codul său de șase cifre apare pe cardul de întrebare al PadForge. Permiteți doar dacă pagina sa de autentificare arată același cod.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Lucrează la nivelul {0}, prin {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Autentificarea sa se întoarce la acest PC, iar orice program de aici ar putea revendica acea adresă.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Autentificare la PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} cere să lucreze cu PadForge pe PC-ul dumneavoastră.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Se numește {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Pe PC-ul dumneavoastră, cardul de întrebare al PadForge întreabă despre această autentificare. Permiteți-o acolo doar dacă cardul arată acest cod:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Această pagină continuă singură după ce răspundeți pe PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Această autentificare se întoarce la un program de pe PC-ul dumneavoastră, iar orice program de acolo ar putea revendica acea adresă.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge nu acceptă acum un asistent web nou. Pe PC, deschideți PadForge, mergeți la Extra, Automatizare și, sub Asistenți pe web, apăsați Începe acceptarea. Apoi autentificați-vă din nou.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Această autentificare nu poate continua. Adăugați din nou adresa PadForge în asistent și autentificați-vă.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Această autentificare s-a încheiat. Autentificați-vă din nou din asistent.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows nu l-a pornit</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>s-a încheiat cu codul {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizarea este dezactivată, deci niciun asistent web nu ajunge la PadForge. Ajutorul web pornește după ce Automatizarea este activată.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Se verifică…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Neinstalată.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Instalată și la zi. Un script începe cu {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Instalată pentru {0} și la zi. Un script începe cu {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Instalată. Acest PadForge are o copie mai nouă.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Instalată pentru {0}. Acest PadForge are o copie mai nouă.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Se instalează…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge nu a putut verifica: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instalarea pune biblioteca PadForge acolo unde o găsește acel limbaj. Un script care o încarcă citește dispozitivele și comandă mapările la nivelul de mai sus.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Salvați o bibliotecă oriunde</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Copii instalate</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Eliminare totală</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Eliminat.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID script</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID-ul său de script</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Scripturile își numesc controalele {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Scripturile își numesc tastele KeyA, KeySpace, KeyLeftShift și altele asemenea, iar fiecare tastă după codul ei, Vk0 până la Vk255.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>Culorile ajung direct la {0}. Culorile care se schimbă, cum ar fi un ciclu de culori sau culorile care urmează sunetul, nu ajung la el. O culoare fixă ajunge.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>Toate fișierele (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>Profil PadForge (*{0})|*{0}</value></data>

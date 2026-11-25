@@ -189,7 +189,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Mod eré kan</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ míràn ti gba orúkọ páìpù {0}. Pa ìṣàfilọ́lẹ̀ náà dé.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows kọ páìpù {0}, nítorí náà àwọn ìṣàfilọ́lẹ̀ kò lè sopọ̀.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Kò sí ìṣàfilọ́lẹ̀ tí ó sopọ̀.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Tàn. Kò sí ìṣàfilọ́lẹ̀ tí ó sopọ̀.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Ti sopọ̀: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ àìmọ̀</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, tí {1} fọwọ́ sí</value></data>
@@ -223,7 +223,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Kò sí èyí mọ́ títí PadForge yóò fi tún bẹ̀rẹ̀</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge kò ní irú irinṣẹ́ bẹ́ẹ̀</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ náà ka ipò àtijọ́</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Kò sí irú ètò bẹ́ẹ̀</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Kò sí ohun tí ó ní ID yẹn</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Iye náà kọjá ohun tí ètò náà ń gbà</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>O kò gbà á láàyè</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Kò sí ẹni tí ó dáhùn ní àkókò</value></data>
@@ -240,6 +240,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Fi fèrèsé hàn</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Rán fèrèsé lọ sí àgbègbè ìfitónilétí</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Sọ fèrèsé di kékeré</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Sọ fèrèsé di ńlá</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Pa PadForge dé</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Bẹ̀rẹ̀ ẹ́ńjìnnì</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Dá ẹ́ńjìnnì dúró</value></data>
@@ -265,6 +266,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Fi ẹ̀rọ {0} kún un</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ṣètò àwọn ìdarí ẹ̀rọ {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Yọ ẹ̀rọ {0} kúrò</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Fi gbogbo ìdarí ẹ̀rọ {0} sí ìsinmi</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Ó ń mú kí PadForge ṣí ìṣàfilọ́lẹ̀ kan.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Ó ń ṣí fáìlì, fódà tàbí ojú ìwé wẹ́ẹ̀bù kan.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Ó ń mú kí PadForge fi kọ́kọ́rọ́ tàbí ìgbéwọlé máòsì ránṣẹ́ sí Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Ó ń gbé profaili kan wọlé láti òde PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge ń béèrè lọ́wọ́ rẹ kí ìṣàfilọ́lẹ̀ kan tó ṣe èyí.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Àwọn àpótí ìbánisọ̀rọ̀</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Àwọn macro</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Di àwọn ìdarí ẹ̀rọ {0} mú</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Fi àwọn ìdarí ẹ̀rọ {0} sílẹ̀</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ṣètò iye {0}</value></data>
@@ -273,25 +282,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Yí profaili padà</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Bẹ̀rẹ̀ tàbí dá ẹ́ńjìnnì dúró</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Tan tàbí pa àwọn ẹ̀rọ ìdarí àfarawé</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Fi àwòrán àyẹ̀wò pamọ́</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Ka ìwọ̀n polling àti àwọn awakọ̀</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>To àwọn profaili</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Ka profaili kan</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>To àwọn ẹ̀rọ ìdarí àfarawé</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>To àwọn ẹ̀rọ</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Ka ẹ̀rọ kan</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Dúró de ìgbéwọlé rẹ</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Ka àwọn ìsopọ̀ ẹ̀rọ ìdarí kan</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>To àwọn macro ẹ̀rọ ìdarí kan</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Gba ìṣòro kan sílẹ̀</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Wá àwọn ètò</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Ka ètò kan</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Fi ibì kan hàn ọ́</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Wá àwọn ibì kan nínú PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Ka ibì kan nínú PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Ka ohun tí o ń rí</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Fi ẹ̀rọ tirẹ̀ kún un</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Darí ẹ̀rọ rẹ̀</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Yọ ẹ̀rọ rẹ̀ kúrò</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Di ìdarí kan mú tàbí fi í sílẹ̀</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Ṣètò iye kan fún àwọn ohun ìmúṣiṣẹ́ macro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Yí ètò kan padà</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Tẹ bọ́tìnì kan</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Ṣẹ̀dá profaili kan</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Yí orúkọ profaili kan padà</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Paarẹ́ profaili kan</value></data>
@@ -302,7 +310,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Yí irú ẹ̀rọ ìdarí kan padà</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Yan ẹ̀rọ kan</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Ṣètò àwọn ìlà ìsopọ̀</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Pa àwọn ìlà ìsopọ̀ rẹ́</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>So ẹ̀rọ ìdarí kan pọ̀ láìfọwọ́yí</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Fi macro kan pamọ́</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Paarẹ́ macro kan</value></data>
@@ -322,6 +329,9 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Ó ń ṣẹ̀dá ẹ̀rọ ìdarí pátákó ìtẹ̀wé àti máòsì</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Ó ń tan {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Yí “{0}” padà</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Tẹ “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} fẹ́ fi {1} hàn ọ́</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Lórí {0}.</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Ó ń ṣètò {0} sí {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Ó ń tẹ́tí sí nẹ́tíwọ̀ọ̀kì, kí àwọn ẹ̀rọ míràn lè dé kọ̀ǹpútà yìí.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Ó ń yí awakọ̀ kan tàbí HidHide padà, èyí tí àwọn ìṣàfilọ́lẹ̀ àti eré míràn gbára lé.</value></data>
@@ -1928,6 +1938,8 @@
   <data name="KeyboardScreens_Kind_Strike7" xml:space="preserve"><value>S.T.R.I.K.E. 7</value></data>
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Pa</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Àwọ̀ lightbar</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Àwọn ẹ̀rọ tí kò sopọ̀</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Gbogbo wọn ti sopọ̀</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>pa</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>nípasẹ̀ Logitech Gaming Software</value></data>
@@ -2047,6 +2059,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Wíwakọ̀ (Kì í ṣe 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetry eré</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Iye ìwé àṣẹ</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Ìsopọ̀mọ́ ẹ̀rọ</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Ìyára (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% ti RPM gíga jùlọ)</value></data>
   <data name="Telemetry_Channel_Brake" xml:space="preserve"><value>Bíréèkì (%)</value></data>
@@ -2088,8 +2101,7 @@
   <data name="Extras_Tile_GameMods" xml:space="preserve"><value>Gba ipa trigger àti ipa ìmọ́lẹ̀ láti inú àwọn mod eré.</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Pọ́ọ̀tì, àrọ́pò DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Àwọn pọ́ọ̀tì, Ìyára kíkún, Àwọn ìlànà àdáni</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Ọgbọ́n</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Àwọn olùrànlọ́wọ́ míràn, àwọn olùrànlọ́wọ́ lórí wẹ́ẹ̀bù</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Wo àyíká pẹ̀lú ẹ̀rọ ìtọpa orí tàbí agbékọrí VR nígbà tí àtàǹpàkò méjèèjì wà lórí àwọn bọ́tìnì.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>So ìyára, àwọn pẹ́dálì àti gíà tí eré awakọ̀ ń fi ránṣẹ́ pọ̀ mọ́ ohun kan, bí ìfiwọlé èyíkéyìí.</value></data>
   <data name="Main_ProfileLabel" xml:space="preserve"><value>Profaili</value></data>
@@ -2282,8 +2294,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} kò sopọ̀ mọ́. {1} kò ní ẹ̀rọ kankan mọ́.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ti sopọ̀</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ti sopọ̀, bátìrì {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>Ẹ̀rọ tí kò sopọ̀ mọ́: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>Ẹ̀rọ tí ó ti sopọ̀: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>Ẹ̀rọ {0} kò sopọ̀ mọ́: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>Ẹ̀rọ {0} ti sopọ̀: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ń já kúrò léraléra</value></data>
   <data name="Extras_Group_Programs" xml:space="preserve"><value>Pẹ̀lú àwọn ìṣàfilọ́lẹ̀ míràn</value></data>
   <data name="Extras_Tile_Automation" xml:space="preserve"><value>Jẹ́ kí àwọn olùṣí eré, àwọn ìwé àṣẹ àti àwọn olùrànlọ́wọ́ ṣiṣẹ́ pẹ̀lú PadForge.</value></data>
@@ -2292,19 +2304,14 @@
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Orúkọ ẹ̀rọ tí a so pọ̀ nígbà tí ó bá sopọ̀.</value></data>
   <data name="Extras_Automation_Switch" xml:space="preserve"><value>Gba àwọn ìṣàfilọ́lẹ̀ láti òde láàyè</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Àwọn olùrànlọ́wọ́</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Lẹ̀ èyí mọ́ inú ètò MCP olùrànlọ́wọ́ kan. Olùrànlọ́wọ́ náà yóò ṣiṣẹ́ pẹ̀lú PadForge ní ìpele tí ó wà lókè.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Ṣàdàkọ bí TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Àwọn olùrànlọ́wọ́ tí ń ka TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Fikún ń fi PadForge, pẹ̀lú ọgbọ́n rẹ̀, sínú olùrànlọ́wọ́ yẹn. Lẹ́yìn náà ó ń ṣiṣẹ́ ní ìpele tí ó wà lókè, àwọn ọ̀rọ̀ rẹ̀ sì ń hàn lẹ́gbẹ̀ẹ́ ohun tí ó ń tọ́ka sí, lábẹ́ orúkọ rẹ̀.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Àwọn ìwé àṣẹ</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Ibi ìkówèésí ìwé àṣẹ</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Fi ibi ìkówèésí pamọ́…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fáìlì kan fún AutoHotkey v2, Python tàbí PowerShell. Ìwé àṣẹ tí ó bá gbé e wọlé lè ka àwọn ẹ̀rọ, kí ó sì darí àwọn ìsopọ̀ ní ìpele tí ó wà lókè.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fáìlì kan fún AutoHotkey v2, Python tàbí PowerShell, tí a kọ sí ibi tí o bá yàn.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Ń dúró dè ọ́</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Àwọn ìṣe</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Kò sí ìṣàfilọ́lẹ̀ tí ó tíì pè. A ó to ìpè kọ̀ọ̀kan síbí pẹ̀lú ohun tí ó jáde nínú rẹ̀.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Dá padà</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Ọgbọ́n fún àwọn olùrànlọ́wọ́</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Fi ọgbọ́n náà pamọ́…</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Ṣiṣẹ́ àwọn ohun ìfikún</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Kò sí ohun ìfikún tí ń ṣiṣẹ́.</value></data>
   <data name="Plugins_Replay_File_Format" xml:space="preserve"><value>{0}, gígùn {1}</value></data>
@@ -2314,15 +2321,20 @@
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Ó ń bẹ̀rẹ̀ pẹ̀lú ẹ́ńjìnnì</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Ń yẹ fáìlì wò kí ó tó bẹ̀rẹ̀</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Àwọn ohun ìfikún tí ń ṣiṣẹ́: {0}. Àwọn ẹ̀rọ tí wọ́n fi kún un: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} dúró lẹ́yìn ìkùnà márùn.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ti yípadà láti ìgbà tí o ti fọwọ́ sí i.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kò lè bẹ̀rẹ̀.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Àpò irinṣẹ́ ohun ìfikún, àti àkọsílẹ̀ ohun ìfikún tí o bá yàn</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Àpò irinṣẹ́ ohun ìfikún</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Fi àpò irinṣẹ́ ohun ìfikún pamọ́…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ohun ìfikún kékeré kan ní C#, àti ohun ìfikún kan náà fún AutoHotkey, Python àti PowerShell, fáìlì kọ̀ọ̀kan pẹ̀lú bí a ṣe ń kọ́ ọ tàbí ṣiṣẹ́ rẹ̀.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ìtọ́sọ́nà sí gbogbo ọ̀rọ̀ ìṣe, ìṣẹ̀lẹ̀ àti irú ètò, ìwé àṣẹ ìkọ́ fún ohun ìfikún C#, àti ohun ìfikún kan náà fún AutoHotkey, Python àti PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Àkọsílẹ̀</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Yan ohun ìfikún kan láti rí àkọsílẹ̀ rẹ̀.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Kò sí nǹkan kan nínú àkọsílẹ̀ ohun ìfikún yìí síbẹ̀.</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Gbà á láàyè</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Má ṣe gbà á láàyè</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Kì í ṣe báyìí</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Fi hàn</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Láti {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Láti {1}, tí ó pe ara rẹ̀ ní “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Láti ìṣàfilọ́lẹ̀ kan tí ó pe ara rẹ̀ ní “{0}”</value></data>
@@ -2331,39 +2343,291 @@
   <data name="Automation_Request_Position_Format" xml:space="preserve"><value>{0} nínú {1}</value></data>
   <data name="Automation_Request_TimeLeft_Format" xml:space="preserve"><value>Àìdáhùn láàárín {0} túmọ̀ sí bẹ́ẹ̀ kọ́.</value></data>
   <data name="Home_SharedFolder_Format" xml:space="preserve"><value>PadForge ń ṣiṣẹ́ pẹ̀lú ẹ̀tọ́ alábòójútó láti {0}, fódà tí àwọn ìṣàfilọ́lẹ̀ míràn lè yí padà. Wọ́n lè yí àwọn ètò PadForge padà níbẹ̀, PadForge yóò sì ṣiṣẹ́ lé wọn lórí pẹ̀lú ẹ̀tọ́ rẹ̀.</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Ṣe ìmúdójúìwọ̀n báyìí ń gba ibi ìpamọ́ ẹ̀rọ ìdarí ti àwùjọ (SDL_GameControllerDB) wálẹ̀ láti GitHub, ó sì ń pa àwọn ìsopọ̀ tí ẹ̀yà PadForge yìí kò ní mọ́ sínú fáìlì ètò. A máa ń lo ìsopọ̀ tuntun kìkì fún ẹ̀rọ ìdarí tí kò sí ohun míràn tí ó kà á bí gamepad, tí a kò yàn, tí kò sì sí ní Ipò joystick aise. Títún tò ń yọ gbogbo ìsopọ̀ tí a gbà wálẹ̀ kúrò.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Update Now ń gba ibi ìpamọ́ ẹ̀rọ ìdarí ti àwùjọ (SDL_GameControllerDB) wálẹ̀ láti GitHub, ó sì ń pa àwọn ìsopọ̀ tí ẹ̀yà PadForge yìí kò ní mọ́ sínú fáìlì ètò. Wọ́n ń ṣiṣẹ́ lẹ́sẹ̀kẹsẹ̀. A máa ń lo ìsopọ̀ tuntun kìkì fún ẹ̀rọ ìdarí tí kò sí ohun míràn tí ó kà á bí gamepad, tí a kò yàn, tí kò sì sí ní Force Raw Joystick Mode. Títún tò ń yọ gbogbo ìsopọ̀ tí a gbà wálẹ̀ kúrò. Àwọn ìlà tìrẹ, lábẹ́ Síi, máa wà.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}. A ṣe ìmúdójúìwọ̀n ní {2}: tuntun {3}, àyípadà {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Tí a kọ́ sínú rẹ̀: ìsopọ̀ {0}, ẹ̀dà àwùjọ ti {1}. A gbà á wálẹ̀ ní {2}: ìlà tuntun {3}, àyípadà {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Ibi ìpamọ́ àwùjọ kò yípadà láti ìgbà ìmúdójúìwọ̀n tó kẹ́yìn.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>A ó lo ìsopọ̀ tuntun nígbà míràn tí ẹ̀rọ ìdarí rẹ̀ bá sopọ̀.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>A ó lo ìsopọ̀ tí a yí padà nígbà míràn tí PadForge bá bẹ̀rẹ̀.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Ìrìn máòsì X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Ìrìn máòsì Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ìrìn dé òpin yíyí</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Bí máòsì ṣe ń rìn jìnnà tó láti àárín dé òpin yíyí, ní ìkà tí máòsì ń ròyìn. Nọ́mbà tí ó ga jù ń darí ní kíkúnná jù, ó sì ń béèrè ìrìn ọwọ́ púpọ̀ sí i.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Bí máòsì tàbí kẹ̀kẹ́ máòsì ṣe ń rìn jìnnà tó láti àárín dé òpin yíyí, ní ìkà tí ó ń ròyìn. Nọ́mbà tí ó ga jù ń darí ní kíkúnná jù, ó sì ń béèrè ìrìn ọwọ́ púpọ̀ sí i.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Pẹ̀lú DPI máòsì tí a ṣètò lórí pánẹ́ẹ̀lì ẹ̀rọ rẹ̀, ìrìn náà tún ń hàn ní sẹ̀ǹtímítà.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ìkà</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Ìpadà sí àárín</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Pa ń di kẹ̀kẹ́ ìdarí mú níbi tí ọwọ́ fi í sílẹ̀ sí. Sípírínìgì ń mú un padà láàárín Àkókò ìpadà. Láti Telemetry ń fà á padà bí táyà iwájú ọkọ̀ ṣe máa ń ṣe ní ìyára àti ìdìmú eré náà: kò fà á nígbà tí ọkọ̀ dúró, ó ń le sí i pẹ̀lú ìyára, ó sì ń fúyẹ́ nígbà tí táyà bá ń yọ̀. Bí kò bá sí eré tí ń fi telemetry ránṣẹ́, ó máa ń ṣiṣẹ́ bí Sípírínìgì. Láti agbára eré ń jẹ́ kí force feedback kẹ̀kẹ́ àfarawé fúnra rẹ̀ yí i.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Pa ń di kẹ̀kẹ́ ìdarí mú níbi tí ọwọ́ fi í sílẹ̀ sí. Sípírínìgì ń mú un padà láàárín Àkókò ìpadà. Láti Telemetry ń fà á padà bí ìdarí ọkọ̀ ṣe máa ń ṣe ní ìyára àti ìdìmú eré náà: ó le ní ìtòsí àárín, ó sì ń rọ̀ bí ó ṣe ń jìnnà sí i, kò fà á nígbà tí ọkọ̀ dúró, ó ń le sí i pẹ̀lú ìyára, ó sì ń fúyẹ́ nígbà tí táyà bá ń yọ̀. Bí kò bá sí eré tí ń fi telemetry ránṣẹ́, ó ń fà á bí ẹni pé ní 100 km/h lórí ọ̀nà gbígbẹ. Láti agbára eré ń jẹ́ kí force feedback kẹ̀kẹ́ àfarawé fúnra rẹ̀ yí i.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Pa</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Sípírínìgì</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Láti Telemetry</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Láti agbára eré</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Àkókò ìpadà</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Bí Sípírínìgì ṣe ń pẹ́ tó láti mú kẹ̀kẹ́ ìdarí padà ní 95% ọ̀nà. Láti Telemetry ń gba àkókò yìí ní 100 km/h lórí ọ̀nà gbígbẹ.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Bí Sípírínìgì ṣe ń pẹ́ tó láti mú kẹ̀kẹ́ ìdarí padà ní 95% ọ̀nà. 0 ń mú un padà sí àárín lẹ́sẹ̀kẹsẹ̀. Láti Telemetry ń gba àkókò yìí láti ìtòsí àárín ní 100 km/h lórí ọ̀nà gbígbẹ.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Darí</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Nígbà gbogbo ń jẹ́ kí máòsì darí ní gbogbo ìgbà. Nígbà tí a dì í mú ń jẹ́ kí ó darí kìkì nígbà tí a bá di Ìgbéwọlé ìdarí mú. Yí padà ń tan ìdarí tàbí pa á pẹ̀lú títẹ̀ Ìgbéwọlé ìdarí kọ̀ọ̀kan. Nígbà tí máòsì kò bá ń darí, kẹ̀kẹ́ ìdarí máa ń dúró sí ibi tí ó wà tàbí padà sí àárín, kí máòsì kan lè darí kí ó sì wo àyíká.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Nígbà gbogbo ń jẹ́ kí máòsì darí ní gbogbo ìgbà. Nígbà tí a dì í mú, kí ó sì padà sí àárín ń jẹ́ kí ó darí kìkì nígbà tí a bá di Ìgbéwọlé ìdarí mú, lẹ́yìn náà ó ń mú un padà sí àárín, nípasẹ̀ Ìpadà sí àárín níbi tí orísun bá ní i àti lẹ́sẹ̀kẹsẹ̀ níbi tí kò ní i. Nígbà tí a dì í mú, kí ó sì dúró ń jẹ́ kí ó darí kìkì nígbà tí a bá di ìgbéwọlé náà mú, ó sì ń fi í sílẹ̀ níbi tí a ti tú u sílẹ̀. Yí padà ń tan ìdarí tàbí pa á pẹ̀lú títẹ̀ Ìgbéwọlé ìdarí kọ̀ọ̀kan. Bẹ́ẹ̀ ni máòsì kan lè darí kí ó sì wo àyíká.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Nígbà gbogbo</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nígbà tí a dì í mú</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Nígbà tí a dì í mú, kí ó sì padà sí àárín</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Yí padà</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Ìgbéwọlé ìdarí</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bọ́tìnnì tí ń jẹ́ kí máòsì darí, lórí ẹ̀rọ kan náà pẹ̀lú ìrìn máòsì. Bí a kò bá yan èyíkéyìí, máòsì máa ń darí nígbà gbogbo.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Bọ́tìnnì tí ń jẹ́ kí máòsì darí, lórí ẹ̀rọ kan náà pẹ̀lú orísun náà. Bí a kò bá yan èyíkéyìí, máòsì máa ń darí nígbà gbogbo.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Ìmúdọ́gba</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ó ń mú máòsì tí ń ròyìn láìdọ́gba dọ́gba. Kẹ̀kẹ́ ìdarí máa ń tẹ̀lé ọwọ́ lẹ́yìn ní nǹkan bí àkókò yìí. 0 túmọ̀ sí pa.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Ó ń mú máòsì tí ń ròyìn láìdọ́gba dọ́gba. Ọ̀pá ìdarí máa ń tẹ̀lé ọwọ́ lẹ́yìn ní nǹkan bí àkókò yìí. 0 túmọ̀ sí pa.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Òpin yíyí ní ìyára</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Nígbà tí Telemetry eré bá tàn, iye òpin yíyí tí ó kù ní 200 km/h. Ní 100%, gbogbo òpin yíyí wà níbẹ̀ ní ìyára èyíkéyìí.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Ìrìn kẹ̀kẹ́ máòsì</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Ìrìn kẹ̀kẹ́ máòsì sí ẹ̀gbẹ́</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Bí máòsì ṣe ń yára tó. Ó ń fi sílẹ̀ nígbà tí ọwọ́ bá dúró.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Ibi tí atọ́ka wà lórí mọ́nítọ̀ rẹ̀, láti àárín rẹ̀ tàbí láti ibi tí ó wà nígbà tí ìdarí bẹ̀rẹ̀.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Bí máòsì ṣe rìn jìnnà tó, tí ó dúró sí ibi tí ọwọ́ fi í sílẹ̀, bí kẹ̀kẹ́ ìdarí ṣe máa ń ṣe.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Àwọn ìgbésẹ̀ yíyí tí a dì mú bí ipò kan, ní pípé pátápátá lórí kẹ̀kẹ́ tí ń yí ní kíkúnná.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Àwọn ìgbésẹ̀ kẹ̀kẹ́ ẹ̀gbẹ́ tí a dì mú bí ipò kan, ní pípé pátápátá lórí kẹ̀kẹ́ tí ń yí ní kíkúnná.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Títì kan fún ìgbésẹ̀ kọ̀ọ̀kan, tí ó padà sí ìsinmi lẹ́sẹ̀kẹsẹ̀.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Nígbà tí a dì í mú, kí ó sì dúró</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Ìfọkànsí</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Iye ọ̀pá ìdarí tí ìyára kan ń fúnni. Ní 1.00, ọ̀pá ìdarí dé òpin rẹ̀ ní ìkà 16,000 ní ìṣẹ́jú àáyá kan, ní gbogbo ìwọ̀n ìbéèrè àti ìwọ̀n ìròyìn máòsì.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Padà sí àárín</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Nígbà tí máòsì bá dín ìyára kù tàbí dúró, ọ̀pá ìdarí kò ní padà yára ju èyí lọ. 0 ń jẹ́ kí ó padà pẹ̀lú máòsì.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Bẹ̀rẹ̀ níbi tí ìdarí ti bẹ̀rẹ̀</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Pẹ̀lú Ìgbéwọlé ìdarí, ọ̀pá ìdarí ń wọ̀n láti ibi tí atọ́ka wà nígbà tí ìdarí bẹ̀rẹ̀, bí ọ̀pá ìdarí lórí ojú fóònù ṣe ń bẹ̀rẹ̀ níbi tí ìka bá balẹ̀ sí. Nígbà tí ó bá wà ní pípa, ó ń wọ̀n láti àárín mọ́nítọ̀ atọ́ka náà.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ákísì yìí ń rìn ní ìfiwéra</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Fún trackball tàbí spinner tí ń ròyìn bí ó ṣe yí jìnnà tó. Nígbà tí ó bá tàn, ákísì náà ń di ipò kan mú bí Ìrìn máòsì ṣe ń ṣe, ó sì ń lo àwọn ètò ìrìn. Windows kò sọ àwọn ákísì tí ń rìn lọ́nà yìí.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Wò ṣáájú</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Ó ń fi bí ìdílé yìí ṣe ń tẹ̀lé máòsì rẹ hàn. Kò sí ohun tí a so pọ̀ títí tí o fi yàn án.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Ìwòṣáájú ń lọ. Gbé máòsì rẹ.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Ó dúró ní {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Ní {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% sí ọ̀tún</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% sí òsì</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% sókè</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% sísàlẹ̀</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>àárín</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Ó ń rìn nígbà tí a bá di {0} mú.</value></data>
   <data name="About_McpSdk" xml:space="preserve"><value>MCP C# SDK</value></data>
   <data name="About_McpSdkDesc" xml:space="preserve"><value>Sáfà àti oníbàárà Model Context Protocol tí ó wà lẹ́yìn ìsopọ̀ olùrànlọ́wọ́ àti PadForge.exe --mcp, láti ọwọ́ Model Context Protocol a Series of LF Projects.</value></data>
   <data name="About_MsExtensions" xml:space="preserve"><value>Microsoft.Extensions Abstractions</value></data>
   <data name="About_MsExtensionsDesc" xml:space="preserve"><value>Microsoft.Extensions.AI.Abstractions, Logging.Abstractions àti DependencyInjection.Abstractions, tí a kọ́ MCP C# SDK lé lórí, láti ọwọ́ Microsoft.</value></data>
   <data name="DeviceType_Program" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Bóyá àwọn ẹ̀rọ ìdarí àfarawé ṣẹ̀ṣẹ̀ tàn tàbí kú, láti ọ̀nà àbùjá tàbí macro kan.</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>{0} ni ó fi kún un.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Ètò {0}</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Ó ń ṣiṣẹ́.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Ó ń ṣiṣẹ́, pẹ̀lú ọwọ́.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Ṣí {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Ṣí Síi.</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Sàmì sí gbígbàsílẹ̀ náà</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ojú ìbòjú náà ń ṣe àkójọ àwọn ẹ̀rọ tí a so pọ̀ tí kò sopọ̀, pẹ̀lú orúkọ tí ojú ìwé Àwọn ẹ̀rọ ń fi hàn, ó sì ń sọ Gbogbo wọn ti sopọ̀ nígbà tí kò sí èyí tí ó sọnù.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Ìbòrí náà ń ṣe àkójọ àwọn ẹ̀rọ tí a so pọ̀ tí kò sopọ̀, pẹ̀lú orúkọ tí ojú ìwé Àwọn ẹ̀rọ ń fi hàn, ó sì ń sọ Gbogbo wọn ti sopọ̀ nígbà tí kò sí èyí tí ó sọnù.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Pa. Kò sí ìṣàfilọ́lẹ̀ tí ó lè dé PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} àti {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>Àwọn ìṣe PadForge: ìpè {0}, èyí tí ó pẹ́ jù lọ ṣáájú. Àwọn ìpè tí ó ṣáájú wọn: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>Àwọn ìṣe PadForge: ìpè {0}. Àwọn ìpè tí ó ṣáájú rẹ̀: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Ìpè àtijọ́ {0:N0} ti lọ. Àwọn ìṣe ń pa èyí tí ó tuntun jù {1:N0} mọ́.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Ìpè àtijọ́ {0:N0} ti lọ. Àwọn ìṣe ń pa èyí tí ó tuntun jù {1:N0} mọ́.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Gbé jáde…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Gbé Àwọn ìṣe jáde</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Fáìlì ọ̀rọ̀</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Ṣí</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Ṣe ìmúdójúìwọ̀n</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Síi fún {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Fi ọgbọ́n náà pamọ́ bí ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Ṣí fáìlì ètò rẹ̀</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Ti fi pamọ́. Nínú {0}, fi {1} kún un lábẹ́ {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} kò tíì ní fáìlì ètò. Fikún yóò ṣe ọ̀kan.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge kò rí ìṣàfilọ́lẹ̀ olùrànlọ́wọ́ kankan lórí kọ̀ǹpútà yìí tí olùṣe rẹ̀ ṣàlàyé ìṣètò rẹ̀ lórí Windows. Copy Settings lábẹ́ Síi ń ṣiṣẹ́ fún èyíkéyìí míràn.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge kò lè ṣàyẹ̀wò àwọn ìṣàfilọ́lẹ̀ olùrànlọ́wọ́: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>A kò tíì fi kún un.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>A ti fi kún un.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>A ti fi kún un. Ó ti sopọ̀ báyìí.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>A ti fi kún un. Kò tíì sopọ̀ láti ìgbà náà. Olùrànlọ́wọ́ tí ó ti ṣí ń rí PadForge lẹ́yìn tí a bá pa á tí a sì tún ṣí i.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>A fi kún un fún PadForge míràn. Ṣe ìmúdójúìwọ̀n ń darí rẹ̀ sí èyí.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>A ti fi kún un. Ọgbọ́n PadForge rẹ̀ ti pẹ́ ju PadForge yìí lọ.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>A ti fi kún un, láìsí ọgbọ́n PadForge rẹ̀.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>A ti fi kún un. Ọgbọ́n PadForge rẹ̀ wá láti PadForge tí ó tuntun jù.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Ó ń gba ọgbọ́n kìkì bí ohun tí a gbé sókè.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Àwọn olùrànlọ́wọ́ tí a fi kún ń dé PadForge nígbà tí Automation bá tàn.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Ó ń fi kún un…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Ó ń yọ ọ́ kúrò…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Ó ń ṣe ìmúdójúìwọ̀n…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Kò parí: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Ti ṣàdàkọ.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>A kò ṣàdàkọ: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Àwọn ìṣàfilọ́lẹ̀ tí a gbà láàyè</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ tí ó fẹ́ Read tàbí jù bẹ́ẹ̀ lọ ń béèrè lẹ́ẹ̀kan, ní ìgbà àkọ́kọ́ tí ó bá sopọ̀, ó sì ń gba ìpele tí ó béèrè, títí dé ìpele tí ó wà lókè. Olùrànlọ́wọ́ tí o fi kún lókè ti gba àyè nípa ìyẹn.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Ó ti sopọ̀ báyìí.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Ìlò tó kẹ́yìn: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>A kò tíì lò ó.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Ìsopọ̀ SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad kan, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick kan. SDL kò ní ìsopọ̀ fún un.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick kan. PadForge ń kà á ní àìse, nítorí náà a kò lo ìsopọ̀ SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick kan, tí ìlà rẹ ṣètò bí gamepad.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL ń ka àwọn ẹ̀rọ nígbà tí ẹ́ńjìnnì bá ń ṣiṣẹ́.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Ẹ̀dà àwùjọ tí a kọ́ sínú rẹ̀, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>A gbà á wálẹ̀ ní {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>Fáìlì PadForge fúnra rẹ̀</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Tìrẹ, a fi kún un ní {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Àyípadà SDL_GAMECONTROLLERCONFIG, tí SDL fi ṣáájú ìlà èyíkéyìí tí o fi kún</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Ṣàdàkọ Ìsopọ̀ SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Ó ń fi ìsopọ̀ ẹ̀rọ náà sínú àpò ìdàkọ bí ìlà kan ti ibi ìpamọ́ àwùjọ, lábẹ́ ID ẹ̀rọ náà pẹ̀lú checksum àti ẹ̀yà rẹ̀ tí a sọ di òdo.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Lẹ̀ Ìsopọ̀ SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Ó ń gba ìlà kan fún ẹ̀rọ yìí, ó ń ṣàyẹ̀wò rẹ̀, ó ń pa á mọ́ bí tìrẹ, ó sì ń lò ó lẹ́sẹ̀kẹsẹ̀.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Wá ìsopọ̀ kan…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Ó ń wá gbogbo ìlà tí PadForge ní nípa orúkọ, ó sì ń lo èyí tí o yàn fún ẹ̀rọ yìí, fún ẹ̀dà tí àwọn ID rẹ̀ yàtọ̀.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Fojú díwọ̀n ìṣètò kan</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Ó ń fojú díwọ̀n ìṣètò gamepad láti àwọn ákísì, bọ́tìnì àti hat ẹ̀rọ náà, fún ẹ̀rọ tí ibi ìpamọ́ kankan kò mọ̀. Ṣàyẹ̀wò rẹ̀ nínú Test Inputs.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Yọ tèmi kúrò</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Yọ tèmi kúrò ń dá ìlà náà àti àwọn ìlà ẹ̀rọ ìdarí ti tẹ́lẹ̀ padà.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Tún so pọ̀</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Ó ń tún ṣe àwọn ìlà ẹ̀rọ náà lórí ẹ̀rọ ìdarí kọ̀ọ̀kan tí ó wà lórí rẹ̀ láti ìṣètò SDL, bí yíyàn án ṣe ń ṣe.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Ojú ìwé ibi ìpamọ́ àwùjọ</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Ìlà náà, àti ibi tí ó ti yàtọ̀ sí {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Ìlà náà</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Ẹ̀rọ ìdarí</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Ìlà {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Ìgbéwọlé rẹ̀ báyìí</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>Ohun tí ìlà SDL sọ</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>kò sí nínú ìlà SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, ó yàtọ̀</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge kò lò: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Ìlà náà</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Ti ṣàdàkọ.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Ti ṣàdàkọ. Ìrísí SDL kò lè gba {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>àwọn macro</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>àwọn ìlà títẹ̀</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>àwọn agbègbè àìṣiṣẹ́</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>àwọn ìjáde kọ́kọ́rọ́ àti máòsì</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, àwọn ìyípadà àti àwọn ìṣe míràn</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} àti {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Kò sí ohun tí a lè ṣàdàkọ: SDL kò ní ìsopọ̀ fún ẹ̀rọ yìí, kò sì sí lórí ẹ̀rọ ìdarí kankan.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Ìṣàfilọ́lẹ̀ míràn ń lo àpò ìdàkọ. A kò ṣàdàkọ nǹkankan.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>A ti yọ ìlà rẹ kúrò. Ẹ̀rọ náà ń kà bí ó ṣe ń kà ṣáájú rẹ̀.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>A tún so pọ̀ láti ìṣètò SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Ó ń ṣiṣẹ́ báyìí. Ìlà náà jẹ́ tìrẹ, ó sì borí fún ẹ̀rọ yìí.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>A pa á mọ́ bí tìrẹ. Ó máa ṣiṣẹ́ nígbà tí ẹ́ńjìnnì bá ń ṣiṣẹ́ tí ẹ̀rọ náà sì sopọ̀.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>A pa á mọ́ bí tìrẹ, ṣùgbọ́n àyípadà SDL_GAMECONTROLLERCONFIG ní ìlà kan fún ẹ̀rọ yìí, èyí tí SDL fi ṣáájú tìrẹ.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL kò gba ìlà náà. Kò sí ohun tí ó yípadà fún ẹ̀rọ yìí.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Lẹ̀ Ìsopọ̀ SDL kan</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Lẹ̀ Ìsopọ̀ SDL kan fún {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Wá ìsopọ̀ kan fún {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Fojú díwọ̀n ìṣètò kan fún {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Fi àwọn ìlà kún un láti fáìlì tàbí àpò ìdàkọ</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Lẹ̀</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Ṣí fáìlì kan…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Àwọn fáìlì ìsopọ̀ (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Fáìlì náà ju 4 MB lọ. Gbogbo fáìlì àwùjọ jẹ́ nǹkan bí 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Wá nípa orúkọ, ID tàbí VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Àwọn ìlà tí PadForge ní</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Kò sí ìlà tí ó bá a mu.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>A ń lo ìlà tí a yàn fún {0} lábẹ́ ID tirẹ̀, nípasẹ̀ àyẹ̀wò kan náà àti yíyàn kan náà bí Lẹ̀.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Ìlà ìsopọ̀ SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Ìlà kan fún ẹ̀rọ yìí.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Ìṣètò tí a fojú díwọ̀n.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, pápá {0}, ID rẹ̀ bá ẹ̀rọ yìí mu.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, pápá {0}, láti olùtajà àti ọjà kan náà lórí bus tàbí ẹ̀yà míràn. A pa á mọ́ lábẹ́ ID ẹ̀rọ yìí fúnra rẹ̀.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, pápá {0}, ìlà ẹ̀rọ míràn. A pa á mọ́ lábẹ́ ID ẹ̀rọ yìí fúnra rẹ̀.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>Pápá {0}. SDL kò ka ẹ̀rọ yìí, nítorí náà PadForge ń ṣètò àwọn ìgbéwọlé rẹ̀ gẹ́gẹ́ bí ìlà náà.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>Pápá {0}, láti àwọn ákísì, bọ́tìnì àti hat ẹ̀rọ náà. Ṣàyẹ̀wò rẹ̀ nínú Test Inputs, lẹ́yìn náà pa á mọ́ tàbí yí i padà níbí.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, pápá {0}, ID rẹ̀ bá ẹ̀rọ yìí mu.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, pápá {0}, láti olùtajà àti ọjà kan náà lórí bus tàbí ẹ̀yà míràn. A pa á mọ́ lábẹ́ ID ẹ̀rọ yìí fúnra rẹ̀.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, pápá {0}, ìlà ẹ̀rọ míràn. A pa á mọ́ lábẹ́ ID ẹ̀rọ yìí fúnra rẹ̀.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>Pápá {0}. SDL kò ka ẹ̀rọ yìí, nítorí náà PadForge ń ṣètò àwọn ìgbéwọlé rẹ̀ gẹ́gẹ́ bí ìlà náà.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>Pápá {0}, láti àwọn ákísì, bọ́tìnì àti hat ẹ̀rọ náà. Ṣàyẹ̀wò rẹ̀ nínú Test Inputs, lẹ́yìn náà pa á mọ́ tàbí yí i padà níbí.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Èyí ń yí bí a ṣe ń ka {0} padà. A tún so àwọn ìlà rẹ̀ nínú {1} pọ̀ láti ìṣètò tuntun.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Èyí ń yí bí a ṣe ń ka {0} padà. Kò sí lórí ẹ̀rọ ìdarí kankan, nítorí náà kò sí ìlà tí ó yípadà.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Àwọn ọ̀nà àbùjá profaili tí ń ka {0} ń pa àwọn ìgbéwọlé tí a ṣètò wọn sí mọ́.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>A pa ìlà náà mọ́ bí tìrẹ nínú PadForge.xml, ó sì borí gbogbo orísun míràn fún ẹ̀rọ yìí. Yọ tèmi kúrò ń dá ìlà àtijọ́ àti àwọn ìlà àtijọ́ padà.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>A pa àwọn ìlà náà mọ́ bí tìrẹ nínú PadForge.xml, wọ́n sì borí gbogbo orísun míràn fún àwọn ẹ̀rọ wọn. Clear, lábẹ́ Síi ìlà Controller Database, ń yọ wọ́n kúrò.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Ìlà {0} fún Windows. A fo {1} ti àwọn ẹ̀rọ ìṣiṣẹ́ míràn kọjá.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Ìlà {0} fún Windows. A fo {1} ti àwọn ẹ̀rọ ìṣiṣẹ́ míràn kọjá.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>A kọ {0}. Èyí àkọ́kọ́: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Lẹ̀ ìlà kan, tàbí ọ̀rọ̀ fáìlì gamecontrollerdb.txt kan.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Ọ̀rọ̀ náà kì í ṣe ìlà ibi ìpamọ́ ẹ̀rọ ìdarí SDL: ID oní nọ́mbà hex 32, orúkọ kan, lẹ́yìn náà àwọn pápá bíi a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Àwọn ìlà náà wà fún àwọn ẹ̀rọ ìṣiṣẹ́ míràn. PadForge ń ka àwọn ìlà fún Windows, tàbí èyí tí kò yan ẹ̀rọ ìṣiṣẹ́ kankan ní pàtó.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>ID ìlà náà kì í ṣe ti ẹ̀rọ kan. Ó nílò nọ́mbà hex 32.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Orúkọ ìlà náà ṣófo, ó ju lẹ́tà 128 lọ, tàbí ó ní lẹ́tà kan tí SDL ń kà bí pápá.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Ìlà náà ní hint tàbí pápá Android kan, èyí tí PadForge kò gbà.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Ìlà náà ní pápá kan tí SDL kò mọ̀.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Ìdè kan kò sí ní ìrísí SDL, bíi b3, a2, +a2, a2~ tàbí h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Ìlà náà fún pápá kan ní ìgbà méjì.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Ìlà náà ju lẹ́tà 1,024 lọ.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Ìlà náà kò de ìdarí kankan.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Àwọn ìlà rẹ</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Ó ń ṣiṣẹ́ lẹ́sẹ̀kẹsẹ̀.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Tàn án</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Àwọn olùrànlọ́wọ́ lórí wẹ́ẹ̀bù</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tọ́nẹ́ẹ̀lì</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Kò sí</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Àdírẹ́sì tí mo lẹ̀</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Ó ń bẹ̀rẹ̀, pẹ̀lú àwọn ẹ̀tọ́ rẹ.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Ó ń ṣiṣẹ́, pẹ̀lú àwọn ẹ̀tọ́ rẹ. Àdírẹ́sì rẹ̀ máa ń jẹ́ kan náà ní ìgbà kọ̀ọ̀kan tí ó bá bẹ̀rẹ̀.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Ó ń ṣiṣẹ́, pẹ̀lú àwọn ẹ̀tọ́ rẹ. Tọ́nẹ́ẹ̀lì kíákíá máa ń gba àdírẹ́sì tuntun ní ìgbà kọ̀ọ̀kan tí ó bá bẹ̀rẹ̀, nítorí náà a ó tún ní láti fi olùrànlọ́wọ́ náà kún un.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Ti dúró.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Ti dúró. Ọ̀rọ̀ rẹ̀ tó kẹ́yìn: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>A kò lè bẹ̀rẹ̀ rẹ̀.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Kò sí lórí kọ̀ǹpútà yìí mọ́.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>A kò rí ìṣàfilọ́lẹ̀ tọ́nẹ́ẹ̀lì kankan lórí kọ̀ǹpútà yìí. PadForge ń ṣiṣẹ́ pẹ̀lú cloudflared, devtunnel, ngrok àti Tailscale Funnel, tàbí pẹ̀lú àdírẹ́sì tọ́nẹ́ẹ̀lì tìrẹ.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Yan tọ́nẹ́ẹ̀lì kan láti fún PadForge ní àdírẹ́sì gbangba.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Bákan náà lórí kọ̀ǹpútà yìí: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, tí àdírẹ́sì rẹ̀ kì í yípadà</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, tí àwọn tọ́nẹ́ẹ̀lì kíákíá rẹ̀ ń gba àdírẹ́sì tuntun ní ìgbà kọ̀ọ̀kan</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Ṣiṣẹ́ tọ́nẹ́ẹ̀lì tìrẹ sí http://127.0.0.1:{0} kí o sì lẹ̀ àdírẹ́sì https rẹ̀. Tọ́nẹ́ẹ̀lì Cloudflare tí ó ní orúkọ, dev tunnel tí ó wà pẹ́, Tailscale Funnel àti àgbègbè ngrok fúnra rẹ̀ máa ń pa àdírẹ́sì wọn mọ́.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Lẹ̀ àdírẹ́sì https tí kò ní ọ̀nà kankan àyàfi /mcp, bí tọ́nẹ́ẹ̀lì rẹ ṣe fún ọ.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Ó ń bẹ̀rẹ̀ ìrànṣẹ́ wẹ́ẹ̀bù PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>Ìrànṣẹ́ wẹ́ẹ̀bù PadForge dúró ({0}). Pa Reach PadForge From the Web kí o sì tàn án láti tún bẹ̀rẹ̀ rẹ̀.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Àdírẹ́sì</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Kò sí àdírẹ́sì gbangba síbẹ̀.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Fi kún Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Ti ṣàdàkọ.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Gba olùrànlọ́wọ́ wẹ́ẹ̀bù tuntun kan</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Bẹ̀rẹ̀ sí í gbà</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Dúró gbígbà</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Ó ń gbà títí di {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Kò gbà. Bẹ̀rẹ̀ sí í gbà ń ṣí i fún ìṣẹ́jú márùn.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Fi àdírẹ́sì náà kún un nínú olùrànlọ́wọ́ náà kí o sì wọlé. Ìwọlé kọ̀ọ̀kan ń fi kóòdù oní nọ́mbà mẹ́fà tirẹ̀ hàn lórí ojú ìwé ìwọlé rẹ̀ àti lórí káàdì ìbéèrè PadForge. Gbà á láàyè kìkì nígbà tí kóòdù méjèèjì bá dọ́gba. Ní ìgbà míràn, a kọ ìwọlé, kò sì sí ohun tí ń béèrè lọ́wọ́ rẹ.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Tí a gbà láàyè lórí wẹ́ẹ̀bù</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Kò sí síbẹ̀.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Ìwọlé rẹ̀ padà sí {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Ó pe ara rẹ̀ ní {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>A gbà á láàyè ní {0}, ìlò tó kẹ́yìn ní {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>A gbà á láàyè ní {0}, a kò tíì lò ó.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Gba àyè padà</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Secure MCP Tunnel tirẹ̀ ń ṣiṣẹ́ PadForge tààrà, láìsí àdírẹ́sì tàbí ìwọlé níbí. Ṣàdàkọ àṣẹ náà sínú ìṣètò tọ́nẹ́ẹ̀lì yẹn.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Ṣàdàkọ àṣẹ</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge kò gba ìṣàfilọ́lẹ̀ tọ́nẹ́ẹ̀lì kankan wálẹ̀, kò sì pa kọ́kọ́rọ́ ilé iṣẹ́ míràn kankan mọ́. Olùrànlọ́wọ́ wẹ́ẹ̀bù ń ṣiṣẹ́ ní ìpele tí ó wà lókè.</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Ìwọlé rẹ̀ ń padà sí {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Ó pe ara rẹ̀ ní {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Gbà á láàyè kìkì bí ojú ìwé ìwọlé rẹ̀ bá fi kóòdù yìí hàn:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Kóòdù oní nọ́mbà mẹ́fà rẹ̀ ń hàn lórí káàdì ìbéèrè PadForge. Gbà á láàyè kìkì bí ojú ìwé ìwọlé rẹ̀ bá fi kóòdù kan náà hàn.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Ó ń ṣiṣẹ́ ní {0}, nípasẹ̀ {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Ìwọlé rẹ̀ ń padà sí kọ̀ǹpútà yìí, ìṣàfilọ́lẹ̀ èyíkéyìí níbí sì lè gba àdírẹ́sì yẹn.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Wọlé sí PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} ń béèrè láti ṣiṣẹ́ pẹ̀lú PadForge lórí kọ̀ǹpútà rẹ.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Ó pe ara rẹ̀ ní {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Lórí kọ̀ǹpútà rẹ, káàdì ìbéèrè PadForge ń béèrè nípa ìwọlé yìí. Gbà á láàyè níbẹ̀ kìkì bí káàdì náà bá fi kóòdù yìí hàn:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Ojú ìwé yìí máa tẹ̀síwájú fúnra rẹ̀ nígbà tí o bá dáhùn lórí kọ̀ǹpútà.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Ìwọlé yìí ń padà sí ìṣàfilọ́lẹ̀ kan lórí kọ̀ǹpútà rẹ, ìṣàfilọ́lẹ̀ èyíkéyìí níbẹ̀ sì lè gba àdírẹ́sì yẹn.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge kò gba olùrànlọ́wọ́ wẹ́ẹ̀bù tuntun báyìí. Lórí kọ̀ǹpútà rẹ, ṣí PadForge, lọ sí Àwọn àfikún, Automation, kí o sì tẹ Bẹ̀rẹ̀ sí í gbà lábẹ́ Àwọn olùrànlọ́wọ́ lórí wẹ́ẹ̀bù. Lẹ́yìn náà, tún wọlé.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Ìwọlé yìí kò lè tẹ̀síwájú. Tún fi àdírẹ́sì PadForge kún un nínú olùrànlọ́wọ́ náà kí o sì wọlé.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Ìwọlé yìí ti parí. Tún wọlé láti inú olùrànlọ́wọ́ náà.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows kò bẹ̀rẹ̀ rẹ̀</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ó parí pẹ̀lú kóòdù {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automation wà ní pípa, nítorí náà kò sí olùrànlọ́wọ́ wẹ́ẹ̀bù tí ó lè dé PadForge. Ìrànṣẹ́ wẹ́ẹ̀bù náà máa bẹ̀rẹ̀ nígbà tí Automation bá tàn.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Ó ń ṣàyẹ̀wò…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>A kò fi sórí ẹ̀rọ.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>A ti fi sórí ẹ̀rọ. PadForge yìí ní ẹ̀dà tuntun jù.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>A ti fi sórí ẹ̀rọ fún {0}. PadForge yìí ní ẹ̀dà tuntun jù.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Ó ń fi sórí ẹ̀rọ…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge kò lè ṣàyẹ̀wò rẹ̀: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Fi sórí ẹ̀rọ ń fi ibi ìkówèésí PadForge sí ibi tí èdè yẹn ti ń rí i. Ìwé àṣẹ tí ó bá gbé e wọlé lè ka àwọn ẹ̀rọ, kí ó sì darí àwọn ìsopọ̀ ní ìpele tí ó wà lókè.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Fi ibi ìkówèésí pamọ́ síbikíbi</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Àwọn ẹ̀dà tí a fi sórí ẹ̀rọ</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Yọ gbogbo rẹ̀ kúrò</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>A ti yọ ọ́ kúrò.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID ìwé àṣẹ</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>ID ìwé àṣẹ rẹ̀</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Àwọn ìwé àṣẹ ń pe àwọn ìdarí rẹ̀ ní {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Àwọn ìwé àṣẹ ń pe àwọn kọ́kọ́rọ́ rẹ̀ ní KeyA, KeySpace, KeyLeftShift àti irú wọn, wọ́n sì ń pe kọ́kọ́rọ́ kọ̀ọ̀kan nípa kóòdù rẹ̀, Vk0 sí Vk255.</value></data>
 </root>

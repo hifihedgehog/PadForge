@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>S'ha desconnectat {0}. {1} ja no té cap dispositiu.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>S'ha connectat {0}</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>S'ha connectat {0}, bateria al {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} dispositius desconnectats</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} dispositius connectats</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} dispositius desconnectats: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} dispositius connectats: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} no para de desconnectar-se</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (màx. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (màx. {0})</value></data>
@@ -431,8 +431,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Reconnexió automàtica, port, identitat d'aparellament, connexió per adreça</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Port, substitut de DSX.exe</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Ports, Velocitat màxima, Formats personalitzats</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Altres assistents, assistents al web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Mira al teu voltant amb un seguidor del cap o uns cascos de RV mentre tens els dos polzes als botons.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Assigna la velocitat, els pedals i les marxes que envia un joc de conducció, com qualsevol entrada.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Envia el moviment del comandament als emuladors que llegeixen una font de moviment DSU.</value></data>
@@ -453,6 +452,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>L'anell, la quadrícula o la barra d'un menú mentre és obert.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>El nom de la capa quan s'activa una capa, durant el temps que aquesta capa estableix.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>El nom del perfil quan canvia el perfil.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Si els comandaments virtuals s'acaben d'activar o desactivar, des de la drecera o una macro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>El nom d'un dispositiu assignat quan es desconnecta.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>El nom d'un dispositiu assignat quan es connecta.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Copia l'adreça</value></data>
@@ -560,35 +560,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Els programes poden canviar de perfil i alliberar-lo, iniciar i aturar el motor, activar i desactivar comandaments virtuals, mostrar i amagar la finestra, tancar PadForge, desar una instantània de diagnòstic i preguntar què s'està executant.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Tot el del nivell Ordres, i els programes poden veure dispositius, comandaments virtuals, assignacions, perfils i configuració, seguir les entrades de tots els dispositius mentre passen i ensenyar-te un lloc de PadForge. Un programa amb Lectura veu totes les tecles premudes a tots els dispositius, també les que s'escriuen en finestres executades com a administrador.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Tot el del nivell Lectura, i els programes poden afegir dispositius propis i controlar-los, mantenir un control de qualsevol dispositiu i passar valors amb nom als activadors de macros.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot el del nivell Enviament d'entrades, i els programes poden canviar el que tu pots canviar a les pàgines.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Tot el del nivell Enviament d'entrades, i els programes poden canviar el que tu pots canviar a les pàgines. Alguns canvis et pregunten sempre abans a la targeta de preguntes de PadForge.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistents</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Enganxa això a la configuració MCP d'un assistent. Després l'assistent treballa amb PadForge al nivell d'aquí a dalt.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Copia com a TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistents que llegeixen TOML</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Afegeix posa PadForge, amb el seu skill, en aquest assistent. Després treballa al nivell d'aquí a dalt, i les seves paraules es mostren al costat del que assenyala, sota el seu nom.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Scripts</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Biblioteca de scripts</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Desa una biblioteca…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un fitxer per a AutoHotkey v2, Python o PowerShell. Un script que el carrega llegeix dispositius i controla assignacions al nivell d'aquí a dalt.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Un fitxer per a AutoHotkey v2, Python o PowerShell, escrit on triïs.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Esperant la teva resposta</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Activitat</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Cap programa ha fet cap crida encara. Cada crida apareix aquí amb el seu resultat.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Desfés</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Skill per a assistents</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Desa el Skill…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge no ho ha pogut desar: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Mentre un programa amb Lectura o més està connectat, veu el que es prem a tots els dispositius, teclats inclosos.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Complements</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Executa complements</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No s'executa cap complement.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Un complement s'executa amb els teus drets, no amb els de PadForge.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Inclosos</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Comandament de prova</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Un comandament que es mou sol, un control cada cop, per poder provar una assignació sense tenir maquinari a mà.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Velocitat</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Lenta</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Ràpida</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Molt ràpida</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Reproducció</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Reprodueix una gravació de problema com els dispositius que la van fer, amb el ritme que tenien. Són dispositius nous en aquest PC, assignats com els assignes tu o un perfil.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Gravació</value></data>
@@ -603,10 +592,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Gravacions de problemes|*.zip;*.log|Tots els fitxers|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge no pot reproduir {0}. No és una gravació de problema o no conté entrades de cap dispositiu.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Els teus complements</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Un complement és un programa que afegeix dispositius a PadForge. PadForge l'inicia amb els teus drets habituals sempre que el motor s'executa.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Afegeix un complement…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programes i scripts|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Tots els fitxers|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Aprova…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Aprova i reinicia…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>S'inicia amb el motor</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>S'està comprovant el fitxer abans d'iniciar-lo</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Ha acabat amb el codi {0}. S'inicia de nou d'aquí a {1} s.</value></data>
@@ -637,10 +625,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ja és a la llista.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge executa fins a 16 complements. Treu-ne un per afegir-ne un altre.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Complements en execució: {0}. Dispositius que han afegit: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} s'ha aturat després de cinc errors.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ha canviat des que el vas aprovar.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} no s'ha pogut iniciar.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ha afegit {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signat per {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Sense signar.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Les seves opcions es mostren aquí mentre s'executa.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>No declara cap opció.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge no ha pogut llegir les seves opcions: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Finalitzat després d'un minut sense resposta</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>El seu fitxer ha canviat mentre s'executava</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Afegit per {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Configuració de {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Tria</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Prem un control…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Cap triat</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Afegeix un complement o deixa'n anar el fitxer en aquesta pàgina. PadForge en mostra la ruta, el signant i el SHA-256, i et pregunta abans d'executar-lo. Un complement s'executa amb els teus permisos, no els de PadForge.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Reprodueix una gravació de problema com els dispositius que la van fer, amb el seu ritme.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>En execució.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>En execució, a mà.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Què es mou</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Palanques i gallets</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Palanques</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Gallets</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Patró</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Escombrada</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Cercle</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Temps de moviment</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Temps de repòs</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Prem botons</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Prem els botons de navegació</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Les aplicacions de Windows actuen sobre A, B, Enrere, Start i la creu direccional d'un comandament Xbox virtual a la finestra de davant, i Guia obre Xbox Game Bar.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Gira la creu direccional</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Pel mateix motiu.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Temps de pulsació</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Comandaments</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>A mà</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Atura el moviment. Defineix-ne les entrades aquí sota amb el ratolí.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Palanca esquerra</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Palanca dreta</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Gallet esquerre</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Gallet dret</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Lectures per segon</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>El kit de complements i el registre del complement que triïs</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit de complements</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Desa el kit de complements…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Un complement petit en C# i el mateix complement per a AutoHotkey, Python i PowerShell, cada fitxer amb instruccions per compilar-lo o executar-lo.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Una guia de cada verb, esdeveniment i tipus d'opció, un script de compilació per al complement en C# i el mateix complement per a AutoHotkey, Python i PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Registre</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Tria un complement per veure'n el registre.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>El registre d'aquest complement encara és buit.</value></data>
@@ -666,7 +697,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Un mod de joc</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Un altre programa té el nom de canonada {0}. Tanca aquest programa.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ha refusat la canonada {0}, així que els programes no es poden connectar.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Cap programa està connectat.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Activat. Cap programa està connectat.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Connectats: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa desconegut</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, signat per {1}</value></data>
@@ -700,7 +731,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>No se'n faran més fins que PadForge s'iniciï de nou</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge no té aquesta eina</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>El programa ha llegit un estat més antic</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>No existeix aquesta opció</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Cap element té aquest ID</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>El valor era fora del que accepta l'opció</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>No ho has permès</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Ningú ha respost a temps</value></data>
@@ -717,6 +748,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Mostra la finestra</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Envia la finestra a la safata del sistema</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimitza la finestra</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maximitza la finestra</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Tanca PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Inicia el motor</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Atura el motor</value></data>
@@ -742,6 +774,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Afegeix el dispositiu {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Defineix els controls del dispositiu {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Treu el dispositiu {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Posa tots els controls del dispositiu {0} en repòs</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Fa que PadForge executi un programa.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Obre un fitxer, una carpeta o una pàgina web.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Fa que PadForge enviï tecles o entrada de ratolí a Windows.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Importa un perfil de fora de PadForge.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge et pregunta abans que un programa faci això.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Diàlegs</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Macros</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Manté controls del dispositiu {0}</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Deixa anar controls del dispositiu {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Defineix el valor {0}</value></data>
@@ -750,25 +790,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Canvia de perfil</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Inicia o atura el motor</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Activa o desactiva comandaments virtuals</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Desa una instantània de diagnòstic</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Llegeix la freqüència de sondeig i els controladors</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Llista els perfils</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Llegeix un perfil</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Llista els comandaments virtuals</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Llista els dispositius</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Llegeix un dispositiu</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Espera una entrada teva</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Llegeix les assignacions d'un comandament</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Llista les macros d'un comandament</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Grava un problema</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Cerca opcions</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Llegeix una opció</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Mostra't un lloc</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Cerca llocs a PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Llegeix un lloc de PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Llegeix el que veus</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Afegeix un dispositiu propi</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Controla el seu dispositiu</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Treu el seu dispositiu</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Manté o deixa anar un control</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Defineix un valor per als activadors de macro</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Canvia una opció</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Prem un botó</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Crea un perfil</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Canvia el nom d'un perfil</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Elimina un perfil</value></data>
@@ -779,7 +818,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Canvia el tipus d'un comandament</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Assigna un dispositiu</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Defineix files d'assignació</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Esborra files d'assignació</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Assigna un comandament automàticament</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Desa una macro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Elimina una macro</value></data>
@@ -799,6 +837,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Crea un comandament de teclat i ratolí</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Activa {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Canvia «{0}»</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Prem «{0}»</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} vol mostrar-te {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>A {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Vols permetre que {0} treballi amb PadForge al nivell {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} executa {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Iniciat per {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Signat per {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Sense signar.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Al nivell Lectura i superiors veu totes les tecles premudes a tots els dispositius, teclats inclosos.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Ho pregunta una sola vegada. Pots eliminar-lo a la pàgina Automatització.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>la línia d'ordres de PadForge</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Posa {0} a {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Escolta a la xarxa, de manera que altres dispositius poden accedir a aquest PC.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Canvia un controlador o HidHide, dels quals depenen altres programes i jocs.</value></data>
@@ -820,6 +869,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>Mòduls de PowerShell (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Permet</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>No permetis</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Ara no</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Mostra</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Pas {0} de {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Fes-hi clic per continuar.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Obre {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Obre Més.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De {1}, que es diu «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>D'un programa que es diu «{0}»</value></data>
@@ -959,7 +1014,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instal·la i reinicia</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Notes de la versió</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Base de dades de comandaments</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualitza ara baixa la base de dades de comandaments de la comunitat (SDL_GameControllerDB) de GitHub i conserva, al fitxer de configuració, les assignacions que aquesta versió de PadForge no té. Una assignació nova només s'usa per a un comandament que cap altra cosa llegeix com a comandament, que no està assignat i que no està en el mode de joystick en brut. El restabliment elimina totes les assignacions baixades.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Actualitza ara baixa la base de dades de comandaments de la comunitat (SDL_GameControllerDB) de GitHub i conserva, al fitxer de configuració, les assignacions que aquesta versió de PadForge no té. S'usen de seguida. Una assignació nova només s'usa per a un comandament que cap altra cosa llegeix com a comandament, que no està assignat i que no està en Força el mode de joystick en brut (omet la reassignació de comandament). El restabliment elimina totes les assignacions baixades. Les teves files, a Més, es queden.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Actualitza ara</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>S'està actualitzant…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>S'estan cercant actualitzacions…</value></data>
@@ -988,12 +1043,10 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>L'actualització a PadForge {0} no s'ha acabat d'instal·lar. Instal·la-la des de Configuració per tornar-ho a provar.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge s'ha actualitzat a la versió {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}. Actualitzat el {2}: noves: {3}, canviades: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Inclòs: {0} assignacions, còpia de la comunitat del {1}. Baixat el {2}: {3} files noves, {4} canviades.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>La base de dades de la comunitat no ha canviat des de l'última actualització.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>No s'ha pogut contactar amb GitHub: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge ha refusat la baixada perquè no és la base de dades de comandaments que espera. No ha canviat res.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Una assignació nova s'usa la propera vegada que es connecti el seu comandament.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Una assignació canviada s'usa la propera vegada que s'iniciï PadForge.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Inicia minimitzat</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Executa en iniciar la sessió</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1091,28 +1144,85 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informació de la versió i registre d'esdeveniments del motor per resoldre problemes.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Mantén un registre de diagnòstic</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Escriu contínuament els esdeveniments del motor a diagnostics.log, a la carpeta de registres, que obre Obre la carpeta de registres. Continua activat entre reinicis. Quan el fitxer arriba a 8 MB, passa a diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Desa una instantània</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Desa els esdeveniments més recents del motor en un fitxer nou. Funciona fins i tot quan el registre de diagnòstic està desactivat.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Desa una instantània…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Pren l'aplicació, Windows, els teus dispositius i la configuració tal com són ara, amb els esdeveniments més recents del motor, i els obre perquè els llegeixis abans de desar-los. Funciona fins i tot quan el registre de diagnòstic està desactivat.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Obre la carpeta de registres</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Grava un problema</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Inicia la gravació</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Atura la gravació ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grava fins que premis Atura la gravació, fins a 10 minuts o fins a un zip de 20 MB, i després selecciona el zip a l'Explorer, a punt per adjuntar-lo a un informe.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Inicia, fes que passi el problema i atura. Un fitxer al costat de PadForge conté tot el que PadForge ha llegit, enviat i registrat, amb un resum del que ha anat malament. Totes les tecles i botons premuts a tots els dispositius mentre grava hi són, teclats i ratolins inclosos. Els noms d'usuari, els números de sèrie, les adreces i els noms escrits se substitueixen abans d'escriure res.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grava fins que premis Atura la gravació, 30 minuts o un zip de 20 MB, i després obre la gravació perquè la llegeixis abans de desar-la.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Inicia, fes que passi el problema i atura. Després llegeix què conté, part per part, i desa-ho on vulguis. Totes les tecles premudes a tots els dispositius mentre grava hi són, teclats i ratolins inclosos. Els noms d'usuari, els números de sèrie, les adreces i els noms escrits se substitueixen abans d'escriure res.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>S'està escrivint el resum…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>S'ha desat {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>La gravació no s'ha iniciat. Una comprovació ha trobat un valor privat d'aquest PC que no quedaria fora del fitxer.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>La gravació no s'ha iniciat. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>L'última gravació encara s'està acabant.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Conserva els últims 60 segons està desactivat, així que no hi ha res per desar.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>S'ha acabat una gravació que PadForge no havia aturat: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>Una gravació que PadForge no havia aturat t'espera perquè la llegeixis a Inici: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Conserva els últims 60 segons</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mentre el motor s'executa, guarda a la memòria l'últim minut del que conté una gravació, per a un problema que apareix un cop per vespre. Desa els últims 60 segons l'escriu com a fitxer.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Mentre el motor s'executa, guarda a la memòria l'últim minut del que conté una gravació, per a un problema que apareix un cop per vespre. Desa els últims 60 segons l'obre perquè el llegeixis abans de desar-lo.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Desa els últims 60 segons</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Escriu les lletres i els números tecleats com una sola tecla</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Una gravació escriu les tecles de lletres i números que cap assignació ni macro llegeix com una sola tecla, cada pulsació al seu moment. Totes les altres tecles, i totes les que llegeix una assignació o una macro, s'escriuen tal com es premen.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Conserva els últims 60 segons, Escriu les lletres i els números tecleats com una sola tecla</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Què gravar, els últims 60 segons, lletres tecleades</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Desa una instantània</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, els teus dispositius i la configuració tal com són ara, amb la mateixa revisió.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log al costat de PadForge.exe, que hi pots llegir.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Què gravar</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Tot activat. Una part desactivada queda fora de la gravació següent, i el fitxer indica quines parts conté.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Per a un problema que apareix un cop per vespre.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>La gravació t'espera perquè la llegeixis a Inici.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Resum</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Configuració i dispositius</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Entrada</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Sortida</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Retorn</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Temporització</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Finestra i errors</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Activitat</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Línies de diagnòstic</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Llegeix la gravació</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} a {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Una instantània a les {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minut</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minuts</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 segon</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} segons</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Aturada per tu.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Aturada soleta als {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Aturada soleta als {0} al zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Aturada per una macro.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Aturada per un programa o --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Aturada per l'assistent que la va iniciar.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Aturada en tancar-se PadForge.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Els últims 60 segons, guardats a la memòria.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Llegeix el que compartiràs. Desactiva una part per deixar-la fora i després desa. Res surt d'aquest PC si no ho publiques.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, tal com es compartirà</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Mostra {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>exclosa</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>no gravada</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} com a text, {1} al zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} com a text, {1} al zip que comparteixes. Una gravació s'atura als {2} al zip o passats {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Comprovació de neteja: PadForge ha substituït {0} de {1}. Cap nom, número de sèrie ni adreça d'aquest PC és a les parts que conserves.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} valors</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 valor</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} tipus privats</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 tipus privat</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Comprovació de neteja: {0} valors propis d'aquest PC encara són a les parts que conserves. Desactiva aquestes parts o elimina la gravació. Desa queda desactivat fins aleshores.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Comprovació de neteja: un valor propi d'aquest PC encara és a les parts que conserves. Desactiva aquestes parts o elimina la gravació. Desa queda desactivat fins aleshores.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>No ha passat res d'aquesta part mentre es gravava.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Elimina</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Copia el resum</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Copiat</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Desa…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Desa la gravació</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Fitxers zip</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>No s'ha desat. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Es desa com a tu, a la carpeta Baixades la primera vegada, després on l'hagis desat per última vegada, i es mostra a l'Explorador de fitxers. Una gravació que s'atura mentre no hi ha ningú a la pàgina (el seu límit, una macro, un programa, l'eina de l'assistent o --record stop) espera aquesta revisió a Inici, i s'elimina als 7 dies si no es desa. A un programa se li diu que espera, mai on.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>Una gravació de problema de {0} t'espera perquè la llegeixis.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Revisa</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Marca la gravació</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versió de l'aplicació</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Entorn d'execució .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versió d'SDL</value></data>
@@ -2894,31 +3004,64 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Posició del ratolí X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Posició del ratolí Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitat del cursor per a cada font. Amb 1.0, s'arriba a la desviació completa de la palanca al 10% de l'amplada de la pantalla des del centre. Els valors per sobre d'1.0 hi arriben amb menys recorregut del cursor. Els valors per sota d'1.0 en necessiten més.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Sensibilitat del cursor per a cada font. Amb 1.0, s'arriba a la desviació completa de la palanca al 10% de l'amplada del monitor del punter des del seu centre. Els valors per sobre d'1.0 hi arriben amb menys recorregut del cursor. Els valors per sota d'1.0 en necessiten més.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Desplaçament del ratolí X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Desplaçament del ratolí Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Desplaçament fins al tope</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quant es mou el ratolí des del centre fins al tope, en els recomptes que informa el ratolí. Un número més alt dirigeix amb més precisió i demana més recorregut de la mà.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Quant es mou el ratolí o la roda des del centre fins al tope, en els recomptes que informa. Un número més alt dirigeix amb més precisió i demana més recorregut de la mà.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Amb els DPI del ratolí definits al panell del dispositiu, el recorregut també es mostra en centímetres.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>recomptes</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Centrat</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desactivat deixa el volant on la mà l'ha deixat. Moll el torna durant el Temps de retorn. De la telemetria l'estira com ho farien les rodes davanteres d'un cotxe amb la velocitat i l'adherència del joc: quiet en aturar-se, més ferm amb la velocitat, lleuger quan les rodes llisquen. Si cap joc envia telemetria, és el moll. De la força del joc deixa que el feedback de força d'un volant virtual el giri.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desactivat deixa el volant on la mà l'ha deixat. Moll el torna durant el Temps de retorn. De la telemetria l'estira com ho fa la direcció d'un cotxe amb la velocitat i l'adherència del joc: amb força prop del centre i més suau més lluny, quiet en aturar-se, més ferm amb la velocitat, lleuger quan les rodes llisquen. Si cap joc envia telemetria, l'estira com a 100 km/h sobre asfalt sec. De la força del joc deixa que el feedback de força d'un volant virtual el giri.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desactivat</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Moll</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>De la telemetria</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>De la força del joc</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Temps de retorn</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>El temps que triga Moll a tornar el volant el 95% del camí. De la telemetria triga això a 100 km/h sobre asfalt sec.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>El temps que triga Moll a tornar el volant el 95% del camí. 0 el centra de seguida. De la telemetria triga això des de prop del centre a 100 km/h sobre asfalt sec.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Direcció</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre deixa que el ratolí dirigeixi en tot moment. Mentre es manté premut el deixa dirigir només mentre es manté premuda l'Entrada de direcció. Commutació activa o desactiva la direcció a cada pulsació de l'Entrada de direcció. Mentre el ratolí no dirigeix, el volant es queda on és o es centra, de manera que un sol ratolí pot dirigir i mirar al voltant.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Sempre deixa que el ratolí dirigeixi en tot moment. Mentre es manté premut i centrat el deixa dirigir només mentre es manté premuda la Entrada de direcció, i després el torna al centre, amb Centrat on la font en té i de seguida on no. Mentre es manté premut i es queda el deixa dirigir només mentre es manté premuda l'entrada i el deixa on era en deixar-la anar. Commutació activa o desactiva la direcció a cada pulsació de la Entrada de direcció. Així un sol ratolí pot dirigir i mirar al voltant.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Sempre</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mentre es manté premut</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Mentre es manté premut i centrat</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Commutació</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Entrada de direcció</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>El botó que deixa que el ratolí dirigeixi, al mateix dispositiu que el desplaçament del ratolí. Si no se'n tria cap, el ratolí sempre dirigeix.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>El botó que deixa que el ratolí dirigeixi, al mateix dispositiu que la font. Si no se'n tria cap, el ratolí sempre dirigeix.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Suavitzat</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Suavitza un ratolí que informa de manera irregular. El volant va darrere de la mà aproximadament aquest temps. 0 ho desactiva.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Suavitza un ratolí que informa de manera irregular. La palanca va darrere de la mà aproximadament aquest temps. 0 ho desactiva.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Tope a velocitat</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Amb Telemetria de joc activada, quant del tope queda a 200 km/h. Al 100% hi ha tot el tope a qualsevol velocitat.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Recorregut del volant</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Recorregut del volant lateral</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Quina velocitat porta el ratolí. Es deixa anar quan la mà s'atura.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>On és el punter al seu monitor, des del centre o des d'on era quan va començar la direcció.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Quant s'ha mogut el ratolí, mantingut allà on la mà el deixa, com un volant.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Els tacs de la roda de desplaçament mantinguts com a posició, amb tota la precisió en una roda de desplaçament fi.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Els tacs de la roda lateral mantinguts com a posició, amb tota la precisió en una roda de desplaçament fi.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Un impuls per cada tac, i torna al repòs de seguida.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Mentre es manté premut i es queda</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sensibilitat</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Quant de la palanca dona una velocitat. Amb 1.00 la palanca arriba a la desviació completa a 16.000 recomptes per segon, amb qualsevol freqüència de sondeig i d'informes del ratolí.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Tornada al centre</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Quan el ratolí frena o s'atura, la palanca torna al centre no més de pressa que això. 0 la deixa tornar amb el ratolí.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Comença d'on va començar la direcció</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Amb una Entrada de direcció, la palanca es mesura des d'on era el punter quan va començar la direcció, com una palanca a la pantalla d'un telèfon comença on cau el dit. Desactivat, es mesura des del centre del monitor del punter.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Aquest eix es mou de manera relativa</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Per a una bola de seguiment o un spinner que informa de quant ha girat. Activat, l'eix manté una posició com ho fa el Desplaçament del ratolí i pren els paràmetres de desplaçament. Windows no diu quins eixos es mouen així.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Previsualitza</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Mostra com aquesta família segueix el teu ratolí. No s'assigna res fins que la triïs.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Previsualitzant. Mou el ratolí.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Mantingut: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Ara: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% a la dreta</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% a l'esquerra</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% amunt</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% avall</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>al centre</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Es mou mentre {0} es manté premut.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>DPI del ratolí</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Els recomptes que aquest ratolí informa per cada polzada que es mou, tal com els defineix el programari del fabricant.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Amb els DPI definits, el Desplaçament del ratolí també mostra el recorregut en centímetres. 0 vol dir sense definir.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Punter IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Punter IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Brillantor IR</value></data>
@@ -4656,6 +4799,7 @@ Hi ha una còpia de la versió anterior en aquesta carpeta: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicadors en pantalla que PadForge mostra mentre jugues. Desactivar-ne un no canvia mai el comportament, només si es mostra.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Avís emergent de canvi de capa</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Superposició de canvi de perfil</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Comandaments activats o desactivats</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Avís de dispositiu desconnectat</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Avís de dispositiu connectat</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra l'anell o la graella en pantalla mentre hi ha actiu un menú radial o tàctil. Els menús continuen funcionant amb la superposició desactivada.</value></data>
@@ -5331,6 +5475,8 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Desactivat</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Cronòmetre</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Color de la barra de llum</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Dispositius desconnectats</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Tots connectats</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>desactivat</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>a través de Logitech Gaming Software</value></data>
@@ -5373,6 +5519,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>La pantalla mostra una imatge que tries, a la seva mida. Si la imatge és més gran que la pantalla, es mostra una finestra de la mida de la pantalla, que la macro Desplaça la imatge de la pantalla del teclat mou. Al S.T.R.I.K.E. 7, arrossegar un dit per la pantalla també la mou.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>La pantalla mostra el cronòmetre, que la macro Cronòmetre inicia, posa en pausa i restableix. Totes les pantalles mostren el mateix cronòmetre.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>La pantalla mostra el color de la barra de llum del DualShock 4 o DualSense de la ranura més baixa que alimenta aquesta pantalla, o de la ranura més baixa de totes quan no n'alimenta cap. Una pantalla monocroma en mostra la brillantor com a patró de punts. Fins que un color arriba a una barra de llum, PadForge no mostra res.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>La pantalla llista els dispositius assignats que no estan connectats, amb els noms que mostra la pàgina Dispositius, i diu Tots connectats quan no en falta cap.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Imatges (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Tots els fitxers (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Desplaçament</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Desplaçament X</value></data>
@@ -5569,6 +5716,7 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Conducció (no 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Telemetria de joc</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Valor de script</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Connexió del dispositiu</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Velocitat (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% del màxim)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Marxa (-1 marxa enrere, 0 punt mort)</value></data>
@@ -5726,4 +5874,231 @@ Vols que PadForge els desinstal·li ara? Cal elevar els permisos i pot trigar un
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Gravació de problema</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Inicia o atura la gravació</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Marca la gravació</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>La superposició llista els dispositius assignats que no estan connectats, amb els noms que mostra la pàgina Dispositius, i diu Tots connectats quan no en falta cap.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Desactivat. Cap programa pot accedir a PadForge.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} i {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Activitat: {0} crides, de la més antiga a la més nova. Crides anteriors a aquestes: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Activitat: {0} crida. Crides anteriors a aquesta: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>S'han perdut {0:N0} crides més antigues. Activitat conserva les {1:N0} més noves.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>S'ha perdut {0:N0} crida més antiga. Activitat conserva les {1:N0} més noves.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Exporta…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Exporta l'activitat</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Fitxer de text</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Obre</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Actualitza</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Més per a {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Desa l'skill com a ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Obre el seu fitxer de configuració</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Desat. A {0}, afegeix {1} a {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} encara no té cap fitxer de configuració. Afegeix en crea un.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge no troba cap programa assistent en aquest PC del qual el fabricant documenti una configuració a Windows. Copy Settings, a Més, serveix per a qualsevol altre.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge no ha pogut comprovar els programes assistents: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>No afegit.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Afegit.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Afegit. Connectat ara.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Afegit. No s'ha connectat des d'aleshores. Un assistent que era obert veu PadForge després de tancar-lo i tornar-lo a obrir.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Afegit per a un altre PadForge. Actualitza l'apunta a aquest.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Afegit. El seu skill de PadForge és més antic que aquest PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Afegit, sense el seu skill de PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Afegit. El seu skill de PadForge ve d'un PadForge més nou.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Només accepta skills com a càrrega.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Els assistents afegits accedeixen a PadForge quan Automatització està activada.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Afegint…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Eliminant…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Actualitzant…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>No ha acabat: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Copiat.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>No s'ha copiat: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Programes permesos</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Un programa que vol Lectura o més ho pregunta una vegada, la primera vegada que es connecta, i obté el nivell que demana, fins al nivell d'aquí a dalt. Un assistent que afegeixes a dalt queda permès amb això.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Connectat ara.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Últim ús: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Encara no usat.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Connectats: {0}. Fes clic per obrir Automatització.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>En aquest PC: {0}. Des del web: {1}. Fes clic per obrir Automatització.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Connectats des del web: {0}. Fes clic per obrir Automatització.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>Assignació SDL</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Un comandament, «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Un joystick. SDL no hi té cap assignació.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Un joystick. PadForge el llegeix en brut, així que no s'usa l'assignació de SDL.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Un joystick, disposat com a comandament per la teva fila.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL llegeix els dispositius mentre el motor s'executa.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>La còpia de la comunitat inclosa, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Baixada el {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>El fitxer propi de PadForge</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Teva, afegida el {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>La variable SDL_GAMECONTROLLERCONFIG, que SDL manté per sobre de qualsevol fila que afegeixis</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Copia l'assignació SDL</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Posa l'assignació del dispositiu al porta-retalls com a fila de la base de dades de la comunitat, sota l'ID del dispositiu amb la suma de verificació i la versió a zero.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Enganxa una assignació SDL…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Pren una fila per a aquest dispositiu, la comprova, la conserva com a teva i l'aplica de seguida.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Cerca una assignació…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Cerca per nom totes les files que porta PadForge i aplica la que triïs a aquest dispositiu, per a un clon amb ID diferents.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Endevina una disposició</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Endevina una disposició de comandament a partir dels eixos, botons i creus del dispositiu, per a un dispositiu que cap base de dades coneix. Comprova-la a Prova les entrades.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Elimina la meva</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Elimina la meva torna la fila i les files de comandament d'abans.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Torna a assignar</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Torna a fer les files del dispositiu a cada comandament on és a partir de la disposició de SDL, com fa en assignar-lo.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Pàgina de la base de dades de la comunitat</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>La fila, i on difereix de {0}</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>La fila</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Comandament</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>Fila {0}</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>La seva entrada ara</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>La fila de SDL diu</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>no és a la fila de SDL</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, difereix</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge no ho usa: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>La fila</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Copiat.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Copiat. El format de SDL no pot contenir {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>macros</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>corbes</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>zones mortes</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>sortides de teclat i ratolí</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, commutacions i altres accions</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} i {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Res a copiar: SDL no té cap assignació per a aquest dispositiu, i no és en cap comandament.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Un altre programa fa servir el porta-retalls. No s'ha copiat res.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>La teva fila s'ha eliminat. El dispositiu es llegeix com abans.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Tornat a assignar a partir de la disposició de SDL: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>En ús ara. La fila és teva i preval per a aquest dispositiu.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Conservada com a teva. S'usa quan el motor s'executa i el dispositiu és connectat.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Conservada com a teva, però la variable SDL_GAMECONTROLLERCONFIG té una fila per a aquest dispositiu, que SDL conserva per sobre de la teva.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL no ha pres la fila. No ha canviat res per a aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Enganxa una assignació SDL</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Enganxa una assignació SDL per a {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Cerca una assignació per a {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Endevina una disposició per a {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Afegeix files d'un fitxer o del porta-retalls</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Enganxa</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Obre un fitxer…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Fitxers d'assignacions (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>El fitxer supera els 4 MB. El fitxer complet de la comunitat fa uns 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Cerca per nom, ID o VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Files que porta PadForge</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Cap fila coincideix.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>La fila triada s'aplica a {0} sota el seu propi ID, amb la mateixa comprovació i la mateixa elecció que Enganxa.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>Fila d'assignació SDL</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Una fila per a aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Una disposició endevinada.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} camps, el seu ID coincideix amb aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} camps, del mateix fabricant i producte en un altre bus o versió. Es conserva sota l'ID propi d'aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} camps, la fila d'un altre dispositiu. Es conserva sota l'ID propi d'aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} camps. SDL no llegeix aquest dispositiu, així que PadForge en disposa les entrades segons la fila.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} camps, a partir dels eixos, botons i creus del dispositiu. Comprova-la a Prova les entrades i després conserva-la o canvia-la aquí.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} camp, el seu ID coincideix amb aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} camp, del mateix fabricant i producte en un altre bus o versió. Es conserva sota l'ID propi d'aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} camp, la fila d'un altre dispositiu. Es conserva sota l'ID propi d'aquest dispositiu.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} camp. SDL no llegeix aquest dispositiu, així que PadForge en disposa les entrades segons la fila.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} camp, a partir dels eixos, botons i creus del dispositiu. Comprova-la a Prova les entrades i després conserva-la o canvia-la aquí.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Això canvia com es llegeix {0}. Les seves files a {1} s'assignen de nou a partir de la disposició nova.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Això canvia com es llegeix {0}. No és en cap comandament, així que no canvia cap fila.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Les dreceres de perfil que llegeixen {0} conserven les entrades que tenien.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>La fila es conserva com a teva a PadForge.xml i preval sobre qualsevol altra font per a aquest dispositiu. Elimina la meva torna la fila d'abans i les files d'abans.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Les files es conserven com a teves a PadForge.xml i prevalen per als seus dispositius sobre qualsevol altra font. Esborra, a Més de la fila Base de dades de comandaments, les elimina.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} files per a Windows. {1} per a altres sistemes s'ometen.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} fila per a Windows. {1} per a altres sistemes s'ometen.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} rebutjades. La primera: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Enganxa una fila o el text d'un fitxer gamecontrollerdb.txt.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>El text no és cap fila de la base de dades de comandaments de SDL: un ID de 32 dígits hexadecimals, un nom i camps com a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Les files són per a altres sistemes. PadForge llegeix files per a Windows, o per a cap sistema en concret.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>L'ID de la fila no és el d'un dispositiu. Necessita 32 dígits hexadecimals.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>El nom de la fila és buit, supera els 128 caràcters o conté un caràcter que SDL llegeix com a camp.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>La fila porta una pista o un camp d'Android, que PadForge no accepta.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>La fila té un camp que SDL no coneix.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Un enllaç no és en el format de SDL, com b3, a2, +a2, a2~ o h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>La fila dona un camp dues vegades.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>La fila supera els 1.024 caràcters.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>La fila no enllaça cap control.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Les teves files</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Les teves files</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Les files que afegeixes aquí, o enganxes a la targeta Assignació SDL d'un dispositiu, prevalen per als seus dispositius sobre qualsevol altra font i es conserven després del restabliment.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Afegeix files d'un fitxer o del porta-retalls…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} files, teves per sobre de qualsevol altra font per als seus dispositius.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} fila, teva per sobre de qualsevol altra font per al seu dispositiu.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Cap encara.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>En ús de seguida.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Activa</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Assistents al web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Túnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Cap</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Una adreça que enganxo</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Iniciant-se, amb els teus permisos.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>En execució, amb els teus permisos. La seva adreça és la mateixa cada vegada que s'inicia.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>En execució, amb els teus permisos. Un túnel ràpid pren una adreça nova cada vegada que s'inicia, així que l'assistent s'hauria d'afegir de nou.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Aturat.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Aturat. Les seves últimes paraules: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>No s'ha pogut iniciar.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ja no és en aquest PC.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>No s'ha trobat cap programa de túnel en aquest PC. PadForge funciona amb cloudflared, devtunnel, ngrok i Tailscale Funnel, o amb l'adreça del teu propi túnel.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Tria un túnel per donar una adreça pública a PadForge.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>També en aquest PC: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, l'adreça del qual és sempre la mateixa</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, els túnels ràpids del qual prenen una adreça nova cada vegada</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Executa el teu propi túnel cap a http://127.0.0.1:{0} i enganxa'n l'adreça https. Un túnel de Cloudflare amb nom, un túnel de desenvolupament persistent, Tailscale Funnel i el domini propi de ngrok conserven l'adreça.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Enganxa una adreça https sense cap camí fora de /mcp, tal com la dona el teu túnel.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Iniciant l'ajudant web de PadForge.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>L'ajudant web de PadForge s'ha aturat ({0}). Desactiva i torna a activar Reach PadForge From the Web per tornar-lo a iniciar.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adreça</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Encara no hi ha adreça pública.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Afegeix a Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Copiat.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Accepta un assistent web nou</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Comença a acceptar</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Deixa d'acceptar</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Acceptant fins a les {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>No s'accepta. Comença a acceptar ho obre durant cinc minuts.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Afegeix l'adreça a l'assistent i inicia la sessió. Cada inici de sessió mostra el seu propi codi de sis dígits a la seva pàgina d'inici de sessió i a la targeta de preguntes de PadForge. Permet-ho només quan els dos codis coincideixin. En altres moments un inici de sessió es rebutja i res et pregunta.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Permesos al web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Cap encara.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>El seu inici de sessió ha tornat a {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Es diu {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Permès {0}, últim ús {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Permès {0}, encara no usat.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Revoca</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>El seu propi Secure MCP Tunnel executa PadForge directament, sense adreça ni inici de sessió aquí. Copia l'ordre a la configuració d'aquest túnel.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Copia l'ordre</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge no baixa cap programa de túnel i no guarda la clau de cap altra empresa. Un assistent web treballa al nivell d'aquí a dalt.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Vols permetre que {0} treballi amb PadForge des del web?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>El seu inici de sessió torna a {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Es diu {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Permet-ho només si la seva pàgina d'inici de sessió mostra aquest codi:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>El seu codi de sis dígits es mostra a la targeta de preguntes de PadForge. Permet-ho només si la seva pàgina d'inici de sessió mostra el mateix codi.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Treballa al nivell {0}, a través de {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>El seu inici de sessió torna a aquest PC, i qualsevol programa d'aquí podria reclamar aquesta adreça.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Inicia la sessió a PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} demana treballar amb PadForge al teu PC.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Es diu {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Al teu PC, la targeta de preguntes de PadForge pregunta per aquest inici de sessió. Permet-ho allà només si la targeta mostra aquest codi:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Aquesta pàgina continua sola quan responguis al PC.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Aquest inici de sessió torna a un programa del teu PC, i qualsevol programa d'allà podria reclamar aquesta adreça.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge no accepta cap assistent web nou ara. Al teu PC, obre PadForge, ves a Extres, Automatització, i a Assistents al web prem Comença a acceptar. Després inicia la sessió de nou.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Aquest inici de sessió no pot continuar. Afegeix de nou l'adreça de PadForge a l'assistent i inicia la sessió.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Aquest inici de sessió ha acabat. Torna a iniciar la sessió des de l'assistent.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows no l'ha iniciat</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>ha acabat amb el codi {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatització està desactivada, així que cap assistent web accedeix a PadForge. L'ajudant web s'inicia quan Automatització s'activa.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Comprovant…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>No instal·lada.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Instal·lada i al dia. Un script comença amb {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Instal·lada per a {0} i al dia. Un script comença amb {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Instal·lada. Aquest PadForge en té una còpia més nova.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Instal·lada per a {0}. Aquest PadForge en té una còpia més nova.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Instal·lant…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge no ha pogut comprovar-la: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instal·la posa la biblioteca de PadForge on aquest llenguatge la troba. Un script que la carrega llegeix dispositius i controla assignacions al nivell d'aquí a dalt.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Desa una biblioteca on vulguis</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Còpies instal·lades</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Elimina-les totes</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Eliminades.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>ID de script</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>El seu ID de script</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Els scripts anomenen els seus controls {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Els scripts anomenen les seves tecles KeyA, KeySpace, KeyLeftShift i similars, i cada tecla pel seu codi, de Vk0 a Vk255.</value></data>
 </root>

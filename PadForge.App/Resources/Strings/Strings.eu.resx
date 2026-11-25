@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} deskonektatu da. {1} gailurik gabe geratu da.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} konektatu da</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} konektatu da, bateria %{1}</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} gailu deskonektatu dira</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} gailu konektatu dira</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} gailu deskonektatu dira: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} gailu konektatu dira: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} behin eta berriz deskonektatzen da</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (gehienez {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (gehienez {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Birkonexio automatikoa, ataka, parekatze-identitatea, helbidearen bidez konektatzea</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Ataka, DSX.exe ordezkoa</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Atakak, Abiadura osoa, Formatu pertsonalizatuak</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Skill</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Beste laguntzaileak, webeko laguntzaileak</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Begiratu inguruan buru-jarraitzaile edo VR betaurreko batekin, bi hatz lodiak botoietan egon daitezen.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Esleitu gidatze-joko batek bidaltzen dituen abiadura, pedalak eta martxak, edozein sarrera bezala.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Bidali kontrolagailuaren mugimendua DSU mugimendu-iturri bat irakurtzen duten emuladoreei.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Menu baten eraztuna, sareta edo barra irekita dagoen bitartean.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Geruzaren izena, aldaketa-geruza bat aktibatzen denean, geruza horrek ezartzen duen denboran zehar.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Profilaren izena, profila aldatzen denean.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Kontrolagailu birtualak aktibatu edo desaktibatu berri diren, lasterbidetik edo makro batetik.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Esleitutako gailu baten izena, deskonektatzen denean.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Esleitutako gailu baten izena, konektatzen denean.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopiatu helbidea</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programek profilak aldatu eta askatu ditzakete, motorra abiarazi eta gelditu, kontrolagailu birtualak aktibatu eta desaktibatu, leihoa erakutsi eta ezkutatu, PadForge itxi, diagnostiko-argazki bat gorde eta zer dabilen galdetu.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Aginduen mailako guztia, eta programek gailuak, kontrolagailu birtualak, mapaketak, profilak eta ezarpenak ikus ditzakete, gailu guztien sarrerak gertatzen diren heinean jarraitu, eta PadForge-ren leku bat erakutsi. Irakurri mailako programa batek gailu guztietan sakatutako tekla guztiak ikusten ditu, administratzaile gisa exekutatzen diren leihoetan idatzitakoak barne.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Irakurri mailako guztia, eta programek euren gailuak gehitu eta gidatu ditzakete, edozein gailutako kontrol bati eutsi eta izendun balioak eman makro-abiarazleei.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Bidali sarrerak mailako guztia, eta programek orrietan alda dezakezun guztia alda dezakete.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Bidali sarrerak mailako guztia, eta programek orrietan alda dezakezun guztia alda dezakete. Aldaketa batzuek beti galdetzen dizute lehenik PadForge-ren galdera-txartelean.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Laguntzaileak</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Itsatsi hau laguntzaile baten MCP ezarpenetan. Laguntzaileak orduan PadForge-rekin lan egingo du goiko mailan.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopiatu TOML gisa</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML irakurtzen duten laguntzaileak</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Gehitu botoiak PadForge gehitzen du laguntzaile horretan, bere trebetasunarekin. Orduan goiko mailan lan egiten du, eta bere hitzak seinalatzen duenaren ondoan agertzen dira, bere izenaren azpian.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Script-ak</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Script-liburutegia</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Gorde liburutegi bat…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fitxategi bat AutoHotkey v2, Python edo PowerShell-erako. Hura kargatzen duen script batek gailuak irakurtzen ditu eta mapaketak gidatzen ditu goiko mailan.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Fitxategi bat AutoHotkey v2, Python edo PowerShell-erako, zuk hautatzen duzun lekuan idatzia.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Zure erantzunaren zain</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Jarduera</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Ez da programarik deitu oraindik. Dei bakoitza hemen zerrendatzen da, zer gertatu zen adierazita.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Desegin</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Laguntzaileentzako skill-a</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Gorde skill-a…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-k ezin izan du gorde: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Irakurri mailako edo goragoko programa bat konektatuta dagoen bitartean, gailu guztietan sakatutakoa ikusten du, teklatuak barne.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Plugin-ak</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Exekutatu plugin-ak</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Ez dago plugin-ik exekutatzen.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>Plugin bat zure eskubideekin exekutatzen da, ez PadForge-renekin.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Integratuak</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Proba-kontrolagailua</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>Berez mugitzen den kontrolagailu bat, kontrol bat aldiko, mapaketa bat probatu ahal izateko hardwarerik eskura izan gabe.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Abiadura</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Motela</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normala</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Azkarra</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Azkarrena</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Berrerreproduzitu</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Arazo baten grabaketa berriro erreproduzitzen du, hura egin zuten gailuak balira bezala eta zuten denborarekin. PC honetako gailu berriak dira, zuk edo profil batek mapatzen dituen moduan mapatuta.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Grabaketa</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Arazo-grabaketak|*.zip;*.log|Fitxategi guztiak|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-k ezin du {0} erreproduzitu. Ez da arazo-grabaketa bat, edo ez dauka gailu baten sarrerarik.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Zure plugin-ak</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>Plugin bat PadForge-ri gailuak gehitzen dizkion programa bat da. PadForge-k zure eskubide arruntekin abiarazten du motorra martxan dagoen bakoitzean.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Gehitu plugin bat…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programak eta script-ak|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Fitxategi guztiak|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Onartu…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Onartu eta berrabiarazi…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Motorrarekin batera abiatzen da</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Fitxategia egiaztatzen abiarazi aurretik</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>{0} kodearekin irten da. {1} s barru berriro abiaraziko da.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} zerrendan dago jada.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge-k gehienez 16 plugin exekutatzen ditu. Kendu bat beste bat gehitzeko.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Exekutatzen ari diren plugin-ak: {0}. Gehitu dituzten gailuak: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} gelditu da bost hutsegiteren ondoren.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} aldatu egin da onartu zenuenetik.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ezin izan da abiarazi.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Gehitu du: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Sinatzailea: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Sinatu gabe.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Bere ezarpenak hemen agertzen dira martxan dagoen bitartean.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Ez du ezarpenik deklaratzen.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-k ezin izan ditu bere ezarpenak irakurri: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Minutu bat igaro ondoren amaitu da, ezer esan gabe</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Bere fitxategia aldatu egin da martxan zegoen bitartean</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Gehitu du: {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} plugin-aren ezarpenak</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Hautatu</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Sakatu kontrol bat…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Hautatu gabe</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Gehitu plugin bat, edo jaregin bere fitxategia orri honetan. PadForge-k bere bidea, bere sinatzailea eta bere SHA-256 erakusten ditu, eta galdetu egiten dizu exekutatu aurretik. Plugin batek zure eskubideekin exekutatzen du, ez PadForge-renekin.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Arazo baten grabaketa berriro erreproduzitzen du, hura egin zuten gailuak balira bezala, haien denborarekin.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Martxan.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Martxan, eskuz.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Zer mugitzen den</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Palankak eta aktibatzaileak</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Palankak</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Aktibatzaileak</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Eredua</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Miaketa</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Zirkulua</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Mugimendu-denbora</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Atseden-denbora</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Sakatu botoiak</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Sakatu nabigazio-botoiak</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows aplikazioek Xbox kontrolagailu birtual baten A, B, Atzera, Hasiera eta D-pad-ari erantzuten diote aurreko leihoan, eta Gida botoiak Xbox Game Bar irekitzen du.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Biratu D-pad-a</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Arrazoi beragatik.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Sakatze-denbora</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Kontrolagailuak</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Eskuz</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Mugimendua gelditzen du. Ezarri bere sarrerak behean, saguarekin.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Ezkerreko palanka</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Eskuineko palanka</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Ezkerreko aktibatzailea</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Eskuineko aktibatzailea</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Irakurketak segundoko</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Plugin-kita eta aukeratzen duzun plugin baten erregistroa</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin-kita</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Gorde plugin-kita…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C#-ko plugin txiki bat, eta plugin bera AutoHotkey, Python eta PowerShell-erako, fitxategi bakoitzak nola eraiki edo exekutatu azalduta.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>Aditz, gertaera eta ezarpen mota guztien gida bat, C#-ko pluginerako eraikuntza-script bat, eta plugin bera AutoHotkey, Python eta PowerShell-erako.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Erregistroa</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Aukeratu plugin bat bere erregistroa ikusteko.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Plugin honen erregistroan ez dago ezer oraindik.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>Joko-mod bat</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>Beste programa batek {0} hodi-izena du. Itxi programa hori.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-ek {0} hodia ukatu du, beraz programak ezin dira konektatu.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Ez dago programarik konektatuta.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Aktibatuta. Ez dago programarik konektatuta.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Konektatuta: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Programa ezezaguna</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, {1}-k sinatua</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Ez da gehiago egingo PadForge berriro abiarazi arte</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-k ez du halako tresnarik</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Programak egoera zaharrago bat irakurri zuen</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ez dago ezarpen hori</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Ez dago ID hori duen ezer</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Balioa ezarpenak onartzen duenaren kanpoan zegoen</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Ez zenuen baimendu</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Inork ez zuen garaiz erantzun</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Erakutsi leihoa</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Bidali leihoa sistema-erretilura</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Minimizatu leihoa</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maximizatu leihoa</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Itxi PadForge</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Abiarazi motorra</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Gelditu motorra</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Gehitu {0} gailua</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Ezarri {0} gailuaren kontrolak</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Kendu {0} gailua</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Jarri {0} gailuaren kontrol guztiak atsedenean</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge-k programa bat exekutatzea eragiten du.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Fitxategi bat, karpeta bat edo web-orri bat irekitzen du.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge-k Windows-i teklak edo sagu-sarrera bidaltzea eragiten du.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge-ren kanpoko profil bat inportatzen du.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge-k galdetu egiten dizu programa batek hau egin aurretik.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Elkarrizketa-koadroak</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makroak</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Eutsi {0} gailuaren kontrolei</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Askatu {0} gailuaren kontrolak</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Ezarri {0} balioa</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Aldatu profilak</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Abiarazi edo gelditu motorra</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Gaitu edo desgaitu kontrolagailu birtualak</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Gorde diagnostiko-argazki bat</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Irakurri galdeketa-maiztasuna eta kontrolatzaileak</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Zerrendatu profilak</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Irakurri profil bat</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Zerrendatu kontrolagailu birtualak</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Zerrendatu gailuak</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Irakurri gailu bat</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Itxaron zure sarrerari</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Irakurri kontrolagailu baten mapaketak</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Zerrendatu kontrolagailu baten makroak</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Grabatu arazo bat</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Bilatu ezarpenak</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Irakurri ezarpen bat</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Erakutsi leku bat</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Bilatu lekuak PadForge-n</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Irakurri leku bat PadForge-n</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Irakurri ikusten duzuna</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Gehitu berezko gailu bat</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Gidatu bere gailua</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Kendu bere gailua</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Eutsi kontrol bati edo askatu</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Ezarri balio bat makro-abiarazleentzat</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Aldatu ezarpen bat</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Sakatu botoi bat</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Sortu profil bat</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Aldatu profil baten izena</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Ezabatu profil bat</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Aldatu kontrolagailu baten mota</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Esleitu gailu bat</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Ezarri mapaketa-errenkadak</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Garbitu mapaketa-errenkadak</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Mapatu kontrolagailu bat automatikoki</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Gorde makro bat</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Ezabatu makro bat</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Teklatu eta sagu kontrolagailu bat sortzen du</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Aktibatzen du: {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Aldatu “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Sakatu “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0}(e)k {1} erakutsi nahi dizu</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Hemen: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>{0} programak PadForge-rekin lan egitea baimendu nahi duzu, {1} mailan?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} exekutatzen {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Abiarazi du: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Sinatzailea: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Sinatu gabe.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Irakurri mailan eta gorago, gailu guztietan sakatutako tekla guztiak ikusten ditu, teklatuak barne.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Behin bakarrik galdetzen du. Automatizazioa orrian kendu dezakezu.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ren komando-lerroa</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ezartzen du honetara: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Sarean entzuten du, beraz beste gailuek PC hau atzitu dezakete.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Kontrolatzaile bat edo HidHide aldatzen du, eta beste programek eta jokoek horietan oinarritzen dira.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell moduluak (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Baimendu</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Ez baimendu</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Orain ez</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Erakutsi</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>{0}. urratsa, {1} urratsetatik.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Egin klik jarraitzeko.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Ireki {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Ireki Gehiago.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Nork: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Nork: {1}, bere burua “{0}” deitzen duena</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Nork: bere burua “{0}” deitzen duen programa bat</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Instalatu eta berrabiarazi</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Bertsio-oharrak</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Kontrolagailuen datu-basea</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Eguneratu orain botoiak komunitatearen kontrolagailuen datu-basea (SDL_GameControllerDB) deskargatzen du GitHub-etik, eta ezarpen-fitxategian gordetzen ditu PadForge-ren bertsio honek ez dituen mapaketak. Mapaketa berri bat beste ezerk gamepad gisa irakurtzen ez duen, esleituta ez dagoen eta Behartu joystick gordinaren moduan ez dagoen kontrolagailu batentzat soilik erabiltzen da. Berrezarpenak deskargatutako mapaketa guztiak kentzen ditu.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Eguneratu orain botoiak komunitatearen kontrolagailuen datu-basea (SDL_GameControllerDB) deskargatzen du GitHub-etik, eta ezarpen-fitxategian gordetzen ditu PadForge-ren bertsio honek ez dituen mapaketak. Berehala erabiltzen dira. Mapaketa berri bat beste ezerk gamepad gisa irakurtzen ez duen, esleituta ez dagoen eta Behartu joystick gordinaren modua moduan ez dagoen kontrolagailu batentzat soilik erabiltzen da. Berrezarpenak deskargatutako mapaketa guztiak kentzen ditu. Zure errenkadak, Gehiago atalaren azpian, geratzen dira.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Eguneratu orain</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Eguneratzen…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Eguneratzeak bilatzen…</value></data>
@@ -994,12 +1049,10 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} bertsiorako eguneratzea ez da instalatzen amaitu. Instalatu Ezarpenetatik berriro saiatzeko.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0} bertsiora eguneratu da.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Integratuta: {0} mapaketa, komunitatearen kopia: {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Integratuta: {0} mapaketa, komunitatearen kopia: {1}. Eguneratuta: {2}. Berriak: {3}, aldatuak: {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Integratuta: {0} mapaketa, komunitatearen kopia: {1}. Deskargatuta: {2}. Errenkada berriak: {3}, aldatuak: {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Komunitatearen datu-basea ez da aldatu azken eguneratzetik.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Ezin izan da GitHub-era iritsi: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-k deskarga baztertu du, ez delako espero duen kontrolagailuen datu-basea. Ez da ezer aldatu.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>Mapaketa berri bat bere kontrolagailua hurrengo aldiz konektatzean erabiltzen da.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>Aldatutako mapaketa bat PadForge hurrengo aldiz abiaraztean erabiltzen da.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Abiarazi minimizatuta</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Abiarazi saioa hastean</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Bertsioaren informazioa, eta motorraren gertaeren erregistroa arazoak konpontzeko.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Gorde diagnostiko-erregistro bat</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Motorraren gertaerak etengabe idazten ditu diagnostics.log fitxategian, Ireki erregistro-karpeta botoiak irekitzen duen karpetan. Gaituta jarraitzen du berrabiarazi ondoren ere. Fitxategiak 8 MB betetzen dituenean, diagnostics.log.old bihurtzen da eta fitxategi berri bat hasten da.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Gorde argazkia</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Motorraren azken gertaerak fitxategi berri batean gordetzen ditu. Diagnostiko-erregistroa desaktibatuta dagoenean ere funtzionatzen du.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Gorde argazki bat…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Aplikazioa, Windows, zure gailuak eta ezarpenak orain dauden bezala hartzen ditu, motorraren azken gertaerekin, eta irekitzen ditu gorde aurretik irakur ditzazun. Diagnostiko-erregistroa desaktibatuta dagoenean ere funtzionatzen du.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Ireki erregistroen karpeta</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Grabatu arazo bat</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Hasi grabatzen</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Gelditu grabaketa ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grabatzen du Gelditu grabaketa sakatu arte, 10 minutu igaro arte edo 20 MB-ko zip-a bete arte, eta gero zip-a Explorer-en hautatzen du, txosten batera erantsteko prest.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Hasi, eragin arazoa, eta gelditu. PadForge-ren ondoko fitxategi batek PadForge-k irakurri, bidali eta erregistratu duen guztia dauka, gaizki joan denaren laburpen batekin. Grabatzen den bitartean gailu guztietan sakatutako tekla eta botoi guztiak fitxategian daude, teklatuak eta saguak barne. Erabiltzaile-izenak, serie-zenbakiak, helbideak eta idatzitako izenak ordezkatu egiten dira ezer idatzi aurretik.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Grabatzen du Gelditu grabaketa sakatu arte, 30 minutu igaro arte edo 20 MB-ko zip-a bete arte, eta gero grabaketa irekitzen du gorde aurretik irakur dezazun.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Hasi, eragin arazoa, eta gelditu. Gero irakurri zer duen, zatiz zati, eta gorde nahi duzun lekuan. Grabatzen den bitartean gailu guztietan sakatutako tekla guztiak bertan daude, teklatuak eta saguak barne. Erabiltzaile-izenak, serie-zenbakiak, helbideak eta idatzitako izenak ordezkatu egiten dira ezer idatzi aurretik.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Laburpena idazten…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} gorde da</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Grabaketa ez da hasi. Egiaztapen batek PC honen balio pribatu bat aurkitu du, fitxategitik kanpo geratuko ez zena.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Grabaketa ez da hasi. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Azken grabaketa amaitzen ari da oraindik.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Gorde azken 60 segundoak desaktibatuta dago, beraz ez dago gordetzeko ezer.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge-k gelditu gabe zuen grabaketa bat amaitu da: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge-k gelditu gabe zuen grabaketa bat Hasiera orrian irakurtzeko zain dago: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Gorde azken 60 segundoak</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Motorra martxan dagoen bitartean, grabaketa batek duenaren azken minutua memorian gordetzen du, arratsaldean behin gertatzen den arazo baterako. Gorde azken 60 segundoak botoiak fitxategi gisa idazten du.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Motorra martxan dagoen bitartean, grabaketa batek duenaren azken minutua memorian gordetzen du, arratsaldean behin gertatzen den arazo baterako. Gorde azken 60 segundoak botoiak irekitzen du gorde aurretik irakur dezazun.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Gorde azken 60 segundoak</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Idatzi letrak eta zenbakiak tekla bakar gisa</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>Grabaketa batek mapaketa edo makro batek irakurtzen ez dituen letra- eta zenbaki-teklak tekla bakar gisa idazten ditu, sakatze bakoitza bere unean. Gainerako tekla guztiak, eta mapaketa edo makro batek irakurtzen dituen guztiak, sakatu bezala idazten dira.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Gorde azken 60 segundoak, Idatzi letrak eta zenbakiak tekla bakar gisa</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Zer grabatu, azken 60 segundoak, idatzitako letrak</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Gorde argazki bat</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, zure gailuak eta ezarpenak orain dauden bezala, berrikuspen beraren bidez.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe-ren ondoko diagnostics.log, hor irakur dezakezuna.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Zer grabatu</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Dena aktibatuta. Desaktibatutako zati bat hurrengo grabaketatik kanpo uzten da, eta fitxategiak zer zati dituen adierazten du.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Arratsaldean behin gertatzen den arazo baterako.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Grabaketa Hasiera orrian irakurtzeko zain dago.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Laburpena</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Ezarpenak eta gailuak</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Sarrera</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Irteera</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Feedbacka</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Denborak</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Leihoa eta erroreak</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Jarduera</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Diagnostiko-lerroak</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Irakurri zure grabaketa</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} eta {1} artean, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>Argazkia: {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minutu</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minutu</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 segundo</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} segundo</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Zuk gelditu duzu.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Berez gelditu da {0} igarota.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Berez gelditu da zip-ean {0} lortuta.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Makro batek gelditu du.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Programa batek edo --record stop komandoak gelditu du.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Hasi zuen laguntzaileak gelditu du.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge ixten zenean gelditu da.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Azken 60 segundoak, memorian gordeta.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Irakurri partekatuko duzuna. Desaktibatu zati bat kanpoan uzteko, eta gero gorde. Ez da ezer PC honetatik irteten zuk argitaratzen ez baduzu.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, partekatuko den bezala</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Erakutsi: {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>kanpoan utzita</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>grabatu gabe</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} testu gisa, {1} zip-ean</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} testu gisa, {1} partekatzen duzun zip-ean. Grabaketa bat zip-ean {2} lortzean edo {3} igarotzean gelditzen da.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Garbiketa-egiaztapena: PadForge-k {0} ordezkatu ditu ({1}). PC honen izenik, serie-zenbakirik edo helbiderik ez dago gordetzen dituzun zatietan.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} balio</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 balio</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} mota pribatu</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 mota pribatu</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Garbiketa-egiaztapena: PC honen berezko {0} balio oraindik gordetzen dituzun zatietan daude. Desaktibatu zati horiek edo ezabatu grabaketa. Ordura arte, Gorde… desaktibatuta dago.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Garbiketa-egiaztapena: PC honen berezko balio bat oraindik gordetzen dituzun zatietan dago. Desaktibatu zati horiek edo ezabatu grabaketa. Ordura arte, Gorde… desaktibatuta dago.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Zati honetako ezer ez da gertatu grabatzen ari zen bitartean.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Ezabatu</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopiatu laburpena</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Kopiatuta</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Gorde…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Gorde grabaketa</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip fitxategiak</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Ez da gorde. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Zure izenean gordetzen da, lehen aldian Deskargak karpetan, gero azken aldiz gorde zenuen lekuan, eta Fitxategi-arakatzailean erakusten da. Orrian inor ez dagoenean gelditzen den grabaketa batek (bere mugak, makro batek, programa batek, laguntzaileen tresnak edo --record stop komandoak) berrikuspen honetarako itxaroten du Hasiera orrian, eta 7 egunera ezabatzen da gorde ezean. Programa bati esaten zaio itxaroten duela, inoiz ez non.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0}(e)ko arazo-grabaketa bat zain dago zuk irakur dezazun.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Berrikusi</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Markatu grabaketa</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Aplikazioaren bertsioa</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET exekuzio-ingurunea</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL bertsioa</value></data>
@@ -2900,31 +3010,64 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Saguaren posizioa X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Saguaren posizioa Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sentikortasuna</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Iturburu bakoitzeko kurtsore-sentikortasuna. 1.0 balioarekin, palankaren desbideratze osoa erdigunetik pantaila-zabaleraren %10era lortzen da. 1.0 baino balio handiagoek kurtsore-ibilbide txikiagoarekin lortzen dute desbideratze osoa. 1.0 baino balio txikiagoek ibilbide handiagoa behar dute.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Iturburu bakoitzeko kurtsore-sentikortasuna. 1.0 balioarekin, palankaren desbideratze osoa erakusleak duen monitorearen zabaleraren %10era lortzen da, bere erditik. 1.0 baino balio handiagoek kurtsore-ibilbide txikiagoarekin lortzen dute desbideratze osoa. 1.0 baino balio txikiagoek ibilbide handiagoa behar dute.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Saguaren ibilbidea X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Saguaren ibilbidea Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Ibilbidea muturrera arte</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Saguak erditik muturrerainoko ibilbidean zenbat mugitzen den, sagu-puntuetan. Zenbaki altuago batek finago gidatzen du eta esku-ibilbide gehiago behar du.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Saguak edo bolanteak erditik muturrerainoko ibilbidean zenbat mugitzen den, jakinarazten dituen puntuetan. Zenbaki altuago batek finago gidatzen du eta esku-ibilbide gehiago behar du.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Saguaren DPI bere gailuaren orrian ezarrita badago, ibilbidea zentimetrotan ere erakusten da.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>puntu</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Zentratzea</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desaktibatuta aukerak bolantea eskuak utzi zuen lekuan uzten du. Malgukiak Itzulera-denboran zehar itzularazten du. Telemetriatik aukerak autoaren aurreko gurpilek bezala tiratzen du, jokoaren abiadura eta atxikimenduaren arabera: geldirik gelditzean, gero eta tinkoago abiadurarekin, arina gurpilak irristatzen direnean. Jokoak telemetriarik bidaltzen ez badu, malgukia da. Jokoaren indarretik aukerak bolante birtualaren indar-feedbackak biratzen uzten du.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Desaktibatuta aukerak bolantea eskuak utzi zuen lekuan uzten du. Malgukiak Itzulera-denboran zehar itzularazten du. Telemetriatik aukerak autoaren zuzendaritzak bezala tiratzen du, jokoaren abiadura eta atxikimenduaren arabera: indartsu erditik gertu eta leunago urrunago, geldirik gelditzean, gero eta tinkoago abiadurarekin, arina gurpilak irristatzen direnean. Jokoak telemetriarik bidaltzen ez badu, 100 km/h-n bide lehorrean bezala tiratzen du. Jokoaren indarretik aukerak bolante birtualaren indar-feedbackak biratzen uzten du.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Desaktibatuta</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Malgukia</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Telemetriatik</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Jokoaren indarretik</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Itzulera-denbora</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Malgukiak bolantea %95 itzultzeko behar duen denbora. Telemetriatik aukerak denbora hori behar du 100 km/h-n bide lehorrean.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Malgukiak bolantea %95 itzultzeko behar duen denbora. 0 balioak berehala zentratzen du. Telemetriatik aukerak denbora hori behar du erditik gertu 100 km/h-n bide lehorrean.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Gidatu</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Beti aukerak sagua une oro gidatzen uzten du. Eutsi bitartean aukerak Gidatze-sarrerari eusten zaion bitartean soilik gidatzen uzten du. Txandakatu aukerak gidatzea aktibatu edo desaktibatzen du Gidatze-sarrera sakatzen den bakoitzean. Sagua gidatzen ari ez den bitartean, bolantea dagoen lekuan geratzen da edo zentratzen da, beraz sagu batek gidatu eta inguruan begira dezake.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Beti aukerak sagua une oro gidatzen uzten du. Eutsi bitartean eta zentratu aukerak Gidatze-sarrerari eusten zaion bitartean soilik gidatzen uzten du, eta gero erdira itzularazten du, Zentratzea duen iturrian hari esker eta ez duen lekuan berehala. Eutsi bitartean eta geratu aukerak sarrerari eusten zaion bitartean soilik gidatzen uzten du eta askatu zen lekuan uzten du. Txandakatu aukerak gidatzea aktibatu edo desaktibatzen du Gidatze-sarrera sakatzen den bakoitzean. Beraz, sagu batek gidatu eta inguruan begira dezake.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Beti</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Eutsi bitartean</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Eutsi bitartean eta zentratu</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Txandakatu</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Gidatze-sarrera</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Saguari gidatzen uzten dion botoia, saguaren ibilbidearen gailu berean. Bat ere aukeratu gabe, sagua beti gidatzen da.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Saguari gidatzen uzten dion botoia, iturburuaren gailu berean. Bat ere aukeratu gabe, sagua beti gidatzen da.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Leuntzea</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Irregularki jakinarazten duen sagu bat leuntzen du. Bolantea eskuaren atzetik doa gutxi gorabehera denbora horretan. 0 desaktibatuta dago.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Irregularki jakinarazten duen sagu bat leuntzen du. Palanka eskuaren atzetik doa gutxi gorabehera denbora horretan. 0 desaktibatuta dago.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Blokeoa abiaduran</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Jokoaren telemetria aktibatuta dagoenean, blokeoaren zenbat geratzen den 200 km/h-n. %100ean blokeo osoa dago abiadura guztietan.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Gurpilaren ibilbidea</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Alboko gurpilaren ibilbidea</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Sagua zein azkar mugitzen den. Askatu egiten da eskua gelditzen denean.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Erakuslea bere monitorean non dagoen, bere erditik edo gidatzea hasi zenean zegoen lekutik.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Sagua zenbat mugitu den, eskuak uzten duen lekuan eutsita, bolante batek bezala.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Korritze-koskak posizio gisa eutsita, zehaztasun osoz korritze fineko gurpil batean.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Alboko gurpilaren koskak posizio gisa eutsita, zehaztasun osoz korritze fineko gurpil batean.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>Bultzada bat koska bakoitzeko, berehala atseden-egoerara itzuliz.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Eutsi bitartean eta geratu</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sentikortasuna</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Abiadurak palankaren zenbat ematen duen. 1.00 balioan, palankak desbideratze osoa lortzen du 16.000 puntu segundoko, edozein inkesta-maiztasun eta sagu-txosten maiztasunetan.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Itzuli erdira</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Sagua moteldu edo gelditzen denean, palanka hau baino azkarrago ez da itzultzen. 0 balioak saguarekin batera itzultzen uzten du.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Hasi gidatzea hasi zen lekutik</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Gidatze-sarrerarekin, palankak erakuslea gidatzea hasi zenean zegoen lekutik neurtzen du, telefono baten pantailako palanka hatza lurreratzen den lekutik hasten den bezala. Desaktibatuta, erakusleak duen monitorearen erditik neurtzen du.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Ardatz honek erlatiboki mugitzen du</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Trackball batentzat edo zenbat biratu den jakinarazten duen biragailu batentzat. Aktibatuta, ardatzak posizio bati eusten dio Saguaren ibilbideak egiten duen bezala eta ibilbide-ezarpenak hartzen ditu. Windows-ek ez du esaten zein ardatz mugitzen diren horrela.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Aurreikusi</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Familia honek zure sagua nola jarraitzen duen erakusten du. Ez da ezer mapatzen hautatu arte.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Aurreikusten. Mugitu sagua.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Eutsita hemen: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>Hemen: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>%{0} eskuinera</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>%{0} ezkerrera</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>%{0} gora</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>%{0} behera</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>erdian</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} sakatuta dagoen bitartean mugitzen da.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Saguaren DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Sagu honek hazbete bakoitzeko jakinarazten dituen puntuak, bere egileen softwareak ezarri bezala.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI ezarrita dagoenean, Saguaren ibilbideak bere ibilbidea zentimetrotan ere erakusten du. 0 ezarri gabe esan nahi du.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR erakuslea X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR erakuslea Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR distira</value></data>
@@ -4652,6 +4795,7 @@ Aurreko bertsioaren kopia bat karpeta honetan dago: {1}</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>PadForge-k jokatzen duzun bitartean pantailan erakusten dituen adierazleak. Bat desaktibatzeak ez du inoiz portaera aldatzen, pantailan erakusten den ala ez baizik.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Aldaketa-geruzaren oharra</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profil-aldaketaren gainjartzea</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Kontrolagailuak aktibatuta edo desaktibatuta</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Gailu deskonektatuaren oharra</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Gailu konektatuaren oharra</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Erakutsi pantailako eraztuna edo sareta menu erradial edo ukitu bidezko bat aktibo dagoenean. Menuek gainjartzea desaktibatuta ere jarraitzen dute funtzionatzen.</value></data>
@@ -5318,6 +5462,8 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Desaktibatuta</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Kronometroa</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Argi-barraren kolorea</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Lineaz kanpoko gailuak</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Guztiak konektatuta</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>desaktibatuta</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software bidez</value></data>
@@ -5360,6 +5506,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Pantailak zuk aukeratutako irudi bat erakusten du, bere tamainan. Pantaila baino handiagoa den irudi batek pantailaren tamainako leiho bat erakusten du, eta Mugitu teklatuko pantailaren irudia makroak mugitzen du. S.T.R.I.K.E. 7-n, pantailan zehar eramandako hatzak ere mugitzen du.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Pantailak kronometroa erakusten du, Kronometroa makroak abiarazi, pausatu eta berrezartzen duena. Pantaila guztiek kronometro bera erakusten dute.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Pantailak DualShock 4 edo DualSense kontrolagailuaren argi-barraren kolorea erakusten du, pantaila honek elikatzen duen zirrikitu baxuenean, edo, bat ere elikatzen ez badu, zirrikitu guztien artean baxuenean. Pantaila monokromo batek bere distira puntu-eredu gisa erakusten du. Kolorea argi-barra batera iritsi arte, PadForge-k ez du ezer erakusten.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Pantailak konektatuta ez dauden gailu mapatuak zerrendatzen ditu, Gailuak orriak erakusten dituen izenekin, eta Guztiak konektatuta jartzen du bat ere falta ez denean.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Irudiak (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Fitxategi guztiak (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Desplazamendua</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>X desplazamendua</value></data>
@@ -5556,6 +5703,7 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Gidatzen (ez 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Jokoaren telemetria</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Script-aren balioa</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Gailuaren konexioa</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Abiadura (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (maximoaren %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Martxa (-1 atzeranzkoa, 0 neutroa)</value></data>
@@ -5711,4 +5859,231 @@ PadForge-k orain desinstalatzea nahi duzu? Horrek administratzaile-baimenak beha
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Arazoaren grabaketa</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Hasi edo gelditu grabaketa</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Markatu grabaketa</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Gainjartzeak konektatuta ez dauden gailu mapatuak zerrendatzen ditu, Gailuak orriak erakusten dituen izenekin, eta Guztiak konektatuta jartzen du bat ere falta ez denean.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Desaktibatuta. Ezein programak ezin du PadForge atzitu.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} eta {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Jarduera: {0} dei, zaharrenetik hasita. Haien aurretik egon ziren deiak: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Jarduera: {0} dei. Haren aurretik egon ziren deiak: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>Dei zaharrak joan dira: {0:N0}. Jarduera atalak berrienak gordetzen ditu: {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>Dei zahar {0:N0} joan da. Jarduera atalak berrienak gordetzen ditu: {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Esportatu…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Esportatu Jarduera</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Testu-fitxategia</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Ireki</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Eguneratu</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Gehiago: {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Gorde trebetasuna ZIP gisa…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Ireki bere ezarpen-fitxategia</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Gorde da. {0} programan, gehitu {1} hemen: {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} programak ez du ezarpen-fitxategirik oraindik. Gehitu botoiak bat sortzen du.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge-k ez du aurkitzen PC honetan Windows-erako konfigurazioa dokumentatuta duen laguntzaile-programarik. Beste edozeinentzat Gehiago atalaren azpiko Copy Settings funtzionatzen du.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge-k ezin izan ditu laguntzaile-programak egiaztatu: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Gehitu gabe.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Gehituta.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Gehituta. Orain konektatuta.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Gehituta. Ordutik ez da konektatu. Irekita zegoen laguntzaile batek PadForge ikusten du itxi eta berriro irekitzen denean.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Beste PadForge baterako gehituta. Eguneratu botoiak honetara zuzentzen du.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Gehituta. Bere PadForge trebetasuna PadForge honena baino zaharragoa da.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Gehituta, bere PadForge trebetasunik gabe.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Gehituta. Bere PadForge trebetasuna PadForge berriago batetik dator.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Trebetasunak igoera gisa soilik hartzen ditu.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Gehitutako laguntzaileek PadForge atzitzen dute Automatizazioa aktibatuta dagoenean.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Gehitzen…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Kentzen…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Eguneratzen…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Ez da amaitu: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Kopiatuta.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Ez da kopiatu: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Baimendutako programak</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>Irakurri edo gehiago nahi duen programa batek behin galdetzen du, lehen aldiz konektatzen denean, eta eskatzen duen maila jasotzen du, goiko mailara arte. Goian gehitzen duzun laguntzaile bat horrekin baimenduta dago.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Orain konektatuta.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Azken erabilera: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Oraindik erabili gabe.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Konektatuta: {0}. Egin klik Automatizazioa irekitzeko.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>PC honetan: {0}. Webetik: {1}. Egin klik Automatizazioa irekitzeko.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Webetik konektatuta: {0}. Egin klik Automatizazioa irekitzeko.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL mapaketa</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>Gamepad bat, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>Joystick bat. SDL-k ez du mapaketarik.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>Joystick bat. PadForge-k gordin irakurtzen du, beraz SDL-ren mapaketa ez da erabiltzen.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>Joystick bat, zure errenkada batek gamepad gisa antolatua.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL-k gailuak irakurtzen ditu motorra martxan dagoen bitartean.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Komunitatearen kopia integratua, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Deskargatuta: {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ren berezko fitxategia</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Zurea, gehitua: {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG aldagaia, SDL-k gehitzen duzun edozein errenkadaren gainetik duena</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopiatu SDL mapaketa</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Gailuaren mapaketa arbelean jartzen du komunitatearen datu-baseko errenkada gisa, gailuaren IDarekin, bere checksuma eta bertsioa zeroan jarrita.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Itsatsi SDL mapaketa…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Gailu honetarako errenkada bat hartzen du, egiaztatzen du, zuretzat gordetzen du eta berehala aplikatzen du.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Bilatu mapaketa bat…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge-k dituen errenkada guztiak bilatzen ditu izenez eta hautatzen duzuna gailu honetan aplikatzen du, IDak ezberdinak dituen klon baterako.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Asmatu diseinu bat</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Gamepad diseinu bat asmatzen du gailuaren ardatz, botoi eta hat-etatik, datu-baseek ezagutzen ez duten gailu baterako. Egiaztatu ezazu Sarreren proba atalean.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Kendu nirea</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Kendu nirea botoiak lehengo errenkada eta kontrolagailu-errenkadak itzultzen ditu.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Mapatu berriro</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Gailuaren errenkadak berriro egiten ditu dagoen kontrolagailu bakoitzean SDL-ren diseinutik, esleitzean egiten den bezala.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Komunitatearen datu-baseko orria</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Errenkada, eta {0}(r)ekin dituen aldeak</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Errenkada</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Kontrolagailua</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} errenkada</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Bere sarrera orain</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL-ren errenkadak dio</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>ez dago SDL-ren errenkadan</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, ezberdina</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge-k ez du erabiltzen: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Errenkada</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Kopiatuta.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Kopiatuta. SDL-ren formak ezin du jaso: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makroak</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>kurbak</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>eremu hilak</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>teklatu eta sagu irteerak</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, toggle-ak eta beste ekintzak</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} eta {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Ez dago kopiatzeko ezer: SDL-k ez du mapaketarik gailu honetarako, eta ez dago kontrolagailu batean ere.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>Beste programa bat arbela erabiltzen ari da. Ez da ezer kopiatu.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Zure errenkada kendu da. Gailua lehen bezala irakurtzen da.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-ren diseinutik berriro mapatuta: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Orain erabiltzen da. Errenkada zurea da eta nagusitzen da gailu honetarako.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>Zuretzat gordeta. Motorra martxan dagoenean eta gailua konektatuta dagoenean erabiltzen da.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>Zuretzat gordeta, baina SDL_GAMECONTROLLERCONFIG aldagaiak gailu honetarako errenkada bat du, eta SDL-k hura mantentzen du zurearen gainetik.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-k ez du errenkada hartu. Ez da ezer aldatu gailu honetarako.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Itsatsi SDL mapaketa bat</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Itsatsi SDL mapaketa bat {0} gailuarentzat</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Bilatu mapaketa bat {0} gailuarentzat</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Asmatu diseinu bat {0} gailuarentzat</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Gehitu errenkadak fitxategi batetik edo arbeletik</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Itsatsi</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Ireki fitxategi bat…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Mapaketa-fitxategiak (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Fitxategiak 4 MB baino gehiago ditu. Komunitatearen fitxategi osoak 0.6 MB inguru ditu.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Bilatu izenez, ID bidez edo VID:PID bidez</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge-k dituen errenkadak</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Ez dago errenkada bat ere bat datorrenik.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Hautatutako errenkada {0} gailuan aplikatzen da bere ID propioarekin, Itsatsi botoiak duen egiaztapen eta aukera beraren bidez.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL mapaketa-errenkada</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>Gailu honetarako errenkada bat.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>Asmatutako diseinu bat.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} eremu, bere ID gailu honekin bat dator.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} eremu, beste bus edo bertsio bateko fabrikatzaile eta produktu berberarena. Gailu honen ID propioarekin gordetzen da.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} eremu, beste gailu baten errenkada. Gailu honen ID propioarekin gordetzen da.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} eremu. SDL-k ez du gailu hau irakurtzen, beraz PadForge-k bere sarrerak errenkadaren arabera antolatzen ditu.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} eremu, gailuaren ardatz, botoi eta hat-etatik. Egiaztatu ezazu Sarreren proba atalean, eta gero gorde edo aldatu hemen.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} eremu, bere ID gailu honekin bat dator.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} eremu, beste bus edo bertsio bateko fabrikatzaile eta produktu berberarena. Gailu honen ID propioarekin gordetzen da.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} eremu, beste gailu baten errenkada. Gailu honen ID propioarekin gordetzen da.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} eremu. SDL-k ez du gailu hau irakurtzen, beraz PadForge-k bere sarrerak errenkadaren arabera antolatzen ditu.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} eremu, gailuaren ardatz, botoi eta hat-etatik. Egiaztatu ezazu Sarreren proba atalean, eta gero gorde edo aldatu hemen.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Honek {0} nola irakurtzen den aldatzen du. Bere errenkadak hemen berriro mapatzen dira diseinu berritik: {1}.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Honek {0} nola irakurtzen den aldatzen du. Ez dago kontrolagailu batean, beraz ez da errenkadarik aldatzen.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} irakurtzen duten profil-lasterbideek ezarrita zeuzkaten sarrerak mantentzen dituzte.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Errenkada zuretzat gordetzen da PadForge.xml fitxategian eta gailu honetarako beste iturri guztien gainetik nagusitzen da. Kendu nirea botoiak lehengo errenkada eta lehengo errenkadak itzultzen ditu.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Errenkadak zuretzat gordetzen dira PadForge.xml fitxategian eta beren gailuetarako beste iturri guztien gainetik nagusitzen dira. Kontrolagailuen datu-basea errenkadaren Gehiago atalaren azpiko Garbitu botoiak kentzen ditu.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} errenkada Windows-erako. Beste sistemetarako {1} baztertzen dira.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} errenkada Windows-erako. Beste sistemetarako {1} baztertzen dira.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ukatu dira. Lehena: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Itsatsi errenkada bat, edo gamecontrollerdb.txt fitxategi baten testua.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Testua ez da SDL-ren kontrolagailu-datu-baseko errenkada bat: 32 digitu hamaseitarreko ID bat, izen bat, eta gero a:b0 bezalako eremuak.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Errenkadak beste sistemetarakoak dira. PadForge-k Windows-erako errenkadak irakurtzen ditu, edo sistema jakinik gabekoak.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Errenkadaren ID ez da gailu batena. 32 digitu hamaseitar behar ditu.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Errenkadaren izena hutsik dago, 128 karaktere baino luzeagoa da, edo SDL-k eremu gisa irakurtzen duen karaktere bat dauka.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Errenkadak hint bat edo Android eremu bat dauka, eta PadForge-k ez ditu hartzen.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Errenkadak SDL-k ezagutzen ez duen eremu bat dauka.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>Lotura bat ez dago SDL-ren formatuan, b3, a2, +a2, a2~ edo h0.4 bezala.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Errenkadak eremu bat birritan ematen du.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Errenkadak 1.024 karaktere baino gehiago ditu.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Errenkadak ez dio kontrolik lotzen.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Zure errenkadak</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Zure errenkadak</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Hemen gehitzen dituzun errenkadak, edo gailu baten SDL mapaketa atalean itsasten dituzunak, beren gailuetarako beste iturri guztien gainetik nagusitzen dira eta berrezarpenean ere irauten dute.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Gehitu errenkadak fitxategi batetik edo arbeletik…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} errenkada, zureak, beren gailuetarako beste iturri guztien gainetik.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} errenkada, zurea, bere gailurako beste iturri guztien gainetik.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Oraindik bat ere ez.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Berehala erabiltzen da.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Aktibatu</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Laguntzaileak webean</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tunela</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Bat ere ez</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>Nik itsasten dudan helbide bat</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Abiarazten, zure eskubideekin.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Martxan, zure eskubideekin. Bere helbidea berdina izaten da abiarazten den bakoitzean.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Martxan, zure eskubideekin. Tunel azkar batek helbide berria hartzen du abiarazten den bakoitzean, beraz laguntzailea berriro gehituko litzateke.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Geldituta.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Geldituta. Bere azken hitzak: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Ezin izan da abiarazi.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Ez dago jada PC honetan.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Ez da tunel-programarik aurkitu PC honetan. PadForge-k cloudflared, devtunnel, ngrok eta Tailscale Funnel programekin lan egiten du, edo zure tunelaren helbidearekin.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Hautatu tunel bat PadForge-ri helbide publiko bat emateko.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>PC honetan ere badaude: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, bere helbidea berdina izaten dena</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, bere tunel azkarrek helbide berria hartzen dutena aldiro</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Exekutatu zeure tunela http://127.0.0.1:{0} helbidera eta itsatsi bere https helbidea. Cloudflare tunel izendun batek, dev tunnel iraunkor batek, Tailscale Funnel-ek eta ngrok-en domeinu propioak beren helbidea mantentzen dute.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Itsatsi /mcp salbu bide gabeko https helbide bat, zure tunelak ematen duen bezala.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-ren web-laguntzailea abiarazten.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ren web-laguntzailea gelditu da ({0}). Desaktibatu eta aktibatu berriro Reach PadForge From the Web hura berriro abiarazteko.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Helbidea</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Oraindik ez dago helbide publikorik.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Kopiatuta.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Onartu web-laguntzaile berri bat</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Hasi onartzen</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Utzi onartzeari</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Onartzen {0} arte.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Ez da onartzen. Hasi onartzen botoiak bost minutuz irekitzen du.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Gehitu helbidea laguntzailean eta hasi saioa. Saio-hasiera bakoitzak sei digituko bere kodea erakusten du bere saio-hasierako orrian eta PadForge-ren galdera-txartelean. Baimendu bi kodeak bat datozenean soilik. Beste unetan saio-hasiera ukatzen da eta ezerk ez dizu galdetzen.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Webean baimenduta</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Oraindik bat ere ez.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Bere saio-hasiera hona itzultzen da: {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Bere burua honela deitzen du: {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Baimenduta: {0}. Azken erabilera: {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Baimenduta: {0}. Oraindik erabili gabe.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Ezeztatu</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Bere Secure MCP Tunnel-ak PadForge zuzenean exekutatzen du, helbiderik edo saio-hasierarik gabe hemen. Kopiatu komandoa tunel horren konfigurazioan.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopiatu komandoa</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge-k ez du tunel-programarik deskargatzen eta ez du beste enpresa baten gakorik gordetzen. Web-laguntzaile batek goiko mailan lan egiten du.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} programak PadForge-rekin webetik lan egitea baimendu nahi duzu?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Bere saio-hasiera hona itzultzen da: {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Bere burua honela deitzen du: {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Baimendu bere saio-hasierako orriak kode hau erakusten badu soilik:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Bere sei digituko kodea PadForge-ren galdera-txartelean agertzen da. Baimendu bere saio-hasierako orriak kode bera erakusten badu soilik.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>{0} mailan lan egiten du, {1} bidez.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Bere saio-hasiera PC honetara itzultzen da, eta hemengo edozein programak helbide hori eskatu lezake.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Hasi saioa PadForge-n</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} programak zure PC-ko PadForge-rekin lan egitea eskatzen du.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Bere burua honela deitzen du: {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Zure PC-n, PadForge-ren galdera-txartelak saio-hasiera honi buruz galdetzen du. Baimendu hor txartelak kode hau erakusten badu soilik:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Orri honek berez jarraitzen du PC-n erantzuten duzunean.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Saio-hasiera honek zure PC-ko programa batera itzultzen da, eta hango edozein programak helbide hori eskatu lezake.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge ez da web-laguntzaile berririk onartzen ari orain. Zure PC-n, ireki PadForge, joan Gehigarriak, Automatizazioa atalera, eta Laguntzaileak webean atalean sakatu Hasi onartzen. Gero hasi saioa berriro.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Saio-hasiera honek ezin du jarraitu. Gehitu berriro PadForge-ren helbidea laguntzailean eta hasi saioa.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Saio-hasiera hau amaitu da. Hasi saioa berriro laguntzailetik.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows-ek ez du abiarazi</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>{0} kodearekin amaitu da</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Automatizazioa desaktibatuta dago, beraz ezein web-laguntzailek ezin du PadForge atzitu. Web-laguntzailea Automatizazioa aktibatzen denean abiatzen da.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Egiaztatzen…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Instalatu gabe.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Instalatuta eta eguneratuta. Script bat honekin hasten da: {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} bertsiorako instalatuta eta eguneratuta. Script bat honekin hasten da: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Instalatuta. PadForge honek kopia berriago bat du.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} bertsiorako instalatuta. PadForge honek kopia berriago bat du.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Instalatzen…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-k ezin izan du egiaztatu: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Instalatu botoiak PadForge-ren liburutegia hizkuntza horrek aurkitzen duen lekuan jartzen du. Hura kargatzen duen script batek gailuak irakurtzen ditu eta mapaketak gidatzen ditu goiko mailan.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Gorde liburutegi bat nonahi</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Instalatutako kopiak</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Kendu guztiak</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Kenduta.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Script IDa</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Bere script IDa</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Script-ek bere kontrolak honela izendatzen dituzte: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Script-ek bere teklak KeyA, KeySpace, KeyLeftShift eta antzekoekin izendatzen dituzte, eta tekla guztiak bere kodearekin, Vk0 eta Vk255 artean.</value></data>
 </root>

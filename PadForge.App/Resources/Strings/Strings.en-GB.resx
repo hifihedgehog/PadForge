@@ -662,4 +662,6 @@
   <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>With a Steer Input, the stick measures from where the pointer was when steering began, as a stick on a phone’s screen starts where the finger lands. Off, it measures from the centre of the pointer’s monitor.</value></data>
   <data name="Mapping_Preview_Center" xml:space="preserve"><value>the centre</value></data>
   <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>With the DPI set, Mouse Travel also shows its travel in centimetres. 0 means not set.</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maximise the window</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>Connect to PadForge, the controller mapper on my PC. It is a local MCP server that runs over stdio: the command is {0}, with the argument --mcp. As JSON settings: {1} Once connected, call its status tool first, then ask me what I want to set up, for example: “Show me where to map my controller’s triggers”.</value></data>
 </root>

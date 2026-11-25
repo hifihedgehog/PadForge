@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ግንኙነቱ ተቋርጧል። {1} ምንም መሣሪያ አልቀረውም።</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} ተገናኝቷል</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} ተገናኝቷል፣ ባትሪ {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} መሣሪያዎች ግንኙነታቸው ተቋርጧል</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} መሣሪያዎች ተገናኝተዋል</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} መሣሪያዎች ግንኙነታቸው ተቋርጧል፦ {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} መሣሪያዎች ተገናኝተዋል፦ {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ግንኙነቱ በተደጋጋሚ እየተቋረጠ ነው</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (ቢበዛ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (ቢበዛ {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ራስ-ሰር ዳግም ግንኙነት፣ ወደብ፣ የማጣመሪያ ማንነት፣ በአድራሻ አገናኝ</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>ወደብ፣ የDSX.exe ተተኪ</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>ወደቦች፣ «ሙሉ ፍጥነት»፣ «ብጁ ቅርጸቶች»</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML፣ ክህሎት</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>ሌሎች ረዳቶች፣ በድር ላይ ያሉ ረዳቶች</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ሁለቱም አውራ ጣቶችዎ በአዝራሮቹ ላይ እንዳሉ በራስ መከታተያ ወይም በVR ሄድሴት ዙሪያውን ይመልከቱ።</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>የመንዳት ጨዋታ የሚልከውን ፍጥነት፣ ፔዳሎች እና ማርሾች እንደማንኛውም ግብዓት ያዛምዱ።</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>የDSU እንቅስቃሴ ምንጭ ለሚያነቡ ኢምዩሌተሮች የመቆጣጠሪያ እንቅስቃሴን ይላኩ።</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ምናሌ ክፍት ሆኖ ሳለ ቀለበቱ፣ ፍርግርጉ ወይም አሞሌው።</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>የሺፍት ንብርብር ሲበራ፣ ያ ንብርብር ለወሰነው ጊዜ የንብርብሩ ስም።</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>መገለጫው ሲቀየር የመገለጫው ስም።</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎቹ ከአቋራጩ ወይም ከማክሮ አሁን መብራታቸውን ወይም መጥፋታቸውን።</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>የተዛመደ መሣሪያ ግንኙነቱ ሲቋረጥ የመሣሪያው ስም።</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>የተዛመደ መሣሪያ ሲገናኝ የመሣሪያው ስም።</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>አድራሻ ቅዳ</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>ፕሮግራሞች መገለጫዎችን መቀየር እና መልቀቅ፣ ሞተሩን ማስጀመር እና ማቆም፣ ምናባዊ መቆጣጠሪያዎችን ማብራት እና ማጥፋት፣ መስኮቱን ማሳየት እና መደበቅ፣ PadForge መዝጋት፣ የምርመራ ቅጽበታዊ ቅጂ ማስቀመጥ እና ምን እየሄደ እንደሆነ መጠየቅ ይችላሉ።</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>በ«ትዕዛዞች» ያለው ሁሉ፣ እና ፕሮግራሞች መሣሪያዎችን፣ ምናባዊ መቆጣጠሪያዎችን፣ ማዛመጃዎችን፣ መገለጫዎችን እና ቅንብሮችን ማየት፣ የእያንዳንዱን መሣሪያ ግብዓቶች በተከሰቱበት ቅጽበት መከታተል እና በPadForge ውስጥ አንድ ቦታ ሊያሳዩዎት ይችላሉ። በ«ማንበብ» ደረጃ ያለ ፕሮግራም በእያንዳንዱ መሣሪያ ላይ የተጫነውን እያንዳንዱን ቁልፍ ያያል፣ እንደ አስተዳዳሪ በሚሄዱ መስኮቶች ውስጥ የተተየቡ ቁልፎችንም ጨምሮ።</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>በ«ማንበብ» ያለው ሁሉ፣ እና ፕሮግራሞች የራሳቸውን መሣሪያዎች ማከል እና መቆጣጠር፣ የማንኛውንም መሣሪያ መቆጣጠሪያ ክፍል መያዝ እና የተሰየሙ እሴቶችን ለማክሮ ቀስቅሴዎች ማስተላለፍ ይችላሉ።</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>በ«ግብዓቶችን መላክ» ያለው ሁሉ፣ እና ፕሮግራሞች እርስዎ በገጾቹ ላይ መቀየር የሚችሉትን መቀየር ይችላሉ።</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>በ«ግብዓቶችን መላክ» ያለው ሁሉ፣ እና ፕሮግራሞች እርስዎ በገጾቹ ላይ መቀየር የሚችሉትን መቀየር ይችላሉ። አንዳንድ ለውጦች ሁልጊዜ በመጀመሪያ በPadForge የጥያቄ ካርድ ላይ እርስዎን ይጠይቃሉ።</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ረዳቶች</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ይህንን በረዳቱ የMCP ቅንብሮች ውስጥ ይለጥፉ። ከዚያ ረዳቱ ከላይ ባለው ደረጃ ከPadForge ጋር ይሠራል።</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>እንደ TOML ቅዳ</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML የሚያነቡ ረዳቶች</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>«አክል» PadForgeን ከክህሎቱ ጋር ወደዚያ ረዳት ያስገባል። ከዚያ ረዳቱ ከላይ ባለው ደረጃ ይሠራል፣ ቃላቱም በሚያመለክተው ነገር አጠገብ፣ በስሙ ስር ይታያሉ።</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>ስክሪፕቶች</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>የስክሪፕት ቤተ መጻሕፍት</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ቤተ መጻሕፍት አስቀምጥ…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ለAutoHotkey v2፣ Python ወይም PowerShell አንድ ፋይል። የሚጭነው ስክሪፕት ከላይ ባለው ደረጃ መሣሪያዎችን ያነባል እና ማዛመጃዎችን ይቆጣጠራል።</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ለAutoHotkey v2፣ Python ወይም PowerShell አንድ ፋይል፣ እርስዎ በሚመርጡት ቦታ የሚጻፍ።</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>እርስዎን በመጠበቅ ላይ</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>እንቅስቃሴ</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>እስካሁን ምንም ፕሮግራም ጥሪ አላደረገም። እያንዳንዱ ጥሪ ከውጤቱ ጋር እዚህ ይዘረዘራል።</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>ቀልብስ</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>ክህሎት ለረዳቶች</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>ክህሎቱን አስቀምጥ…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge ሊያስቀምጠው አልቻለም፦ {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>በ«ማንበብ» ወይም ከዚያ በላይ ያለ ፕሮግራም ተገናኝቶ ሳለ በእያንዳንዱ መሣሪያ ላይ የሚጫነውን ያያል፣ የቁልፍ ሰሌዳዎችንም ጨምሮ።</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>ተሰኪዎች</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>ተሰኪዎችን አሂድ</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ምንም ተሰኪ እየሄደ አይደለም።</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ተሰኪ የሚሄደው በእርስዎ መብቶች ነው እንጂ በPadForge መብቶች አይደለም።</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>አብሮ የተሰሩ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>የሙከራ መቆጣጠሪያ</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>በራሱ የሚንቀሳቀስ መቆጣጠሪያ፣ አንድ መቆጣጠሪያ ክፍል በአንድ ጊዜ፣ ስለዚህ ሃርድዌር በእጅ ሳይኖር ማዛመጃ መሞከር ይቻላል።</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>ፍጥነት</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>ቀርፋፋ</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>መደበኛ</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>ፈጣን</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>በጣም ፈጣን</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>መልሶ ማጫወት</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>የችግር ቀረጻን እንደሠሩት መሣሪያዎች፣ በነበራቸው ጊዜ አጠባበቅ መልሶ ያጫውታል። በዚህ ፒሲ ላይ አዲስ መሣሪያዎች ናቸው፣ እርስዎ ወይም መገለጫ እንደሚያዛምዷቸው ይዛመዳሉ።</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ቀረጻ</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>የችግር ቀረጻዎች|*.zip;*.log|ሁሉም ፋይሎች|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} ማጫወት አይችልም። የችግር ቀረጻ አይደለም፣ ወይም የማንኛውንም መሣሪያ ግብዓት አልያዘም።</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>የእርስዎ ተሰኪዎች</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>ተሰኪ ለPadForge መሣሪያዎችን የሚያክል ፕሮግራም ነው። ሞተሩ በሚሄድ ቁጥር PadForge በተለመዱት መብቶችዎ ያስጀምረዋል።</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>ተሰኪ አክል…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>ፕሮግራሞች እና ስክሪፕቶች|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ሁሉም ፋይሎች|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>አጽድቅ…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>አጽድቅ እና እንደገና አስጀምር…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>ከሞተሩ ጋር ይጀምራል</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>ከመጀመሩ በፊት ፋይሉን በመፈተሽ ላይ</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>በኮድ {0} ወጥቷል። በ{1} ሰከንድ ውስጥ እንደገና ይጀምራል።</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} አስቀድሞ በዝርዝሩ ውስጥ አለ።</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge እስከ 16 ተሰኪዎችን ያሂዳል። ሌላ ለማከል አንዱን ያስወግዱ።</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>የሚሄዱ ተሰኪዎች፦ {0}። ያከሏቸው መሣሪያዎች፦ {1}።</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ከአምስት ውድቀቶች በኋላ ቆሟል።</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ካጸደቁት በኋላ ተቀይሯል።</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} መጀመር አልቻለም።</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ያከላቸው፦ {0}።</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>የፈረመው፦ {0}።</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ያልተፈረመ።</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>ቅንብሮቹ እየሄደ ሳለ እዚህ ይታያሉ።</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>ምንም ቅንብር አላሳወቀም።</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge ቅንብሮቹን ማንበብ አልቻለም፦ {0}።</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>ለአንድ ደቂቃ ምንም ምላሽ ሳይሰጥ ተቋርጧል</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>እየሄደ ሳለ ፋይሉ ተቀይሯል</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>ያከለው፦ {0}።</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>የ{0} ቅንብሮች</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>ምረጥ</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>መቆጣጠሪያ ክፍል ይጫኑ…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>አልተመረጠም</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>ተሰኪ ያክሉ፣ ወይም ፋይሉን በዚህ ገጽ ላይ ይጣሉ። PadForge ዱካውን፣ ፈራሚውን እና SHA-256ን ያሳያል፣ ከመሄዱም በፊት እርስዎን ይጠይቃል። ተሰኪ የሚሄደው በእርስዎ መብቶች እንጂ በPadForge መብቶች አይደለም።</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>የችግር ቀረጻን እንደሠሩት መሣሪያዎች፣ በጊዜ አጠባበቃቸው መልሶ ያጫውታል።</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>እየሄደ ነው።</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>እየሄደ ነው፣ በእጅ።</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>የሚንቀሳቀሰው</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>ስቲኮች እና ትሪገሮች</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>ስቲኮች</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>ትሪገሮች</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>ንድፍ</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>መጥረግ</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>ክብ</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>የእንቅስቃሴ ጊዜ</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>የእረፍት ጊዜ</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>አዝራሮችን ተጫን</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>የአሰሳ አዝራሮችን ተጫን</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows መተግበሪያዎች በፊት ባለው መስኮት ውስጥ ለምናባዊ Xbox መቆጣጠሪያ A፣ B፣ «ተመለስ»፣ «ጀምር» እና D-pad ምላሽ ይሰጣሉ፣ «መመሪያ» ደግሞ Xbox Game Barን ይከፍታል።</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>D-Padን አዙር</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>በዚሁ ምክንያት።</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>የመጫን ጊዜ</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>መቆጣጠሪያዎች</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>በእጅ</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>እንቅስቃሴውን ያቆማል። ግብዓቶቹን ከታች በመዳፊት ያዘጋጁ።</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>ግራ ስቲክ</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>ቀኝ ስቲክ</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>ግራ ትሪገር</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>ቀኝ ትሪገር</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>በሰከንድ ንባቦች</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>የተሰኪ ኪት፣ እና የመረጡት ተሰኪ ምዝግብ</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>የተሰኪ ኪት</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>የተሰኪ ኪቱን አስቀምጥ…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>በC# የተጻፈ ትንሽ ተሰኪ፣ እና ያው ተሰኪ ለAutoHotkey፣ Python እና PowerShell፣ እያንዳንዱ ፋይል እንዴት እንደሚገነባ ወይም እንደሚሄድ ይዟል።</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>ለእያንዳንዱ ግስ፣ ክስተት እና የቅንብር ዓይነት መመሪያ፣ ለC# ተሰኪው የግንባታ ስክሪፕት፣ እና ያው ተሰኪ ለAutoHotkey፣ Python እና PowerShell።</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>ምዝግብ</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>ምዝግቡን ለማየት ተሰኪ ይምረጡ።</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>በዚህ ተሰኪ ምዝግብ ውስጥ እስካሁን ምንም የለም።</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>አንድ የጨዋታ ሞድ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>ሌላ ፕሮግራም የቧንቧ ስሙን {0} ይዞታል። ያንን ፕሮግራም ይዝጉ።</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows ቧንቧውን {0} ስላልፈቀደ ፕሮግራሞች መገናኘት አይችሉም።</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ምንም ፕሮግራም አልተገናኘም።</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>በርቷል። ምንም ፕሮግራም አልተገናኘም።</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>የተገናኙ፦ {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>ያልታወቀ ፕሮግራም</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}፣ በ{1} የተፈረመ</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge እንደገና እስኪጀምር ድረስ ከእነዚህ ተጨማሪ የለም</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge እንደዚህ ያለ መገልገያ የለውም</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>ፕሮግራሙ የቆየ ሁኔታ አንብቧል</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>እንደዚህ ያለ ቅንብር የለም</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ያንን መለያ የያዘ ምንም ነገር የለም</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>እሴቱ ቅንብሩ ከሚቀበለው ውጭ ነበር</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>አልፈቀዱትም</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>ማንም በጊዜው አልመለሰም</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>መስኮቱን አሳይ</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>መስኮቱን ወደ ሲስተም ትሪ ላክ</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>መስኮቱን አሳንስ</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>መስኮቱን አስፋ</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge ዝጋ</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ሞተሩን አስጀምር</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ሞተሩን አቁም</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>መሣሪያውን {0} አክል</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን አዘጋጅ</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>መሣሪያውን {0} አስወግድ</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን በሙሉ ወደ እረፍት መልስ</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge ፕሮግራም እንዲያሄድ ያደርጋል።</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ፋይል፣ አቃፊ ወይም ድረ ገጽ ይከፍታል።</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge ቁልፎችን ወይም የመዳፊት ግብዓትን ወደ Windows እንዲልክ ያደርጋል።</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>ከPadForge ውጭ መገለጫ ያስመጣል።</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>አንድ ፕሮግራም ይህንን ከማድረጉ በፊት PadForge እርስዎን ይጠይቃል።</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>መገናኛ ሳጥኖች</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>ማክሮዎች</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን ያዝ</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>የመሣሪያ {0} መቆጣጠሪያ ክፍሎችን ልቀቅ</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>እሴቱን {0} አዘጋጅ</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>መገለጫዎችን ቀይር</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ሞተሩን አስጀምር ወይም አቁም</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎችን አብራ ወይም አጥፋ</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>የምርመራ ቅጽበታዊ ቅጂ አስቀምጥ</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>የመጠይቅ ድግግሞሹን እና ሾፌሮቹን አንብብ</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>መገለጫዎቹን ዘርዝር</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>መገለጫ አንብብ</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ምናባዊ መቆጣጠሪያዎቹን ዘርዝር</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>መሣሪያዎቹን ዘርዝር</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>መሣሪያ አንብብ</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>ግብዓትዎን ጠብቅ</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>የመቆጣጠሪያን ማዛመጃዎች አንብብ</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>የመቆጣጠሪያን ማክሮዎች ዘርዝር</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ችግር ቅዳ</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ቅንብሮችን ፈልግ</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ቅንብር አንብብ</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>አንድ ቦታ አሳይ</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>በPadForge ውስጥ ቦታዎችን ፈልግ</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>በPadForge ውስጥ ያለ ቦታ አንብብ</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>የሚያዩትን አንብብ</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>የራሱን መሣሪያ አክል</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>መሣሪያውን ተቆጣጠር</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>መሣሪያውን አስወግድ</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>መቆጣጠሪያ ክፍል ያዝ ወይም ልቀቅ</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>ለማክሮ ቀስቅሴዎች እሴት አዘጋጅ</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ቅንብር ቀይር</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>አዝራር ተጫን</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>መገለጫ ፍጠር</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>መገለጫ እንደገና ሰይም</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>መገለጫ ሰርዝ</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>የመቆጣጠሪያን ዓይነት ቀይር</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>መሣሪያ መድብ</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>የማዛመጃ ረድፎችን አዘጋጅ</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>የማዛመጃ ረድፎችን አጽዳ</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>መቆጣጠሪያን በራስ ሰር አዛምድ</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ማክሮ አስቀምጥ</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ማክሮ ሰርዝ</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>የቁልፍ ሰሌዳ እና የመዳፊት መቆጣጠሪያ ይፈጥራል</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} ያበራል</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>«{0}» ቀይር</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>«{0}» ተጫን</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} {1} ሊያሳይዎት ይፈልጋል</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>ቦታው፦ {0}።</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>{0} ከPadForge ጋር በ{1} ደረጃ እንዲሠራ ይፈቀድ?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} የሚያሄደው፦ {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>የጀመረው፦ {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>የፈረመው፦ {0}።</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>ያልተፈረመ።</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>በ«ማንበብ» ደረጃ እና ከዚያ በላይ፣ የቁልፍ ሰሌዳዎችን ጨምሮ በእያንዳንዱ መሣሪያ ላይ የሚጫነውን እያንዳንዱን ቁልፍ ያያል።</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>አንድ ጊዜ ብቻ ይጠይቃል። በ«አውቶሜሽን» ገጽ ላይ ሊያስወግዱት ይችላሉ።</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>የPadForge ትእዛዝ መስመር</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} ወደ {1} ያዘጋጃል</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>በአውታረ መረቡ ላይ ያዳምጣል፣ ስለዚህ ሌሎች መሣሪያዎች ይህንን ፒሲ ማግኘት ይችላሉ።</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ሌሎች ፕሮግራሞች እና ጨዋታዎች የሚመኩበትን ሾፌር ወይም HidHide ይቀይራል።</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>የPowerShell ሞጁሎች (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>ፍቀድ</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>አትፍቀድ</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>አሁን አይደለም</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>አሳይ</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>ደረጃ {0} ከ{1}።</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ለመቀጠል ጠቅ ያድርጉት።</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ይክፈቱ።</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>«ተጨማሪ»ን ይክፈቱ።</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>ከ{0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ራሱን «{0}» ብሎ ከሚጠራው {1}</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ራሱን «{0}» ብሎ ከሚጠራ ፕሮግራም</value></data>
@@ -964,7 +1019,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ጫን እና እንደገና አስጀምር</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>የልቀት ማስታወሻዎች</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>የመቆጣጠሪያ ውሂብ ጎታ</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«አሁን አዘምን» የማኅበረሰቡን የመቆጣጠሪያ ውሂብ ጎታ (SDL_GameControllerDB) ከGitHub ያወርዳል፣ እና ይህ የPadForge ስሪት የሌሉትን ማዛመጃዎች በቅንብሮች ፋይሉ ውስጥ ያስቀምጣል። አዲስ ማዛመጃ ጥቅም ላይ የሚውለው ሌላ ምንም ነገር እንደ ጌምፓድ ለማያነበው፣ ላልተመደበ እና በ«ጥሬ የጆይስቲክ ሁነታን አስገድድ» ውስጥ ላልሆነ መቆጣጠሪያ ብቻ ነው። ዳግም ማስጀመሪያው የወረዱትን ማዛመጃዎች በሙሉ ያስወግዳል።</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>«አሁን አዘምን» የማኅበረሰቡን የመቆጣጠሪያ ውሂብ ጎታ (SDL_GameControllerDB) ከGitHub ያወርዳል፣ እና ይህ የPadForge ስሪት የሌሉትን ማዛመጃዎች በቅንብሮች ፋይሉ ውስጥ ያስቀምጣል። ወዲያውኑ ጥቅም ላይ ይውላሉ። አዲስ ማዛመጃ ጥቅም ላይ የሚውለው ሌላ ምንም ነገር እንደ ጌምፓድ ለማያነበው፣ ላልተመደበ እና «ጥሬ የጆይስቲክ ሁነታን አስገድድ» ላልበራለት መቆጣጠሪያ ብቻ ነው። ዳግም ማስጀመሪያው የወረዱትን ማዛመጃዎች በሙሉ ያስወግዳል። በ«ተጨማሪ» ስር ያሉት የራስዎ ረድፎች ይቆያሉ።</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>አሁን አዘምን</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>በማዘመን ላይ…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>ዝማኔዎችን በመፈተሽ ላይ…</value></data>
@@ -993,12 +1048,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>ወደ PadForge {0} የሚደረገው ዝማኔ መጫኑን አላጠናቀቀም። እንደገና ለመሞከር ከቅንብሮች ይጫኑት።</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge ወደ {0} ተዘምኗል።</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>አብሮ የተሰራ፦ {0} ማዛመጃዎች፣ የ{1} የማኅበረሰብ ቅጂ።</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>አብሮ የተሰራ፦ {0} ማዛመጃዎች፣ የ{1} የማኅበረሰብ ቅጂ። {2} ተዘምኗል፦ {3} አዲስ፣ {4} የተቀየሩ።</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>አብሮ የተሰራ፦ {0} ማዛመጃዎች፣ የ{1} የማኅበረሰብ ቅጂ። {2} ወርዷል፦ {3} አዲስ ረድፎች፣ {4} የተቀየሩ።</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>የማኅበረሰቡ ውሂብ ጎታ ካለፈው ዝማኔ ወዲህ አልተቀየረም።</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub ማግኘት አልተቻለም፦ {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge የሚጠብቀው የመቆጣጠሪያ ውሂብ ጎታ ስላልሆነ ውርዱን አልተቀበለም። ምንም አልተቀየረም።</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>አዲስ ማዛመጃ ጥቅም ላይ የሚውለው መቆጣጠሪያው በሚቀጥለው ጊዜ ሲገናኝ ነው።</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>የተቀየረ ማዛመጃ ጥቅም ላይ የሚውለው PadForge በሚቀጥለው ጊዜ ሲጀምር ነው።</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ተሳንሶ ጀምር</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ሲገቡ ጀምር</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1096,28 +1149,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>የስሪት መረጃ፣ እንዲሁም ለችግር መፍቻ የሞተር ክስተቶች ምዝግብ።</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>የምርመራ ምዝግብ አቆይ</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>የሞተር ክስተቶችን በምዝግብ ማስታወሻ አቃፊው ውስጥ ወደ diagnostics.log ያለማቋረጥ ይጽፋል፣ ይህንንም አቃፊ «የምዝግብ ማስታወሻ አቃፊ ክፈት» ይከፍተዋል። ዳግም ከተጀመረ በኋላም እንደነቃ ይቆያል። ፋይሉ 8 MB ሲደርስ ወደ diagnostics.log.old ይዞራል።</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ቅጽበታዊ ቅጂ አስቀምጥ</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>የቅርብ ጊዜዎቹን የሞተር ክስተቶች ወደ አዲስ ፋይል ያስቀምጣል። የምርመራ ምዝግቡ ጠፍቶ እንኳ ይሠራል።</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ቅጽበታዊ ቅጂ አስቀምጥ…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>መተግበሪያውን፣ Windowsን፣ መሣሪያዎችዎን እና ቅንብሮችዎን አሁን ባሉበት ሁኔታ ከቅርብ ጊዜዎቹ የሞተር ክስተቶች ጋር ይወስዳል፣ ከማስቀመጥዎ በፊት እንዲያነቧቸውም ይከፍታቸዋል። የምርመራ ምዝግቡ ጠፍቶ እንኳ ይሠራል።</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>የምዝግብ አቃፊ ክፈት</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>ችግር ቅዳ</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>መቅዳት ጀምር</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>መቅዳት አቁም ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}፣ {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>«መቅዳት አቁም» እስኪጫን፣ 10 ደቂቃ እስኪሞላ ወይም zip 20 MB እስኪደርስ ድረስ ይቀዳል፣ ከዚያ zip ፋይሉን በExplorer ውስጥ ይመርጣል፣ ከሪፖርት ጋር ለማያያዝ ዝግጁ።</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ይጀምሩ፣ ችግሩ እንዲከሰት ያድርጉ፣ ከዚያ ያቁሙ። ከPadForge አጠገብ ያለ አንድ ፋይል PadForge ያነበበውን፣ የላከውን እና የመዘገበውን ሁሉ፣ ምን እንደተበላሸ ከሚገልጽ ማጠቃለያ ጋር ይይዛል። በሚቀዳበት ጊዜ በእያንዳንዱ መሣሪያ ላይ የተጫነ እያንዳንዱ ቁልፍ እና አዝራር በፋይሉ ውስጥ አለ፣ የቁልፍ ሰሌዳዎች እና መዳፊቶችም ጨምሮ። የተጠቃሚ ስሞች፣ የመለያ ቁጥሮች፣ አድራሻዎች እና የተተየቡ ስሞች ማንኛውም ነገር ከመጻፉ በፊት ይተካሉ።</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>«መቅዳት አቁም» እስኪጫን፣ 30 ደቂቃ እስኪሞላ ወይም zip 20 MB እስኪደርስ ድረስ ይቀዳል፣ ከዚያ ከማስቀመጥዎ በፊት እንዲያነቡት ቀረጻውን ይከፍታል።</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ይጀምሩ፣ ችግሩ እንዲከሰት ያድርጉ፣ ከዚያ ያቁሙ። ከዚያ የያዘውን ክፍል በክፍል ያንብቡ፣ እና በፈለጉት ቦታ ያስቀምጡት። በሚቀዳበት ጊዜ በእያንዳንዱ መሣሪያ ላይ የተጫነ እያንዳንዱ ቁልፍ በውስጡ አለ፣ የቁልፍ ሰሌዳዎች እና መዳፊቶችም ጨምሮ። የተጠቃሚ ስሞች፣ የመለያ ቁጥሮች፣ አድራሻዎች እና የተተየቡ ስሞች ማንኛውም ነገር ከመጻፉ በፊት ይተካሉ።</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>ማጠቃለያውን በመጻፍ ላይ…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} ተቀምጧል</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>መቅዳት አልጀመረም። አንድ ፍተሻ ከፋይሉ ውጭ ሊደረግ የማይችል የዚህን PC የግል እሴት አግኝቷል።</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>መቅዳት አልጀመረም። {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>የመጨረሻው ቀረጻ አሁንም እየተጠናቀቀ ነው።</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>«የመጨረሻዎቹን 60 ሰከንዶች አቆይ» ጠፍቷል፣ ስለዚህ የሚቀመጥ ነገር የለም።</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ያላቆመው ቀረጻ ተጠናቋል፦ {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge ያላቆመው ቀረጻ በ«መነሻ» ገጽ ላይ እንዲያነቡት እየጠበቀዎት ነው፦ {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>የመጨረሻዎቹን 60 ሰከንዶች አቆይ</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ሞተሩ በሚሄድበት ጊዜ ቀረጻ የሚይዘውን የመጨረሻውን ደቂቃ በማህደረ ትውስታ ውስጥ ይይዛል፣ በምሽት አንድ ጊዜ ለሚመጣ ችግር። «የመጨረሻዎቹን 60 ሰከንዶች አስቀምጥ» እንደ ፋይል ይጽፈዋል።</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>ሞተሩ በሚሄድበት ጊዜ ቀረጻ የሚይዘውን የመጨረሻውን ደቂቃ በማህደረ ትውስታ ውስጥ ይይዛል፣ በምሽት አንድ ጊዜ ለሚመጣ ችግር። «የመጨረሻዎቹን 60 ሰከንዶች አስቀምጥ» ከማስቀመጥዎ በፊት እንዲያነቡት ይከፍተዋል።</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>የመጨረሻዎቹን 60 ሰከንዶች አስቀምጥ</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>የተተየቡ ፊደሎችን እና ቁጥሮችን እንደ አንድ ቁልፍ ጻፍ</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ቀረጻ ምንም ማዛመጃ ወይም ማክሮ የማያነባቸውን የፊደል እና የቁጥር ቁልፎች እንደ አንድ ቁልፍ ይጽፋል፣ እያንዳንዱን ጭነት በራሱ ጊዜ። ሌላ እያንዳንዱ ቁልፍ፣ እና ማዛመጃ ወይም ማክሮ የሚያነበው እያንዳንዱ ቁልፍ፣ እንደተጫነ ይጻፋል።</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>የመጨረሻዎቹን 60 ሰከንዶች አቆይ፣ የተተየቡ ፊደሎችን እና ቁጥሮችን እንደ አንድ ቁልፍ ጻፍ</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>ምን እንደሚቀዳ፣ የመጨረሻዎቹ 60 ሰከንዶች፣ የተተየቡ ፊደሎች</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>ቅጽበታዊ ቅጂ አስቀምጥ</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge፣ Windows፣ መሣሪያዎችዎ እና ቅንብሮችዎ አሁን ባሉበት ሁኔታ፣ በተመሳሳዩ ግምገማ በኩል።</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>ከPadForge.exe አጠገብ ያለ diagnostics.log፣ እዚያው ሊያነቡት ይችላሉ።</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>ምን እንደሚቀዳ</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>ሁሉም በርተዋል። የጠፋ ክፍል ከሚቀጥለው ቀረጻ ውጭ ይቀራል፣ ፋይሉም የትኞቹን ክፍሎች እንደያዘ ይገልጻል።</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>በምሽት አንድ ጊዜ ለሚመጣ ችግር።</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>ቀረጻው በ«መነሻ» ገጽ ላይ እንዲያነቡት እየጠበቀዎት ነው።</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>ማጠቃለያ</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>ቅንብሮች እና መሣሪያዎች</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>ግብዓት</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>ውጽዓት</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>ግብረመልስ</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>ጊዜ አጠባበቅ</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>መስኮት እና ስህተቶች</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>እንቅስቃሴ</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>የምርመራ መስመሮች</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>ቀረጻዎን ያንብቡ</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>ከ{0} እስከ {1}፣ {2}። {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>በ{0} የተወሰደ ቅጽበታዊ ቅጂ።</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 ደቂቃ</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} ደቂቃ</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 ሰከንድ</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} ሰከንድ</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>በእርስዎ ቆሟል።</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>በ{0} ራሱ ቆሟል።</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>zip ፋይሉ {0} ሲደርስ ራሱ ቆሟል።</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>በማክሮ ቆሟል።</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>በፕሮግራም ወይም በ--record stop ቆሟል።</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>በጀመረው ረዳት ቆሟል።</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge ሲዘጋ ቆሟል።</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>የመጨረሻዎቹ 60 ሰከንዶች፣ በማህደረ ትውስታ የተያዙ።</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>የሚያጋሩትን ያንብቡ። አንድን ክፍል ለመተው ያጥፉት፣ ከዚያ ያስቀምጡ። እርስዎ ካልለጠፉት በስተቀር ምንም ነገር ከዚህ ፒሲ አይወጣም።</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}፣ በሚጋራበት መልኩ</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} አሳይ</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>ተትቷል</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>አልተቀዳም</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} እንደ ጽሑፍ፣ {1} በzip ውስጥ</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} እንደ ጽሑፍ፣ {1} በሚያጋሩት zip ውስጥ። ቀረጻ zip ፋይሉ {2} ሲደርስ ወይም ከ{3} በኋላ ይቆማል።</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ PadForge ከ{1} {0} ተክቷል። ከዚህ ፒሲ ስሞች፣ የመለያ ቁጥሮች ወይም አድራሻዎች አንዳቸውም በሚያስቀምጧቸው ክፍሎች ውስጥ የሉም።</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} እሴቶች</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 እሴት</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} የግል ዓይነቶች</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 የግል ዓይነት</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ የዚህ ፒሲ የራሱ {0} እሴቶች አሁንም በሚያስቀምጧቸው ክፍሎች ውስጥ አሉ። እነዚያን ክፍሎች ያጥፉ ወይም ቀረጻውን ይሰርዙ። እስከዚያ ድረስ «አስቀምጥ» እንደጠፋ ይቆያል።</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>የማጽዳት ፍተሻ፦ ከዚህ ፒሲ የራሱ እሴቶች አንዱ አሁንም በሚያስቀምጧቸው ክፍሎች ውስጥ አለ። እነዚያን ክፍሎች ያጥፉ ወይም ቀረጻውን ይሰርዙ። እስከዚያ ድረስ «አስቀምጥ» እንደጠፋ ይቆያል።</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>በሚቀዳበት ጊዜ ከዚህ ክፍል ምንም አልተከሰተም።</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>ሰርዝ</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>ማጠቃለያ ቅዳ</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>ተቀድቷል</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>አስቀምጥ…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>ቀረጻውን አስቀምጥ</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ፋይሎች</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>አልተቀመጠም። {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>በእርስዎ መለያ ይቀመጣል፣ የመጀመሪያው ጊዜ ወደ Downloads አቃፊዎ፣ ከዚያ ለመጨረሻ ጊዜ ወዳስቀመጡበት ቦታ፣ እና በExplorer ውስጥ ይታያል። ማንም በገጹ ላይ በሌለበት ጊዜ የሚቆም ቀረጻ (በገደቡ፣ በማክሮ፣ በፕሮግራም፣ በረዳቱ መሣሪያ ወይም በ--record stop) ይህንን ግምገማ በ«መነሻ» ገጽ ላይ ይጠብቃል፣ ካልተቀመጠም ከ7 ቀናት በኋላ ይሰረዛል። ፕሮግራም ቀረጻው እየጠበቀ መሆኑ ይነገረዋል፣ የት እንዳለ ግን በጭራሽ አይነገረውም።</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>የ{0} የችግር ቀረጻ እንዲያነቡት እየጠበቀዎት ነው።</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>ገምግም</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>ቀረጻውን ምልክት አድርግ</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>የመተግበሪያ ስሪት</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ራንታይም</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>የSDL ስሪት</value></data>
@@ -2899,31 +3009,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>የመዳፊት አቀማመጥ X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>የመዳፊት አቀማመጥ Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>ትብነት</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የጠቋሚ ትብነት። 1.0 ከመሃል በማያ ገጹ ስፋት 10% ላይ ሙሉ የስቲክ ማፈንገጥ ይደርሳል። ከ1.0 በላይ የሆኑ እሴቶች በአነሰ የጠቋሚ ጉዞ ሙሉ ማፈንገጥ ይደርሳሉ። ከ1.0 በታች የሆኑት የበለጠ ጉዞ ያስፈልጋቸዋል።</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ለእያንዳንዱ ምንጭ የጠቋሚ ትብነት። 1.0 ከጠቋሚው ማሳያ መሃል በማሳያው ስፋት 10% ላይ ሙሉ የስቲክ ማፈንገጥ ይደርሳል። ከ1.0 በላይ የሆኑ እሴቶች በአነሰ የጠቋሚ ጉዞ ሙሉ ማፈንገጥ ይደርሳሉ። ከ1.0 በታች የሆኑት የበለጠ ጉዞ ያስፈልጋቸዋል።</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>የመዳፊት ጉዞ X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>የመዳፊት ጉዞ Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>እስከ ሙሉ መቆለፊያ ያለው ጉዞ</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>መዳፊቱ ከመሃል እስከ ሙሉ መቆለፊያ የሚንቀሳቀስበት ርቀት፣ መዳፊቱ በሚዘግባቸው ቆጠራዎች። ከፍ ያለ ቁጥር በይበልጥ በጥንቃቄ ይመራል እና ተጨማሪ የእጅ እንቅስቃሴ ይወስዳል።</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>መዳፊቱ ወይም ጎማው ከመሃል እስከ ሙሉ መቆለፊያ የሚንቀሳቀስበት ርቀት፣ በሚዘግባቸው ቆጠራዎች። ከፍ ያለ ቁጥር በይበልጥ በጥንቃቄ ይመራል እና ተጨማሪ የእጅ እንቅስቃሴ ይወስዳል።</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>የመዳፊቱ DPI በመሣሪያ ፓነሉ ላይ ሲዘጋጅ፣ ጉዞው በሴንቲሜትርም ይታያል።</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ቆጠራዎች</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ማዕከል ማድረጊያ</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«ጠፍቷል» መሪውን እጁ በተወው ቦታ ይይዛል። «ስፕሪንግ» በ«የመመለሻ ጊዜ» ውስጥ መልሶ ያመጣዋል። «ከቴሌሜትሪ» የመኪና የፊት ጎማዎች በጨዋታው ፍጥነት እና መያዣ እንደሚያደርጉት መልሶ ይጎትተዋል፦ ቆሞ ሳለ አይጎትትም፣ በፍጥነት ይጠነክራል፣ ጎማዎቹ ሲንሸራተቱ ቀላል ይሆናል። ቴሌሜትሪ የሚልክ ጨዋታ ከሌለ እንደ ስፕሪንግ ይሠራል። «ከጨዋታው ኃይል» የምናባዊ መሪ የራሱ የኃይል ግብረመልስ እንዲያዞረው ያደርጋል።</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>«ጠፍቷል» መሪውን እጁ በተወው ቦታ ይይዛል። «ስፕሪንግ» በ«የመመለሻ ጊዜ» ውስጥ መልሶ ያመጣዋል። «ከቴሌሜትሪ» የመኪና መሪ በጨዋታው ፍጥነት እና መያዣ እንደሚያደርገው መልሶ ይጎትተዋል፦ በመሃል አቅራቢያ በጠንካራ ሁኔታ እና ራቅ ሲል በለስላሳ፣ ቆሞ ሳለ አይጎትትም፣ በፍጥነት ይጠነክራል፣ ጎማዎቹ ሲንሸራተቱ ቀላል ይሆናል። ቴሌሜትሪ የሚልክ ጨዋታ ከሌለ በደረቅ መንገድ ላይ በ100 km/h እንዳለ ይጎትታል። «ከጨዋታው ኃይል» የምናባዊ መሪ የራሱ የኃይል ግብረመልስ እንዲያዞረው ያደርጋል።</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ስፕሪንግ</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ከቴሌሜትሪ</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ከጨዋታው ኃይል</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>የመመለሻ ጊዜ</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>«ስፕሪንግ» መሪውን 95% መልሶ ለማምጣት የሚወስድበት ጊዜ። «ከቴሌሜትሪ» ይህን ያህል ጊዜ የሚወስደው በደረቅ መንገድ ላይ በ100 km/h ነው።</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>«ስፕሪንግ» መሪውን 95% መልሶ ለማምጣት የሚወስድበት ጊዜ። 0 ወዲያውኑ ወደ መሃል ይመልሰዋል። «ከቴሌሜትሪ» ይህን ያህል ጊዜ የሚወስደው ከመሃል አቅራቢያ በደረቅ መንገድ ላይ በ100 km/h ነው።</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>ምራ</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«ሁልጊዜ» መዳፊቱ በማንኛውም ጊዜ እንዲመራ ያደርጋል። «ተይዞ ሳለ» «የመሪ ግብዓት» ተይዞ ሳለ ብቻ እንዲመራ ያደርጋል። «ቀያይር» በእያንዳንዱ የ«የመሪ ግብዓት» ጭነት መምራትን ያበራል ወይም ያጠፋል። መዳፊቱ በማይመራበት ጊዜ መሪው ባለበት ይቆያል ወይም ወደ መሃል ይመለሳል፣ ስለዚህ አንድ መዳፊት መምራትም ዙሪያውን መመልከትም ይችላል።</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>«ሁልጊዜ» መዳፊቱ በማንኛውም ጊዜ እንዲመራ ያደርጋል። «ተይዞ ሳለ እና ወደ መሃል» «የመሪ ግብዓት» ተይዞ ሳለ ብቻ እንዲመራ ያደርጋል፣ ከዚያ ወደ መሃል ይመልሰዋል፣ ምንጩ «ማዕከል ማድረጊያ» ካለው በእሱ፣ ከሌለው ወዲያውኑ። «ተይዞ ሳለ እና ባለበት ቆይ» ግብዓቱ ተይዞ ሳለ ብቻ እንዲመራ ያደርጋል እና በተለቀቀበት ቦታ ይተወዋል። «ቀያይር» በእያንዳንዱ የ«የመሪ ግብዓት» ጭነት መምራትን ያበራል ወይም ያጠፋል። ስለዚህ አንድ መዳፊት መምራትም ዙሪያውን መመልከትም ይችላል።</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ሁልጊዜ</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ተይዞ ሳለ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>ተይዞ ሳለ እና ወደ መሃል</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ቀያይር</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>የመሪ ግብዓት</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>መዳፊቱ እንዲመራ የሚያስችለው አዝራር፣ ከመዳፊቱ ጉዞ ጋር በተመሳሳዩ መሣሪያ ላይ። ምንም ካልተመረጠ መዳፊቱ ሁልጊዜ ይመራል።</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>መዳፊቱ እንዲመራ የሚያስችለው አዝራር፣ ከምንጩ ጋር በተመሳሳዩ መሣሪያ ላይ። ምንም ካልተመረጠ መዳፊቱ ሁልጊዜ ይመራል።</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ማለስለሻ</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ያልተስተካከለ ሪፖርት የሚያደርግ መዳፊትን ያስተካክላል። መሪው እጁን በዚህ ያህል ጊዜ ገደማ ዘግይቶ ይከተላል። 0 ጠፍቷል ማለት ነው።</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ያልተስተካከለ ሪፖርት የሚያደርግ መዳፊትን ያስተካክላል። ስቲኩ እጁን በዚህ ያህል ጊዜ ገደማ ዘግይቶ ይከተላል። 0 ጠፍቷል ማለት ነው።</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>በፍጥነት ላይ ያለ መቆለፊያ</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>«የጨዋታ ቴሌሜትሪ» በርቶ ሳለ በ200 km/h ምን ያህል መቆለፊያ እንደሚቀር። በ100% ሙሉ መቆለፊያው በእያንዳንዱ ፍጥነት ይገኛል።</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>የጎማ ጉዞ</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>የጎን ጎማ ጉዞ</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>መዳፊቱ ምን ያህል በፍጥነት እንደሚንቀሳቀስ። እጁ ሲቆም ይለቃል።</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>ጠቋሚው በማሳያው ላይ ያለበት ቦታ፣ ከመሃሉ ወይም መምራት ሲጀመር ከነበረበት ቦታ።</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>መዳፊቱ ምን ያህል እንደተንቀሳቀሰ፣ እንደ መሪ እጁ በተወው ቦታ የሚቆይ።</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>የማሸብለያ ጥርሶች እንደ ቦታ የሚያዙ፣ ጥቃቅን ማሸብለል በሚችል ጎማ ላይ በሙሉ ትክክለኛነት።</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>የጎን ጎማው ጥርሶች እንደ ቦታ የሚያዙ፣ ጥቃቅን ማሸብለል በሚችል ጎማ ላይ በሙሉ ትክክለኛነት።</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>ለእያንዳንዱ ጥርስ አንድ ግፊት፣ ወዲያውኑ ወደ እረፍት ይመለሳል።</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>ተይዞ ሳለ እና ባለበት ቆይ</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>ትብነት</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>አንድ ፍጥነት ምን ያህል ስቲክ እንደሚሰጥ። በ1.00 ስቲኩ በሰከንድ 16,000 ቆጠራዎች ላይ ሙሉ ማፈንገጥ ይደርሳል፣ በማንኛውም የፍተሻ መጠን እና የመዳፊት ሪፖርት መጠን።</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>ወደ መሃል መመለስ</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>መዳፊቱ ሲዘገይ ወይም ሲቆም ስቲኩ ከዚህ በበለጠ ፍጥነት አይመለስም። 0 ከመዳፊቱ ጋር እንዲመለስ ያደርገዋል።</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>መምራት ከጀመረበት ቦታ ጀምር</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>«የመሪ ግብዓት» ሲኖር፣ ስቲኩ የሚለካው መምራት ሲጀመር ጠቋሚው ከነበረበት ቦታ ነው፣ በስልክ ማያ ገጽ ላይ ያለ ስቲክ ጣቱ ካረፈበት ቦታ እንደሚጀምር። ሲጠፋ ከጠቋሚው ማሳያ መሃል ይለካል።</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>ይህ ዘንግ አንጻራዊ በሆነ መንገድ ይንቀሳቀሳል</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ምን ያህል እንደዞረ ለሚዘግብ ትራክቦል ወይም ስፒነር። ሲበራ ዘንጉ እንደ «የመዳፊት ጉዞ» ቦታ ይይዛል፣ የጉዞ ቅንብሮችንም ይወስዳል። Windows የትኞቹ ዘንጎች በዚህ መንገድ እንደሚንቀሳቀሱ አይገልጽም።</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}፣ {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>ቅድመ እይታ</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>ይህ ቤተሰብ የራስዎን መዳፊት እንዴት እንደሚከተል ያሳያል። እስኪመርጡት ድረስ ምንም አይዛመድም።</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>ቅድመ እይታ ላይ። መዳፊትዎን ያንቀሳቅሱ።</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>በ{0} ተይዟል</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>አሁን፦ {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% ወደ ቀኝ</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% ወደ ግራ</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% ወደ ላይ</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% ወደ ታች</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>መሃል</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} ተይዞ ሳለ ይንቀሳቀሳል።</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>የመዳፊት DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>መዳፊቱ ለሚንቀሳቀሰው እያንዳንዱ ኢንች የሚዘግባቸው ቆጠራዎች፣ በአምራቹ ሶፍትዌር እንደተዘጋጀው።</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI ሲዘጋጅ፣ «የመዳፊት ጉዞ» ጉዞውን በሴንቲሜትርም ያሳያል። 0 አልተዘጋጀም ማለት ነው።</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>የIR ጠቋሚ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>የIR ጠቋሚ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>የIR ብሩህነት</value></data>
@@ -4624,6 +4767,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>በሚጫወቱበት ጊዜ PadForge የሚያሳያቸው የማያ ላይ አመልካቾች። አንዱን ማጥፋት ባህሪን በፍጹም አይቀይርም፣ የሚቀይረው መታየት አለመታየቱን ብቻ ነው።</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>የሺፍት ንብርብር ብቅ-ባይ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>የመገለጫ መቀየሪያ ተደራቢ</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>መቆጣጠሪያዎች በርተዋል ወይም ጠፍተዋል</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>የመሣሪያ ግንኙነት መቋረጥ ማስታወሻ</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>የመሣሪያ መገናኘት ማስታወሻ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>ክብ ወይም የመንካት ምናሌ ሲነቃ የማያ ላይ ቀለበቱን ወይም ፍርግርጉን አሳይ። ተደራቢው ጠፍቶም ምናሌዎች ይፈጸማሉ።</value></data>
@@ -5299,6 +5443,8 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>የሩጫ ሰዓት</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>የብርሃን አሞሌ ቀለም</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>ከመስመር ውጭ ያሉ መሣሪያዎች</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>ሁሉም ተገናኝተዋል</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}፦ {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>ጠፍቷል</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>በLogitech Gaming Software በኩል</value></data>
@@ -5341,6 +5487,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>ማያ ገጹ የተመረጠውን ምስል በራሱ መጠን ያሳያል። ከማያ ገጹ የሚበልጥ ምስል የማያ ገጹን መጠን የሚያህል መስኮት ያሳያል፤ ይህንንም «የቁልፍ ሰሌዳ ማያ ገጽ ምስልን አንቀሳቅስ» ማክሮ ያንቀሳቅሰዋል። በS.T.R.I.K.E. 7 ላይ በማያ ገጹ ላይ የሚጎተት ጣትም ያንቀሳቅሰዋል።</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>ማያ ገጹ የሩጫ ሰዓቱን ያሳያል። «የሩጫ ሰዓት» ማክሮ ያስጀምረዋል፣ ለአፍታ ያቆመዋል፣ ዳግም ያስጀምረዋል። ሁሉም ማያ ገጾች አንድ አይነት የሩጫ ሰዓት ያሳያሉ።</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>ማያ ገጹ ይህ ማያ ገጽ ከሚመግባቸው ቦታዎች ዝቅተኛ ቁጥር ባለው ቦታ ላይ፣ ምንም ቦታ የማይመግብ ከሆነ ደግሞ ከሁሉም ቦታዎች ዝቅተኛ ቁጥር ባለው ቦታ ላይ ያለውን የDualShock 4 ወይም DualSense የብርሃን አሞሌ ቀለም ያሳያል። ባለአንድ ቀለም ማያ ገጽ ብሩህነቱን በነጥብ ንድፍ ያሳያል። ቀለም የብርሃን አሞሌ ላይ እስኪደርስ ድረስ PadForge ምንም አያሳይም።</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>ማያ ገጹ ያልተገናኙትን የተዛመዱ መሣሪያዎች «መሣሪያዎች» ገጹ በሚያሳያቸው ስሞች ይዘረዝራል፣ ምንም የጎደለ ከሌለ ደግሞ «ሁሉም ተገናኝተዋል» ይላል።</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>ምስሎች (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ሁሉም ፋይሎች (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>ማንቀሳቀሻ</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>ማንቀሳቀሻ X</value></data>
@@ -5536,6 +5683,7 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>በማሽከርከር ላይ (0 ያልሆነ)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>የጨዋታ ቴሌሜትሪ</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>የስክሪፕት እሴት</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>የመሣሪያ ግንኙነት</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>ፍጥነት (ማይል/ሰ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (ከከፍተኛው %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ማርሽ (-1 ኋላ፣ 0 ነፃ)</value></data>
@@ -5689,4 +5837,231 @@ PadForge አሁን እንዲያራግፋቸው ይፈልጋሉ? ይህ የአስ
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>የችግር ቀረጻ</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>መቅዳት ጀምር ወይም አቁም</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ቀረጻውን ምልክት አድርግ</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>ተደራቢው ያልተገናኙትን የተዛመዱ መሣሪያዎች «መሣሪያዎች» ገጹ በሚያሳያቸው ስሞች ይዘረዝራል፣ ምንም የጎደለ ከሌለ ደግሞ «ሁሉም ተገናኝተዋል» ይላል።</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>ጠፍቷል። ምንም ፕሮግራም PadForge ላይ መድረስ አይችልም።</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} እና {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}፣ {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge እንቅስቃሴ፦ {0} ጥሪዎች፣ ከቀደመው ጀምሮ። ከእነሱ በፊት የነበሩ ጥሪዎች፦ {1}።</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge እንቅስቃሴ፦ {0} ጥሪ። ከእሱ በፊት የነበሩ ጥሪዎች፦ {1}።</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} የቆዩ ጥሪዎች ተወግደዋል። «እንቅስቃሴ» አዲሶቹን {1:N0} ያቆያል።</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} የቆየ ጥሪ ተወግዷል። «እንቅስቃሴ» አዲሶቹን {1:N0} ያቆያል።</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>ወደ ውጭ ላክ…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>እንቅስቃሴን ወደ ውጭ ላክ</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>የጽሑፍ ፋይል</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>ክፈት</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>አዘምን</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>ለ{0} ተጨማሪ</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>ክህሎቱን እንደ ZIP አስቀምጥ…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>የቅንብሮች ፋይሉን ክፈት</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>ተቀምጧል። በ{0} ውስጥ፣ {1} የተባለውን ፋይል በ{2} ስር ያክሉ።</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} እስካሁን የቅንብሮች ፋይል የለውም። «አክል» አንድ ይፈጥራል።</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge በዚህ ፒሲ ላይ አምራቹ በWindows ላይ ማዋቀርን የሚገልጽለት ምንም የረዳት ፕሮግራም አላገኘም። በ«ተጨማሪ» ስር ያለው «Copy Settings» ለሌሎች ሁሉ ይሠራል።</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge የረዳት ፕሮግራሞቹን መፈተሽ አልቻለም፦ {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>አልታከለም።</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>ታክሏል።</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>ታክሏል። አሁን ተገናኝቷል።</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>ታክሏል። ከዚያ ወዲህ አልተገናኘም። ክፍት የነበረ ረዳት PadForgeን የሚያየው ተዘግቶ እንደገና ከተከፈተ በኋላ ነው።</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>ለሌላ PadForge ታክሏል። «አዘምን» ወደዚህኛው ያመለክተዋል።</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>ታክሏል። የPadForge ክህሎቱ ከዚህ PadForge የቆየ ነው።</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>ታክሏል፣ ያለ PadForge ክህሎቱ።</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>ታክሏል። የPadForge ክህሎቱ ከአዲስ PadForge የመጣ ነው።</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>ክህሎቶችን የሚቀበለው በመስቀል ብቻ ነው።</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>የታከሉ ረዳቶች «አውቶሜሽን» ሲበራ PadForge ላይ ይደርሳሉ።</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>በማከል ላይ…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>በማስወገድ ላይ…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>በማዘመን ላይ…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>አልተጠናቀቀም፦ {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>ተቀድቷል።</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>አልተቀዳም፦ {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>የተፈቀዱ ፕሮግራሞች</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>«ማንበብ» ወይም ከዚያ በላይ የሚፈልግ ፕሮግራም ለመጀመሪያ ጊዜ ሲገናኝ አንድ ጊዜ ይጠይቃል፣ የጠየቀውንም ደረጃ እስከ ላይኛው ደረጃ ድረስ ያገኛል። ከላይ የሚያክሉት ረዳት በዚያ ይፈቀዳል።</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}። {1}። {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>አሁን ተገናኝቷል።</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>መጨረሻ ጥቅም ላይ የዋለው፦ {0}።</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>እስካሁን ጥቅም ላይ አልዋለም።</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>የተገናኙ፦ {0}። የ«አውቶሜሽን» ገጹን ለመክፈት ጠቅ ያድርጉ።</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>በዚህ ፒሲ ላይ፦ {0}። ከድር፦ {1}። የ«አውቶሜሽን» ገጹን ለመክፈት ጠቅ ያድርጉ።</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>ከድር የተገናኙ፦ {0}። የ«አውቶሜሽን» ገጹን ለመክፈት ጠቅ ያድርጉ።</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL ማዛመጃ</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>ጌምፓድ፣ «{0}»</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>ጆይስቲክ። SDL ለእሱ ማዛመጃ የለውም።</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ጆይስቲክ። PadForge በጥሬው ያነበዋል፣ ስለዚህ የSDL ማዛመጃ ጥቅም ላይ አይውልም።</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>ጆይስቲክ፣ በእርስዎ ረድፍ እንደ ጌምፓድ የተደረደረ።</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL መሣሪያዎችን የሚያነበው ሞተሩ በሚሄድበት ጊዜ ነው።</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>አብሮ የተሰራው የማኅበረሰብ ቅጂ፣ {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>የወረደ፦ {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>የPadForge የራሱ ፋይል</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>የእርስዎ፣ የታከለው፦ {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG ተለዋዋጭ፣ SDL ከሚያክሉት ማንኛውም ረድፍ በላይ የሚያስቀድመው</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL ማዛመጃ ቅዳ</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>የመሣሪያውን ማዛመጃ እንደ የማኅበረሰብ ውሂብ ጎታ ረድፍ፣ በመሣሪያው መለያ ስር ቼክሰሙ እና ስሪቱ ዜሮ ተደርገው፣ ወደ ቅንጥብ ሰሌዳ ያስቀምጣል።</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL ማዛመጃ ለጥፍ…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>ለዚህ መሣሪያ ረድፍ ይቀበላል፣ ይፈትሸዋል፣ እንደ እርስዎ ያስቀምጠዋል እና ወዲያውኑ ይተገብረዋል።</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>ማዛመጃ ፈልግ…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge የያዘውን እያንዳንዱን ረድፍ በስም ይፈልጋል እና የመረጡትን በዚህ መሣሪያ ላይ ይተገብራል፣ መለያዎቹ ለሚለያዩ ቅጂ መሣሪያዎች።</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>አቀማመጥ ገምት</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>ከመሣሪያው ዘንጎች፣ አዝራሮች እና የኮፍያ ቁልፎች የጌምፓድ አቀማመጥ ይገምታል፣ ምንም ውሂብ ጎታ ለማያውቀው መሣሪያ። በ«ግብዓቶችን ፈትሽ» ውስጥ ይፈትሹት።</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>የእኔን አስወግድ</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>«የእኔን አስወግድ» የቀድሞውን ረድፍ እና የቀድሞዎቹን የመቆጣጠሪያ ረድፎች ይመልሳል።</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>እንደገና አዛምድ</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>መሣሪያው ባለበት በእያንዳንዱ መቆጣጠሪያ ላይ ያሉትን የመሣሪያውን ረድፎች ከSDL አቀማመጥ እንደገና ይሠራል፣ መመደብ እንደሚያደርገው።</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>የማኅበረሰብ ውሂብ ጎታ ገጽ</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>ረድፉ፣ እና ከ{0} የሚለይበት</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>ረድፉ</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>መቆጣጠሪያ</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>የ{0} ረድፍ</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>አሁን ያለው ግብዓቱ</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>የSDL ረድፍ የሚለው</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>በSDL ረድፍ ውስጥ የለም</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}፣ ይለያል</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>በPadForge ጥቅም ላይ ያልዋሉ፦ {0}።</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>ረድፉ</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>ተቀድቷል።</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>ተቀድቷል። የSDL ቅርጸት {0} መያዝ አይችልም።</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>ማክሮዎች</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>ኩርባዎች</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>የሞቱ ዞኖች</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>የቁልፍ ሰሌዳ እና የመዳፊት ውጽዓቶች</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ቱርቦ፣ መቀያየሪያዎች እና ሌሎች እርምጃዎች</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} እና {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>የሚቀዳ ነገር የለም፦ SDL ለዚህ መሣሪያ ማዛመጃ የለውም፣ መሣሪያውም በምንም መቆጣጠሪያ ላይ የለም።</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>ሌላ ፕሮግራም ቅንጥብ ሰሌዳውን እየተጠቀመ ነው። ምንም አልተቀዳም።</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>ረድፍዎ ተወግዷል። መሣሪያው ከዚያ በፊት እንደነበረው ይነበባል።</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>ከSDL አቀማመጥ እንደገና ተዛምዷል፦ {0}።</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>አሁን ጥቅም ላይ ነው። ረድፉ የእርስዎ ነው፣ ለዚህ መሣሪያም ቅድሚያ ያገኛል።</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>እንደ እርስዎ ተቀምጧል። ሞተሩ ሲሄድ እና መሣሪያው ሲገናኝ ጥቅም ላይ ይውላል።</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>እንደ እርስዎ ተቀምጧል፣ ነገር ግን የSDL_GAMECONTROLLERCONFIG ተለዋዋጭ ለዚህ መሣሪያ ረድፍ ይዟል፣ SDL ደግሞ ያንን ከእርስዎ በላይ ያስቀድማል።</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL ረድፉን አልተቀበለም። ለዚህ መሣሪያ ምንም አልተቀየረም።</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL ማዛመጃ ለጥፍ</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>ለ{0} SDL ማዛመጃ ለጥፍ</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>ለ{0} ማዛመጃ ፈልግ</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>ለ{0} አቀማመጥ ገምት</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>ከፋይል ወይም ከቅንጥብ ሰሌዳ ረድፎችን አክል</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>ለጥፍ</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>ፋይል ክፈት…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>የማዛመጃ ፋይሎች (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>ፋይሉ ከ4 MB በላይ ነው። የማኅበረሰቡ ሙሉ ፋይል 0.6 MB ገደማ ነው።</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>በስም፣ በመለያ ወይም በVID:PID ይፈልጉ</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge የያዛቸው ረድፎች</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>የሚዛመድ ረድፍ የለም።</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>የተመረጠው ረድፍ በራሱ መለያ ስር በ{0} ላይ ይተገበራል፣ ከ«ለጥፍ» ጋር በተመሳሳዩ ፍተሻ እና ምርጫ።</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL ማዛመጃ ረድፍ</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>ለዚህ መሣሪያ የሆነ ረድፍ።</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>የተገመተ አቀማመጥ።</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows፣ {0} መስኮች፣ መለያው ከዚህ መሣሪያ ጋር ይዛመዳል።</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows፣ {0} መስኮች፣ ከተመሳሳዩ አቅራቢ እና ምርት በሌላ አውቶቡስ ወይም ስሪት። በዚህ መሣሪያ የራሱ መለያ ስር ይቀመጣል።</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows፣ {0} መስኮች፣ የሌላ መሣሪያ ረድፍ። በዚህ መሣሪያ የራሱ መለያ ስር ይቀመጣል።</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} መስኮች። SDL ይህንን መሣሪያ አያነብም፣ ስለዚህ PadForge ግብዓቶቹን በረድፉ መሠረት ያደራጃል።</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} መስኮች፣ ከመሣሪያው ዘንጎች፣ አዝራሮች እና የኮፍያ ቁልፎች። በ«ግብዓቶችን ፈትሽ» ውስጥ ይፈትሹት፣ ከዚያ ያቆዩት ወይም እዚህ ይቀይሩት።</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows፣ {0} መስክ፣ መለያው ከዚህ መሣሪያ ጋር ይዛመዳል።</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows፣ {0} መስክ፣ ከተመሳሳዩ አቅራቢ እና ምርት በሌላ አውቶቡስ ወይም ስሪት። በዚህ መሣሪያ የራሱ መለያ ስር ይቀመጣል።</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows፣ {0} መስክ፣ የሌላ መሣሪያ ረድፍ። በዚህ መሣሪያ የራሱ መለያ ስር ይቀመጣል።</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} መስክ። SDL ይህንን መሣሪያ አያነብም፣ ስለዚህ PadForge ግብዓቶቹን በረድፉ መሠረት ያደራጃል።</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} መስክ፣ ከመሣሪያው ዘንጎች፣ አዝራሮች እና የኮፍያ ቁልፎች። በ«ግብዓቶችን ፈትሽ» ውስጥ ይፈትሹት፣ ከዚያ ያቆዩት ወይም እዚህ ይቀይሩት።</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ይህ {0} እንዴት እንደሚነበብ ይቀይራል። በ{1} ውስጥ ያሉት ረድፎቹ ከአዲሱ አቀማመጥ እንደገና ይዛመዳሉ።</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ይህ {0} እንዴት እንደሚነበብ ይቀይራል። በምንም መቆጣጠሪያ ላይ ስለሌለ ምንም ረድፍ አይቀየርም።</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>መሣሪያውን {0} የሚያነቡ የመገለጫ አቋራጮች የተዘጋጁላቸውን ግብዓቶች ያቆያሉ።</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>ረድፉ እንደ እርስዎ በPadForge.xml ውስጥ ይቀመጣል፣ ለዚህ መሣሪያም ከሌሎች ምንጮች ሁሉ በላይ ቅድሚያ ያገኛል። «የእኔን አስወግድ» የቀድሞውን ረድፍ እና የቀድሞዎቹን ረድፎች ይመልሳል።</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>ረድፎቹ እንደ እርስዎ በPadForge.xml ውስጥ ይቀመጣሉ፣ ለመሣሪያዎቻቸውም ከሌሎች ምንጮች ሁሉ በላይ ቅድሚያ ያገኛሉ። በ«የመቆጣጠሪያ ውሂብ ጎታ» ረድፍ «ተጨማሪ» ስር ያለው «አጽዳ» ያስወግዳቸዋል።</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>ለWindows {0} ረድፎች። ለሌሎች ሥርዓቶች የሆኑ {1} ታልፈዋል።</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>ለWindows {0} ረድፍ። ለሌሎች ሥርዓቶች የሆኑ {1} ታልፈዋል።</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} ተቀባይነት አላገኙም። የመጀመሪያው፦ {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ረድፍ ወይም የgamecontrollerdb.txt ፋይል ጽሑፍ ይለጥፉ።</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ጽሑፉ የSDL የመቆጣጠሪያ ውሂብ ጎታ ረድፍ አይደለም፦ 32 የሄክስ አሃዞች ያሉት መለያ፣ ስም፣ ከዚያ እንደ a:b0 ያሉ መስኮች።</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>ረድፎቹ ለሌሎች ሥርዓቶች ናቸው። PadForge የሚያነበው ለWindows ወይም ለየትኛውም የተለየ ሥርዓት ያልሆኑ ረድፎችን ነው።</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>የረድፉ መለያ የመሣሪያ መለያ አይደለም። 32 የሄክስ አሃዞች ያስፈልጉታል።</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>የረድፉ ስም ባዶ ነው፣ ከ128 ቁምፊዎች በላይ ነው፣ ወይም SDL እንደ መስክ የሚያነበው ቁምፊ ይዟል።</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>ረድፉ ፍንጭ ወይም የAndroid መስክ ይዟል፣ PadForge ደግሞ እነዚህን አይቀበልም።</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>ረድፉ SDL የማያውቀው መስክ አለው።</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>አንድ ማሰሪያ በSDL ቅርጸት አይደለም፣ ለምሳሌ b3፣ a2፣ +a2፣ a2~ ወይም h0.4።</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>ረድፉ አንድን መስክ ሁለት ጊዜ ይሰጣል።</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>ረድፉ ከ1,024 ቁምፊዎች በላይ ነው።</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>ረድፉ ምንም መቆጣጠሪያ ክፍል አያስርም።</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>የእርስዎ ረድፎች</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>የእርስዎ ረድፎች</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>እዚህ የሚያክሏቸው፣ ወይም በመሣሪያ «SDL ማዛመጃ» ካርድ ላይ የሚለጥፏቸው ረድፎች ለመሣሪያዎቻቸው ከሌሎች ምንጮች ሁሉ በላይ ቅድሚያ ያገኛሉ፣ ዳግም ከማስጀመሩም በኋላ ይቆያሉ።</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ከፋይል ወይም ከቅንጥብ ሰሌዳ ረድፎችን አክል…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} ረድፎች፣ ለመሣሪያዎቻቸው ከሌሎች ምንጮች ሁሉ በላይ የእርስዎ።</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ረድፍ፣ ለመሣሪያው ከሌሎች ምንጮች ሁሉ በላይ የእርስዎ።</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>እስካሁን የለም።</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>ወዲያውኑ ጥቅም ላይ ውሏል።</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>አብራ</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>በድር ላይ ያሉ ረዳቶች</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>ዋሻ</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>ምንም</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>የምለጥፈው አድራሻ</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>በመጀመር ላይ፣ በእርስዎ መብቶች።</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>በመሄድ ላይ፣ በእርስዎ መብቶች። አድራሻው በጀመረ ቁጥር ተመሳሳይ ሆኖ ይቆያል።</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>በመሄድ ላይ፣ በእርስዎ መብቶች። ፈጣን ዋሻ በጀመረ ቁጥር አዲስ አድራሻ ይወስዳል፣ ስለዚህ ረዳቱ እንደገና መታከል ይኖርበታል።</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>ቆሟል።</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>ቆሟል። የመጨረሻ ቃላቱ፦ {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>ሊጀመር አልቻለም።</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>ከአሁን በኋላ በዚህ ፒሲ ላይ የለም።</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>በዚህ ፒሲ ላይ ምንም የዋሻ ፕሮግራም አልተገኘም። PadForge ከcloudflared፣ devtunnel፣ ngrok እና Tailscale Funnel ጋር፣ ወይም ከራስዎ ዋሻ አድራሻ ጋር ይሠራል።</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>ለPadForge ይፋዊ አድራሻ ለመስጠት ዋሻ ይምረጡ።</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>እንዲሁም በዚህ ፒሲ ላይ፦ {0}።</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}፣ አድራሻው ተመሳሳይ ሆኖ የሚቆይ</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}፣ ፈጣን ዋሻዎቹ በእያንዳንዱ ጊዜ አዲስ አድራሻ የሚወስዱ</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>የራስዎን ዋሻ ወደ http://127.0.0.1:{0} ያሂዱ እና የhttps አድራሻውን ይለጥፉ። የተሰየመ Cloudflare ዋሻ፣ ቋሚ dev tunnel፣ Tailscale Funnel እና የngrok የራሱ ጎራ አድራሻቸውን ያቆያሉ።</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>ዋሻዎ እንደሚሰጠው፣ ከ/mcp ውጭ ምንም ዱካ የሌለው የhttps አድራሻ ይለጥፉ።</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>የPadForge የድር አጋዥ በመጀመር ላይ።</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>የPadForge የድር አጋዥ ቆሟል ({0})። እንደገና ለማስጀመር «Reach PadForge From the Web»ን ያጥፉ እና ያብሩ።</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>አድራሻ</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>እስካሁን ይፋዊ አድራሻ የለም።</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>ወደ Claude አክል</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>ተቀድቷል።</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>አዲስ የድር ረዳት ተቀበል</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>መቀበል ጀምር</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>መቀበል አቁም</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>እስከ {0} ድረስ በመቀበል ላይ።</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>እየተቀበለ አይደለም። «መቀበል ጀምር» ለአምስት ደቂቃ ይከፍተዋል።</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>አድራሻውን በረዳቱ ውስጥ ያክሉ እና ይግቡ። እያንዳንዱ መግቢያ የራሱን ባለ ስድስት አሃዝ ኮድ በመግቢያ ገጹ ላይ እና በPadForge የጥያቄ ካርድ ላይ ያሳያል። ሁለቱ ኮዶች ሲዛመዱ ብቻ ይፍቀዱት። በሌላ ጊዜ መግቢያው ውድቅ ይደረጋል፣ እርስዎንም ምንም አይጠይቅም።</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>በድር ላይ የተፈቀዱ</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>እስካሁን የለም።</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>መግቢያው ወደ {0} ተመልሷል።</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>ራሱን {0} ብሎ ይጠራል።</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>የተፈቀደው {0}፣ መጨረሻ ጥቅም ላይ የዋለው {1}።</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>የተፈቀደው {0}፣ እስካሁን ጥቅም ላይ አልዋለም።</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>ሻር</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>የራሱ Secure MCP Tunnel PadForgeን በቀጥታ ያሄዳል፣ እዚህ ያለ አድራሻ ወይም መግቢያ። ትእዛዙን ወደዚያ ዋሻ ማዋቀሪያ ይቅዱ።</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ትእዛዝ ቅዳ</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ምንም የዋሻ ፕሮግራም አያወርድም፣ የሌላ ኩባንያ ቁልፍም አያስቀምጥም። የድር ረዳት ከላይ ባለው ደረጃ ይሠራል።</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0} ከድር ከPadForge ጋር እንዲሠራ ይፈቀድ?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>መግቢያው ወደ {0} ይመለሳል።</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>ራሱን {0} ብሎ ይጠራል።</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>የመግቢያ ገጹ ይህንን ኮድ ካሳየ ብቻ ይፍቀዱ፦</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>ባለ ስድስት አሃዝ ኮዱ በPadForge የጥያቄ ካርድ ላይ ይታያል። የመግቢያ ገጹ ተመሳሳዩን ኮድ ካሳየ ብቻ ይፍቀዱ።</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>በ{0} ደረጃ፣ በ{1} በኩል ይሠራል።</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>መግቢያው ወደዚህ ፒሲ ይመለሳል፣ እዚህ ያለ ማንኛውም ፕሮግራምም ያንን አድራሻ ሊወስድ ይችላል።</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>ወደ PadForge ይግቡ</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} በፒሲዎ ላይ ከPadForge ጋር ለመሥራት ይጠይቃል።</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>ራሱን {0} ብሎ ይጠራል።</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>በፒሲዎ ላይ የPadForge የጥያቄ ካርድ ስለዚህ መግቢያ ይጠይቃል። ካርዱ ይህንን ኮድ ካሳየ ብቻ እዚያ ይፍቀዱት፦</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>በፒሲው ላይ ሲመልሱ ይህ ገጽ በራሱ ይቀጥላል።</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>ይህ መግቢያ በፒሲዎ ላይ ወዳለ ፕሮግራም ይመለሳል፣ እዚያ ያለ ማንኛውም ፕሮግራምም ያንን አድራሻ ሊወስድ ይችላል።</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge አሁን አዲስ የድር ረዳት እየተቀበለ አይደለም። በፒሲዎ ላይ PadForgeን ይክፈቱ፣ ወደ «ተጨማሪዎች»፣ «አውቶሜሽን» ይሂዱ፣ እና በ«በድር ላይ ያሉ ረዳቶች» ስር «መቀበል ጀምር»ን ይጫኑ። ከዚያ እንደገና ይግቡ።</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>ይህ መግቢያ መቀጠል አይችልም። የPadForge አድራሻን በረዳቱ ውስጥ እንደገና ያክሉ እና ይግቡ።</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>ይህ መግቢያ አብቅቷል። ከረዳቱ እንደገና ይግቡ።</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows አላስጀመረውም</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>በኮድ {0} አብቅቷል</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>«አውቶሜሽን» ጠፍቷል፣ ስለዚህ ምንም የድር ረዳት PadForge ላይ አይደርስም። የድር አጋዡ «አውቶሜሽን» ሲበራ ይጀምራል።</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>በመፈተሽ ላይ…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>አልተጫነም።</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>ተጭኗል እና የቅርብ ጊዜው ነው። ስክሪፕት በ{0} ይጀምራል።</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>ለ{0} ተጭኗል እና የቅርብ ጊዜው ነው። ስክሪፕት በ{1} ይጀምራል።</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>ተጭኗል። ይህ PadForge አዲስ ቅጂ አለው።</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>ለ{0} ተጭኗል። ይህ PadForge አዲስ ቅጂ አለው።</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>በመጫን ላይ…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge ሊፈትሸው አልቻለም፦ {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>«ጫን» የPadForge ቤተ መጻሕፍትን ያ ቋንቋ በሚያገኘው ቦታ ያስቀምጣል። የሚጭነው ስክሪፕት ከላይ ባለው ደረጃ መሣሪያዎችን ያነባል እና ማዛመጃዎችን ይቆጣጠራል።</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>ቤተ መጻሕፍትን በማንኛውም ቦታ አስቀምጥ</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>የተጫኑ ቅጂዎች</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>ሁሉንም አስወግድ</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>ተወግዷል።</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>የስክሪፕት መለያ</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>የስክሪፕት መለያው</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>ስክሪፕቶች መቆጣጠሪያ ክፍሎቹን {0} ብለው ይሰይማሉ።</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>ስክሪፕቶች ቁልፎቹን KeyA፣ KeySpace፣ KeyLeftShift እና የመሳሰሉትን ብለው ይሰይማሉ፣ እያንዳንዱንም ቁልፍ በኮዱ፣ ከVk0 እስከ Vk255።</value></data>
 </root>

@@ -191,8 +191,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} 연결 끊김. {1}에 남은 장치가 없습니다.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} 연결됨</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} 연결됨, 배터리 {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>장치 {0}개 연결 끊김</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>장치 {0}개 연결됨</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>장치 {0}개 연결 끊김: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>장치 {0}개 연결됨: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0}의 연결이 계속 끊어집니다</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (최대 {0}개)</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (최대 {0}개)</value></data>
@@ -384,7 +384,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>게임 모드</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>다른 프로그램이 파이프 이름 {0}을(를) 사용 중입니다. 해당 프로그램을 닫으세요.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows가 파이프 {0}을(를) 거부하여 프로그램이 연결할 수 없습니다.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>연결된 프로그램이 없습니다.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>켜짐. 연결된 프로그램이 없습니다.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>연결됨: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>알 수 없는 프로그램</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, 서명자: {1}</value></data>
@@ -418,7 +418,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge를 다시 시작하기 전까지는 더 할 수 없음</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge에 해당 도구가 없습니다</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>프로그램이 이전 상태를 읽었습니다</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>해당 설정 없음</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>해당 ID를 가진 항목 없음</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>설정이 받는 범위를 벗어난 값이었습니다</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>허용하지 않았습니다</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>제때 응답한 사람이 없습니다</value></data>
@@ -435,6 +435,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>창 표시</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>창을 시스템 트레이로 보내기</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>창 최소화</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>창 최대화</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge 닫기</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>엔진 시작</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>엔진 중지</value></data>
@@ -460,6 +461,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>장치 {0} 추가</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 설정</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>장치 {0} 제거</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>장치 {0}의 모든 컨트롤을 대기 상태로 두기</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge가 프로그램을 실행하게 합니다.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>파일, 폴더 또는 웹 페이지를 엽니다.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge가 Windows에 키 또는 마우스 입력을 보내게 합니다.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge 밖에서 프로필을 가져옵니다.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>프로그램이 이 작업을 하기 전에 PadForge가 먼저 묻습니다.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>대화 상자</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>매크로</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 고정</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>장치 {0}의 컨트롤 놓기</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>값 {0} 설정</value></data>
@@ -468,25 +477,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>프로필 전환</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>엔진 시작 또는 중지</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>가상 컨트롤러 켜기 또는 끄기</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>진단 스냅샷 저장</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>폴링 레이트와 드라이버 읽기</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>프로필 목록 보기</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>프로필 읽기</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>가상 컨트롤러 목록 보기</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>장치 목록 보기</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>장치 읽기</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>사용자의 입력 기다리기</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>컨트롤러의 매핑 읽기</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>컨트롤러의 매크로 목록 보기</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>문제 녹화</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>설정 찾기</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>설정 읽기</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>위치 보여 주기</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge에서 위치 찾기</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge의 위치 읽기</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>보이는 내용 읽기</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>자체 장치 추가</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>자체 장치 구동</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>자체 장치 제거</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>컨트롤 고정 또는 놓기</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>매크로 트리거용 값 설정</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>설정 변경</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>버튼 누르기</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>프로필 만들기</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>프로필 이름 바꾸기</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>프로필 삭제</value></data>
@@ -497,7 +505,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>컨트롤러 유형 변경</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>장치 할당</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>매핑 행 설정</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>매핑 행 지우기</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>컨트롤러 자동 매핑</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>매크로 저장</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>매크로 삭제</value></data>
@@ -517,6 +524,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>키보드 및 마우스 컨트롤러 만들기</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} 켜기</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” 변경</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” 누르기</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0}이(가) {1}을(를) 보여 주려고 합니다</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>위치: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>{0}이(가) {1} 수준으로 PadForge와 함께 작동하도록 허용하시겠습니까?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0}이(가) {1} 실행 중</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>시작한 프로그램: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>서명자: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>서명되지 않음.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>읽기 이상에서는 키보드를 포함해 모든 장치에서 누른 모든 키를 봅니다.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>한 번만 묻습니다. 자동화 페이지에서 제거할 수 있습니다.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge의 명령줄</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} 설정: {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>네트워크에서 연결을 받으므로 다른 장치가 이 PC에 접근할 수 있습니다.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>다른 프로그램과 게임이 의존하는 드라이버나 HidHide를 변경합니다.</value></data>
@@ -538,6 +556,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell 모듈 (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>허용</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>허용 안 함</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>나중에</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>표시</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>{1}단계 중 {0}단계.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>계속하려면 클릭하세요.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0}을(를) 여세요.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>더 보기를 여세요.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>발신: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>발신: {1}, 스스로 밝힌 이름 “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>발신: 스스로 밝힌 이름이 “{0}”인 프로그램</value></data>
@@ -683,7 +707,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>설치 후 다시 시작</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>릴리스 노트</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>컨트롤러 데이터베이스</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>지금 업데이트는 커뮤니티 컨트롤러 데이터베이스(SDL_GameControllerDB)를 GitHub에서 다운로드하고, 이 버전의 PadForge에 없는 매핑을 설정 파일에 보관합니다. 새 매핑은 다른 방법으로는 게임패드로 인식되지 않고, 할당되지 않았으며, 강제 원시 조이스틱 모드가 아닌 컨트롤러에만 사용됩니다. 초기화는 다운로드한 모든 매핑을 제거합니다.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>지금 업데이트는 커뮤니티 컨트롤러 데이터베이스(SDL_GameControllerDB)를 GitHub에서 다운로드하고, 이 버전의 PadForge에 없는 매핑을 설정 파일에 보관합니다. 그 매핑은 즉시 사용됩니다. 새 매핑은 다른 방법으로는 게임패드로 인식되지 않고, 할당되지 않았으며, 강제 원시 조이스틱 모드 (게임패드 재매핑 우회)가 아닌 컨트롤러에만 사용됩니다. 초기화는 다운로드한 모든 매핑을 제거합니다. 더 보기 아래의 사용자 행은 그대로 남습니다.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>지금 업데이트</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>업데이트 중…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>업데이트 확인 중…</value></data>
@@ -712,12 +736,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}(으)로의 업데이트 설치가 완료되지 않았습니다. 다시 시도하려면 설정에서 설치하세요.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge가 {0}(으)로 업데이트되었습니다.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>기본 제공: 매핑 {0}개, {1}자 커뮤니티 사본.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>기본 제공: 매핑 {0}개, {1}자 커뮤니티 사본. {2} 업데이트: 새로운 것 {3}개, 변경된 것 {4}개.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>기본 제공: 매핑 {0}개, {1}자 커뮤니티 사본. {2} 다운로드: 새 행 {3}개, 변경된 행 {4}개.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>마지막 업데이트 이후 커뮤니티 데이터베이스가 바뀌지 않았습니다.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub에 연결할 수 없습니다: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge가 예상하는 컨트롤러 데이터베이스가 아니어서 다운로드를 거부했습니다. 변경된 것은 없습니다.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>새 매핑은 해당 컨트롤러가 다음에 연결될 때 사용됩니다.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>변경된 매핑은 PadForge를 다음에 시작할 때 사용됩니다.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>최소화 상태로 시작</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>로그인 시 자동 시작</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -815,28 +837,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>버전 정보와 문제 해결을 위한 엔진 이벤트 로그입니다.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>진단 로그 기록</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>엔진 이벤트를 로그 폴더의 diagnostics.log에 계속 기록하며, 로그 폴더 열기로 그 폴더를 열 수 있습니다. 다시 시작해도 켜진 상태가 유지됩니다. 파일이 8 MB에 도달하면 diagnostics.log.old로 교체됩니다.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>스냅샷 저장</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>가장 최근의 엔진 이벤트를 새 파일로 저장합니다. 진단 로그가 꺼져 있어도 작동합니다.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>스냅샷 저장…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>앱, Windows, 장치와 설정의 현재 상태를 가장 최근의 엔진 이벤트와 함께 가져와, 저장하기 전에 읽어 볼 수 있도록 엽니다. 진단 로그가 꺼져 있어도 작동합니다.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>로그 폴더 열기</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>문제 녹화</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>녹화 시작</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>녹화 중지 ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>녹화 중지, 10분, 또는 20 MB zip에 이를 때까지 기록한 다음 Explorer에서 zip을 선택해 보고서에 바로 첨부할 수 있게 합니다.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>시작하고, 문제를 일으킨 다음, 중지하세요. PadForge 옆에 생기는 파일 하나에 PadForge가 읽고 보내고 기록한 모든 것과 무엇이 잘못되었는지에 대한 요약이 담깁니다. 녹화하는 동안 모든 장치에서 누른 모든 키와 버튼이 파일에 들어가며, 키보드와 마우스도 포함됩니다. 사용자 이름, 일련번호, 주소, 입력한 이름은 기록되기 전에 대체됩니다.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>녹화 중지, 30분, 또는 20 MB zip에 이를 때까지 기록한 다음 저장하기 전에 읽어 볼 수 있도록 녹화를 엽니다.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>시작하고, 문제를 일으킨 다음, 중지하세요. 그런 다음 담긴 내용을 항목별로 읽고 원하는 곳에 저장하세요. 녹화하는 동안 모든 장치에서 누른 모든 키가 들어 있으며, 키보드와 마우스도 포함됩니다. 사용자 이름, 일련번호, 주소, 입력한 이름은 기록되기 전에 대체됩니다.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>요약을 쓰는 중…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} 저장됨</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>녹화를 시작하지 못했습니다. 검사에서 파일에 남지 않도록 막지 못할 이 PC의 개인 값이 발견되었습니다.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>녹화를 시작하지 못했습니다. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>마지막 녹화를 아직 마무리하는 중입니다.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>최근 60초 보관이 꺼져 있어 저장할 것이 없습니다.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge가 중지하지 못한 녹화를 마무리했습니다: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge가 중지하지 못한 녹화가 홈에서 읽어 주기를 기다리고 있습니다: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>최근 60초 보관</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>엔진이 실행되는 동안 녹화에 담기는 내용의 마지막 1분을 메모리에 보관합니다. 저녁에 한 번 생기는 문제에 쓰입니다. 최근 60초 저장은 이를 파일로 씁니다.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>엔진이 실행되는 동안 녹화에 담기는 내용의 마지막 1분을 메모리에 보관합니다. 저녁에 한 번 생기는 문제에 쓰입니다. 최근 60초 저장은 저장하기 전에 읽어 볼 수 있도록 이를 엽니다.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>최근 60초 저장</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>입력한 문자와 숫자를 키 하나로 기록</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>녹화는 어떤 매핑이나 매크로도 읽지 않는 문자와 숫자 키를 하나의 키로 기록하며, 각 입력은 자기 시간에 남깁니다. 그 밖의 모든 키와 매핑이나 매크로가 읽는 모든 키는 누른 그대로 기록됩니다.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>최근 60초 보관, 입력한 문자와 숫자를 키 하나로 기록</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>녹화 항목, 최근 60초, 입력한 문자</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>스냅샷 저장</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, 장치와 설정의 현재 상태를 같은 검토 과정을 거쳐 저장합니다.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe 옆에 diagnostics.log로 기록되며 거기서 읽을 수 있습니다.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>녹화 항목</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>모두 켜져 있습니다. 꺼 둔 항목은 다음 녹화에서 빠지고, 파일에 어떤 항목이 들어 있는지 표시됩니다.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>저녁에 한 번 생기는 문제에 쓰입니다.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>녹화가 홈에서 읽어 주기를 기다리고 있습니다.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>요약</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>설정 및 장치</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>입력</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>출력</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>피드백</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>타이밍</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>창 및 오류</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>활동</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>진단 줄</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>녹화 읽기</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0}부터 {1}까지, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>{0}의 스냅샷.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1분</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0}분</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1초</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0}초</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>사용자가 중지했습니다.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>{0}이 되어 자동으로 중지되었습니다.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>zip이 {0}에 이르러 자동으로 중지되었습니다.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>매크로가 중지했습니다.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>프로그램 또는 --record stop이 중지했습니다.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>녹화를 시작한 어시스턴트가 중지했습니다.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge가 종료되면서 중지되었습니다.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>메모리에 보관한 최근 60초입니다.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>공유할 내용을 읽어 보세요. 빼려는 항목은 끄고 저장하세요. 직접 게시하지 않으면 이 PC 밖으로 나가는 것은 없습니다.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, 공유될 모습</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} 표시</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>제외됨</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>기록되지 않음</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>텍스트 {0}, zip {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>텍스트 {0}, 공유하는 zip {1}. 녹화는 zip이 {2}에 이르거나 {3}이 지나면 중지됩니다.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>정리 점검: PadForge가 {1} 중 {0}을(를) 대체했습니다. 보관하는 항목에는 이 PC의 이름, 일련번호, 주소가 하나도 들어 있지 않습니다.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>값 {0}개</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>값 1개</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>비공개 종류 {0}개</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>비공개 종류 1개</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>정리 점검: 이 PC 고유의 값 {0}개가 보관하는 항목에 아직 남아 있습니다. 해당 항목을 끄거나 녹화를 삭제하세요. 그때까지 저장할 수 없습니다.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>정리 점검: 이 PC 고유의 값 1개가 보관하는 항목에 아직 남아 있습니다. 해당 항목을 끄거나 녹화를 삭제하세요. 그때까지 저장할 수 없습니다.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>이 항목은 녹화되는 동안 아무 일도 없었습니다.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>삭제</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>요약 복사</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>복사됨</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>저장…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>녹화 저장</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip 파일</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>저장되지 않았습니다. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>사용자 계정으로 저장되며, 처음에는 다운로드 폴더에, 그다음부터는 마지막으로 저장한 위치에 저장되고 파일 탐색기에 표시됩니다. 아무도 이 페이지에 없는 동안 중지된 녹화(제한 도달, 매크로, 프로그램, 어시스턴트 도구, --record stop)는 홈에서 이 검토를 기다리며, 저장하지 않으면 7일 뒤 삭제됩니다. 프로그램에는 녹화가 대기 중이라는 사실만 알리고 위치는 알리지 않습니다.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0}의 문제 녹화가 읽어 주기를 기다리고 있습니다.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>검토</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>녹화에 표시 남기기</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>앱 버전</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 런타임</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 버전</value></data>
@@ -2273,31 +2352,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>마우스 위치 X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>마우스 위치 Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>감도</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>소스별 커서 감도입니다. 1.0이면 중앙에서 화면 너비의 10% 지점에서 스틱이 최대로 기울어집니다. 1.0보다 크면 더 적은 커서 이동으로 최대에 도달하고, 1.0보다 작으면 더 많이 움직여야 합니다.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>소스별 커서 감도입니다. 1.0이면 포인터가 있는 모니터 너비의 10% 지점에서, 그 중앙으로부터 스틱이 최대로 기울어집니다. 1.0보다 크면 더 적은 커서 이동으로 최대에 도달하고, 1.0보다 작으면 더 많이 움직여야 합니다.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>마우스 이동량 X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>마우스 이동량 Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>최대 회전까지의 이동량</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>마우스가 중앙에서 최대 회전까지 움직이는 거리이며, 마우스가 보고하는 카운트로 나타냅니다. 값이 높을수록 조향이 더 세밀해지고 손을 더 많이 움직여야 합니다.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>마우스나 휠이 중앙에서 최대 회전까지 움직이는 거리이며, 그것이 보고하는 카운트로 나타냅니다. 값이 높을수록 조향이 더 세밀해지고 손을 더 많이 움직여야 합니다.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>장치 패널에서 마우스의 DPI를 설정하면 이동량이 센티미터로도 표시됩니다.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>카운트</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>센터링</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>끔은 손을 뗀 자리에 휠을 그대로 둡니다. 스프링은 복귀 시간에 걸쳐 휠을 되돌립니다. 텔레메트리 기준은 게임의 속도와 그립에 따라 자동차 앞바퀴가 당기듯 되돌립니다. 정지 상태에서는 가만히 있고, 속도가 높을수록 단단해지며, 타이어가 미끄러지면 가벼워집니다. 텔레메트리를 보내는 게임이 없으면 스프링으로 동작합니다. 게임의 힘 기준은 가상 휠 자체의 포스 피드백이 휠을 돌리게 합니다.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>끔은 손을 뗀 자리에 휠을 그대로 둡니다. 스프링은 복귀 시간에 걸쳐 휠을 되돌립니다. 텔레메트리 기준은 게임의 속도와 그립에 따라 자동차의 조향처럼 되돌립니다. 중앙 근처에서는 가파르고 멀어질수록 부드러우며, 정지 상태에서는 가만히 있고, 속도가 높을수록 단단해지며, 타이어가 미끄러지면 가벼워집니다. 텔레메트리를 보내는 게임이 없으면 마른 도로에서 100 km/h일 때처럼 당깁니다. 게임의 힘 기준은 가상 휠 자체의 포스 피드백이 휠을 돌리게 합니다.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>끔</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>스프링</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>텔레메트리 기준</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>게임의 힘 기준</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>복귀 시간</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>스프링이 휠을 95% 되돌리는 데 걸리는 시간입니다. 텔레메트리 기준은 마른 도로에서 100 km/h일 때 이만큼 걸립니다.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>스프링이 휠을 95% 되돌리는 데 걸리는 시간입니다. 0이면 즉시 중앙으로 돌아옵니다. 텔레메트리 기준은 마른 도로에서 100 km/h일 때 중앙 근처에서 이만큼 걸립니다.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>조향</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>항상은 마우스가 언제나 조향하게 합니다. 누르는 동안은 조향 입력을 누르고 있는 동안에만 조향하게 합니다. 토글은 조향 입력을 누를 때마다 조향을 켜거나 끕니다. 마우스가 조향하지 않는 동안 휠은 그 자리에 있거나 중앙으로 돌아가므로, 마우스 하나로 조향하면서 주변을 둘러볼 수 있습니다.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>항상은 마우스가 언제나 조향하게 합니다. 누르는 동안 중앙 복귀는 조향 입력을 누르고 있는 동안에만 조향하게 하고, 그다음 중앙으로 되돌립니다. 센터링이 있는 소스에서는 센터링으로, 없는 소스에서는 즉시 되돌립니다. 누르는 동안 유지는 입력을 누르고 있는 동안에만 조향하게 하고 놓은 자리에 그대로 둡니다. 토글은 조향 입력을 누를 때마다 조향을 켜거나 끕니다. 그래서 마우스 하나로 조향하면서 주변을 둘러볼 수 있습니다.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>항상</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>누르는 동안</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>누르는 동안 중앙 복귀</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>토글</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>조향 입력</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>마우스가 조향하게 하는 버튼이며, 마우스 이동량과 같은 장치에 있어야 합니다. 선택하지 않으면 마우스가 항상 조향합니다.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>마우스가 조향하게 하는 버튼이며, 소스와 같은 장치에 있어야 합니다. 선택하지 않으면 마우스가 항상 조향합니다.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>부드럽게</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>고르지 않게 보고하는 마우스를 매끄럽게 합니다. 휠이 이 시간 정도 손보다 늦게 따라갑니다. 0이면 꺼집니다.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>고르지 않게 보고하는 마우스를 매끄럽게 합니다. 스틱이 이 시간 정도 손보다 늦게 따라갑니다. 0이면 꺼집니다.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>속도에서 회전 제한</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>게임 텔레메트리를 켜면 200 km/h에서 남는 회전 범위입니다. 100%이면 모든 속도에서 전체 회전 범위를 쓸 수 있습니다.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>휠 이동량</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>가로 휠 이동량</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>마우스가 움직이는 속도입니다. 손이 멈추면 놓입니다.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>포인터가 모니터에서 있는 위치이며, 중앙 또는 조향을 시작한 위치를 기준으로 합니다.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>마우스가 움직인 거리이며, 휠처럼 손을 뗀 자리에 유지됩니다.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>스크롤 노치를 위치로 유지하며, 미세 스크롤 휠에서는 최대 정밀도로 반영합니다.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>가로 휠의 노치를 위치로 유지하며, 미세 스크롤 휠에서는 최대 정밀도로 반영합니다.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>노치마다 한 번 밀고 곧바로 중립으로 돌아갑니다.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>누르는 동안 유지</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>감도</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>속도가 스틱에 얼마나 반영되는지 정합니다. 1.00에서는 폴링 레이트와 마우스 보고 속도에 관계없이 초당 16,000카운트에서 스틱이 최대로 기울어집니다.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>중앙 복귀</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>마우스가 느려지거나 멈추면 스틱은 이 값보다 빠르지 않게 돌아옵니다. 0이면 마우스와 함께 돌아옵니다.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>조향 시작 위치에서 시작</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>조향 입력이 있으면 스틱은 조향을 시작할 때 포인터가 있던 위치를 기준으로 측정됩니다. 휴대폰 화면의 스틱이 손가락이 닿은 곳에서 시작하는 것과 같습니다. 끄면 포인터가 있는 모니터의 중앙을 기준으로 측정합니다.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>이 축은 상대적으로 움직임</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>회전한 양을 보고하는 트랙볼이나 스피너용입니다. 켜면 축이 마우스 이동량처럼 위치를 유지하고 이동량 설정을 따릅니다. Windows는 어느 축이 이렇게 움직이는지 알려 주지 않습니다.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>미리보기</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>이 계열이 사용자의 마우스를 어떻게 따르는지 보여 줍니다. 선택하기 전에는 아무것도 매핑되지 않습니다.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>미리보기 중입니다. 마우스를 움직이세요.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>{0}에 유지됨</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>{0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>오른쪽 {0}%</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>왼쪽 {0}%</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>위쪽 {0}%</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>아래쪽 {0}%</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>중앙</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0}을(를) 누르는 동안 움직입니다.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>마우스 DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>제조사 소프트웨어에서 설정한 대로, 이 마우스가 1인치 움직일 때 보고하는 카운트입니다.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI를 설정하면 마우스 이동량에도 이동량이 센티미터로 표시됩니다. 0은 설정 안 함입니다.</value></data>
   <data name="Mapping_TouchpadClick" xml:space="preserve"><value>터치패드 클릭</value></data>
   <data name="Mapping_TouchpadFingerX_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} X</value></data>
   <data name="Mapping_TouchpadFingerY_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} Y</value></data>
@@ -3960,8 +4072,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>자동 재연결, 포트, 페어링 ID, 주소로 연결</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>포트, DSX.exe 대역</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>포트, 최고 속도(km/h), 사용자 지정 형식</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, 스킬</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>다른 어시스턴트, 웹의 어시스턴트</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>양 엄지를 버튼에 둔 채 헤드 트래커나 VR 헤드셋으로 주위를 둘러봅니다.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>레이싱 게임이 보내는 속도, 페달, 기어를 다른 입력처럼 매핑합니다.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU 모션 소스를 읽는 에뮬레이터에 컨트롤러 모션을 보냅니다.</value></data>
@@ -3982,6 +4093,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>메뉴가 열려 있는 동안의 링, 격자 또는 바.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>시프트 레이어가 켜질 때 레이어 이름, 해당 레이어가 정한 시간 동안.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>프로필이 바뀔 때 프로필 이름.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>단축키나 매크로로 가상 컨트롤러가 켜졌는지 꺼졌는지 알려 줍니다.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>연결이 끊어질 때 매핑된 장치의 이름.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>연결될 때 매핑된 장치의 이름.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>주소 복사</value></data>
@@ -4089,35 +4201,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>프로그램이 프로필을 전환하고 해제하고, 엔진을 시작하고 중지하고, 가상 컨트롤러를 켜고 끄고, 창을 표시하고 숨기고, PadForge를 닫고, 진단 스냅샷을 저장하고, 실행 중인 항목을 물어볼 수 있습니다.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>명령 수준의 모든 기능에 더해, 프로그램이 장치, 가상 컨트롤러, 매핑, 프로필, 설정을 보고, 모든 장치의 입력을 실시간으로 따라가고, PadForge의 한 위치를 보여 줄 수 있습니다. 읽기 수준의 프로그램은 관리자 권한으로 실행되는 창에 입력한 키를 포함해 모든 장치에서 누른 모든 키를 봅니다.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>읽기 수준의 모든 기능에 더해, 프로그램이 자체 장치를 추가해 구동하고, 어떤 장치의 컨트롤이든 고정하고, 이름을 붙인 값을 매크로 트리거에 전달할 수 있습니다.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>입력 전송 수준의 모든 기능에 더해, 프로그램이 각 페이지에서 바꿀 수 있는 항목을 바꿀 수 있습니다.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>입력 전송 수준의 모든 기능에 더해, 프로그램이 각 페이지에서 바꿀 수 있는 항목을 바꿀 수 있습니다. 일부 변경은 항상 PadForge의 질문 카드에서 먼저 묻습니다.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>어시스턴트</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>이것을 어시스턴트의 MCP 설정에 붙여 넣으세요. 그러면 어시스턴트가 위의 수준으로 PadForge와 함께 작동합니다.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML로 복사</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML을 읽는 어시스턴트</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>추가를 누르면 PadForge가 스킬과 함께 해당 어시스턴트에 들어갑니다. 그러면 위의 수준으로 작동하며, 어시스턴트가 가리키는 대상 옆에 어시스턴트의 말이 이름 아래에 표시됩니다.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>스크립트</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>스크립트 라이브러리</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>라이브러리 저장…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python, PowerShell용 파일 하나입니다. 이 파일을 불러오는 스크립트는 위의 수준으로 장치를 읽고 매핑을 구동합니다.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python, PowerShell용 파일 하나이며, 선택한 위치에 저장됩니다.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>답변 대기 중</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>활동</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>아직 호출한 프로그램이 없습니다. 호출은 결과와 함께 여기에 표시됩니다.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>실행 취소</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>어시스턴트용 스킬</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>스킬 저장…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge가 저장하지 못했습니다: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>읽기 수준 이상의 프로그램이 연결되어 있는 동안에는 키보드를 포함해 모든 장치에서 누른 것을 봅니다.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>플러그인</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>플러그인 실행</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>실행 중인 플러그인이 없습니다.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>플러그인은 PadForge의 권한이 아니라 사용자의 권한으로 실행됩니다.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>기본 제공</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>테스트 컨트롤러</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>컨트롤 하나씩 스스로 움직이는 컨트롤러로, 하드웨어 없이도 매핑을 시험해 볼 수 있습니다.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>속도</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>느리게</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>보통</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>빠르게</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>가장 빠르게</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>리플레이</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>문제 녹화를 그것을 만든 장치로, 당시의 타이밍 그대로 재생합니다. 이 PC의 새 장치이며, 사용자나 프로필이 매핑하는 대로 매핑됩니다.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>녹화</value></data>
@@ -4132,10 +4233,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>문제 녹화|*.zip;*.log|모든 파일|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge가 {0}을(를) 재생할 수 없습니다. 문제 녹화가 아니거나 장치 입력이 들어 있지 않습니다.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>내 플러그인</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>플러그인은 PadForge에 장치를 추가하는 프로그램입니다. PadForge는 엔진이 실행될 때마다 일반 권한으로 플러그인을 시작합니다.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>플러그인 추가…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>프로그램 및 스크립트|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|모든 파일|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>승인…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>승인 후 다시 시작…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>엔진과 함께 시작됨</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>시작 전에 파일을 확인하는 중</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>코드 {0}(으)로 종료되었습니다. {1}초 후에 다시 시작합니다.</value></data>
@@ -4166,10 +4266,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0}은(는) 이미 목록에 있습니다.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge는 플러그인을 최대 16개까지 실행합니다. 다른 플러그인을 추가하려면 하나를 제거하세요.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>실행 중인 플러그인: {0}개. 플러그인이 추가한 장치: {1}개.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0}이(가) 다섯 번 실패한 뒤 중지되었습니다.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0}이(가) 승인한 이후 변경되었습니다.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0}을(를) 시작하지 못했습니다.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>추가한 장치: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>서명자: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>서명되지 않음.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>실행되는 동안 설정이 여기에 표시됩니다.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>선언한 설정이 없습니다.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge가 설정을 읽지 못했습니다: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>1분 동안 응답이 없어 종료됨</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>실행 중에 파일이 변경됨</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>{0}이(가) 추가했습니다.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} 설정</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>선택</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>컨트롤을 누르세요…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>선택 안 함</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>플러그인을 추가하거나 이 페이지에 파일을 끌어다 놓으세요. PadForge는 경로, 서명자, SHA-256을 보여 주고 실행하기 전에 묻습니다. 플러그인은 PadForge의 권한이 아니라 사용자의 권한으로 실행됩니다.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>문제 녹화를 그것을 만든 장치로, 당시의 타이밍 그대로 재생합니다.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>실행 중.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>실행 중, 수동.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>움직일 대상</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>스틱과 트리거</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>스틱</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>트리거</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>패턴</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>스윕</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>원</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>이동 시간</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>휴지 시간</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>버튼 누르기</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>탐색 버튼 누르기</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows 앱은 가상 Xbox 컨트롤러의 A, B, 뒤로, 시작, 방향 패드를 앞에 있는 창에서 처리하며, 가이드는 Xbox Game Bar를 엽니다.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>방향 패드 돌리기</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>같은 이유입니다.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>누름 시간</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>컨트롤러</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>수동</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>움직임을 멈춥니다. 아래에서 마우스로 입력을 설정하세요.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>왼쪽 스틱</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>오른쪽 스틱</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>왼쪽 트리거</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>오른쪽 트리거</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>초당 읽기 횟수</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>플러그인 키트와 선택한 플러그인의 로그</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>플러그인 키트</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>플러그인 키트 저장…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C#으로 만든 작은 플러그인과 AutoHotkey, Python, PowerShell용 같은 플러그인입니다. 파일마다 빌드하거나 실행하는 방법이 들어 있습니다.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>모든 동사, 이벤트, 설정 종류에 대한 안내서, C# 플러그인용 빌드 스크립트, 그리고 AutoHotkey, Python, PowerShell용 같은 플러그인입니다.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>로그</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>로그를 보려면 플러그인을 선택하세요.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>이 플러그인의 로그에 아직 아무것도 없습니다.</value></data>
@@ -4867,6 +5010,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>플레이 중 PadForge가 표시하는 화면 표시기입니다. 끄더라도 동작은 바뀌지 않고 화면에 나타나는지만 달라집니다.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>시프트 레이어 플라이아웃</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>프로필 전환 오버레이</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>컨트롤러 켜짐 또는 꺼짐</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>장치 연결 끊김 알림</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>장치 연결 알림</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>방사형 또는 터치 메뉴가 활성화된 동안 화면에 링 또는 그리드를 표시합니다. 오버레이가 꺼져 있어도 메뉴는 실행됩니다.</value></data>
@@ -5606,6 +5750,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>끔</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>스톱워치</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>라이트바 색</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>오프라인 장치</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>모두 연결됨</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>꺼짐</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software를 통해</value></data>
@@ -5648,6 +5794,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>화면에 선택한 그림이 원래 크기로 표시됩니다. 화면보다 큰 그림은 화면 크기만큼의 창으로 보이며, 이 창은 키보드 화면 그림 이동 매크로로 움직입니다. S.T.R.I.K.E. 7에서는 화면 위로 손가락을 끌어도 움직입니다.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>화면에 스톱워치가 표시되며, 스톱워치 매크로로 시작, 일시 정지, 초기화할 수 있습니다. 모든 화면에 같은 스톱워치가 표시됩니다.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>화면에 이 화면이 입력되는 가장 낮은 슬롯의 DualShock 4 또는 DualSense 라이트바 색이 표시됩니다. 입력되는 슬롯이 없으면 전체에서 가장 낮은 슬롯의 색이 표시됩니다. 흑백 화면에서는 밝기가 점 무늬로 표시됩니다. 라이트바에 색이 전달되기 전에는 PadForge가 아무것도 표시하지 않습니다.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>화면에 연결되지 않은 매핑된 장치를 장치 페이지에 표시되는 이름으로 나열하며, 빠진 장치가 없으면 모두 연결됨이라고 표시합니다.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>그림 (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|모든 파일 (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>이동</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>X 이동</value></data>
@@ -5899,6 +6046,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>주행 (0이 아님)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>게임 텔레메트리</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>스크립트 값</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>장치 연결</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>속도 (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (최대 대비 %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>기어 (-1 후진, 0 중립)</value></data>
@@ -6004,6 +6152,7 @@
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>오버레이에 선택한 그림이 비율을 유지한 채 창을 가득 채우도록 크기가 조정되어 표시됩니다. 확대가 100퍼센트를 넘으면 지도처럼 그림의 일부가 표시됩니다. 키보드 화면 그림 이동 매크로가 그 부분을 움직이며, PadForge가 맨 앞에 있을 때 마우스 왼쪽 버튼으로 드래그해도 움직입니다.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>오버레이에 스톱워치가 표시되며, 스톱워치 매크로로 시작, 일시 정지, 초기화할 수 있습니다. 모든 키보드 화면에 표시되는 것과 같은 스톱워치입니다.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>오버레이에 여기서 선택한 슬롯 또는 색이 있는 가장 낮은 슬롯의 DualShock 4 또는 DualSense 라이트바 색이 표시됩니다. 라이트바에 색이 전달되기 전에는 아무것도 표시되지 않습니다.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>오버레이에 연결되지 않은 매핑된 장치를 장치 페이지에 표시되는 이름으로 나열하며, 빠진 장치가 없으면 모두 연결됨이라고 표시합니다.</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>화면 오버레이 {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>오버레이 추가</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>색이 있는 가장 낮은 슬롯</value></data>
@@ -6346,6 +6495,245 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>유지 시간 전에 여는 입력에서 손을 떼면 키보드를 열거나 닫습니다. 더 길게 누르면 아무 일도 일어나지 않습니다.</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>연속 누르기 시간 안에 여는 입력을 세 번 누르면 키보드를 열거나 닫습니다.</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>여는 입력을 한 번 누르고 연속 누르기 시간이 끝나면 키보드를 열거나 닫습니다. 그 시간 안에 두 번째로 누르면 취소됩니다.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>꺼짐. 어떤 프로그램도 PadForge에 접근할 수 없습니다.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} 및 {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge 활동: 호출 {0}개, 오래된 순. 그 이전의 호출: {1}개.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge 활동: 호출 {0}개. 그 이전의 호출: {1}개.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>오래된 호출 {0:N0}개가 삭제되었습니다. 활동에는 최근 {1:N0}개만 보관됩니다.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>오래된 호출 {0:N0}개가 삭제되었습니다. 활동에는 최근 {1:N0}개만 보관됩니다.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>내보내기…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>활동 내보내기</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>텍스트 파일</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>열기</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>업데이트</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>{0} 더 보기</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>스킬을 ZIP으로 저장…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>설정 파일 열기</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>저장되었습니다. {0}에서 {2} 아래에 {1}을(를) 추가하세요.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0}에는 아직 설정 파일이 없습니다. 추가하면 만들어집니다.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge가 이 PC에서 Windows에서의 설정 방법을 문서화한 어시스턴트 프로그램을 찾지 못했습니다. 다른 어시스턴트는 더 보기의 설정 복사로 사용할 수 있습니다.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge가 어시스턴트 프로그램을 확인하지 못했습니다: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>추가되지 않음.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>추가됨.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>추가됨. 지금 연결되어 있습니다.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>추가됨. 그 뒤로 연결되지 않았습니다. 열려 있던 어시스턴트는 닫았다가 다시 열면 PadForge를 인식합니다.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>다른 PadForge용으로 추가되었습니다. 업데이트하면 이 PadForge를 가리킵니다.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>추가됨. PadForge 스킬이 이 PadForge보다 오래되었습니다.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>추가됨. PadForge 스킬은 없습니다.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>추가됨. PadForge 스킬이 더 새로운 PadForge의 것입니다.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>스킬은 업로드로만 받습니다.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>추가된 어시스턴트는 자동화를 켜면 PadForge에 접근합니다.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>추가하는 중…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>제거하는 중…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>업데이트하는 중…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>끝내지 못했습니다: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>다른 어시스턴트</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>위에 없는 어시스턴트용입니다. 설정 복사는 MCP 설정에 넣을 항목을 주고, 메시지 복사는 연결 방법과 처음 물어볼 것을 알려 주는 짧은 글을 어떤 채팅에든 쓸 수 있게 줍니다.</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>설정 복사</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>메시지 복사</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>복사했습니다.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>복사하지 못했습니다: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>내 PC의 컨트롤러 매퍼인 PadForge에 연결하세요. stdio로 실행되는 로컬 MCP 서버이며, 명령은 {0}이고 인수는 --mcp입니다. JSON 설정으로는 다음과 같습니다. {1} 연결되면 먼저 status 도구를 호출한 다음, 무엇을 설정하고 싶은지 저에게 물어보세요. 예: “컨트롤러의 트리거를 매핑할 위치를 보여 줘.”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge의 자동화가 지금 꺼져 있습니다. 먼저 PadForge의 추가 기능, 자동화에서 켜세요.</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>허용된 프로그램</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>읽기 이상을 원하는 프로그램은 처음 연결할 때 한 번 묻고, 위의 수준까지 요청한 수준을 받습니다. 위에서 추가한 어시스턴트는 이것으로 허용됩니다.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>지금 연결되어 있습니다.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>마지막 사용: {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>아직 사용하지 않음.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>연결됨: {0}. 클릭하여 자동화를 엽니다.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>이 PC: {0}. 웹: {1}. 클릭하여 자동화를 엽니다.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>웹에서 연결됨: {0}. 클릭하여 자동화를 엽니다.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL 매핑</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>인식 방식</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>출처</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>게임패드, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>조이스틱입니다. SDL에 이 장치의 매핑이 없습니다.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>조이스틱입니다. PadForge가 원시로 읽으므로 SDL의 매핑은 사용되지 않습니다.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>조이스틱이며, 사용자의 행에 따라 게임패드로 배치됩니다.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL은 엔진이 실행되는 동안 장치를 읽습니다.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>기본 제공 커뮤니티 사본, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>{0} 다운로드</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge의 자체 파일</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>사용자 행, {0} 추가</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG 변수이며, SDL은 추가한 어떤 행보다 이것을 우선합니다</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL 매핑 복사</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>장치의 매핑을 커뮤니티 데이터베이스의 행 형식으로 클립보드에 넣습니다. 장치의 ID 아래에 두며 체크섬과 버전은 0으로 합니다.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL 매핑 붙여 넣기…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>이 장치용 행을 받아 확인하고, 사용자 행으로 보관한 다음 즉시 적용합니다.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>매핑 찾기…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge가 가진 모든 행을 이름으로 검색하고 선택한 행을 이 장치에 적용합니다. ID가 다른 복제품에 쓰입니다.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>레이아웃 추정</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>어떤 데이터베이스에도 없는 장치에 대해 장치의 축, 버튼, 햇을 바탕으로 게임패드 레이아웃을 추정합니다. 입력 테스트에서 확인하세요.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>내 행 제거</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>내 행 제거는 이전의 행과 컨트롤러 행을 되돌립니다.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>다시 매핑</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>장치를 할당할 때처럼 장치가 속한 각 컨트롤러의 행을 SDL의 레이아웃으로 다시 만듭니다.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>커뮤니티 데이터베이스 페이지</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>행, 그리고 {0}과(와) 다른 부분</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>행</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>컨트롤러</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} 행</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>현재 입력</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL의 행 내용</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL의 행에 없음</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, 다름</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge에서 사용하지 않음: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>행</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>복사했습니다.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>복사했습니다. SDL 형식에는 {0}을(를) 담을 수 없습니다.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>매크로</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>곡선</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>데드 존</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>키보드 및 마우스 출력</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>터보, 토글 및 기타 동작</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} 및 {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>복사할 내용이 없습니다. SDL에 이 장치의 매핑이 없고 어떤 컨트롤러에도 속해 있지 않습니다.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>다른 프로그램이 클립보드를 사용 중입니다. 아무것도 복사되지 않았습니다.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>사용자 행이 제거되었습니다. 장치는 그 이전처럼 인식됩니다.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL의 레이아웃에서 다시 매핑했습니다: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>지금 사용 중입니다. 이 행은 사용자 행이며 이 장치에서 우선합니다.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>사용자 행으로 보관했습니다. 엔진이 실행되고 장치가 연결되면 사용됩니다.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>사용자 행으로 보관했지만, SDL_GAMECONTROLLERCONFIG 변수에 이 장치의 행이 있어 SDL이 사용자 행보다 그것을 우선합니다.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL이 행을 받지 않았습니다. 이 장치에는 변경된 것이 없습니다.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL 매핑 붙여 넣기</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0}의 SDL 매핑 붙여 넣기</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0}의 매핑 찾기</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>{0}의 레이아웃 추정</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>파일 또는 클립보드에서 행 추가</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>붙여 넣기</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>파일 열기…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>매핑 파일 (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>파일이 4 MB를 넘습니다. 커뮤니티의 전체 파일은 약 0.6 MB입니다.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>이름, ID 또는 VID:PID로 검색</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge가 가진 행</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>일치하는 행이 없습니다.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>선택한 행은 붙여 넣기와 같은 확인과 같은 선택을 거쳐 {0}의 ID로 적용됩니다.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL 매핑 행</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>이 장치의 행입니다.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>추정한 레이아웃입니다.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, 필드 {0}개, ID가 이 장치와 일치합니다.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, 필드 {0}개, 다른 버스나 버전의 같은 제조사와 제품입니다. 이 장치 자신의 ID로 보관됩니다.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, 필드 {0}개, 다른 장치의 행입니다. 이 장치 자신의 ID로 보관됩니다.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>필드 {0}개. SDL은 이 장치를 읽지 않으므로 PadForge가 행에 따라 입력을 배치합니다.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>장치의 축, 버튼, 햇을 바탕으로 한 필드 {0}개. 입력 테스트에서 확인한 다음 보관하거나 여기서 변경하세요.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, 필드 {0}개, ID가 이 장치와 일치합니다.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, 필드 {0}개, 다른 버스나 버전의 같은 제조사와 제품입니다. 이 장치 자신의 ID로 보관됩니다.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, 필드 {0}개, 다른 장치의 행입니다. 이 장치 자신의 ID로 보관됩니다.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>필드 {0}개. SDL은 이 장치를 읽지 않으므로 PadForge가 행에 따라 입력을 배치합니다.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>장치의 축, 버튼, 햇을 바탕으로 한 필드 {0}개. 입력 테스트에서 확인한 다음 보관하거나 여기서 변경하세요.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>{0}의 인식 방식이 바뀝니다. {1}의 행이 새 레이아웃으로 다시 매핑됩니다.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>{0}의 인식 방식이 바뀝니다. 어떤 컨트롤러에도 속해 있지 않으므로 바뀌는 행은 없습니다.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0}을(를) 읽는 프로필 단축키는 설정된 입력을 그대로 유지합니다.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>이 행은 PadForge.xml에 사용자 행으로 보관되며 이 장치에서 다른 모든 출처보다 우선합니다. 내 행 제거는 이전 행과 이전 행들을 되돌립니다.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>이 행들은 PadForge.xml에 사용자 행으로 보관되며 해당 장치에서 다른 모든 출처보다 우선합니다. 컨트롤러 데이터베이스 행의 더 보기 아래에 있는 지우기로 제거합니다.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows용 행 {0}개. 다른 시스템용 {1}개는 건너뜁니다.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows용 행 {0}개. 다른 시스템용 {1}개는 건너뜁니다.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0}개를 거부했습니다. 처음 항목: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>행 하나 또는 gamecontrollerdb.txt 파일의 내용을 붙여 넣으세요.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>SDL 컨트롤러 데이터베이스의 행이 아닙니다. 32자리 16진수 ID, 이름, 그다음 a:b0 같은 필드가 있어야 합니다.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>다른 시스템용 행입니다. PadForge는 Windows용 행이나 특정 시스템에 속하지 않은 행을 읽습니다.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>행의 ID가 장치의 ID가 아닙니다. 16진수 32자리여야 합니다.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>행의 이름이 비어 있거나 128자를 넘거나 SDL이 필드로 읽는 문자가 들어 있습니다.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>행에 PadForge가 받지 않는 힌트 또는 Android 필드가 있습니다.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>SDL이 모르는 필드가 행에 있습니다.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>바인딩이 SDL의 형식이 아닙니다. 예: b3, a2, +a2, a2~, h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>행에 같은 필드가 두 번 나옵니다.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>행이 1,024자를 넘습니다.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>행에 연결된 컨트롤이 없습니다.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>사용자 행</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>사용자 행</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>여기서 추가하거나 장치의 SDL 매핑 카드에 붙여 넣은 행은 해당 장치에서 다른 모든 출처보다 우선하며 초기화 후에도 유지됩니다.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>파일 또는 클립보드에서 행 추가…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>행 {0}개. 해당 장치에서 다른 모든 출처보다 우선하는 사용자 행입니다.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>행 {0}개. 해당 장치에서 다른 모든 출처보다 우선하는 사용자 행입니다.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>아직 없음.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>즉시 사용됩니다.</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>웹에서 PadForge에 접근</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>웹사이트에서 실행되는 어시스턴트는 이 PC의 터널 프로그램을 통해 PadForge에 접근합니다. 켜기 전에 먼저 확인합니다.</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>웹에서 PadForge에 접근하시겠습니까?</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge는 관리자 권한 없는 도우미를 시작해 이 PC에서만 연결을 받으며, 선택한 터널 프로그램이 여기에 공개 주소를 부여합니다. 웹 어시스턴트는 PadForge의 질문 카드에서 로그인을 허용한 뒤에만 들어올 수 있으며, 위의 수준으로 작동합니다.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>켜기</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>웹의 어시스턴트</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>터널</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>없음</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>붙여 넣는 주소</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>시작하는 중이며, 사용자 권한으로 실행됩니다.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>실행 중이며, 사용자 권한으로 실행됩니다. 시작할 때마다 주소가 같습니다.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>실행 중이며, 사용자 권한으로 실행됩니다. 빠른 터널은 시작할 때마다 새 주소를 받으므로 어시스턴트를 다시 추가해야 합니다.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>중지됨.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>중지됨. 마지막 출력: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>시작하지 못했습니다.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>더 이상 이 PC에 없습니다.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>이 PC에서 터널 프로그램을 찾지 못했습니다. PadForge는 cloudflared, devtunnel, ngrok, Tailscale Funnel 또는 사용자의 터널 주소와 함께 작동합니다.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge에 공개 주소를 부여할 터널을 선택하세요.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>이 PC에 있는 다른 터널: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, 주소가 그대로 유지됨</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, 빠른 터널은 매번 새 주소를 받음</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>http://127.0.0.1:{0}으로 사용자의 터널을 실행하고 그 https 주소를 붙여 넣으세요. 이름이 지정된 Cloudflare 터널, 영구 dev 터널, Tailscale Funnel, ngrok의 자체 도메인은 주소가 유지됩니다.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>터널이 주는 그대로, /mcp 외에 경로가 없는 https 주소를 붙여 넣으세요.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge의 웹 도우미를 시작하는 중입니다.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge의 웹 도우미가 중지되었습니다({0}). 다시 시작하려면 웹에서 PadForge에 접근을 껐다가 다시 켜세요.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>주소</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>아직 공개 주소가 없습니다.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude에 추가</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>복사했습니다.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>새 웹 어시스턴트 받기</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>받기 시작</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>받기 중지</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>{0}까지 받는 중입니다.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>받지 않는 중입니다. 받기 시작을 누르면 5분 동안 열립니다.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>어시스턴트에 주소를 추가하고 로그인하세요. 로그인마다 로그인 페이지와 PadForge의 질문 카드에 각자 6자리 코드가 표시됩니다. 두 코드가 일치할 때만 허용하세요. 그 밖의 경우 로그인은 거부되며 묻지 않습니다.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>웹에서 허용됨</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>아직 없음.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>로그인이 {0}(으)로 돌아갑니다.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>스스로를 {0}(이)라고 부릅니다.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0}에 허용됨, 마지막 사용 {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0}에 허용됨, 아직 사용하지 않음.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>취소</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>자체 Secure MCP Tunnel이 PadForge를 직접 실행하므로 여기서 주소나 로그인이 필요 없습니다. 명령을 복사해 그 터널의 설정에 넣으세요.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>명령 복사</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge는 터널 프로그램을 다운로드하지 않고 다른 회사의 키도 보관하지 않습니다. 웹 어시스턴트는 위의 수준으로 작동합니다.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0}이(가) 웹에서 PadForge와 함께 작동하도록 허용하시겠습니까?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>로그인이 {0}(으)로 돌아갑니다.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>스스로를 {0}(이)라고 부릅니다.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>로그인 페이지에 이 코드가 표시될 때만 허용하세요:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>6자리 코드는 PadForge의 질문 카드에 표시됩니다. 로그인 페이지에 같은 코드가 표시될 때만 허용하세요.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>{1}을(를) 통해 {0} 수준으로 작동합니다.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>로그인이 이 PC로 돌아오며, 여기 있는 어떤 프로그램이든 그 주소를 가로챌 수 있습니다.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge에 로그인</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0}이(가) 사용자의 PC에서 PadForge와 함께 작동하기를 요청합니다.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>스스로를 {0}(이)라고 부릅니다.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>사용자의 PC에서 PadForge의 질문 카드가 이 로그인에 대해 묻습니다. 카드에 이 코드가 표시될 때만 거기서 허용하세요:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>PC에서 답하면 이 페이지는 저절로 진행됩니다.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>이 로그인은 사용자 PC의 프로그램으로 돌아가며, 거기 있는 어떤 프로그램이든 그 주소를 가로챌 수 있습니다.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge가 지금 새 웹 어시스턴트를 받지 않습니다. PC에서 PadForge를 열고 추가 기능, 자동화로 가서 웹의 어시스턴트 아래의 받기 시작을 누른 다음 다시 로그인하세요.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>이 로그인을 계속할 수 없습니다. 어시스턴트에 PadForge의 주소를 다시 추가하고 로그인하세요.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>이 로그인이 끝났습니다. 어시스턴트에서 다시 로그인하세요.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows가 시작하지 않음</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>코드 {0}(으)로 종료됨</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>자동화가 꺼져 있어 웹 어시스턴트가 PadForge에 접근할 수 없습니다. 웹 도우미는 자동화가 켜지면 시작됩니다.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>확인하는 중…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>설치되지 않음.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>설치되어 있고 최신입니다. 스크립트는 {0}(으)로 시작합니다.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0}용으로 설치되어 있고 최신입니다. 스크립트는 {1}(으)로 시작합니다.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>설치됨. 이 PadForge에 더 새로운 사본이 있습니다.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0}용으로 설치됨. 이 PadForge에 더 새로운 사본이 있습니다.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>설치하는 중…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge가 확인하지 못했습니다: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>설치하면 PadForge의 라이브러리가 해당 언어가 찾는 위치에 놓입니다. 이를 불러오는 스크립트는 위의 수준으로 장치를 읽고 매핑을 구동합니다.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>원하는 곳에 라이브러리 저장</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>설치된 사본</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>모두 제거</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>제거했습니다.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>스크립트 ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>스크립트 ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>스크립트는 컨트롤 이름을 {0}(으)로 부릅니다.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>스크립트는 키 이름을 KeyA, KeySpace, KeyLeftShift 등으로 부르고, 모든 키를 코드 Vk0부터 Vk255까지로 부릅니다.</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>색상이 {0}에 직접 전달됩니다. 색상 순환이나 소리를 따라가는 색상처럼 변하는 색상은 전달되지 않습니다. 변하지 않는 색상은 전달됩니다.</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>모든 파일 (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge 프로필 (*{0})|*{0}</value></data>

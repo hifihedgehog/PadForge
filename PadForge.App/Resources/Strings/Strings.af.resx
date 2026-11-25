@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ontkoppel. {1} het geen toestel oor nie.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} gekoppel</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} gekoppel, battery {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} toestelle ontkoppel</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} toestelle gekoppel</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} toestelle ontkoppel: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} toestelle gekoppel: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ontkoppel aanhoudend</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (maks. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (maks. {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>Outo-herkoppel, poort, paringsidentiteit, koppel via adres</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>Poort, DSX.exe-plaasvervanger</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>Poorte, Volspoed, Pasgemaakte formate</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, Vaardigheid</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>Ander assistente, assistente op die web</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>Kyk rond met 'n kopvolger of VR-headset terwyl albei duime op die knoppies bly.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>Karteer die spoed, pedale en rataflope wat 'n renspeletjie stuur, soos enige invoer.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>Stuur controller-beweging na emulators wat 'n DSU-bewegingsbron lees.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>Die ring, rooster of balk van 'n kieslys terwyl dit oop is.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>Die laag se naam wanneer 'n skuiflaag aangaan, vir die tyd wat daardie laag instel.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>Die profiel se naam wanneer die profiel verander.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>Of die virtuele controllers pas aan of af geskakel is, deur die kortpad of 'n makro.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>Die naam van 'n toegewysde toestel wanneer dit ontkoppel.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>Die naam van 'n toegewysde toestel wanneer dit koppel.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>Kopieer adres</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>Programme kan profiele wissel en vrystel, die enjin begin en stop, virtuele controllers aan- en afskakel, die venster wys en versteek, PadForge toemaak, 'n diagnosekiekie stoor en vra wat aktief is.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>Alles by Opdragte, en programme kan toestelle, virtuele controllers, toewysings, profiele en instellings sien, die invoere van elke toestel volg soos dit gebeur, en vir jou 'n plek in PadForge wys. 'n Program by Lees sien elke sleutel wat op elke toestel gedruk word, ook sleutels wat in vensters getik word wat as administrateur loop.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>Alles by Lees, en programme kan eie toestelle byvoeg en bestuur, 'n kontrole van enige toestel vashou en benoemde waardes aan makro-snellers oorhandig.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alles by Stuur invoere, en programme kan verander wat jy op die bladsye kan verander.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>Alles by Stuur invoere, en programme kan verander wat jy op die bladsye kan verander. Sommige veranderinge vra jou altyd eers op PadForge se vraagkaart.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>Assistente</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Plak dit in 'n assistent se MCP-instellings. Die assistent werk dan op die vlak hierbo met PadForge.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>Kopieer as TOML</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>Assistente wat TOML lees</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>Voeg by sit PadForge, met sy vaardigheid, in daardie assistent. Dit werk dan op die vlak hierbo, en sy woorde wys langs wat dit aanwys, onder sy naam.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>Skrifte</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>Skrifbiblioteek</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>Stoor 'n biblioteek…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Een lêer vir AutoHotkey v2, Python of PowerShell. 'n Skrif wat dit laai, lees toestelle en bestuur toewysings op die vlak hierbo.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>Een lêer vir AutoHotkey v2, Python of PowerShell, geskryf waar jy kies.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>Wag op jou</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>Aktiwiteit</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>Nog geen program het geroep nie. Elke oproep word hier gelys met wat daarvan gekom het.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>Ontdoen</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>Vaardigheid vir assistente</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>Stoor die vaardigheid…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge kon dit nie stoor nie: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>Terwyl 'n program by Lees of hoër gekoppel is, sien dit wat op elke toestel gedruk word, sleutelborde ingesluit.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>Inpropprogramme</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>Laat inpropprogramme loop</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>Geen inpropprogram loop nie.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>'n Inpropprogram loop met jou regte, nie met PadForge se regte nie.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Ingebou</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Toetscontroller</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>'n Controller wat self beweeg, een kontrole op 'n slag, sodat 'n toewysing probeer kan word sonder toerusting byderhand.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>Spoed</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>Stadig</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>Normaal</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>Vinnig</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>Vinnigste</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Herspeel</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Speel 'n probleemopname terug as die toestelle wat dit gemaak het, met die tydsberekening wat hulle gehad het. Hulle is nuwe toestelle op hierdie rekenaar, toegewys soos jy of 'n profiel hulle toewys.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Opname</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>Probleemopnames|*.zip;*.log|Alle lêers|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge kan nie {0} speel nie. Dit is nie 'n probleemopname nie, of dit bevat geen toestel se invoer nie.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>Jou inpropprogramme</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>'n Inpropprogram is 'n program wat toestelle by PadForge voeg. PadForge begin dit met jou gewone regte wanneer die enjin loop.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>Voeg 'n inpropprogram by…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>Programme en skrifte|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|Alle lêers|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>Keur goed…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>Keur goed en herbegin…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>Begin saam met die enjin</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>Kyk die lêer na voordat dit begin</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>Het met kode {0} gestop. Begin weer oor {1} s.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} is reeds op die lys.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge laat tot 16 inpropprogramme loop. Verwyder een om 'n ander by te voeg.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>Inpropprogramme wat loop: {0}. Toestelle wat hulle bygevoeg het: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} het na vyf mislukkings gestop.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} het verander sedert jy dit goedgekeur het.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kon nie begin nie.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} bygevoeg.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Onderteken deur {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nie onderteken nie.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>Die instellings verskyn hier terwyl dit loop.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>Dit verklaar geen instellings nie.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge kon nie die instellings lees nie: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>Na 'n minuut sonder 'n woord beëindig</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>Die lêer het verander terwyl dit geloop het</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>Bygevoeg deur {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>Instellings van {0}</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>Kies</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>Druk 'n kontrole…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>Nie gekies nie</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>Voeg 'n inpropprogram by, of sleep sy lêer na hierdie bladsy. PadForge wys sy pad, sy ondertekenaar en sy SHA-256 en vra jou voordat dit loop. 'n Inpropprogram loop met jou regte, nie met PadForge se regte nie.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>Speel 'n probleemopname terug as die toestelle wat dit gemaak het, met hul tydsberekening.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>Loop.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Loop, met die hand.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>Wat beweeg</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>Stokkies en snellers</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>Stokkies</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>Snellers</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>Patroon</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>Vee</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>Sirkel</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>Beweegtyd</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>Rustyd</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>Druk knoppies</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>Druk navigasieknoppies</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows-programme reageer op 'n virtuele Xbox-controller se A, B, Terug, Start en D-pad in die venster vooraan, en Guide maak Xbox Game Bar oop.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>Draai die D-pad</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>Om dieselfde rede.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>Druktyd</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>Controllers</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>Met die hand</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>Stop die beweging. Stel sy invoere hieronder met die muis.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>Linkerstokkie</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>Regterstokkie</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>Linkersneller</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>Regtersneller</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>Lesings per sekonde</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Die inpropprogramstel en die logboek van 'n inpropprogram wat jy kies</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Inpropprogramstel</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Stoor die inpropprogramstel…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>'n Klein inpropprogram in C#, en dieselfde inpropprogram vir AutoHotkey, Python en PowerShell, elke lêer met hoe om dit te bou of te laat loop.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>'n Gids vir elke werkwoord, gebeurtenis en soort instelling, 'n bouskrif vir die C#-inpropprogram, en dieselfde inpropprogram vir AutoHotkey, Python en PowerShell.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>Logboek</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>Kies 'n inpropprogram om sy logboek te sien.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>Daar is nog niks in hierdie inpropprogram se logboek nie.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>'n Speletjie-mod</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>'n Ander program hou die pypnaam {0}. Maak daardie program toe.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows het die pyp {0} geweier, so programme kan nie koppel nie.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Geen program is gekoppel nie.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Aan. Geen program is gekoppel nie.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Gekoppel: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Onbekende program</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, onderteken deur {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>Nie meer hiervan tot PadForge weer begin nie</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge het geen sodanige hulpmiddel nie</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>Die program het 'n ouer toestand gelees</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Geen sodanige instelling nie</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>Niks het daardie ID nie</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>Die waarde was buite wat die instelling aanvaar</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>Jy het dit nie toegelaat nie</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>Niemand het betyds geantwoord nie</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>Wys die venster</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>Stuur die venster na die stelselbalk</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>Maak die venster klein</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>Maak die venster groot</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>Maak PadForge toe</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>Begin die enjin</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>Stop die enjin</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>Voeg die toestel {0} by</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>Stel die kontroles van toestel {0}</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>Verwyder die toestel {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>Sit elke kontrole van toestel {0} in rus</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>Laat PadForge 'n program laat loop.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>Maak 'n lêer, 'n vouer of 'n webblad oop.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>Laat PadForge sleutels of muisinvoer na Windows stuur.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>Voer 'n profiel van buite PadForge in.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge vra jou voordat 'n program dit doen.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>Dialoë</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>Makro's</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>Hou kontroles van toestel {0} vas</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>Los kontroles van toestel {0}</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>Stel die waarde {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>Wissel profiele</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>Begin of stop die enjin</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>Skakel virtuele controllers aan of af</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>Stoor 'n diagnosekiekie</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>Lees die pollingkoers en drywers</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>Lys die profiele</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>Lees 'n profiel</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>Lys die virtuele controllers</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>Lys die toestelle</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>Lees 'n toestel</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>Wag vir jou invoer</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>Lees 'n controller se toewysings</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>Lys 'n controller se makro's</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>Neem 'n probleem op</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>Soek instellings</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>Lees 'n instelling</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>Wys vir jou 'n plek</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>Soek plekke in PadForge</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>Lees 'n plek in PadForge</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>Lees wat jy sien</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>Voeg 'n eie toestel by</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>Bestuur sy toestel</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>Verwyder sy toestel</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>Hou 'n kontrole vas of los dit</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>Stel 'n waarde vir makro-snellers</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>Verander 'n instelling</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>Druk 'n knoppie</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>Skep 'n profiel</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>Hernoem 'n profiel</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>Vee 'n profiel uit</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>Verander 'n controller se tipe</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>Wys 'n toestel toe</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>Stel toewysingsrye</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>Vee toewysingsrye uit</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>Wys 'n controller outomaties toe</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>Stoor 'n makro</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>Vee 'n makro uit</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>Maak 'n sleutelbord-en-muis-controller</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>Skakel {0} aan</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>Verander “{0}”</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>Druk “{0}”</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} wil vir jou {1} wys</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>Op {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>Laat {0} toe om met PadForge te werk by {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} laat {1} loop</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>Begin deur {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>Onderteken deur {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>Nie onderteken nie.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>Op Lees en hoër sien dit elke sleutel wat op elke toestel gedruk word, sleutelborde ingesluit.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>Dit vra een keer. Jy kan dit op die Outomatisering-bladsy verwyder.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge se opdragreël</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>Stel {0} op {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>Luister op die netwerk, sodat ander toestelle hierdie rekenaar kan bereik.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>Verander 'n drywer of HidHide, waarop ander programme en speletjies staatmaak.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell-modules (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>Laat toe</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>Moenie toelaat nie</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>Nie nou nie</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>Wys</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>Stap {0} van {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik daarop om voort te gaan.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Maak {0} oop.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Maak Meer oop.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Van {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Van {1}, wat homself “{0}” noem</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Van 'n program wat homself “{0}” noem</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>Installeer en herbegin</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>Vrystellingsnotas</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>Controller-databasis</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdateer nou laai die gemeenskap se controller-databasis (SDL_GameControllerDB) van GitHub af en hou in die instellingslêer die toewysings wat hierdie weergawe van PadForge kort. 'n Nuwe toewysing word slegs gebruik vir 'n controller wat niks anders as 'n gamepad lees nie, wat nie toegewys is nie en wat nie in Dwing rou joystick-modus is nie. Die terugstelling verwyder elke afgelaaide toewysing.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>Opdateer nou laai die gemeenskap se controller-databasis (SDL_GameControllerDB) van GitHub af en hou in die instellingslêer die toewysings wat hierdie weergawe van PadForge kort. Hulle is dadelik in gebruik. 'n Nuwe toewysing word slegs gebruik vir 'n controller wat niks anders as 'n gamepad lees nie, wat nie toegewys is nie en wat nie in Dwing rou joystick-modus (omseil gamepad-hertoewysing) is nie. Die terugstelling verwyder elke afgelaaide toewysing. Jou eie rye, onder Meer, bly.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>Opdateer nou</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>Opdateer tans…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>Kyk tans vir opdaterings…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>Die opdatering na PadForge {0} het nie klaar geïnstalleer nie. Installeer dit vanuit Instellings om weer te probeer.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge is opgedateer na {0}.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>Ingebou: {0} toewysings, gemeenskapskopie van {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ingebou: {0} toewysings, gemeenskapskopie van {1}. Opgedateer {2}: {3} nuut, {4} verander.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>Ingebou: {0} toewysings, gemeenskapskopie van {1}. Afgelaai {2}: {3} nuwe rye, {4} verander.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>Die gemeenskapsdatabasis het nie verander sedert die laaste opdatering nie.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>Kon nie GitHub bereik nie: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge het die aflaai geweier omdat dit nie die controller-databasis is wat dit verwag nie. Niks het verander nie.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>'n Nuwe toewysing word gebruik die volgende keer wat sy controller koppel.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>'n Verande toewysing word gebruik die volgende keer wat PadForge begin.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Begin geminimeer</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Begin by aanmelding</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Weergawe-inligting, plus enjingebeurtenislogging vir probleemoplossing.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Hou 'n diagnoselogboek</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Skryf voortdurend enjingebeurtenisse na diagnostics.log in die logvouer, wat Maak logvouer oop oopmaak. Bly aan oor herbeginne heen. Wanneer die lêer 8 MB bereik, rol dit oor na diagnostics.log.old.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Stoor kiekie</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Stoor die jongste enjingebeurtenisse in 'n nuwe lêer. Werk selfs wanneer die diagnoselogboek af is.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Stoor 'n kiekie…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Neem die program, Windows, jou toestelle en instellings soos hulle nou is, met die jongste enjingebeurtenisse, en maak hulle oop sodat jy hulle kan lees voordat jy hulle stoor. Werk selfs wanneer die diagnoselogboek af is.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Maak logboekvouer oop</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>Neem 'n probleem op</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>Begin opname</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>Stop opname ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Neem op tot Stop opname, 10 minute of 'n zip van 20 MB, kies dan die zip in Explorer, gereed om aan 'n verslag te heg.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Begin, laat die probleem gebeur, en stop dan. Een lêer langs PadForge bevat alles wat PadForge gelees, gestuur en gelog het, met 'n opsomming van wat verkeerd gegaan het. Elke sleutel en knoppie wat op elke toestel gedruk word terwyl dit opneem, is in die lêer, sleutelborde en muise ingesluit. Gebruikersname, reeksnommers, adresse en getikte name word vervang voordat enigiets geskryf word.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>Neem op tot Stop opname, 30 minute of 'n zip van 20 MB, en maak dan die opname oop sodat jy dit kan lees voordat jy dit stoor.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>Begin, laat die probleem gebeur, en stop dan. Lees dan wat dit bevat, deel vir deel, en stoor dit waar jy wil. Elke sleutel wat op elke toestel gedruk word terwyl dit opneem, is daarin, sleutelborde en muise ingesluit. Gebruikersname, reeksnommers, adresse en getikte name word vervang voordat enigiets geskryf word.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>Skryf die opsomming…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} gestoor</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>Die opname het nie begin nie. 'n Toets het 'n private waarde van hierdie PC gevind wat nie uit die lêer gehou sou word nie.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>Die opname het nie begin nie. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>Die laaste opname word nog voltooi.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>Hou die laaste 60 sekondes is af, so daar is niks om te stoor nie.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>'n Opname voltooi wat PadForge nie gestop het nie: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>'n Opname wat PadForge nie gestop het nie, wag dat jy dit op Tuis lees: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>Hou die laaste 60 sekondes</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Terwyl die enjin loop, hou dit die laaste minuut van wat 'n opname bevat in geheue, vir 'n probleem wat een keer 'n aand kom. Stoor die laaste 60 sekondes skryf dit as 'n lêer.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>Terwyl die enjin loop, hou dit die laaste minuut van wat 'n opname bevat in geheue, vir 'n probleem wat een keer 'n aand kom. Stoor die laaste 60 sekondes maak dit oop sodat jy dit kan lees voordat jy dit stoor.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>Stoor die laaste 60 sekondes</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>Skryf getikte letters en syfers as een sleutel</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>'n Opname skryf die letter- en syfersleutels wat geen toewysing of makro lees nie as een sleutel, elke druk op sy eie tyd. Elke ander sleutel, en elke sleutel wat 'n toewysing of makro lees, word geskryf soos gedruk.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Hou die laaste 60 sekondes, Skryf getikte letters en syfers as een sleutel</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>Wat om op te neem, die laaste 60 sekondes, getikte letters</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>Stoor 'n kiekie</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, jou toestelle en instellings soos hulle nou is, deur dieselfde hersiening.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log langs PadForge.exe, wat jy daar kan lees.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>Wat om op te neem</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>Almal aan. 'n Deel wat afgeskakel is, word uit die volgende opname gelaat, en die lêer sê watter dele dit bevat.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>Vir 'n probleem wat een keer 'n aand kom.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>Die opname wag dat jy dit op Tuis lees.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>Opsomming</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>Instellings en toestelle</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>Invoer</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>Uitvoer</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>Terugvoer</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>Tydsberekening</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>Venster en foute</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>Aktiwiteit</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>Diagnoselyne</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>Lees jou opname</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} tot {1}, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>'n Kiekie om {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 minuut</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} minute</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 sekonde</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} sekondes</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>Deur jou gestop.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>Self gestop by {0}.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>Self gestop by {0} in die zip.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>Deur 'n makro gestop.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>Deur 'n program of --record stop gestop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>Deur die assistent gestop wat dit begin het.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>Gestop toe PadForge gesluit het.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>Die laaste 60 sekondes, in geheue gehou.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>Lees wat jy gaan deel. Skakel 'n deel af om dit uit te laat, stoor dan. Niks verlaat hierdie rekenaar tensy jy dit plaas nie.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, soos dit gedeel sal word</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>Wys {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>uitgelaat</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>nie opgeneem nie</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} as teks, {1} in die zip</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} as teks, {1} in die zip wat jy deel. 'n Opname stop by {2} in die zip of na {3}.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>Skoonmaakkontrole: PadForge het {0} van {1} vervang. Geen van hierdie rekenaar se name, reeksnommers of adresse is in die dele wat jy hou nie.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} waardes</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 waarde</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} private soorte</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 private soort</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>Skoonmaakkontrole: {0} van hierdie rekenaar se eie waardes is nog in die dele wat jy hou. Skakel daardie dele af of vee die opname uit. Stoor bly af tot dan.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>Skoonmaakkontrole: een van hierdie rekenaar se eie waardes is nog in die dele wat jy hou. Skakel daardie dele af of vee die opname uit. Stoor bly af tot dan.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>Niks van hierdie deel het gebeur terwyl dit opgeneem het nie.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>Vee uit</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>Kopieer opsomming</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>Gekopieer</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>Stoor…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>Stoor die opname</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip-lêers</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>Nie gestoor nie. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>Gestoor as jy, die eerste keer in jou Aflaaie-vouer, daarna waar jy laas gestoor het, en in Lêerverkenner gewys. 'n Opname wat stop terwyl niemand by die bladsy is nie (sy perk, 'n makro, 'n program, die assistentnutsding of --record stop) wag op hierdie hersiening op Tuis, en word na 7 dae uitgevee tensy dit gestoor is. 'n Program word vertel dat dit wag, nooit waar nie.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>'n Probleemopname van {0} wag dat jy dit lees.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>Hersien</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>Merk die opname</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Toepassingweergawe</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-looptyd</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-weergawe</value></data>
@@ -2898,31 +3008,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>Muisposisie X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>Muisposisie Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>Sensitiwiteit</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Wysersensitiwiteit per bron. 1.0 bereik volle stokkie-uitwyking by 10% van die skermwydte vanaf die middel. Waardes bo 1.0 bereik volle uitwyking met minder wyserbeweging. Waardes onder 1.0 het meer nodig.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>Wysersensitiwiteit per bron. 1.0 bereik volle stokkie-uitwyking by 10% van die breedte van die wyser se monitor vanaf sy middel. Waardes bo 1.0 bereik volle uitwyking met minder wyserbeweging. Waardes onder 1.0 het meer nodig.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>Muisbeweging X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>Muisbeweging Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>Beweging tot volle slot</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hoe ver die muis van die middel tot volle slot beweeg, in die tellings wat die muis rapporteer. 'n Hoër getal stuur fyner en vra meer handbeweging.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>Hoe ver die muis of die wiel van die middel tot volle slot beweeg, in die tellings wat dit rapporteer. 'n Hoër getal stuur fyner en vra meer handbeweging.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Met die muis se DPI gestel op sy toestelpaneel, wys die beweging ook in sentimeter.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>tellings</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>Sentrering</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Af hou die stuurwiel waar die hand dit gelos het. Veer bring dit terug oor die Terugkeertyd. Uit telemetrie trek dit terug soos 'n motor se voorbande by die speletjie se spoed en greep sou doen: stil by stilstand, fermer met spoed, lig wanneer die bande gly. Sonder 'n speletjie wat telemetrie stuur, is dit die veer. Uit die speletjie se krag laat 'n virtuele stuurwiel se eie kragterugvoer dit draai.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>Af hou die stuurwiel waar die hand dit gelos het. Veer bring dit terug oor die Terugkeertyd. Uit telemetrie trek dit terug soos 'n motor se stuur doen by die speletjie se spoed en greep: steil naby die middel en sagter verder uit, stil by stilstand, fermer met spoed, lig wanneer die bande gly. Sonder 'n speletjie wat telemetrie stuur, trek dit soos by 100 km/h op 'n droë pad. Uit die speletjie se krag laat 'n virtuele stuurwiel se eie kragterugvoer dit draai.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>Af</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>Veer</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>Uit telemetrie</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>Uit die speletjie se krag</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>Terugkeertyd</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hoe lank Veer neem om die stuurwiel 95% van die pad terug te bring. Uit telemetrie neem hierdie lank by 100 km/h op 'n droë pad.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>Hoe lank Veer neem om die stuurwiel 95% van die pad terug te bring. 0 sentreer dit dadelik. Uit telemetrie neem hierdie lank van naby die middel by 100 km/h op 'n droë pad.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>Stuur</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Altyd laat die muis te alle tye stuur. Terwyl vasgehou laat dit net stuur terwyl die Stuurinvoer vasgehou word. Wissel skakel stuur aan of af met elke druk op die Stuurinvoer. Terwyl die muis nie stuur nie, bly die stuurwiel waar dit is of sentreer, so een muis kan stuur en rondkyk.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>Altyd laat die muis te alle tye stuur. Terwyl vasgehou en middel laat dit net stuur terwyl die Stuurinvoer vasgehou word, en bring dit dan terug na die middel, deur Sentrering waar die bron een het en dadelik waar dit geen het nie. Terwyl vasgehou en bly laat dit net stuur terwyl die invoer vasgehou word en los dit waar dit gelos is. Wissel skakel stuur aan of af met elke druk op die Stuurinvoer. So kan een muis stuur en rondkyk.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>Altyd</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Terwyl vasgehou</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>Terwyl vasgehou en middel</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>Wissel</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>Stuurinvoer</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Die knoppie wat die muis laat stuur, op dieselfde toestel as die muis se beweging. As geen gekies is nie, stuur die muis altyd.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>Die knoppie wat die muis laat stuur, op dieselfde toestel as die bron. As geen gekies is nie, stuur die muis altyd.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>Gladmaak</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maak 'n muis gelyk wat ongelyk rapporteer. Die stuurwiel volg die hand ongeveer so lank agterna. 0 is af.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>Maak 'n muis gelyk wat ongelyk rapporteer. Die stokkie volg die hand ongeveer so lank agterna. 0 is af.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>Slot by spoed</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>Met Speletjietelemetrie aan, hoeveel van die slot oor is by 200 km/h. By 100% is die hele slot by elke spoed daar.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>Wielbeweging</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>Wielbeweging sywaarts</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>Hoe vinnig die muis beweeg. Laat los wanneer die hand ophou.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>Waar die wyser op sy monitor is, van sy middel af of van waar dit was toe stuur begin het.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>Hoe ver die muis beweeg het, gehou waar die hand dit laat, soos by 'n stuurwiel.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>Rolkepe gehou as 'n posisie, teen volle presisie op 'n fyn rolwiel.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>Die syrolwiel se kepe gehou as 'n posisie, teen volle presisie op 'n fyn rolwiel.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>'n Stoot vir elke kep, dadelik terug na rus.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Terwyl vasgehou en bly</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>Sensitiwiteit</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>Hoeveel van die stokkie 'n spoed gee. By 1.00 bereik die stokkie volle uitwyking by 16 000 tellings per sekonde, by elke peilingtempo en muisverslagtempo.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>Terug na die middel</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>Sodra die muis stadiger raak of stop, kom die stokkie nie vinniger terug as dit nie. 0 laat dit saam met die muis terugkom.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Begin waar stuur begin het</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>Met 'n Stuurinvoer meet die stokkie vanaf waar die wyser was toe stuur begin het, soos 'n stokkie op 'n foon se skerm begin waar die vinger land. Af meet dit vanaf die middel van die wyser se monitor.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>Hierdie as beweeg relatief</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>Vir 'n rolbal of 'n draaiknop wat rapporteer hoe ver dit gedraai het. Aan hou die as 'n posisie soos Muisbeweging doen en neem die bewegingsinstellings. Windows sê nie watter asse so beweeg nie.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} cm</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>Voorskou</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>Wys hoe hierdie familie jou eie muis volg. Niks is toegewys totdat jy dit kies nie.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>Voorskou. Beweeg jou muis.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>Gehou by {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>By {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% regs</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% links</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% op</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% af</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>die middel</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>Beweeg terwyl {0} vasgehou word.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>Muis-DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>Die tellings wat hierdie muis rapporteer vir elke duim wat dit beweeg, soos sy vervaardiger se sagteware dit stel.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>Met die DPI gestel, wys Muisbeweging ook sy beweging in sentimeter. 0 beteken nie gestel nie.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-wyser X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-wyser Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-helderheid</value></data>
@@ -4532,6 +4675,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Aanwysers op die skerm wat PadForge wys terwyl jy speel. Om een af te skakel verander nooit gedrag nie, net of dit gewys word.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-laag-flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profielwissel-overlay</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Controllers aan of af</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>Nota oor ontkoppelde toestel</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>Nota oor gekoppelde toestel</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Wys die ring of rooster op die skerm solank ’n radiale of raakkieslys aktief is. Kieslyste vuur steeds met die overlay af.</value></data>
@@ -5121,6 +5265,8 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>Af</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>Stophorlosie</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>Ligbalkkleur</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Vanlyn toestelle</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Almal gekoppel</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>af</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>deur Logitech Gaming Software</value></data>
@@ -5163,6 +5309,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>Die skerm wys 'n prent wat jy kies, in sy eie grootte. 'n Prent groter as die skerm wys 'n venster van die skerm se grootte, wat die Skuif sleutelbordskermprent-makro skuif. Op die S.T.R.I.K.E. 7 skuif 'n vinger wat oor die skerm gesleep word dit ook.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>Die skerm wys die stophorlosie, wat die Stophorlosie-makro begin, onderbreek en terugstel. Elke skerm wys dieselfde stophorlosie.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>Die skerm wys die kleur van die ligbalk op die DualShock 4 of DualSense in die laagste gleuf wat hierdie skerm voed, of in die laagste gleuf van almal as dit geen een voed nie. 'n Monochroomskerm wys sy helderheid as 'n kolpatroon. Totdat 'n kleur 'n ligbalk bereik, wys PadForge niks.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Die skerm lys die toegewysde toestelle wat nie gekoppel is nie, by die name wat die Toestelle-bladsy wys, en sê Almal gekoppel wanneer geeneen ontbreek nie.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>Prente (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Alle lêers (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>Skuif</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>Skuif X</value></data>
@@ -5359,6 +5506,7 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>Ry (nie 0 nie)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>Speletjietelemetrie</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>Skrifwaarde</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>Toestelverbinding</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>Spoed (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% van maks.)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>Rat (-1 trurat, 0 neutraal)</value></data>
@@ -5522,4 +5670,231 @@ Wil jy hê PadForge moet dit nou deïnstalleer? Dit vereis verhoogde regte en ka
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>Probleemopname</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>Begin of stop opname</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>Merk die opname</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Die overlay lys die toegewysde toestelle wat nie gekoppel is nie, by die name wat die Toestelle-bladsy wys, en sê Almal gekoppel wanneer geeneen ontbreek nie.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>Af. Geen program kan PadForge bereik nie.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} en {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Aktiwiteit: {0} oproepe, oudste eerste. Oproepe wat hulle voorafgegaan het: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Aktiwiteit: {0} oproep. Oproepe wat dit voorafgegaan het: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} ouer oproepe is weg. Aktiwiteit hou die nuutste {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} ouer oproep is weg. Aktiwiteit hou die nuutste {1:N0}.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>Voer uit…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Voer Aktiwiteit uit</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Tekslêer</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>Maak oop</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>Opdateer</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>Meer vir {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>Stoor die vaardigheid as 'n ZIP…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>Maak sy instellingslêer oop</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>Gestoor. Voeg in {0} die {1} by onder {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} het nog geen instellingslêer nie. Voeg by maak een.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge vind geen assistentprogram op hierdie rekenaar waarvan die vervaardiger 'n opstelling op Windows dokumenteer nie. Copy Settings onder Meer werk vir enige ander.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge kon nie die assistentprogramme nagaan nie: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>Nie bygevoeg nie.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>Bygevoeg.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>Bygevoeg. Nou gekoppel.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>Bygevoeg. Dit het sedertdien nie gekoppel nie. 'n Assistent wat oop was, sien PadForge nadat dit toegemaak en weer oopgemaak is.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>Bygevoeg vir 'n ander PadForge. Opdateer wys dit na hierdie een.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>Bygevoeg. Sy PadForge-vaardigheid is ouer as hierdie PadForge.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>Bygevoeg, sonder sy PadForge-vaardigheid.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>Bygevoeg. Sy PadForge-vaardigheid kom van 'n nuwer PadForge.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>Dit neem vaardighede slegs as 'n oplaai.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>Bygevoegde assistente bereik PadForge sodra Outomatisering aan is.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>Voeg by…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>Verwyder…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>Opdateer…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>Dit het nie klaargemaak nie: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>Gekopieer.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>Nie gekopieer nie: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>Toegelate programme</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>'n Program wat Lees of meer wil hê, vra een keer, die eerste keer wat dit koppel, en kry die vlak wat dit vra, tot by die vlak hierbo. 'n Assistent wat jy hierbo byvoeg, word daardeur toegelaat.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>Nou gekoppel.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>Laas gebruik {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>Nog nie gebruik nie.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>Gekoppel: {0}. Klik om Outomatisering oop te maak.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>Op hierdie rekenaar: {0}. Van die web af: {1}. Klik om Outomatisering oop te maak.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>Van die web af gekoppel: {0}. Klik om Outomatisering oop te maak.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL-toewysing</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>'n Gamepad, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>'n Joystick. SDL het nie 'n toewysing daarvoor nie.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>'n Joystick. PadForge lees dit rou, so SDL se toewysing word nie gebruik nie.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>'n Joystick, as 'n gamepad uitgelê deur jou ry.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL lees toestelle terwyl die enjin loop.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>Die gemeenskapskopie wat ingebou is, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>Afgelaai {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge se eie lêer</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>Joune, bygevoeg {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>Die SDL_GAMECONTROLLERCONFIG-veranderlike, wat SDL bo enige ry hou wat jy byvoeg</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>Kopieer SDL-toewysing</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>Sit die toestel se toewysing op die knipbord as 'n ry van die gemeenskapsdatabasis, onder die toestel se ID met sy kontrolesom en weergawe op nul.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>Plak SDL-toewysing…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>Neem 'n ry vir hierdie toestel, gaan dit na, hou dit as joune en pas dit dadelik toe.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>Vind 'n toewysing…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>Soek elke ry wat PadForge dra volgens naam en pas die een wat jy kies op hierdie toestel toe, vir 'n kloon wie se ID's verskil.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>Raai 'n uitleg</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>Raai 'n gamepad-uitleg uit die toestel se asse, knoppies en hoedjies, vir 'n toestel wat geen databasis ken nie. Gaan dit na in Toets invoere.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>Verwyder myne</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>Verwyder myne sit die ry en die controller-rye van vroeër terug.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>Wys weer toe</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>Maak die toestel se rye op elke controller waarop dit is weer uit SDL se uitleg, soos toewys dit doen.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>Gemeenskapsdatabasisbladsy</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>Die ry, en waar dit van {0} verskil</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>Die ry</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0}-ry</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>Sy invoer nou</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL se ry sê</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>nie in SDL se ry nie</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, verskil</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>Nie deur PadForge gebruik nie: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>Die ry</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>Gekopieer.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>Gekopieer. SDL se vorm kan nie {0} hou nie.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>makro's</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>krommes</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>dooisones</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>sleutelbord- en muisuitvoere</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>turbo, wisselskakelaars en ander aksies</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} en {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>Niks om te kopieer nie: SDL het geen toewysing vir hierdie toestel nie, en dit is op geen controller nie.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>'n Ander program gebruik die knipbord. Niks is gekopieer nie.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>Jou ry is verwyder. Die toestel word gelees soos voorheen.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>Weer toegewys uit SDL se uitleg: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>Nou in gebruik. Die ry is joune en geld vir hierdie toestel.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>As joune gehou. Dit is in gebruik sodra die enjin loop en die toestel gekoppel is.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>As joune gehou, maar die SDL_GAMECONTROLLERCONFIG-veranderlike hou 'n ry vir hierdie toestel, wat SDL bo joune hou.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL het nie die ry geneem nie. Niks het vir hierdie toestel verander nie.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>Plak 'n SDL-toewysing</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>Plak 'n SDL-toewysing vir {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>Vind 'n toewysing vir {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>Raai 'n uitleg vir {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>Voeg rye by uit 'n lêer of die knipbord</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>Plak</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>Maak 'n lêer oop…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>Toewysinglêers (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>Die lêer is meer as 4 MB. Die gemeenskap se hele lêer is ongeveer 0.6 MB.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>Soek volgens naam, ID of VID:PID</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>Rye wat PadForge dra</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>Geen ry pas nie.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>Die gekose ry word op {0} toegepas onder sy eie ID, deur dieselfde nagaan en dieselfde keuse as Plak.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL-toewysingry</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>'n Ry vir hierdie toestel.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>'n Geraaide uitleg.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} velde, sy ID pas by hierdie toestel.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} velde, van dieselfde vervaardiger en produk op 'n ander bus of weergawe. Dit word onder hierdie toestel se eie ID gehou.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} velde, 'n ander toestel se ry. Dit word onder hierdie toestel se eie ID gehou.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} velde. SDL lees nie hierdie toestel nie, so PadForge lê sy invoere uit volgens die ry.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} velde, uit die toestel se asse, knoppies en hoedjies. Gaan dit na in Toets invoere, hou dit dan of verander dit hier.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} veld, sy ID pas by hierdie toestel.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} veld, van dieselfde vervaardiger en produk op 'n ander bus of weergawe. Dit word onder hierdie toestel se eie ID gehou.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} veld, 'n ander toestel se ry. Dit word onder hierdie toestel se eie ID gehou.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} veld. SDL lees nie hierdie toestel nie, so PadForge lê sy invoere uit volgens die ry.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} veld, uit die toestel se asse, knoppies en hoedjies. Gaan dit na in Toets invoere, hou dit dan of verander dit hier.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>Dit verander hoe {0} gelees word. Sy rye in {1} word weer uit die nuwe uitleg toegewys.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>Dit verander hoe {0} gelees word. Dit is op geen controller nie, so geen rye verander nie.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profielkortpaaie wat {0} lees, hou die invoere waarop hulle gestel is.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>Die ry word as joune in PadForge.xml gehou en geld bo elke ander bron vir hierdie toestel. Verwyder myne sit die ou ry en die ou rye terug.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>Die rye word as joune in PadForge.xml gehou en geld vir hul toestelle bo elke ander bron. Maak skoon, onder Meer van die Controller-databasis-ry, verwyder hulle.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rye vir Windows. {1} vir ander stelsels word oorgeslaan.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} ry vir Windows. {1} vir ander stelsels word oorgeslaan.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} geweier. Die eerste: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Plak 'n ry, of die teks van 'n gamecontrollerdb.txt-lêer.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>Die teks is geen ry van SDL se controller-databasis nie: 'n ID van 32 heksadesimale syfers, 'n naam, dan velde soos a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>Die rye is vir ander stelsels. PadForge lees rye vir Windows, of vir geen bepaalde stelsel nie.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>Die ry se ID is nie 'n toestel s'n nie. Dit het 32 heksadesimale syfers nodig.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>Die ry se naam is leeg, meer as 128 karakters, of bevat 'n karakter wat SDL as 'n veld lees.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>Die ry dra 'n wenk of 'n Android-veld, wat PadForge nie neem nie.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>Die ry het 'n veld wat SDL nie ken nie.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>'n Binding is nie in SDL se vorm nie, soos b3, a2, +a2, a2~ of h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>Die ry gee een veld twee keer.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>Die ry is meer as 1 024 karakters.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>Die ry bind geen kontrole nie.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>Jou rye</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>Jou rye</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rye wat jy hier byvoeg, of plak op 'n toestel se SDL-toewysing-kaart, geld vir hul toestelle bo elke ander bron en bly deur die terugstelling.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Voeg rye by uit 'n lêer of die knipbord…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rye, joune bo elke ander bron vir hul toestelle.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} ry, joune bo elke ander bron vir sy toestel.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>Nog geen.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>Dadelik in gebruik.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>Skakel aan</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>Assistente op die web</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>Tonnel</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>Geen</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>'n Adres wat ek plak</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>Begin, met jou regte.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>Loop, met jou regte. Sy adres bly dieselfde elke keer as dit begin.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>Loop, met jou regte. 'n Vinnige tonnel kry elke keer 'n nuwe adres as dit begin, so die assistent sou weer bygevoeg word.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>Gestop.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>Gestop. Sy laaste woorde: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>Dit kon nie begin word nie.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>Dit is nie meer op hierdie rekenaar nie.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>Geen tonnelprogram is op hierdie rekenaar gevind nie. PadForge werk met cloudflared, devtunnel, ngrok en Tailscale Funnel, of met jou eie tonnel se adres.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>Kies 'n tonnel om PadForge 'n openbare adres te gee.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>Ook op hierdie rekenaar: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, wie se adres dieselfde bly</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, wie se vinnige tonnels elke keer 'n nuwe adres kry</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>Laat jou eie tonnel loop na http://127.0.0.1:{0} en plak sy https-adres. 'n Benoemde Cloudflare-tonnel, 'n blywende dev-tonnel, Tailscale Funnel en ngrok se eie domein behou hul adres.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>Plak 'n https-adres sonder pad behalwe /mcp, soos jou tonnel dit gee.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>Begin PadForge se webhelper.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge se webhelper het gestop ({0}). Skakel Reach PadForge From the Web af en aan om dit weer te begin.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>Adres</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>Nog geen openbare adres nie.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Voeg by Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>Gekopieer.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>Neem 'n nuwe webassistent aan</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>Begin aanneem</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>Hou op aanneem</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>Neem aan tot {0}.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>Neem nie aan nie. Begin aanneem maak dit vir vyf minute oop.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>Voeg die adres in die assistent by en meld aan. Elke aanmelding wys sy eie kode van ses syfers op sy aanmeldbladsy en op PadForge se vraagkaart. Laat dit net toe wanneer die twee kodes ooreenstem. Andersins word 'n aanmelding geweier en niks vra jou nie.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>Toegelaat op die web</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>Nog geen.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>Sy aanmelding het teruggekeer na {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>Dit noem homself {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>Toegelaat {0}, laas gebruik {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>Toegelaat {0}, nog nie gebruik nie.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>Trek terug</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>Sy eie Secure MCP Tunnel laat PadForge direk loop, sonder adres of aanmelding hier. Kopieer die opdrag na daardie tonnel se opstelling.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>Kopieer opdrag</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge laai geen tonnelprogram af nie en hou nie 'n ander maatskappy se sleutel nie. 'n Webassistent werk op die vlak hierbo.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>Laat {0} toe om vanaf die web met PadForge te werk?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>Sy aanmelding keer terug na {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>Dit noem homself {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>Laat net toe as sy aanmeldbladsy hierdie kode wys:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>Sy kode van ses syfers verskyn op PadForge se vraagkaart. Laat net toe as sy aanmeldbladsy dieselfde kode wys.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>Dit werk by {0}, deur {1}.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>Sy aanmelding keer terug na hierdie rekenaar, en enige program hier kan daardie adres opeis.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>Meld aan by PadForge</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} vra om met PadForge op jou rekenaar te werk.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>Dit noem homself {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>Op jou rekenaar vra PadForge se vraagkaart oor hierdie aanmelding. Laat dit daar net toe as die kaart hierdie kode wys:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>Hierdie bladsy gaan self voort sodra jy op die rekenaar antwoord.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>Hierdie aanmelding keer terug na 'n program op jou rekenaar, en enige program daar kan daardie adres opeis.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge neem nou nie 'n nuwe webassistent aan nie. Maak PadForge op jou rekenaar oop, gaan na Ekstras, Outomatisering, en druk onder Assistente op die web op Begin aanneem. Meld dan weer aan.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>Hierdie aanmelding kan nie voortgaan nie. Voeg PadForge se adres weer in die assistent by en meld aan.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>Hierdie aanmelding het geëindig. Meld weer aan vanaf die assistent.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows het dit nie begin nie</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>dit het met kode {0} geëindig</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>Outomatisering is af, so geen webassistent bereik PadForge nie. Die webhelper begin sodra Outomatisering aan is.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>Gaan na…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>Nie geïnstalleer nie.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>Geïnstalleer en op datum. 'n Skrif begin met {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>Geïnstalleer vir {0} en op datum. 'n Skrif begin met {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>Geïnstalleer. Hierdie PadForge het 'n nuwer kopie.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>Geïnstalleer vir {0}. Hierdie PadForge het 'n nuwer kopie.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>Installeer…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge kon dit nie nagaan nie: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>Installeer sit PadForge se biblioteek waar daardie taal dit vind. 'n Skrif wat dit laai, lees toestelle en bestuur toewysings op die vlak hierbo.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>Stoor 'n biblioteek enige plek</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>Geïnstalleerde kopieë</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>Verwyder almal</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>Verwyder.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>Skrif-ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>Sy skrif-ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>Skrifte noem sy kontroles {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>Skrifte noem sy sleutels KeyA, KeySpace, KeyLeftShift en dies meer, en elke sleutel by sy kode, Vk0 tot Vk255.</value></data>
 </root>

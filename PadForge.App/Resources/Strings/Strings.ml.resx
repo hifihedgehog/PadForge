@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} ഡിസ്കണക്റ്റ് ചെയ്തു. {1}-ൽ ഇനി ഉപകരണമില്ല.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തു</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} കണക്റ്റ് ചെയ്തു, ബാറ്ററി {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} ഉപകരണങ്ങൾ ഡിസ്കണക്റ്റ് ചെയ്തു</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} ഉപകരണങ്ങൾ കണക്റ്റ് ചെയ്തു</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} ഉപകരണങ്ങൾ ഡിസ്കണക്റ്റ് ചെയ്തു: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} ഉപകരണങ്ങൾ കണക്റ്റ് ചെയ്തു: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} ആവർത്തിച്ച് ഡിസ്കണക്റ്റ് ആകുന്നു</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (പരമാവധി {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (പരമാവധി {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>സ്വയമേവ വീണ്ടും കണക്റ്റ്, പോർട്ട്, ജോടിയാക്കൽ ഐഡന്റിറ്റി, വിലാസം ഉപയോഗിച്ച് കണക്റ്റ് ചെയ്യുക</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>പോർട്ട്, DSX.exe സ്റ്റാൻഡ്-ഇൻ</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>പോർട്ടുകൾ, പൂർണ്ണ വേഗത, ഇഷ്ടാനുസൃത ഫോർമാറ്റുകൾ</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, സ്കിൽ</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>മറ്റ് അസിസ്റ്റന്റുകൾ, വെബിലെ അസിസ്റ്റന്റുകൾ</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>രണ്ട് തള്ളവിരലുകളും ബട്ടണുകളിൽ തന്നെ വച്ചുകൊണ്ട് ഒരു ഹെഡ് ട്രാക്കർ അല്ലെങ്കിൽ VR ഹെഡ്സെറ്റ് ഉപയോഗിച്ച് ചുറ്റും നോക്കുക.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ഒരു ഡ്രൈവിംഗ് ഗെയിം അയയ്ക്കുന്ന വേഗത, പെഡലുകൾ, ഗിയറുകൾ എന്നിവ ഏതൊരു ഇൻപുട്ടിനെയും പോലെ മാപ്പ് ചെയ്യുക.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>DSU മോഷൻ ഉറവിടം വായിക്കുന്ന എമുലേറ്ററുകളിലേക്ക് കൺട്രോളർ ചലനം അയയ്ക്കുക.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>ഒരു മെനു തുറന്നിരിക്കുമ്പോൾ അതിന്റെ റിംഗ്, ഗ്രിഡ് അല്ലെങ്കിൽ ബാർ.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>ഒരു ഷിഫ്റ്റ് ലെയർ ഓണാകുമ്പോൾ ആ ലെയർ നിശ്ചയിക്കുന്ന സമയത്തേക്ക് ആ ലെയറിന്റെ പേര്.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>പ്രൊഫൈൽ മാറുമ്പോൾ പ്രൊഫൈലിന്റെ പേര്.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ ഇപ്പോൾ ഓണോ ഓഫോ ആയോ എന്ന്, ഷോർട്ട്കട്ടിൽ നിന്നോ മാക്രോയിൽ നിന്നോ.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>മാപ്പ് ചെയ്ത ഒരു ഉപകരണം ഡിസ്കണക്റ്റ് ആകുമ്പോൾ അതിന്റെ പേര്.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>മാപ്പ് ചെയ്ത ഒരു ഉപകരണം കണക്റ്റ് ആകുമ്പോൾ അതിന്റെ പേര്.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>വിലാസം പകർത്തുക</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>പ്രോഗ്രാമുകൾക്ക് പ്രൊഫൈലുകൾ മാറ്റാനും വിടാനും, എഞ്ചിൻ ആരംഭിക്കാനും നിർത്താനും, വെർച്വൽ കൺട്രോളറുകൾ ഓണും ഓഫും ആക്കാനും, വിൻഡോ കാണിക്കാനും മറയ്ക്കാനും, PadForge അടയ്ക്കാനും, ഡയഗ്നോസ്റ്റിക്സ് സ്നാപ്ഷോട്ട് സേവ് ചെയ്യാനും, എന്താണ് പ്രവർത്തിക്കുന്നതെന്ന് ചോദിക്കാനും കഴിയും.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>കമാൻഡുകൾ ലെവലിലുള്ളതെല്ലാം, കൂടാതെ പ്രോഗ്രാമുകൾക്ക് ഉപകരണങ്ങൾ, വെർച്വൽ കൺട്രോളറുകൾ, മാപ്പിംഗുകൾ, പ്രൊഫൈലുകൾ, ക്രമീകരണങ്ങൾ എന്നിവ കാണാനും, എല്ലാ ഉപകരണങ്ങളുടെയും ഇൻപുട്ടുകൾ തത്സമയം പിന്തുടരാനും, PadForge-ലെ ഒരു സ്ഥലം നിങ്ങൾക്ക് കാണിച്ചുതരാനും കഴിയും. വായിക്കുക ലെവലിലുള്ള ഒരു പ്രോഗ്രാം എല്ലാ ഉപകരണങ്ങളിലും അമർത്തുന്ന ഓരോ കീയും കാണുന്നു, അഡ്മിനിസ്ട്രേറ്ററായി പ്രവർത്തിക്കുന്ന വിൻഡോകളിൽ ടൈപ്പ് ചെയ്യുന്ന കീകൾ ഉൾപ്പെടെ.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>വായിക്കുക ലെവലിലുള്ളതെല്ലാം, കൂടാതെ പ്രോഗ്രാമുകൾക്ക് സ്വന്തമായി ഉപകരണങ്ങൾ ചേർക്കാനും അവയെ നിയന്ത്രിക്കാനും, ഏതൊരു ഉപകരണത്തിന്റെയും ഒരു നിയന്ത്രണം പിടിച്ചുവയ്ക്കാനും, പേരിട്ട മൂല്യങ്ങൾ മാക്രോ ട്രിഗറുകൾക്ക് കൈമാറാനും കഴിയും.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ഇൻപുട്ടുകൾ അയയ്ക്കുക ലെവലിലുള്ളതെല്ലാം, കൂടാതെ പേജുകളിൽ നിങ്ങൾക്ക് മാറ്റാവുന്നത് പ്രോഗ്രാമുകൾക്കും മാറ്റാൻ കഴിയും.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ഇൻപുട്ടുകൾ അയയ്ക്കുക ലെവലിലുള്ളതെല്ലാം, കൂടാതെ പേജുകളിൽ നിങ്ങൾക്ക് മാറ്റാവുന്നത് പ്രോഗ്രാമുകൾക്കും മാറ്റാൻ കഴിയും. ചില മാറ്റങ്ങൾ എപ്പോഴും PadForge-ന്റെ ചോദ്യ കാർഡിൽ ആദ്യം നിങ്ങളോട് ചോദിക്കും.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>അസിസ്റ്റന്റുകൾ</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ഇത് ഒരു അസിസ്റ്റന്റിന്റെ MCP ക്രമീകരണങ്ങളിൽ ഒട്ടിക്കുക. തുടർന്ന് അസിസ്റ്റന്റ് മുകളിലെ ലെവലിൽ PadForge-നൊപ്പം പ്രവർത്തിക്കും.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML ആയി പകർത്തുക</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML വായിക്കുന്ന അസിസ്റ്റന്റുകൾ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ചേർക്കുക PadForge-നെ അതിന്റെ സ്കില്ലിനൊപ്പം ആ അസിസ്റ്റന്റിലേക്ക് ഇടുന്നു. തുടർന്ന് അത് മുകളിലെ ലെവലിൽ പ്രവർത്തിക്കുന്നു, അത് ചൂണ്ടിക്കാണിക്കുന്നതിന് അരികെ അതിന്റെ പേരിന് കീഴിൽ അതിന്റെ വാക്കുകൾ കാണിക്കുന്നു.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>സ്ക്രിപ്റ്റുകൾ</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>സ്ക്രിപ്റ്റ് ലൈബ്രറി</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ഒരു ലൈബ്രറി സേവ് ചെയ്യുക…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python അല്ലെങ്കിൽ PowerShell എന്നിവയ്ക്കായി ഒരു ഫയൽ. ഇത് ലോഡ് ചെയ്യുന്ന സ്ക്രിപ്റ്റ് മുകളിലെ ലെവലിൽ ഉപകരണങ്ങൾ വായിക്കുകയും മാപ്പിംഗുകൾ നിയന്ത്രിക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2, Python അല്ലെങ്കിൽ PowerShell എന്നിവയ്ക്കായി ഒരു ഫയൽ, നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന സ്ഥലത്ത് എഴുതുന്നത്.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>നിങ്ങൾക്കായി കാത്തിരിക്കുന്നു</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>പ്രവർത്തനം</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ഒരു പ്രോഗ്രാമും ഇതുവരെ വിളിച്ചിട്ടില്ല. ഓരോ വിളിയും അതിന്റെ ഫലത്തോടൊപ്പം ഇവിടെ പട്ടികപ്പെടുത്തും.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>പഴയപടിയാക്കുക</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>അസിസ്റ്റന്റുകൾക്കുള്ള സ്കിൽ</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>സ്കിൽ സേവ് ചെയ്യുക…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-ന് അത് സേവ് ചെയ്യാനായില്ല: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>വായിക്കുക ലെവലോ അതിന് മുകളിലോ ഉള്ള ഒരു പ്രോഗ്രാം കണക്റ്റ് ചെയ്തിരിക്കുമ്പോൾ, കീബോർഡുകൾ ഉൾപ്പെടെ എല്ലാ ഉപകരണങ്ങളിലും അമർത്തുന്നത് അത് കാണുന്നു.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>പ്ലഗിനുകൾ</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>പ്ലഗിനുകൾ പ്രവർത്തിപ്പിക്കുക</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>ഒരു പ്ലഗിനും പ്രവർത്തിക്കുന്നില്ല.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>ഒരു പ്ലഗിൻ പ്രവർത്തിക്കുന്നത് നിങ്ങളുടെ അവകാശങ്ങളോടെയാണ്, PadForge-ന്റേതോടെയല്ല.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയവ</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ടെസ്റ്റ് കൺട്രോളർ</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>സ്വയം നീങ്ങുന്ന ഒരു കൺട്രോളർ, ഓരോ തവണയും ഒരു നിയന്ത്രണം, അതിനാൽ ഹാർഡ്‌വെയർ കൈയിലില്ലാതെ ഒരു മാപ്പിംഗ് പരീക്ഷിക്കാം.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>വേഗത</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>സാവധാനം</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>സാധാരണ</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>വേഗത്തിൽ</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>ഏറ്റവും വേഗത്തിൽ</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>റീപ്ലേ</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>ഒരു പ്രശ്ന റെക്കോർഡിംഗ്, അത് ഉണ്ടാക്കിയ ഉപകരണങ്ങളായി, അവയുടെ സമയക്രമത്തോടെ തിരികെ പ്ലേ ചെയ്യുന്നു. അവ ഈ PC-യിലെ പുതിയ ഉപകരണങ്ങളാണ്, നിങ്ങളോ ഒരു പ്രൊഫൈലോ മാപ്പ് ചെയ്യുന്നതുപോലെ മാപ്പ് ചെയ്യപ്പെടും.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>റെക്കോർഡിംഗ്</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>പ്രശ്ന റെക്കോർഡിംഗുകൾ|*.zip;*.log|എല്ലാ ഫയലുകളും|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ന് {0} പ്ലേ ചെയ്യാനാവില്ല. ഇത് ഒരു പ്രശ്ന റെക്കോർഡിംഗ് അല്ല, അല്ലെങ്കിൽ ഇതിൽ ഒരു ഉപകരണത്തിന്റെയും ഇൻപുട്ട് ഇല്ല.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>നിങ്ങളുടെ പ്ലഗിനുകൾ</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>ഒരു പ്ലഗിൻ PadForge-ലേക്ക് ഉപകരണങ്ങൾ ചേർക്കുന്ന ഒരു പ്രോഗ്രാമാണ്. എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോഴെല്ലാം PadForge അതിനെ നിങ്ങളുടെ സാധാരണ അവകാശങ്ങളോടെ ആരംഭിക്കുന്നു.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>ഒരു പ്ലഗിൻ ചേർക്കുക…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>പ്രോഗ്രാമുകളും സ്ക്രിപ്റ്റുകളും|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|എല്ലാ ഫയലുകളും|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>അംഗീകരിക്കുക…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>അംഗീകരിച്ച് പുനരാരംഭിക്കുക…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>എഞ്ചിനോടൊപ്പം ആരംഭിക്കുന്നു</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>ആരംഭിക്കുന്നതിന് മുമ്പ് ഫയൽ പരിശോധിക്കുന്നു</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>കോഡ് {0} ഉപയോഗിച്ച് അവസാനിച്ചു. {1} സെക്കൻഡിൽ വീണ്ടും ആരംഭിക്കും.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} ഇതിനകം പട്ടികയിലുണ്ട്.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge പരമാവധി 16 പ്ലഗിനുകൾ പ്രവർത്തിപ്പിക്കും. മറ്റൊന്ന് ചേർക്കാൻ ഒന്ന് നീക്കം ചെയ്യുക.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>പ്രവർത്തിക്കുന്ന പ്ലഗിനുകൾ: {0}. അവ ചേർത്ത ഉപകരണങ്ങൾ: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} അഞ്ച് പരാജയങ്ങൾക്ക് ശേഷം നിന്നു.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>നിങ്ങൾ അംഗീകരിച്ചതിന് ശേഷം {0} മാറിയിരിക്കുന്നു.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ആരംഭിക്കാനായില്ല.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ചേർത്തത്: {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ഒപ്പിട്ടത്: {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ഒപ്പിട്ടിട്ടില്ല.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>ഇത് പ്രവർത്തിക്കുമ്പോൾ അതിന്റെ ക്രമീകരണങ്ങൾ ഇവിടെ കാണിക്കും.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>ഇത് ക്രമീകരണങ്ങളൊന്നും പ്രഖ്യാപിക്കുന്നില്ല.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-ന് അതിന്റെ ക്രമീകരണങ്ങൾ വായിക്കാനായില്ല: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>ഒരു മിനിറ്റ് ഒന്നും പറയാതിരുന്നതിനാൽ അവസാനിപ്പിച്ചു</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>പ്രവർത്തിക്കുമ്പോൾ അതിന്റെ ഫയൽ മാറി</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>ചേർത്തത്: {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} ക്രമീകരണങ്ങൾ</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>തിരഞ്ഞെടുക്കുക</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>ഒരു നിയന്ത്രണം അമർത്തുക…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>തിരഞ്ഞെടുത്തിട്ടില്ല</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>ഒരു പ്ലഗിൻ ചേർക്കുക, അല്ലെങ്കിൽ അതിന്റെ ഫയൽ ഈ പേജിലേക്ക് വലിച്ചിടുക. PadForge അതിന്റെ പാത്ത്, ഒപ്പിട്ടയാൾ, SHA-256 എന്നിവ കാണിക്കുകയും പ്രവർത്തിപ്പിക്കുന്നതിന് മുമ്പ് നിങ്ങളോട് ചോദിക്കുകയും ചെയ്യും. ഒരു പ്ലഗിൻ പ്രവർത്തിക്കുന്നത് നിങ്ങളുടെ അവകാശങ്ങളോടെയാണ്, PadForge-ന്റേതോടെയല്ല.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>ഒരു പ്രശ്ന റെക്കോർഡിംഗ്, അത് ഉണ്ടാക്കിയ ഉപകരണങ്ങളായി, അവയുടെ സമയക്രമത്തോടെ തിരികെ പ്ലേ ചെയ്യുന്നു.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>പ്രവർത്തിക്കുന്നു.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>പ്രവർത്തിക്കുന്നു, കൈകൊണ്ട്.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>എന്ത് നീങ്ങുന്നു</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>സ്റ്റിക്കുകളും ട്രിഗറുകളും</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>സ്റ്റിക്കുകൾ</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>ട്രിഗറുകൾ</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>പാറ്റേൺ</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>സ്വീപ്</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>വൃത്തം</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>നീങ്ങുന്ന സമയം</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>വിശ്രമ സമയം</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>ബട്ടണുകൾ അമർത്തുക</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>നാവിഗേഷൻ ബട്ടണുകൾ അമർത്തുക</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>മുന്നിലുള്ള വിൻഡോയിൽ Windows ആപ്പുകൾ ഒരു വെർച്വൽ Xbox കൺട്രോളറിന്റെ A, B, ബാക്ക്, സ്റ്റാർട്ട്, D-പാഡ് എന്നിവയോട് പ്രതികരിക്കുന്നു, ഗൈഡ് Xbox Game Bar തുറക്കുന്നു.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>D-പാഡ് തിരിക്കുക</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>അതേ കാരണത്താൽ.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>അമർത്തുന്ന സമയം</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>കൺട്രോളറുകൾ</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>കൈകൊണ്ട്</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>ചലനം നിർത്തുന്നു. അതിന്റെ ഇൻപുട്ടുകൾ താഴെ മൗസ് ഉപയോഗിച്ച് സജ്ജമാക്കുക.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>ഇടത് സ്റ്റിക്ക്</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>വലത് സ്റ്റിക്ക്</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>ഇടത് ട്രിഗർ</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>വലത് ട്രിഗർ</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>സെക്കൻഡിലെ വായനകൾ</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>പ്ലഗിൻ കിറ്റ്, നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന പ്ലഗിന്റെ ലോഗ്</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>പ്ലഗിൻ കിറ്റ്</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>പ്ലഗിൻ കിറ്റ് സേവ് ചെയ്യുക…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C#-ൽ ഒരു ചെറിയ പ്ലഗിൻ, അതേ പ്ലഗിൻ AutoHotkey, Python, PowerShell എന്നിവയ്ക്കും, ഓരോ ഫയലിലും അത് എങ്ങനെ ബിൽഡ് ചെയ്യാമെന്നോ പ്രവർത്തിപ്പിക്കാമെന്നോ ഉണ്ട്.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>എല്ലാ വെർബിനും ഇവന്റിനും ക്രമീകരണ തരത്തിനുമുള്ള ഒരു ഗൈഡ്, C# പ്ലഗിനുള്ള ഒരു ബിൽഡ് സ്ക്രിപ്റ്റ്, അതേ പ്ലഗിൻ AutoHotkey, Python, PowerShell എന്നിവയ്ക്കും.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>ലോഗ്</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>ലോഗ് കാണാൻ ഒരു പ്ലഗിൻ തിരഞ്ഞെടുക്കുക.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>ഈ പ്ലഗിന്റെ ലോഗിൽ ഇതുവരെ ഒന്നുമില്ല.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ഒരു ഗെയിം മോഡ്</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>മറ്റൊരു പ്രോഗ്രാം പൈപ്പ് പേര് {0} കൈവശം വച്ചിരിക്കുന്നു. ആ പ്രോഗ്രാം അടയ്ക്കുക.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows പൈപ്പ് {0} നിരസിച്ചു, അതിനാൽ പ്രോഗ്രാമുകൾക്ക് കണക്റ്റ് ചെയ്യാനാവില്ല.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ഒരു പ്രോഗ്രാമും കണക്റ്റ് ചെയ്തിട്ടില്ല.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ഓൺ. ഒരു പ്രോഗ്രാമും കണക്റ്റ് ചെയ്തിട്ടില്ല.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തത്: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>അറിയാത്ത പ്രോഗ്രാം</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ഒപ്പിട്ടത്: {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge വീണ്ടും ആരംഭിക്കുന്നതുവരെ ഇവ ഇനി ഇല്ല</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-ൽ അങ്ങനെയൊരു ടൂൾ ഇല്ല</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>പ്രോഗ്രാം വായിച്ചത് പഴയ അവസ്ഥയാണ്</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>അങ്ങനെയൊരു ക്രമീകരണം ഇല്ല</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ആ ID ഉള്ളത് ഒന്നുമില്ല</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>ക്രമീകരണം സ്വീകരിക്കുന്നതിന് പുറത്തുള്ള മൂല്യമായിരുന്നു</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>നിങ്ങൾ അനുവദിച്ചില്ല</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>സമയത്തിനുള്ളിൽ ആരും ഉത്തരം നൽകിയില്ല</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>വിൻഡോ കാണിക്കുക</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>വിൻഡോ സിസ്റ്റം ട്രേയിലേക്ക് അയയ്ക്കുക</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>വിൻഡോ ചുരുക്കുക</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>വിൻഡോ വലുതാക്കുക</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge അടയ്ക്കുക</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>എഞ്ചിൻ ആരംഭിക്കുക</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>എഞ്ചിൻ നിർത്തുക</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>ഉപകരണം {0} ചേർക്കുക</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ സജ്ജമാക്കുക</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>ഉപകരണം {0} നീക്കം ചെയ്യുക</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ എല്ലാ നിയന്ത്രണങ്ങളും വിശ്രമ നിലയിലാക്കുക</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge-നെക്കൊണ്ട് ഒരു പ്രോഗ്രാം പ്രവർത്തിപ്പിക്കുന്നു.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ഒരു ഫയലോ ഫോൾഡറോ വെബ് പേജോ തുറക്കുന്നു.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge-നെക്കൊണ്ട് Windows-ലേക്ക് കീകളോ മൗസ് ഇൻപുട്ടോ അയപ്പിക്കുന്നു.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge-ന് പുറത്തുനിന്ന് ഒരു പ്രൊഫൈൽ ഇറക്കുമതി ചെയ്യുന്നു.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>ഒരു പ്രോഗ്രാം ഇത് ചെയ്യുന്നതിന് മുമ്പ് PadForge നിങ്ങളോട് ചോദിക്കും.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>ഡയലോഗുകൾ</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>മാക്രോകൾ</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ പിടിച്ചുവയ്ക്കുക</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>ഉപകരണം {0}-ന്റെ നിയന്ത്രണങ്ങൾ വിടുക</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>മൂല്യം {0} സജ്ജമാക്കുക</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>പ്രൊഫൈലുകൾ മാറ്റുക</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>എഞ്ചിൻ ആരംഭിക്കുക അല്ലെങ്കിൽ നിർത്തുക</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ ഓണോ ഓഫോ ആക്കുക</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>ഡയഗ്നോസ്റ്റിക്സ് സ്നാപ്ഷോട്ട് സേവ് ചെയ്യുക</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>പോളിംഗ് നിരക്കും ഡ്രൈവറുകളും വായിക്കുക</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>പ്രൊഫൈലുകൾ പട്ടികപ്പെടുത്തുക</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>ഒരു പ്രൊഫൈൽ വായിക്കുക</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>വെർച്വൽ കൺട്രോളറുകൾ പട്ടികപ്പെടുത്തുക</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>ഉപകരണങ്ങൾ പട്ടികപ്പെടുത്തുക</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>ഒരു ഉപകരണം വായിക്കുക</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>നിങ്ങളുടെ ഇൻപുട്ടിനായി കാത്തിരിക്കുക</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>ഒരു കൺട്രോളറിന്റെ മാപ്പിംഗുകൾ വായിക്കുക</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>ഒരു കൺട്രോളറിന്റെ മാക്രോകൾ പട്ടികപ്പെടുത്തുക</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>ഒരു പ്രശ്നം റെക്കോർഡ് ചെയ്യുക</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ക്രമീകരണങ്ങൾ കണ്ടെത്തുക</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ഒരു ക്രമീകരണം വായിക്കുക</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>ഒരു സ്ഥലം കാണിച്ചുതരിക</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge-ലെ സ്ഥലങ്ങൾ തിരയുക</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge-ലെ ഒരു സ്ഥലം വായിക്കുക</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>നിങ്ങൾ കാണുന്നത് വായിക്കുക</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>സ്വന്തമായി ഒരു ഉപകരണം ചേർക്കുക</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>അതിന്റെ ഉപകരണം നിയന്ത്രിക്കുക</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>അതിന്റെ ഉപകരണം നീക്കം ചെയ്യുക</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>ഒരു നിയന്ത്രണം പിടിച്ചുവയ്ക്കുക അല്ലെങ്കിൽ വിടുക</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>മാക്രോ ട്രിഗറുകൾക്കായി ഒരു മൂല്യം സജ്ജമാക്കുക</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ഒരു ക്രമീകരണം മാറ്റുക</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>ഒരു ബട്ടൺ അമർത്തുക</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>ഒരു പ്രൊഫൈൽ ഉണ്ടാക്കുക</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>ഒരു പ്രൊഫൈലിന്റെ പേര് മാറ്റുക</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>ഒരു പ്രൊഫൈൽ ഇല്ലാതാക്കുക</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>ഒരു കൺട്രോളറിന്റെ തരം മാറ്റുക</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>ഒരു ഉപകരണം അസൈൻ ചെയ്യുക</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>മാപ്പിംഗ് വരികൾ സജ്ജമാക്കുക</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>മാപ്പിംഗ് വരികൾ മായ്ക്കുക</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>ഒരു കൺട്രോളർ സ്വയമേവ മാപ്പ് ചെയ്യുക</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>ഒരു മാക്രോ സേവ് ചെയ്യുക</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>ഒരു മാക്രോ ഇല്ലാതാക്കുക</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ഒരു കീബോർഡ്, മൗസ് കൺട്രോളർ ഉണ്ടാക്കുന്നു</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} ഓണാക്കുന്നു</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” മാറ്റുക</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” അമർത്തുക</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} നിങ്ങളെ {1} കാണിക്കാൻ ആഗ്രഹിക്കുന്നു</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0}-ൽ.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>{0}-നെ {1} ലെവലിൽ PadForge-നൊപ്പം പ്രവർത്തിക്കാൻ അനുവദിക്കണോ?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} പ്രവർത്തിപ്പിക്കുന്നത് {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>ആരംഭിച്ചത്: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>ഒപ്പിട്ടത്: {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>ഒപ്പിട്ടിട്ടില്ല.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>വായിക്കുക എന്ന ലെവലിലും അതിന് മുകളിലും, കീബോർഡുകൾ ഉൾപ്പെടെ എല്ലാ ഉപകരണങ്ങളിലും അമർത്തുന്ന ഓരോ കീയും അതിന് കാണാം.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>ഇത് ഒരിക്കൽ മാത്രം ചോദിക്കുന്നു. ഓട്ടോമേഷൻ പേജിൽ നിങ്ങൾക്ക് ഇതിനെ നീക്കം ചെയ്യാം.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ന്റെ കമാൻഡ് ലൈൻ</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} എന്നത് {1} ആക്കുന്നു</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>നെറ്റ്‌വർക്കിൽ കേൾക്കുന്നു, അതിനാൽ മറ്റ് ഉപകരണങ്ങൾക്ക് ഈ PC-യിൽ എത്താനാകും.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>മറ്റ് പ്രോഗ്രാമുകളും ഗെയിമുകളും ആശ്രയിക്കുന്ന ഒരു ഡ്രൈവറോ HidHide-ഓ മാറ്റുന്നു.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell മോഡ്യൂളുകൾ (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>അനുവദിക്കുക</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>അനുവദിക്കരുത്</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>ഇപ്പോൾ വേണ്ട</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>കാണിക്കുക</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>ഘട്ടം {0} / {1}.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>തുടരാൻ ഇതിൽ ക്ലിക്ക് ചെയ്യുക.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} തുറക്കുക.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>കൂടുതൽ തുറക്കുക.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0}-ൽ നിന്ന്</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1}-ൽ നിന്ന്, അത് സ്വയം “{0}” എന്ന് വിളിക്കുന്നു</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>സ്വയം “{0}” എന്ന് വിളിക്കുന്ന ഒരു പ്രോഗ്രാമിൽ നിന്ന്</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്ത് റീസ്റ്റാർട്ട് ചെയ്യുക</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>റിലീസ് കുറിപ്പുകൾ</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>കൺട്രോളർ ഡാറ്റാബേസ്</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക എന്നത് കമ്മ്യൂണിറ്റി കൺട്രോളർ ഡാറ്റാബേസ് (SDL_GameControllerDB) GitHub-ൽ നിന്ന് ഡൗൺലോഡ് ചെയ്യുകയും, PadForge-ന്റെ ഈ പതിപ്പിൽ ഇല്ലാത്ത മാപ്പിംഗുകൾ ക്രമീകരണ ഫയലിൽ സൂക്ഷിക്കുകയും ചെയ്യുന്നു. ഒരു പുതിയ മാപ്പിംഗ് ഉപയോഗിക്കുന്നത്, മറ്റൊന്നും ഗെയിംപാഡായി വായിക്കാത്തതും അസൈൻ ചെയ്യാത്തതും റോ ജോയ്സ്റ്റിക്ക് മോഡ് നിർബന്ധമാക്കാത്തതുമായ ഒരു കൺട്രോളറിന് മാത്രമാണ്. റീസെറ്റ് ഡൗൺലോഡ് ചെയ്ത എല്ലാ മാപ്പിംഗുകളും നീക്കം ചെയ്യുന്നു.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക കമ്മ്യൂണിറ്റി കൺട്രോളർ ഡാറ്റാബേസ് (SDL_GameControllerDB) GitHub-ൽ നിന്ന് ഡൗൺലോഡ് ചെയ്യുകയും, PadForge-ന്റെ ഈ പതിപ്പിൽ ഇല്ലാത്ത മാപ്പിംഗുകൾ ക്രമീകരണ ഫയലിൽ സൂക്ഷിക്കുകയും ചെയ്യുന്നു. അവ ഉടൻ ഉപയോഗത്തിലാകും. ഒരു പുതിയ മാപ്പിംഗ് ഉപയോഗിക്കുന്നത്, മറ്റൊന്നും ഗെയിംപാഡായി വായിക്കാത്തതും അസൈൻ ചെയ്യാത്തതും റോ ജോയ്സ്റ്റിക്ക് മോഡ് നിർബന്ധമാക്കുക (ഗെയിംപാഡ് റീമാപ്പിംഗ് ഒഴിവാക്കുക) എന്നതിൽ അല്ലാത്തതുമായ ഒരു കൺട്രോളറിന് മാത്രമാണ്. റീസെറ്റ് ഡൗൺലോഡ് ചെയ്ത എല്ലാ മാപ്പിംഗുകളും നീക്കം ചെയ്യുന്നു. കൂടുതൽ എന്നതിന് കീഴിലെ നിങ്ങളുടെ സ്വന്തം വരികൾ നിലനിൽക്കും.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>അപ്ഡേറ്റ് ചെയ്യുന്നു…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>അപ്ഡേറ്റുകൾ പരിശോധിക്കുന്നു…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0}-ലേക്കുള്ള അപ്ഡേറ്റ് ഇൻസ്റ്റാൾ ചെയ്യുന്നത് പൂർത്തിയായില്ല. വീണ്ടും ശ്രമിക്കാൻ ക്രമീകരണങ്ങളിൽ നിന്ന് ഇൻസ്റ്റാൾ ചെയ്യുക.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge {0}-ലേക്ക് അപ്ഡേറ്റ് ചെയ്തു.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയത്: {0} മാപ്പിംഗുകൾ, {1} തീയതിയിലെ കമ്മ്യൂണിറ്റി പകർപ്പ്.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയത്: {0} മാപ്പിംഗുകൾ, {1} തീയതിയിലെ കമ്മ്യൂണിറ്റി പകർപ്പ്. അപ്ഡേറ്റ് ചെയ്തത് {2}: പുതിയത് {3}, മാറിയത് {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയത്: {0} മാപ്പിംഗുകൾ, {1} തീയതിയിലെ കമ്മ്യൂണിറ്റി പകർപ്പ്. ഡൗൺലോഡ് ചെയ്തത് {2}: പുതിയ വരികൾ {3}, മാറിയത് {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>കഴിഞ്ഞ അപ്ഡേറ്റിന് ശേഷം കമ്മ്യൂണിറ്റി ഡാറ്റാബേസിൽ മാറ്റമില്ല.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-ൽ എത്താനായില്ല: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>ഡൗൺലോഡ് പ്രതീക്ഷിക്കുന്ന കൺട്രോളർ ഡാറ്റാബേസ് അല്ലാത്തതിനാൽ PadForge അത് നിരസിച്ചു. ഒന്നും മാറിയില്ല.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>ഒരു പുതിയ മാപ്പിംഗ് അതിന്റെ കൺട്രോളർ അടുത്ത തവണ കണക്റ്റ് ചെയ്യുമ്പോൾ ഉപയോഗിക്കും.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>മാറിയ ഒരു മാപ്പിംഗ് PadForge അടുത്ത തവണ ആരംഭിക്കുമ്പോൾ ഉപയോഗിക്കും.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ചെറുതാക്കി ആരംഭിക്കുക</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>ലോഗിൻ ചെയ്യുമ്പോൾ ആരംഭിക്കുക</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>പതിപ്പ് വിവരങ്ങളും, പ്രശ്നപരിഹാരത്തിനുള്ള എഞ്ചിൻ ഇവന്റ് ലോഗിംഗും.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>ഡയഗ്നോസ്റ്റിക്സ് ലോഗ് സൂക്ഷിക്കുക</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>എഞ്ചിൻ ഇവന്റുകൾ ലോഗ് ഫോൾഡറിലെ diagnostics.log-ലേക്ക് തുടർച്ചയായി എഴുതുന്നു, ആ ഫോൾഡർ ലോഗ് ഫോൾഡർ തുറക്കുക എന്ന ബട്ടൺ തുറക്കുന്നു. റീസ്റ്റാർട്ടുകൾക്കിടയിലും പ്രവർത്തനക്ഷമമായി തുടരും. ഫയൽ 8 MB ആകുമ്പോൾ അത് diagnostics.log.old-ലേക്ക് മാറും.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>സ്നാപ്ഷോട്ട് സേവ് ചെയ്യുക</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ഏറ്റവും പുതിയ എഞ്ചിൻ ഇവന്റുകൾ ഒരു പുതിയ ഫയലിൽ സേവ് ചെയ്യുന്നു. ഡയഗ്നോസ്റ്റിക്സ് ലോഗ് ഓഫായിരിക്കുമ്പോഴും പ്രവർത്തിക്കും.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>ഒരു സ്നാപ്ഷോട്ട് സേവ് ചെയ്യുക…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ആപ്പ്, Windows, നിങ്ങളുടെ ഉപകരണങ്ങൾ, ക്രമീകരണങ്ങൾ എന്നിവ ഇപ്പോഴത്തെ നിലയിൽ, ഏറ്റവും പുതിയ എഞ്ചിൻ ഇവന്റുകൾക്കൊപ്പം എടുക്കുകയും, സേവ് ചെയ്യുന്നതിന് മുമ്പ് വായിക്കാൻ അവ തുറക്കുകയും ചെയ്യുന്നു. ഡയഗ്നോസ്റ്റിക്സ് ലോഗ് ഓഫായിരിക്കുമ്പോഴും പ്രവർത്തിക്കും.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ലോഗ് ഫോൾഡർ തുറക്കുക</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>ഒരു പ്രശ്നം റെക്കോർഡ് ചെയ്യുക</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിക്കുക</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>റെക്കോർഡിംഗ് നിർത്തുക ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>റെക്കോർഡിംഗ് നിർത്തുക അമർത്തുന്നതുവരെ, 10 മിനിറ്റ് വരെ അല്ലെങ്കിൽ 20 MB zip ആകുന്നതുവരെ റെക്കോർഡ് ചെയ്യുന്നു, തുടർന്ന് റിപ്പോർട്ടിനൊപ്പം ചേർക്കാൻ തയ്യാറായി Explorer-ൽ zip തിരഞ്ഞെടുക്കുന്നു.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ആരംഭിക്കുക, പ്രശ്നം സംഭവിപ്പിക്കുക, തുടർന്ന് നിർത്തുക. PadForge-ന് അടുത്തുള്ള ഒരു ഫയലിൽ PadForge വായിച്ചതും അയച്ചതും ലോഗ് ചെയ്തതുമായ എല്ലാം, എന്താണ് തെറ്റിയതെന്നതിന്റെ സംഗ്രഹത്തോടെ ഉണ്ടാകും. റെക്കോർഡ് ചെയ്യുമ്പോൾ എല്ലാ ഉപകരണങ്ങളിലും അമർത്തുന്ന ഓരോ കീയും ബട്ടണും ഫയലിലുണ്ട്, കീബോർഡുകളും മൗസുകളും ഉൾപ്പെടെ. ഉപയോക്തൃനാമങ്ങൾ, സീരിയൽ നമ്പറുകൾ, വിലാസങ്ങൾ, ടൈപ്പ് ചെയ്ത പേരുകൾ എന്നിവ എന്തെങ്കിലും എഴുതുന്നതിന് മുമ്പ് മാറ്റിസ്ഥാപിക്കുന്നു.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>റെക്കോർഡിംഗ് നിർത്തുക അമർത്തുന്നതുവരെ, 30 മിനിറ്റ് വരെ അല്ലെങ്കിൽ 20 MB zip ആകുന്നതുവരെ റെക്കോർഡ് ചെയ്യുന്നു, തുടർന്ന് നിങ്ങൾ സേവ് ചെയ്യുന്നതിന് മുമ്പ് വായിക്കാൻ റെക്കോർഡിംഗ് തുറക്കുന്നു.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>ആരംഭിക്കുക, പ്രശ്നം സംഭവിപ്പിക്കുക, തുടർന്ന് നിർത്തുക. പിന്നീട് അതിലുള്ളത് ഭാഗം ഭാഗമായി വായിച്ച്, ഇഷ്ടമുള്ളിടത്ത് സേവ് ചെയ്യുക. റെക്കോർഡ് ചെയ്യുമ്പോൾ എല്ലാ ഉപകരണങ്ങളിലും അമർത്തുന്ന ഓരോ കീയും അതിലുണ്ട്, കീബോർഡുകളും മൗസുകളും ഉൾപ്പെടെ. ഉപയോക്തൃനാമങ്ങൾ, സീരിയൽ നമ്പറുകൾ, വിലാസങ്ങൾ, ടൈപ്പ് ചെയ്ത പേരുകൾ എന്നിവ എന്തെങ്കിലും എഴുതുന്നതിന് മുമ്പ് മാറ്റിസ്ഥാപിക്കുന്നു.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>സംഗ്രഹം എഴുതുന്നു…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>{0} സേവ് ചെയ്തു</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിച്ചില്ല. ഫയലിൽ നിന്ന് ഒഴിവാക്കാനാകാത്ത ഈ PC-യുടെ ഒരു സ്വകാര്യ മൂല്യം ഒരു പരിശോധനയിൽ കണ്ടെത്തി.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിച്ചില്ല. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>കഴിഞ്ഞ റെക്കോർഡിംഗ് ഇപ്പോഴും പൂർത്തിയാക്കുകയാണ്.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സൂക്ഷിക്കുക ഓഫാണ്, അതിനാൽ സേവ് ചെയ്യാൻ ഒന്നുമില്ല.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge നിർത്താതിരുന്ന ഒരു റെക്കോർഡിംഗ് പൂർത്തിയാക്കി: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge നിർത്താതിരുന്ന ഒരു റെക്കോർഡിംഗ് ഹോം പേജിൽ നിങ്ങൾ വായിക്കാൻ കാത്തിരിക്കുന്നു: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സൂക്ഷിക്കുക</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോൾ, ഒരു റെക്കോർഡിംഗിലുള്ളതിന്റെ അവസാന മിനിറ്റ് മെമ്മറിയിൽ സൂക്ഷിക്കുന്നു, സായാഹ്നത്തിൽ ഒരിക്കൽ വരുന്ന പ്രശ്നത്തിനായി. അവസാന 60 സെക്കൻഡ് സേവ് ചെയ്യുക അത് ഒരു ഫയലായി എഴുതുന്നു.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോൾ, ഒരു റെക്കോർഡിംഗിലുള്ളതിന്റെ അവസാന മിനിറ്റ് മെമ്മറിയിൽ സൂക്ഷിക്കുന്നു, സായാഹ്നത്തിൽ ഒരിക്കൽ വരുന്ന പ്രശ്നത്തിനായി. അവസാന 60 സെക്കൻഡ് സേവ് ചെയ്യുക അത് സേവ് ചെയ്യുന്നതിന് മുമ്പ് വായിക്കാൻ തുറക്കുന്നു.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സേവ് ചെയ്യുക</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ടൈപ്പ് ചെയ്ത അക്ഷരങ്ങളും അക്കങ്ങളും ഒരൊറ്റ കീ ആയി എഴുതുക</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ഒരു മാപ്പിംഗോ മാക്രോയോ വായിക്കാത്ത അക്ഷര, അക്ക കീകൾ ഒരൊറ്റ കീ ആയി ഒരു റെക്കോർഡിംഗ് എഴുതുന്നു, ഓരോ അമർത്തലും അതിന്റെ സ്വന്തം സമയത്ത്. മറ്റെല്ലാ കീകളും, ഒരു മാപ്പിംഗോ മാക്രോയോ വായിക്കുന്ന എല്ലാ കീകളും, അമർത്തിയതുപോലെ എഴുതുന്നു.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ് സൂക്ഷിക്കുക, ടൈപ്പ് ചെയ്ത അക്ഷരങ്ങളും അക്കങ്ങളും ഒരൊറ്റ കീ ആയി എഴുതുക</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>എന്ത് റെക്കോർഡ് ചെയ്യണം, അവസാന 60 സെക്കൻഡ്, ടൈപ്പ് ചെയ്ത അക്ഷരങ്ങൾ</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>ഒരു സ്നാപ്ഷോട്ട് സേവ് ചെയ്യുക</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, നിങ്ങളുടെ ഉപകരണങ്ങൾ, ക്രമീകരണങ്ങൾ എന്നിവ ഇപ്പോഴത്തെ നിലയിൽ, അതേ പരിശോധനയിലൂടെ.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>PadForge.exe-ക്ക് അടുത്തുള്ള diagnostics.log, അത് നിങ്ങൾക്ക് അവിടെ വായിക്കാം.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>എന്ത് റെക്കോർഡ് ചെയ്യണം</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>എല്ലാം ഓൺ. ഓഫാക്കിയ ഭാഗം അടുത്ത റെക്കോർഡിംഗിൽ ഉൾപ്പെടുത്തില്ല, ഫയലിൽ ഏതൊക്കെ ഭാഗങ്ങളുണ്ടെന്ന് അത് പറയും.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>സായാഹ്നത്തിൽ ഒരിക്കൽ വരുന്ന പ്രശ്നത്തിന്.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>റെക്കോർഡിംഗ് ഹോം പേജിൽ നിങ്ങൾ വായിക്കാൻ കാത്തിരിക്കുന്നു.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>സംഗ്രഹം</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>ക്രമീകരണങ്ങളും ഉപകരണങ്ങളും</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>ഇൻപുട്ട്</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>ഔട്ട്പുട്ട്</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>ഫീഡ്ബാക്ക്</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>സമയക്രമം</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>വിൻഡോയും പിശകുകളും</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>പ്രവർത്തനം</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>ഡയഗ്നോസ്റ്റിക്സ് വരികൾ</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>നിങ്ങളുടെ റെക്കോർഡിംഗ് വായിക്കുക</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} മുതൽ {1} വരെ, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>{0}-ലെ ഒരു സ്നാപ്ഷോട്ട്.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 മിനിറ്റ്</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} മിനിറ്റ്</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 സെക്കൻഡ്</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} സെക്കൻഡ്</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>നിങ്ങൾ നിർത്തി.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>{0} ആയപ്പോൾ സ്വയം നിന്നു.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>zip-ൽ {0} ആയപ്പോൾ സ്വയം നിന്നു.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>ഒരു മാക്രോ നിർത്തി.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>ഒരു പ്രോഗ്രാം അല്ലെങ്കിൽ --record stop നിർത്തി.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>ഇത് ആരംഭിച്ച അസിസ്റ്റന്റ് നിർത്തി.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge അടച്ചപ്പോൾ നിന്നു.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>അവസാന 60 സെക്കൻഡ്, മെമ്മറിയിൽ സൂക്ഷിച്ചത്.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>നിങ്ങൾ പങ്കിടാൻ പോകുന്നത് വായിക്കുക. ഒരു ഭാഗം ഒഴിവാക്കാൻ അത് ഓഫാക്കുക, തുടർന്ന് സേവ് ചെയ്യുക. നിങ്ങൾ പോസ്റ്റ് ചെയ്യാത്തിടത്തോളം ഒന്നും ഈ PC-യിൽ നിന്ന് പുറത്തുപോകില്ല.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, പങ്കിടുന്ന രൂപത്തിൽ</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} കാണിക്കുക</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>ഒഴിവാക്കി</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>റെക്കോർഡ് ചെയ്തിട്ടില്ല</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>ടെക്സ്റ്റായി {0}, zip-ൽ {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>ടെക്സ്റ്റായി {0}, നിങ്ങൾ പങ്കിടുന്ന zip-ൽ {1}. zip-ൽ {2} ആകുമ്പോഴോ {3} കഴിയുമ്പോഴോ റെക്കോർഡിംഗ് നിൽക്കും.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>സ്ക്രബ് പരിശോധന: {1}-ൽ പെട്ട {0} PadForge മാറ്റിസ്ഥാപിച്ചു. ഈ PC-യുടെ പേരുകളോ സീരിയലുകളോ വിലാസങ്ങളോ നിങ്ങൾ സൂക്ഷിക്കുന്ന ഭാഗങ്ങളിൽ ഇല്ല.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} മൂല്യങ്ങൾ</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 മൂല്യം</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} സ്വകാര്യ ഇനങ്ങൾ</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 സ്വകാര്യ ഇനം</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>സ്ക്രബ് പരിശോധന: ഈ PC-യുടെ സ്വന്തം {0} മൂല്യങ്ങൾ നിങ്ങൾ സൂക്ഷിക്കുന്ന ഭാഗങ്ങളിൽ ഇപ്പോഴുമുണ്ട്. ആ ഭാഗങ്ങൾ ഓഫാക്കുകയോ റെക്കോർഡിംഗ് ഇല്ലാതാക്കുകയോ ചെയ്യുക. അതുവരെ സേവ് ചെയ്യുക ബട്ടൺ ഓഫായിരിക്കും.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>സ്ക്രബ് പരിശോധന: ഈ PC-യുടെ സ്വന്തം ഒരു മൂല്യം നിങ്ങൾ സൂക്ഷിക്കുന്ന ഭാഗങ്ങളിൽ ഇപ്പോഴുമുണ്ട്. ആ ഭാഗങ്ങൾ ഓഫാക്കുകയോ റെക്കോർഡിംഗ് ഇല്ലാതാക്കുകയോ ചെയ്യുക. അതുവരെ സേവ് ചെയ്യുക ബട്ടൺ ഓഫായിരിക്കും.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>റെക്കോർഡ് ചെയ്യുമ്പോൾ ഈ ഭാഗത്ത് ഒന്നും സംഭവിച്ചില്ല.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>ഇല്ലാതാക്കുക</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>സംഗ്രഹം പകർത്തുക</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>പകർത്തി</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>സേവ് ചെയ്യുക…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>റെക്കോർഡിംഗ് സേവ് ചെയ്യുക</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ഫയലുകൾ</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>സേവ് ചെയ്തില്ല. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>നിങ്ങളായി സേവ് ചെയ്യുന്നു, ആദ്യ തവണ Downloads ഫോൾഡറിലേക്കും പിന്നീട് നിങ്ങൾ അവസാനം സേവ് ചെയ്ത ഇടത്തും, Explorer-ൽ കാണിക്കുകയും ചെയ്യുന്നു. പേജിൽ ആരും ഇല്ലാത്തപ്പോൾ നിൽക്കുന്ന റെക്കോർഡിംഗ് (അതിന്റെ പരിധി, ഒരു മാക്രോ, ഒരു പ്രോഗ്രാം, അസിസ്റ്റന്റ് ടൂൾ അല്ലെങ്കിൽ --record stop കാരണം) ഹോം പേജിൽ ഈ അവലോകനത്തിനായി കാത്തിരിക്കുന്നു, സേവ് ചെയ്തില്ലെങ്കിൽ 7 ദിവസത്തിന് ശേഷം ഇല്ലാതാക്കുന്നു. അത് കാത്തിരിക്കുന്നുവെന്ന് പ്രോഗ്രാമിനെ അറിയിക്കുന്നു, എവിടെയെന്ന് ഒരിക്കലും അറിയിക്കുന്നില്ല.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0}-ലെ ഒരു പ്രശ്ന റെക്കോർഡിംഗ് നിങ്ങൾ വായിക്കാൻ കാത്തിരിക്കുന്നു.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>അവലോകനം ചെയ്യുക</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>റെക്കോർഡിംഗ് അടയാളപ്പെടുത്തുക</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ആപ്പ് പതിപ്പ്</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET റൺടൈം</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL പതിപ്പ്</value></data>
@@ -2898,31 +3008,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>മൗസ് സ്ഥാനം X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>മൗസ് സ്ഥാനം Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ഓരോ ഉറവിടത്തിനുമുള്ള കഴ്സർ സെൻസിറ്റിവിറ്റി. 1.0 ആയാൽ, മധ്യത്തിൽ നിന്ന് സ്ക്രീൻ വീതിയുടെ 10% അകലത്തിൽ സ്റ്റിക്ക് പൂർണ്ണ വ്യതിയാനത്തിലെത്തും. 1.0-ൽ കൂടുതൽ മൂല്യങ്ങളിൽ കഴ്സർ കുറച്ച് നീങ്ങിയാൽ മതി. 1.0-ൽ കുറഞ്ഞ മൂല്യങ്ങളിൽ കൂടുതൽ നീങ്ങണം.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ഓരോ ഉറവിടത്തിനുമുള്ള കഴ്സർ സെൻസിറ്റിവിറ്റി. 1.0 ആയാൽ, പോയിന്റർ ഉള്ള മോണിറ്ററിന്റെ മധ്യത്തിൽ നിന്ന് അതിന്റെ വീതിയുടെ 10% അകലത്തിൽ സ്റ്റിക്ക് പൂർണ്ണ വ്യതിയാനത്തിലെത്തും. 1.0-ൽ കൂടുതൽ മൂല്യങ്ങളിൽ കഴ്സർ കുറച്ച് നീങ്ങിയാൽ മതി. 1.0-ൽ കുറഞ്ഞ മൂല്യങ്ങളിൽ കൂടുതൽ നീങ്ങണം.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>മൗസ് സഞ്ചാരം X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>മൗസ് സഞ്ചാരം Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>പൂർണ്ണ ലോക്കിലേക്കുള്ള സഞ്ചാരം</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>മൗസ് റിപ്പോർട്ട് ചെയ്യുന്ന കൗണ്ടുകളിൽ, മധ്യത്തിൽ നിന്ന് പൂർണ്ണ ലോക്കിലേക്ക് മൗസ് എത്ര നീങ്ങണം. ഉയർന്ന സംഖ്യ കൂടുതൽ സൂക്ഷ്മമായി സ്റ്റിയർ ചെയ്യുന്നു, കൈ കൂടുതൽ നീക്കേണ്ടി വരും.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>മൗസോ വീലോ റിപ്പോർട്ട് ചെയ്യുന്ന കൗണ്ടുകളിൽ, മധ്യത്തിൽ നിന്ന് പൂർണ്ണ ലോക്കിലേക്ക് അത് എത്ര നീങ്ങണം. ഉയർന്ന സംഖ്യ കൂടുതൽ സൂക്ഷ്മമായി സ്റ്റിയർ ചെയ്യുന്നു, കൈ കൂടുതൽ നീക്കേണ്ടി വരും.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>മൗസിന്റെ DPI അതിന്റെ ഉപകരണ പാനലിൽ സജ്ജമാക്കിയാൽ, സഞ്ചാരം സെന്റിമീറ്ററിലും കാണിക്കും.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>കൗണ്ടുകൾ</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>സെന്ററിംഗ്</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ഓഫ് വീലിനെ കൈ വിട്ട സ്ഥാനത്ത് നിർത്തുന്നു. സ്പ്രിംഗ് അതിനെ മടങ്ങൽ സമയം കൊണ്ട് തിരികെ കൊണ്ടുവരുന്നു. ടെലിമെട്രിയിൽ നിന്ന് ഗെയിമിന്റെ വേഗതയിലും ഗ്രിപ്പിലും ഒരു കാറിന്റെ മുൻ ടയറുകൾ വലിക്കുന്നതുപോലെ വലിക്കുന്നു: നിശ്ചലമായിരിക്കുമ്പോൾ അനങ്ങാതെ, വേഗത കൂടുമ്പോൾ ഉറപ്പോടെ, ടയറുകൾ തെന്നുമ്പോൾ ലഘുവായി. ടെലിമെട്രി അയയ്ക്കുന്ന ഗെയിം ഇല്ലെങ്കിൽ അത് സ്പ്രിംഗ് ആണ്. ഗെയിമിന്റെ ബലത്തിൽ നിന്ന് ഒരു വെർച്വൽ വീലിന്റെ സ്വന്തം ഫോഴ്സ് ഫീഡ്ബാക്ക് അതിനെ തിരിക്കാൻ അനുവദിക്കുന്നു.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>ഓഫ് വീലിനെ കൈ വിട്ട സ്ഥാനത്ത് നിർത്തുന്നു. സ്പ്രിംഗ് അതിനെ മടങ്ങൽ സമയം കൊണ്ട് തിരികെ കൊണ്ടുവരുന്നു. ടെലിമെട്രിയിൽ നിന്ന് ഗെയിമിന്റെ വേഗതയിലും ഗ്രിപ്പിലും ഒരു കാറിന്റെ സ്റ്റിയറിംഗ് ചെയ്യുന്നതുപോലെ വലിക്കുന്നു: മധ്യത്തിനടുത്ത് കുത്തനെയും അകലെ മൃദുവായും, നിശ്ചലമായിരിക്കുമ്പോൾ അനങ്ങാതെ, വേഗത കൂടുമ്പോൾ ഉറപ്പോടെ, ടയറുകൾ തെന്നുമ്പോൾ ലഘുവായി. ടെലിമെട്രി അയയ്ക്കുന്ന ഗെയിം ഇല്ലെങ്കിൽ, വരണ്ട റോഡിൽ 100 km/h വേഗതയിലെന്നപോലെ വലിക്കുന്നു. ഗെയിമിന്റെ ബലത്തിൽ നിന്ന് ഒരു വെർച്വൽ വീലിന്റെ സ്വന്തം ഫോഴ്സ് ഫീഡ്ബാക്ക് അതിനെ തിരിക്കാൻ അനുവദിക്കുന്നു.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>ഓഫ്</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>സ്പ്രിംഗ്</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ടെലിമെട്രിയിൽ നിന്ന്</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>ഗെയിമിന്റെ ബലത്തിൽ നിന്ന്</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>മടങ്ങൽ സമയം</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>സ്പ്രിംഗ് വീലിനെ 95% വഴി തിരികെ കൊണ്ടുവരാൻ എടുക്കുന്ന സമയം. ടെലിമെട്രിയിൽ നിന്ന് എന്നതിൽ, വരണ്ട റോഡിൽ 100 km/h വേഗതയിൽ ഇത്രയും സമയമെടുക്കും.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>സ്പ്രിംഗ് വീലിനെ 95% വഴി തിരികെ കൊണ്ടുവരാൻ എടുക്കുന്ന സമയം. 0 അതിനെ ഉടൻ മധ്യത്തിലാക്കുന്നു. ടെലിമെട്രിയിൽ നിന്ന് എന്നതിൽ, വരണ്ട റോഡിൽ 100 km/h വേഗതയിൽ മധ്യത്തിനടുത്തുനിന്ന് ഇത്രയും സമയമെടുക്കും.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>സ്റ്റിയർ</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>എപ്പോഴും മൗസിനെ എല്ലായ്പ്പോഴും സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുന്നു. അമർത്തിപ്പിടിക്കുമ്പോൾ സ്റ്റിയർ ഇൻപുട്ട് അമർത്തിപ്പിടിക്കുമ്പോൾ മാത്രം അനുവദിക്കുന്നു. ടോഗിൾ സ്റ്റിയർ ഇൻപുട്ടിന്റെ ഓരോ അമർത്തലിലും സ്റ്റിയറിംഗ് ഓണും ഓഫും ആക്കുന്നു. മൗസ് സ്റ്റിയർ ചെയ്യാത്തപ്പോൾ വീൽ ഇരുന്നിടത്ത് തുടരുകയോ മധ്യത്തിലേക്ക് വരികയോ ചെയ്യും, അതിനാൽ ഒരു മൗസിന് സ്റ്റിയർ ചെയ്യാനും ചുറ്റും നോക്കാനും കഴിയും.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>എപ്പോഴും മൗസിനെ എല്ലായ്പ്പോഴും സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുന്നു. അമർത്തിപ്പിടിക്കുമ്പോൾ, മധ്യത്തിലേക്ക് സ്റ്റിയർ ഇൻപുട്ട് അമർത്തിപ്പിടിക്കുമ്പോൾ മാത്രം സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുകയും, പിന്നീട് അതിനെ മധ്യത്തിലേക്ക് തിരികെ കൊണ്ടുവരുകയും ചെയ്യുന്നു, ഉറവിടത്തിന് സെന്ററിംഗ് ഉണ്ടെങ്കിൽ അതിലൂടെ, ഇല്ലെങ്കിൽ ഉടനെ. അമർത്തിപ്പിടിക്കുമ്പോൾ, അതേ നിലയിൽ ഇൻപുട്ട് പിടിച്ചിരിക്കുമ്പോൾ മാത്രം സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുകയും വിട്ട സ്ഥാനത്ത് നിർത്തുകയും ചെയ്യുന്നു. ടോഗിൾ സ്റ്റിയർ ഇൻപുട്ടിന്റെ ഓരോ അമർത്തലിലും സ്റ്റിയറിംഗ് ഓണും ഓഫും ആക്കുന്നു. അതിനാൽ ഒരു മൗസിന് സ്റ്റിയർ ചെയ്യാനും ചുറ്റും നോക്കാനും കഴിയും.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>എപ്പോഴും</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുമ്പോൾ</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുമ്പോൾ, മധ്യത്തിലേക്ക്</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ടോഗിൾ</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>സ്റ്റിയർ ഇൻപുട്ട്</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>മൗസിന്റെ സഞ്ചാരത്തിന്റെ അതേ ഉപകരണത്തിലെ, മൗസിനെ സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുന്ന ബട്ടൺ. ഒന്നും തിരഞ്ഞെടുത്തില്ലെങ്കിൽ മൗസ് എപ്പോഴും സ്റ്റിയർ ചെയ്യുന്നു.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>മൗസിനെ സ്റ്റിയർ ചെയ്യാൻ അനുവദിക്കുന്ന ബട്ടൺ, ഉറവിടത്തിന്റെ അതേ ഉപകരണത്തിലെ. ഒന്നും തിരഞ്ഞെടുത്തില്ലെങ്കിൽ മൗസ് എപ്പോഴും സ്റ്റിയർ ചെയ്യുന്നു.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>സ്മൂത്തിംഗ്</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>അസമമായി റിപ്പോർട്ട് ചെയ്യുന്ന മൗസിനെ സമമാക്കുന്നു. വീൽ കൈയെ ഏകദേശം ഇത്രയും സമയം പിന്തുടരുന്നു. 0 ഓഫ് ആണ്.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>അസമമായി റിപ്പോർട്ട് ചെയ്യുന്ന മൗസിനെ സമമാക്കുന്നു. സ്റ്റിക്ക് കൈയെ ഏകദേശം ഇത്രയും സമയം പിന്തുടരുന്നു. 0 ഓഫ് ആണ്.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>വേഗതയിലെ ലോക്ക്</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ഗെയിം ടെലിമെട്രി ഓണായിരിക്കുമ്പോൾ, 200 km/h വേഗതയിൽ ലോക്കിൽ എത്ര ബാക്കിയുണ്ട്. 100% ആയാൽ എല്ലാ വേഗതയിലും മുഴുവൻ ലോക്കും ഉണ്ടാകും.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>വീൽ സഞ്ചാരം</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>വീൽ സഞ്ചാരം വശങ്ങളിലേക്ക്</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>മൗസ് എത്ര വേഗത്തിൽ നീങ്ങുന്നു. കൈ നിൽക്കുമ്പോൾ വിടുന്നു.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>പോയിന്റർ അതിന്റെ മോണിറ്ററിൽ എവിടെയാണ്, അതിന്റെ മധ്യത്തിൽ നിന്നോ സ്റ്റിയറിംഗ് തുടങ്ങിയപ്പോൾ എവിടെയായിരുന്നോ അവിടെ നിന്നോ.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>ഒരു വീൽ പോലെ, കൈ വിടുന്നിടത്ത് പിടിച്ചുനിർത്തി, മൗസ് എത്ര നീങ്ങി.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>സ്ക്രോൾ നോച്ചുകൾ ഒരു സ്ഥാനമായി പിടിച്ചുനിർത്തുന്നു, ഫൈൻ സ്ക്രോളിംഗ് വീലിൽ പൂർണ്ണ കൃത്യതയോടെ.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>വശങ്ങളിലേക്കുള്ള വീലിന്റെ നോച്ചുകൾ ഒരു സ്ഥാനമായി പിടിച്ചുനിർത്തുന്നു, ഫൈൻ സ്ക്രോളിംഗ് വീലിൽ പൂർണ്ണ കൃത്യതയോടെ.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>ഓരോ നോച്ചിനും ഒരു തള്ളൽ, ഉടൻ തന്നെ വിശ്രമ നിലയിലേക്ക് മടങ്ങുന്നു.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>അമർത്തിപ്പിടിക്കുമ്പോൾ, അതേ നിലയിൽ</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>സെൻസിറ്റിവിറ്റി</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>ഒരു വേഗം സ്റ്റിക്കിന്റെ എത്ര ഭാഗം നൽകുന്നു. 1.00-ൽ, ഏത് പോളിംഗ് നിരക്കിലും മൗസ് റിപ്പോർട്ട് നിരക്കിലും സെക്കൻഡിൽ 16,000 കൗണ്ടിൽ സ്റ്റിക്ക് പൂർണ്ണ വ്യതിയാനത്തിലെത്തുന്നു.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>മധ്യത്തിലേക്ക് മടങ്ങൽ</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>മൗസ് വേഗം കുറയ്ക്കുകയോ നിൽക്കുകയോ ചെയ്താൽ, സ്റ്റിക്ക് ഇതിലും വേഗത്തിൽ തിരികെ വരില്ല. 0 ആയാൽ അത് മൗസിനൊപ്പം തിരികെ വരും.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>സ്റ്റിയറിംഗ് തുടങ്ങിയിടത്ത് തുടങ്ങുക</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>ഒരു സ്റ്റിയർ ഇൻപുട്ട് ഉള്ളപ്പോൾ, ഫോൺ സ്ക്രീനിലെ സ്റ്റിക്ക് വിരൽ തൊടുന്നിടത്ത് തുടങ്ങുന്നതുപോലെ, സ്റ്റിയറിംഗ് തുടങ്ങിയപ്പോൾ പോയിന്റർ എവിടെയായിരുന്നോ അവിടെ നിന്ന് സ്റ്റിക്ക് അളക്കുന്നു. ഓഫായാൽ, പോയിന്റർ ഉള്ള മോണിറ്ററിന്റെ മധ്യത്തിൽ നിന്ന് അളക്കുന്നു.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>ഈ ആക്സിസ് ആപേക്ഷികമായി നീങ്ങുന്നു</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>എത്ര തിരിഞ്ഞു എന്ന് റിപ്പോർട്ട് ചെയ്യുന്ന ട്രാക്ക്ബോളിനോ സ്പിന്നറിനോ വേണ്ടി. ഓണായാൽ, ആക്സിസ് Mouse Travel പോലെ ഒരു സ്ഥാനം പിടിച്ചുനിർത്തുകയും സഞ്ചാര ക്രമീകരണങ്ങൾ സ്വീകരിക്കുകയും ചെയ്യുന്നു. ഏത് ആക്സിസുകൾ ഇങ്ങനെ നീങ്ങുന്നു എന്ന് Windows പറയുന്നില്ല.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} സെന്റിമീറ്റർ</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>പ്രിവ്യൂ</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>ഈ കുടുംബം നിങ്ങളുടെ സ്വന്തം മൗസിനെ എങ്ങനെ പിന്തുടരുന്നു എന്ന് കാണിക്കുന്നു. നിങ്ങൾ തിരഞ്ഞെടുക്കുന്നതുവരെ ഒന്നും മാപ്പ് ചെയ്യപ്പെടുന്നില്ല.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>പ്രിവ്യൂ ചെയ്യുന്നു. മൗസ് നീക്കുക.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>{0}-ൽ പിടിച്ചിരിക്കുന്നു</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>{0}-ൽ</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% വലത്</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% ഇടത്</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% മുകളിൽ</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% താഴെ</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>മധ്യം</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} അമർത്തിപ്പിടിക്കുമ്പോൾ നീങ്ങുന്നു.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>മൗസ് DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>ഈ മൗസ് ഓരോ ഇഞ്ച് നീങ്ങുമ്പോഴും റിപ്പോർട്ട് ചെയ്യുന്ന കൗണ്ടുകൾ, അതിന്റെ നിർമ്മാതാവിന്റെ സോഫ്റ്റ്‌വെയർ സജ്ജമാക്കിയതുപോലെ.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI സജ്ജമാക്കിയാൽ, Mouse Travel അതിന്റെ സഞ്ചാരം സെന്റിമീറ്ററിലും കാണിക്കും. 0 എന്നാൽ സജ്ജമാക്കിയിട്ടില്ല.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR പോയിന്റർ X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR പോയിന്റർ Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR തെളിച്ചം</value></data>
@@ -4625,6 +4768,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>നിങ്ങൾ കളിക്കുമ്പോൾ PadForge കാണിക്കുന്ന ഓൺ-സ്ക്രീൻ സൂചകങ്ങൾ. ഒന്ന് ഓഫാക്കുന്നത് പെരുമാറ്റം മാറ്റില്ല, അത് കാണിക്കുമോ എന്നത് മാത്രമേ മാറൂ.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>ഷിഫ്റ്റ് ലെയർ ഫ്ലൈഔട്ട്</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>പ്രൊഫൈൽ സ്വിച്ച് ഓവർലേ</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>കൺട്രോളറുകൾ ഓൺ അല്ലെങ്കിൽ ഓഫ്</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>ഉപകരണം ഡിസ്കണക്റ്റ് ആയ അറിയിപ്പ്</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>ഉപകരണം കണക്റ്റ് ആയ അറിയിപ്പ്</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>റേഡിയൽ അല്ലെങ്കിൽ ടച്ച് മെനു ഇടപഴകിയിരിക്കുമ്പോൾ ഓൺ-സ്ക്രീൻ റിംഗോ ഗ്രിഡോ കാണിക്കുക. ഓവർലേ ഓഫാണെങ്കിലും മെനുകൾ പ്രവർത്തിക്കും.</value></data>
@@ -5291,6 +5435,8 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>ഓഫ്</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>സ്റ്റോപ്പ് വാച്ച്</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>ലൈറ്റ്ബാർ നിറം</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>ഓഫ്‌ലൈൻ ഉപകരണങ്ങൾ</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>എല്ലാം കണക്റ്റഡ്</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>ഓഫ്</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software വഴി</value></data>
@@ -5333,6 +5479,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന ചിത്രം സ്ക്രീൻ അതിന്റെ സ്വന്തം വലുപ്പത്തിൽ കാണിക്കുന്നു. സ്ക്രീനേക്കാൾ വലിയ ചിത്രത്തിൽ സ്ക്രീനിന്റെ വലുപ്പമുള്ള ഒരു ജാലകം കാണിക്കുന്നു, അതിനെ കീബോർഡ് സ്ക്രീൻ ചിത്രം പാൻ ചെയ്യുക മാക്രോ നീക്കുന്നു. S.T.R.I.K.E. 7-ൽ സ്ക്രീനിലൂടെ വിരൽ വലിച്ചാലും അത് നീങ്ങും.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>സ്റ്റോപ്പ് വാച്ച് മാക്രോ ആരംഭിക്കുകയും താൽക്കാലികമായി നിർത്തുകയും പുനഃസജ്ജമാക്കുകയും ചെയ്യുന്ന സ്റ്റോപ്പ് വാച്ച് സ്ക്രീൻ കാണിക്കുന്നു. എല്ലാ സ്ക്രീനും ഒരേ സ്റ്റോപ്പ് വാച്ചാണ് കാണിക്കുന്നത്.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>ഈ സ്ക്രീൻ നൽകുന്ന ഏറ്റവും താഴ്ന്ന സ്ലോട്ടിലെ, ഒന്നിലും നൽകുന്നില്ലെങ്കിൽ എല്ലാ സ്ലോട്ടുകളിലും വച്ച് ഏറ്റവും താഴ്ന്നതിലെ, DualShock 4 അല്ലെങ്കിൽ DualSense-ന്റെ ലൈറ്റ്ബാറിന്റെ നിറം സ്ക്രീൻ കാണിക്കുന്നു. മോണോക്രോം സ്ക്രീൻ അതിന്റെ തെളിച്ചം ഡോട്ട് പാറ്റേണായി കാണിക്കുന്നു. ലൈറ്റ്ബാറിൽ ഒരു നിറം എത്തുന്നതുവരെ PadForge ഒന്നും കാണിക്കില്ല.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>കണക്റ്റ് ചെയ്യാത്ത മാപ്പ് ചെയ്ത ഉപകരണങ്ങളെ, ഉപകരണങ്ങൾ പേജ് കാണിക്കുന്ന പേരുകളിൽ സ്ക്രീൻ പട്ടികപ്പെടുത്തുന്നു, ഒന്നും ഇല്ലാതെ വരുമ്പോൾ എല്ലാം കണക്റ്റഡ് എന്ന് പറയുന്നു.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>ചിത്രങ്ങൾ (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|എല്ലാ ഫയലുകളും (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>പാൻ</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>പാൻ X</value></data>
@@ -5529,6 +5676,7 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ഡ്രൈവിംഗ് (0 അല്ലാത്തത്)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>ഗെയിം ടെലിമെട്രി</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>സ്ക്രിപ്റ്റ് മൂല്യം</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>ഉപകരണ കണക്ഷൻ</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>വേഗം (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (പരമാവധിയുടെ %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>ഗിയർ (-1 റിവേഴ്സ്, 0 ന്യൂട്രൽ)</value></data>
@@ -5684,4 +5832,231 @@ PadForge ഇവ ഇപ്പോൾ അൺഇൻസ്റ്റാൾ ചെയ�
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>പ്രശ്ന റെക്കോർഡിംഗ്</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>റെക്കോർഡിംഗ് ആരംഭിക്കുക അല്ലെങ്കിൽ നിർത്തുക</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>റെക്കോർഡിംഗിൽ അടയാളമിടുക</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>കണക്റ്റ് ചെയ്യാത്ത മാപ്പ് ചെയ്ത ഉപകരണങ്ങളെ, ഉപകരണങ്ങൾ പേജ് കാണിക്കുന്ന പേരുകളിൽ ഓവർലേ പട്ടികപ്പെടുത്തുന്നു, ഒന്നും ഇല്ലാതെ വരുമ്പോൾ എല്ലാം കണക്റ്റഡ് എന്ന് പറയുന്നു.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>ഓഫ്. ഒരു പ്രോഗ്രാമിനും PadForge-നെ സമീപിക്കാനാകില്ല.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0}, {1} എന്നിവ</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge പ്രവർത്തനം: {0} കോളുകൾ, ഏറ്റവും പഴയത് ആദ്യം. അവയ്ക്ക് മുമ്പുണ്ടായ കോളുകൾ: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge പ്രവർത്തനം: {0} കോൾ. അതിന് മുമ്പുണ്ടായ കോളുകൾ: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} പഴയ കോളുകൾ പോയി. പ്രവർത്തനം ഏറ്റവും പുതിയ {1:N0} സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} പഴയ കോൾ പോയി. പ്രവർത്തനം ഏറ്റവും പുതിയ {1:N0} സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>എക്സ്പോർട്ട്…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>പ്രവർത്തനം എക്സ്പോർട്ട് ചെയ്യുക</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>ടെക്സ്റ്റ് ഫയൽ</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>തുറക്കുക</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>അപ്ഡേറ്റ്</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>{0}-നുള്ള കൂടുതൽ</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>സ്കിൽ ZIP ആയി സേവ് ചെയ്യുക…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>അതിന്റെ ക്രമീകരണ ഫയൽ തുറക്കുക</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>സേവ് ചെയ്തു. {0}-ൽ, {2}-ന് കീഴിൽ {1} ചേർക്കുക.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0}-ന് ഇതുവരെ ക്രമീകരണ ഫയൽ ഇല്ല. ചേർക്കുക എന്നത് ഒന്ന് ഉണ്ടാക്കും.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>Windows-ൽ സെറ്റപ്പ് നിർമ്മാതാവ് രേഖപ്പെടുത്തിയിട്ടുള്ള ഒരു അസിസ്റ്റന്റ് പ്രോഗ്രാമും ഈ PC-യിൽ PadForge കണ്ടെത്തുന്നില്ല. മറ്റേതിനും കൂടുതൽ എന്നതിന് കീഴിലെ Copy Settings പ്രവർത്തിക്കും.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>അസിസ്റ്റന്റ് പ്രോഗ്രാമുകൾ PadForge-ന് പരിശോധിക്കാനായില്ല: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>ചേർത്തിട്ടില്ല.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>ചേർത്തു.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>ചേർത്തു. ഇപ്പോൾ കണക്റ്റ് ചെയ്തിരിക്കുന്നു.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>ചേർത്തു. അതിന് ശേഷം കണക്റ്റ് ചെയ്തിട്ടില്ല. തുറന്നിരുന്ന ഒരു അസിസ്റ്റന്റ് അടച്ച് വീണ്ടും തുറന്നതിന് ശേഷം PadForge കാണും.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>മറ്റൊരു PadForge-നായി ചേർത്തു. അപ്ഡേറ്റ് അതിനെ ഇതിലേക്ക് ചൂണ്ടുന്നു.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>ചേർത്തു. അതിന്റെ PadForge സ്കിൽ ഈ PadForge-നേക്കാൾ പഴയതാണ്.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>ചേർത്തു, അതിന്റെ PadForge സ്കിൽ ഇല്ലാതെ.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>ചേർത്തു. അതിന്റെ PadForge സ്കിൽ ഒരു പുതിയ PadForge-ൽ നിന്നുള്ളതാണ്.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>ഇത് സ്കിൽ അപ്ലോഡായി മാത്രമേ സ്വീകരിക്കൂ.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>ചേർത്ത അസിസ്റ്റന്റുകൾ ഓട്ടോമേഷൻ ഓണായാൽ PadForge-നെ സമീപിക്കും.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>ചേർക്കുന്നു…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>നീക്കം ചെയ്യുന്നു…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>അപ്ഡേറ്റ് ചെയ്യുന്നു…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>ഇത് പൂർത്തിയായില്ല: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>പകർത്തി.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>പകർത്തിയില്ല: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>അനുവദിച്ച പ്രോഗ്രാമുകൾ</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>വായിക്കുക ലെവലോ അതിന് മുകളിലോ ആവശ്യപ്പെടുന്ന ഒരു പ്രോഗ്രാം ആദ്യമായി കണക്റ്റ് ചെയ്യുമ്പോൾ ഒരിക്കൽ ചോദിക്കുകയും, മുകളിലെ ലെവൽ വരെ, അത് ആവശ്യപ്പെടുന്ന ലെവൽ നേടുകയും ചെയ്യുന്നു. നിങ്ങൾ മുകളിൽ ചേർക്കുന്ന ഒരു അസിസ്റ്റന്റിനെ അതുകൊണ്ട് അനുവദിച്ചിരിക്കുന്നു.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>ഇപ്പോൾ കണക്റ്റ് ചെയ്തിരിക്കുന്നു.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>അവസാനം ഉപയോഗിച്ചത് {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>ഇതുവരെ ഉപയോഗിച്ചിട്ടില്ല.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>കണക്റ്റ് ചെയ്തത്: {0}. ഓട്ടോമേഷൻ തുറക്കാൻ ക്ലിക്ക് ചെയ്യുക.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>ഈ PC-യിൽ: {0}. വെബിൽ നിന്ന്: {1}. ഓട്ടോമേഷൻ തുറക്കാൻ ക്ലിക്ക് ചെയ്യുക.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>വെബിൽ നിന്ന് കണക്റ്റ് ചെയ്തത്: {0}. ഓട്ടോമേഷൻ തുറക്കാൻ ക്ലിക്ക് ചെയ്യുക.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL മാപ്പിംഗ്</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>ഒരു ഗെയിംപാഡ്, “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>ഒരു ജോയ്സ്റ്റിക്ക്. SDL-ന് ഇതിന് മാപ്പിംഗ് ഇല്ല.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ഒരു ജോയ്സ്റ്റിക്ക്. PadForge ഇത് റോ ആയി വായിക്കുന്നു, അതിനാൽ SDL-ന്റെ മാപ്പിംഗ് ഉപയോഗിക്കുന്നില്ല.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>ഒരു ജോയ്സ്റ്റിക്ക്, നിങ്ങളുടെ വരി ഗെയിംപാഡായി ക്രമീകരിച്ചത്.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>എഞ്ചിൻ പ്രവർത്തിക്കുമ്പോൾ SDL ഉപകരണങ്ങൾ വായിക്കുന്നു.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>ഉൾപ്പെടുത്തിയ കമ്മ്യൂണിറ്റി പകർപ്പ്, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ഡൗൺലോഡ് ചെയ്തത് {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ന്റെ സ്വന്തം ഫയൽ</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>നിങ്ങളുടേത്, ചേർത്തത് {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG വേരിയബിൾ, നിങ്ങൾ ചേർക്കുന്ന ഏത് വരിക്കും മുകളിൽ SDL ഇത് പരിഗണിക്കുന്നു</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL മാപ്പിംഗ് പകർത്തുക</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>ഉപകരണത്തിന്റെ മാപ്പിംഗ്, ഉപകരണത്തിന്റെ ID-യിൽ അതിന്റെ ചെക്ക്സമും പതിപ്പും പൂജ്യമാക്കി, കമ്മ്യൂണിറ്റി ഡാറ്റാബേസിന്റെ ഒരു വരിയായി ക്ലിപ്ബോർഡിൽ ഇടുന്നു.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL മാപ്പിംഗ് ഒട്ടിക്കുക…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>ഈ ഉപകരണത്തിനായുള്ള ഒരു വരി എടുത്ത് പരിശോധിച്ച്, നിങ്ങളുടേതായി സൂക്ഷിച്ച് ഉടൻ പ്രയോഗിക്കുന്നു.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>ഒരു മാപ്പിംഗ് കണ്ടെത്തുക…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge വഹിക്കുന്ന എല്ലാ വരികളിലും പേര് നോക്കി തിരയുകയും, ഐഡികൾ വ്യത്യസ്തമായ ഒരു ക്ലോണിനായി, നിങ്ങൾ തിരഞ്ഞെടുക്കുന്നത് ഈ ഉപകരണത്തിൽ പ്രയോഗിക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>ഒരു ലേഔട്ട് ഊഹിക്കുക</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>ഒരു ഡാറ്റാബേസിനും അറിയാത്ത ഉപകരണത്തിനായി, അതിന്റെ ആക്സിസുകൾ, ബട്ടണുകൾ, ഹാറ്റുകൾ എന്നിവയിൽ നിന്ന് ഒരു ഗെയിംപാഡ് ലേഔട്ട് ഊഹിക്കുന്നു. ഇൻപുട്ടുകൾ പരിശോധിക്കുക എന്നതിൽ അത് പരിശോധിക്കുക.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>എന്റേത് നീക്കം ചെയ്യുക</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>എന്റേത് നീക്കം ചെയ്യുക എന്നത് മുമ്പത്തെ വരിയും കൺട്രോളർ വരികളും തിരികെ വയ്ക്കുന്നു.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>വീണ്ടും മാപ്പ് ചെയ്യുക</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>ഉപകരണം ഉള്ള ഓരോ കൺട്രോളറിലെയും അതിന്റെ വരികൾ, അസൈൻ ചെയ്യുമ്പോൾ ചെയ്യുന്നതുപോലെ, SDL-ന്റെ ലേഔട്ടിൽ നിന്ന് വീണ്ടും ഉണ്ടാക്കുന്നു.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>കമ്മ്യൂണിറ്റി ഡാറ്റാബേസ് പേജ്</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>വരി, {0}-ൽ നിന്ന് അത് എവിടെ വ്യത്യാസപ്പെടുന്നു</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>വരി</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>കൺട്രോളർ</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} വരി</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>ഇപ്പോഴത്തെ ഇൻപുട്ട്</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL-ന്റെ വരി പറയുന്നത്</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL-ന്റെ വരിയിൽ ഇല്ല</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, വ്യത്യാസപ്പെടുന്നു</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge ഉപയോഗിക്കാത്തത്: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>വരി</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>പകർത്തി.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>പകർത്തി. SDL-ന്റെ രൂപത്തിന് {0} ഉൾക്കൊള്ളാനാകില്ല.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>മാക്രോകൾ</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>കർവുകൾ</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>ഡെഡ് സോണുകൾ</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>കീബോർഡ്, മൗസ് ഔട്ട്പുട്ടുകൾ</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ടർബോ, ടോഗിളുകൾ, മറ്റ് പ്രവർത്തനങ്ങൾ</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0}, {1} എന്നിവ</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>പകർത്താൻ ഒന്നുമില്ല: ഈ ഉപകരണത്തിന് SDL-ൽ മാപ്പിംഗ് ഇല്ല, ഇത് ഒരു കൺട്രോളറിലും ഇല്ല.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>മറ്റൊരു പ്രോഗ്രാം ക്ലിപ്ബോർഡ് ഉപയോഗിക്കുന്നു. ഒന്നും പകർത്തിയില്ല.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>നിങ്ങളുടെ വരി നീക്കം ചെയ്തു. ഉപകരണം അതിന് മുമ്പത്തെ പോലെ വായിക്കപ്പെടുന്നു.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL-ന്റെ ലേഔട്ടിൽ നിന്ന് വീണ്ടും മാപ്പ് ചെയ്തു: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>ഇപ്പോൾ ഉപയോഗത്തിലുണ്ട്. വരി നിങ്ങളുടേതാണ്, ഈ ഉപകരണത്തിന് അത് മുൻഗണന നേടുന്നു.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>നിങ്ങളുടേതായി സൂക്ഷിച്ചു. എഞ്ചിൻ പ്രവർത്തിക്കുകയും ഉപകരണം കണക്റ്റ് ചെയ്യുകയും ചെയ്യുമ്പോൾ ഇത് ഉപയോഗത്തിലാകും.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>നിങ്ങളുടേതായി സൂക്ഷിച്ചു, പക്ഷേ SDL_GAMECONTROLLERCONFIG വേരിയബിളിൽ ഈ ഉപകരണത്തിനുള്ള ഒരു വരി ഉണ്ട്, അത് SDL നിങ്ങളുടേതിനേക്കാൾ മുകളിൽ നിർത്തുന്നു.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL വരി സ്വീകരിച്ചില്ല. ഈ ഉപകരണത്തിന് ഒന്നും മാറിയില്ല.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>ഒരു SDL മാപ്പിംഗ് ഒട്ടിക്കുക</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0}-നായി ഒരു SDL മാപ്പിംഗ് ഒട്ടിക്കുക</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0}-നായി ഒരു മാപ്പിംഗ് കണ്ടെത്തുക</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>{0}-നായി ഒരു ലേഔട്ട് ഊഹിക്കുക</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>ഒരു ഫയലിൽ നിന്നോ ക്ലിപ്ബോർഡിൽ നിന്നോ വരികൾ ചേർക്കുക</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>ഒട്ടിക്കുക</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>ഒരു ഫയൽ തുറക്കുക…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>മാപ്പിംഗ് ഫയലുകൾ (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>ഫയൽ 4 MB-യിൽ കൂടുതലാണ്. കമ്മ്യൂണിറ്റിയുടെ മുഴുവൻ ഫയലും ഏകദേശം 0.6 MB ആണ്.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>പേര്, ID അല്ലെങ്കിൽ VID:PID വഴി തിരയുക</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge വഹിക്കുന്ന വരികൾ</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>ഒരു വരിയും യോജിക്കുന്നില്ല.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>തിരഞ്ഞെടുത്ത വരി, ഒട്ടിക്കുക എന്നതിന്റെ അതേ പരിശോധനയിലൂടെയും അതേ തിരഞ്ഞെടുപ്പിലൂടെയും, {0}-ൽ അതിന്റെ സ്വന്തം ID-യിൽ പ്രയോഗിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL മാപ്പിംഗ് വരി</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>ഈ ഉപകരണത്തിനുള്ള ഒരു വരി.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>ഊഹിച്ച ഒരു ലേഔട്ട്.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} ഫീൽഡുകൾ, ഇതിന്റെ ID ഈ ഉപകരണവുമായി യോജിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} ഫീൽഡുകൾ, മറ്റൊരു ബസിലോ പതിപ്പിലോ ഉള്ള അതേ വെണ്ടറിന്റെയും ഉൽപ്പന്നത്തിന്റെയും. ഇത് ഈ ഉപകരണത്തിന്റെ സ്വന്തം ID-യിൽ സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} ഫീൽഡുകൾ, മറ്റൊരു ഉപകരണത്തിന്റെ വരി. ഇത് ഈ ഉപകരണത്തിന്റെ സ്വന്തം ID-യിൽ സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} ഫീൽഡുകൾ. SDL ഈ ഉപകരണം വായിക്കുന്നില്ല, അതിനാൽ PadForge അതിന്റെ ഇൻപുട്ടുകൾ വരി അനുസരിച്ച് ക്രമീകരിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} ഫീൽഡുകൾ, ഉപകരണത്തിന്റെ ആക്സിസുകൾ, ബട്ടണുകൾ, ഹാറ്റുകൾ എന്നിവയിൽ നിന്ന്. ഇൻപുട്ടുകൾ പരിശോധിക്കുക എന്നതിൽ ഇത് പരിശോധിച്ച്, തുടർന്ന് ഇവിടെ സൂക്ഷിക്കുകയോ മാറ്റുകയോ ചെയ്യുക.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} ഫീൽഡ്, ഇതിന്റെ ID ഈ ഉപകരണവുമായി യോജിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} ഫീൽഡ്, മറ്റൊരു ബസിലോ പതിപ്പിലോ ഉള്ള അതേ വെണ്ടറിന്റെയും ഉൽപ്പന്നത്തിന്റെയും. ഇത് ഈ ഉപകരണത്തിന്റെ സ്വന്തം ID-യിൽ സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} ഫീൽഡ്, മറ്റൊരു ഉപകരണത്തിന്റെ വരി. ഇത് ഈ ഉപകരണത്തിന്റെ സ്വന്തം ID-യിൽ സൂക്ഷിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} ഫീൽഡ്. SDL ഈ ഉപകരണം വായിക്കുന്നില്ല, അതിനാൽ PadForge അതിന്റെ ഇൻപുട്ടുകൾ വരി അനുസരിച്ച് ക്രമീകരിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} ഫീൽഡ്, ഉപകരണത്തിന്റെ ആക്സിസുകൾ, ബട്ടണുകൾ, ഹാറ്റുകൾ എന്നിവയിൽ നിന്ന്. ഇൻപുട്ടുകൾ പരിശോധിക്കുക എന്നതിൽ ഇത് പരിശോധിച്ച്, തുടർന്ന് ഇവിടെ സൂക്ഷിക്കുകയോ മാറ്റുകയോ ചെയ്യുക.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ഇത് {0} എങ്ങനെ വായിക്കപ്പെടുന്നു എന്ന് മാറ്റുന്നു. {1}-ലെ അതിന്റെ വരികൾ പുതിയ ലേഔട്ടിൽ നിന്ന് വീണ്ടും മാപ്പ് ചെയ്യുന്നു.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ഇത് {0} എങ്ങനെ വായിക്കപ്പെടുന്നു എന്ന് മാറ്റുന്നു. ഇത് ഒരു കൺട്രോളറിലും ഇല്ല, അതിനാൽ ഒരു വരിയും മാറുന്നില്ല.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>{0} വായിക്കുന്ന പ്രൊഫൈൽ ഷോർട്ട്കട്ടുകൾ സജ്ജമാക്കിയ ഇൻപുട്ടുകൾ നിലനിർത്തുന്നു.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>വരി PadForge.xml-ൽ നിങ്ങളുടേതായി സൂക്ഷിക്കുന്നു, ഈ ഉപകരണത്തിന് മറ്റെല്ലാ ഉറവിടങ്ങളെക്കാളും മുൻഗണന നേടുന്നു. എന്റേത് നീക്കം ചെയ്യുക എന്നത് പഴയ വരിയും പഴയ വരികളും തിരികെ വയ്ക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>വരികൾ PadForge.xml-ൽ നിങ്ങളുടേതായി സൂക്ഷിക്കുന്നു, അവയുടെ ഉപകരണങ്ങൾക്ക് മറ്റെല്ലാ ഉറവിടങ്ങളെക്കാളും മുൻഗണന നേടുന്നു. കൺട്രോളർ ഡാറ്റാബേസ് വരിയുടെ കൂടുതൽ എന്നതിന് കീഴിലെ മായ്ക്കുക അവ നീക്കം ചെയ്യുന്നു.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows-നുള്ള {0} വരികൾ. മറ്റ് സിസ്റ്റങ്ങൾക്കുള്ള {1} ഒഴിവാക്കി.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows-നുള്ള {0} വരി. മറ്റ് സിസ്റ്റങ്ങൾക്കുള്ള {1} ഒഴിവാക്കി.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} നിരസിച്ചു. ആദ്യത്തേത്: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ഒരു വരി, അല്ലെങ്കിൽ gamecontrollerdb.txt ഫയലിന്റെ ടെക്സ്റ്റ് ഒട്ടിക്കുക.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ഈ ടെക്സ്റ്റ് SDL-ന്റെ കൺട്രോളർ ഡാറ്റാബേസിലെ വരിയല്ല: 32 ഹെക്സ് അക്കങ്ങളുള്ള ഒരു ID, ഒരു പേര്, തുടർന്ന് a:b0 പോലുള്ള ഫീൽഡുകൾ.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>വരികൾ മറ്റ് സിസ്റ്റങ്ങൾക്കുള്ളതാണ്. PadForge Windows-നുള്ള വരികളോ ഒരു സിസ്റ്റവും നിർദ്ദേശിക്കാത്തവയോ വായിക്കുന്നു.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>വരിയുടെ ID ഒരു ഉപകരണത്തിന്റേതല്ല. അതിന് 32 ഹെക്സ് അക്കങ്ങൾ വേണം.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>വരിയുടെ പേര് ശൂന്യമാണ്, 128 അക്ഷരത്തിൽ കൂടുതലാണ്, അല്ലെങ്കിൽ SDL ഫീൽഡായി വായിക്കുന്ന ഒരു അക്ഷരം ഉൾക്കൊള്ളുന്നു.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>വരിയിൽ PadForge സ്വീകരിക്കാത്ത ഒരു ഹിന്റോ Android ഫീൽഡോ ഉണ്ട്.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>വരിയിൽ SDL-ന് അറിയാത്ത ഒരു ഫീൽഡ് ഉണ്ട്.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>ഒരു ബൈൻഡിംഗ് SDL-ന്റെ രൂപത്തിലല്ല, b3, a2, +a2, a2~ അല്ലെങ്കിൽ h0.4 പോലെ.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>വരി ഒരു ഫീൽഡ് രണ്ടുതവണ നൽകുന്നു.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>വരി 1,024 അക്ഷരത്തിൽ കൂടുതലാണ്.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>വരി ഒരു നിയന്ത്രണവും ബന്ധിപ്പിക്കുന്നില്ല.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>നിങ്ങളുടെ വരികൾ</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>നിങ്ങളുടെ വരികൾ</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>നിങ്ങൾ ഇവിടെ ചേർക്കുന്ന അല്ലെങ്കിൽ ഒരു ഉപകരണത്തിന്റെ SDL മാപ്പിംഗ് കാർഡിൽ ഒട്ടിക്കുന്ന വരികൾ, അവയുടെ ഉപകരണങ്ങൾക്ക് മറ്റെല്ലാ ഉറവിടങ്ങളെക്കാളും മുൻഗണന നേടുകയും റീസെറ്റിന് ശേഷവും നിലനിൽക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>ഒരു ഫയലിൽ നിന്നോ ക്ലിപ്ബോർഡിൽ നിന്നോ വരികൾ ചേർക്കുക…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} വരികൾ, അവയുടെ ഉപകരണങ്ങൾക്ക് മറ്റെല്ലാ ഉറവിടങ്ങളെക്കാളും നിങ്ങളുടേത് മുൻഗണന നേടുന്നു.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} വരി, അതിന്റെ ഉപകരണത്തിന് മറ്റെല്ലാ ഉറവിടങ്ങളെക്കാളും നിങ്ങളുടേത് മുൻഗണന നേടുന്നു.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ഇതുവരെ ഒന്നുമില്ല.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>ഉടൻ ഉപയോഗത്തിലുണ്ട്.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>ഓണാക്കുക</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>വെബിലെ അസിസ്റ്റന്റുകൾ</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>ടണൽ</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>ഒന്നുമില്ല</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>ഞാൻ ഒട്ടിക്കുന്ന ഒരു വിലാസം</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>ആരംഭിക്കുന്നു, നിങ്ങളുടെ അവകാശങ്ങളോടെ.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>പ്രവർത്തിക്കുന്നു, നിങ്ങളുടെ അവകാശങ്ങളോടെ. ഓരോ തവണ ആരംഭിക്കുമ്പോഴും അതിന്റെ വിലാസം അതുതന്നെയായിരിക്കും.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>പ്രവർത്തിക്കുന്നു, നിങ്ങളുടെ അവകാശങ്ങളോടെ. ക്വിക്ക് ടണൽ ഓരോ തവണ ആരംഭിക്കുമ്പോഴും പുതിയ വിലാസം എടുക്കുന്നു, അതിനാൽ അസിസ്റ്റന്റിനെ വീണ്ടും ചേർക്കേണ്ടി വരും.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>നിന്നു.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>നിന്നു. അതിന്റെ അവസാന വാക്കുകൾ: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>അത് ആരംഭിക്കാനായില്ല.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>അത് ഇനി ഈ PC-യിൽ ഇല്ല.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>ഈ PC-യിൽ ടണൽ പ്രോഗ്രാം ഒന്നും കണ്ടെത്തിയില്ല. PadForge cloudflared, devtunnel, ngrok, Tailscale Funnel എന്നിവയോടൊപ്പം, അല്ലെങ്കിൽ നിങ്ങളുടെ സ്വന്തം ടണലിന്റെ വിലാസത്തോടൊപ്പം പ്രവർത്തിക്കുന്നു.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge-ന് ഒരു പൊതു വിലാസം നൽകാൻ ഒരു ടണൽ തിരഞ്ഞെടുക്കുക.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>ഈ PC-യിൽ ഇവയും ഉണ്ട്: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, ഇതിന്റെ വിലാസം മാറാതിരിക്കുന്നു</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, ഇതിന്റെ ക്വിക്ക് ടണലുകൾ ഓരോ തവണയും പുതിയ വിലാസം എടുക്കുന്നു</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>http://127.0.0.1:{0}-ലേക്ക് നിങ്ങളുടെ സ്വന്തം ടണൽ പ്രവർത്തിപ്പിച്ച് അതിന്റെ https വിലാസം ഒട്ടിക്കുക. പേരിട്ട Cloudflare ടണൽ, സ്ഥിരമായ ഡെവ് ടണൽ, Tailscale Funnel, ngrok-ന്റെ സ്വന്തം ഡൊമെയ്ൻ എന്നിവ അവയുടെ വിലാസം നിലനിർത്തുന്നു.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>നിങ്ങളുടെ ടണൽ നൽകുന്നതുപോലെ, /mcp അല്ലാതെ പാത്ത് ഇല്ലാത്ത ഒരു https വിലാസം ഒട്ടിക്കുക.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-ന്റെ വെബ് ഹെൽപ്പർ ആരംഭിക്കുന്നു.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ന്റെ വെബ് ഹെൽപ്പർ നിന്നു ({0}). അത് വീണ്ടും ആരംഭിക്കാൻ Reach PadForge From the Web ഓഫാക്കി വീണ്ടും ഓണാക്കുക.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>വിലാസം</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>ഇതുവരെ പൊതു വിലാസം ഇല്ല.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude-ലേക്ക് ചേർക്കുക</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>പകർത്തി.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>ഒരു പുതിയ വെബ് അസിസ്റ്റന്റിനെ സ്വീകരിക്കുക</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>സ്വീകരിക്കാൻ തുടങ്ങുക</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>സ്വീകരിക്കുന്നത് നിർത്തുക</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>{0} വരെ സ്വീകരിക്കുന്നു.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>സ്വീകരിക്കുന്നില്ല. സ്വീകരിക്കാൻ തുടങ്ങുക അഞ്ച് മിനിറ്റ് നേരത്തേക്ക് ഇത് തുറക്കുന്നു.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>അസിസ്റ്റന്റിൽ വിലാസം ചേർത്ത് സൈൻ ഇൻ ചെയ്യുക. ഓരോ സൈൻ ഇന്നും അതിന്റെ സൈൻ ഇൻ പേജിലും PadForge-ന്റെ ചോദ്യ കാർഡിലും സ്വന്തം ആറക്ക കോഡ് കാണിക്കുന്നു. രണ്ട് കോഡുകളും ഒത്തുവന്നാൽ മാത്രം അനുവദിക്കുക. മറ്റ് സമയങ്ങളിൽ സൈൻ ഇൻ നിരസിക്കപ്പെടുന്നു, ഒന്നും നിങ്ങളോട് ചോദിക്കുന്നില്ല.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>വെബിൽ അനുവദിച്ചത്</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>ഇതുവരെ ഒന്നുമില്ല.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>ഇതിന്റെ സൈൻ ഇൻ {0}-ലേക്ക് മടങ്ങി.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>ഇത് സ്വയം {0} എന്ന് വിളിക്കുന്നു.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>{0} അനുവദിച്ചു, അവസാനം ഉപയോഗിച്ചത് {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>{0} അനുവദിച്ചു, ഇതുവരെ ഉപയോഗിച്ചിട്ടില്ല.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>റദ്ദാക്കുക</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>അതിന്റെ സ്വന്തം Secure MCP Tunnel PadForge-നെ നേരിട്ട് പ്രവർത്തിപ്പിക്കുന്നു, ഇവിടെ വിലാസമോ സൈൻ ഇന്നോ വേണ്ട. കമാൻഡ് ആ ടണലിന്റെ സെറ്റപ്പിലേക്ക് പകർത്തുക.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>കമാൻഡ് പകർത്തുക</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge ഒരു ടണൽ പ്രോഗ്രാമും ഡൗൺലോഡ് ചെയ്യുന്നില്ല, മറ്റൊരു കമ്പനിയുടെയും കീ സൂക്ഷിക്കുന്നില്ല. ഒരു വെബ് അസിസ്റ്റന്റ് മുകളിലെ ലെവലിൽ പ്രവർത്തിക്കുന്നു.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>{0}-നെ വെബിൽ നിന്ന് PadForge-നൊപ്പം പ്രവർത്തിക്കാൻ അനുവദിക്കണോ?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>ഇതിന്റെ സൈൻ ഇൻ {0}-ലേക്ക് മടങ്ങുന്നു.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>ഇത് സ്വയം {0} എന്ന് വിളിക്കുന്നു.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>ഇതിന്റെ സൈൻ ഇൻ പേജ് ഈ കോഡ് കാണിക്കുന്നെങ്കിൽ മാത്രം അനുവദിക്കുക:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>ഇതിന്റെ ആറക്ക കോഡ് PadForge-ന്റെ ചോദ്യ കാർഡിൽ കാണിക്കുന്നു. ഇതിന്റെ സൈൻ ഇൻ പേജ് അതേ കോഡ് കാണിക്കുന്നെങ്കിൽ മാത്രം അനുവദിക്കുക.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>ഇത് {0} ലെവലിൽ, {1} വഴി പ്രവർത്തിക്കുന്നു.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>ഇതിന്റെ സൈൻ ഇൻ ഈ PC-യിലേക്ക് മടങ്ങുന്നു, ഇവിടെയുള്ള ഏത് പ്രോഗ്രാമിനും ആ വിലാസം അവകാശപ്പെടാം.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge-ലേക്ക് സൈൻ ഇൻ ചെയ്യുക</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} നിങ്ങളുടെ PC-യിൽ PadForge-നൊപ്പം പ്രവർത്തിക്കാൻ ആവശ്യപ്പെടുന്നു.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>ഇത് സ്വയം {0} എന്ന് വിളിക്കുന്നു.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>നിങ്ങളുടെ PC-യിൽ, PadForge-ന്റെ ചോദ്യ കാർഡ് ഈ സൈൻ ഇന്നിനെക്കുറിച്ച് ചോദിക്കുന്നു. കാർഡ് ഈ കോഡ് കാണിക്കുന്നെങ്കിൽ മാത്രം അവിടെ അനുവദിക്കുക:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>നിങ്ങൾ PC-യിൽ ഉത്തരം നൽകിയാൽ ഈ പേജ് സ്വയം തുടരും.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>ഈ സൈൻ ഇൻ നിങ്ങളുടെ PC-യിലെ ഒരു പ്രോഗ്രാമിലേക്ക് മടങ്ങുന്നു, അവിടെയുള്ള ഏത് പ്രോഗ്രാമിനും ആ വിലാസം അവകാശപ്പെടാം.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge ഇപ്പോൾ പുതിയ വെബ് അസിസ്റ്റന്റിനെ സ്വീകരിക്കുന്നില്ല. നിങ്ങളുടെ PC-യിൽ PadForge തുറന്ന്, എക്സ്ട്രാസ്, ഓട്ടോമേഷൻ എന്നതിലേക്ക് പോയി, വെബിലെ അസിസ്റ്റന്റുകൾക്ക് കീഴിൽ സ്വീകരിക്കാൻ തുടങ്ങുക അമർത്തുക. തുടർന്ന് വീണ്ടും സൈൻ ഇൻ ചെയ്യുക.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>ഈ സൈൻ ഇൻ തുടരാനാകില്ല. അസിസ്റ്റന്റിൽ PadForge-ന്റെ വിലാസം വീണ്ടും ചേർത്ത് സൈൻ ഇൻ ചെയ്യുക.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>ഈ സൈൻ ഇൻ അവസാനിച്ചു. അസിസ്റ്റന്റിൽ നിന്ന് വീണ്ടും സൈൻ ഇൻ ചെയ്യുക.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows അത് ആരംഭിച്ചില്ല</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>അത് കോഡ് {0} ഉപയോഗിച്ച് അവസാനിച്ചു</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>ഓട്ടോമേഷൻ ഓഫാണ്, അതിനാൽ ഒരു വെബ് അസിസ്റ്റന്റും PadForge-നെ സമീപിക്കുന്നില്ല. ഓട്ടോമേഷൻ ഓണായാൽ വെബ് ഹെൽപ്പർ ആരംഭിക്കും.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>പരിശോധിക്കുന്നു…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്തു, പുതിയതാണ്. ഒരു സ്ക്രിപ്റ്റ് {0} ഉപയോഗിച്ച് തുടങ്ങുന്നു.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0}-നായി ഇൻസ്റ്റാൾ ചെയ്തു, പുതിയതാണ്. ഒരു സ്ക്രിപ്റ്റ് {1} ഉപയോഗിച്ച് തുടങ്ങുന്നു.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്തു. ഈ PadForge-ന് കൂടുതൽ പുതിയ പകർപ്പ് ഉണ്ട്.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0}-നായി ഇൻസ്റ്റാൾ ചെയ്തു. ഈ PadForge-ന് കൂടുതൽ പുതിയ പകർപ്പ് ഉണ്ട്.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്യുന്നു…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-ന് ഇത് പരിശോധിക്കാനായില്ല: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്യുക PadForge-ന്റെ ലൈബ്രറി ആ ഭാഷ കണ്ടെത്തുന്ന സ്ഥലത്ത് വയ്ക്കുന്നു. അത് ലോഡ് ചെയ്യുന്ന സ്ക്രിപ്റ്റ് മുകളിലെ ലെവലിൽ ഉപകരണങ്ങൾ വായിക്കുകയും മാപ്പിംഗുകൾ നിയന്ത്രിക്കുകയും ചെയ്യുന്നു.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>ഒരു ലൈബ്രറി എവിടെയും സേവ് ചെയ്യുക</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>ഇൻസ്റ്റാൾ ചെയ്ത പകർപ്പുകൾ</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>എല്ലാം നീക്കം ചെയ്യുക</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>നീക്കം ചെയ്തു.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>സ്ക്രിപ്റ്റ് ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>അതിന്റെ സ്ക്രിപ്റ്റ് ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>സ്ക്രിപ്റ്റുകൾ അതിന്റെ നിയന്ത്രണങ്ങളെ {0} എന്ന് വിളിക്കുന്നു.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>സ്ക്രിപ്റ്റുകൾ അതിന്റെ കീകളെ KeyA, KeySpace, KeyLeftShift എന്നിങ്ങനെയും, ഓരോ കീയെയും അതിന്റെ കോഡ് Vk0 മുതൽ Vk255 വരെ ഉപയോഗിച്ചും വിളിക്കുന്നു.</value></data>
 </root>

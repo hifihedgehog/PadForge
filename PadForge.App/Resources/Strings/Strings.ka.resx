@@ -182,8 +182,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} გაითიშა. {1}: მოწყობილობა აღარ დარჩა.</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} დაკავშირდა</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} დაკავშირდა, ბატარეა {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>{0} მოწყობილობა გაითიშა</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>{0} მოწყობილობა დაკავშირდა</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} მოწყობილობა გაითიშა: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} მოწყობილობა დაკავშირდა: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} განმეორებით ითიშება</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (მაქს. {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (მაქს. {0})</value></data>
@@ -437,8 +437,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>ავტომატური გადაკავშირება, პორტი, დაწყვილების პირადობა, დაკავშირება მისამართით</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>პორტი, DSX.exe-ის შემცვლელი</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>პორტები, სრული სიჩქარე და საკუთარი ფორმატები</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML, უნარი</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>სხვა ასისტენტები, ასისტენტები ვებში</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ირგვლივ იხედეთ თავის ტრეკერით ან VR ჰედსეტით, ხოლო ორივე ცერა თითი ღილაკებზე რჩება.</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>მიაბით სიჩქარე, პედლები და გადაცემები, რომლებსაც მანქანის მართვის თამაში აგზავნის, ნებისმიერი შეყვანის მსგავსად.</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>გაუგზავნეთ კონტროლერის მოძრაობა ემულატორებს, რომლებიც DSU მოძრაობის წყაროს კითხულობენ.</value></data>
@@ -459,6 +458,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>მენიუს რგოლი, ბადე ან ზოლი, სანამ ის ღიაა.</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>შრის სახელი, როცა Shift-შრე ირთვება, იმ დროის განმავლობაში, რომელსაც ეს შრე განსაზღვრავს.</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>პროფილის სახელი, როცა პროფილი იცვლება.</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>ვირტუალური კონტროლერები ახლახან ჩაირთო თუ გამოირთო, მალსახმობით ან მაკროთი.</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>მიბმული მოწყობილობის სახელი, როცა ის გაითიშება.</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>მიბმული მოწყობილობის სახელი, როცა ის დაკავშირდება.</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>მისამართის კოპირება</value></data>
@@ -566,35 +566,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>პროგრამებს შეუძლიათ პროფილების გადართვა და გათავისუფლება, ძრავის გაშვება და გაჩერება, ვირტუალური კონტროლერების ჩართვა და გამორთვა, ფანჯრის ჩვენება და დამალვა, PadForge-ის დახურვა, დიაგნოსტიკის სნეპშოტის შენახვა და კითხვა, რა მუშაობს.</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>ყველაფერი, რაც ბრძანებების დონეზეა, და პროგრამებს შეუძლიათ მოწყობილობების, ვირტუალური კონტროლერების, რუკების, პროფილებისა და პარამეტრების ნახვა, ყველა მოწყობილობის შეყვანების რეალურ დროში თვალყურის დევნება და PadForge-ში ადგილის ჩვენება. წაკითხვის დონეზე მყოფი პროგრამა ხედავს ყველა მოწყობილობაზე დაჭერილ ყველა კლავიშს, ადმინისტრატორის უფლებებით გაშვებულ ფანჯრებში აკრეფილებსაც.</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>ყველაფერი, რაც წაკითხვის დონეზეა, და პროგრამებს შეუძლიათ საკუთარი მოწყობილობების დამატება და მართვა, ნებისმიერი მოწყობილობის კონტროლის დაჭერა და მაკროს ტრიგერებისთვის დასახელებული მნიშვნელობების გადაცემა.</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ყველაფერი, რაც შეყვანების გაგზავნის დონეზეა, და პროგრამებს შეუძლიათ ის შეცვალონ, რისი შეცვლაც გვერდებზე თქვენ შეგიძლიათ.</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ყველაფერი, რაც შეყვანების გაგზავნის დონეზეა, და პროგრამებს შეუძლიათ ის შეცვალონ, რისი შეცვლაც გვერდებზე თქვენ შეგიძლიათ. ზოგი ცვლილება ყოველთვის ჯერ გეკითხებათ PadForge-ის შეკითხვის ბარათზე.</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>ასისტენტები</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ჩასვით ეს ასისტენტის MCP პარამეტრებში. ამის შემდეგ ასისტენტი PadForge-თან ზემოთ მითითებული დონით იმუშავებს.</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML-ად კოპირება</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>ასისტენტები, რომლებიც TOML-ს კითხულობენ</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>ღილაკი „დამატება“ PadForge-ს თავისი უნარით ამ ასისტენტში ათავსებს. ამის შემდეგ ის ზემოთ მითითებული დონით მუშაობს, მისი სიტყვები კი იმის გვერდით ჩანს, რაზეც მიუთითებს, მისი სახელის ქვეშ.</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>სკრიპტები</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>სკრიპტების ბიბლიოთეკა</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>ბიბლიოთეკის შენახვა…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ერთი ფაილი AutoHotkey v2-ისთვის, Python-ისთვის ან PowerShell-ისთვის. სკრიპტი, რომელიც მას ჩატვირთავს, კითხულობს მოწყობილობებს და მართავს რუკებს ზემოთ მითითებული დონით.</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>ერთი ფაილი AutoHotkey v2-ისთვის, Python-ისთვის ან PowerShell-ისთვის, იქ ჩაწერილი, სადაც აირჩევთ.</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>გელოდებათ</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>აქტივობა</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ჯერ არც ერთ პროგრამას არ მიუმართავს. თითოეული მიმართვა აქ ჩანს მისი შედეგით.</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>გაუქმება</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>უნარი ასისტენტებისთვის</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>უნარის შენახვა…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge-მა ვერ შეინახა: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>სანამ წაკითხვის ან უფრო მაღალი დონის პროგრამა დაკავშირებულია, ის ხედავს, რა იჭერება ყველა მოწყობილობაზე, კლავიატურებზეც.</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>პლაგინები</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>პლაგინების გაშვება</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>არც ერთი პლაგინი არ მუშაობს.</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>პლაგინი თქვენი უფლებებით მუშაობს და არა PadForge-ის უფლებებით.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>ჩაშენებული</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>სატესტო კონტროლერი</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>კონტროლერი, რომელიც თავისით მოძრაობს, ერთ-ერთი კონტროლი თითო ჯერზე, რათა რუკის გამოცდა აპარატურის გარეშე შეგეძლოთ.</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>სიჩქარე</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>ნელი</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>ჩვეულებრივი</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>სწრაფი</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>უსწრაფესი</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>გამეორება</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>პრობლემის ჩანაწერს უკან უკრავს იმ მოწყობილობების სახით, რომლებმაც ის შექმნეს, იმავე დროებით. ისინი ამ კომპიუტერზე ახალი მოწყობილობებია, მიბმული ისე, როგორც თქვენ ან პროფილი მიაბამთ.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ჩანაწერი</value></data>
@@ -609,10 +598,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>პრობლემის ჩანაწერები|*.zip;*.log|ყველა ფაილი|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge-ს არ შეუძლია {0}-ის დაკვრა. ის პრობლემის ჩანაწერი არ არის ან მოწყობილობის შეყვანას არ შეიცავს.</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>თქვენი პლაგინები</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>პლაგინი არის პროგრამა, რომელიც PadForge-ს მოწყობილობებს ამატებს. PadForge მას თქვენი ჩვეულებრივი უფლებებით უშვებს, როცა ძრავა მუშაობს.</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>პლაგინის დამატება…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>პროგრამები და სკრიპტები|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|ყველა ფაილი|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>დამტკიცება…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>დამტკიცება და გადატვირთვა…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>ძრავასთან ერთად ირთვება</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>ფაილის შემოწმება გაშვებამდე</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>დასრულდა კოდით {0}. ხელახლა დაიწყება {1} წამში.</value></data>
@@ -643,10 +631,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} სიაში უკვე არის.</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge-ს შეუძლია მაქსიმუმ 16 პლაგინის გაშვება. სხვის დასამატებლად ერთი წაშალეთ.</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>მოქმედი პლაგინები: {0}. მათ მიერ დამატებული მოწყობილობები: {1}.</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ხუთი შეცდომის შემდეგ გაჩერდა.</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} შეიცვალა თქვენი დამტკიცების შემდეგ.</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ვერ ჩაირთო.</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>დაემატა {0}.</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ხელს აწერს {0}.</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ხელმოუწერელია.</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>მისი პარამეტრები აქ გამოჩნდება, სანამ ის მუშაობს.</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>ის პარამეტრებს არ აცხადებს.</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge-მა ვერ წაიკითხა მისი პარამეტრები: {0}.</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>დასრულდა ერთი წუთის უპასუხობის შემდეგ</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>მისი ფაილი შეიცვალა მუშაობისას</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>დაამატა {0}.</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0}: პარამეტრები</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>არჩევა</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>დააჭირეთ კონტროლს…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>არჩეული არ არის</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>დაამატეთ პლაგინი ან გადმოაგდეთ მისი ფაილი ამ გვერდზე. PadForge აჩვენებს მის მისამართს, ხელმომწერს და SHA-256-ს და გეკითხებათ გაშვებამდე. პლაგინი მუშაობს თქვენი უფლებებით და არა PadForge-ის უფლებებით.</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>პრობლემის ჩანაწერს უკან უკრავს იმ მოწყობილობების სახით, რომლებმაც ის შექმნეს, მათივე დროებით.</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>მუშაობს.</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>მუშაობს, ხელით.</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>რა მოძრაობს</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>ჯოისტიკები და ტრიგერები</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>ჯოისტიკები</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>ტრიგერები</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>ნიმუში</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>ტალღა</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>წრე</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>მოძრაობის დრო</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>შეჩერების დრო</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>ღილაკების დაჭერა</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>ნავიგაციის ღილაკების დაჭერა</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows აპები რეაგირებენ ვირტუალური Xbox კონტროლერის A, B, უკან, სტარტი და D-pad ღილაკებზე წინა ფანჯარაში, ხოლო Guide ხსნის Xbox Game Bar-ს.</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>D-pad-ის მოტრიალება</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>იმავე მიზეზით.</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>დაჭერის დრო</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>კონტროლერები</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>ხელით</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>აჩერებს მოძრაობას. მისი შეყვანები ქვემოთ მაუსით დააყენეთ.</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>მარცხენა ჯოისტიკი</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>მარჯვენა ჯოისტიკი</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>მარცხენა ტრიგერი</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>მარჯვენა ტრიგერი</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>წაკითხვა წამში</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>პლაგინის ნაკრები და არჩეული პლაგინის ჟურნალი</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>პლაგინის ნაკრები</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>პლაგინის ნაკრების შენახვა…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>პატარა პლაგინი C#-ზე და იგივე პლაგინი AutoHotkey-ის, Python-ისა და PowerShell-ისთვის, თითოეულ ფაილში მისი აგების ან გაშვების აღწერით.</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>ინსტრუქცია ყველა ზმნაზე, მოვლენასა და პარამეტრის სახეობაზე, C# პლაგინის ასაგები სკრიპტი და იგივე პლაგინი AutoHotkey-ის, Python-ისა და PowerShell-ისთვის.</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>ჟურნალი</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>აირჩიეთ პლაგინი მისი ჟურნალის სანახავად.</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>ამ პლაგინის ჟურნალში ჯერ არაფერია.</value></data>
@@ -672,7 +703,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>თამაშის მოდი</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>სხვა პროგრამას უკავია მილის სახელი {0}. დახურეთ ეს პროგრამა.</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows-მა უარყო მილი {0}, ამიტომ პროგრამები ვერ უკავშირდებიან.</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>არც ერთი პროგრამა არ არის დაკავშირებული.</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ჩართულია. არც ერთი პროგრამა არ არის დაკავშირებული.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>დაკავშირებულია: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>უცნობი პროგრამა</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}, ხელმოწერილია: {1}</value></data>
@@ -706,7 +737,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge-ის შემდეგ გაშვებამდე ამგვარი აღარ იქნება</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge-ს ასეთი ხელსაწყო არ აქვს</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>პროგრამამ ძველი მდგომარეობა წაიკითხა</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ასეთი პარამეტრი არ არის</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ამ ID-ით არაფერია</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>მნიშვნელობა პარამეტრის დასაშვებ ფარგლებს სცილდებოდა</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>თქვენ ეს არ დაუშვით</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>დროულად არავინ უპასუხა</value></data>
@@ -723,6 +754,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>ფანჯრის ჩვენება</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>ფანჯრის გადაყვანა სისტემურ პანელში</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ფანჯრის ჩაკეცვა</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>ფანჯრის გაშლა</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge-ის დახურვა</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>ძრავის გაშვება</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>ძრავის გაჩერება</value></data>
@@ -748,6 +780,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>მოწყობილობის დამატება: {0}</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების დაყენება</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>მოწყობილობის წაშლა: {0}</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>მოწყობილობის {0} ყველა კონტროლის უმოქმედოდ დაყენება</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>აიძულებს PadForge-ს, გაუშვას პროგრამა.</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>ხსნის ფაილს, საქაღალდეს ან ვებგვერდს.</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>აიძულებს PadForge-ს, გაუგზავნოს Windows-ს კლავიშები ან მაუსის შეყვანა.</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>შემოაქვს პროფილი PadForge-ის გარედან.</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>PadForge გეკითხებათ, სანამ პროგრამა ამას გააკეთებს.</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>დიალოგები</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>მაკროები</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების დაჭერა</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>მოწყობილობის {0} კონტროლების გაშვება</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>მნიშვნელობის დაყენება: {0}</value></data>
@@ -756,25 +796,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>პროფილების გადართვა</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>ძრავის გაშვება ან გაჩერება</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ვირტუალური კონტროლერების ჩართვა ან გამორთვა</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>დიაგნოსტიკის სნეპშოტის შენახვა</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>გამოკითხვის სიხშირისა და დრაივერების წაკითხვა</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>პროფილების სიის მოთხოვნა</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>პროფილის წაკითხვა</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ვირტუალური კონტროლერების სიის მოთხოვნა</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>მოწყობილობების სიის მოთხოვნა</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>მოწყობილობის წაკითხვა</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>თქვენი შეყვანის ლოდინი</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>კონტროლერის რუკების წაკითხვა</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>კონტროლერის მაკროების სიის მოთხოვნა</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>პარამეტრების ძებნა</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>პარამეტრის წაკითხვა</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>ადგილის ჩვენება თქვენთვის</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>ადგილების ძებნა PadForge-ში</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>ადგილის წაკითხვა PadForge-ში</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>იმის წაკითხვა, რასაც ხედავთ</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>საკუთარი მოწყობილობის დამატება</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>თავისი მოწყობილობის მართვა</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>თავისი მოწყობილობის წაშლა</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>კონტროლის დაჭერა ან გაშვება</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>მნიშვნელობის დაყენება მაკროს გამშვებებისთვის</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>პარამეტრის შეცვლა</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>ღილაკის დაჭერა</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>პროფილის შექმნა</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>პროფილის გადარქმევა</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>პროფილის წაშლა</value></data>
@@ -785,7 +824,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>კონტროლერის ტიპის შეცვლა</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>მოწყობილობის მინიჭება</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>რუკის რიგების დაყენება</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>რუკის რიგების გასუფთავება</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>კონტროლერის ავტომატური მიბმა</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>მაკროს შენახვა</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>მაკროს წაშლა</value></data>
@@ -805,6 +843,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>ქმნის კლავიატურისა და მაუსის კონტროლერს</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>რთავს: {0}</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>„{0}“ შეცვლა</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>დაჭერა: „{0}“</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} გიჩვენებთ: {1}</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>ადგილი: {0}.</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>მივცეთ {0}-ს უფლება, იმუშაოს PadForge-თან დონეზე {1}?</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} უშვებს {1}-ს</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>გაუშვა: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>ხელს აწერს {0}.</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>ხელმოუწერელია.</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>დონეზე წაკითხვა და მაღლა ის ხედავს ყველა მოწყობილობაზე დაჭერილ ყველა კლავიშს, კლავიატურების ჩათვლით.</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>ის ერთხელ ეკითხება. მისი ამოშლა შეგიძლიათ ავტომატიზაცია გვერდზე.</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge-ის ბრძანების ხაზი</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} იღებს მნიშვნელობას {1}</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>უსმენს ქსელს, ამიტომ სხვა მოწყობილობებს ამ კომპიუტერთან დაკავშირება შეუძლიათ.</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ცვლის დრაივერს ან HidHide-ს, რომელზეც სხვა პროგრამები და თამაშები არიან დამოკიდებული.</value></data>
@@ -826,6 +875,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell მოდულები (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>დაშვება</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>არ დაიშვას</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>ახლა არა</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>ჩვენება</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>ნაბიჯი {0} {1}-დან.</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>გასაგრძელებლად დააწკაპუნეთ.</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>გახსენით: {0}.</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>გახსენით მეტი.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>გამომგზავნი: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>გამომგზავნი: {1}, რომელიც საკუთარ თავს „{0}“ უწოდებს</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>გამომგზავნი: პროგრამა, რომელიც საკუთარ თავს „{0}“ უწოდებს</value></data>
@@ -965,7 +1020,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>დაყენება და გადატვირთვა</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>გამოშვების შენიშვნები</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>კონტროლერების მონაცემთა ბაზა</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ღილაკი „ახლა განახლება“ GitHub-იდან ჩამოტვირთავს საზოგადოების კონტროლერების მონაცემთა ბაზას (SDL_GameControllerDB) და პარამეტრების ფაილში ინახავს რუკებს, რომლებიც PadForge-ის ამ ვერსიას არ აქვს. ახალი რუკა გამოიყენება მხოლოდ იმ კონტროლერისთვის, რომელსაც სხვა არაფერი კითხულობს გეიმპადად, რომელიც მინიჭებული არ არის და რომელიც არ არის ნედლი ჯოისტიკის რეჟიმში. საწყისზე დაბრუნება შლის ყველა ჩამოტვირთულ რუკას.</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ღილაკი „ახლა განახლება“ GitHub-იდან ჩამოტვირთავს საზოგადოების კონტროლერების მონაცემთა ბაზას (SDL_GameControllerDB) და პარამეტრების ფაილში ინახავს რუკებს, რომლებიც PadForge-ის ამ ვერსიას არ აქვს. ისინი მაშინვე გამოიყენება. ახალი რუკა გამოიყენება მხოლოდ იმ კონტროლერისთვის, რომელსაც სხვა არაფერი კითხულობს გეიმპადად, რომელიც მინიჭებული არ არის და რომელიც არ არის რეჟიმში „ნედლი ჯოისტიკის რეჟიმის იძულება (გეიმპადის გადანაწილების გვერდის ავლით)“. საწყისზე დაბრუნება შლის ყველა ჩამოტვირთულ რუკას. თქვენი რიგები, „მეტი“-ში, რჩება.</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ახლა განახლება</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>განახლება…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>განახლებების შემოწმება…</value></data>
@@ -994,12 +1049,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>განახლება PadForge {0}-მდე ვერ დასრულდა. სცადეთ ხელახლა პარამეტრებიდან დაყენებით.</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge განახლდა {0}-მდე.</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>ჩაშენებულია {0} რუკა, საზოგადოების ასლი თარიღით {1}.</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ჩაშენებულია {0} რუკა, საზოგადოების ასლი თარიღით {1}. განახლდა {2}: ახალია {3}, შეცვლილია {4}.</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>ჩაშენებულია {0} რუკა, საზოგადოების ასლი თარიღით {1}. ჩამოიტვირთა {2}: ახალი რიგი {3}, შეცვლილი {4}.</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>საზოგადოების მონაცემთა ბაზა ბოლო განახლების შემდეგ არ შეცვლილა.</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub-თან დაკავშირება ვერ მოხერხდა: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge-მა ჩამოტვირთვა უარყო, რადგან ის არ არის კონტროლერების მონაცემთა ბაზა, რომელსაც ელოდა. არაფერი შეცვლილა.</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>ახალი რუკა გამოიყენება კონტროლერის შემდეგი დაკავშირებისას.</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>შეცვლილი რუკა გამოიყენება PadForge-ის შემდეგი გაშვებისას.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>ჩაკეცილად გაშვება</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>გაშვება სისტემაში შესვლისას</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1097,28 +1150,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>ვერსიის ინფორმაცია და ძრავის მოვლენების ჟურნალი პრობლემების გასარკვევად.</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>დიაგნოსტიკის ჟურნალის წარმოება</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>მუდმივად წერს ძრავის მოვლენებს diagnostics.log-ში ჟურნალის საქაღალდეში, რომელსაც „ჟურნალის საქაღალდის გახსნა“ ხსნის. ჩართული რჩება გადატვირთვების მერეც. როცა ფაილი 8 MB-ს მიაღწევს, გადადის diagnostics.log.old-ში.</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>სნეპშოტის შენახვა</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ინახავს ძრავის უახლეს მოვლენებს ახალ ფაილში. მუშაობს მაშინაც, როცა დიაგნოსტიკის ჟურნალი გამორთულია.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>სნეპშოტის შენახვა…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>იღებს აპს, Windows-ს, თქვენს მოწყობილობებსა და პარამეტრებს ისე, როგორც ახლა არის, ძრავის უახლეს მოვლენებთან ერთად, და ხსნის მათ, რომ შენახვამდე წაიკითხოთ. მუშაობს მაშინაც, როცა დიაგნოსტიკის ჟურნალი გამორთულია.</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ჟურნალის საქაღალდის გახსნა</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>ჩაწერის დაწყება</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>ჩაწერის შეჩერება ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}, {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>წერს ჩაწერის შეჩერებამდე, 10 წუთამდე ან 20 MB zip-მდე, შემდეგ Explorer-ში მონიშნავს zip-ს, რათა ანგარიშს მიაბათ.</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>დაიწყეთ, გამოიწვიეთ პრობლემა და შეაჩერეთ. PadForge-ის გვერდით ერთი ფაილი შეიცავს ყველაფერს, რასაც PadForge კითხულობდა, აგზავნიდა და ჟურნალში წერდა, ხარვეზის შეჯამებასთან ერთად. ფაილში არის ჩაწერისას ყველა მოწყობილობაზე დაჭერილი ყველა კლავიში და ღილაკი, კლავიატურებისა და მაუსების ჩათვლით. მომხმარებლის სახელები, სერიული ნომრები, მისამართები და აკრეფილი სახელები იცვლება ჩაწერამდე.</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>წერს ჩაწერის შეჩერებამდე, 30 წუთამდე ან 20 MB zip-მდე, შემდეგ ხსნის ჩანაწერს, რომ შენახვამდე წაიკითხოთ.</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>დაიწყეთ, გამოიწვიეთ პრობლემა და შეაჩერეთ. შემდეგ წაიკითხეთ, რას შეიცავს, ნაწილ-ნაწილ, და შეინახეთ სადაც გსურთ. მასში არის ჩაწერისას ყველა მოწყობილობაზე დაჭერილი ყველა კლავიში, კლავიატურებისა და მაუსების ჩათვლით. მომხმარებლის სახელები, სერიული ნომრები, მისამართები და აკრეფილი სახელები იცვლება ჩაწერამდე.</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>შეჯამების წერა…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>შენახულია {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ჩაწერა არ დაიწყო. შემოწმებამ აღმოაჩინა ამ PC-ის პირადი მნიშვნელობა, რომელიც ფაილს ვერ დაემალებოდა.</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ჩაწერა არ დაიწყო. {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>წინა ჩანაწერი ჯერ კიდევ მთავრდება.</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>„ბოლო 60 წამის შენახვა“ გამორთულია, ამიტომ შესანახი არაფერია.</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>დასრულდა ჩანაწერი, რომელიც PadForge-მა არ შეაჩერა: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>ჩანაწერი, რომელიც PadForge-მა არ შეაჩერა, გელოდებათ წასაკითხად გვერდზე „მთავარი“: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>ბოლო 60 წამის შენახვა</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>სანამ ძრავა მუშაობს, მეხსიერებაში ინახავს ჩანაწერის შიგთავსის ბოლო წუთს, იმ პრობლემისთვის, რომელიც საღამოში ერთხელ ჩნდება. ღილაკი „ბოლო 60 წამის შენახვა“ მას ფაილად წერს.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>სანამ ძრავა მუშაობს, მეხსიერებაში ინახავს ჩანაწერის შიგთავსის ბოლო წუთს, იმ პრობლემისთვის, რომელიც საღამოში ერთხელ ჩნდება. ღილაკი „ბოლო 60 წამის შენახვა“ მას ხსნის, რომ შენახვამდე წაიკითხოთ.</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>ბოლო 60 წამის შენახვა</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>აკრეფილი ასოებისა და ციფრების ერთ კლავიშად ჩაწერა</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ჩანაწერი წერს ასოებისა და ციფრების კლავიშებს, რომლებსაც არც რუკა და არც მაკრო კითხულობს, ერთ კლავიშად, თითოეულ დაჭერას თავისი დროით. ყველა სხვა კლავიში და ყველა კლავიში, რომელსაც რუკა ან მაკრო კითხულობს, იწერება ისე, როგორც დაიჭირეს.</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>ბოლო 60 წამის შენახვა, აკრეფილი ასოებისა და ციფრების ერთ კლავიშად ჩაწერა</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>რა ჩაიწეროს, ბოლო 60 წამი, აკრეფილი ასოები</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>სნეპშოტის შენახვა</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge, Windows, თქვენი მოწყობილობები და პარამეტრები ისე, როგორც ახლა არის, იმავე გადახედვით.</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log PadForge.exe-ის გვერდით, სადაც შეგიძლიათ წაიკითხოთ.</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>რა ჩაიწეროს</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>ყველაფერი ჩართულია. გამორთული ნაწილი შემდეგ ჩანაწერში არ მოხვდება და ფაილი იტყვის, რომელ ნაწილებს შეიცავს.</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>იმ პრობლემისთვის, რომელიც საღამოში ერთხელ ჩნდება.</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>ჩანაწერი ელოდება, სანამ გვერდზე „მთავარი“ წაიკითხავთ.</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>შეჯამება</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>პარამეტრები და მოწყობილობები</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>შეყვანა</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>გამოყვანა</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>უკუკავშირი</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>დროები</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>ფანჯარა და შეცდომები</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>აქტივობა</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>დიაგნოსტიკის ხაზები</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>წაიკითხეთ თქვენი ჩანაწერი</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0}-დან {1}-მდე, {2}. {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>სნეპშოტი, {0}.</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 წუთი</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} წუთი</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 წამი</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} წამი</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>შეაჩერეთ თქვენ.</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>თავისით შეჩერდა {0}-ზე.</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>თავისით შეჩერდა, როცა zip-ში {0} მიაღწია.</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>შეაჩერა მაკრომ.</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>შეაჩერა პროგრამამ ან ბრძანებამ --record stop.</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>შეაჩერა ასისტენტმა, რომელმაც დაიწყო.</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>შეჩერდა PadForge-ის დახურვისას.</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>ბოლო 60 წამი, მეხსიერებაში შენახული.</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>წაიკითხეთ, რასაც გააზიარებთ. გამორთეთ ნაწილი, რომ გამოირიცხოს, და შემდეგ შეინახეთ. ამ კომპიუტერიდან არაფერი გადის, სანამ თავად არ გამოაქვეყნებთ.</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}, როგორც გაზიარდება</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>ჩვენება: {0}</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>გამოირიცხა</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>არ ჩაწერილა</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>{0} ტექსტად, {1} zip-ში</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>{0} ტექსტად, {1} zip-ში, რომელსაც გააზიარებთ. ჩანაწერი ჩერდება, როცა zip-ში {2} მიაღწევს ან {3} გავა.</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>გაწმენდის შემოწმება: PadForge-მა შეცვალა {0} {1}-დან. ამ კომპიუტერის არც სახელი, არც სერიული ნომერი, არც მისამართი არ არის იმ ნაწილებში, რომლებსაც ინახავთ.</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} მნიშვნელობა</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 მნიშვნელობა</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} პირადი სახეობა</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 პირადი სახეობა</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>გაწმენდის შემოწმება: ამ კომპიუტერის {0} საკუთარი მნიშვნელობა ჯერ კიდევ არის იმ ნაწილებში, რომლებსაც ინახავთ. გამორთეთ ეს ნაწილები ან წაშალეთ ჩანაწერი. „შენახვა…“ გამორთული რჩება, სანამ ეს არ მოხდება.</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>გაწმენდის შემოწმება: ამ კომპიუტერის ერთი საკუთარი მნიშვნელობა ჯერ კიდევ არის იმ ნაწილებში, რომლებსაც ინახავთ. გამორთეთ ეს ნაწილები ან წაშალეთ ჩანაწერი. „შენახვა…“ გამორთული რჩება, სანამ ეს არ მოხდება.</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>ჩაწერისას ამ ნაწილში არაფერი მომხდარა.</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>წაშლა</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>შეჯამების კოპირება</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>დაკოპირდა</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>შენახვა…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>ჩანაწერის შენახვა</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip ფაილები</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>არ შეინახა. {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>ინახება თქვენი სახელით, პირველად საქაღალდეში Downloads, შემდეგ იქ, სადაც ბოლოს შეინახეთ, და ჩანს Explorer-ში. ჩანაწერი, რომელიც ჩერდება, სანამ გვერდთან არავინ არის (მისი ზღვარი, მაკრო, პროგრამა, ასისტენტის ხელსაწყო ან --record stop), ელოდება ამ გადახედვას გვერდზე „მთავარი“ და 7 დღის შემდეგ იშლება, თუ არ შეინახეთ. პროგრამას ეუბნებიან, რომ ის ელოდება, მაგრამ არასოდეს ეუბნებიან, სად.</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>პრობლემის ჩანაწერი დროით {0} გელოდებათ წასაკითხად.</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>გადახედვა</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>ჩანაწერში ნიშნის დასმა</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>აპის ვერსია</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET გაშვების გარემო</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL ვერსია</value></data>
@@ -2900,31 +3010,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>მაუსის პოზიცია X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>მაუსის პოზიცია Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>მგრძნობელობა</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>კურსორის მგრძნობელობა თითოეული წყაროსთვის. 1.0-ზე სტიკის სრული გადახრა მიიღწევა ცენტრიდან ეკრანის სიგანის 10%-ზე. 1.0-ზე მეტი მნიშვნელობისას სრულ გადახრას კურსორის ნაკლები გადაადგილება აღწევს. 1.0-ზე ნაკლებისას მეტი სჭირდება.</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>კურსორის მგრძნობელობა თითოეული წყაროსთვის. 1.0-ზე სტიკის სრული გადახრა მიიღწევა კურსორის მონიტორის სიგანის 10%-ზე მისი ცენტრიდან. 1.0-ზე მეტი მნიშვნელობისას სრულ გადახრას კურსორის ნაკლები გადაადგილება აღწევს. 1.0-ზე ნაკლებისას მეტი სჭირდება.</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>მაუსის სვლა X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>მაუსის სვლა Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>სვლა სრულ ზღვრამდე</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>რამდენს გადაადგილდება მაუსი ცენტრიდან სრულ ზღვრამდე, მაუსის მიერ გადაცემული ერთეულებით. რაც მეტია რიცხვი, მით უფრო ზუსტად ბრუნავს საჭე და მეტი ხელის სვლა სჭირდება.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>რამდენს გადაადგილდება მაუსი ან ბორბალი ცენტრიდან სრულ ზღვრამდე, მის მიერ გადაცემული ერთეულებით. რაც მეტია რიცხვი, მით უფრო ზუსტად ბრუნავს საჭე და მეტი ხელის სვლა სჭირდება.</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>როცა მაუსის DPI დაყენებულია მისი მოწყობილობის პანელზე, სვლა სანტიმეტრებშიც გამოჩნდება.</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>ერთეული</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>ცენტრირება</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>გამორთული ტოვებს საჭეს იქ, სადაც ხელმა დატოვა. ზამბარა მას უკან აბრუნებს დაბრუნების დროის განმავლობაში. ტელემეტრიიდან მას ისე უკან ექაჩება, როგორც მანქანის წინა საბურავები ექაჩებოდა თამაშის სიჩქარისა და მიჭერის მიხედვით: გაჩერებისას უძრავია, სიჩქარესთან ერთად მაგრდება, საბურავების სრიალისას მსუბუქია. თუ თამაში ტელემეტრიას არ აგზავნის, ის ზამბარაა. თამაშის ძალიდან ვირტუალური საჭის საკუთარ ძალურ უკუკავშირს საშუალებას აძლევს, ის მოაბრუნოს.</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>გამორთული ტოვებს საჭეს იქ, სადაც ხელმა დატოვა. ზამბარა მას უკან აბრუნებს დაბრუნების დროის განმავლობაში. ტელემეტრიიდან მას ისე უკან ექაჩება, როგორც მანქანის საჭე თამაშის სიჩქარისა და მიჭერის მიხედვით: ცენტრთან ახლოს ციცაბოდ და შორს უფრო რბილად, გაჩერებისას უძრავია, სიჩქარესთან ერთად მაგრდება, საბურავების სრიალისას მსუბუქია. თუ თამაში ტელემეტრიას არ აგზავნის, ის ისე ექაჩება, როგორც 100 km/h სიჩქარეზე მშრალ გზაზე. თამაშის ძალიდან ვირტუალური საჭის საკუთარ ძალურ უკუკავშირს საშუალებას აძლევს, ის მოაბრუნოს.</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>გამორთული</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>ზამბარა</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ტელემეტრიიდან</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>თამაშის ძალიდან</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>დაბრუნების დრო</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>რამდენ ხანში აბრუნებს ზამბარა საჭეს გზის 95%-ზე. ტელემეტრიიდან ამდენ ხანს მოითხოვს 100 km/h სიჩქარეზე მშრალ გზაზე.</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>რამდენ ხანში აბრუნებს ზამბარა საჭეს გზის 95%-ზე. 0 მას მაშინვე ცენტრში აბრუნებს. ტელემეტრიიდან ამდენ ხანს მოითხოვს ცენტრთან ახლოდან 100 km/h სიჩქარეზე მშრალ გზაზე.</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>მართვა</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ყოველთვის მაუსს მუდმივად აძლევს მართვის საშუალებას. დაჭერისას მას მხოლოდ მაშინ აძლევს, როცა მართვის შეყვანა დაჭერილია. გადართვა მართვას რთავს ან თიშავს მართვის შეყვანის ყოველი დაჭერით. სანამ მაუსი არ მართავს, საჭე რჩება იქ, სადაც არის, ან ცენტრში ბრუნდება, ამიტომ ერთ მაუსს შეუძლია მართვაც და მიმოხედვაც.</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ყოველთვის მაუსს მუდმივად აძლევს მართვის საშუალებას. დაჭერისას და ცენტრი მას მხოლოდ მაშინ აძლევს, როცა მართვის შეყვანა დაჭერილია, შემდეგ აბრუნებს ცენტრში, ცენტრირებით, სადაც წყაროს აქვს, და მაშინვე, სადაც არ აქვს. დაჭერისას და დარჩენა მას მხოლოდ მაშინ აძლევს, როცა შეყვანა დაჭერილია, და ტოვებს იქ, სადაც გაუშვეს. გადართვა მართვას რთავს ან თიშავს მართვის შეყვანის ყოველი დაჭერით. ამიტომ ერთ მაუსს შეუძლია მართვაც და მიმოხედვაც.</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ყოველთვის</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>დაჭერისას</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>დაჭერისას და ცენტრი</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>გადართვა</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>მართვის შეყვანა</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ღილაკი, რომელიც მაუსს მართვის საშუალებას აძლევს, იმავე მოწყობილობაზე, რომელზეც მაუსის სვლაა. თუ არაფერია არჩეული, მაუსი ყოველთვის მართავს.</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>ღილაკი, რომელიც მაუსს მართვის საშუალებას აძლევს, იმავე მოწყობილობაზე, რომელზეც წყაროა. თუ არაფერია არჩეული, მაუსი ყოველთვის მართავს.</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>გაგლუვება</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>არათანაბრად მოხსენებულ მაუსს არეგულირებს. საჭე ხელს დაახლოებით ამდენი ხნით ჩამორჩება. 0 გამორთულია.</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>არათანაბრად მოხსენებულ მაუსს არეგულირებს. ჯოისტიკი ხელს დაახლოებით ამდენი ხნით ჩამორჩება. 0 გამორთულია.</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>ზღვარი სიჩქარეზე</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>ჩართული თამაშის ტელემეტრიისას, რამდენი რჩება ზღვრიდან 200 km/h სიჩქარეზე. 100%-ზე მთელი ზღვარი ყველა სიჩქარეზე არის.</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>ბორბლის სვლა</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>ბორბლის გვერდითი სვლა</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>რა სიჩქარით მოძრაობს მაუსი. უშვებს, როცა ხელი ჩერდება.</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>სად არის კურსორი თავის მონიტორზე, მისი ცენტრიდან ან იქიდან, სადაც იყო მართვის დაწყებისას.</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>რამდენი გაიარა მაუსმა, იქვე შენახული, სადაც ხელმა დატოვა, როგორც საჭეში.</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>ბორბლის დაწკაპუნებები, შენახული პოზიციად, სრული სიზუსტით წვრილად მოძრავ ბორბალზე.</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>გვერდითი ბორბლის დაწკაპუნებები, შენახული პოზიციად, სრული სიზუსტით წვრილად მოძრავ ბორბალზე.</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>ბიძგი თითო დაწკაპუნებაზე, მაშინვე უკან უმოქმედობაში.</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>დაჭერისას და დარჩენა</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>მგრძნობელობა</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>სიჩქარე რამდენს აძლევს ჯოისტიკს. 1.00-ზე ჯოისტიკი სრულ გადახრას აღწევს 16,000 ერთეულზე წამში, ყველა გამოკითხვისა და მაუსის ანგარიშის სიხშირეზე.</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>ცენტრში დაბრუნება</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>როცა მაუსი ნელდება ან ჩერდება, ჯოისტიკი ამაზე სწრაფად არ ბრუნდება. 0 მას მაუსთან ერთად აბრუნებს.</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>დაწყება იქ, სადაც მართვა დაიწყო</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>მართვის შეყვანით ჯოისტიკი ზომავს იქიდან, სადაც იყო კურსორი მართვის დაწყებისას, როგორც ტელეფონის ეკრანზე ჯოისტიკი იწყება იქ, სადაც თითი დაეშვა. გამორთულისას ზომავს კურსორის მონიტორის ცენტრიდან.</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>ეს ღერძი ფარდობითად მოძრაობს</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ტრექბოლისთვის ან სპინერისთვის, რომელიც აცხადებს, რამდენი შეტრიალდა. ჩართულისას ღერძი პოზიციას ინახავს, როგორც მაუსის სვლა, და იღებს სვლის პარამეტრებს. Windows არ ამბობს, რომელი ღერძები მოძრაობს ასე.</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}, {1} სმ</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>გადახედვა</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>აჩვენებს, როგორ მიჰყვება ეს ოჯახი თქვენს მაუსს. არაფერი არის მიბმული, სანამ არ აირჩევთ.</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>გადახედვა. გაამოძრავეთ მაუსი.</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>დაჭერილია: {0}</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>მდებარეობა: {0}</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% მარჯვნივ</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% მარცხნივ</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% ზემოთ</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% ქვემოთ</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>ცენტრი</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>მოძრაობს, სანამ {0} დაჭერილია.</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>მაუსის DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>ერთეულები, რომელსაც ეს მაუსი აცხადებს ყოველ გავლილ ინჩზე, როგორც მწარმოებლის პროგრამა აყენებს.</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>როცა DPI დაყენებულია, მაუსის სვლა თავის სვლას სანტიმეტრებშიც აჩვენებს. 0 ნიშნავს დაუყენებელს.</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR მაჩვენებელი X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR მაჩვენებელი Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR სიკაშკაშე</value></data>
@@ -4658,6 +4801,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>ეკრანული ინდიკატორები, რომლებსაც PadForge თამაშისას აჩვენებს. ერთის გამორთვა ქცევას არასდროს ცვლის, მხოლოდ იმას, გამოჩნდება თუ არა.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift-შრის ამომხტარი პანელი</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>პროფილის გადართვის გადაფარვა</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>კონტროლერები ჩართულია ან გამორთულია</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>მოწყობილობის გათიშვის შენიშვნა</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>მოწყობილობის დაკავშირების შენიშვნა</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>აჩვენებს ეკრანულ რგოლს ან ბადეს, სანამ რადიალური ან სენსორული მენიუ ჩართულია. გადაფარვის გამორთვისასაც მენიუები მუშაობს.</value></data>
@@ -5310,6 +5454,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>გამორთულია</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>წამზომი</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>შუქის ზოლის ფერი</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>გათიშული მოწყობილობები</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>ყველა დაკავშირებულია</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>გამორთულია</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software-ის მეშვეობით</value></data>
@@ -5352,6 +5498,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>ეკრანი აჩვენებს თქვენს მიერ არჩეულ სურათს მისივე ზომით. ეკრანზე დიდი სურათიდან ეკრანის ზომის ფანჯარა ჩანს, რომელსაც მაკრო „კლავიატურის ეკრანის სურათის გადაადგილება“ ამოძრავებს. S.T.R.I.K.E. 7-ზე მას ეკრანზე გადაჩოჩებული თითიც ამოძრავებს.</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>ეკრანი აჩვენებს წამზომს, რომელსაც მაკრო „წამზომი“ იწყებს, აპაუზებს და ნულზე აბრუნებს. ყველა ეკრანი ერთსა და იმავე წამზომს აჩვენებს.</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>ეკრანი აჩვენებს DualShock 4-ის ან DualSense-ის შუქის ზოლის ფერს ყველაზე დაბალ სლოტში, რომელსაც ეს ეკრანი კვებავს, ხოლო თუ არცერთს არ კვებავს, ყველა სლოტში ყველაზე დაბალში. მონოქრომული ეკრანი მის სიკაშკაშეს წერტილოვანი ნიმუშით აჩვენებს. სანამ ფერი შუქის ზოლამდე არ მივა, PadForge არაფერს აჩვენებს.</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>ეკრანი ჩამოთვლის მიბმულ მოწყობილობებს, რომლებიც დაკავშირებული არ არის, იმ სახელებით, რომლებსაც გვერდი „მოწყობილობები“ აჩვენებს, და წერს „ყველა დაკავშირებულია“, როცა არცერთი არ აკლია.</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>სურათები (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|ყველა ფაილი (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>გადაადგილება</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>გადაადგილება X</value></data>
@@ -5546,6 +5693,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>მართვაშია (არა 0)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>თამაშის ტელემეტრია</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>სკრიპტის მნიშვნელობა</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>მოწყობილობის კავშირი</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>სიჩქარე (მილი/სთ)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (% მაქსიმუმიდან)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>გადაცემა (-1 უკუსვლა, 0 ნეიტრალი)</value></data>
@@ -5700,4 +5848,231 @@
   <data name="MacroAction_Type_ProblemRecording" xml:space="preserve"><value>პრობლემის ჩაწერა</value></data>
   <data name="MacroAction_ProblemRecording_Toggle" xml:space="preserve"><value>ჩაწერის დაწყება ან შეჩერება</value></data>
   <data name="MacroAction_ProblemRecording_Mark" xml:space="preserve"><value>ჩანაწერზე ნიშნულის დასმა</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>გადაფარვა ჩამოთვლის მიბმულ მოწყობილობებს, რომლებიც დაკავშირებული არ არის, იმ სახელებით, რომლებსაც გვერდი „მოწყობილობები“ აჩვენებს, და წერს „ყველა დაკავშირებულია“, როცა არცერთი არ აკლია.</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>გამორთულია. არცერთ პროგრამას არ შეუძლია PadForge-თან დაკავშირება.</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} და {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge-ის აქტივობა: {0} გამოძახება, ძველიდან ახალისკენ. მათ წინ გამოძახებები იყო: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge-ის აქტივობა: {0} გამოძახება. მის წინ გამოძახებები იყო: {1}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} უფრო ძველი გამოძახება წავიდა. აქტივობა ინახავს უახლეს {1:N0}-ს.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} უფრო ძველი გამოძახება წავიდა. აქტივობა ინახავს უახლეს {1:N0}-ს.</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>ექსპორტი…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>აქტივობის ექსპორტი</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>ტექსტური ფაილი</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>გახსნა</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>განახლება</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>მეტი: {0}</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>უნარის შენახვა ZIP-ად…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>მისი პარამეტრების ფაილის გახსნა</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>შეინახა. პროგრამაში {0} დაამატეთ {1} აქ: {2}.</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0}-ს პარამეტრების ფაილი ჯერ არ აქვს. „დამატება“ შექმნის მას.</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge ამ კომპიუტერზე ვერ პოულობს ასისტენტ პროგრამას, რომლის მწარმოებელიც Windows-ზე დაყენებას აღწერს. ღილაკი Copy Settings განყოფილებაში „მეტი“ ნებისმიერ სხვას ერგება.</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge-მა ვერ შეამოწმა ასისტენტი პროგრამები: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>არ არის დამატებული.</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>დამატებულია.</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>დამატებულია. ახლა დაკავშირებულია.</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>დამატებულია. მას შემდეგ არ დაკავშირებულა. ასისტენტი, რომელიც ღია იყო, PadForge-ს დახურვისა და ხელახლა გახსნის შემდეგ დაინახავს.</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>დამატებულია სხვა PadForge-ისთვის. „განახლება“ მას ამ PadForge-ზე გადაამისამართებს.</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>დამატებულია. მისი PadForge-ის უნარი ამ PadForge-ზე ძველია.</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>დამატებულია, PadForge-ის უნარის გარეშე.</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>დამატებულია. მისი PadForge-ის უნარი უფრო ახალი PadForge-იდანაა.</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>ის უნარებს მხოლოდ ატვირთვით იღებს.</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>დამატებული ასისტენტები PadForge-ს მაშინ აღწევენ, როცა ავტომატიზაცია ჩართულია.</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>ემატება…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>იშლება…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>ახლდება…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>არ დასრულდა: {0}</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>დაკოპირდა.</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>არ დაკოპირდა: {0}</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>დაშვებული პროგრამები</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>პროგრამა, რომელსაც სურს წაკითხვა ან მეტი, ერთხელ ეკითხება, პირველად დაკავშირებისას, და იღებს იმ დონეს, რომელსაც ითხოვს, ზემოთ მითითებულ დონემდე. ზემოთ დამატებული ასისტენტი ამით უკვე დაშვებულია.</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}. {1}. {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>ახლა დაკავშირებულია.</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>ბოლოს გამოიყენა {0}.</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>ჯერ არ გამოუყენებია.</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>დაკავშირებულია: {0}. დააწკაპუნეთ ავტომატიზაციის გასახსნელად.</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>ამ კომპიუტერზე: {0}. ვებიდან: {1}. დააწკაპუნეთ ავტომატიზაციის გასახსნელად.</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>დაკავშირებულია ვებიდან: {0}. დააწკაპუნეთ ავტომატიზაციის გასახსნელად.</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL რუკა</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>გეიმპადი, „{0}“</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>ჯოისტიკი. SDL მისთვის რუკას არ ფლობს.</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>ჯოისტიკი. PadForge მას ნედლად კითხულობს, ამიტომ SDL-ის რუკა არ გამოიყენება.</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>ჯოისტიკი, თქვენი რიგით გეიმპადად განლაგებული.</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL მოწყობილობებს კითხულობს, სანამ ძრავა მუშაობს.</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>ჩაშენებული საზოგადოების ასლი, {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ჩამოტვირთულია {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge-ის საკუთარი ფაილი</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>თქვენია, დაემატა {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>ცვლადი SDL_GAMECONTROLLERCONFIG, რომელსაც SDL ინახავს თქვენ დამატებულ ნებისმიერ რიგზე მაღლა</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL რუკის კოპირება</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>აკოპირებს მოწყობილობის რუკას გაცვლის ბუფერში, როგორც საზოგადოების ბაზის რიგს, მოწყობილობის ID-ით, საკონტროლო ჯამითა და ვერსიით ნულებად დაყენებული.</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL რუკის ჩასმა…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>იღებს ამ მოწყობილობის რიგს, ამოწმებს მას, ინახავს როგორც თქვენსას და მაშინვე იყენებს.</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>რუკის პოვნა…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>ეძებს სახელით ყველა რიგს, რომელსაც PadForge ფლობს, და ამ მოწყობილობაზე იყენებს არჩეულს, კლონისთვის, რომლის ID-ებიც განსხვავებულია.</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>განლაგების გამოცნობა</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>ხელსაწყოს ღერძების, ღილაკებისა და ჰეტების მიხედვით გამოიცნობს გეიმპადის განლაგებას იმ მოწყობილობისთვის, რომელსაც არცერთი ბაზა არ იცნობს. შეამოწმეთ შეყვანების გამოცდაში.</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>ჩემი რიგის ამოღება</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>„ჩემი რიგის ამოღება“ აბრუნებს წინანდელ რიგსა და კონტროლერის რიგებს.</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>ხელახლა მიბმა</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>მოწყობილობის რიგებს ყველა კონტროლერზე, რომელზეც ის არის, ხელახლა ქმნის SDL-ის განლაგებიდან, ისე, როგორც მისი მინიჭებისას.</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>საზოგადოების ბაზის გვერდი</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>რიგი და სად განსხვავდება ის {0}-ისგან</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>რიგი</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>კონტროლერი</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0}: რიგი</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>მისი შეყვანა ახლა</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL-ის რიგი ამბობს</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>არ არის SDL-ის რიგში</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}, განსხვავდება</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge-ს არ გამოუყენებია: {0}.</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>რიგი</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>დაკოპირდა.</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>დაკოპირდა. SDL-ის ფორმას არ შეუძლია შეიცავდეს: {0}.</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>მაკროები</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>მრუდები</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>მკვდარი ზონები</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>კლავიატურისა და მაუსის გამოყვანები</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ტურბო, გადამრთველები და სხვა მოქმედებები</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} და {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>საკოპირებელი არაფერია: SDL-ს ამ მოწყობილობისთვის რუკა არ აქვს და ის არც ერთ კონტროლერზე არ არის.</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>გაცვლის ბუფერს სხვა პროგრამა იყენებს. არაფერი დაკოპირდა.</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>თქვენი რიგი ამოღებულია. მოწყობილობა ისევ ისე იკითხება, როგორც მანამდე.</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>ხელახლა მიება SDL-ის განლაგებიდან: {0}.</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>ახლა გამოიყენება. რიგი თქვენია და ამ მოწყობილობისთვის უპირატესია.</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>შენახულია როგორც თქვენი. გამოიყენება, როცა ძრავა იმუშავებს და მოწყობილობა დაკავშირდება.</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>შენახულია როგორც თქვენი, მაგრამ ცვლადი SDL_GAMECONTROLLERCONFIG ამ მოწყობილობისთვის რიგს შეიცავს, რომელსაც SDL თქვენსაზე წინ ინახავს.</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL-მა რიგი არ მიიღო. ამ მოწყობილობისთვის არაფერი შეცვლილა.</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL რუკის ჩასმა</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>SDL რუკის ჩასმა: {0}</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>რუკის პოვნა: {0}</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>განლაგების გამოცნობა: {0}</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>რიგების დამატება ფაილიდან ან გაცვლის ბუფერიდან</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>ჩასმა</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>ფაილის გახსნა…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>რუკის ფაილები (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>ფაილი 4 MB-ზე დიდია. საზოგადოების მთელი ფაილი დაახლოებით 0.6 MB-ია.</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>ძებნა სახელით, ID-ით ან VID:PID-ით</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>რიგები, რომლებსაც PadForge ფლობს</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>არცერთი რიგი არ ემთხვევა.</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>არჩეული რიგი გამოიყენება მოწყობილობაზე {0} მისივე ID-ით, იმავე შემოწმებითა და იმავე არჩევანით, როგორც ჩასმაში.</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL რუკის რიგი</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>რიგი ამ მოწყობილობისთვის.</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>გამოცნობილი განლაგება.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows, {0} ველი, მისი ID ამ მოწყობილობას ემთხვევა.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows, {0} ველი, იმავე მწარმოებლისა და პროდუქტისგან სხვა სალტეზე ან ვერსიაზე. ის ინახება ამ მოწყობილობის საკუთარი ID-ით.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} ველი, სხვა მოწყობილობის რიგი. ის ინახება ამ მოწყობილობის საკუთარი ID-ით.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} ველი. SDL ამ მოწყობილობას არ კითხულობს, ამიტომ PadForge მის შეყვანებს რიგის მიხედვით ანაწილებს.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} ველი, მოწყობილობის ღერძებისა და ღილაკების მიხედვით. შეამოწმეთ შეყვანების გამოცდაში, შემდეგ დატოვეთ ან შეცვალეთ აქ.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} ველი, მისი ID ამ მოწყობილობას ემთხვევა.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} ველი, იმავე მწარმოებლისა და პროდუქტისგან სხვა სალტეზე ან ვერსიაზე. ის ინახება ამ მოწყობილობის საკუთარი ID-ით.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} ველი, სხვა მოწყობილობის რიგი. ის ინახება ამ მოწყობილობის საკუთარი ID-ით.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} ველი. SDL ამ მოწყობილობას არ კითხულობს, ამიტომ PadForge მის შეყვანებს რიგის მიხედვით ანაწილებს.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} ველი, მოწყობილობის ღერძებისა და ღილაკების მიხედვით. შეამოწმეთ შეყვანების გამოცდაში, შემდეგ დატოვეთ ან შეცვალეთ აქ.</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>ეს ცვლის, როგორ იკითხება {0}. მისი რიგები კონტროლერზე {1} ახალი განლაგებიდან ხელახლა იქმნება.</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>ეს ცვლის, როგორ იკითხება {0}. ის არც ერთ კონტროლერზე არ არის, ამიტომ არცერთი რიგი არ იცვლება.</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>პროფილის მალსახმობები, რომლებიც {0}-ს კითხულობენ, ინარჩუნებენ შეყვანებს, რაზეც იყვნენ დაყენებული.</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>რიგი ინახება როგორც თქვენი PadForge.xml-ში და ამ მოწყობილობისთვის ყველა სხვა წყაროზე უპირატესია. „ჩემი რიგის ამოღება“ აბრუნებს ძველ რიგსა და ძველ რიგებს.</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>რიგები ინახება როგორც თქვენი PadForge.xml-ში და თავიანთი მოწყობილობებისთვის ყველა სხვა წყაროზე უპირატესია. „მეტი“ განყოფილებაში, კონტროლერების მონაცემთა ბაზის რიგში, „გასუფთავება“ მათ შლის.</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} რიგი Windows-ისთვის. {1} სხვა სისტემებისთვის გამოტოვებულია.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} რიგი Windows-ისთვის. {1} სხვა სისტემებისთვის გამოტოვებულია.</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} უარყოფილია. პირველი: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>ჩასვით რიგი ან gamecontrollerdb.txt ფაილის ტექსტი.</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>ტექსტი SDL-ის კონტროლერების ბაზის რიგი არ არის: ID 32 თექვსმეტობითი ციფრით, სახელი, შემდეგ ველები, მაგალითად a:b0.</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>რიგები სხვა სისტემებისთვისაა. PadForge კითხულობს რიგებს Windows-ისთვის ან არც ერთი კონკრეტული სისტემისთვის.</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>რიგის ID მოწყობილობის არ არის. მას 32 თექვსმეტობითი ციფრი სჭირდება.</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>რიგის სახელი ცარიელია, 128 სიმბოლოზე გრძელია ან შეიცავს სიმბოლოს, რომელსაც SDL ველად კითხულობს.</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>რიგი შეიცავს მინიშნებას ან Android ველს, რომელსაც PadForge არ იღებს.</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>რიგში არის ველი, რომელიც SDL-მა არ იცის.</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>მიბმა SDL-ის ფორმით არ არის, მაგალითად b3, a2, +a2, a2~ ან h0.4.</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>რიგი ერთ ველს ორჯერ იძლევა.</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>რიგი 1,024 სიმბოლოზე გრძელია.</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>რიგი არც ერთ კონტროლს არ აბამს.</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>თქვენი რიგები</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>თქვენი რიგები</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>რიგები, რომლებსაც აქ დაამატებთ ან მოწყობილობის SDL რუკა ბარათზე ჩასვამთ, თავიანთი მოწყობილობებისთვის ყველა სხვა წყაროზე უპირატესია და საწყისზე დაბრუნებას გადაურჩება.</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>რიგების დამატება ფაილიდან ან გაცვლის ბუფერიდან…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} რიგი, თქვენი, თავიანთი მოწყობილობებისთვის ყველა სხვა წყაროზე უპირატესი.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} რიგი, თქვენი, თავისი მოწყობილობისთვის ყველა სხვა წყაროზე უპირატესი.</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ჯერ არცერთი.</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>მაშინვე გამოიყენება.</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>ჩართვა</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>ასისტენტები ვებში</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>გვირაბი</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>არცერთი</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>მისამართი, რომელსაც ჩავსვამ</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>იწყება, თქვენი უფლებებით.</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>მუშაობს, თქვენი უფლებებით. მისი მისამართი ყოველ გაშვებაზე იგივე რჩება.</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>მუშაობს, თქვენი უფლებებით. სწრაფი გვირაბი ყოველ გაშვებაზე ახალ მისამართს იღებს, ამიტომ ასისტენტი ხელახლა უნდა დაემატოს.</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>გაჩერებულია.</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>გაჩერებულია. მისი ბოლო სიტყვები: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>ვერ გაეშვა.</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>ის ამ კომპიუტერზე აღარ არის.</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>ამ კომპიუტერზე გვირაბის პროგრამა ვერ მოიძებნა. PadForge მუშაობს cloudflared-თან, devtunnel-თან, ngrok-თან და Tailscale Funnel-თან ან თქვენი გვირაბის მისამართთან.</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>აირჩიეთ გვირაბი, რომ PadForge-ს საჯარო მისამართი მიეცეს.</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>ასევე ამ კომპიუტერზე: {0}.</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}, რომლის მისამართი იგივე რჩება</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}, რომლის სწრაფი გვირაბები ყოველ ჯერზე ახალ მისამართს იღებს</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>გაუშვით თქვენი გვირაბი მისამართზე http://127.0.0.1:{0} და ჩასვით მისი https მისამართი. დასახელებული Cloudflare გვირაბი, მუდმივი dev გვირაბი, Tailscale Funnel და ngrok-ის საკუთარი დომენი მისამართს ინარჩუნებენ.</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>ჩასვით https მისამართი, რომელშიც გზა მხოლოდ /mcp არის, როგორც თქვენი გვირაბი იძლევა.</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge-ის ვებ დამხმარე იწყება.</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge-ის ვებ დამხმარე გაჩერდა ({0}). მის ხელახლა დასაწყებად გამორთეთ და ჩართეთ Reach PadForge From the Web.</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>მისამართი</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>საჯარო მისამართი ჯერ არ არის.</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Add to Claude</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>დაკოპირდა.</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>ახალი ვებ ასისტენტის მიღება</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>მიღების დაწყება</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>მიღების შეჩერება</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>მიღება გრძელდება {0}-მდე.</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>არ იღებს. მიღების დაწყება მას ხუთი წუთით ხსნის.</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>დაამატეთ მისამართი ასისტენტში და შედით. ყოველი შესვლა თავის ექვსნიშნა კოდს აჩვენებს თავის შესვლის გვერდზე და PadForge-ის შეკითხვის ბარათზე. დააჭირეთ ღილაკს „დაშვება“ მხოლოდ მაშინ, როცა ორი კოდი ერთმანეთს ემთხვევა. სხვა დროს შესვლა უარყოფილია და არაფერი გეკითხებათ.</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>დაშვებული ვებში</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>ჯერ არცერთი.</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>მისი შესვლა დაბრუნდა მისამართზე {0}.</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>თავს ეძახის {0}.</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>დაშვებულია {0}, ბოლოს გამოიყენა {1}.</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>დაშვებულია {0}, ჯერ არ გამოუყენებია.</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>გაუქმება</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>მისი საკუთარი Secure MCP Tunnel PadForge-ს პირდაპირ უშვებს, აქ მისამართისა და შესვლის გარეშე. დააკოპირეთ ბრძანება ამ გვირაბის მოწყობაში.</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>ბრძანების კოპირება</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge არ ჩამოტვირთავს გვირაბის პროგრამას და არ ინახავს სხვა კომპანიის გასაღებს. ვებ ასისტენტი ზემოთ მითითებული დონით მუშაობს.</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>მივცეთ {0}-ს უფლება, იმუშაოს PadForge-თან ვებიდან?</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>მისი შესვლა დაბრუნდა მისამართზე {0}.</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>თავს ეძახის {0}.</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>დააჭირეთ ღილაკს „დაშვება“ მხოლოდ თუ მისი შესვლის გვერდი ამ კოდს აჩვენებს:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>მისი ექვსნიშნა კოდი PadForge-ის შეკითხვის ბარათზე ჩანს. დააჭირეთ ღილაკს „დაშვება“ მხოლოდ თუ მისი შესვლის გვერდი იმავე კოდს აჩვენებს.</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>ის მუშაობს დონეზე {0}, {1}-ის მეშვეობით.</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>მისი შესვლა ამ კომპიუტერზე ბრუნდება და აქ ნებისმიერ პროგრამას შეუძლია ეს მისამართი დაიკავოს.</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge-ში შესვლა</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} ითხოვს თქვენს კომპიუტერზე PadForge-თან მუშაობას.</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>თავს ეძახის {0}.</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>თქვენს კომპიუტერზე PadForge-ის შეკითხვის ბარათი ამ შესვლაზე გეკითხებათ. იქ დააჭირეთ ღილაკს „დაშვება“ მხოლოდ თუ ბარათი ამ კოდს აჩვენებს:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>ეს გვერდი თავისით გაგრძელდება, როცა კომპიუტერზე უპასუხებთ.</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>ეს შესვლა თქვენს კომპიუტერზე პროგრამაში ბრუნდება და იქ ნებისმიერ პროგრამას შეუძლია ეს მისამართი დაიკავოს.</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge ახლა ახალ ვებ ასისტენტს არ იღებს. თქვენს კომპიუტერზე გახსენით PadForge, გადადით გვერდზე „დამატებითი“, შემდეგ „ავტომატიზაცია“ და ქვეშ „ასისტენტები ვებში“ დააჭირეთ ღილაკს „მიღების დაწყება“. ამის შემდეგ ისევ შედით.</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>ეს შესვლა ვერ გაგრძელდება. ისევ დაამატეთ PadForge-ის მისამართი ასისტენტში და შედით.</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>ეს შესვლა დასრულდა. ისევ შედით ასისტენტიდან.</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows-მა ის არ გაუშვა</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>დასრულდა კოდით {0}</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>ავტომატიზაცია გამორთულია, ამიტომ არცერთი ვებ ასისტენტი PadForge-ს ვერ აღწევს. ვებ დამხმარე იწყება, როცა ავტომატიზაცია ჩაირთვება.</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>მოწმდება…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>დაყენებული არ არის.</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>დაყენებულია და ახალია. სკრიპტი იწყება ასე: {0}.</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>დაყენებულია {0}-ისთვის და ახალია. სკრიპტი იწყება ასე: {1}.</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>დაყენებულია. ამ PadForge-ს უფრო ახალი ასლი აქვს.</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>დაყენებულია {0}-ისთვის. ამ PadForge-ს უფრო ახალი ასლი აქვს.</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>ყენდება…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge-მა ვერ შეამოწმა: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>ღილაკი „დაყენება“ PadForge-ის ბიბლიოთეკას იქ ათავსებს, სადაც ამ ენას მოეძებნება. სკრიპტი, რომელიც მას ჩატვირთავს, კითხულობს მოწყობილობებს და მართავს რუკებს ზემოთ მითითებული დონით.</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>ბიბლიოთეკის შენახვა სადმე</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>დაყენებული ასლები</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>ყველას ამოღება</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>ამოღებულია.</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>სკრიპტის ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>მისი სკრიპტის ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>სკრიპტები მის კონტროლებს ასე ეძახიან: {0}.</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>სკრიპტები მის კლავიშებს ასე ეძახიან: KeyA, KeySpace, KeyLeftShift და მისთანანი, ხოლო ყველა კლავიშს მისი კოდით, Vk0-დან Vk255-მდე.</value></data>
 </root>

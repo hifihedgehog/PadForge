@@ -195,8 +195,8 @@
   <data name="Main_DeviceDisconnectedLast_Format" xml:space="preserve"><value>{0} منقطع ہو گیا۔ {1} کے پاس اب کوئی آلہ نہیں رہا۔</value></data>
   <data name="Main_DeviceConnected_Format" xml:space="preserve"><value>{0} منسلک ہو گیا</value></data>
   <data name="Main_DeviceConnectedBattery_Format" xml:space="preserve"><value>{0} منسلک ہو گیا، بیٹری {1}%</value></data>
-  <data name="Main_DevicesDisconnected_Format" xml:space="preserve"><value>آلات منقطع ہوئے: {0}</value></data>
-  <data name="Main_DevicesConnected_Format" xml:space="preserve"><value>آلات منسلک ہوئے: {0}</value></data>
+  <data name="Main_DevicesDisconnectedNamed_Format" xml:space="preserve"><value>{0} آلات منقطع ہوئے: {1}</value></data>
+  <data name="Main_DevicesConnectedNamed_Format" xml:space="preserve"><value>{0} آلات منسلک ہوئے: {1}</value></data>
   <data name="Main_DeviceKeepsDisconnecting_Format" xml:space="preserve"><value>{0} بار بار منقطع ہو رہا ہے</value></data>
   <data name="Main_Xbox_Max_Format" xml:space="preserve"><value>Xbox (زیادہ سے زیادہ {0})</value></data>
   <data name="Main_PlayStation_Max_Format" xml:space="preserve"><value>PlayStation (زیادہ سے زیادہ {0})</value></data>
@@ -450,8 +450,7 @@
   <data name="Extras_More_RemoteLink" xml:space="preserve"><value>خودکار دوبارہ رابطہ، پورٹ، جوڑا بنانے کی شناخت، پتے کے ذریعے منسلک کریں</value></data>
   <data name="Extras_More_GameMods" xml:space="preserve"><value>پورٹ، DSX.exe کا متبادل</value></data>
   <data name="Extras_More_GameTelemetry" xml:space="preserve"><value>پورٹس، مکمل رفتار اور حسب ضرورت فارمیٹس</value></data>
-  <data name="Extras_More_Automation" xml:space="preserve"><value>TOML</value></data>
-  <data name="Extras_More_Automation_WithSkill" xml:space="preserve"><value>TOML، اسکل</value></data>
+  <data name="Extras_More_Automation" xml:space="preserve"><value>دوسرے اسسٹنٹس، ویب پر اسسٹنٹس</value></data>
   <data name="Extras_PageLine_HeadTracking" xml:space="preserve"><value>ہیڈ ٹریکر یا VR ہیڈسیٹ سے ادھر ادھر دیکھیں، جبکہ دونوں انگوٹھے بٹنوں پر رہیں۔</value></data>
   <data name="Extras_PageLine_GameTelemetry" xml:space="preserve"><value>ڈرائیونگ گیم کی بھیجی ہوئی رفتار، پیڈلز اور گیئرز کو کسی بھی ان پٹ کی طرح میپ کریں۔</value></data>
   <data name="Extras_PageLine_MotionServer" xml:space="preserve"><value>کنٹرولر کی حرکت ان ایمولیٹرز کو بھیجیں جو DSU موشن ماخذ پڑھتے ہیں۔</value></data>
@@ -472,6 +471,7 @@
   <data name="Extras_Overlays_MenuHint" xml:space="preserve"><value>کھلے ہونے کے دوران مینیو کا رِنگ، گرڈ یا بار۔</value></data>
   <data name="Extras_Overlays_ShiftLayerHint" xml:space="preserve"><value>شفٹ لیئر آن ہونے پر لیئر کا نام، اتنی دیر کے لیے جتنی وہ لیئر طے کرتی ہے۔</value></data>
   <data name="Extras_Overlays_ProfileHint" xml:space="preserve"><value>پروفائل بدلنے پر پروفائل کا نام۔</value></data>
+  <data name="Extras_Overlays_ControllersNoteHint" xml:space="preserve"><value>ورچوئل کنٹرولرز ابھی آن ہوئے یا آف، شارٹ کٹ یا میکرو سے۔</value></data>
   <data name="Extras_Overlays_DeviceDisconnectedHint" xml:space="preserve"><value>میپ شدہ آلے کا نام جب وہ منقطع ہو۔</value></data>
   <data name="Extras_Overlays_DeviceConnectedHint" xml:space="preserve"><value>میپ شدہ آلے کا نام جب وہ منسلک ہو۔</value></data>
   <data name="Extras_CopyAddress" xml:space="preserve"><value>پتہ کاپی کریں</value></data>
@@ -579,35 +579,24 @@
   <data name="Extras_Automation_LevelLine_Commands" xml:space="preserve"><value>پروگرام پروفائل بدل سکتے اور چھوڑ سکتے ہیں، انجن شروع اور بند کر سکتے ہیں، ورچوئل کنٹرولرز آن اور آف کر سکتے ہیں، ونڈو دکھا اور چھپا سکتے ہیں، PadForge بند کر سکتے ہیں، تشخیصی اسنیپ شاٹ محفوظ کر سکتے ہیں اور پوچھ سکتے ہیں کہ کیا چل رہا ہے۔</value></data>
   <data name="Extras_Automation_LevelLine_Read" xml:space="preserve"><value>کمانڈز کی سطح کی ہر چیز، اور پروگرام آلات، ورچوئل کنٹرولرز، میپنگز، پروفائلز اور ترتیبات دیکھ سکتے ہیں، ہر آلے کے ان پٹ ہوتے ہی دیکھ سکتے ہیں، اور آپ کو PadForge میں کوئی جگہ دکھا سکتے ہیں۔ پڑھیں کی سطح پر موجود پروگرام ہر آلے پر دبائی گئی ہر کلید دیکھتا ہے، ان ونڈوز میں ٹائپ کی گئی کلیدیں بھی جو منتظم کے طور پر چل رہی ہوں۔</value></data>
   <data name="Extras_Automation_LevelLine_SendInputs" xml:space="preserve"><value>پڑھیں کی سطح کی ہر چیز، اور پروگرام اپنے آلات شامل کر کے انہیں چلا سکتے ہیں، کسی بھی آلے کا کوئی کنٹرول تھامے رکھ سکتے ہیں اور میکرو ٹرگرز کو نام والی قدریں دے سکتے ہیں۔</value></data>
-  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ان پٹ بھیجیں کی سطح کی ہر چیز، اور پروگرام وہ سب بدل سکتے ہیں جو آپ صفحات پر بدل سکتے ہیں۔</value></data>
+  <data name="Extras_Automation_LevelLine_ChangeSettings" xml:space="preserve"><value>ان پٹ بھیجیں کی سطح کی ہر چیز، اور پروگرام وہ سب بدل سکتے ہیں جو آپ صفحات پر بدل سکتے ہیں۔ کچھ تبدیلیاں ہمیشہ پہلے PadForge کے سوالیہ کارڈ پر آپ سے پوچھتی ہیں۔</value></data>
   <data name="Extras_Automation_Card_Assistants" xml:space="preserve"><value>اسسٹنٹس</value></data>
-  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>اسے اسسٹنٹ کی MCP ترتیبات میں چسپاں کریں۔ پھر اسسٹنٹ اوپر والی سطح پر PadForge کے ساتھ کام کرتا ہے۔</value></data>
-  <data name="Extras_Automation_CopyToml" xml:space="preserve"><value>TOML کے طور پر کاپی کریں</value></data>
-  <data name="Extras_Automation_TomlLabel" xml:space="preserve"><value>TOML پڑھنے والے اسسٹنٹس</value></data>
+  <data name="Extras_Automation_AssistantsHint" xml:space="preserve"><value>شامل کریں PadForge کو اس کی اسکل کے ساتھ اس اسسٹنٹ میں رکھ دیتا ہے۔ پھر یہ اوپر والی سطح پر کام کرتا ہے، اور اس کے الفاظ اس کے نام کے نیچے، اس چیز کے ساتھ دکھائی دیتے ہیں جس کی طرف وہ اشارہ کرتا ہے۔</value></data>
   <data name="Extras_Automation_Card_Scripts" xml:space="preserve"><value>اسکرپٹس</value></data>
   <data name="Extras_Automation_Library" xml:space="preserve"><value>اسکرپٹ لائبریری</value></data>
   <data name="Extras_Automation_SaveLibrary" xml:space="preserve"><value>لائبریری محفوظ کریں…</value></data>
-  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2، Python یا PowerShell کے لیے ایک فائل۔ اسے لوڈ کرنے والا اسکرپٹ اوپر والی سطح پر آلات پڑھتا اور میپنگز چلاتا ہے۔</value></data>
+  <data name="Extras_Automation_LibraryHint" xml:space="preserve"><value>AutoHotkey v2، Python یا PowerShell کے لیے ایک فائل، جہاں آپ منتخب کریں وہاں لکھی جاتی ہے۔</value></data>
   <data name="Extras_Automation_Card_Waiting" xml:space="preserve"><value>آپ کے جواب کا انتظار</value></data>
   <data name="Extras_Automation_Card_Activity" xml:space="preserve"><value>سرگرمی</value></data>
-  <data name="Extras_Automation_ActivityEmpty" xml:space="preserve"><value>ابھی تک کسی پروگرام نے کال نہیں کی۔ ہر کال یہاں اس کے نتیجے کے ساتھ درج ہوگی۔</value></data>
   <data name="Extras_Automation_Undo" xml:space="preserve"><value>واپس کریں</value></data>
-  <data name="Extras_Automation_SkillLabel" xml:space="preserve"><value>اسسٹنٹس کے لیے اسکل</value></data>
-  <data name="Extras_Automation_SaveSkill" xml:space="preserve"><value>اسکل محفوظ کریں…</value></data>
   <data name="Extras_Automation_NotSaved_Format" xml:space="preserve"><value>PadForge اسے محفوظ نہیں کر سکا: {0}</value></data>
   <data name="Extras_Automation_Note" xml:space="preserve"><value>جب تک پڑھیں یا اس سے اوپر کی سطح کا کوئی پروگرام منسلک ہے، وہ ہر آلے پر دبائی گئی چیز دیکھتا ہے، کی بورڈز سمیت۔</value></data>
   <data name="Extras_Plugins_Title" xml:space="preserve"><value>پلگ اِنز</value></data>
   <data name="Extras_Plugins_Switch" xml:space="preserve"><value>پلگ اِنز چلائیں</value></data>
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>کوئی پلگ اِن نہیں چل رہا۔</value></data>
-  <data name="Extras_Plugins_Note" xml:space="preserve"><value>پلگ اِن آپ کے حقوق کے ساتھ چلتا ہے، PadForge کے حقوق کے ساتھ نہیں۔</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>پہلے سے شامل</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>ٹیسٹ کنٹرولر</value></data>
   <data name="Plugins_TestController_Note" xml:space="preserve"><value>ایسا کنٹرولر جو خود ہلتا ہے، ایک وقت میں ایک کنٹرول، تاکہ ہاتھ میں ہارڈ ویئر کے بغیر میپنگ آزمائی جا سکے۔</value></data>
-  <data name="Plugins_Speed" xml:space="preserve"><value>رفتار</value></data>
-  <data name="Plugins_Speed_Slow" xml:space="preserve"><value>آہستہ</value></data>
-  <data name="Plugins_Speed_Normal" xml:space="preserve"><value>عام</value></data>
-  <data name="Plugins_Speed_Fast" xml:space="preserve"><value>تیز</value></data>
-  <data name="Plugins_Speed_Fastest" xml:space="preserve"><value>تیز ترین</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>ری پلے</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>کسی مسئلے کی ریکارڈنگ کو انہی آلات کے طور پر اسی وقت کے ساتھ دوبارہ چلاتا ہے جنہوں نے اسے بنایا تھا۔ وہ اس PC پر نئے آلات ہیں، جنہیں آپ یا کوئی پروفائل جیسے میپ کرے ویسے میپ کیا جاتا ہے۔</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>ریکارڈنگ</value></data>
@@ -622,10 +611,9 @@
   <data name="Plugins_Replay_Filter" xml:space="preserve"><value>مسئلے کی ریکارڈنگز|*.zip;*.log|تمام فائلیں|*.*</value></data>
   <data name="Plugins_Replay_NotOpened_Format" xml:space="preserve"><value>PadForge {0} نہیں چلا سکتا۔ یہ مسئلے کی ریکارڈنگ نہیں ہے، یا اس میں کسی آلے کا ان پٹ نہیں۔</value></data>
   <data name="Plugins_Card_Yours" xml:space="preserve"><value>آپ کے پلگ اِنز</value></data>
-  <data name="Plugins_Empty" xml:space="preserve"><value>پلگ اِن ایسا پروگرام ہے جو PadForge میں آلات شامل کرتا ہے۔ جب بھی انجن چلتا ہے PadForge اسے آپ کے عام حقوق کے ساتھ شروع کرتا ہے۔</value></data>
   <data name="Plugins_Add" xml:space="preserve"><value>پلگ اِن شامل کریں…</value></data>
   <data name="Plugins_Add_Filter" xml:space="preserve"><value>پروگرام اور اسکرپٹس|*.exe;*.py;*.pyw;*.ps1;*.ahk;*.ah2;*.bat;*.cmd;*.js;*.vbs|تمام فائلیں|*.*</value></data>
-  <data name="Plugins_Approve" xml:space="preserve"><value>منظور کریں…</value></data>
+  <data name="Plugins_Approve" xml:space="preserve"><value>منظور کریں اور ری اسٹارٹ کریں…</value></data>
   <data name="Plugins_State_Waiting" xml:space="preserve"><value>انجن کے ساتھ شروع ہوتا ہے</value></data>
   <data name="Plugins_State_Checking" xml:space="preserve"><value>شروع ہونے سے پہلے فائل جانچی جا رہی ہے</value></data>
   <data name="Plugins_State_Exited_Format" xml:space="preserve"><value>کوڈ {0} کے ساتھ بند ہوا۔ {1} سیکنڈ میں دوبارہ شروع ہوگا۔</value></data>
@@ -656,10 +644,53 @@
   <data name="Plugins_Already_Format" xml:space="preserve"><value>{0} فہرست میں پہلے سے ہے۔</value></data>
   <data name="Plugins_Full" xml:space="preserve"><value>PadForge زیادہ سے زیادہ 16 پلگ اِنز چلاتا ہے۔ نیا شامل کرنے کے لیے کوئی ہٹائیں۔</value></data>
   <data name="Plugins_Status_Format" xml:space="preserve"><value>چلتے پلگ اِنز: {0}۔ ان کے شامل کردہ آلات: {1}۔</value></data>
+  <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} پانچ ناکامیوں کے بعد رک گیا۔</value></data>
+  <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} آپ کی منظوری کے بعد بدل گیا۔</value></data>
+  <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} شروع نہیں ہو سکا۔</value></data>
+  <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>شامل کیا: {0}۔</value></data>
+  <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>دستخط کنندہ: {0}۔</value></data>
+  <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>دستخط شدہ نہیں۔</value></data>
+  <data name="Plugins_Missing_NotRunning" xml:space="preserve"><value>اس کی ترتیبات اس کے چلنے کے دوران یہاں دکھائی دیتی ہیں۔</value></data>
+  <data name="Plugins_Missing_None" xml:space="preserve"><value>یہ کوئی ترتیب ظاہر نہیں کرتا۔</value></data>
+  <data name="Plugins_Missing_Refused_Format" xml:space="preserve"><value>PadForge اس کی ترتیبات نہیں پڑھ سکا: {0}۔</value></data>
+  <data name="Plugins_Log_Silent" xml:space="preserve"><value>ایک منٹ تک کوئی جواب نہ ملنے پر ختم کر دیا گیا</value></data>
+  <data name="Plugins_Log_ChangedWhileRunning" xml:space="preserve"><value>چلنے کے دوران اس کی فائل بدل گئی</value></data>
+  <data name="Plugins_Device_AddedBy_Format" xml:space="preserve"><value>{0} نے شامل کیا۔</value></data>
+  <data name="Plugins_Device_Settings_Format" xml:space="preserve"><value>{0} کی ترتیبات</value></data>
+  <data name="Plugins_Input_Pick" xml:space="preserve"><value>منتخب کریں</value></data>
+  <data name="Plugins_Input_Press" xml:space="preserve"><value>کوئی کنٹرول دبائیں…</value></data>
+  <data name="Plugins_Input_None" xml:space="preserve"><value>منتخب نہیں</value></data>
+  <data name="Plugins_Add_Note" xml:space="preserve"><value>پلگ اِن شامل کریں، یا اس کی فائل اس صفحے پر ڈراپ کریں۔ PadForge اس کا راستہ، اس کا دستخط کنندہ اور اس کا SHA-256 دکھاتا ہے اور چلانے سے پہلے آپ سے پوچھتا ہے۔ پلگ اِن آپ کے حقوق کے ساتھ چلتا ہے، PadForge کے حقوق کے ساتھ نہیں۔</value></data>
+  <data name="Plugins_Replay_Line" xml:space="preserve"><value>مسئلے کی ریکارڈنگ کو انہی آلات کے طور پر ان کے وقت کے ساتھ دوبارہ چلاتا ہے جنہوں نے اسے بنایا تھا۔</value></data>
+  <data name="Plugins_TC_State_Moving" xml:space="preserve"><value>چل رہا ہے۔</value></data>
+  <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>چل رہا ہے، ہاتھ سے۔</value></data>
+  <data name="Plugins_TC_WhatMoves" xml:space="preserve"><value>کیا حرکت کرتا ہے</value></data>
+  <data name="Plugins_TC_WhatMoves_Both" xml:space="preserve"><value>اسٹکس اور ٹرگرز</value></data>
+  <data name="Plugins_TC_WhatMoves_Sticks" xml:space="preserve"><value>اسٹکس</value></data>
+  <data name="Plugins_TC_WhatMoves_Triggers" xml:space="preserve"><value>ٹرگرز</value></data>
+  <data name="Plugins_TC_Pattern" xml:space="preserve"><value>پیٹرن</value></data>
+  <data name="Plugins_TC_Pattern_Sweep" xml:space="preserve"><value>جھولا</value></data>
+  <data name="Plugins_TC_Pattern_Circle" xml:space="preserve"><value>دائرہ</value></data>
+  <data name="Plugins_TC_MoveTime" xml:space="preserve"><value>حرکت کا وقت</value></data>
+  <data name="Plugins_TC_RestTime" xml:space="preserve"><value>آرام کا وقت</value></data>
+  <data name="Plugins_TC_PressButtons" xml:space="preserve"><value>بٹن دبائیں</value></data>
+  <data name="Plugins_TC_PressNavigation" xml:space="preserve"><value>نیویگیشن بٹن دبائیں</value></data>
+  <data name="Plugins_TC_PressNavigation_Help" xml:space="preserve"><value>Windows ایپس سامنے والی ونڈو میں ورچوئل Xbox کنٹرولر کے A، B، بیک، اسٹارٹ اور ڈی پیڈ پر عمل کرتی ہیں، اور گائیڈ سے Xbox Game Bar کھلتا ہے۔</value></data>
+  <data name="Plugins_TC_TurnDpad" xml:space="preserve"><value>ڈی پیڈ گھمائیں</value></data>
+  <data name="Plugins_TC_TurnDpad_Help" xml:space="preserve"><value>اسی وجہ سے۔</value></data>
+  <data name="Plugins_TC_PressTime" xml:space="preserve"><value>دبانے کا وقت</value></data>
+  <data name="Plugins_TC_Controllers" xml:space="preserve"><value>کنٹرولرز</value></data>
+  <data name="Plugins_TC_ByHand" xml:space="preserve"><value>ہاتھ سے</value></data>
+  <data name="Plugins_TC_ByHand_Help" xml:space="preserve"><value>حرکت روک دیتا ہے۔ اس کے ان پٹس نیچے ماؤس سے مقرر کریں۔</value></data>
+  <data name="Plugins_TC_LeftStick" xml:space="preserve"><value>بایاں اسٹک</value></data>
+  <data name="Plugins_TC_RightStick" xml:space="preserve"><value>دایاں اسٹک</value></data>
+  <data name="Plugins_TC_LeftTrigger" xml:space="preserve"><value>بایاں ٹرگر</value></data>
+  <data name="Plugins_TC_RightTrigger" xml:space="preserve"><value>دایاں ٹرگر</value></data>
+  <data name="Plugins_TC_ReadsPerSecond" xml:space="preserve"><value>فی سیکنڈ ریڈز</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>پلگ اِن کٹ، اور آپ کے منتخب کردہ پلگ اِن کا لاگ</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>پلگ اِن کٹ</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>پلگ اِن کٹ محفوظ کریں…</value></data>
-  <data name="Plugins_Kit_Note" xml:space="preserve"><value>C# میں ایک چھوٹا پلگ اِن، اور وہی پلگ اِن AutoHotkey، Python اور PowerShell کے لیے، ہر فائل کے ساتھ اسے بنانے یا چلانے کا طریقہ۔</value></data>
+  <data name="Plugins_Kit_Note" xml:space="preserve"><value>ہر ویرب، ایونٹ اور ترتیب کی قسم کی گائیڈ، C# پلگ اِن کے لیے بلڈ اسکرپٹ، اور وہی پلگ اِن AutoHotkey، Python اور PowerShell کے لیے۔</value></data>
   <data name="Plugins_Log" xml:space="preserve"><value>لاگ</value></data>
   <data name="Plugins_Log_Pick" xml:space="preserve"><value>لاگ دیکھنے کے لیے کوئی پلگ اِن منتخب کریں۔</value></data>
   <data name="Plugins_Log_Empty" xml:space="preserve"><value>اس پلگ اِن کے لاگ میں ابھی کچھ نہیں ہے۔</value></data>
@@ -685,7 +716,7 @@
   <data name="GameMods_UnknownSender" xml:space="preserve"><value>ایک گیم موڈ</value></data>
   <data name="Automation_Status_NameTaken_Format" xml:space="preserve"><value>کوئی دوسرا پروگرام پائپ کا نام {0} روکے ہوئے ہے۔ اس پروگرام کو بند کریں۔</value></data>
   <data name="Automation_Status_Failed_Format" xml:space="preserve"><value>Windows نے پائپ {0} سے انکار کر دیا، اس لیے پروگرام منسلک نہیں ہو سکتے۔</value></data>
-  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>کوئی پروگرام منسلک نہیں۔</value></data>
+  <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>آن۔ کوئی پروگرام منسلک نہیں۔</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>منسلک: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>نامعلوم پروگرام</value></data>
   <data name="Automation_Program_Signed_Format" xml:space="preserve"><value>{0}، دستخط کنندہ {1}</value></data>
@@ -719,7 +750,7 @@
   <data name="Automation_Result_LimitReached" xml:space="preserve"><value>PadForge دوبارہ شروع ہونے تک ان میں سے مزید نہیں</value></data>
   <data name="Automation_Result_UnknownTool" xml:space="preserve"><value>PadForge کے پاس ایسا کوئی ٹول نہیں</value></data>
   <data name="Automation_Result_Stale" xml:space="preserve"><value>پروگرام نے پرانی حالت پڑھی</value></data>
-  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>ایسی کوئی ترتیب نہیں</value></data>
+  <data name="Automation_Result_UnknownSetting" xml:space="preserve"><value>اس ID والی کوئی چیز نہیں</value></data>
   <data name="Automation_Result_OutOfRange" xml:space="preserve"><value>قدر اس حد سے باہر تھی جو ترتیب لیتی ہے</value></data>
   <data name="Automation_Result_Declined" xml:space="preserve"><value>آپ نے اجازت نہیں دی</value></data>
   <data name="Automation_Result_TimedOut" xml:space="preserve"><value>وقت پر کسی نے جواب نہیں دیا</value></data>
@@ -736,6 +767,7 @@
   <data name="Automation_Asked_Show" xml:space="preserve"><value>ونڈو دکھائیں</value></data>
   <data name="Automation_Asked_Hide" xml:space="preserve"><value>ونڈو کو سسٹم ٹرے میں بھیجیں</value></data>
   <data name="Automation_Asked_Minimize" xml:space="preserve"><value>ونڈو کو چھوٹا کریں</value></data>
+  <data name="Automation_Asked_Maximize" xml:space="preserve"><value>ونڈو کو بڑا کریں</value></data>
   <data name="Automation_Asked_Exit" xml:space="preserve"><value>PadForge بند کریں</value></data>
   <data name="Automation_Asked_EngineOn" xml:space="preserve"><value>انجن شروع کریں</value></data>
   <data name="Automation_Asked_EngineOff" xml:space="preserve"><value>انجن بند کریں</value></data>
@@ -761,6 +793,14 @@
   <data name="Automation_Asked_Declare_Format" xml:space="preserve"><value>آلہ {0} شامل کریں</value></data>
   <data name="Automation_Asked_Set_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز مقرر کریں</value></data>
   <data name="Automation_Asked_Gone_Format" xml:space="preserve"><value>آلہ {0} ہٹائیں</value></data>
+  <data name="Automation_Asked_Rest_Format" xml:space="preserve"><value>آلہ {0} کے ہر کنٹرول کو آرام کی حالت میں رکھیں</value></data>
+  <data name="Automation_Ask_RunsProgram" xml:space="preserve"><value>PadForge سے کوئی پروگرام چلواتا ہے۔</value></data>
+  <data name="Automation_Ask_OpensPlace" xml:space="preserve"><value>کوئی فائل، فولڈر یا ویب صفحہ کھولتا ہے۔</value></data>
+  <data name="Automation_Ask_SendsInput" xml:space="preserve"><value>PadForge سے Windows کو کیز یا ماؤس ان پٹ بھجواتا ہے۔</value></data>
+  <data name="Automation_Ask_ImportsProfile" xml:space="preserve"><value>PadForge کے باہر سے پروفائل درآمد کرتا ہے۔</value></data>
+  <data name="Automation_Ask_Always" xml:space="preserve"><value>پروگرام کے یہ کرنے سے پہلے PadForge آپ سے پوچھتا ہے۔</value></data>
+  <data name="Search_Group_Dialogs" xml:space="preserve"><value>ڈائیلاگز</value></data>
+  <data name="Search_Group_Macros" xml:space="preserve"><value>میکروز</value></data>
   <data name="Automation_Asked_Own_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز تھامے رکھیں</value></data>
   <data name="Automation_Asked_Release_Format" xml:space="preserve"><value>آلہ {0} کے کنٹرولز چھوڑ دیں</value></data>
   <data name="Automation_Asked_Value_Format" xml:space="preserve"><value>قدر {0} مقرر کریں</value></data>
@@ -769,25 +809,24 @@
   <data name="Automation_Tool_SwitchProfile" xml:space="preserve"><value>پروفائل بدلیں</value></data>
   <data name="Automation_Tool_SetEngine" xml:space="preserve"><value>انجن شروع یا بند کریں</value></data>
   <data name="Automation_Tool_SetControllersPower" xml:space="preserve"><value>ورچوئل کنٹرولرز آن یا آف کریں</value></data>
-  <data name="Automation_Tool_SaveSnapshot" xml:space="preserve"><value>تشخیصی اسنیپ شاٹ محفوظ کریں</value></data>
-  <data name="Automation_Tool_GetSystem" xml:space="preserve"><value>پولنگ ریٹ اور ڈرائیورز پڑھیں</value></data>
   <data name="Automation_Tool_ListProfiles" xml:space="preserve"><value>پروفائلز کی فہرست دیں</value></data>
-  <data name="Automation_Tool_GetProfile" xml:space="preserve"><value>پروفائل پڑھیں</value></data>
   <data name="Automation_Tool_ListControllers" xml:space="preserve"><value>ورچوئل کنٹرولرز کی فہرست دیں</value></data>
   <data name="Automation_Tool_ListDevices" xml:space="preserve"><value>آلات کی فہرست دیں</value></data>
   <data name="Automation_Tool_GetDevice" xml:space="preserve"><value>آلہ پڑھیں</value></data>
   <data name="Automation_Tool_WaitForInput" xml:space="preserve"><value>آپ کے ان پٹ کا انتظار کریں</value></data>
   <data name="Automation_Tool_GetMappings" xml:space="preserve"><value>کنٹرولر کی میپنگز پڑھیں</value></data>
-  <data name="Automation_Tool_ListMacros" xml:space="preserve"><value>کنٹرولر کے میکروز کی فہرست دیں</value></data>
   <data name="Automation_Tool_RecordProblem" xml:space="preserve"><value>مسئلہ ریکارڈ کریں</value></data>
-  <data name="Automation_Tool_FindSettings" xml:space="preserve"><value>ترتیبات تلاش کریں</value></data>
-  <data name="Automation_Tool_GetSetting" xml:space="preserve"><value>ترتیب پڑھیں</value></data>
   <data name="Automation_Tool_Show" xml:space="preserve"><value>آپ کو کوئی جگہ دکھائیں</value></data>
+  <data name="Automation_Tool_Find" xml:space="preserve"><value>PadForge میں جگہیں تلاش کریں</value></data>
+  <data name="Automation_Tool_Read" xml:space="preserve"><value>PadForge میں کوئی جگہ پڑھیں</value></data>
+  <data name="Automation_Tool_Where" xml:space="preserve"><value>جو آپ دیکھ رہے ہیں وہ پڑھیں</value></data>
   <data name="Automation_Tool_AddDevice" xml:space="preserve"><value>اپنا ایک آلہ شامل کریں</value></data>
   <data name="Automation_Tool_SetDeviceInputs" xml:space="preserve"><value>اپنا آلہ چلائیں</value></data>
   <data name="Automation_Tool_RemoveDevice" xml:space="preserve"><value>اپنا آلہ ہٹائیں</value></data>
   <data name="Automation_Tool_HoldControl" xml:space="preserve"><value>کنٹرول تھامیں یا چھوڑیں</value></data>
+  <data name="Automation_Tool_SetValue" xml:space="preserve"><value>میکرو ٹرگرز کے لیے قدر مقرر کریں</value></data>
   <data name="Automation_Tool_SetSetting" xml:space="preserve"><value>ترتیب بدلیں</value></data>
+  <data name="Automation_Tool_Press" xml:space="preserve"><value>بٹن دبائیں</value></data>
   <data name="Automation_Tool_CreateProfile" xml:space="preserve"><value>پروفائل بنائیں</value></data>
   <data name="Automation_Tool_RenameProfile" xml:space="preserve"><value>پروفائل کا نام بدلیں</value></data>
   <data name="Automation_Tool_DeleteProfile" xml:space="preserve"><value>پروفائل حذف کریں</value></data>
@@ -798,7 +837,6 @@
   <data name="Automation_Tool_SetControllerType" xml:space="preserve"><value>کنٹرولر کی قسم بدلیں</value></data>
   <data name="Automation_Tool_AssignDevice" xml:space="preserve"><value>آلہ تفویض کریں</value></data>
   <data name="Automation_Tool_SetMappings" xml:space="preserve"><value>میپنگ کی قطاریں مقرر کریں</value></data>
-  <data name="Automation_Tool_ClearMappings" xml:space="preserve"><value>میپنگ کی قطاریں صاف کریں</value></data>
   <data name="Automation_Tool_AutoMap" xml:space="preserve"><value>کنٹرولر خودکار طور پر میپ کریں</value></data>
   <data name="Automation_Tool_SaveMacro" xml:space="preserve"><value>میکرو محفوظ کریں</value></data>
   <data name="Automation_Tool_DeleteMacro" xml:space="preserve"><value>میکرو حذف کریں</value></data>
@@ -818,6 +856,17 @@
   <data name="Automation_Ask_MakesKeyboardMouse" xml:space="preserve"><value>کی بورڈ اور ماؤس کنٹرولر بناتا ہے</value></data>
   <data name="Automation_Ask_TurnsOn_Format" xml:space="preserve"><value>{0} آن کرتا ہے</value></data>
   <data name="Automation_Ask_Setting_Format" xml:space="preserve"><value>“{0}” بدلیں</value></data>
+  <data name="Automation_Ask_Press_Format" xml:space="preserve"><value>“{0}” دبائیں</value></data>
+  <data name="Automation_Ask_Show_Format" xml:space="preserve"><value>{0} آپ کو {1} دکھانا چاہتا ہے</value></data>
+  <data name="Automation_Ask_ShowWhere_Format" xml:space="preserve"><value>{0} پر۔</value></data>
+  <data name="Automation_Ask_Consent_Format" xml:space="preserve"><value>کیا {0} کو PadForge کے ساتھ {1} کی سطح پر کام کرنے کی اجازت دیں؟</value></data>
+  <data name="Automation_Consent_Running_Format" xml:space="preserve"><value>{0} چلا رہا ہے {1}</value></data>
+  <data name="Automation_Consent_Started_Format" xml:space="preserve"><value>اسے شروع کیا: {0}</value></data>
+  <data name="Automation_Consent_Signed_Format" xml:space="preserve"><value>دستخط کنندہ: {0}۔</value></data>
+  <data name="Automation_Consent_NotSigned" xml:space="preserve"><value>دستخط شدہ نہیں۔</value></data>
+  <data name="Automation_Consent_ReadsKeys" xml:space="preserve"><value>پڑھیں اور اس سے اوپر کی سطح پر یہ ہر آلے پر دبائی گئی ہر کلید دیکھتا ہے، کی بورڈز سمیت۔</value></data>
+  <data name="Automation_Consent_AsksOnce" xml:space="preserve"><value>یہ ایک بار پوچھتا ہے۔ آپ اسے آٹومیشن کے صفحے پر ہٹا سکتے ہیں۔</value></data>
+  <data name="Automation_Consent_CommandLine" xml:space="preserve"><value>PadForge کی کمانڈ لائن</value></data>
   <data name="Automation_Ask_SetsTo_Format" xml:space="preserve"><value>{0} کو {1} پر مقرر کرتا ہے</value></data>
   <data name="Automation_Ask_Network" xml:space="preserve"><value>نیٹ ورک پر سنتا ہے، اس لیے دوسرے آلات اس PC تک پہنچ سکتے ہیں۔</value></data>
   <data name="Automation_Ask_Drivers" xml:space="preserve"><value>ڈرائیور یا HidHide بدلتا ہے، جن پر دوسرے پروگرام اور گیمز انحصار کرتے ہیں۔</value></data>
@@ -839,6 +888,12 @@
   <data name="Automation_Library_PowerShell_Filter" xml:space="preserve"><value>PowerShell ماڈیولز (*.psm1)|*.psm1</value></data>
   <data name="Automation_Request_Allow" xml:space="preserve"><value>اجازت دیں</value></data>
   <data name="Automation_Request_Deny" xml:space="preserve"><value>اجازت نہ دیں</value></data>
+  <data name="Automation_Request_NotNow" xml:space="preserve"><value>ابھی نہیں</value></data>
+  <data name="Automation_Request_Show" xml:space="preserve"><value>دکھائیں</value></data>
+  <data name="Automation_Pointer_Step_Format" xml:space="preserve"><value>مرحلہ {0} از {1}۔</value></data>
+  <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>آگے بڑھنے کے لیے اس پر کلک کریں۔</value></data>
+  <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} کھولیں۔</value></data>
+  <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>مزید کھولیں۔</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} کی طرف سے</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} کی طرف سے، جو خود کو “{0}” کہتا ہے</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ایسے پروگرام کی طرف سے جو خود کو “{0}” کہتا ہے</value></data>
@@ -1016,7 +1071,7 @@
   <data name="Settings_InstallAndRestart" xml:space="preserve"><value>انسٹال کر کے دوبارہ شروع کریں</value></data>
   <data name="Settings_ReleaseNotes" xml:space="preserve"><value>ریلیز نوٹس</value></data>
   <data name="Settings_ControllerDatabase" xml:space="preserve"><value>کنٹرولر ڈیٹا بیس</value></data>
-  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ابھی اپ ڈیٹ کریں GitHub سے کمیونٹی کنٹرولر ڈیٹا بیس (SDL_GameControllerDB) ڈاؤن لوڈ کرتا ہے اور ترتیبات کی فائل میں وہ میپنگز رکھتا ہے جو PadForge کے اس ورژن میں نہیں ہیں۔ نئی میپنگ صرف ایسے کنٹرولر کے لیے استعمال ہوتی ہے جسے کوئی اور گیم پیڈ کے طور پر نہیں پڑھتا، جو تفویض نہیں ہے اور جو خام جوائے اسٹک موڈ میں نہیں ہے۔ ری سیٹ ڈاؤن لوڈ کی گئی ہر میپنگ ہٹا دیتا ہے۔</value></data>
+  <data name="Settings_ControllerDatabaseDesc" xml:space="preserve"><value>ابھی اپ ڈیٹ کریں GitHub سے کمیونٹی کنٹرولر ڈیٹا بیس (SDL_GameControllerDB) ڈاؤن لوڈ کرتا ہے اور ترتیبات کی فائل میں وہ میپنگز رکھتا ہے جو PadForge کے اس ورژن میں نہیں ہیں۔ وہ فوراً استعمال میں آ جاتی ہیں۔ نئی میپنگ صرف ایسے کنٹرولر کے لیے استعمال ہوتی ہے جسے کوئی اور گیم پیڈ کے طور پر نہیں پڑھتا، جو تفویض نہیں ہے اور جو خام جوائے اسٹک موڈ لازمی کریں (گیم پیڈ ری میپنگ کو بائی پاس کریں) میں نہیں ہے۔ ری سیٹ ڈاؤن لوڈ کی گئی ہر میپنگ ہٹا دیتا ہے۔ مزید کے تحت آپ کی اپنی قطاریں رہتی ہیں۔</value></data>
   <data name="Settings_ControllerDatabaseUpdateNow" xml:space="preserve"><value>ابھی اپ ڈیٹ کریں</value></data>
   <data name="Settings_ControllerDatabaseUpdating" xml:space="preserve"><value>اپ ڈیٹ ہو رہا ہے…</value></data>
   <data name="Update_Checking" xml:space="preserve"><value>اپ ڈیٹس چیک کی جا رہی ہیں…</value></data>
@@ -1045,12 +1100,10 @@
   <data name="Update_PendingFailed_Format" xml:space="preserve"><value>PadForge {0} کی اپ ڈیٹ کی انسٹالیشن مکمل نہیں ہوئی۔ دوبارہ کوشش کے لیے اسے ترتیبات سے انسٹال کریں۔</value></data>
   <data name="Update_Updated_Format" xml:space="preserve"><value>PadForge کو {0} پر اپ ڈیٹ کر دیا گیا۔</value></data>
   <data name="ControllerDatabase_BuiltIn_Format" xml:space="preserve"><value>اندر شامل: {0} میپنگز، {1} کی کمیونٹی کاپی۔</value></data>
-  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>اندر شامل: {0} میپنگز، {1} کی کمیونٹی کاپی۔ اپ ڈیٹ {2}: نئی {3}، تبدیل شدہ {4}۔</value></data>
+  <data name="ControllerDatabase_BuiltInUpdated_Format" xml:space="preserve"><value>اندر شامل: {0} میپنگز، {1} کی کمیونٹی کاپی۔ ڈاؤن لوڈ {2}: نئی قطاریں {3}، تبدیل شدہ {4}۔</value></data>
   <data name="ControllerDatabase_NothingChanged" xml:space="preserve"><value>پچھلی اپ ڈیٹ کے بعد کمیونٹی ڈیٹا بیس نہیں بدلا۔</value></data>
   <data name="ControllerDatabase_NoNetwork_Format" xml:space="preserve"><value>GitHub تک رسائی نہیں ہو سکی: {0}</value></data>
   <data name="ControllerDatabase_Refused" xml:space="preserve"><value>PadForge نے ڈاؤن لوڈ قبول نہیں کیا کیونکہ یہ وہ کنٹرولر ڈیٹا بیس نہیں جس کی اسے توقع ہے۔ کچھ نہیں بدلا۔</value></data>
-  <data name="ControllerDatabase_NewApplies" xml:space="preserve"><value>نئی میپنگ اگلی بار اس کا کنٹرولر منسلک ہونے پر استعمال ہوتی ہے۔</value></data>
-  <data name="ControllerDatabase_ChangedApplies" xml:space="preserve"><value>تبدیل شدہ میپنگ اگلی بار PadForge شروع ہونے پر استعمال ہوتی ہے۔</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>چھوٹی حالت میں شروع کریں</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>لاگ ان پر شروع کریں</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide</value></data>
@@ -1148,28 +1201,85 @@
   <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>ورژن کی معلومات، اور مسائل کے حل کے لیے انجن ایونٹس کی لاگنگ۔</value></data>
   <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>تشخیصی لاگ رکھیں</value></data>
   <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>انجن کے ایونٹس لاگ فولڈر میں diagnostics.log میں مسلسل لکھتا ہے، جسے لاگ فولڈر کھولیں کا بٹن کھولتا ہے۔ دوبارہ شروع کرنے کے بعد بھی فعال رہتا ہے۔ فائل 8 MB تک پہنچنے پر diagnostics.log.old میں منتقل ہو جاتی ہے۔</value></data>
-  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>اسنیپ شاٹ محفوظ کریں</value></data>
-  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>انجن کے تازہ ترین ایونٹس ایک نئی فائل میں محفوظ کرتا ہے۔ تشخیصی لاگ آف ہو تب بھی کام کرتا ہے۔</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>اسنیپ شاٹ محفوظ کریں…</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>ایپ، Windows، آپ کے آلات اور ترتیبات جیسے وہ ابھی ہیں، انجن کے تازہ ترین ایونٹس کے ساتھ لیتا ہے، اور انہیں کھولتا ہے تاکہ آپ محفوظ کرنے سے پہلے پڑھ لیں۔ تشخیصی لاگ آف ہو تب بھی کام کرتا ہے۔</value></data>
   <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>لاگ فولڈر کھولیں</value></data>
   <data name="Settings_RecordProblem" xml:space="preserve"><value>مسئلہ ریکارڈ کریں</value></data>
   <data name="Settings_RecordProblem_Start" xml:space="preserve"><value>ریکارڈنگ شروع کریں</value></data>
   <data name="Settings_RecordProblem_Stop_Format" xml:space="preserve"><value>ریکارڈنگ روکیں ({0})</value></data>
   <data name="Settings_RecordProblem_Elapsed_Format" xml:space="preserve"><value>{0}، {1}</value></data>
-  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>ریکارڈنگ روکیں دبانے، 10 منٹ یا 20 MB کی zip تک ریکارڈ کرتا ہے، پھر Explorer میں zip منتخب کر دیتا ہے، جو رپورٹ کے ساتھ منسلک کرنے کے لیے تیار ہوتی ہے۔</value></data>
-  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>شروع کریں، مسئلہ ہونے دیں، پھر روکیں۔ PadForge کے ساتھ ایک فائل میں وہ سب ہوتا ہے جو PadForge نے پڑھا، بھیجا اور لاگ کیا، اور خرابی کا خلاصہ بھی۔ ریکارڈنگ کے دوران ہر آلے پر دبائی گئی ہر کلید اور بٹن فائل میں ہوتا ہے، کی بورڈز اور ماؤس سمیت۔ کچھ بھی لکھے جانے سے پہلے صارف کے نام، سیریل نمبر، پتے اور ٹائپ کیے گئے نام بدل دیے جاتے ہیں۔</value></data>
+  <data name="Settings_RecordProblem_Tooltip" xml:space="preserve"><value>ریکارڈنگ روکیں دبانے، 30 منٹ یا 20 MB کی zip تک ریکارڈ کرتا ہے، پھر ریکارڈنگ کھولتا ہے تاکہ آپ محفوظ کرنے سے پہلے اسے پڑھ لیں۔</value></data>
+  <data name="Settings_RecordProblem_Hint" xml:space="preserve"><value>شروع کریں، مسئلہ ہونے دیں، پھر روکیں۔ پھر جو کچھ اس میں ہے حصہ حصہ پڑھیں، اور جہاں چاہیں محفوظ کریں۔ ریکارڈنگ کے دوران ہر آلے پر دبائی گئی ہر کلید اس میں ہوتی ہے، کی بورڈز اور ماؤس سمیت۔ کچھ بھی لکھے جانے سے پہلے صارف کے نام، سیریل نمبر، پتے اور ٹائپ کیے گئے نام بدل دیے جاتے ہیں۔</value></data>
   <data name="Settings_RecordProblem_Finishing" xml:space="preserve"><value>خلاصہ لکھا جا رہا ہے…</value></data>
   <data name="Settings_RecordProblem_Saved_Format" xml:space="preserve"><value>محفوظ ہوا {0}</value></data>
   <data name="Settings_RecordProblem_Refused" xml:space="preserve"><value>ریکارڈنگ شروع نہیں ہوئی۔ ایک جانچ میں اس PC کی ایک نجی قدر ملی جو فائل سے باہر نہیں رکھی جا سکتی تھی۔</value></data>
   <data name="Settings_RecordProblem_FileError_Format" xml:space="preserve"><value>ریکارڈنگ شروع نہیں ہوئی۔ {0}</value></data>
   <data name="Settings_RecordProblem_Busy" xml:space="preserve"><value>پچھلی ریکارڈنگ ابھی مکمل کی جا رہی ہے۔</value></data>
   <data name="Settings_RecordProblem_NothingKept" xml:space="preserve"><value>آخری 60 سیکنڈ رکھیں بند ہے، اس لیے محفوظ کرنے کو کچھ نہیں۔</value></data>
-  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>وہ ریکارڈنگ مکمل کی گئی جسے PadForge نے روکا نہیں تھا: {0}</value></data>
+  <data name="Settings_RecordProblem_LeftOver_Format" xml:space="preserve"><value>PadForge نے جو ریکارڈنگ روکی نہیں تھی وہ ہوم پر آپ کے پڑھنے کی منتظر ہے: {0}</value></data>
   <data name="Settings_RecordProblem_KeepLastMinute" xml:space="preserve"><value>آخری 60 سیکنڈ رکھیں</value></data>
-  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>انجن چلنے کے دوران ریکارڈنگ کا آخری ایک منٹ میموری میں رکھتا ہے، ایسے مسئلے کے لیے جو شام میں ایک بار آتا ہے۔ آخری 60 سیکنڈ محفوظ کریں اسے فائل کے طور پر لکھتا ہے۔</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinuteTooltip" xml:space="preserve"><value>انجن چلنے کے دوران ریکارڈنگ کا آخری ایک منٹ میموری میں رکھتا ہے، ایسے مسئلے کے لیے جو شام میں ایک بار آتا ہے۔ آخری 60 سیکنڈ محفوظ کریں اسے کھولتا ہے تاکہ آپ محفوظ کرنے سے پہلے پڑھ لیں۔</value></data>
   <data name="Settings_RecordProblem_SaveLastMinute" xml:space="preserve"><value>آخری 60 سیکنڈ محفوظ کریں</value></data>
   <data name="Settings_RecordProblem_HideTypedKeys" xml:space="preserve"><value>ٹائپ کیے گئے حروف اور اعداد ایک کلید کے طور پر لکھیں</value></data>
   <data name="Settings_RecordProblem_HideTypedKeysTooltip" xml:space="preserve"><value>ریکارڈنگ حروف اور اعداد کی وہ کلیدیں جنہیں کوئی میپنگ یا میکرو نہیں پڑھتا ایک کلید کے طور پر لکھتی ہے، ہر دباؤ اپنے وقت پر۔ باقی ہر کلید، اور ہر وہ کلید جسے کوئی میپنگ یا میکرو پڑھتا ہے، جیسی دبائی گئی ویسی لکھی جاتی ہے۔</value></data>
-  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>آخری 60 سیکنڈ رکھیں، ٹائپ کیے گئے حروف اور اعداد ایک کلید کے طور پر لکھیں</value></data>
+  <data name="Settings_More_Diagnostics" xml:space="preserve"><value>کیا ریکارڈ کریں، آخری 60 سیکنڈ، ٹائپ کیے گئے حروف</value></data>
+  <data name="Settings_SaveSnapshot" xml:space="preserve"><value>اسنیپ شاٹ محفوظ کریں</value></data>
+  <data name="Settings_SaveSnapshot_Hint" xml:space="preserve"><value>PadForge، Windows، آپ کے آلات اور ترتیبات جیسے وہ ابھی ہیں، اسی جائزے کے ذریعے۔</value></data>
+  <data name="Settings_DiagnosticsLogging_Hint" xml:space="preserve"><value>diagnostics.log، PadForge.exe کے ساتھ، جسے آپ وہیں پڑھ سکتے ہیں۔</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord" xml:space="preserve"><value>کیا ریکارڈ کریں</value></data>
+  <data name="Settings_RecordProblem_WhatToRecord_Hint" xml:space="preserve"><value>سب آن ہے۔ بند کیا گیا حصہ اگلی ریکارڈنگ میں شامل نہیں ہوتا، اور فائل بتاتی ہے کہ اس میں کون سے حصے ہیں۔</value></data>
+  <data name="Settings_RecordProblem_KeepLastMinute_Hint" xml:space="preserve"><value>ایسے مسئلے کے لیے جو شام میں ایک بار آتا ہے۔</value></data>
+  <data name="Settings_RecordProblem_Waiting" xml:space="preserve"><value>ریکارڈنگ آپ کے ہوم پر پڑھنے کی منتظر ہے۔</value></data>
+  <data name="Recording_Part_Summary" xml:space="preserve"><value>خلاصہ</value></data>
+  <data name="Recording_Part_SettingsAndDevices" xml:space="preserve"><value>ترتیبات اور آلات</value></data>
+  <data name="Recording_Part_Input" xml:space="preserve"><value>ان پٹ</value></data>
+  <data name="Recording_Part_Output" xml:space="preserve"><value>آؤٹ پٹ</value></data>
+  <data name="Recording_Part_Feedback" xml:space="preserve"><value>فیڈ بیک</value></data>
+  <data name="Recording_Part_Timing" xml:space="preserve"><value>ٹائمنگ</value></data>
+  <data name="Recording_Part_WindowAndErrors" xml:space="preserve"><value>ونڈو اور خرابیاں</value></data>
+  <data name="Recording_Part_Activity" xml:space="preserve"><value>سرگرمی</value></data>
+  <data name="Recording_Part_DiagnosticsLines" xml:space="preserve"><value>تشخیصی لائنیں</value></data>
+  <data name="Review_Title" xml:space="preserve"><value>اپنی ریکارڈنگ پڑھیں</value></data>
+  <data name="Review_Span_Format" xml:space="preserve"><value>{0} سے {1} تک، {2}۔ {3}</value></data>
+  <data name="Review_Snapshot_Format" xml:space="preserve"><value>{0} پر اسنیپ شاٹ۔</value></data>
+  <data name="Review_OneMinute" xml:space="preserve"><value>1 منٹ</value></data>
+  <data name="Review_Minutes_Format" xml:space="preserve"><value>{0} منٹ</value></data>
+  <data name="Review_OneSecond" xml:space="preserve"><value>1 سیکنڈ</value></data>
+  <data name="Review_Seconds_Format" xml:space="preserve"><value>{0} سیکنڈ</value></data>
+  <data name="Review_Stop_User" xml:space="preserve"><value>آپ نے روکی۔</value></data>
+  <data name="Review_Stop_Time_Format" xml:space="preserve"><value>{0} پر خود رک گئی۔</value></data>
+  <data name="Review_Stop_Size_Format" xml:space="preserve"><value>zip میں {0} پر خود رک گئی۔</value></data>
+  <data name="Review_Stop_Macro" xml:space="preserve"><value>میکرو نے روکی۔</value></data>
+  <data name="Review_Stop_Program" xml:space="preserve"><value>کسی پروگرام یا --record stop نے روکی۔</value></data>
+  <data name="Review_Stop_Assistant" xml:space="preserve"><value>اسے شروع کرنے والے اسسٹنٹ نے روکی۔</value></data>
+  <data name="Review_Stop_Closed" xml:space="preserve"><value>PadForge بند ہونے پر رک گئی۔</value></data>
+  <data name="Review_Stop_LastMinute" xml:space="preserve"><value>آخری 60 سیکنڈ، جو میموری میں رکھے گئے۔</value></data>
+  <data name="Review_Lead" xml:space="preserve"><value>پڑھیں کہ آپ کیا شیئر کریں گے۔ کوئی حصہ چھوڑنے کے لیے اسے بند کریں، پھر محفوظ کریں۔ جب تک آپ خود پوسٹ نہ کریں، کچھ بھی اس PC سے باہر نہیں جاتا۔</value></data>
+  <data name="Review_ShowPart_Format" xml:space="preserve"><value>{0}، جیسا شیئر کیا جائے گا</value></data>
+  <data name="Review_Show_Format" xml:space="preserve"><value>{0} دکھائیں</value></data>
+  <data name="Review_LeftOut" xml:space="preserve"><value>چھوڑا گیا</value></data>
+  <data name="Review_NotRecorded" xml:space="preserve"><value>ریکارڈ نہیں ہوا</value></data>
+  <data name="Review_PartSize_Format" xml:space="preserve"><value>متن کے طور پر {0}، zip میں {1}</value></data>
+  <data name="Review_Sizes_Format" xml:space="preserve"><value>متن کے طور پر {0}، آپ کی شیئر کی گئی zip میں {1}۔ ریکارڈنگ zip میں {2} پر یا {3} کے بعد رک جاتی ہے۔</value></data>
+  <data name="Review_Scrub_Format" xml:space="preserve"><value>اسکرب جانچ: PadForge نے {1} میں {0} بدل دیں۔ آپ کے رکھے ہوئے حصوں میں اس PC کا کوئی نام، سیریل یا پتہ نہیں ہے۔</value></data>
+  <data name="Review_ScrubValues_Format" xml:space="preserve"><value>{0} قدریں</value></data>
+  <data name="Review_ScrubOneValue" xml:space="preserve"><value>1 قدر</value></data>
+  <data name="Review_ScrubKinds_Format" xml:space="preserve"><value>{0} نجی اقسام</value></data>
+  <data name="Review_ScrubOneKind" xml:space="preserve"><value>1 نجی قسم</value></data>
+  <data name="Review_Scrub_Found_Format" xml:space="preserve"><value>اسکرب جانچ: اس PC کی اپنی {0} قدریں اب بھی آپ کے رکھے ہوئے حصوں میں ہیں۔ ان حصوں کو بند کریں یا ریکارڈنگ حذف کریں۔ تب تک محفوظ کریں… بند رہتا ہے۔</value></data>
+  <data name="Review_Scrub_FoundOne" xml:space="preserve"><value>اسکرب جانچ: اس PC کی اپنی ایک قدر اب بھی آپ کے رکھے ہوئے حصوں میں ہے۔ ان حصوں کو بند کریں یا ریکارڈنگ حذف کریں۔ تب تک محفوظ کریں… بند رہتا ہے۔</value></data>
+  <data name="Review_Empty" xml:space="preserve"><value>ریکارڈنگ کے دوران اس حصے کا کچھ نہیں ہوا۔</value></data>
+  <data name="Review_Delete" xml:space="preserve"><value>حذف کریں</value></data>
+  <data name="Review_CopySummary" xml:space="preserve"><value>خلاصہ کاپی کریں</value></data>
+  <data name="Review_Copied" xml:space="preserve"><value>کاپی ہو گیا</value></data>
+  <data name="Review_Save" xml:space="preserve"><value>محفوظ کریں…</value></data>
+  <data name="Review_SaveTitle" xml:space="preserve"><value>ریکارڈنگ محفوظ کریں</value></data>
+  <data name="Review_SaveFilter" xml:space="preserve"><value>Zip فائلیں</value></data>
+  <data name="Review_SaveFailed_Format" xml:space="preserve"><value>محفوظ نہیں ہوا۔ {0}</value></data>
+  <data name="Review_Footnote" xml:space="preserve"><value>آپ کے طور پر محفوظ ہوتی ہے، پہلی بار آپ کے ڈاؤن لوڈز فولڈر میں، پھر اس جگہ جہاں آپ نے آخری بار محفوظ کیا، اور فائل ایکسپلورر میں دکھائی جاتی ہے۔ جو ریکارڈنگ اس وقت رکتی ہے جب صفحے پر کوئی نہ ہو (اس کی حد، کوئی میکرو، کوئی پروگرام، اسسٹنٹ ٹول یا --record stop سے) وہ ہوم پر اس جائزے کی منتظر رہتی ہے، اور محفوظ نہ کی جائے تو 7 دن بعد حذف ہو جاتی ہے۔ پروگرام کو بتایا جاتا ہے کہ وہ منتظر ہے، یہ نہیں کہ کہاں۔</value></data>
+  <data name="Home_RecordingWaiting_Format" xml:space="preserve"><value>{0} کی مسئلے کی ریکارڈنگ آپ کے پڑھنے کی منتظر ہے۔</value></data>
+  <data name="Home_RecordingWaiting_Review" xml:space="preserve"><value>جائزہ</value></data>
+  <data name="Tray_MarkRecording" xml:space="preserve"><value>ریکارڈنگ میں نشان لگائیں</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>ایپ ورژن</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET رن ٹائم</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL ورژن</value></data>
@@ -3128,31 +3238,64 @@
   <data name="Mapping_MousePositionX" xml:space="preserve"><value>ماؤس کی پوزیشن X</value></data>
   <data name="Mapping_MousePositionY" xml:space="preserve"><value>ماؤس کی پوزیشن Y</value></data>
   <data name="Mapping_MouseCursorSensitivity" xml:space="preserve"><value>حساسیت</value></data>
-  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ہر ماخذ کے لیے کرسر کی حساسیت۔ 1.0 پر مرکز سے اسکرین کی چوڑائی کے 10% فاصلے پر اسٹک کا پورا انحراف ملتا ہے۔ 1.0 سے زیادہ قدروں پر کرسر کے کم سفر سے پورا انحراف مل جاتا ہے۔ 1.0 سے کم قدروں پر زیادہ سفر درکار ہوتا ہے۔</value></data>
+  <data name="Mapping_MouseCursorSensitivity_Tooltip" xml:space="preserve"><value>ہر ماخذ کے لیے کرسر کی حساسیت۔ 1.0 پر پوائنٹر کے مانیٹر کی چوڑائی کے 10% فاصلے پر، اس کے مرکز سے، اسٹک کا پورا انحراف ملتا ہے۔ 1.0 سے زیادہ قدروں پر کرسر کے کم سفر سے پورا انحراف مل جاتا ہے۔ 1.0 سے کم قدروں پر زیادہ سفر درکار ہوتا ہے۔</value></data>
   <data name="Mapping_MouseTravelX" xml:space="preserve"><value>ماؤس کا سفر X</value></data>
   <data name="Mapping_MouseTravelY" xml:space="preserve"><value>ماؤس کا سفر Y</value></data>
   <data name="Mapping_MouseTravelCounts" xml:space="preserve"><value>مکمل لاک تک سفر</value></data>
-  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماؤس مرکز سے مکمل لاک تک کتنا ہلتا ہے، ماؤس کے بتائے ہوئے کاؤنٹس میں۔ زیادہ عدد زیادہ باریک اسٹیئرنگ دیتا ہے اور ہاتھ کو زیادہ حرکت کرنی پڑتی ہے۔</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip" xml:space="preserve"><value>ماؤس یا وہیل مرکز سے مکمل لاک تک کتنا ہلتا ہے، اپنے بتائے ہوئے کاؤنٹس میں۔ زیادہ عدد زیادہ باریک اسٹیئرنگ دیتا ہے اور ہاتھ کو زیادہ حرکت کرنی پڑتی ہے۔</value></data>
+  <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>ماؤس کی DPI اس کے آلے کے پینل میں مقرر ہو تو سفر سینٹی میٹر میں بھی دکھایا جاتا ہے۔</value></data>
   <data name="Mapping_MouseTravelCounts_Unit" xml:space="preserve"><value>کاؤنٹس</value></data>
   <data name="Mapping_MouseTravelCentering" xml:space="preserve"><value>مرکز پر واپسی</value></data>
-  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>آف وہیل کو وہیں رکھتا ہے جہاں ہاتھ نے چھوڑا۔ اسپرنگ اسے واپسی کے وقت میں واپس لاتا ہے۔ ٹیلی میٹری سے اسے ایسے کھینچتا ہے جیسے کار کے اگلے ٹائر کھینچتے، گیم کی رفتار اور گرفت پر: رکنے پر ساکن، رفتار کے ساتھ سخت، ٹائر پھسلیں تو ہلکا۔ ٹیلی میٹری بھیجنے والی کوئی گیم نہ ہو تو یہ اسپرنگ ہے۔ گیم کی قوت سے ورچوئل وہیل کی اپنی فورس فیڈ بیک اسے گھمانے دیتی ہے۔</value></data>
+  <data name="Mapping_MouseTravelCentering_Tooltip" xml:space="preserve"><value>آف وہیل کو وہیں رکھتا ہے جہاں ہاتھ نے چھوڑا۔ اسپرنگ اسے واپسی کے وقت میں واپس لاتا ہے۔ ٹیلی میٹری سے اسے ایسے کھینچتا ہے جیسے کار کی اسٹیئرنگ کھینچتی ہے، گیم کی رفتار اور گرفت پر: مرکز کے قریب تیز اور آگے نرم، رکنے پر ساکن، رفتار کے ساتھ سخت، ٹائر پھسلیں تو ہلکا۔ ٹیلی میٹری بھیجنے والی کوئی گیم نہ ہو تو یہ ایسے کھینچتا ہے جیسے خشک سڑک پر 100 km/h پر۔ گیم کی قوت سے ورچوئل وہیل کی اپنی فورس فیڈ بیک اسے گھمانے دیتی ہے۔</value></data>
   <data name="Mapping_MouseTravelCentering_Off" xml:space="preserve"><value>آف</value></data>
   <data name="Mapping_MouseTravelCentering_Spring" xml:space="preserve"><value>اسپرنگ</value></data>
   <data name="Mapping_MouseTravelCentering_Telemetry" xml:space="preserve"><value>ٹیلی میٹری سے</value></data>
   <data name="Mapping_MouseTravelCentering_GameForce" xml:space="preserve"><value>گیم کی قوت سے</value></data>
   <data name="Mapping_MouseTravelReturnTime" xml:space="preserve"><value>واپسی کا وقت</value></data>
-  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>اسپرنگ وہیل کو 95% واپس لانے میں کتنا وقت لیتا ہے۔ ٹیلی میٹری سے خشک سڑک پر 100 km/h پر اتنا وقت لیتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelReturnTime_Tooltip" xml:space="preserve"><value>اسپرنگ وہیل کو 95% واپس لانے میں کتنا وقت لیتا ہے۔ 0 اسے فوراً مرکز پر لے آتا ہے۔ ٹیلی میٹری سے خشک سڑک پر 100 km/h پر مرکز کے قریب سے اتنا وقت لیتا ہے۔</value></data>
   <data name="Mapping_MouseTravelSteer" xml:space="preserve"><value>اسٹیئر کریں</value></data>
-  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ہمیشہ ماؤس کو ہر وقت اسٹیئر کرنے دیتا ہے۔ دبائے رکھنے کے دوران اسے صرف اسی وقت اسٹیئر کرنے دیتا ہے جب اسٹیئر ان پٹ دبا ہو۔ ٹوگل اسٹیئر ان پٹ کے ہر دباؤ پر اسٹیئرنگ آن یا آف کرتا ہے۔ جب ماؤس اسٹیئر نہیں کرتا تو وہیل وہیں رہتا ہے یا مرکز پر آ جاتا ہے، اس لیے ایک ماؤس اسٹیئر بھی کر سکتا ہے اور اردگرد بھی دیکھ سکتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelSteer_Tooltip" xml:space="preserve"><value>ہمیشہ ماؤس کو ہر وقت اسٹیئر کرنے دیتا ہے۔ دبائے رکھنے کے دوران اور مرکز پر اسے صرف اسی وقت اسٹیئر کرنے دیتا ہے جب اسٹیئر ان پٹ دبا ہو، پھر اسے مرکز پر واپس لاتا ہے، جہاں ماخذ میں مرکزیت ہو وہاں اس کے ذریعے اور جہاں نہ ہو وہاں فوراً۔ دبائے رکھنے کے دوران اور وہیں رکیں اسے صرف ان پٹ دبا ہونے تک اسٹیئر کرنے دیتا ہے اور چھوڑنے پر جہاں تھا وہیں رہنے دیتا ہے۔ ٹوگل اسٹیئر ان پٹ کے ہر دباؤ پر اسٹیئرنگ آن یا آف کرتا ہے۔ اس طرح ایک ماؤس اسٹیئر بھی کر سکتا ہے اور اردگرد بھی دیکھ سکتا ہے۔</value></data>
   <data name="Mapping_MouseTravelSteer_Always" xml:space="preserve"><value>ہمیشہ</value></data>
-  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>دبائے رکھنے کے دوران</value></data>
+  <data name="Mapping_MouseTravelSteer_Held" xml:space="preserve"><value>دبائے رکھنے کے دوران اور مرکز پر</value></data>
   <data name="Mapping_MouseTravelSteer_Toggle" xml:space="preserve"><value>ٹوگل</value></data>
   <data name="Mapping_MouseTravelSteerInput" xml:space="preserve"><value>اسٹیئر ان پٹ</value></data>
-  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>وہ بٹن جو ماؤس کو اسٹیئر کرنے دیتا ہے، ماؤس کے سفر والے ہی آلے پر۔ کوئی منتخب نہ ہو تو ماؤس ہمیشہ اسٹیئر کرتا ہے۔</value></data>
+  <data name="Mapping_MouseTravelSteerInput_Tooltip" xml:space="preserve"><value>وہ بٹن جو ماؤس کو اسٹیئر کرنے دیتا ہے، ماخذ والے ہی آلے پر۔ کوئی منتخب نہ ہو تو ماؤس ہمیشہ اسٹیئر کرتا ہے۔</value></data>
   <data name="Mapping_MouseTravelSmoothing" xml:space="preserve"><value>ہموار کاری</value></data>
-  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ناہموار رپورٹ کرنے والے ماؤس کو ہموار کرتا ہے۔ وہیل ہاتھ سے تقریباً اتنا پیچھے رہتا ہے۔ 0 پر آف۔</value></data>
+  <data name="Mapping_MouseTravelSmoothing_Tooltip" xml:space="preserve"><value>ناہموار رپورٹ کرنے والے ماؤس کو ہموار کرتا ہے۔ اسٹک ہاتھ سے تقریباً اتنا پیچھے رہتی ہے۔ 0 پر آف۔</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed" xml:space="preserve"><value>رفتار پر لاک</value></data>
   <data name="Mapping_MouseTravelLockAtSpeed_Tooltip" xml:space="preserve"><value>گیم ٹیلی میٹری آن ہو تو 200 km/h پر لاک کا کتنا حصہ باقی رہتا ہے۔ 100% پر ہر رفتار پر پورا لاک موجود ہوتا ہے۔</value></data>
+  <data name="Mapping_WheelTravel" xml:space="preserve"><value>وہیل کا سفر</value></data>
+  <data name="Mapping_WheelTravelSideways" xml:space="preserve"><value>وہیل کا سفر پہلو کی طرف</value></data>
+  <data name="Mapping_MouseSpeed_Description" xml:space="preserve"><value>ماؤس کتنی تیزی سے ہلتا ہے۔ ہاتھ رکنے پر چھوڑ دیتا ہے۔</value></data>
+  <data name="Mapping_MousePosition_Description" xml:space="preserve"><value>پوائنٹر اپنے مانیٹر پر کہاں ہے، اس کے مرکز سے یا وہاں سے جہاں وہ اسٹیئرنگ شروع ہونے پر تھا۔</value></data>
+  <data name="Mapping_MouseTravel_Description" xml:space="preserve"><value>ماؤس کتنا ہلا ہے، وہیں تھاما ہوا جہاں ہاتھ چھوڑے، جیسے وہیل کا ہوتا ہے۔</value></data>
+  <data name="Mapping_WheelTravel_Description" xml:space="preserve"><value>اسکرول کے نشان ایک پوزیشن کے طور پر تھامے گئے، باریک اسکرول کرنے والے وہیل پر پوری درستی کے ساتھ۔</value></data>
+  <data name="Mapping_WheelTravelSideways_Description" xml:space="preserve"><value>پہلو والے وہیل کے نشان ایک پوزیشن کے طور پر تھامے گئے، باریک اسکرول کرنے والے وہیل پر پوری درستی کے ساتھ۔</value></data>
+  <data name="Mapping_MouseScroll_Description" xml:space="preserve"><value>ہر نشان پر ایک دھکا، پھر فوراً آرام کی حالت میں۔</value></data>
+  <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>دبائے رکھنے کے دوران اور وہیں رکیں</value></data>
+  <data name="Mapping_MouseSpeedSensitivity" xml:space="preserve"><value>حساسیت</value></data>
+  <data name="Mapping_MouseSpeedSensitivity_Tooltip" xml:space="preserve"><value>رفتار اسٹک کا کتنا حصہ دیتی ہے۔ 1.00 پر اسٹک 16,000 کاؤنٹس فی سیکنڈ پر پورے انحراف تک پہنچتی ہے، ہر پولنگ ریٹ اور ماؤس رپورٹ ریٹ پر۔</value></data>
+  <data name="Mapping_MouseBackToCenter" xml:space="preserve"><value>مرکز پر واپسی</value></data>
+  <data name="Mapping_MouseBackToCenter_Tooltip" xml:space="preserve"><value>ماؤس کے سست یا رک جانے پر اسٹک اس سے زیادہ تیزی سے واپس نہیں آتی۔ 0 پر یہ ماؤس کے ساتھ ہی واپس آ جاتی ہے۔</value></data>
+  <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>جہاں اسٹیئرنگ شروع ہوئی وہاں سے شروع کریں</value></data>
+  <data name="Mapping_MousePositionAnchor_Tooltip" xml:space="preserve"><value>اسٹیئر ان پٹ کے ساتھ اسٹک وہاں سے ناپتی ہے جہاں اسٹیئرنگ شروع ہونے پر پوائنٹر تھا، جیسے فون کی اسکرین پر اسٹک وہاں سے شروع ہوتی ہے جہاں انگلی لگتی ہے۔ آف ہو تو وہ پوائنٹر کے مانیٹر کے مرکز سے ناپتی ہے۔</value></data>
+  <data name="Mapping_AxisRelative" xml:space="preserve"><value>یہ محور رشتہ دار طور پر حرکت کرتا ہے</value></data>
+  <data name="Mapping_AxisRelative_Tooltip" xml:space="preserve"><value>ٹریک بال یا اسپنر کے لیے جو بتاتا ہے کہ وہ کتنا گھوما۔ آن ہو تو محور ماؤس کے سفر کی طرح ایک پوزیشن تھامے رکھتا ہے اور سفر کی ترتیبات لیتا ہے۔ Windows نہیں بتاتا کہ کون سے محور اس طرح حرکت کرتے ہیں۔</value></data>
+  <data name="Mapping_MouseTravelCounts_Centimeters" xml:space="preserve"><value>{0}، {1} سینٹی میٹر</value></data>
+  <data name="Mapping_Preview" xml:space="preserve"><value>پیش منظر</value></data>
+  <data name="Mapping_Preview_Tooltip" xml:space="preserve"><value>دکھاتا ہے کہ یہ فیملی آپ کے اپنے ماؤس کو کیسے فالو کرتی ہے۔ جب تک آپ اسے منتخب نہ کریں، کچھ میپ نہیں ہوتا۔</value></data>
+  <data name="Mapping_Preview_Moving" xml:space="preserve"><value>پیش منظر چل رہا ہے۔ اپنا ماؤس ہلائیں۔</value></data>
+  <data name="Mapping_Preview_Held_Format" xml:space="preserve"><value>{0} پر تھاما ہوا</value></data>
+  <data name="Mapping_Preview_At_Format" xml:space="preserve"><value>{0} پر</value></data>
+  <data name="Mapping_Preview_Right" xml:space="preserve"><value>{0}% دائیں</value></data>
+  <data name="Mapping_Preview_Left" xml:space="preserve"><value>{0}% بائیں</value></data>
+  <data name="Mapping_Preview_Up" xml:space="preserve"><value>{0}% اوپر</value></data>
+  <data name="Mapping_Preview_Down" xml:space="preserve"><value>{0}% نیچے</value></data>
+  <data name="Mapping_Preview_Center" xml:space="preserve"><value>مرکز</value></data>
+  <data name="Mapping_Preview_Waits_Format" xml:space="preserve"><value>{0} دبا ہونے کے دوران حرکت کرتا ہے۔</value></data>
+  <data name="Devices_MouseDpi" xml:space="preserve"><value>ماؤس DPI</value></data>
+  <data name="Devices_MouseDpi_Tooltip" xml:space="preserve"><value>یہ ماؤس ہر انچ ہلنے پر جتنے کاؤنٹس بتاتا ہے، جیسا اس کے بنانے والے کا سافٹ ویئر مقرر کرتا ہے۔</value></data>
+  <data name="Devices_MouseDpi_Note" xml:space="preserve"><value>DPI مقرر ہو تو ماؤس کا سفر سینٹی میٹر میں بھی دکھایا جاتا ہے۔ 0 کا مطلب مقرر نہیں۔</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR پوائنٹر X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR پوائنٹر Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR چمک</value></data>
@@ -4923,6 +5066,7 @@
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>اسکرین پر نظر آنے والے اشارے جو PadForge کھیلنے کے دوران دکھاتا ہے۔ کسی کو آف کرنے سے طرز عمل کبھی نہیں بدلتا، صرف یہ بدلتا ہے کہ وہ دکھایا جائے یا نہیں۔</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>شفٹ لیئر فلائی آؤٹ</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>پروفائل تبدیلی اوورلے</value></data>
+  <data name="Dashboard_ControllersNote" xml:space="preserve"><value>کنٹرولرز آن یا آف</value></data>
   <data name="Dashboard_DeviceDisconnectedNote" xml:space="preserve"><value>آلہ منقطع ہونے کا نوٹ</value></data>
   <data name="Dashboard_DeviceConnectedNote" xml:space="preserve"><value>آلہ منسلک ہونے کا نوٹ</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>جب ریڈیل یا ٹچ مینو فعال ہو تو اسکرین پر حلقہ یا گرڈ دکھائیں۔ اوورلے آف ہونے پر بھی مینوز چلتے ہیں۔</value></data>
@@ -5651,6 +5795,8 @@
   <data name="KeyboardScreens_Mode_Off" xml:space="preserve"><value>آف</value></data>
   <data name="KeyboardScreens_Mode_Stopwatch" xml:space="preserve"><value>اسٹاپ واچ</value></data>
   <data name="KeyboardScreens_Mode_Lightbar" xml:space="preserve"><value>لائٹ بار کا رنگ</value></data>
+  <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>آف لائن آلات</value></data>
+  <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>سب منسلک</value></data>
   <data name="KeyboardScreens_Status_Line_Format" xml:space="preserve"><value>{0}: {1}</value></data>
   <data name="KeyboardScreens_Status_Off" xml:space="preserve"><value>آف</value></data>
   <data name="KeyboardScreens_Status_Lgs" xml:space="preserve"><value>Logitech Gaming Software کے ذریعے</value></data>
@@ -5693,6 +5839,7 @@
   <data name="KeyboardScreen_Hint_Picture" xml:space="preserve"><value>اسکرین آپ کی منتخب کردہ تصویر اس کے اپنے سائز میں دکھاتی ہے۔ اسکرین سے بڑی تصویر ہو تو اسکرین کے سائز کی ایک کھڑکی دکھائی جاتی ہے، جسے کی بورڈ اسکرین کی تصویر پین کریں میکرو حرکت دیتا ہے۔ S.T.R.I.K.E. 7 پر اسکرین پر انگلی گھسیٹنے سے بھی یہ حرکت کرتی ہے۔</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch" xml:space="preserve"><value>اسکرین اسٹاپ واچ دکھاتی ہے، جسے اسٹاپ واچ میکرو شروع کرتا ہے، موقوف کرتا ہے اور ری سیٹ کرتا ہے۔ ہر اسکرین ایک ہی اسٹاپ واچ دکھاتی ہے۔</value></data>
   <data name="KeyboardScreen_Hint_Lightbar" xml:space="preserve"><value>اسکرین اس سب سے کم نمبر والے سلاٹ میں موجود DualShock 4 یا DualSense کے لائٹ بار کا رنگ دکھاتی ہے جسے یہ اسکرین ان پٹ دیتی ہے، اور اگر وہ کسی کو ان پٹ نہ دے تو تمام سلاٹس میں سب سے کم نمبر والے سلاٹ کا۔ مونوکروم اسکرین اس کی چمک ڈاٹ پیٹرن کی صورت میں دکھاتی ہے۔ جب تک کسی لائٹ بار تک رنگ نہ پہنچے، PadForge کچھ نہیں دکھاتا۔</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>اسکرین ان میپ شدہ آلات کی فہرست دکھاتی ہے جو منسلک نہیں ہیں، انہی ناموں سے جو آلات صفحہ دکھاتا ہے، اور کوئی غیر حاضر نہ ہو تو سب منسلک لکھتی ہے۔</value></data>
   <data name="KeyboardScreen_PictureFilter" xml:space="preserve"><value>تصاویر (*.png, *.jpg, *.bmp, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.gif|تمام فائلیں (*.*)|*.*</value></data>
   <data name="KeyboardScreen_Pan_Label" xml:space="preserve"><value>پین</value></data>
   <data name="KeyboardScreen_PanX" xml:space="preserve"><value>پین X</value></data>
@@ -5944,6 +6091,7 @@
   <data name="Telemetry_Target_Driving" xml:space="preserve"><value>ڈرائیونگ (0 نہیں)</value></data>
   <data name="Macro_GameTelemetry" xml:space="preserve"><value>گیم ٹیلی میٹری</value></data>
   <data name="Macro_ScriptValue" xml:space="preserve"><value>اسکرپٹ کی قدر</value></data>
+  <data name="Macro_DeviceConnection" xml:space="preserve"><value>آلے کا کنکشن</value></data>
   <data name="Telemetry_Channel_SpeedMph" xml:space="preserve"><value>رفتار (mph)</value></data>
   <data name="Telemetry_Channel_RpmPercent" xml:space="preserve"><value>RPM (زیادہ سے زیادہ کا %)</value></data>
   <data name="Telemetry_Channel_Gear" xml:space="preserve"><value>گیئر (-1 ریورس، 0 نیوٹرل)</value></data>
@@ -6049,6 +6197,7 @@
   <data name="KeyboardScreen_Hint_Picture_Overlay" xml:space="preserve"><value>اوورلے آپ کی منتخب کردہ تصویر دکھاتا ہے، جو اپنے تناسب کو برقرار رکھتے ہوئے اس کی ونڈو کو بھرنے کے لیے پھیلائی جاتی ہے۔ 100 فیصد سے اوپر زوم پر یہ تصویر کا ایک حصہ دکھاتا ہے، مثلاً نقشے کے لیے۔ اس حصے کو کی بورڈ اسکرین کی تصویر پین کریں میکرو حرکت دیتا ہے، اور PadForge سامنے ہونے پر ماؤس کے بائیں بٹن سے گھسیٹنا بھی۔</value></data>
   <data name="KeyboardScreen_Hint_Stopwatch_Overlay" xml:space="preserve"><value>اوورلے اسٹاپ واچ دکھاتا ہے، جسے اسٹاپ واچ میکرو شروع کرتا ہے، موقوف کرتا ہے اور ری سیٹ کرتا ہے۔ یہ وہی اسٹاپ واچ ہے جو ہر کی بورڈ اسکرین دکھاتی ہے۔</value></data>
   <data name="KeyboardScreen_Hint_Lightbar_Overlay" xml:space="preserve"><value>اوورلے یہاں آپ کے منتخب کردہ سلاٹ میں، یا رنگ والے سب سے کم نمبر کے سلاٹ میں، موجود DualShock 4 یا DualSense کے لائٹ بار کا رنگ دکھاتا ہے۔ جب تک کسی لائٹ بار تک رنگ نہ پہنچے، یہ کچھ نہیں دکھاتا۔</value></data>
+  <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>اوورلے ان میپ شدہ آلات کی فہرست دکھاتا ہے جو منسلک نہیں ہیں، انہی ناموں سے جو آلات صفحہ دکھاتا ہے، اور کوئی غیر حاضر نہ ہو تو سب منسلک لکھتا ہے۔</value></data>
   <data name="Dashboard_ScreenOverlay_Number_Format" xml:space="preserve"><value>اسکرین اوورلے {0}</value></data>
   <data name="Dashboard_ScreenOverlayAdd" xml:space="preserve"><value>اوورلے شامل کریں</value></data>
   <data name="KeyboardScreen_LightbarSlot_Lowest" xml:space="preserve"><value>رنگ والا سب سے کم نمبر کا سلاٹ</value></data>
@@ -6391,6 +6540,245 @@
   <data name="Menu_Keyboard_OpenPress_Short_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبائے رکھنے کے وقت سے پہلے چھوڑ دیا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔ اس سے زیادہ دیر دبانے پر کچھ نہیں ہوتا۔</value></data>
   <data name="Menu_Keyboard_OpenPress_Triple_Desc" xml:space="preserve"><value>جب "اس سے کھلتا ہے" کو دبانے کی مہلت کے اندر تین بار دبایا جائے تو کی بورڈ کھلتا یا بند ہوتا ہے۔</value></data>
   <data name="Menu_Keyboard_OpenPress_Single_Desc" xml:space="preserve"><value>"اس سے کھلتا ہے" کو ایک بار دبانے کے بعد جب دبانے کی مہلت ختم ہو تو کی بورڈ کھلتا یا بند ہوتا ہے۔ مہلت کے اندر دوسری بار دبانے سے یہ منسوخ ہو جاتا ہے۔</value></data>
+  <data name="Automation_Status_Off" xml:space="preserve"><value>آف۔ کوئی پروگرام PadForge تک نہیں پہنچ سکتا۔</value></data>
+  <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} اور {1}</value></data>
+  <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}، {1}</value></data>
+  <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge سرگرمی: {0} کالز، پرانی پہلے۔ ان سے پہلے کی کالز: {1}۔</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge سرگرمی: {0} کال۔ اس سے پہلے کی کالز: {1}۔</value></data>
+  <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} پرانی کالز ہٹ گئیں۔ سرگرمی نئی ترین {1:N0} رکھتی ہے۔</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} پرانی کال ہٹ گئی۔ سرگرمی نئی ترین {1:N0} رکھتی ہے۔</value></data>
+  <data name="Extras_Automation_Export" xml:space="preserve"><value>ایکسپورٹ کریں…</value></data>
+  <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>سرگرمی ایکسپورٹ کریں</value></data>
+  <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>ٹیکسٹ فائل</value></data>
+  <data name="Extras_Automation_OpenRun" xml:space="preserve"><value>کھولیں</value></data>
+  <data name="Extras_Automation_Update" xml:space="preserve"><value>اپ ڈیٹ</value></data>
+  <data name="Extras_Automation_RowMenu_Format" xml:space="preserve"><value>{0} کے لیے مزید</value></data>
+  <data name="Extras_Automation_SaveZip" xml:space="preserve"><value>اسکل کو ZIP کے طور پر محفوظ کریں…</value></data>
+  <data name="Extras_Automation_OpenSettings" xml:space="preserve"><value>اس کی ترتیبات کی فائل کھولیں</value></data>
+  <data name="Extras_Automation_ZipSaved_Format" xml:space="preserve"><value>محفوظ ہو گیا۔ {0} میں {2} کے تحت {1} شامل کریں۔</value></data>
+  <data name="Extras_Automation_NoSettingsFile_Format" xml:space="preserve"><value>{0} کی ترتیبات کی فائل ابھی موجود نہیں۔ شامل کریں بنا دیتا ہے۔</value></data>
+  <data name="Extras_Automation_NoAssistants" xml:space="preserve"><value>PadForge کو اس PC پر کوئی اسسٹنٹ پروگرام نہیں ملتا جس کا بنانے والا Windows پر سیٹ اپ بیان کرتا ہو۔ باقی کسی کے لیے مزید کے تحت ترتیبات کاپی کریں کام کرتا ہے۔</value></data>
+  <data name="Extras_Automation_CheckFailed_Format" xml:space="preserve"><value>PadForge اسسٹنٹ پروگراموں کی جانچ نہیں کر سکا: {0}</value></data>
+  <data name="Extras_Automation_State_NotAdded" xml:space="preserve"><value>شامل نہیں۔</value></data>
+  <data name="Extras_Automation_State_Added" xml:space="preserve"><value>شامل۔</value></data>
+  <data name="Extras_Automation_State_ConnectedNow" xml:space="preserve"><value>شامل۔ ابھی منسلک ہے۔</value></data>
+  <data name="Extras_Automation_State_NotConnectedSince" xml:space="preserve"><value>شامل۔ اس کے بعد یہ منسلک نہیں ہوا۔ جو اسسٹنٹ کھلا ہوا تھا وہ بند کر کے دوبارہ کھولنے کے بعد PadForge کو دیکھتا ہے۔</value></data>
+  <data name="Extras_Automation_State_EntryOlder" xml:space="preserve"><value>دوسرے PadForge کے لیے شامل کیا گیا۔ اپ ڈیٹ اسے اس والے کی طرف موڑ دیتا ہے۔</value></data>
+  <data name="Extras_Automation_State_SkillOlder" xml:space="preserve"><value>شامل۔ اس کی PadForge اسکل اس PadForge سے پرانی ہے۔</value></data>
+  <data name="Extras_Automation_State_SkillMissing" xml:space="preserve"><value>شامل، لیکن اس کی PadForge اسکل کے بغیر۔</value></data>
+  <data name="Extras_Automation_State_SkillNewer" xml:space="preserve"><value>شامل۔ اس کی PadForge اسکل نئے PadForge سے آئی ہے۔</value></data>
+  <data name="Extras_Automation_State_UploadOnly" xml:space="preserve"><value>یہ اسکلز صرف اپ لوڈ کے طور پر لیتا ہے۔</value></data>
+  <data name="Extras_Automation_State_OffNote" xml:space="preserve"><value>شامل کیے گئے اسسٹنٹس آٹومیشن آن ہونے پر PadForge تک پہنچتے ہیں۔</value></data>
+  <data name="Extras_Automation_State_Adding" xml:space="preserve"><value>شامل کیا جا رہا ہے…</value></data>
+  <data name="Extras_Automation_State_Removing" xml:space="preserve"><value>ہٹایا جا رہا ہے…</value></data>
+  <data name="Extras_Automation_State_Updating" xml:space="preserve"><value>اپ ڈیٹ ہو رہا ہے…</value></data>
+  <data name="Extras_Automation_State_Failed_Format" xml:space="preserve"><value>یہ مکمل نہیں ہوا: {0}</value></data>
+  <data name="Extras_Automation_OtherAssistants" xml:space="preserve"><value>دوسرے اسسٹنٹس</value></data>
+  <data name="Extras_Automation_OtherAssistantsHint" xml:space="preserve"><value>اوپر درج نہ ہونے والے اسسٹنٹ کے لیے: ترتیبات کاپی کریں اس کی MCP ترتیبات کے لیے اندراج دیتا ہے، اور پیغام کاپی کریں کسی بھی چیٹ کے لیے مختصر متن دیتا ہے جو بتاتا ہے کہ کیسے جڑنا ہے اور پہلے کیا پوچھنا ہے۔</value></data>
+  <data name="Extras_Automation_CopySettings" xml:space="preserve"><value>ترتیبات کاپی کریں</value></data>
+  <data name="Extras_Automation_CopyMessage" xml:space="preserve"><value>پیغام کاپی کریں</value></data>
+  <data name="Extras_Automation_Copied" xml:space="preserve"><value>کاپی ہو گیا۔</value></data>
+  <data name="Extras_Automation_NotCopied_Format" xml:space="preserve"><value>کاپی نہیں ہوا: {0}</value></data>
+  <data name="Extras_Automation_Message_Format" xml:space="preserve"><value>PadForge سے جڑیں، جو میرے PC پر کنٹرولر میپر ہے۔ یہ ایک مقامی MCP سرور ہے جو stdio پر چلتا ہے: کمانڈ {0} ہے، آرگومنٹ --mcp کے ساتھ۔ JSON ترتیبات کے طور پر: {1} جڑنے کے بعد پہلے اس کا status ٹول کال کریں، پھر مجھ سے پوچھیں کہ میں کیا سیٹ اپ کرنا چاہتا ہوں، مثلاً: “مجھے دکھائیں کہ اپنے کنٹرولر کے ٹرگرز کہاں میپ کروں۔”</value></data>
+  <data name="Extras_Automation_Message_Off" xml:space="preserve"><value>PadForge کا آٹومیشن ابھی آف ہے: پہلے PadForge میں ایکسٹراز، آٹومیشن کے تحت اسے آن کریں۔</value></data>
+  <data name="Extras_Automation_Card_Allowed" xml:space="preserve"><value>اجازت یافتہ پروگرام</value></data>
+  <data name="Extras_Automation_AllowedHint" xml:space="preserve"><value>جو پروگرام پڑھیں یا اس سے اوپر کی سطح چاہتا ہے وہ پہلی بار جڑتے وقت ایک بار پوچھتا ہے، اور اوپر والی سطح تک، جو سطح مانگے وہ پاتا ہے۔ آپ نے اوپر جو اسسٹنٹ شامل کیا ہو اسے اسی سے اجازت مل جاتی ہے۔</value></data>
+  <data name="Automation_Allowed_Line_Format" xml:space="preserve"><value>{0}۔ {1}۔ {2}</value></data>
+  <data name="Automation_Allowed_ConnectedNow" xml:space="preserve"><value>ابھی منسلک ہے۔</value></data>
+  <data name="Automation_Allowed_LastUsed_Format" xml:space="preserve"><value>آخری استعمال {0}۔</value></data>
+  <data name="Automation_Allowed_NeverUsed" xml:space="preserve"><value>ابھی استعمال نہیں ہوا۔</value></data>
+  <data name="Main_ConnectedMark_Format" xml:space="preserve"><value>منسلک: {0}۔ آٹومیشن کھولنے کے لیے کلک کریں۔</value></data>
+  <data name="Main_ConnectedMark_Web_Format" xml:space="preserve"><value>اس PC پر: {0}۔ ویب سے: {1}۔ آٹومیشن کھولنے کے لیے کلک کریں۔</value></data>
+  <data name="Main_ConnectedMark_WebOnly_Format" xml:space="preserve"><value>ویب سے منسلک: {0}۔ آٹومیشن کھولنے کے لیے کلک کریں۔</value></data>
+  <data name="SdlMapping_Title" xml:space="preserve"><value>SDL میپنگ</value></data>
+  <data name="SdlMapping_ReadAs" xml:space="preserve"><value>بطور پڑھا گیا</value></data>
+  <data name="SdlMapping_From" xml:space="preserve"><value>ماخذ</value></data>
+  <data name="SdlMapping_Id" xml:space="preserve"><value>ID</value></data>
+  <data name="SdlMapping_Gamepad_Format" xml:space="preserve"><value>گیم پیڈ، “{0}”</value></data>
+  <data name="SdlMapping_Joystick" xml:space="preserve"><value>جوائے اسٹک۔ SDL کے پاس اس کی کوئی میپنگ نہیں۔</value></data>
+  <data name="SdlMapping_ReadRaw" xml:space="preserve"><value>جوائے اسٹک۔ PadForge اسے خام پڑھتا ہے، اس لیے SDL کی میپنگ استعمال نہیں ہوتی۔</value></data>
+  <data name="SdlMapping_PadForgeDeviceMapped" xml:space="preserve"><value>جوائے اسٹک، جسے آپ کی قطار نے گیم پیڈ کی طرح ترتیب دیا۔</value></data>
+  <data name="SdlMapping_Stopped" xml:space="preserve"><value>SDL آلات کو انجن چلنے کے دوران پڑھتا ہے۔</value></data>
+  <data name="SdlMapping_From_Sdl" xml:space="preserve"><value>SDL</value></data>
+  <data name="SdlMapping_From_Community_Format" xml:space="preserve"><value>کمیونٹی کی اندر شامل کاپی، {0}</value></data>
+  <data name="SdlMapping_From_Downloaded_Format" xml:space="preserve"><value>ڈاؤن لوڈ کیا {0}</value></data>
+  <data name="SdlMapping_From_PadForge" xml:space="preserve"><value>PadForge کی اپنی فائل</value></data>
+  <data name="SdlMapping_From_Yours_Format" xml:space="preserve"><value>آپ کی، شامل کی {0}</value></data>
+  <data name="SdlMapping_From_Variable" xml:space="preserve"><value>SDL_GAMECONTROLLERCONFIG ویری ایبل، جسے SDL آپ کی شامل کردہ ہر قطار سے اوپر رکھتا ہے</value></data>
+  <data name="SdlMapping_Copy" xml:space="preserve"><value>SDL میپنگ کاپی کریں</value></data>
+  <data name="SdlMapping_CopyTip" xml:space="preserve"><value>آلے کی میپنگ کو کمیونٹی ڈیٹا بیس کی قطار کے طور پر کلپ بورڈ پر رکھتا ہے، آلے کے ID کے تحت، اس کا چیک سم اور ورژن صفر کر کے۔</value></data>
+  <data name="SdlMapping_Paste" xml:space="preserve"><value>SDL میپنگ چسپاں کریں…</value></data>
+  <data name="SdlMapping_PasteTip" xml:space="preserve"><value>اس آلے کے لیے ایک قطار لیتا ہے، اسے جانچتا ہے، آپ کی اپنی کے طور پر رکھتا ہے اور فوراً لاگو کر دیتا ہے۔</value></data>
+  <data name="SdlMapping_Find" xml:space="preserve"><value>میپنگ تلاش کریں…</value></data>
+  <data name="SdlMapping_FindTip" xml:space="preserve"><value>PadForge کی رکھی ہوئی ہر قطار نام سے تلاش کرتا ہے اور آپ کی منتخب کردہ کو اس آلے پر لاگو کرتا ہے، ایسے کلون کے لیے جس کی IDs مختلف ہوں۔</value></data>
+  <data name="SdlMapping_Guess" xml:space="preserve"><value>لے آؤٹ کا اندازہ لگائیں</value></data>
+  <data name="SdlMapping_GuessTip" xml:space="preserve"><value>آلے کے محوروں، بٹنوں اور ہیٹس سے گیم پیڈ لے آؤٹ کا اندازہ لگاتا ہے، ایسے آلے کے لیے جسے کوئی ڈیٹا بیس نہیں جانتا۔ اسے ٹیسٹ ان پٹس میں جانچیں۔</value></data>
+  <data name="SdlMapping_RemoveMine" xml:space="preserve"><value>میری ہٹائیں</value></data>
+  <data name="SdlMapping_RemoveMineNote" xml:space="preserve"><value>میری ہٹائیں پہلے کی قطار اور کنٹرولر کی قطاریں واپس لے آتا ہے۔</value></data>
+  <data name="SdlMapping_MapAgain" xml:space="preserve"><value>دوبارہ میپ کریں</value></data>
+  <data name="SdlMapping_MapAgainTip" xml:space="preserve"><value>آلے کی قطاریں ہر اس کنٹرولر پر جس پر وہ ہے، SDL کے لے آؤٹ سے دوبارہ بناتا ہے، جیسے اسے تفویض کرنے پر ہوتا ہے۔</value></data>
+  <data name="SdlMapping_CommunityLink" xml:space="preserve"><value>کمیونٹی ڈیٹا بیس کا صفحہ</value></data>
+  <data name="SdlMapping_More_Format" xml:space="preserve"><value>قطار، اور وہ جہاں {0} سے مختلف ہے</value></data>
+  <data name="SdlMapping_More_NoController" xml:space="preserve"><value>قطار</value></data>
+  <data name="SdlMapping_Controller" xml:space="preserve"><value>کنٹرولر</value></data>
+  <data name="SdlMapping_Col_Row_Format" xml:space="preserve"><value>{0} کی قطار</value></data>
+  <data name="SdlMapping_Col_InputNow" xml:space="preserve"><value>اس کا ان پٹ اب</value></data>
+  <data name="SdlMapping_Col_RowSays" xml:space="preserve"><value>SDL کی قطار کہتی ہے</value></data>
+  <data name="SdlMapping_NotInRow" xml:space="preserve"><value>SDL کی قطار میں نہیں</value></data>
+  <data name="SdlMapping_Differs_Format" xml:space="preserve"><value>{0}، مختلف</value></data>
+  <data name="SdlMapping_Unused_Format" xml:space="preserve"><value>PadForge استعمال نہیں کرتا: {0}۔</value></data>
+  <data name="SdlMapping_TheRow" xml:space="preserve"><value>قطار</value></data>
+  <data name="SdlMapping_Copied" xml:space="preserve"><value>کاپی ہو گیا۔</value></data>
+  <data name="SdlMapping_CopiedLeftOut_Format" xml:space="preserve"><value>کاپی ہو گیا۔ SDL کی شکل {0} نہیں رکھ سکتی۔</value></data>
+  <data name="SdlMapping_LeftOut_Macros" xml:space="preserve"><value>میکروز</value></data>
+  <data name="SdlMapping_LeftOut_Curves" xml:space="preserve"><value>کرووز</value></data>
+  <data name="SdlMapping_LeftOut_DeadZones" xml:space="preserve"><value>ڈیڈ زونز</value></data>
+  <data name="SdlMapping_LeftOut_Keys" xml:space="preserve"><value>کی بورڈ اور ماؤس آؤٹ پٹس</value></data>
+  <data name="SdlMapping_LeftOut_Actions" xml:space="preserve"><value>ٹربو، ٹوگلز اور دوسرے اعمال</value></data>
+  <data name="SdlMapping_ListAnd_Format" xml:space="preserve"><value>{0} اور {1}</value></data>
+  <data name="SdlMapping_CopyNothing" xml:space="preserve"><value>کاپی کرنے کو کچھ نہیں: SDL کے پاس اس آلے کی کوئی میپنگ نہیں، اور یہ کسی کنٹرولر پر نہیں ہے۔</value></data>
+  <data name="SdlMapping_ClipboardBusy" xml:space="preserve"><value>کوئی اور پروگرام کلپ بورڈ استعمال کر رہا ہے۔ کچھ کاپی نہیں ہوا۔</value></data>
+  <data name="SdlMapping_Removed" xml:space="preserve"><value>آپ کی قطار ہٹا دی گئی۔ آلہ ویسے پڑھا جاتا ہے جیسے اس سے پہلے پڑھا جاتا تھا۔</value></data>
+  <data name="SdlMapping_MappedAgain_Format" xml:space="preserve"><value>SDL کے لے آؤٹ سے دوبارہ میپ کیا گیا: {0}۔</value></data>
+  <data name="SdlMapping_Applied" xml:space="preserve"><value>اب استعمال میں ہے۔ قطار آپ کی ہے اور اس آلے کے لیے غالب رہتی ہے۔</value></data>
+  <data name="SdlMapping_AppliesAtStart" xml:space="preserve"><value>آپ کی اپنی کے طور پر رکھ لی گئی۔ انجن چلنے اور آلہ منسلک ہونے پر یہ استعمال میں آئے گی۔</value></data>
+  <data name="SdlMapping_VariableWins" xml:space="preserve"><value>آپ کی اپنی کے طور پر رکھ لی گئی، لیکن SDL_GAMECONTROLLERCONFIG ویری ایبل میں اس آلے کی ایک قطار ہے، جسے SDL آپ کی قطار پر ترجیح دیتا ہے۔</value></data>
+  <data name="SdlMapping_SdlRefused" xml:space="preserve"><value>SDL نے قطار قبول نہیں کی۔ اس آلے کے لیے کچھ نہیں بدلا۔</value></data>
+  <data name="SdlMappingDialog_Title" xml:space="preserve"><value>SDL میپنگ چسپاں کریں</value></data>
+  <data name="SdlMappingDialog_PasteTitle_Format" xml:space="preserve"><value>{0} کے لیے SDL میپنگ چسپاں کریں</value></data>
+  <data name="SdlMappingDialog_FindTitle_Format" xml:space="preserve"><value>{0} کے لیے میپنگ تلاش کریں</value></data>
+  <data name="SdlMappingDialog_GuessTitle_Format" xml:space="preserve"><value>{0} کے لیے لے آؤٹ کا اندازہ لگائیں</value></data>
+  <data name="SdlMappingDialog_AddTitle" xml:space="preserve"><value>فائل یا کلپ بورڈ سے قطاریں شامل کریں</value></data>
+  <data name="SdlMappingDialog_Paste" xml:space="preserve"><value>چسپاں کریں</value></data>
+  <data name="SdlMappingDialog_OpenFile" xml:space="preserve"><value>فائل کھولیں…</value></data>
+  <data name="SdlMappingDialog_FileFilter" xml:space="preserve"><value>میپنگ فائلیں (*.txt)</value></data>
+  <data name="SdlMappingDialog_FileTooLarge" xml:space="preserve"><value>فائل 4 MB سے بڑی ہے۔ کمیونٹی کی پوری فائل تقریباً 0.6 MB کی ہے۔</value></data>
+  <data name="SdlMappingDialog_Search" xml:space="preserve"><value>نام، ID یا VID:PID سے تلاش کریں</value></data>
+  <data name="SdlMappingDialog_FindList" xml:space="preserve"><value>PadForge کی رکھی ہوئی قطاریں</value></data>
+  <data name="SdlMappingDialog_FindNone" xml:space="preserve"><value>کوئی قطار مطابقت نہیں رکھتی۔</value></data>
+  <data name="SdlMappingDialog_FindNote_Format" xml:space="preserve"><value>منتخب قطار {0} پر اس کی اپنی ID کے تحت لاگو ہوتی ہے، اسی جانچ اور اسی انتخاب سے جو چسپاں کریں کا ہے۔</value></data>
+  <data name="SdlMappingDialog_RowBox" xml:space="preserve"><value>SDL میپنگ کی قطار</value></data>
+  <data name="SdlMappingDialog_ForThisDevice" xml:space="preserve"><value>اس آلے کے لیے ایک قطار۔</value></data>
+  <data name="SdlMappingDialog_GuessLead" xml:space="preserve"><value>اندازے سے بنا لے آؤٹ۔</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_Format" xml:space="preserve"><value>Windows، {0} فیلڈز، اس کی ID اس آلے سے ملتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_Format" xml:space="preserve"><value>Windows، {0} فیلڈز، کسی دوسری بس یا ورژن پر اسی وینڈر اور پروڈکٹ کی۔ یہ اس آلے کی اپنی ID کے تحت رکھی جاتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows، {0} فیلڈز، کسی دوسرے آلے کی قطار۔ یہ اس آلے کی اپنی ID کے تحت رکھی جاتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} فیلڈز۔ SDL اس آلے کو نہیں پڑھتا، اس لیے PadForge اس کے ان پٹس قطار کے مطابق ترتیب دیتا ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} فیلڈز، آلے کے محوروں، بٹنوں اور ہیٹس سے۔ اسے ٹیسٹ ان پٹس میں جانچیں، پھر یہاں رکھیں یا بدلیں۔</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows، {0} فیلڈ، اس کی ID اس آلے سے ملتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows، {0} فیلڈ، کسی دوسری بس یا ورژن پر اسی وینڈر اور پروڈکٹ کی۔ یہ اس آلے کی اپنی ID کے تحت رکھی جاتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows، {0} فیلڈ، کسی دوسرے آلے کی قطار۔ یہ اس آلے کی اپنی ID کے تحت رکھی جاتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} فیلڈ۔ SDL اس آلے کو نہیں پڑھتا، اس لیے PadForge اس کے ان پٹس قطار کے مطابق ترتیب دیتا ہے۔</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} فیلڈ، آلے کے محوروں، بٹنوں اور ہیٹس سے۔ اسے ٹیسٹ ان پٹس میں جانچیں، پھر یہاں رکھیں یا بدلیں۔</value></data>
+  <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>اس سے {0} کے پڑھے جانے کا طریقہ بدلتا ہے۔ {1} میں اس کی قطاریں نئے لے آؤٹ سے دوبارہ میپ ہوتی ہیں۔</value></data>
+  <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>اس سے {0} کے پڑھے جانے کا طریقہ بدلتا ہے۔ یہ کسی کنٹرولر پر نہیں ہے، اس لیے کوئی قطار نہیں بدلتی۔</value></data>
+  <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>جو پروفائل شارٹ کٹس {0} کو پڑھتے ہیں وہ اپنے مقرر کردہ ان پٹس رکھتے ہیں۔</value></data>
+  <data name="SdlMappingDialog_Note" xml:space="preserve"><value>قطار PadForge.xml میں آپ کی اپنی کے طور پر رکھی جاتی ہے اور اس آلے کے لیے ہر دوسرے ماخذ پر غالب رہتی ہے۔ میری ہٹائیں پرانی قطار اور پرانی قطاریں واپس لے آتا ہے۔</value></data>
+  <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>قطاریں PadForge.xml میں آپ کی اپنی کے طور پر رکھی جاتی ہیں اور اپنے آلات کے لیے ہر دوسرے ماخذ پر غالب رہتی ہیں۔ کنٹرولر ڈیٹا بیس قطار کے مزید کے تحت صاف کریں انہیں ہٹا دیتا ہے۔</value></data>
+  <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>Windows کے لیے {0} قطاریں۔ دوسرے سسٹمز کی {1} چھوڑ دی گئیں۔</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>Windows کے لیے {0} قطار۔ دوسرے سسٹمز کی {1} چھوڑ دی گئیں۔</value></data>
+  <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} مسترد ہوئیں۔ پہلی: {1}</value></data>
+  <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>کوئی قطار، یا gamecontrollerdb.txt فائل کا متن چسپاں کریں۔</value></data>
+  <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>یہ متن SDL کے کنٹرولر ڈیٹا بیس کی کوئی قطار نہیں: 32 ہیکس ہندسوں کی ID، ایک نام، پھر فیلڈز جیسے a:b0۔</value></data>
+  <data name="SdlMappingDialog_Refused_OtherPlatform" xml:space="preserve"><value>قطاریں دوسرے سسٹمز کی ہیں۔ PadForge Windows کی قطاریں پڑھتا ہے، یا ان کی جو کسی خاص سسٹم کی نہ ہوں۔</value></data>
+  <data name="SdlMappingDialog_Refused_BadId" xml:space="preserve"><value>قطار کی ID کسی آلے کی نہیں ہے۔ اسے 32 ہیکس ہندسے چاہییں۔</value></data>
+  <data name="SdlMappingDialog_Refused_BadName" xml:space="preserve"><value>قطار کا نام خالی ہے، 128 حروف سے زیادہ ہے، یا ایسا حرف رکھتا ہے جسے SDL فیلڈ پڑھتا ہے۔</value></data>
+  <data name="SdlMappingDialog_Refused_Hint" xml:space="preserve"><value>قطار میں ایک ہنٹ یا Android فیلڈ ہے، جسے PadForge قبول نہیں کرتا۔</value></data>
+  <data name="SdlMappingDialog_Refused_UnknownField" xml:space="preserve"><value>قطار میں ایک ایسی فیلڈ ہے جسے SDL نہیں جانتا۔</value></data>
+  <data name="SdlMappingDialog_Refused_BadBinding" xml:space="preserve"><value>کوئی بائنڈنگ SDL کی شکل میں نہیں ہے، جیسے b3, a2, +a2, a2~ یا h0.4۔</value></data>
+  <data name="SdlMappingDialog_Refused_RepeatedField" xml:space="preserve"><value>قطار ایک فیلڈ دو بار دیتی ہے۔</value></data>
+  <data name="SdlMappingDialog_Refused_TooLong" xml:space="preserve"><value>قطار 1,024 حروف سے زیادہ ہے۔</value></data>
+  <data name="SdlMappingDialog_Refused_NoBindings" xml:space="preserve"><value>قطار کسی کنٹرول کو بائنڈ نہیں کرتی۔</value></data>
+  <data name="Settings_More_ControllerDatabase" xml:space="preserve"><value>آپ کی قطاریں</value></data>
+  <data name="ControllerDatabase_YourRows" xml:space="preserve"><value>آپ کی قطاریں</value></data>
+  <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>جو قطاریں آپ یہاں شامل کریں، یا کسی آلے کے SDL میپنگ کارڈ پر چسپاں کریں، وہ اپنے آلات کے لیے ہر دوسرے ماخذ پر غالب رہتی ہیں اور ری سیٹ کے بعد بھی رہتی ہیں۔</value></data>
+  <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>فائل یا کلپ بورڈ سے قطاریں شامل کریں…</value></data>
+  <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} قطاریں، اپنے آلات کے لیے ہر دوسرے ماخذ پر آپ کی۔</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} قطار، اپنے آلے کے لیے ہر دوسرے ماخذ پر آپ کی۔</value></data>
+  <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>ابھی کوئی نہیں۔</value></data>
+  <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>فوراً استعمال میں۔</value></data>
+  <data name="Web_Reach_Label" xml:space="preserve"><value>ویب سے PadForge تک رسائی</value></data>
+  <data name="Web_Reach_Hint" xml:space="preserve"><value>ویب سائٹ پر چلنے والا اسسٹنٹ اس PC پر ایک ٹنل پروگرام کے ذریعے PadForge تک پہنچتا ہے۔ اسے آن کرنے سے پہلے آپ سے پوچھا جاتا ہے۔</value></data>
+  <data name="Web_Reach_Ask_Title" xml:space="preserve"><value>ویب سے PadForge تک رسائی دیں؟</value></data>
+  <data name="Web_Reach_Ask_Body" xml:space="preserve"><value>PadForge ایک ہیلپر بغیر ایڈمنسٹریٹر حقوق کے شروع کرتا ہے جو صرف اس PC پر سنتا ہے، اور آپ کا منتخب کردہ ٹنل پروگرام اسے عوامی پتہ دیتا ہے۔ ویب اسسٹنٹ تبھی اندر آتا ہے جب آپ PadForge کے سوالیہ کارڈ پر اس کے سائن اِن کی اجازت دیں، اور وہ اوپر والی سطح پر کام کرتا ہے۔</value></data>
+  <data name="Web_Reach_Ask_Confirm" xml:space="preserve"><value>آن کریں</value></data>
+  <data name="Web_Header" xml:space="preserve"><value>ویب پر اسسٹنٹس</value></data>
+  <data name="Web_Tunnel_Label" xml:space="preserve"><value>ٹنل</value></data>
+  <data name="Web_Tunnel_None" xml:space="preserve"><value>کوئی نہیں</value></data>
+  <data name="Web_Tunnel_Paste" xml:space="preserve"><value>میرا چسپاں کردہ پتہ</value></data>
+  <data name="Web_Tunnel_Starting" xml:space="preserve"><value>شروع ہو رہا ہے، آپ کے حقوق کے ساتھ۔</value></data>
+  <data name="Web_Tunnel_Running_Keeps" xml:space="preserve"><value>چل رہا ہے، آپ کے حقوق کے ساتھ۔ ہر بار شروع ہونے پر اس کا پتہ وہی رہتا ہے۔</value></data>
+  <data name="Web_Tunnel_Running_Changes" xml:space="preserve"><value>چل رہا ہے، آپ کے حقوق کے ساتھ۔ فوری ٹنل ہر بار شروع ہونے پر نیا پتہ لیتا ہے، اس لیے اسسٹنٹ کو دوبارہ شامل کرنا پڑے گا۔</value></data>
+  <data name="Web_Tunnel_Stopped" xml:space="preserve"><value>رکا ہوا۔</value></data>
+  <data name="Web_Tunnel_Stopped_Format" xml:space="preserve"><value>رکا ہوا۔ اس کے آخری الفاظ: {0}</value></data>
+  <data name="Web_Tunnel_Failed" xml:space="preserve"><value>یہ شروع نہیں ہو سکا۔</value></data>
+  <data name="Web_Tunnel_Missing" xml:space="preserve"><value>یہ اب اس PC پر نہیں ہے۔</value></data>
+  <data name="Web_Tunnel_NoneFound" xml:space="preserve"><value>اس PC پر کوئی ٹنل پروگرام نہیں ملا۔ PadForge cloudflared، devtunnel، ngrok اور Tailscale Funnel کے ساتھ کام کرتا ہے، یا آپ کے اپنے ٹنل کے پتے کے ساتھ۔</value></data>
+  <data name="Web_Tunnel_Choose" xml:space="preserve"><value>PadForge کو عوامی پتہ دینے کے لیے ٹنل منتخب کریں۔</value></data>
+  <data name="Web_Tunnel_AlsoFound_Format" xml:space="preserve"><value>اس PC پر یہ بھی ہیں: {0}۔</value></data>
+  <data name="Web_Tunnel_Keeps_Format" xml:space="preserve"><value>{0}، جس کا پتہ وہی رہتا ہے</value></data>
+  <data name="Web_Tunnel_Changes_Format" xml:space="preserve"><value>{0}، جس کے فوری ٹنل ہر بار نیا پتہ لیتے ہیں</value></data>
+  <data name="Web_Tunnel_Paste_Hint_Format" xml:space="preserve"><value>اپنا ٹنل http://127.0.0.1:{0} تک چلائیں اور اس کا https پتہ چسپاں کریں۔ نامزد Cloudflare ٹنل، مستقل dev ٹنل، Tailscale Funnel اور ngrok کا اپنا ڈومین اپنا پتہ برقرار رکھتے ہیں۔</value></data>
+  <data name="Web_Tunnel_Paste_Wrong" xml:space="preserve"><value>ایسا https پتہ چسپاں کریں جس میں /mcp کے سوا کوئی راستہ نہ ہو، جیسا آپ کا ٹنل دیتا ہے۔</value></data>
+  <data name="Web_Helper_Starting" xml:space="preserve"><value>PadForge کا ویب ہیلپر شروع ہو رہا ہے۔</value></data>
+  <data name="Web_Helper_Stopped_Format" xml:space="preserve"><value>PadForge کا ویب ہیلپر رک گیا ({0})۔ اسے دوبارہ شروع کرنے کے لیے ویب سے PadForge تک رسائی بند کر کے دوبارہ آن کریں۔</value></data>
+  <data name="Web_Address_Label" xml:space="preserve"><value>پتہ</value></data>
+  <data name="Web_Address_None" xml:space="preserve"><value>ابھی کوئی عوامی پتہ نہیں۔</value></data>
+  <data name="Web_Address_AddToClaude" xml:space="preserve"><value>Claude میں شامل کریں</value></data>
+  <data name="Web_Address_Copied" xml:space="preserve"><value>کاپی ہو گیا۔</value></data>
+  <data name="Web_Accept_Label" xml:space="preserve"><value>نیا ویب اسسٹنٹ قبول کریں</value></data>
+  <data name="Web_Accept_Start" xml:space="preserve"><value>قبول کرنا شروع کریں</value></data>
+  <data name="Web_Accept_Stop" xml:space="preserve"><value>قبول کرنا بند کریں</value></data>
+  <data name="Web_Accept_Until_Format" xml:space="preserve"><value>{0} تک قبول کر رہا ہے۔</value></data>
+  <data name="Web_Accept_Off" xml:space="preserve"><value>قبول نہیں کر رہا۔ قبول کرنا شروع کریں اسے پانچ منٹ کے لیے کھولتا ہے۔</value></data>
+  <data name="Web_Accept_Hint" xml:space="preserve"><value>اسسٹنٹ میں پتہ شامل کریں اور سائن اِن کریں۔ ہر سائن اِن اپنے سائن اِن صفحے پر اور PadForge کے سوالیہ کارڈ پر اپنا چھ ہندسوں کا کوڈ دکھاتا ہے۔ اجازت تبھی دیں جب دونوں کوڈ ملتے ہوں۔ دوسرے اوقات میں سائن اِن مسترد ہو جاتا ہے اور کوئی آپ سے نہیں پوچھتا۔</value></data>
+  <data name="Web_Allowed_Label" xml:space="preserve"><value>ویب پر اجازت یافتہ</value></data>
+  <data name="Web_Allowed_None" xml:space="preserve"><value>ابھی کوئی نہیں۔</value></data>
+  <data name="Web_Allowed_ReturnsTo_Format" xml:space="preserve"><value>اس کا سائن اِن {0} پر لوٹا۔</value></data>
+  <data name="Web_Allowed_CallsItself_Format" xml:space="preserve"><value>یہ اپنا نام {0} بتاتا ہے۔</value></data>
+  <data name="Web_Allowed_When_Format" xml:space="preserve"><value>اجازت {0} کو دی گئی، آخری استعمال {1}۔</value></data>
+  <data name="Web_Allowed_WhenNew_Format" xml:space="preserve"><value>اجازت {0} کو دی گئی، ابھی استعمال نہیں ہوا۔</value></data>
+  <data name="Web_Allowed_Revoke" xml:space="preserve"><value>منسوخ کریں</value></data>
+  <data name="Web_ChatGpt_Label" xml:space="preserve"><value>ChatGPT</value></data>
+  <data name="Web_ChatGpt_Hint" xml:space="preserve"><value>اس کی اپنی Secure MCP Tunnel PadForge کو براہ راست چلاتی ہے، یہاں کسی پتے یا سائن اِن کے بغیر۔ کمانڈ اس ٹنل کی سیٹ اپ میں کاپی کریں۔</value></data>
+  <data name="Web_ChatGpt_Copy" xml:space="preserve"><value>کمانڈ کاپی کریں</value></data>
+  <data name="Web_Footnote" xml:space="preserve"><value>PadForge کوئی ٹنل پروگرام ڈاؤن لوڈ نہیں کرتا اور کسی دوسری کمپنی کی کلید نہیں رکھتا۔ ویب اسسٹنٹ اوپر والی سطح پر کام کرتا ہے۔</value></data>
+  <data name="Web_Ask_Title_Format" xml:space="preserve"><value>کیا {0} کو ویب سے PadForge کے ساتھ کام کرنے کی اجازت دیں؟</value></data>
+  <data name="Web_Ask_ReturnsTo_Format" xml:space="preserve"><value>اس کا سائن اِن {0} پر لوٹتا ہے۔</value></data>
+  <data name="Web_Ask_CallsItself_Format" xml:space="preserve"><value>یہ اپنا نام {0} بتاتا ہے۔</value></data>
+  <data name="Web_Ask_CodeLead" xml:space="preserve"><value>اجازت صرف تب دیں جب اس کا سائن اِن صفحہ یہ کوڈ دکھائے:</value></data>
+  <data name="Web_Ask_CodeOnCard" xml:space="preserve"><value>اس کا چھ ہندسوں کا کوڈ PadForge کے سوالیہ کارڈ پر دکھائی دیتا ہے۔ اجازت صرف تب دیں جب اس کا سائن اِن صفحہ وہی کوڈ دکھائے۔</value></data>
+  <data name="Web_Ask_Through_Format" xml:space="preserve"><value>یہ {0} پر کام کرتا ہے، {1} کے ذریعے۔</value></data>
+  <data name="Web_Ask_LocalWarning" xml:space="preserve"><value>اس کا سائن اِن اس PC پر لوٹتا ہے، اور یہاں کوئی بھی پروگرام وہ پتہ لے سکتا ہے۔</value></data>
+  <data name="Web_SignIn_Title" xml:space="preserve"><value>PadForge میں سائن اِن کریں</value></data>
+  <data name="Web_SignIn_Asks_Format" xml:space="preserve"><value>{0} آپ کے PC پر PadForge کے ساتھ کام کرنے کی درخواست کرتا ہے۔</value></data>
+  <data name="Web_SignIn_CallsItself_Format" xml:space="preserve"><value>یہ اپنا نام {0} بتاتا ہے۔</value></data>
+  <data name="Web_SignIn_Code" xml:space="preserve"><value>آپ کے PC پر PadForge کا سوالیہ کارڈ اس سائن اِن کے بارے میں پوچھتا ہے۔ وہاں اجازت صرف تب دیں جب کارڈ یہ کوڈ دکھائے:</value></data>
+  <data name="Web_SignIn_Moves" xml:space="preserve"><value>جب آپ PC پر جواب دیں گے تو یہ صفحہ خود آگے بڑھ جائے گا۔</value></data>
+  <data name="Web_SignIn_LocalWarning" xml:space="preserve"><value>یہ سائن اِن آپ کے PC پر ایک پروگرام کو لوٹتا ہے، اور وہاں کوئی بھی پروگرام وہ پتہ لے سکتا ہے۔</value></data>
+  <data name="Web_SignIn_NotAccepting" xml:space="preserve"><value>PadForge ابھی نیا ویب اسسٹنٹ قبول نہیں کر رہا۔ اپنے PC پر PadForge کھولیں، ایکسٹراز، آٹومیشن میں جائیں، اور ویب پر اسسٹنٹس کے تحت قبول کرنا شروع کریں دبائیں۔ پھر دوبارہ سائن اِن کریں۔</value></data>
+  <data name="Web_SignIn_CannotGoOn" xml:space="preserve"><value>یہ سائن اِن آگے نہیں بڑھ سکتا۔ اسسٹنٹ میں PadForge کا پتہ دوبارہ شامل کریں اور سائن اِن کریں۔</value></data>
+  <data name="Web_SignIn_Expired" xml:space="preserve"><value>یہ سائن اِن ختم ہو چکا ہے۔ اسسٹنٹ سے دوبارہ سائن اِن کریں۔</value></data>
+  <data name="Web_Helper_Why_NotStarted" xml:space="preserve"><value>Windows نے اسے شروع نہیں کیا</value></data>
+  <data name="Web_Helper_Why_Ended_Format" xml:space="preserve"><value>یہ کوڈ {0} کے ساتھ ختم ہوا</value></data>
+  <data name="Web_Helper_AutomationOff" xml:space="preserve"><value>آٹومیشن آف ہے، اس لیے کوئی ویب اسسٹنٹ PadForge تک نہیں پہنچتا۔ آٹومیشن آن ہونے پر ویب ہیلپر شروع ہو جاتا ہے۔</value></data>
+  <data name="Extras_Automation_Scripts_Checking" xml:space="preserve"><value>جانچ ہو رہی ہے…</value></data>
+  <data name="Extras_Automation_Scripts_NotInstalled" xml:space="preserve"><value>انسٹال نہیں۔</value></data>
+  <data name="Extras_Automation_Scripts_Current_Format" xml:space="preserve"><value>انسٹال اور تازہ ترین۔ اسکرپٹ {0} سے شروع ہوتا ہے۔</value></data>
+  <data name="Extras_Automation_Scripts_CurrentFor_Format" xml:space="preserve"><value>{0} کے لیے انسٹال اور تازہ ترین۔ اسکرپٹ {1} سے شروع ہوتا ہے۔</value></data>
+  <data name="Extras_Automation_Scripts_Older" xml:space="preserve"><value>انسٹال۔ اس PadForge کے پاس نئی کاپی ہے۔</value></data>
+  <data name="Extras_Automation_Scripts_OlderFor_Format" xml:space="preserve"><value>{0} کے لیے انسٹال۔ اس PadForge کے پاس نئی کاپی ہے۔</value></data>
+  <data name="Extras_Automation_Scripts_Installing" xml:space="preserve"><value>انسٹال ہو رہا ہے…</value></data>
+  <data name="Extras_Automation_Scripts_CheckFailed_Format" xml:space="preserve"><value>PadForge اسے جانچ نہیں سکا: {0}</value></data>
+  <data name="Extras_Automation_Scripts_Hint" xml:space="preserve"><value>انسٹال کریں PadForge کی لائبریری وہاں رکھتا ہے جہاں اس زبان کو ملتی ہے۔ جو اسکرپٹ اسے لوڈ کرتا ہے وہ اوپر والی سطح پر آلات پڑھتا اور میپنگز چلاتا ہے۔</value></data>
+  <data name="Extras_More_Scripts" xml:space="preserve"><value>لائبریری کہیں بھی محفوظ کریں</value></data>
+  <data name="Extras_Automation_Scripts_Installed" xml:space="preserve"><value>انسٹال شدہ کاپیاں</value></data>
+  <data name="Extras_Automation_Scripts_RemoveAll" xml:space="preserve"><value>سب ہٹائیں</value></data>
+  <data name="Extras_Automation_Scripts_Removed" xml:space="preserve"><value>ہٹا دیا گیا۔</value></data>
+  <data name="Devices_ScriptId" xml:space="preserve"><value>اسکرپٹ ID</value></data>
+  <data name="Devices_More_ScriptId" xml:space="preserve"><value>اس کی اسکرپٹ ID</value></data>
+  <data name="Devices_ScriptNames_Format" xml:space="preserve"><value>اسکرپٹس اس کے کنٹرولز کے نام {0} رکھتے ہیں۔</value></data>
+  <data name="Devices_ScriptKeys" xml:space="preserve"><value>اسکرپٹس اس کی کیز کے نام KeyA، KeySpace، KeyLeftShift اور ان جیسے رکھتے ہیں، اور ہر کلید اس کے کوڈ سے، Vk0 سے Vk255 تک۔</value></data>
   <data name="Pad_Lighting_RouteDirectSteadyOnly" xml:space="preserve"><value>رنگ سیدھے {0} کو جاتے ہیں۔ بدلتے رنگ، جیسے رنگوں کا چکر یا آواز کے ساتھ چلنے والے رنگ، اس تک نہیں پہنچتے۔ جو رنگ ایک جیسا رہے وہ پہنچتا ہے۔</value></data>
   <data name="FileDialog_AllFilesFilter" xml:space="preserve"><value>تمام فائلیں (*.*)|*.*</value></data>
   <data name="FileDialog_ProfileFilter_Format" xml:space="preserve"><value>PadForge پروفائل (*{0})|*{0}</value></data>

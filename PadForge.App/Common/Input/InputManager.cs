@@ -1253,8 +1253,10 @@ namespace PadForge.Common.Input
 
                     // Real transport path for the bridged pads (Dossier path + BT/USB
                     // classification): the virtual joysticks have no SDL path of their own.
+                    // A SpaceMouse's is its puck's HID path, by which a problem
+                    // recording finds the puck's Raw Input reports (#600 item 32).
                     Engine.SdlDeviceWrapper.ExternalDevicePathProvider =
-                        id => Ds3DirectService.GetDevicePath(id) ?? PsMoveDirectService.GetDevicePath(id);
+                        id => Ds3DirectService.GetDevicePath(id) ?? PsMoveDirectService.GetDevicePath(id) ?? SpaceMouseService.GetDevicePath(id);
                 }
                 catch (Exception ex) { Engine.SdlDiagLog.WriteLine("DS3 service start failed: " + ex.Message); }
 

@@ -516,6 +516,8 @@ namespace PadForge.Engine
             // use-after-free; leak the few KB to process exit instead (the
             // same join-gated release the Wii speaker and NFC teardowns use).
             RelativeHidAxes.Clear(freeBuffers: pumpExited);
+            // A handle Raw Input gives again later may name another device.
+            RawReportTap.Clear();
             if (pumpExited)
             {
                 foreach (var kvp in _consumerPreparsed)
@@ -1474,9 +1476,12 @@ namespace PadForge.Engine
                 {
                     // A game controller's relative values (#600), then a
                     // Consumer Control's keys. Each passes over a handle
-                    // that is not its kind.
+                    // that is not its kind. A recording that compares the
+                    // collection with PadForge's reading keeps its newest
+                    // reports (#600 item 32).
                     RelativeHidAxes.Process(hDevice, dataPtr);
                     ProcessConsumerInput(hDevice, dataPtr);
+                    RawReportTap.Take(hDevice, dataPtr, written > headerSize ? (int)Math.Min(written - headerSize, (uint)int.MaxValue) : 0);
                 }
             }
             finally

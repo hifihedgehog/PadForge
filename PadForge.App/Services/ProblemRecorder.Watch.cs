@@ -241,6 +241,7 @@ namespace PadForge.Services
             Array.Fill(_placeOf, -1);
             _rawListed.Clear();
             _disagree.Clear();
+            ResetReaders();
             Interlocked.Exchange(ref _exceptions, 0);
             Interlocked.Exchange(ref _exceptionsLeftOut, 0);
             lock (_repeats) _repeats.Clear();
@@ -285,6 +286,7 @@ namespace PadForge.Services
                 WatchPasses(capture);
             }
             if ((parts & RecordingParts.Output) != 0 || (parts & RecordingParts.Input) != 0) WatchXInput(capture, parts);
+            if ((parts & RecordingParts.Input) != 0) WatchReaders(capture);
             if ((parts & RecordingParts.Feedback) != 0)
             {
                 WatchForceKinds(capture);
@@ -647,6 +649,237 @@ namespace PadForge.Services
             Trigger("LeftTrigger", state.Axis[2] >> 8, read.LeftTrigger);
             Trigger("RightTrigger", state.Axis[5] >> 8, read.RightTrigger);
             return sb.Length == 0 ? null : sb.ToString();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Raw Input: a second reader of every other device
+        // ─────────────────────────────────────────────
+
+        /// <summary>How long a device may send reports that name none of its
+        /// compared controls before the file says Raw Input's reports of it
+        /// name none of them now: a Bluetooth PlayStation pad once SDL turns
+        /// on its full reports (SDL_hints.h:1518-1528).</summary>
+        internal static readonly TimeSpan UnnamedAfter = TimeSpan.FromSeconds(1);
+
+        /// <summary>How many reports naming none of a device's compared
+        /// controls must come a second for them to count as kept coming. A
+        /// slow one alone says nothing: a SpaceMouse Wireless also sends a
+        /// battery report of ID 23 (spacenavd dev_usb_freebsd.c:173-175)
+        /// while the puck rests and sends no axis report.</summary>
+        internal const int OthersPerSecond = 10;
+
+        /// <summary>How long PadForge's reader may see a device move while Raw
+        /// Input hands over no report of it before the file says so.</summary>
+        internal static readonly TimeSpan NoReportAfter = TimeSpan.FromSeconds(1);
+
+        /// <summary>A device's second reader while a file is written.</summary>
+        private sealed class ReaderWatch
+        {
+            public ISdlInputDevice Live;
+            public ReaderLayout Layout;
+            public bool Settled, Unnamed, NoReportSaid, HasShape;
+            public readonly ReaderReading Reading = new();
+            public long Since, MovedSince, LastNamed;
+            public bool Said;
+            public string Text;
+            public int Shape;
+            // Where the run of reports naming none of its controls starts:
+            // the newest named report, or the first other one when no named
+            // report came, and the count of others then.
+            public bool Marked;
+            public long MarkNamed, MarkAt;
+            public int MarkCount;
+        }
+
+        private readonly Dictionary<UserDevice, ReaderWatch> _readers = new();
+
+        /// <summary>Lets every device's second reader go, for a new file.</summary>
+        private void ResetReaders()
+        {
+            var source = RecorderReaders.Source;
+            _readers.Clear();
+            source.Watch(Array.Empty<ReaderLayout>());
+            source.ReleaseAll();
+        }
+
+        /// <summary>
+        /// Raw Input's reading of every device at no XInput place against
+        /// PadForge's reader's (#600 item 32): a device SDL reads through
+        /// DirectInput, a pad SDL reads through a HIDAPI driver whose meaning is
+        /// proven, a SpaceMouse. The same gap, window and stale gate as the
+        /// XInput comparison above. Once per device and file a line says how
+        /// its controls are matched, or why it has no second reader.
+        /// </summary>
+        private void WatchReaders(RecordingCapture capture)
+        {
+            var live = _live;
+            if (live == null) return;
+            var source = RecorderReaders.Source;
+            long now = capture.Ticks();
+            // PadForge's reader is read on the poll thread. Suspended, or with
+            // no pass for a while, its last state is old (see WatchXInput).
+            bool stale = capture.RestState == 2 || now - capture.LastPass > Seconds(ReaderStaleAfter);
+            List<ReaderLayout> watching = null;
+            int count = capture.DeviceCount;
+            for (int i = 0; i < count; i++)
+            {
+                var device = capture.DeviceOfTrack(i);
+                // An SDL device of this PC: keyboards, mice, touchpads, a
+                // peer's devices and PadForge's own readers say their second
+                // reader in the header alone.
+                if (device?.Device is not ISdlInputDevice sdl || RecorderReaderPlan.Signature(sdl.SdlGuid) < 0
+                    || sdl is PadForge.Engine.RemoteLink.RemotePeerDevice
+                    || device.IsKeyboard || device.IsMouse || device.IsTouchpad) continue;
+                if (!device.IsOnline || !live.Online[i] || live.Devices[i] == null) continue;
+                if (XInputSlotIdentity.TryParseSlot(device.DevicePath, out int place) && place < XInputReadBack.Places) continue;
+                if (!_readers.TryGetValue(device, out var w) || !ReferenceEquals(w.Live, sdl))
+                {
+                    if (w != null) source.Release(w.Layout);
+                    _readers[device] = w = new ReaderWatch { Live = sdl };
+                }
+                w.Layout ??= source.Layout(device);
+                var layout = w.Layout;
+                if (layout == null) continue;
+                if (!w.Settled)
+                {
+                    w.Settled = true;
+                    if (layout.Plan == null)
+                    {
+                        Line(RecordingCodec.LayerReader, "has no second reader: " + layout.Reason, device);
+                        continue;
+                    }
+                    Line(RecordingCodec.LayerReader, "is compared with its own reports through Raw Input: " + RecorderReaderPlan.MatchWords(layout.Plan), device);
+                    foreach (string left in layout.Plan.LeftOut) Line(RecordingCodec.LayerReader, "is not compared on its " + left, device);
+                }
+                if (layout.Plan == null) continue;
+                (watching ??= new List<ReaderLayout>()).Add(layout);
+                if (stale) continue;
+
+                var state = live.Devices[i];
+                var reading = w.Reading;
+                bool read = source.Read(layout, reading);
+                if (NoReport(w, device, reading, state, now)) continue;
+
+                // The device keeps sending reports that name none of its
+                // compared controls: what Raw Input last named is old.
+                bool unnamed = Unnamed(w, reading);
+                if (unnamed != w.Unnamed)
+                {
+                    w.Unnamed = unnamed;
+                    Line(RecordingCodec.LayerReader, unnamed ? "the reports Raw Input hands over now name none of its controls" : "Raw Input names its controls again", device);
+                }
+                if (unnamed || !read)
+                {
+                    w.Since = 0;
+                    w.Said = false;
+                    w.Text = null;
+                    continue;
+                }
+
+                string difference = RecorderReaderMatch.Difference(RecorderReaderPlan.Expected(layout.Plan, reading.Values, reading.Known), state, layout.Plan.Kind);
+                if (difference != null)
+                {
+                    if (w.Since == 0 || w.Text != difference)
+                    {
+                        w.Since = now;
+                        w.Said = false;
+                        w.Text = difference;
+                    }
+                    else if (!w.Said && now - w.Since >= (long)(DisagreeFor.TotalSeconds * Stopwatch.Frequency))
+                    {
+                        w.Said = true;
+                        Line(RecordingCodec.LayerReader, "Raw Input reads " + difference, device);
+                    }
+                }
+                else if (w.Since != 0)
+                {
+                    if (w.Said)
+                        Line(RecordingCodec.LayerReader, "Raw Input and PadForge's reader agree again after "
+                            + S((double)(now - w.Since) / Stopwatch.Frequency), device);
+                    w.Since = 0;
+                    w.Said = false;
+                    w.Text = null;
+                }
+            }
+            source.Watch(watching ?? (IReadOnlyList<ReaderLayout>)Array.Empty<ReaderLayout>());
+        }
+
+        /// <summary>
+        /// Whether reports naming none of a device's compared controls have
+        /// kept coming for <see cref="UnnamedAfter"/> past the newest that
+        /// named any, at <see cref="OthersPerSecond"/> or more. Times are the
+        /// pump's, so the run is measured on the reports alone.
+        /// </summary>
+        private static bool Unnamed(ReaderWatch w, ReaderReading reading)
+        {
+            if (!w.Marked || reading.NamedTicks != w.MarkNamed)
+            {
+                w.Marked = true;
+                w.MarkNamed = reading.NamedTicks;
+                w.MarkAt = reading.NamedTicks;
+                w.MarkCount = reading.OtherCount;
+            }
+            if (reading.OtherTicks == 0) return false;
+            if (w.MarkAt == 0)
+            {
+                // No named report came: the run starts at the first other.
+                w.MarkAt = reading.OtherTicks;
+                w.MarkCount = reading.OtherCount;
+                return false;
+            }
+            long span = reading.OtherTicks - w.MarkAt;
+            if (span <= Seconds(UnnamedAfter)) return false;
+            long others = unchecked(reading.OtherCount - w.MarkCount);
+            return others * Stopwatch.Frequency >= OthersPerSecond * span;
+        }
+
+        /// <summary>
+        /// Whether PadForge's reader has seen a device move for
+        /// <see cref="NoReportAfter"/> while Raw Input handed over no new report
+        /// naming its controls. Said once per device and file, PadForge's own
+        /// change being the positive control in the same window: a device
+        /// hidden by HidHide as having no second reader, since HidHide's own
+        /// documentation says Raw Input still hands a hidden device's reports
+        /// over (docs.nefarius.at, docs/projects/HidHide/FAQ.md:11), any other
+        /// as Raw Input handing PadForge nothing of it.
+        /// </summary>
+        private bool NoReport(ReaderWatch w, UserDevice device, ReaderReading reading, CustomInputState state, long now)
+        {
+            int shape = ShapeOf(state);
+            bool moved = w.HasShape && shape != w.Shape;
+            w.Shape = shape;
+            w.HasShape = true;
+            if (reading.NamedTicks != w.LastNamed)
+            {
+                w.LastNamed = reading.NamedTicks;
+                w.MovedSince = 0;
+                return false;
+            }
+            if (!moved) return w.NoReportSaid;
+            if (w.MovedSince == 0)
+            {
+                w.MovedSince = now;
+                return w.NoReportSaid;
+            }
+            if (!w.NoReportSaid && now - w.MovedSince >= Seconds(NoReportAfter))
+            {
+                w.NoReportSaid = true;
+                Line(RecordingCodec.LayerReader, w.Layout.Hidden ? "has no second reader: hidden by HidHide"
+                    : "Raw Input hands PadForge no report of it while PadForge's reader sees it move", device);
+            }
+            return w.NoReportSaid;
+        }
+
+        /// <summary>A number that changes when PadForge's reading of a device
+        /// changes.</summary>
+        private static int ShapeOf(CustomInputState s)
+        {
+            var hash = new HashCode();
+            foreach (int a in s.Axis) hash.Add(a);
+            foreach (int a in s.Sliders) hash.Add(a);
+            foreach (int p in s.Povs) hash.Add(p);
+            foreach (bool b in s.Buttons) hash.Add(b);
+            return hash.ToHashCode();
         }
 
         // ─────────────────────────────────────────────

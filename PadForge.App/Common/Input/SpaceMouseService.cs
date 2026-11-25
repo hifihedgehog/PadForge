@@ -89,6 +89,17 @@ namespace PadForge.Common.Input
 
         public SpaceMouseService(Action<string> log = null) => _log = log ?? (_ => { });
 
+        // The path each puck was opened at, by the SDL instance of its virtual
+        // joystick, which has no path of its own: a problem recording pairs the
+        // puck with its Raw Input collection by it (#600 item 32).
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<uint, string> s_paths = new();
+
+        /// <summary>The interface path of the puck behind a virtual joystick,
+        /// for <see cref="Engine.SdlDeviceWrapper.ExternalDevicePathProvider"/>,
+        /// or null.</summary>
+        public static string GetDevicePath(uint sdlInstanceId)
+            => s_paths.TryGetValue(sdlInstanceId, out string path) ? path : null;
+
         /// <summary>Begin watching for SpaceMouse devices. Call after SDL has
         /// been initialized (SDL_INIT_JOYSTICK), like Ds3DirectService.Start.</summary>
         public void Start()
@@ -407,6 +418,7 @@ namespace PadForge.Common.Input
                         _log("SDL_AttachVirtualJoystick failed for " + _name);
                         return false;
                     }
+                    s_paths[_instanceId] = _path;
                     _joystick = SDL.SDL_OpenJoystick(_instanceId);
                     if (_joystick == IntPtr.Zero) return false;
                 }
@@ -438,7 +450,12 @@ namespace PadForge.Common.Input
                     _reader = null;
 
                     if (_joystick != IntPtr.Zero) { SDL.SDL_CloseJoystick(_joystick); _joystick = IntPtr.Zero; }
-                    if (_instanceId != 0) { SDL.SDL_DetachVirtualJoystick(_instanceId); _instanceId = 0; }
+                    if (_instanceId != 0)
+                    {
+                        s_paths.TryRemove(_instanceId, out _);
+                        SDL.SDL_DetachVirtualJoystick(_instanceId);
+                        _instanceId = 0;
+                    }
 
                     _readEvent?.Dispose();
                     _readEvent = null;

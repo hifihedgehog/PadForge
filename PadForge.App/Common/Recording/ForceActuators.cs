@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace PadForge.Common.Recording
@@ -13,6 +12,10 @@ namespace PadForge.Common.Recording
     /// DI_DeviceObjectCallback). SDL keeps them to itself and gives only a
     /// count (SDL_GetNumHapticAxes). Each axis is named in fixed English by
     /// its type, never in the device's own words.
+    ///
+    /// <para>The read goes through PadForge's one DirectInput enumerator,
+    /// RecorderReaders.EachDevice, which a problem recording's object read
+    /// uses too.</para>
     ///
     /// <para>DirectInput's enumeration can take a long time on some PCs (SDL
     /// says so beside its own), so nothing here waits on it: a product asked
@@ -178,16 +181,13 @@ namespace PadForge.Common.Recording
         //  DirectInput, as dinput.h of the Windows SDK lays it out
         // ─────────────────────────────────────────────
 
-        private const uint DirectInputVersion = 0x0800;      // DIRECTINPUT_VERSION
         internal const uint GameControllers = 4;             // DI8DEVCLASS_GAMECTRL
         internal const uint PointingDevices = 2;             // DI8DEVCLASS_POINTER
         internal const uint AttachedOnly = 0x1;              // DIEDFL_ATTACHEDONLY
         internal const uint ForceFeedbackOnly = 0x100;       // DIEDFL_FORCEFEEDBACK
         private const uint Axes = 0x3;                       // DIDFT_AXIS
         private const uint Actuator = 0x1;                   // DIDOI_FFACTUATOR
-        private const int Continue = 1;                      // DIENUM_CONTINUE
 
-        private static readonly Guid DirectInput8W = new("BF798031-483A-4DA2-AA99-5D64ED369700");
         private static readonly Guid XAxis = new("A36D02E0-C9F3-11CF-BFC7-444553540000");
         private static readonly Guid YAxis = new("A36D02E1-C9F3-11CF-BFC7-444553540000");
         private static readonly Guid ZAxis = new("A36D02E2-C9F3-11CF-BFC7-444553540000");
@@ -232,96 +232,30 @@ namespace PadForge.Common.Recording
             public ushort ReportId;
         }
 
-        // From System32 alone: PadForge may run with rights from a folder
-        // others can write to, and dinput8.dll is no known DLL.
-        [DllImport("dinput8.dll")]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-        private static extern int DirectInput8Create(IntPtr instance, uint version, in Guid interfaceId, out IntPtr directInput, IntPtr outer);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-        private static extern IntPtr GetModuleHandle(string name);
-
-        private static IntPtr Slot(IntPtr com, int index) => (*(IntPtr**)com)[index];
-
-        /// <summary>What a device's objects are enumerated into: the names,
-        /// and whether only the axes a motor acts on count.</summary>
-        private sealed class AxisNames
-        {
-            public readonly List<string> Names = new();
-            public bool ActuatorsOnly;
-        }
-
         /// <summary>Every attached force-feedback game controller DirectInput
         /// lists, by product, with the names of its motors' axes. Null when
         /// DirectInput cannot be asked. A live test asks another class of
-        /// device, with every axis, to see the same calls answer.</summary>
+        /// device, with every axis, to see the same calls answer. A product
+        /// already read is not created again.</summary>
         internal static Dictionary<uint, string[]> ReadAll(uint deviceClass = GameControllers,
             uint flags = AttachedOnly | ForceFeedbackOnly, bool actuatorsOnly = true)
         {
-            IntPtr directInput = IntPtr.Zero;
-            var found = new List<(Guid Instance, uint Product)>();
-            var handle = GCHandle.Alloc(found);
-            try
+            var known = new Dictionary<uint, string[]>();
+            bool asked = RecorderReaders.EachDevice(deviceClass, flags, product => !known.ContainsKey(ProductOf(product)), (device, product) =>
             {
-                if (DirectInput8Create(GetModuleHandle(null), DirectInputVersion, in DirectInput8W, out directInput, IntPtr.Zero) < 0
-                    || directInput == IntPtr.Zero)
-                    return null;
-                // IDirectInput8W: 3 CreateDevice, 4 EnumDevices.
-                var enumDevices = (delegate* unmanaged[Stdcall]<IntPtr, uint, delegate* unmanaged[Stdcall]<DeviceInstance*, IntPtr, int>, IntPtr, uint, int>)Slot(directInput, 4);
-                if (enumDevices(directInput, deviceClass, &OnDevice, GCHandle.ToIntPtr(handle), flags) < 0) return null;
-
-                var known = new Dictionary<uint, string[]>();
-                var createDevice = (delegate* unmanaged[Stdcall]<IntPtr, Guid*, IntPtr*, IntPtr, int>)Slot(directInput, 3);
-                foreach (var (instance, product) in found)
+                var objects = RecorderReaders.ObjectsOf(device, Axes);
+                if (objects == null) return true;
+                var names = new List<string>();
+                foreach (var item in objects)
                 {
-                    if (known.ContainsKey(product)) continue;
-                    var id = instance;
-                    IntPtr device = IntPtr.Zero;
-                    if (createDevice(directInput, &id, &device, IntPtr.Zero) < 0 || device == IntPtr.Zero) continue;
-                    var names = new AxisNames { ActuatorsOnly = actuatorsOnly };
-                    var namesHandle = GCHandle.Alloc(names);
-                    try
-                    {
-                        // IDirectInputDevice8W: 4 EnumObjects.
-                        var enumObjects = (delegate* unmanaged[Stdcall]<IntPtr, delegate* unmanaged[Stdcall]<ObjectInstance*, IntPtr, int>, IntPtr, uint, int>)Slot(device, 4);
-                        if (enumObjects(device, &OnObject, GCHandle.ToIntPtr(namesHandle), Axes) >= 0) known[product] = names.Names.ToArray();
-                    }
-                    finally
-                    {
-                        namesHandle.Free();
-                        Marshal.Release(device);
-                    }
+                    // SDL's test: an axis object whose flags say it is an actuator.
+                    if ((item.ObjectType & Axes) != 0 && (!actuatorsOnly || (item.Flags & Actuator) != 0))
+                        names.Add(NameOf(item.Type, item.Offset));
                 }
-                return known;
-            }
-            catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException)
-            {
-                return null;
-            }
-            finally
-            {
-                handle.Free();
-                if (directInput != IntPtr.Zero) Marshal.Release(directInput);
-            }
-        }
-
-        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-        private static int OnDevice(DeviceInstance* device, IntPtr context)
-        {
-            if (GCHandle.FromIntPtr(context).Target is List<(Guid, uint)> found)
-                found.Add((device->Instance, ProductOf(device->Product)));
-            return Continue;
-        }
-
-        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-        private static int OnObject(ObjectInstance* item, IntPtr context)
-        {
-            // SDL's test: an axis object whose flags say it is an actuator.
-            if ((item->ObjectType & Axes) != 0 && GCHandle.FromIntPtr(context).Target is AxisNames names
-                && (!names.ActuatorsOnly || (item->Flags & Actuator) != 0))
-                names.Names.Add(NameOf(item->Type, item->Offset));
-            return Continue;
+                known[ProductOf(product)] = names.ToArray();
+                return true;
+            });
+            return asked ? known : null;
         }
     }
 }

@@ -460,5 +460,14 @@ namespace PadForge.Tests
         internal static void Set() => PadForge.Common.Recording.ForceActuators.OffLimitsForTest = true;
     }
 
+    /// <summary>No game controller of the bench is looked up in Raw Input or
+    /// asked through DirectInput while a test records (#600 item 32): the
+    /// readers a comparison reads come from a test's seam or not at all.</summary>
+    internal static class RecorderReadersOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => PadForge.Common.Recording.RecorderReaders.OffLimitsForTest = true;
+    }
+
 #pragma warning restore CA2255
 }

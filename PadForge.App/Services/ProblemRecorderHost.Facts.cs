@@ -279,13 +279,15 @@ namespace PadForge.Services
             => device?.Device is { } live && live.HapticHandle != IntPtr.Zero;
 
         /// <summary>A device's facts beyond its first build's line: how it is
-        /// held, its XInput place, and for a force-feedback device its driver
-        /// file and motor axes.</summary>
+        /// held, its XInput place or else its second reader, and for a
+        /// force-feedback device its driver file and motor axes.</summary>
         internal void AppendDeviceFacts(StringBuilder sb, UserDevice device)
         {
             RecordingCodec.AppendFact(sb, "held", HeldWord(device));
             int place = XInputPlace(device);
             if (place > 0) RecordingCodec.AppendFact(sb, "xinput", place);
+            // Any other device's second reader, or none and why (#600 item 32).
+            else RecordingCodec.AppendFact(sb, "second", RecorderReaders.SecondFact(device));
             if (!device.HasForceFeedback) return;
             string driver = ForceDriver(device.VendorId, device.ProdId);
             if (driver != null) RecordingCodec.AppendFact(sb, "ffdriver", driver);

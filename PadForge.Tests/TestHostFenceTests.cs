@@ -228,6 +228,7 @@ namespace PadForge.Tests
         private const string ReadBackFile = "PadForge.App/Common/Recording/XInputReadBack.cs";
         private const string WebTunnelsFile = Services + "Automation/Web/WebTunnels.cs";
         private const string WebDocuments = Services + "Automation/Web/WebClientDocuments.cs";
+        private const string RecorderReadersFile = "PadForge.App/Common/Recording/RecorderReaders.cs";
 
         private const string RefusesHost = "if (PadForge.Engine.Common.OutboundNetworkGate.RefusesHost(host))";
         private const string VendorRefuses = "if (PadForge.Engine.Common.VendorProgramGate.Refuses";
@@ -282,6 +283,7 @@ namespace PadForge.Tests
             (NativeCrashFile, "NativeCrashRecord"),
             (ReadBackFile, "XInputReadBack"),
             (WebTunnelsFile, "WebTunnels"),
+            (RecorderReadersFile, "RecorderReaders"),
         };
 
         private const string Flag = "OffLimitsForTest";
@@ -345,6 +347,7 @@ namespace PadForge.Tests
             Assert.True(PadForge.Common.Recording.XInputReadBack.OffLimitsForTest);
             Assert.True(PadForge.Common.Recording.ForceActuators.OffLimitsForTest);
             Assert.True(PadForge.Services.Automation.Web.WebTunnels.OffLimitsForTest);
+            Assert.True(PadForge.Common.Recording.RecorderReaders.OffLimitsForTest);
         }
 
         /// <summary>Each flag is a plain field that starts false, and no
@@ -620,6 +623,12 @@ namespace PadForge.Tests
             // Steam.
             new object[] { SteamHttpFile, "private static HttpClient CreateClient()", "var http = OffLimitsForTest ? new HttpClient(new SendsNothing()) : new HttpClient();" },
             new object[] { SteamClientFile, "public async Task EnsureLoggedOnAsync(CancellationToken ct = default)", "if (SteamHttp.OffLimitsForTest)" },
+
+            // The readers a recording compares with PadForge's (#600 item 32):
+            // Raw Input's collections and DirectInput's objects.
+            new object[] { RecorderReadersFile, "internal static IntPtr FindCollection(string path, out ushort usage, out ushort vendor, out ushort product)", "if (OffLimitsForTest" },
+            new object[] { RecorderReadersFile, "internal static IntPtr PreparsedOf(IntPtr handle)", "if (OffLimitsForTest" },
+            new object[] { RecorderReadersFile, "internal static unsafe List<DiObject> ReadObjects(string path)", "if (OffLimitsForTest) return null;" },
         };
 
         [Theory]

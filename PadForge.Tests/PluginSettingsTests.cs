@@ -373,8 +373,16 @@ namespace PadForge.Tests
             Assert.Contains(row.Settings.Rows, r => r is PluginSettingItem { Key: "dead" });
 
             // A plugin that stopped is named on the status line, which Home's
-            // Plugins tile shows.
-            for (int i = 0; i < PluginManager.MostFailures; i++)
+            // Plugins tile shows: while it waits out its pause to start
+            // again, and once it failed too often to be started again.
+            rig.Launcher.Last.Exit(1);
+            rig.Controller.Manager.Tick();
+            rig.Controller.Refresh();
+            Assert.Equal(PluginStatus.Restarting, run.Status);
+            Assert.EndsWith(string.Format(s.Plugins_Problem_Restarting_Format, "pedals.exe"), rig.Vm.PluginsStatus);
+            rig.Now += 31_000;
+            rig.Controller.Manager.Tick();
+            for (int i = 1; i < PluginManager.MostFailures; i++)
             {
                 rig.Launcher.Last.Exit(1);
                 rig.Now += 31_000;

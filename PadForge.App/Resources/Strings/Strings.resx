@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} stopped after five failures.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} changed since you approved it.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} could not start.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} stopped and starts again shortly.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Added {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signed by {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Not signed.</value></data>

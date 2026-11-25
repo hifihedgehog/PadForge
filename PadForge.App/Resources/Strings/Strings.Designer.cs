@@ -816,6 +816,7 @@ public class Strings : INotifyPropertyChanged
     public string Plugins_Problem_Failed_Format => Get("Plugins_Problem_Failed_Format");
     public string Plugins_Problem_Changed_Format => Get("Plugins_Problem_Changed_Format");
     public string Plugins_Problem_Refused_Format => Get("Plugins_Problem_Refused_Format");
+    public string Plugins_Problem_Restarting_Format => Get("Plugins_Problem_Restarting_Format");
     public string Plugins_Row_Added_Format => Get("Plugins_Row_Added_Format");
     public string Plugins_Row_Signed_Format => Get("Plugins_Row_Signed_Format");
     public string Plugins_Row_NotSigned => Get("Plugins_Row_NotSigned");

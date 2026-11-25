@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
@@ -15,10 +11,12 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
+using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol;
+using PadForge.Common.Input;
 using PadForge.Services;
 using PadForge.Services.Automation;
 using PadForge.Services.Automation.Web;
-using PadForge.Services.Plugins;
 using Xunit;
 
 namespace PadForge.Tests
@@ -36,27 +34,50 @@ namespace PadForge.Tests
         }
     }
 
+    /// <summary>The same, for a test with rows.</summary>
+    public sealed class UnelevatedTheoryAttribute : TheoryAttribute
+    {
+        public UnelevatedTheoryAttribute()
+        {
+            if (Environment.IsPrivilegedProcess)
+                Skip = "The test host has administrator rights, and a PadForge.exe it started would take the start with rights. Run it in a host without them.";
+        }
+    }
+
     /// <summary>
     /// The client run as an assistant host meets it (#600 item 52, AS-131,
     /// AS-132, AS-194): the app's own build of PadForge.exe, started as a
-    /// child of this process with <c>--mcp</c> and then <c>--web</c>, driven
-    /// over its real standard input and output and over HTTP. The child
-    /// starts without a prompt for rights, writes nothing but protocol to
-    /// standard output, ends when its input closes (the web helper when its
-    /// pipe does), shows no window, and loads none of WPF.
+    /// child of this process, and spoken to through the official C# SDK's
+    /// client, the library a host is built on: over the child's standard
+    /// input and output for <c>--mcp</c>, signed in over HTTP for
+    /// <c>--web</c>. Each child starts without a prompt for rights, writes
+    /// nothing but protocol to standard output, ends when its input closes
+    /// (the web helper when its pipe does), shows no window from its start to
+    /// its end, and loads none of WPF. Every switch of the client run is run
+    /// the same way and checked by everything it mapped up to its exit.
     ///
-    /// <para>The child is fenced as this host is: its variables name a pipe
-    /// of the test's own (PADFORGE_PIPE, the variable PadForge names its web
-    /// helper's pipe in), so its run reaches that pipe alone and never a
+    /// <para>The SDK's own stdio start (StdioClientTransport) is not used:
+    /// on Windows it wraps the command in <c>cmd.exe /c</c> and keeps the
+    /// process it starts to itself (csharp-sdk v2.4.0,
+    /// src/ModelContextProtocol.Core/Client/StdioClientTransport.cs:66-72,
+    /// :183 and :227), so the child would run before it could be put in the
+    /// test's job or watched by its process. The test starts the child itself
+    /// and hands its pipes to the SDK's StreamClientTransport, whose session
+    /// class does every read and write of the stdio one
+    /// (StdioClientSessionTransport derives from StreamClientSessionTransport,
+    /// StdioClientSessionTransport.cs:8).</para>
+    ///
+    /// <para>Every child is fenced as this host is: its variables name a
+    /// pipe of the test's own (PADFORGE_PIPE, the variable PadForge names its
+    /// web helper's pipe in), so its run reaches that pipe alone and never a
     /// PadForge that runs on the PC (ClientRun.Seams.ForThisRun), and it runs
-    /// in a job that ends it when the test lets go. A real web assistant's
-    /// sign-in is not part of this test.</para>
+    /// in a job that ends it when the test lets go.</para>
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public partial class ClientRunChildTests
     {
         // ─────────────────────────────────────────────
-        //  The app's build, and a child of it
+        //  The app's build
         // ─────────────────────────────────────────────
 
         /// <summary>The app's own build of PadForge.exe in the configuration
@@ -85,146 +106,18 @@ namespace PadForge.Tests
             return reader.GetGuid(reader.GetModuleDefinition().Mvid);
         }
 
-        /// <summary>A started child, in a job that ends it with this object,
-        /// its standard output read byte for byte, its standard error drained,
-        /// and its top-level windows watched from its start to its end.</summary>
-        internal sealed class Child : IDisposable
+        /// <summary>A folder of the test's own under the temp folder.</summary>
+        internal static string TempFolder(string tag)
         {
-            public readonly Process Process;
-            private readonly SafeFileHandle _job;
-            private readonly MemoryStream _stdout = new();
-            private readonly BlockingCollection<string> _lines = new();
-            private readonly StringBuilder _stderr = new();
-            private readonly Task _reading, _draining, _watching;
-            private readonly CancellationTokenSource _stop = new();
-            public readonly ConcurrentBag<string> VisibleWindows = new();
-            public readonly ConcurrentBag<string> HiddenWindows = new();
+            string folder = Path.Combine(Path.GetTempPath(), "PadForge.Tests." + tag + "." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(folder);
+            return folder;
+        }
 
-            public Child(string exe, string arguments, IReadOnlyDictionary<string, string> variables)
-            {
-                var start = new ProcessStartInfo(exe, arguments)
-                {
-                    UseShellExecute = false,
-                    RedirectStandardInput = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    WorkingDirectory = Path.GetDirectoryName(exe),
-                };
-                // The child's environment is this host's, with the test's own
-                // pipe named and no web key left over.
-                start.Environment.Remove(WebHelper.KeyVariable);
-                foreach (var (name, value) in variables) start.Environment[name] = value;
-                _job = CreateJobObjectW(IntPtr.Zero, null);
-                Assert.False(_job.IsInvalid, "no job object");
-                var limits = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
-                limits.BasicLimitInformation.LimitFlags = JobObjectLimitKillOnJobClose;
-                Assert.True(SetInformationJobObject(_job, JobObjectExtendedLimitInformation, ref limits, Marshal.SizeOf<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>()));
-                // A start that needed rights would fail here with Windows'
-                // ERROR_ELEVATION_REQUIRED: no prompt can stand between.
-                Process = Process.Start(start);
-                Assert.NotNull(Process);
-                Assert.True(AssignProcessToJobObject(_job, Process.SafeHandle), "the child is in no job");
-                _reading = Task.Run(ReadOut);
-                _draining = Task.Run(async () =>
-                {
-                    var buffer = new char[4096];
-                    int n;
-                    while ((n = await Process.StandardError.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                        lock (_stderr) _stderr.Append(buffer, 0, n);
-                });
-                _watching = Task.Run(Watch);
-            }
-
-            private void ReadOut()
-            {
-                var stream = Process.StandardOutput.BaseStream;
-                var line = new List<byte>();
-                var buffer = new byte[4096];
-                int n;
-                while ((n = stream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    lock (_stdout) _stdout.Write(buffer, 0, n);
-                    for (int i = 0; i < n; i++)
-                    {
-                        if (buffer[i] == (byte)'\n')
-                        {
-                            _lines.Add(Encoding.UTF8.GetString(line.ToArray()).TrimEnd('\r'));
-                            line.Clear();
-                        }
-                        else line.Add(buffer[i]);
-                    }
-                }
-                _lines.CompleteAdding();
-            }
-
-            private async Task Watch()
-            {
-                while (!_stop.IsCancellationRequested)
-                {
-                    foreach (var (_, visible, words) in TopLevelWindows(Process.Id))
-                        (visible ? VisibleWindows : HiddenWindows).Add(words);
-                    try { await Task.Delay(25, _stop.Token); } catch (OperationCanceledException) { return; }
-                    if (Process.HasExited) return;
-                }
-            }
-
-            public byte[] StandardOutput { get { lock (_stdout) return _stdout.ToArray(); } }
-
-            /// <summary>Closes the job, which ends the child and what it
-            /// started.</summary>
-            public void EndJob() => _job.Dispose();
-
-            /// <summary>Whether the test still holds the child's job, so
-            /// nothing of the test's ended the child.</summary>
-            public bool JobOpen => !_job.IsClosed;
-
-            /// <summary>The next line of standard output, or null when none
-            /// comes within <paramref name="ms"/>.</summary>
-            public string NextLine(int ms) => _lines.TryTake(out string line, ms) ? line : null;
-
-            public string StandardError { get { lock (_stderr) return _stderr.ToString(); } }
-
-            /// <summary>Sends one JSON-RPC message as one line.</summary>
-            public void Send(JsonObject message)
-            {
-                Process.StandardInput.Write(message.ToJsonString() + "\n");
-                Process.StandardInput.Flush();
-            }
-
-            /// <summary>The answer to request <paramref name="id"/>, past any
-            /// notice that comes first.</summary>
-            public JsonNode Answer(int id, int ms = 30000)
-            {
-                var clock = Stopwatch.StartNew();
-                while (clock.ElapsedMilliseconds < ms)
-                {
-                    if (!_lines.TryTake(out string line, 250)) { if (_lines.IsCompleted) break; continue; }
-                    var node = JsonNode.Parse(line);
-                    if (node?["id"] is JsonValue v && v.TryGetValue(out int got) && got == id) return node;
-                }
-                throw new TimeoutException("no answer to request " + id + ". Standard error: " + StandardError);
-            }
-
-            /// <summary>Waits for the child to end, then for everything it
-            /// wrote.</summary>
-            public bool Ends(int ms)
-            {
-                if (!Process.WaitForExit(ms)) return false;
-                Process.WaitForExit();
-                Task.WaitAll(new[] { _reading, _draining }, 10000);
-                return true;
-            }
-
-            public void Dispose()
-            {
-                _stop.Cancel();
-                try { _watching.Wait(2000); } catch { }
-                // Closing the job's last handle ends the child and anything it
-                // started.
-                _job.Dispose();
-                try { Process.WaitForExit(5000); } catch { }
-                Process.Dispose();
-            }
+        internal static void RemoveFolder(string folder)
+        {
+            try { if (Directory.Exists(folder)) Directory.Delete(folder, true); }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException) { }
         }
 
         // ─────────────────────────────────────────────
@@ -262,28 +155,46 @@ namespace PadForge.Tests
         /// loaded it as an image or mapped it flat.</summary>
         internal static HashSet<string> MappedFiles(int processId)
         {
-            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             IntPtr process = OpenProcess(ProcessQueryInformation | ProcessVmRead, false, processId);
             Assert.True(process != IntPtr.Zero, "the process " + processId + " cannot be read: " + Marshal.GetLastWin32Error());
+            try { return MappedFiles(process); }
+            finally { CloseHandle(process); }
+        }
+
+        /// <summary>The same, through a handle this process holds, as the
+        /// debugger lists a child at its exit event.</summary>
+        internal static HashSet<string> MappedFiles(SafeProcessHandle process)
+        {
+            bool held = false;
             try
             {
-                long address = 0;
-                var name = new StringBuilder(1024);
-                while (address < 0x7FFF_FFFF_FFFFL)
-                {
-                    if (VirtualQueryEx(process, new IntPtr(address), out var region, new IntPtr(Marshal.SizeOf<MEMORY_BASIC_INFORMATION>())) == IntPtr.Zero) break;
-                    if (region.State == MemCommit && (region.Type == MemImage || region.Type == MemMapped))
-                    {
-                        name.Clear();
-                        if (GetMappedFileNameW(process, region.BaseAddress, name, (uint)name.Capacity) > 0)
-                            names.Add(Path.GetFileName(name.ToString()));
-                    }
-                    long next = region.BaseAddress.ToInt64() + region.RegionSize.ToInt64();
-                    if (next <= address) break;
-                    address = next;
-                }
+                process.DangerousAddRef(ref held);
+                return MappedFiles(process.DangerousGetHandle());
             }
-            finally { CloseHandle(process); }
+            finally
+            {
+                if (held) process.DangerousRelease();
+            }
+        }
+
+        private static HashSet<string> MappedFiles(IntPtr process)
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            long address = 0;
+            var name = new StringBuilder(1024);
+            while (address < 0x7FFF_FFFF_FFFFL)
+            {
+                if (VirtualQueryEx(process, new IntPtr(address), out var region, new IntPtr(Marshal.SizeOf<MEMORY_BASIC_INFORMATION>())) == IntPtr.Zero) break;
+                if (region.State == MemCommit && (region.Type == MemImage || region.Type == MemMapped))
+                {
+                    name.Clear();
+                    if (GetMappedFileNameW(process, region.BaseAddress, name, (uint)name.Capacity) > 0)
+                        names.Add(Path.GetFileName(name.ToString()));
+                }
+                long next = region.BaseAddress.ToInt64() + region.RegionSize.ToInt64();
+                if (next <= address) break;
+                address = next;
+            }
             return names;
         }
 
@@ -302,13 +213,31 @@ namespace PadForge.Tests
             finally { CloseHandle(process); }
         }
 
-        /// <summary>WPF's assemblies and libraries: a process that loaded any
-        /// part of WPF has one of these mapped.</summary>
+        /// <summary>WPF's assemblies and libraries, the shared framework's
+        /// Microsoft.WindowsDesktop.App part of it: a process that ran any
+        /// part of WPF has one of these mapped. PresentationFramework's
+        /// themes go by its name's start.</summary>
         internal static readonly string[] Wpf =
         {
             "PresentationFramework.dll", "PresentationCore.dll", "WindowsBase.dll", "System.Xaml.dll",
             "PresentationNative_cor3.dll", "wpfgfx_cor3.dll", "PresentationFramework.Aero2.dll", "UIAutomationProvider.dll",
+            "UIAutomationTypes.dll", "PresentationUI.dll", "ReachFramework.dll", "DirectWriteForwarder.dll",
+            "System.Windows.Presentation.dll", "PenImc_cor3.dll",
         };
+
+        internal static bool IsWpf(string file)
+            => Wpf.Contains(file, StringComparer.OrdinalIgnoreCase) || file.StartsWith("PresentationFramework.", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Fails on any part of WPF among <paramref name="files"/>,
+        /// naming when they were listed and what else was there.</summary>
+        internal static void NoWpf(IEnumerable<string> files, string when, Child child)
+        {
+            var all = files.ToList();
+            var wpf = all.Where(IsWpf).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            Assert.True(wpf.Count == 0, "WPF in the child " + when + ": " + string.Join(", ", wpf)
+                + ". Everything listed: " + string.Join(", ", all.OrderBy(m => m, StringComparer.OrdinalIgnoreCase))
+                + ". Standard error: " + child.StandardError);
+        }
 
         /// <summary>The method sees what it is to look for. In this process,
         /// which loaded WPF, the listing names WPF's assemblies. A window of
@@ -321,6 +250,7 @@ namespace PadForge.Tests
             var own = MappedFiles(Environment.ProcessId);
             Assert.Contains("PresentationFramework.dll", own);
             Assert.Contains("System.Private.CoreLib.dll", own);
+            Assert.Contains(own, IsWpf);
             Exception failure = null;
             var thread = new Thread(() =>
             {
@@ -430,97 +360,285 @@ namespace PadForge.Tests
         }
 
         // ─────────────────────────────────────────────
-        //  --mcp
+        //  --mcp, through the SDK's client
         // ─────────────────────────────────────────────
 
+        /// <summary>The name the test's client gives in its initialize, which
+        /// the question card shows.</summary>
+        private const string ClientName = "PadForge End-to-End Test";
+
+        /// <summary>
+        /// PadForge's side of the child's pipe at Change Settings: its
+        /// Automation host, its assistants' server and its calls, as
+        /// AssistantRig builds them, with two differences. The consent list
+        /// starts empty, so the child's program asks on the question card
+        /// as a first connection does. And undo puts back the catalog's
+        /// settings, as the app's undo puts back its app settings
+        /// (AssistantUndoStore.Take and Restore), where AssistantRig's undo
+        /// puts back a profile counter alone.
+        /// </summary>
+        private sealed class ConsentRig : IDisposable
+        {
+            private readonly DeviceCollection _devices = SettingsManager.UserDevices;
+            private readonly SettingsCollection _settings = SettingsManager.UserSettings;
+
+            public readonly string PipeName = "PadForge.Tests.ChildAssistant." + Guid.NewGuid().ToString("N");
+            public readonly FakeAssistantApp App = new();
+            public readonly FakeAssistantCatalog Catalog = new();
+            public readonly InlineAutomationUi Ui = new();
+            public readonly AutomationHost Host;
+            public readonly AutomationConsent Consent;
+
+            public ConsentRig()
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                Host = new AutomationHost(new RecordingAutomationTarget(), Ui, "PadForge.Tests.ChildAssistantControl." + Guid.NewGuid().ToString("N"),
+                    automationPipeName: PipeName);
+                Consent = TestConsent.Empty(Host);
+                var undo = new AssistantUndo(Take, Restore);
+                var calls = new AssistantCalls(Host, App, Catalog, Ui, undo, AssistantTools.All);
+                new AssistantServer(Host, calls, Ui).Attach();
+                Host.Apply(true, AutomationLevel.ChangeSettings);
+                Assert.Equal(ExternalControlService.PipeState.Serving, Host.AutomationPipeState);
+            }
+
+            private sealed record Kept(double Number, bool Switch, string Choice);
+
+            private AssistantUndoState Take()
+                => new() { AppSettings = new Kept(Catalog.Number, Catalog.Switch, Catalog.Choice), Taken = DateTimeOffset.Now };
+
+            private string Restore(AssistantUndoState state)
+            {
+                var kept = (Kept)state.AppSettings;
+                Catalog.Number = kept.Number;
+                Catalog.Switch = kept.Switch;
+                Catalog.Choice = kept.Choice;
+                return "Put back the app settings.";
+            }
+
+            public void Dispose()
+            {
+                Host.Dispose();
+                SettingsManager.UserDevices = _devices;
+                SettingsManager.UserSettings = _settings;
+            }
+        }
+
+        /// <summary>The SDK's client over the child's standard input and
+        /// output: initialize, then initialized, as a host opens a
+        /// server.</summary>
+        private static Task<McpClient> ConnectAsync(Child child)
+            => McpClient.CreateAsync(new StreamClientTransport(child.ProtocolInput, child.ProtocolOutput), new McpClientOptions
+            {
+                ProtocolVersion = AssistantMirror.UpstreamVersion,
+                ClientInfo = new Implementation { Name = ClientName, Version = "1" },
+            });
+
+        /// <summary>The value a read gives for a place.</summary>
+        private static double Value(CallToolResult read)
+        {
+            Assert.False(read.IsError == true, AssistantRig.Text(read));
+            return read.StructuredContent.Value.GetProperty("place").GetProperty("value").GetDouble();
+        }
+
+        private static string Events(WindowWatch watch, int processId) => string.Join(", ", watch.Of(processId));
+
+        /// <summary>
+        /// What the reference's own end-to-end test does, exe to exe (the
+        /// built program started, the door found, a number set and read
+        /// back), as a host's assistant
+        /// does it: the built PadForge.exe with <c>--mcp</c>, the SDK's
+        /// client over its standard input and output, the program's consent
+        /// given on the question card, then at Change Settings a number set
+        /// and read back, undone, and the old value read back. The child
+        /// shows no window from its start to its end, loads no part of WPF,
+        /// writes nothing but protocol to standard output and ends with 0
+        /// when its input closes.
+        /// </summary>
         [UnelevatedFact]
-        public void TheAssistantsCopy_AnsweredOverItsStandardInputAndOutput_IsAProtocolServerAlone()
+        public async Task TheAssistantsCopy_SetsANumber_ReadsItBack_AndUndoesIt_ThroughTheSdksClient()
         {
             TheManifestAsksForNoRights();
             TheListingsSeeWhatTheyLookFor();
             string exe = BuiltExe();
-            using var rig = new AssistantRig(AutomationLevel.Read);
-            using var child = new Child(exe, "--mcp", new Dictionary<string, string> { [WebHelper.PipeVariable] = rig.PipeName });
-
-            // As a host opens a server: initialize, then initialized.
-            child.Send(Request(1, "initialize", new JsonObject
+            using var rig = new ConsentRig();
+            using var watch = new WindowWatch();
+            using var child = new Child(exe, "--mcp", new Dictionary<string, string> { [WebHelper.PipeVariable] = rig.PipeName }, watch);
+            var client = await ConnectAsync(child);
+            try
             {
-                ["protocolVersion"] = AssistantMirror.UpstreamVersion,
-                ["capabilities"] = new JsonObject(),
-                ["clientInfo"] = new JsonObject { ["name"] = "PadForge Child Test", ["version"] = "1" },
-            }));
-            var hello = child.Answer(1);
-            Assert.Equal("padforge", hello["result"]?["serverInfo"]?["name"]?.GetValue<string>());
-            child.Send(new JsonObject { ["jsonrpc"] = "2.0", ["method"] = "notifications/initialized" });
+                Assert.Equal("padforge", client.ServerInfo?.Name);
 
-            // The tools are the test's host's, through its own pipe: the fence
-            // held, and the PC's PadForge was never reached.
-            child.Send(Request(2, "tools/list"));
-            var tools = child.Answer(2)["result"]?["tools"]?.AsArray().Select(t => t["name"]?.GetValue<string>()).ToList();
-            Assert.Contains("list_controllers", tools);
-            child.Send(Request(3, "tools/call", new JsonObject { ["name"] = "list_controllers", ["arguments"] = new JsonObject() }));
-            var called = child.Answer(3)["result"];
-            Assert.NotEqual(true, called?["isError"]?.GetValue<bool>());
-            Assert.Equal(1, called?["structuredContent"]?["controllers"]?[0]?["number"]?.GetValue<int>());
+                // A first connection at Change Settings asks the user, on the
+                // question card that names the program, and the user allows
+                // it.
+                await AssistantRig.Until(() => rig.Host.Approvals.Pending.Any(p => p.Request.Kind == ApprovalKind.Consent), 30000);
+                var card = rig.Host.Approvals.Pending.Single(p => p.Request.Kind == ApprovalKind.Consent);
+                Assert.Contains(ClientName, card.Request.Title);
+                Assert.True(rig.Host.Approvals.Answer(card.Id, true));
+                // The answer is kept as the card's question goes on after it.
+                await AssistantRig.Until(() => rig.Consent.Programs.Count == 1, 10000);
+                Assert.Equal(AutomationLevel.ChangeSettings, rig.Consent.Programs.Single().Level);
 
-            // The skill, a docs page's copy among it, is the child's own.
-            child.Send(Request(4, "resources/read", new JsonObject { ["uri"] = AssistantSkill.Root + "references/docs/features/assistants.md" }));
-            string page = child.Answer(4)["result"]?["contents"]?[0]?["text"]?.GetValue<string>();
-            Assert.StartsWith("<!-- " + AssistantDocs.Root + "features/assistants/", page);
+                // PadForge's list grows with the level, the copy hears it, and
+                // the client gets the change tools.
+                IList<McpClientTool> tools = null;
+                await AssistantRig.Until(() => (tools = client.ListToolsAsync().AsTask().GetAwaiter().GetResult()).Any(t => t.Name == "set"), 30000);
+                Assert.Contains(tools, t => t.Name == "read");
+                Assert.Contains(tools, t => t.Name == "undo");
 
-            // After real work: no part of WPF, beside the runtime and the
-            // protocol's own library, which show the listing reads the child.
-            var mapped = MappedFiles(child.Process.Id);
-            Assert.Contains("System.Private.CoreLib.dll", mapped);
-            Assert.Contains("ModelContextProtocol.Core.dll", mapped);
-            Assert.Contains("System.IO.Pipes.dll", mapped);
-            Assert.False(Wpf.Any(mapped.Contains), "WPF in the child: " + string.Join(", ", Wpf.Where(mapped.Contains)) + ". Everything mapped: " + string.Join(", ", mapped.OrderBy(m => m, StringComparer.OrdinalIgnoreCase)));
+                // A number set and read back, then undone and read back.
+                const string place = "pad/Pad_Deadzone@c1";
+                Assert.Equal(8, Value(await client.CallToolAsync("read", AssistantRig.Args(("id", place)))));
+                var set = await client.CallToolAsync("set", AssistantRig.Args(("id", place), ("value", 35)));
+                Assert.False(set.IsError == true, AssistantRig.Text(set));
+                Assert.True(set.StructuredContent.Value.GetProperty("done").GetBoolean());
+                Assert.Equal(35, rig.Catalog.Number);
+                Assert.Equal(35, Value(await client.CallToolAsync("read", AssistantRig.Args(("id", place)))));
+                var undone = await client.CallToolAsync("undo");
+                Assert.False(undone.IsError == true, AssistantRig.Text(undone));
+                Assert.True(undone.StructuredContent.Value.GetProperty("done").GetBoolean());
+                Assert.Equal(8, rig.Catalog.Number);
+                Assert.Equal(8, Value(await client.CallToolAsync("read", AssistantRig.Args(("id", place)))));
 
-            // The child has this host's rights, no more: no prompt stood.
-            Assert.Equal(Rights(Environment.ProcessId), Rights(child.Process.Id));
+                // The skill, a docs page's copy among it, is the child's own.
+                var page = await client.ReadResourceAsync(AssistantSkill.Root + "references/docs/features/assistants.md");
+                Assert.StartsWith("<!-- " + AssistantDocs.Root + "features/assistants/", Assert.IsType<TextResourceContents>(page.Contents[0]).Text);
 
-            // Closing its input ends it, with 0.
-            child.Process.StandardInput.Close();
+                // The watch takes a window this test shows and hides at once,
+                // in the same watch, while the child runs.
+                watch.Drain();
+
+                // After real work: no part of WPF, beside the runtime and the
+                // protocol's own library, which show the listing reads the
+                // child.
+                var mapped = MappedFiles(child.Id);
+                Assert.Contains("System.Private.CoreLib.dll", mapped);
+                Assert.Contains("ModelContextProtocol.Core.dll", mapped);
+                Assert.Contains("System.IO.Pipes.dll", mapped);
+                NoWpf(mapped, "after its calls", child);
+                Assert.DoesNotContain(TopLevelWindows(child.Id), w => w.Visible);
+
+                // The child has this host's rights, no more: no prompt stood.
+                Assert.Equal(Rights(Environment.ProcessId), Rights(child.Id));
+            }
+            finally
+            {
+                await client.DisposeAsync();
+            }
+
+            // The host lets go: its input closes, and the child ends with 0.
+            child.EndInput();
             Assert.True(child.Ends(20000), "the child did not end when its input closed. Standard error: " + child.StandardError);
-            Assert.Equal(0, child.Process.ExitCode);
-            Assert.True(OnlyProtocol(child.StandardOutput) >= 4, "fewer messages than answers");
-            Assert.True(child.VisibleWindows.IsEmpty, "the child showed a window: " + string.Join(", ", child.VisibleWindows.Distinct()));
+            Assert.Equal(0, child.ExitCode);
+            Assert.True(OnlyProtocol(child.StandardOutput) >= 10, "fewer messages than answers");
+            // A window shown after the child ended comes through, so every
+            // event of the child's has: none showed a window.
+            watch.Drain();
+            Assert.True(watch.Shown(child.Id).Count == 0, "the child showed a window: " + Events(watch, child.Id));
         }
 
         /// <summary>With no PadForge to reach, as a host usually finds it,
-        /// the copy speaks its own words: status says PadForge is not
-        /// running, and no part of WPF loads for them.</summary>
+        /// the copy speaks its own words through the SDK's client: status
+        /// says PadForge is not running. It loads no part of WPF, and reads
+        /// no settings file, so it maps none of the runtime's XML reader.</summary>
         [UnelevatedFact]
-        public void TheAssistantsCopy_WithNoPadForge_SaysSoInStatus_AndLoadsNoWpf()
+        public async Task TheAssistantsCopy_WithNoPadForge_SaysSoInStatus_AndLoadsNoWpf()
         {
             string exe = BuiltExe();
             string nobody = "PadForge.Tests.Nobody." + Guid.NewGuid().ToString("N");
-            using var child = new Child(exe, "--mcp", new Dictionary<string, string> { [WebHelper.PipeVariable] = nobody });
-            child.Send(Request(1, "initialize", new JsonObject
+            using var watch = new WindowWatch();
+            using var child = new Child(exe, "--mcp", new Dictionary<string, string> { [WebHelper.PipeVariable] = nobody }, watch);
+            var client = await ConnectAsync(child);
+            try
             {
-                ["protocolVersion"] = AssistantMirror.UpstreamVersion,
-                ["capabilities"] = new JsonObject(),
-                ["clientInfo"] = new JsonObject { ["name"] = "PadForge Child Test", ["version"] = "1" },
-            }));
-            Assert.Equal("padforge", child.Answer(1)["result"]?["serverInfo"]?["name"]?.GetValue<string>());
-            child.Send(new JsonObject { ["jsonrpc"] = "2.0", ["method"] = "notifications/initialized" });
-            child.Send(Request(2, "tools/list"));
-            Assert.Equal(new[] { "status" }, child.Answer(2)["result"]?["tools"]?.AsArray().Select(t => t["name"]?.GetValue<string>()));
-            child.Send(Request(3, "tools/call", new JsonObject { ["name"] = "status", ["arguments"] = new JsonObject() }));
-            var status = child.Answer(3)["result"]?["structuredContent"];
-            Assert.False(status?["connected"]?.GetValue<bool>());
-            Assert.False(string.IsNullOrWhiteSpace(status?["message"]?.GetValue<string>()));
+                Assert.Equal("padforge", client.ServerInfo?.Name);
+                Assert.Equal(new[] { "status" }, (await client.ListToolsAsync()).Select(t => t.Name));
+                var status = (await client.CallToolAsync("status")).StructuredContent.Value;
+                Assert.False(status.GetProperty("connected").GetBoolean());
+                Assert.False(string.IsNullOrWhiteSpace(status.GetProperty("message").GetString()));
 
-            var mapped = MappedFiles(child.Process.Id);
-            Assert.Contains("System.Private.CoreLib.dll", mapped);
-            Assert.Contains("ModelContextProtocol.Core.dll", mapped);
-            Assert.False(Wpf.Any(mapped.Contains), "WPF in the child: " + string.Join(", ", Wpf.Where(mapped.Contains)));
+                watch.Drain();
+                var mapped = MappedFiles(child.Id);
+                Assert.Contains("System.Private.CoreLib.dll", mapped);
+                Assert.Contains("ModelContextProtocol.Core.dll", mapped);
+                Assert.DoesNotContain("System.Private.Xml.dll", mapped);
+                NoWpf(mapped, "after its calls", child);
+            }
+            finally
+            {
+                await client.DisposeAsync();
+            }
 
-            child.Process.StandardInput.Close();
+            child.EndInput();
             Assert.True(child.Ends(20000), "the child did not end when its input closed. Standard error: " + child.StandardError);
-            Assert.Equal(0, child.Process.ExitCode);
+            Assert.Equal(0, child.ExitCode);
             Assert.True(OnlyProtocol(child.StandardOutput) >= 3, "fewer messages than answers");
-            Assert.True(child.VisibleWindows.IsEmpty, "the child showed a window: " + string.Join(", ", child.VisibleWindows.Distinct()));
+            watch.Drain();
+            Assert.True(watch.Shown(child.Id).Count == 0, "the child showed a window: " + Events(watch, child.Id));
+        }
+
+        /// <summary>
+        /// The production copy's start-up read of PadForge.xml (item 5 of the
+        /// lane, AS-131): a test's child reads the settings file its test
+        /// names (AssistantMirror.TestsSettingsVariable) through
+        /// AutomationFileSettings.Read, the read the production copy makes of
+        /// the file beside its exe. With Automation on at Change Settings and
+        /// no PadForge to reach, it lists every tool, each of which would
+        /// start PadForge, and a test's child starts nothing, so a call says
+        /// PadForge did not start. The runtime's XML reader is mapped, which
+        /// shows the read ran, and no part of WPF is.
+        /// </summary>
+        [UnelevatedFact]
+        public async Task TheAssistantsCopy_ReadsTheSettingsFileAtItsStart_ListsWhatItsLevelAllows_AndLoadsNoWpf()
+        {
+            string exe = BuiltExe();
+            string folder = TempFolder("settings");
+            try
+            {
+                // PadForge.xml's form, under a name of the test's own.
+                string file = Path.Combine(folder, "settings.xml");
+                File.WriteAllText(file, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<PadForgeSettings>\n  <AppSettings>\n"
+                    + "    <EnableAutomation>true</EnableAutomation>\n    <AutomationLevel>3</AutomationLevel>\n  </AppSettings>\n</PadForgeSettings>\n");
+                Assert.Equal(new AutomationFileSettings(true, AutomationLevel.ChangeSettings), AutomationFileSettings.Read(file));
+                string nobody = "PadForge.Tests.Nobody." + Guid.NewGuid().ToString("N");
+                using var watch = new WindowWatch();
+                using var child = new Child(exe, "--mcp", new Dictionary<string, string>
+                {
+                    [WebHelper.PipeVariable] = nobody,
+                    [AssistantMirror.TestsSettingsVariable] = file,
+                }, watch);
+                var client = await ConnectAsync(child);
+                try
+                {
+                    Assert.Equal(AssistantTools.All.Select(t => t.Name), (await client.ListToolsAsync()).Select(t => t.Name));
+                    var called = await client.CallToolAsync("list_profiles");
+                    Assert.True(called.IsError);
+                    Assert.Contains("(not-connected)", AssistantRig.Text(called));
+
+                    watch.Drain();
+                    var mapped = MappedFiles(child.Id);
+                    Assert.Contains("System.Private.CoreLib.dll", mapped);
+                    Assert.Contains("System.Private.Xml.dll", mapped);
+                    NoWpf(mapped, "after it read the settings file and listed every tool", child);
+                }
+                finally
+                {
+                    await client.DisposeAsync();
+                }
+
+                child.EndInput();
+                Assert.True(child.Ends(20000), "the child did not end when its input closed. Standard error: " + child.StandardError);
+                Assert.Equal(0, child.ExitCode);
+                OnlyProtocol(child.StandardOutput);
+                watch.Drain();
+                Assert.True(watch.Shown(child.Id).Count == 0, "the child showed a window: " + Events(watch, child.Id));
+            }
+            finally
+            {
+                RemoveFolder(folder);
+            }
         }
 
         // ─────────────────────────────────────────────

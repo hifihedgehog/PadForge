@@ -135,7 +135,8 @@ namespace PadForge.Services
             /// PadForge.exe never reaches a PadForge that runs on the PC. Its
             /// running copy is whatever serves that pipe, it sends no line
             /// to a control pipe, looks up no window, lock or exit of the
-            /// PC's copy, installs nothing in the PC's folders, opens nothing
+            /// PC's copy, installs nothing in the PC's folders, saves nothing
+            /// from the recordings folder the PC's copy keeps, opens nothing
             /// through the shell, shows no box and never becomes the app.
             /// </summary>
             internal static Seams ForThisRun(Func<string, string> variable)
@@ -165,12 +166,22 @@ namespace PadForge.Services
                     sayError(TestsChildOpensNothing);
                     return AnsweredAnError;
                 };
+                // --record save reads the recordings folder in the user's
+                // temp folder, where the PC's copy keeps the recordings
+                // that wait for review, and makes it when it is missing
+                // (RecordingFolder.Get).
+                seams.RecordSave = (source, target, sayError) =>
+                {
+                    sayError(TestsChildSavesNothing);
+                    return AnsweredAnError;
+                };
                 return seams;
             }
         }
 
         internal const string TestsChildInstallsNothing = "A test's run of PadForge installs nothing.";
         internal const string TestsChildOpensNothing = "A test's run of PadForge opens nothing.";
+        internal const string TestsChildSavesNothing = "A test's run of PadForge saves no recording.";
 
         /// <summary>
         /// Runs the command line as a client when it is one. True when this

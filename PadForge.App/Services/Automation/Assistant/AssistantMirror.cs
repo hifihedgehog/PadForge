@@ -249,17 +249,28 @@ namespace PadForge.Services.Automation
         /// standard input and output, until it closes.</summary>
         internal static int Run() => Run(() => new AssistantMirror());
 
+        /// <summary>The variable that names, for a test's child alone, the
+        /// settings file its copy reads at its start in place of the
+        /// PadForge.xml beside the exe (#600 item 52), so a test runs the
+        /// production copy's start-up read under its own fences. It is read
+        /// only in the run of a test's child (ClientRun.Seams.ForThisRun).</summary>
+        internal const string TestsSettingsVariable = "PADFORGE_TEST_SETTINGS";
+
         /// <summary>The run of a test's child (#600 item 52), whose
-        /// variables name a pipe of the test's own (ClientRun.Seams.ForThisRun).</summary>
-        internal static int Run(string testsOwnPipe) => Run(() => ForTestsOwnPipe(testsOwnPipe));
+        /// variables name a pipe of the test's own (ClientRun.Seams.ForThisRun),
+        /// and a settings file of the test's when they name one.</summary>
+        internal static int Run(string testsOwnPipe)
+            => Run(() => ForTestsOwnPipe(testsOwnPipe, Environment.GetEnvironmentVariable(TestsSettingsVariable)));
 
         /// <summary>The copy for a test's own pipe: that pipe stands for
-        /// PadForge, whether PadForge runs is whether it stands, PadForge.xml
-        /// is not read, and a call that needs PadForge starts nothing. So a
-        /// test that starts this copy never reaches a PadForge that runs on
-        /// the PC.</summary>
-        internal static AssistantMirror ForTestsOwnPipe(string pipe)
-            => new AssistantMirror(pipe, () => ControlPipeClient.Stands(pipe), fileSettings: () => AutomationFileSettings.None)
+        /// PadForge, whether PadForge runs is whether it stands, the settings
+        /// file read is the one the test names or none, never the
+        /// PadForge.xml beside the exe, and a call that needs PadForge starts
+        /// nothing. So a test that starts this copy never reaches a PadForge
+        /// that runs on the PC.</summary>
+        internal static AssistantMirror ForTestsOwnPipe(string pipe, string settingsFile = null)
+            => new AssistantMirror(pipe, () => ControlPipeClient.Stands(pipe),
+                fileSettings: string.IsNullOrEmpty(settingsFile) ? () => AutomationFileSettings.None : () => AutomationFileSettings.Read(settingsFile))
             {
                 StartPadForge = () => false,
             };

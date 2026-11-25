@@ -179,8 +179,8 @@ namespace PadForge.Tests
             SettingsManager.SlotCreated = new bool[InputManager.MaxPads];
             ScriptValues.ResetForTest();
             ControlHolds.Publish(null);
-            Host = new AutomationHost(Target, Ui, "PadForge.Tests.Control." + Guid.NewGuid().ToString("N"),
-                automationPipeName: PipeName);
+            Host = TestConsent.AllowAll(new AutomationHost(Target, Ui, "PadForge.Tests.Control." + Guid.NewGuid().ToString("N"),
+                automationPipeName: PipeName));
             Host.Sessions.Devices.OfflineAfterMs = 300;
             if (engine)
             {

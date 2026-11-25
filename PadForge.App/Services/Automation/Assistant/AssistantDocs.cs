@@ -1,0 +1,113 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using PadForge.Search;
+using PadForge.Services.Catalog;
+
+namespace PadForge.Services.Automation
+{
+    /// <summary>
+    /// PadForge's documentation pages, by what they cover (#600). A read
+    /// names the page it comes from, and its result carries it as a resource
+    /// link, so an assistant can read how a feature works from the source
+    /// people read. The pages are the documentation site's (padforge.org,
+    /// mkdocs.yml's nav), each at its directory address. No WPF: the skill's
+    /// reference list is made from the same table.
+    /// </summary>
+    internal static class AssistantDocs
+    {
+        internal const string Root = "https://padforge.org/docs/";
+
+        /// <summary>Every page an assistant is pointed at, by its path under
+        /// the site, with what it covers.</summary>
+        internal static readonly IReadOnlyList<(string Path, string Covers)> Pages = new[]
+        {
+            ("start/first-controller/", "Setting up a first controller"),
+            ("features/dashboard/", "Home: the engine, the virtual controllers and the extras that are on"),
+            ("features/devices/", "Devices: every device PadForge reads, hiding a device from games, lighting and feedback"),
+            ("features/controller-slots/", "Controller slots: making, numbering and removing virtual controllers"),
+            ("features/virtual-controllers/", "Virtual controller types and presets"),
+            ("features/mappings/", "Button and axis mapping rows"),
+            ("features/stick-deadzones/", "Sticks: dead zones, curves and anti-dead zones"),
+            ("features/trigger-deadzones/", "Triggers: dead zones and ranges"),
+            ("features/force-feedback/", "Force feedback and rumble"),
+            ("features/lighting/", "Lighting"),
+            ("guides/gyro/", "Motion aiming with a gyro"),
+            ("guides/macros/", "Macros"),
+            ("guides/shift-layers/", "Shift layers"),
+            ("guides/menus/", "Menus"),
+            ("guides/profiles/", "Per-game profiles"),
+            ("guides/profile-import/", "Importing profiles from other programs"),
+            ("guides/web-controller/", "A phone as a controller"),
+            ("guides/remote-link/", "Remote Link"),
+            ("features/game-telemetry/", "Game telemetry"),
+            ("features/game-mods/", "Game mods"),
+            ("features/head-tracking/", "Head tracking"),
+            ("features/twitch-chat/", "Twitch chat"),
+            ("features/screen-overlay/", "The screen overlay"),
+            ("features/crosshair/", "The crosshair"),
+            ("features/magnifier/", "The magnifier"),
+            ("features/touchpad/", "Touchpads"),
+            ("features/settings/", "Settings"),
+            ("features/driver-management/", "Drivers and HidHide"),
+            ("troubleshooting/", "When a game does not see a controller, and other problems"),
+        };
+
+        private static readonly Dictionary<string, string> ByExtra = new()
+        {
+            ["WebController"] = "guides/web-controller/",
+            ["HeadTracking"] = "features/head-tracking/",
+            ["GameTelemetry"] = "features/game-telemetry/",
+            ["TwitchChat"] = "features/twitch-chat/",
+            ["RemoteLink"] = "guides/remote-link/",
+            ["GameMods"] = "features/game-mods/",
+            ["ScreenOverlay"] = "features/screen-overlay/",
+            ["Crosshair"] = "features/crosshair/",
+            ["Magnifier"] = "features/magnifier/",
+            ["TouchpadOverlay"] = "features/touchpad/",
+        };
+
+        private static readonly string[] BySection =
+        {
+            "features/mappings/", "features/stick-deadzones/", "features/force-feedback/",
+            "guides/gyro/", "features/lighting/", "guides/macros/",
+        };
+
+        /// <summary>Whether an address is one of these pages.</summary>
+        internal static bool IsPage(string address)
+            => address != null && address.StartsWith(Root, StringComparison.Ordinal)
+                && Pages.Any(p => address.Length == Root.Length + p.Path.Length && address.EndsWith(p.Path, StringComparison.Ordinal));
+
+        /// <summary>The page that covers a place, as a full address, or
+        /// null when none does.</summary>
+        internal static string PageFor(SearchEntry entry, LiveEntry live)
+        {
+            string path = null;
+            if (entry != null)
+            {
+                if (entry.ExtraKey != null && ByExtra.TryGetValue(entry.ExtraKey, out var extra)) path = extra;
+                else path = entry.Page switch
+                {
+                    SearchPage.Pad => entry.Section >= 0 && entry.Section < BySection.Length ? BySection[entry.Section] : "features/mappings/",
+                    SearchPage.Devices => "features/devices/",
+                    SearchPage.Profiles => "guides/profiles/",
+                    SearchPage.Settings => "features/settings/",
+                    SearchPage.Home => "features/dashboard/",
+                    _ => null,
+                };
+            }
+            else if (live != null)
+            {
+                path = live.Kind switch
+                {
+                    LiveKind.Device => "features/devices/",
+                    LiveKind.Controller => "features/controller-slots/",
+                    LiveKind.Profile => "guides/profiles/",
+                    LiveKind.Macro => "guides/macros/",
+                    _ => null,
+                };
+            }
+            return path == null ? null : Root + path;
+        }
+    }
+}

@@ -132,10 +132,24 @@ namespace PadForge.Services.Automation
         {
             if (outcome.Ok)
             {
+                var content = new List<ContentBlock> { new TextContentBlock { Text = outcome.Json } };
+                // A result that names the documentation page it comes from
+                // points at it with a resource link (#600).
+                if (outcome.Structured is { ValueKind: JsonValueKind.Object } structured
+                    && structured.TryGetProperty("docs", out var docs) && docs.ValueKind == JsonValueKind.String
+                    && Uri.TryCreate(docs.GetString(), UriKind.Absolute, out var page) && page.Scheme == Uri.UriSchemeHttps)
+                    content.Add(new ResourceLinkBlock
+                    {
+                        Uri = page.AbsoluteUri,
+                        Name = "padforge-docs",
+                        Title = "PadForge's documentation",
+                        Description = "The documentation page this comes from.",
+                        MimeType = "text/html",
+                    });
                 return new CallToolResult
                 {
                     StructuredContent = outcome.Structured,
-                    Content = new List<ContentBlock> { new TextContentBlock { Text = outcome.Json } },
+                    Content = content,
                     IsError = false,
                 };
             }
@@ -185,8 +199,10 @@ namespace PadForge.Services.Automation
         public AutomationSession Session { get; }
 
         /// <summary>The key the rate limit, the undo journal and the pending
-        /// requests know the program by: its connection.</summary>
-        public int Key => Peer?.Session ?? 0;
+        /// requests know the program by (#600): the first connection of an
+        /// assistant's helper, which keeps one resume secret across a pipe
+        /// drop, else the connection.</summary>
+        public int Key => Session != null && Session.CallerKey > 0 ? Session.CallerKey : Peer?.Session ?? 0;
 
         /// <summary>The program as Activity shows it.</summary>
         public AutomationProgram Program

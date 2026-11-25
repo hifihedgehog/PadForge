@@ -79,6 +79,45 @@ namespace PadForge.Services.Automation
 
         internal const int ConnectMs = 1500;
 
+        /// <summary>How long a call that started PadForge waits for it
+        /// (#600).</summary>
+        internal static readonly TimeSpan StartWait = TimeSpan.FromSeconds(60);
+
+        /// <summary>How long after one start no other is made, so a refused
+        /// prompt for rights is never put again at every call.</summary>
+        internal static readonly TimeSpan StartQuiet = TimeSpan.FromSeconds(90);
+
+        /// <summary>
+        /// The resume secret this copy holds for its whole run (#600): its
+        /// hello carries it, so PadForge keeps the copy's undo, rate and
+        /// waiting requests across a pipe drop and a restart of either side
+        /// within a while. Random, never written anywhere.
+        /// </summary>
+        internal readonly string Resume = Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(16)).ToLowerInvariant();
+
+        /// <summary>What PadForge.xml says of Automation, read without
+        /// loading the app: the switch and the level. A test gives its
+        /// own.</summary>
+        internal Func<AutomationFileSettings> FileSettings { get; set; } = () => AutomationFileSettings.Read(AutomationFileSettings.DefaultPath());
+
+        /// <summary>Starts PadForge minimized through the normal start path:
+        /// the desktop shell starts PadForge.exe as a double-click does, with
+        /// the user's rights, and PadForge asks Windows for its own. True when
+        /// the shell took it. The test host starts nothing
+        /// (ShellLaunch.OffLimitsForTest).</summary>
+        internal Func<bool> StartPadForge { get; set; } = () =>
+        {
+            string exe = Environment.ProcessPath;
+            if (string.IsNullOrEmpty(exe)) return false;
+            return PadForge.Common.ShellLaunch.AsTheUser(new System.Diagnostics.ProcessStartInfo(exe, "--minimized")
+            {
+                WorkingDirectory = Path.GetDirectoryName(exe) ?? string.Empty,
+            }, out _);
+        };
+
+        private DateTimeOffset _startedAt = DateTimeOffset.MinValue;
+        private readonly object _startSync = new object();
+
         private readonly string _pipeName;
         private readonly Func<bool> _padForgeRuns;
         private readonly Func<SafePipeHandle, bool> _trust;
@@ -101,8 +140,12 @@ namespace PadForge.Services.Automation
         /// The owner check when none is given.</param>
         /// <param name="host">The image name of the program that started
         /// this copy, for Activity. Found when none is given.</param>
-        public AssistantMirror(string pipeName = null, Func<bool> padForgeRuns = null, Func<SafePipeHandle, bool> trustServer = null, string host = null)
+        /// <param name="fileSettings">What PadForge.xml says of Automation
+        /// (#600). The file beside this exe when none is given.</param>
+        public AssistantMirror(string pipeName = null, Func<bool> padForgeRuns = null, Func<SafePipeHandle, bool> trustServer = null, string host = null,
+            Func<AutomationFileSettings> fileSettings = null)
         {
+            if (fileSettings != null) FileSettings = fileSettings;
             _pipeName = pipeName ?? AutomationPipe.PipeName;
             _padForgeRuns = padForgeRuns ?? RunningCopy.Exists;
             _trust = trustServer ?? (handle => PipeOwner.IsServer(handle, _pipeName));
@@ -291,7 +334,8 @@ namespace PadForge.Services.Automation
             }
 
             string hello = "hello kind=mcp name=" + AutomationLine.Quote(_clientName ?? "assistant")
-                + (string.IsNullOrEmpty(_host) ? string.Empty : " host=" + AutomationLine.Quote(_host)) + "\n";
+                + (string.IsNullOrEmpty(_host) ? string.Empty : " host=" + AutomationLine.Quote(_host))
+                + " resume=" + Resume + "\n";
             byte[] bytes = Encoding.UTF8.GetBytes(hello);
             await pipe.WriteAsync(bytes, stopping).ConfigureAwait(false);
             await pipe.FlushAsync(stopping).ConfigureAwait(false);
@@ -406,15 +450,24 @@ namespace PadForge.Services.Automation
             lock (_sync) ShowOffline();
         }
 
+        /// <summary>While PadForge is closed (#600): with Automation on in
+        /// PadForge.xml, the tools its level allows, each of which starts
+        /// PadForge when called and waits for it, and status. With it off,
+        /// status alone, which says what to do.</summary>
         private void ShowOffline()
         {
-            if (_tools.Count == 1 && _tools.First() is OfflineStatus) { }
-            else
+            var file = SafeFile();
+            var want = new List<McpServerTool> { new OfflineStatus(this) };
+            if (file.On && State is MirrorState.Closed or MirrorState.Starting)
+                foreach (var tool in AssistantTools.All.Where(t => t.Level <= file.Level && t.Name != "status"))
+                    want.Add(new StartingTool(tool.ProtocolTool, this));
+            if (!(_tools.Count == want.Count && _tools.Select(x => x.ProtocolTool.Name).SequenceEqual(want.Select(x => x.ProtocolTool.Name))
+                  && _tools.First() is OfflineStatus))
             {
                 using (_tools.DeferChangedEvents())
                 {
                     _tools.Clear();
-                    _tools.Add(new OfflineStatus(this));
+                    foreach (var tool in want) _tools.Add(tool);
                 }
             }
             if (_prompts.Count > 0) _prompts.Clear();
@@ -429,6 +482,47 @@ namespace PadForge.Services.Automation
             StateChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        private AutomationFileSettings SafeFile()
+        {
+            try { return FileSettings?.Invoke() ?? AutomationFileSettings.None; }
+            catch (Exception) { return AutomationFileSettings.None; }
+        }
+
+        /// <summary>
+        /// A call that needs PadForge while it is closed (#600): with
+        /// Automation on in PadForge.xml, PadForge is started minimized
+        /// through the normal start path, once in <see cref="StartQuiet"/>,
+        /// and the call waits up to <see cref="StartWait"/> for it. False
+        /// when it did not come: Automation is off in the file, the start was
+        /// refused, or PadForge did not answer in time.
+        /// </summary>
+        internal async Task<bool> EnsurePadForgeAsync(CancellationToken ct)
+        {
+            if (_up != null && State == MirrorState.Connected) return true;
+            if (!SafeFile().On) return false;
+            if (State is MirrorState.AutomationOff or MirrorState.NameTaken or MirrorState.Refused) return false;
+            bool start;
+            lock (_startSync)
+            {
+                start = DateTimeOffset.UtcNow - _startedAt > StartQuiet;
+                if (start) _startedAt = DateTimeOffset.UtcNow;
+            }
+            if (start && !(StartPadForge?.Invoke() ?? false))
+            {
+                _words = "the start was refused";
+                return false;
+            }
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            while (clock.Elapsed < StartWait && !ct.IsCancellationRequested)
+            {
+                if (_up != null && State == MirrorState.Connected) return true;
+                if (State is MirrorState.AutomationOff or MirrorState.NameTaken or MirrorState.Refused) return false;
+                try { await Task.Delay(200, ct).ConfigureAwait(false); }
+                catch (OperationCanceledException) { return false; }
+            }
+            return _up != null && State == MirrorState.Connected;
+        }
+
         /// <summary>What status says while PadForge does not answer.</summary>
         internal string OfflineMessage() => State switch
         {
@@ -436,7 +530,9 @@ namespace PadForge.Services.Automation
             MirrorState.NameTaken => "Another program holds the name of PadForge's pipe, so this connection sends it nothing. Ask the user to close programs that mimic PadForge, then restart PadForge. This connection keeps trying.",
             MirrorState.Refused => "PadForge did not take this connection" + (string.IsNullOrEmpty(_words) ? "." : ": " + _words + ".") + " This connection keeps trying.",
             MirrorState.Starting => "This connection is still looking for PadForge. Call status again in a moment.",
-            _ => "PadForge is not running. Ask the user to start PadForge. If it was restarting, wait a few seconds. This connection finds it again by itself.",
+            _ => SafeFile().On
+                ? "PadForge is not running. The next call that needs it starts PadForge minimized and waits for it, and Windows may ask the user for PadForge's rights. This connection finds it by itself."
+                : "PadForge is not running, and its Automation is off. Ask the user to start PadForge, go to Extras, Automation, turn it on and pick a level. After that a call starts PadForge by itself when it is closed.",
         };
 
         private McpClient Up => _up;
@@ -476,6 +572,36 @@ namespace PadForge.Services.Automation
                     Content = new List<ContentBlock> { new TextContentBlock { Text = json } },
                     IsError = false,
                 });
+            }
+        }
+
+        /// <summary>A tool PadForge's level allows, listed while PadForge is
+        /// closed (#600): a call starts PadForge, waits for it and is then
+        /// forwarded as any call is.</summary>
+        private sealed class StartingTool : McpServerTool
+        {
+            private readonly Tool _tool;
+            private readonly AssistantMirror _mirror;
+
+            public StartingTool(Tool tool, AssistantMirror mirror)
+            {
+                _tool = tool;
+                _mirror = mirror;
+            }
+
+            public override Tool ProtocolTool => _tool;
+
+            public override IReadOnlyList<object> Metadata => Array.Empty<object>();
+
+            public override async ValueTask<CallToolResult> InvokeAsync(RequestContext<CallToolRequestParams> request, CancellationToken cancellationToken = default)
+            {
+                if (!await _mirror.EnsurePadForgeAsync(cancellationToken).ConfigureAwait(false))
+                    return new CallToolResult
+                    {
+                        IsError = true,
+                        Content = new List<ContentBlock> { new TextContentBlock { Text = "PadForge did not start for this call. " + _mirror.OfflineMessage() + " (not-connected)" } },
+                    };
+                return await new ForwardedTool(_tool, _mirror).InvokeAsync(request, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -706,6 +832,66 @@ namespace PadForge.Services.Automation
             uint parent = unchecked((uint)info.InheritedFromUniqueProcessId.ToUInt64());
             string path = PadForge.Common.Input.ProcessImage.PathOf(parent);
             return string.IsNullOrEmpty(path) ? null : System.IO.Path.GetFileName(path);
+        }
+    }
+
+    /// <summary>
+    /// What PadForge.xml says of Automation (#600), read by the copy an
+    /// assistant starts, which loads no part of the app: the switch and the
+    /// level, under PadForgeSettings, AppSettings. The file is the one
+    /// beside PadForge.exe, as SettingsService.FindSettingsFile finds it.
+    /// </summary>
+    internal sealed record AutomationFileSettings(bool On, AutomationLevel Level)
+    {
+        internal static readonly AutomationFileSettings None = new(false, AutomationLevel.Commands);
+
+        /// <summary>PadForge.xml beside this exe, else the older
+        /// Settings.xml, as the app looks for them.</summary>
+        internal static string DefaultPath()
+        {
+            string folder = AppContext.BaseDirectory;
+            string primary = Path.Combine(folder, "PadForge.xml");
+            if (File.Exists(primary)) return primary;
+            string fallback = Path.Combine(folder, "Settings.xml");
+            return File.Exists(fallback) ? fallback : primary;
+        }
+
+        /// <summary>The two values from a file, or <see cref="None"/> when
+        /// it is missing or does not read.</summary>
+        internal static AutomationFileSettings Read(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return None;
+            try
+            {
+                using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                return Read(stream);
+            }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException or System.Xml.XmlException)
+            {
+                return None;
+            }
+        }
+
+        internal static AutomationFileSettings Read(Stream stream)
+        {
+            var settings = new System.Xml.XmlReaderSettings { DtdProcessing = System.Xml.DtdProcessing.Prohibit, XmlResolver = null, IgnoreComments = true };
+            using var reader = System.Xml.XmlReader.Create(stream, settings);
+            bool on = false;
+            int level = 0;
+            if (!reader.ReadToFollowing("AppSettings")) return None;
+            using var app = reader.ReadSubtree();
+            app.Read();
+            while (!app.EOF)
+            {
+                // Reading an element's content moves past it, so the next
+                // element is looked at without another read.
+                if (app.NodeType == System.Xml.XmlNodeType.Element && app.Depth == 1 && app.Name == "EnableAutomation")
+                    on = string.Equals(app.ReadElementContentAsString().Trim(), "true", StringComparison.OrdinalIgnoreCase);
+                else if (app.NodeType == System.Xml.XmlNodeType.Element && app.Depth == 1 && app.Name == "AutomationLevel")
+                    int.TryParse(app.ReadElementContentAsString().Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out level);
+                else app.Read();
+            }
+            return new AutomationFileSettings(on, AutomationLevels.FromSaved(level));
         }
     }
 }

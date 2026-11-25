@@ -190,6 +190,15 @@ namespace PadForge.Views
             return null;
         }
 
+        /// <summary>A group's button on the page's left, which the guided
+        /// pointer rings on the way to a setting of the group (#600).</summary>
+        internal RadioButton GroupButton(SettingsGroup group)
+        {
+            foreach (var (candidate, _, _, button) in Groups)
+                if (candidate == group) return button;
+            return null;
+        }
+
         /// <summary>A group's name, as its button and its heading read.</summary>
         internal string GroupName(SettingsGroup group)
         {

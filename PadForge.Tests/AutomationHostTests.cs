@@ -27,7 +27,7 @@ namespace PadForge.Tests
             Func<int, AutomationProgram> programOf = null, Func<DateTimeOffset> now = null)
         {
             target = new RecordingAutomationTarget();
-            return new AutomationHost(target, new InlineAutomationUi(), pipe ?? OwnPipe("host"), programOf, now);
+            return TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), pipe ?? OwnPipe("host"), programOf, now));
         }
 
         private static async Task Until(Func<bool> condition, int timeoutMs = 5000)

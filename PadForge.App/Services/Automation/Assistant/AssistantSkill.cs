@@ -76,9 +76,23 @@ namespace PadForge.Services.Automation
                 using var stream = assembly.GetManifestResourceStream(name);
                 using var copy = new MemoryStream();
                 stream.CopyTo(copy);
-                files.Add(new SkillFile(name.Substring(ResourcePrefix.Length).Replace(Path.DirectorySeparatorChar, '/'), copy.ToArray()));
+                string path = name.Substring(ResourcePrefix.Length).Replace(Path.DirectorySeparatorChar, '/');
+                files.Add(new SkillFile(path, path == "SKILL.md" ? Stamped(copy.ToArray()) : copy.ToArray()));
             }
             return files.OrderBy(f => f.Path == "SKILL.md" ? 0 : 1).ThenBy(f => f.Path, StringComparer.Ordinal).ToArray();
+        }
+
+        /// <summary>The line of SKILL.md's frontmatter that carries the
+        /// version, as the repository keeps it.</summary>
+        internal const string VersionLine = "version: dev";
+
+        /// <summary>SKILL.md with this PadForge's version in its frontmatter
+        /// (#600), so a copy on disk says which build it describes.</summary>
+        internal static byte[] Stamped(byte[] skill)
+        {
+            string text = Encoding.UTF8.GetString(skill);
+            string stamped = text.Replace(VersionLine, "version: " + BuildIdentity.VersionText(BuildIdentity.Version));
+            return Encoding.UTF8.GetBytes(stamped);
         }
 
         /// <summary>The YAML frontmatter of SKILL.md, each field as it is

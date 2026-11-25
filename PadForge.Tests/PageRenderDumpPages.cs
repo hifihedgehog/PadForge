@@ -1725,6 +1725,73 @@ namespace PadForge.Tests
         /// <summary>Runs <paramref name="body"/> beside the app's resources
         /// and theme, and draws into the folder PADFORGE_PAGE_RENDER_DIR
         /// names. Without that folder it does nothing.</summary>
+        /// <summary>The question card's three kinds (#600): a program's first
+        /// connection with both answers alike, a change that asks with its
+        /// ember Allow, and a show while the window is behind with Not Now
+        /// and Show. Then the guided pointer's callout beside a setting of the
+        /// Settings page, held by its ring.</summary>
+        [Fact]
+        public void DrawAssistantCardsAndPointer()
+        {
+            Run("assistant", drawing =>
+            {
+                var now = new DateTimeOffset(2026, 11, 24, 12, 4, 0, TimeSpan.Zero);
+                using var host = new PadForge.Services.Automation.AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                    "PadForge.Tests.DrawAssistant." + Guid.NewGuid().ToString("N"), _ => PadForge.Services.Automation.AutomationProgram.Unknown, () => now);
+                var dash = new DashboardViewModel { RemoteLink = new SettingsViewModel() };
+                dash.AttachAutomation(host, drawing.App.Dispatcher);
+                AutomationRequestCard.KindOf = id => host.Approvals.KindOf(id);
+                try
+                {
+                    var python = new PadForge.Services.Automation.AutomationProgram("Telemetry Bridge", 4300, "python.exe", @"C:\Python314\python.exe");
+                    var s = PadForge.Resources.Strings.Strings.Instance;
+                    host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(python,
+                        string.Format(s.Automation_Ask_Consent_Format, "Telemetry Bridge", s.Extras_Automation_Level_Read),
+                        new[]
+                        {
+                            string.Format(s.Automation_Consent_Running_Format, "python.exe", @"C:\Tools\telemetry_bridge.py"),
+                            s.Automation_Consent_NotSigned, s.Automation_Consent_ReadsKeys, s.Automation_Consent_AsksOnce,
+                        }) { Kind = PadForge.Services.Automation.ApprovalKind.Consent });
+                    drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(8)), "assistant-card-consent.png");
+                    foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+
+                    var claude = new PadForge.Services.Automation.AutomationProgram("Claude Code", 4400, "claude.exe");
+                    host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(claude,
+                        string.Format(s.Automation_Ask_Show_Format, "Claude Code", "Steering Lock Feedback"),
+                        new[] { string.Format(s.Automation_Ask_ShowWhere_Format, "Controller 1, Force Feedback") }) { Kind = PadForge.Services.Automation.ApprovalKind.Show });
+                    drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(1)), "assistant-card-show.png");
+                    foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+
+                    host.Approvals.AskAsync(new PadForge.Services.Automation.ApprovalRequest(claude,
+                        s.Automation_Ask_UseOnly, new[] { s.Automation_Ask_Always }));
+                    drawing.PictureWindow(new AutomationRequestCard(dash.AutomationRequests, null, () => now.AddSeconds(2)), "assistant-card-change.png");
+                    foreach (var waiting in dash.AutomationRequests.ToList()) waiting.DenyCommand.Execute(null);
+                }
+                finally
+                {
+                    AutomationRequestCard.KindOf = null;
+                }
+
+                // The callout beside a switch of the Settings page.
+                var settings = new SettingsPage { DataContext = new SettingsViewModel() };
+                var window = new Window { Content = settings, Width = 1100, Height = 760 };
+                var pointer = new PadForge.Services.Automation.AssistantPointer(() => window);
+                drawing.PictureWindow(window, "assistant-pointer.png", () =>
+                {
+                    var toggle = PadForge.Search.SearchLocator.VisualDescendants(settings).OfType<System.Windows.Controls.Primitives.ToggleButton>()
+                        .First(t => t.IsVisible && t is not System.Windows.Controls.RadioButton);
+                    var row = PadForge.Search.SearchLocator.Up(toggle) as FrameworkElement ?? toggle;
+                    pointer.Play("Claude Code", new[]
+                    {
+                        new PadForge.Services.Automation.AssistantPointer.Step { Words = "Start here, then turn this on.", Advance = PadForge.Services.Automation.AssistantAdvance.Click, Find = () => toggle },
+                        new PadForge.Services.Automation.AssistantPointer.Step { Words = "Then this one.", Advance = PadForge.Services.Automation.AssistantAdvance.Next, Find = () => row },
+                    });
+                    PageRenderDump.Settle(drawing.App.Dispatcher);
+                });
+                pointer.Clear();
+            });
+        }
+
         private static void Run(string what, Action<Drawing> body)
         {
             string dir = Environment.GetEnvironmentVariable("PADFORGE_PAGE_RENDER_DIR");

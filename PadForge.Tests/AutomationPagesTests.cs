@@ -51,8 +51,8 @@ namespace PadForge.Tests
         }
 
         private static AutomationHost NewHost(Func<DateTimeOffset> now = null, TimeSpan? wait = null)
-            => new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
-                "PadForge.Tests.Pages." + Guid.NewGuid().ToString("N"), _ => AutomationProgram.Unknown, now, wait);
+            => TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                "PadForge.Tests.Pages." + Guid.NewGuid().ToString("N"), _ => AutomationProgram.Unknown, now, wait));
 
         private static DashboardViewModel Attached(AutomationHost host)
         {

@@ -50,8 +50,10 @@ namespace PadForge.Search
         /// <paramref name="takeFocus"/> false the place is opened, scrolled to
         /// and ringed, and the keyboard focus stays where it is: an
         /// assistant's show (#597), which must never activate the window,
-        /// lands that way.</summary>
-        internal void Open(SearchResult result, bool takeFocus = true)
+        /// lands that way. With <paramref name="ring"/> false nothing is
+        /// ringed: the guided pointer (#600) rings and holds the place
+        /// itself.</summary>
+        internal void Open(SearchResult result, bool takeFocus = true, bool ring = true)
         {
             if (result == null) return;
             switch (result.Target)
@@ -144,12 +146,12 @@ namespace PadForge.Search
                     break;
             }
             var page = _pageOf(entry.Page);
-            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus)));
+            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus, ring)));
         }
 
         /// <summary>The page shows: find the result's element, open what
         /// folds it, then scroll, ring and focus once that is laid out.</summary>
-        private void Land(SearchResult result, FrameworkElement page, bool takeFocus)
+        private void Land(SearchResult result, FrameworkElement page, bool takeFocus, bool ring)
         {
             var entry = result.Entry;
             DependencyObject label;
@@ -169,7 +171,7 @@ namespace PadForge.Search
             {
                 if (!target.IsVisible) return;
                 ScrollTo(target);
-                SearchLandingAdorner.Ring(target);
+                if (ring) SearchLandingAdorner.Ring(target);
                 if (takeFocus) FocusIn(target, entry);
             }));
         }
@@ -259,7 +261,7 @@ namespace PadForge.Search
 
         /// <summary>Scrolls the nearest scroll viewer so the element's top is
         /// 96 under the viewport's top, as far as the viewer goes.</summary>
-        private static void ScrollTo(FrameworkElement target)
+        internal static void ScrollTo(FrameworkElement target)
         {
             ScrollViewer scroll = null;
             for (DependencyObject at = VisualTreeHelper.GetParent(target); at != null; at = VisualTreeHelper.GetParent(at))
@@ -328,6 +330,21 @@ namespace PadForge.Search
             var size = AdornedElement.RenderSize;
             dc.DrawRoundedRectangle(null, _pen, new Rect(-4, -4, size.Width + 8, size.Height + 8), 8, 8);
         }
+
+        /// <summary>Search's ring held on an element until
+        /// <see cref="Release"/> (#600): the guided pointer's. Null when the
+        /// element sits in no adorner layer.</summary>
+        internal static SearchLandingAdorner Hold(FrameworkElement target)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(target);
+            if (layer == null) return null;
+            var ring = new SearchLandingAdorner(target, target.TryFindResource("EmberBrush") as Brush ?? Brushes.OrangeRed);
+            layer.Add(ring);
+            return ring;
+        }
+
+        /// <summary>Takes a held ring away.</summary>
+        internal void Release() => AdornerLayer.GetAdornerLayer(AdornedElement)?.Remove(this);
 
         internal static void Ring(FrameworkElement target)
         {

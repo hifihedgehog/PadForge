@@ -121,8 +121,36 @@ namespace PadForge.Common
             /// app.</summary>
             public Services.Install.InstallRequest Install { get; set; }
 
+            /// <summary><c>--tools</c> (#600): list the assistant tools with
+            /// their levels and arguments.</summary>
+            public bool Tools { get; set; }
+
+            /// <summary><c>--call &lt;tool&gt; [json]</c> (#600): the tool's
+            /// name, or null.</summary>
+            public string CallTool { get; set; }
+
+            /// <summary>The JSON object <c>--call</c> takes, <c>{}</c> when
+            /// none was given.</summary>
+            public string CallArguments { get; set; }
+
+            /// <summary><c>--skill [name]</c> (#600): the file of the skill to
+            /// print, empty for SKILL.md, or null.</summary>
+            public string Skill { get; set; }
+
+            /// <summary><c>--describe &lt;folder&gt;</c> (#600): the folder
+            /// the page description is written to, or null.</summary>
+            public string Describe { get; set; }
+
+            /// <summary><c>--json</c>: machine-readable answers.</summary>
+            public bool Json { get; set; }
+
+            /// <summary>Whether the line is an assistant run of its own
+            /// (#600): <c>--tools</c>, <c>--call</c>, <c>--skill</c> or
+            /// <c>--describe</c>.</summary>
+            public bool AssistantRun => Tools || CallTool != null || Skill != null || Describe != null;
+
             /// <summary>Whether anything but the update marker was given.</summary>
-            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null;
+            public bool Empty => Steps.Count == 0 && !Help && !Version && !Mcp && !Wait && Install == null && !AssistantRun && !Json;
 
             /// <summary>Whether a copy that finds none running can start
             /// PadForge with this command line. A switch that only makes sense
@@ -212,6 +240,49 @@ namespace PadForge.Common
                         string mistake = Services.Install.UserInstall.Parse(args, ref i, out var install);
                         if (mistake != null) return Fail(r, mistake);
                         r.Install = install;
+                        break;
+                    }
+
+                    case "--tools":
+                        if (inline != null) return Fail(r, name + " takes no value.");
+                        r.Tools = true;
+                        break;
+
+                    case "--json":
+                        if (inline != null) return Fail(r, name + " takes no value.");
+                        r.Json = true;
+                        break;
+
+                    case "--call":
+                    {
+                        // The tool's name, then an optional JSON object of its
+                        // arguments (#600).
+                        if (r.CallTool != null) return Fail(r, "--call is given once.");
+                        string tool = (inline ?? Next(args, ref i))?.Trim();
+                        if (string.IsNullOrEmpty(tool) || LooksLikeSwitch(tool))
+                            return Fail(r, "--call needs a tool's name, as in --call status. --tools lists them.");
+                        r.CallTool = tool;
+                        r.CallArguments = "{}";
+                        if (i + 1 < args.Count && (args[i + 1] ?? string.Empty).TrimStart().StartsWith("{", StringComparison.Ordinal))
+                            r.CallArguments = args[++i];
+                        break;
+                    }
+
+                    case "--skill":
+                    {
+                        // A file of the skill by its name, or SKILL.md (#600).
+                        string which = inline;
+                        if (which == null && i + 1 < args.Count && !LooksLikeSwitch(args[i + 1])) which = args[++i];
+                        r.Skill = (which ?? string.Empty).Trim();
+                        break;
+                    }
+
+                    case "--describe":
+                    {
+                        string folder = inline ?? Next(args, ref i);
+                        if (string.IsNullOrWhiteSpace(folder) || LooksLikeSwitch(folder))
+                            return Fail(r, "--describe needs the folder to write the page description to.");
+                        r.Describe = folder.Trim();
                         break;
                     }
 
@@ -413,7 +484,13 @@ namespace PadForge.Common
             "  --snapshot                Save a diagnostics snapshot\r\n" +
             "  --record start|stop|mark  Record a problem\r\n" +
             "  --wait                    Return when PadForge exits, with its exit code\r\n" +
-            "  --mcp                     Serve an assistant over standard input and output\r\n" +
+            "  --mcp                     Serve an assistant over standard input and output,\r\n" +
+            "                            starting PadForge when a call needs it\r\n" +
+            "  --tools                   List the assistant tools with their levels\r\n" +
+            "  --call <tool> [json]      Call one, with a JSON object of its arguments\r\n" +
+            "  --json                    One line of JSON from --state, --tools and --call\r\n" +
+            "  --skill [name]            Print PadForge's skill, or one of its files\r\n" +
+            "  --describe <folder>       Write every page's description, Markdown and JSON\r\n" +
             "  --install <what> [where]  Install for the user: skill <program or folder>,\r\n" +
             "                            autohotkey, powershell, python [folder or file]\r\n" +
             "                            or assistant <program>. --remove takes it out,\r\n" +

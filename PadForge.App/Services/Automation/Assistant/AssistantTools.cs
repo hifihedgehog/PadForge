@@ -72,6 +72,31 @@ namespace PadForge.Services.Automation
 
         [Description("What the user can do, when something stands in the way.")]
         public string Message { get; set; }
+
+        [Description("The polling rate, the drivers and HidHide, at Read and above.")]
+        public AssistantSystemResult System { get; set; }
+
+        [Description("What each level above this connection's would add: its tools with their arguments. Only the user can raise the level.")]
+        public List<AssistantLevelTools> HigherLevels { get; set; }
+    }
+
+    /// <summary>One level's tools, for status (#600).</summary>
+    internal sealed class AssistantLevelTools
+    {
+        [Description("commands, read, send_inputs or change_settings.")]
+        public string Level { get; set; }
+
+        public List<AssistantToolSummary> Tools { get; set; } = new();
+    }
+
+    /// <summary>A tool by its name, title and arguments.</summary>
+    internal sealed class AssistantToolSummary
+    {
+        public string Name { get; set; }
+        public string Title { get; set; }
+
+        [Description("Its arguments, a required one marked with *.")]
+        public List<string> Arguments { get; set; } = new();
     }
 
     internal sealed class SwitchProfileArgs
@@ -121,9 +146,18 @@ namespace PadForge.Services.Automation
         public string Message { get; set; }
     }
 
+    internal sealed class ListProfilesArgs
+    {
+        [Description("A profile's ID or name, to add what that profile holds: its controllers, devices, games, polling rate and extras.")]
+        public string Profile { get; set; }
+    }
+
     internal sealed class ProfilesResult
     {
         public List<AssistantProfile> Profiles { get; set; } = new();
+
+        [Description("What the profile asked for holds, when one was.")]
+        public AssistantProfileDetail Profile { get; set; }
     }
 
     internal sealed class ProfileArgs
@@ -195,6 +229,12 @@ namespace PadForge.Services.Automation
 
         [Description("Whether a program added it.")]
         public bool FromProgram { get; set; }
+
+        [Description("Its maker, as the device names itself, when it does.")]
+        public OutsideText Maker { get; set; }
+
+        [Description("The IDs of the device's own settings and actions that a plugin declares, which read, set and press take.")]
+        public List<string> Settings { get; set; }
     }
 
     internal sealed class DevicesResult
@@ -282,6 +322,24 @@ namespace PadForge.Services.Automation
 
         [Description("Only this device's short ID. Every connected device when left out.")]
         public string Device { get; set; }
+
+        [Description("True to record every input change for the whole time, as a timeline, in place of the first change.")]
+        public bool Timeline { get; set; }
+    }
+
+    /// <summary>One change of a timeline (#600).</summary>
+    internal sealed class InputChange
+    {
+        [Description("Milliseconds since the wait began.")]
+        public long Ms { get; set; }
+
+        public string Device { get; set; }
+
+        [Description("The input as set_mappings takes it.")]
+        public string Input { get; set; }
+
+        [Description("Its value in plain units: 1 or 0 for a button, -100 to 100 for a stick, 0 to 100 for a trigger or slider, degrees or -1 for a hat.")]
+        public double Value { get; set; }
     }
 
     internal sealed class InputResult
@@ -305,6 +363,15 @@ namespace PadForge.Services.Automation
         public double Value { get; set; }
 
         public string Message { get; set; }
+
+        [Description("With timeline: every change, in order.")]
+        public List<InputChange> Timeline { get; set; }
+
+        [Description("With timeline: changes left out past the most a timeline holds.")]
+        public int Dropped { get; set; }
+
+        [Description("With timeline: engine passes that went by between two reads, whose changes may be missing. 0 when every pass was read.")]
+        public long PassesUnread { get; set; }
     }
 
     internal sealed class ControllerArgs
@@ -313,22 +380,30 @@ namespace PadForge.Services.Automation
         public int Controller { get; set; }
     }
 
+    internal sealed class GetMappingsArgs
+    {
+        [JsonRequired, Description("The controller's number, from list_controllers.")]
+        public int Controller { get; set; }
+
+        [Description("True to add the controller's macros, each with its trigger, steps and data, and its menus.")]
+        public bool Macros { get; set; }
+    }
+
     internal sealed class MappingsResult
     {
         public int Controller { get; set; }
         public List<AssistantMappingRow> Rows { get; set; } = new();
-    }
 
-    internal sealed class MacrosResult
-    {
-        public int Controller { get; set; }
-        public List<AssistantMacro> Macros { get; set; } = new();
-        public List<AssistantMenu> Menus { get; set; } = new();
+        [Description("The macros, when asked for. save_macro takes a macro's data.")]
+        public List<AssistantMacro> Macros { get; set; }
+
+        [Description("The menus, when asked for.")]
+        public List<AssistantMenu> Menus { get; set; }
     }
 
     internal sealed class RecordArgs
     {
-        [Description("How long to record, 3 to 60 seconds. 10 when left out. Ask the user to show the problem meanwhile.")]
+        [Description("How long to record, 3 to 60 seconds, 10 when left out, which needs the Read level. 0 saves a diagnostics snapshot instead, at any level. Ask the user to show the problem meanwhile.")]
         public int? Seconds { get; set; }
 
         [Description("A note PadForge marks the recording with at its start.")]
@@ -337,60 +412,111 @@ namespace PadForge.Services.Automation
 
     internal sealed class RecordResult
     {
-        [Description("The recording's file, beside PadForge.exe. The user attaches it to a bug report.")]
-        public string File { get; set; }
-
         [Description("What the recorder found, scrubbed of private values.")]
         public string Summary { get; set; }
+
+        [Description("Where the recording stands: it waits in PadForge for the user to look over and save.")]
+        public string Message { get; set; }
     }
 
-    internal sealed class FindSettingsArgs
+    internal sealed class FindArgs
     {
-        [JsonRequired, Description("Words from the setting's name or where it is, in English or the interface language.")]
+        [Description("Words from the place's name, help or where it is, in English or the interface language. Leave them out with a kind to list that kind.")]
         public string Words { get; set; }
 
-        [Description("How many to return, 1 to 50. 15 when left out.")]
+        [Description("Only places of this kind: setting, action, card, section, part, extra, page, dialog, menu_item, device, controller, profile, macro, plugin or plugin_setting.")]
+        public string Kind { get; set; }
+
+        [Description("How many to return, 1 to 100. 15 when left out.")]
         public int? Most { get; set; }
     }
 
-    internal sealed class SettingsResult
+    internal sealed class IdArgs
     {
-        public List<AssistantSetting> Settings { get; set; } = new();
-    }
-
-    internal sealed class SettingArgs
-    {
-        [JsonRequired, Description("The setting's ID, from find_settings.")]
+        [JsonRequired, Description("The place's ID, from find, where or another read.")]
         public string Id { get; set; }
     }
 
-    internal sealed class SetSettingArgs
+    internal sealed class SetArgs
     {
-        [JsonRequired, Description("The setting's ID, from find_settings.")]
+        [Description("The place's ID, from find or read.")]
         public string Id { get; set; }
 
-        [JsonRequired, Description("The new value: a number, true or false, or one of the choices' text.")]
-        public JsonElement Value { get; set; }
+        [Description("The new value: a number, true or false, a choice's text or text, as the place's takes says. A section, part or extra takes true, which opens it.")]
+        public JsonElement? Value { get; set; }
+
+        [Description("In place of id and value: several places by ID, each with its value, set in order. The first refused stops the rest.")]
+        public Dictionary<string, JsonElement> Values { get; set; }
     }
 
-    internal sealed class SetSettingResult : AssistantChangeResult
+    internal sealed class SetResult : AssistantChangeResult
     {
-        public AssistantSetting Setting { get; set; }
+        [Description("Each place set, as it reads after.")]
+        public List<AssistantPlace> Places { get; set; } = new();
+    }
+
+    internal sealed class PressResult : AssistantChangeResult
+    {
+        public AssistantPlace Place { get; set; }
+
+        [Description("The dialog the press opened, with its text and buttons, when it opened one.")]
+        public AssistantRead Dialog { get; set; }
+
+        [Description("Set when the press opened a Windows dialog PadForge cannot read: it waits for the person.")]
+        public string WaitingForPerson { get; set; }
+    }
+
+    internal sealed class ShowStepArgs
+    {
+        [JsonRequired, Description("The place's ID, from find: a setting, action, card, section, extra, page, dialog, device, controller, profile or plugin.")]
+        public string Place { get; set; }
+
+        [Description("Your words for the user, beside the place. PadForge heads them with your name, takes out control characters and cuts them at 300 characters.")]
+        public string Words { get; set; }
+
+        [Description("How the step goes on: click (when the user clicks the place, the default), seconds, or next (at your next call).")]
+        public AssistantAdvance? Advance { get; set; }
+
+        [Description("With advance seconds: 1 to 60. 5 when left out.")]
+        public int? Seconds { get; set; }
     }
 
     internal sealed class ShowArgs
     {
-        [Description("A setting's ID.")]
-        public string Setting { get; set; }
+        [Description("One place's ID. Leave place and steps out to take the callout away.")]
+        public string Place { get; set; }
 
-        [Description("A device's short ID.")]
-        public string Device { get; set; }
+        [Description("Your words for the user, beside the place.")]
+        public string Words { get; set; }
 
-        [Description("A controller's number.")]
-        public int? Controller { get; set; }
+        [Description("How it goes on: click (the default), seconds or next.")]
+        public AssistantAdvance? Advance { get; set; }
 
-        [Description("A profile's ID or name.")]
-        public string Profile { get; set; }
+        [Description("With advance seconds: 1 to 60. 5 when left out.")]
+        public int? Seconds { get; set; }
+
+        [Description("In place of place: several steps, shown one after another.")]
+        public List<ShowStepArgs> Steps { get; set; }
+
+        [Description("True to ring each click on the way to the last place first: the sidebar entry, the section or extra, and More. The user does the clicking.")]
+        public bool Walk { get; set; }
+    }
+
+    internal sealed class PlacesResult
+    {
+        public List<AssistantPlace> Places { get; set; } = new();
+    }
+
+    internal sealed class SetValueArgs
+    {
+        [JsonRequired, Description("The value's name, as a Custom Expression trigger reads it: a letter, then up to 31 letters, digits, _ . or -.")]
+        public string Name { get; set; }
+
+        [Description("The number to hand to the triggers that read the name. Leave it out with release.")]
+        public double? Value { get; set; }
+
+        [Description("True to let go of the value, which then reads 0.")]
+        public bool Release { get; set; }
     }
 
     internal sealed class AxisDeclaration
@@ -596,17 +722,11 @@ namespace PadForge.Services.Automation
         [JsonRequired, Description("The controller's number.")]
         public int Controller { get; set; }
 
-        [JsonRequired, Description("The rows to write. Rows not named stay as they are.")]
+        [Description("The rows to write. Rows not named stay as they are. A row with an empty source is cleared.")]
         public List<MappingEditArgs> Rows { get; set; }
-    }
 
-    internal sealed class ClearMappingsArgs
-    {
-        [JsonRequired, Description("The controller's number.")]
-        public int Controller { get; set; }
-
-        [Description("The targets of the rows to clear. Every row when left out.")]
-        public List<string> Targets { get; set; }
+        [Description("True to clear every row first, before the rows given are written.")]
+        public bool ClearAll { get; set; }
     }
 
     internal sealed class MappingsChangeResult : AssistantChangeResult
@@ -620,10 +740,10 @@ namespace PadForge.Services.Automation
         [JsonRequired, Description("The controller's number.")]
         public int Controller { get; set; }
 
-        [Description("The index of the macro to replace, from list_macros. A new macro when left out.")]
+        [Description("The index of the macro to replace, from get_mappings with macros. A new macro when left out.")]
         public int? Index { get; set; }
 
-        [JsonRequired, Description("The macro in PadForge's own JSON form, as list_macros gives a macro's data.")]
+        [JsonRequired, Description("The macro in PadForge's own JSON form, as get_mappings with macros gives a macro's data.")]
         public JsonElement Macro { get; set; }
     }
 
@@ -638,7 +758,7 @@ namespace PadForge.Services.Automation
         [JsonRequired, Description("The controller's number.")]
         public int Controller { get; set; }
 
-        [JsonRequired, Description("The macro's index, from list_macros.")]
+        [JsonRequired, Description("The macro's index, from get_mappings with macros.")]
         public int Index { get; set; }
     }
 
@@ -696,7 +816,7 @@ namespace PadForge.Services.Automation
         {
             // ── Commands ──
             Tool<NoArguments, StatusResult>("status", "PadForge's Status",
-                "Says what PadForge is doing: the engine, the profile in force, the window, each virtual controller and what the Automation level allows. Call it first, and again when a call is refused.",
+                "Says what PadForge is doing: the engine, the profile in force, the window, each virtual controller, what this connection's level allows, and at Read the polling rate and drivers. It lists what each higher level would add, with its arguments. Call it first, and again when a call is refused.",
                 AutomationLevel.Commands, true, false, true, Status),
             Tool<SwitchProfileArgs, SwitchProfileResult>("switch_profile", "Switch Profile",
                 "Puts a profile in force and holds it against switching by game, or with no profile lets go and returns to the default profile.",
@@ -707,68 +827,46 @@ namespace PadForge.Services.Automation
             Tool<ControllersPowerArgs, DoneResult>("set_controllers_power", "Turn Virtual Controllers On or Off",
                 "Turns every virtual controller, or one by its number, on or off. A controller that is off is gone from games until it is turned on.",
                 AutomationLevel.Commands, false, false, true, SetControllersPower),
-            Tool<NoArguments, FileResult>("save_snapshot", "Save a Diagnostics Snapshot",
-                "Saves a diagnostics snapshot beside PadForge.exe, as the Settings page's Save Snapshot does, for a bug report.",
-                AutomationLevel.Commands, false, false, false, SaveSnapshot),
+            Tool<RecordArgs, RecordResult>("record_problem", "Record a Problem",
+                "Records what the devices and virtual controllers do for a few seconds while the user shows the problem, and returns what the recorder found. The recording waits in PadForge for the user to review and save. With seconds 0 it saves a diagnostics snapshot instead.",
+                AutomationLevel.Commands, false, false, false, RecordProblem),
 
             // ── Read ──
-            Tool<NoArguments, AssistantSystemResult>("get_system", "Polling Rate and Drivers",
-                "Reads the polling rate, the drivers PadForge works with and whether HidHide is installed. Use it when a game does not see a controller.",
-                AutomationLevel.Read, true, false, true, (inv, _, _) => Task.FromResult(inv.OnUi(inv.App.ReadSystem))),
-            Tool<NoArguments, ProfilesResult>("list_profiles", "List Profiles",
-                "Lists the profiles with their IDs, names, games and which one is in force.",
-                AutomationLevel.Read, true, false, true, (inv, _, _) => Task.FromResult(new ProfilesResult { Profiles = inv.OnUi(inv.App.ListProfiles) })),
-            Tool<ProfileArgs, AssistantProfileDetail>("get_profile", "What a Profile Holds",
-                "Reads one profile: its virtual controllers with their devices, its games, its polling rate and the extras it turns on.",
-                AutomationLevel.Read, true, false, true, (inv, a, _) => { inv.Detail = a.Profile; return Task.FromResult(inv.OnUi(() => inv.App.ReadProfile(a.Profile))); }),
+            Tool<ListProfilesArgs, ProfilesResult>("list_profiles", "List Profiles",
+                "Lists the profiles with their IDs, names, games and which one is in force, and with a profile what it holds: its controllers with their devices, its games, its polling rate and the extras it turns on.",
+                AutomationLevel.Read, true, false, true, ListProfiles),
             Tool<ListControllersArgs, ControllersResult>("list_controllers", "List Virtual Controllers",
                 "Lists the virtual controllers games see, with their numbers, types, presets and devices, and on request what each sends to the game now and the presets of each type.",
                 AutomationLevel.Read, true, false, true, ListControllers),
             Tool<ListDevicesArgs, DevicesResult>("list_devices", "List Devices",
-                "Lists the input devices PadForge reads, keyboards and mice included, each by product name and a short ID, with a filter by kind, assignment, connection or words.",
+                "Lists the input devices PadForge reads, keyboards and mice included, each by product name, maker and a short ID, with a filter by kind, assignment, connection or words.",
                 AutomationLevel.Read, true, false, true, (inv, a, _) => Task.FromResult(ListDevices(inv, a))),
             Tool<DeviceArgs, DeviceDetail>("get_device", "A Device's Controls",
                 "Reads one device: each button, axis, slider and hat by index and name with the input set_mappings takes for it, its features and feedback, and on request its state now.",
                 AutomationLevel.Read, true, false, true, (inv, a, _) => Task.FromResult(GetDevice(inv, a))),
             Tool<WaitForInputArgs, InputResult>("wait_for_input", "Wait for the User's Input",
-                "Waits for the next button, hat or axis the user moves on any device, or on one, and says what it was. Ask the user to press the control they mean, then call this.",
+                "Waits for the next button, hat or axis the user moves on any device, or on one, and says what it was. With timeline it records every change for the whole time instead. Ask the user to press the control they mean, then call this.",
                 AutomationLevel.Read, true, false, false, WaitForInput),
-            Tool<ControllerArgs, MappingsResult>("get_mappings", "A Controller's Mappings",
-                "Reads every mapping row of a virtual controller: its target, the input that feeds it, the device and the row's options.",
+            Tool<GetMappingsArgs, MappingsResult>("get_mappings", "A Controller's Mappings",
+                "Reads every mapping row of a virtual controller: its target, the input that feeds it, the device and the row's options, and on request its macros and menus.",
+                AutomationLevel.Read, true, false, true, GetMappings),
+            Tool<FindArgs, AssistantFound>("find", "Find in PadForge",
+                "Finds anything on PadForge's pages, dialogs and menus by words, or every place of a kind: settings, buttons, cards, sections, extras, pages, dialogs, menu items, devices, controllers, profiles, macros, plugins and what plugins declare. Each comes with its ID, words, place, kind, value, range or choices, whether it is turned on and shown, and its class. It says how many it left out.",
                 AutomationLevel.Read, true, false, true, (inv, a, _) =>
                 {
-                    inv.Detail = Number(a.Controller);
-                    return Task.FromResult(new MappingsResult { Controller = a.Controller, Rows = inv.OnUi(() => inv.App.ReadMappings(a.Controller)) });
+                    inv.Detail = a.Words ?? a.Kind;
+                    int most = Math.Clamp(a.Most ?? 15, 1, 100);
+                    return Task.FromResult(inv.OnUi(() => inv.Catalog.Find(a.Words, a.Kind, most)));
                 }),
-            Tool<ControllerArgs, MacrosResult>("list_macros", "A Controller's Macros and Menus",
-                "Lists a virtual controller's macros, each with its trigger, its steps and its data, and its menus.",
-                AutomationLevel.Read, true, false, true, (inv, a, _) =>
-                {
-                    inv.Detail = Number(a.Controller);
-                    return Task.FromResult(inv.OnUi(() => new MacrosResult
-                    {
-                        Controller = a.Controller,
-                        Macros = inv.App.ReadMacros(a.Controller),
-                        Menus = inv.App.ReadMenus(a.Controller),
-                    }));
-                }),
-            Tool<RecordArgs, RecordResult>("record_problem", "Record a Problem",
-                "Records what the devices and virtual controllers do for a few seconds, as the problem recorder does, while the user shows the problem. Returns the file for a bug report and what the recorder found.",
-                AutomationLevel.Read, false, false, false, RecordProblem),
-            Tool<FindSettingsArgs, SettingsResult>("find_settings", "Find Settings",
-                "Finds settings on every page by words, with each one's ID, name, place, value now, kind and range or choices. Use it before get_setting, set_setting and show.",
-                AutomationLevel.Read, true, false, true, (inv, a, _) =>
-                {
-                    inv.Detail = a.Words;
-                    int most = Math.Clamp(a.Most ?? 15, 1, 50);
-                    return Task.FromResult(new SettingsResult { Settings = inv.OnUi(() => inv.Settings.Find(a.Words, most)) });
-                }),
-            Tool<SettingArgs, AssistantSetting>("get_setting", "Read a Setting",
-                "Reads one setting by its ID: its value now, its kind and its range or choices.",
-                AutomationLevel.Read, true, false, true, (inv, a, _) => { inv.Detail = a.Id; return Task.FromResult(inv.OnUi(() => inv.Settings.Get(a.Id))); }),
+            Tool<IdArgs, AssistantRead>("read", "Read a Place",
+                "Reads one place by its ID: a setting's value, kind and range, or a page, card, section, dialog, device, controller or plugin with every label, value, status line, list row and button under it. It changes nothing on screen.",
+                AutomationLevel.Read, true, false, true, (inv, a, _) => { inv.Detail = a.Id; return Task.FromResult(inv.OnUi(() => inv.Catalog.Read(a.Id))); }),
+            Tool<NoArguments, AssistantWhere>("where", "What the User Sees",
+                "Says what the user sees now: where PadForge's window is, the page and section, the dialogs open, a Windows dialog that waits for the person, the controller, device and profile picked, and your callout's step.",
+                AutomationLevel.Read, true, false, true, (inv, _, _) => Task.FromResult(inv.OnUi(() => inv.Catalog.Where()))),
             Tool<ShowArgs, AssistantShown>("show", "Show the User Where",
-                "Opens PadForge's page on a setting, a device, a controller or a profile and rings it, so the user sees it. It changes nothing and never brings the window up. The result says where the window is, so tell the user where to look.",
-                AutomationLevel.Read, true, false, true, (inv, a, _) => Task.FromResult(Show(inv, a))),
+                "Rings a place in PadForge with your words beside it, under your name, or walks the user through several, one step at a time. It never clicks for the user and never brings PadForge's window up: when the window is not in front, PadForge's question card asks the user, and the steps play once they pick Show. Show with no place takes your callout away.",
+                AutomationLevel.Read, true, false, false, Show),
 
             // ── Send Inputs ──
             Tool<AddDeviceArgs, AddDeviceResult>("add_device", "Add a Device of Your Own",
@@ -783,11 +881,17 @@ namespace PadForge.Services.Automation
             Tool<HoldArgs, DoneResult>("hold_control", "Hold or Release a Control",
                 "Holds a control of any device at a value, as if the user held it, until it is released or the connection ends.",
                 AutomationLevel.SendInputs, false, false, true, HoldControl),
+            Tool<SetValueArgs, DoneResult>("set_value", "Hand a Value to Macro Triggers",
+                "Sets a named value that Custom Expression macro triggers read, until it is released or the connection ends.",
+                AutomationLevel.SendInputs, false, false, true, SetValue),
 
             // ── Change Settings ──
-            Tool<SetSettingArgs, SetSettingResult>("set_setting", "Change a Setting",
-                "Changes one setting by its ID, through the control on its page, so it is checked and saved as a person's change is. A value out of range is refused with the range. Some settings ask the user first.",
-                AutomationLevel.ChangeSettings, false, true, true, SetSetting, changes: true),
+            Tool<SetArgs, SetResult>("set", "Change a Place",
+                "Changes a setting, text box, list or choice by its ID through the control on its page, so it is checked and saved as a person's change is, or opens a section. A value out of range is refused with the range, and a control the page has turned off is refused. Some changes ask the user first.",
+                AutomationLevel.ChangeSettings, false, true, true, Set, changes: true),
+            Tool<IdArgs, PressResult>("press", "Press a Button",
+                "Presses a button, a menu item or an open dialog's button by its ID, as a person's click does. A press that opens a dialog answers with the dialog's text and buttons. Some presses ask the user first, and some buttons are the user's alone.",
+                AutomationLevel.ChangeSettings, false, true, false, Press, changes: true),
             Tool<CreateProfileArgs, ProfileChangeResult>("create_profile", "Create a Profile",
                 "Makes a profile, empty or a copy of another. It does not put it in force.",
                 AutomationLevel.ChangeSettings, false, false, false, CreateProfile, changes: true),
@@ -816,11 +920,8 @@ namespace PadForge.Services.Automation
                 "Assigns a device to a virtual controller, which maps it there, or takes it off. Assigning to a keyboard and mouse controller asks the user first.",
                 AutomationLevel.ChangeSettings, false, true, true, AssignDevice, changes: true),
             Tool<SetMappingsArgs, MappingsChangeResult>("set_mappings", "Set Mapping Rows",
-                "Writes mapping rows of a virtual controller: which input of which device feeds each target, and the row's options. Rows not named stay. On a keyboard and mouse controller the user is asked first.",
+                "Writes mapping rows of a virtual controller: which input of which device feeds each target, and the row's options. Rows not named stay, a row with an empty source is cleared, and clear_all clears every row first. On a keyboard and mouse controller the user is asked first.",
                 AutomationLevel.ChangeSettings, false, true, true, SetMappings, changes: true),
-            Tool<ClearMappingsArgs, MappingsChangeResult>("clear_mappings", "Clear Mapping Rows",
-                "Clears mapping rows of a virtual controller, or every row.",
-                AutomationLevel.ChangeSettings, false, true, true, ClearMappings, changes: true),
             Tool<ControllerArgs, MappingsChangeResult>("auto_map", "Map Automatically",
                 "Maps a virtual controller's devices again as assigning them does, the way PadForge maps a known gamepad.",
                 AutomationLevel.ChangeSettings, false, true, true, AutoMap, changes: true),
@@ -837,6 +938,15 @@ namespace PadForge.Services.Automation
                 "Says how a change that waited for the user's answer ended, by the request ID it returned.",
                 AutomationLevel.ChangeSettings, true, false, true, (inv, a, _) => Task.FromResult(inv.Calls.Check(inv.Caller, a.RequestId))),
         };
+
+        /// <summary>The most tools the list holds (#600), a budget a test
+        /// pins.</summary>
+        internal const int MostTools = 39;
+
+        /// <summary>The most bytes the whole tools/list may take (#600), a
+        /// budget a test pins, since a host reads every tool's schema into
+        /// its model's context.</summary>
+        internal const int MostListBytes = 90000;
 
         private static string Number(int controller) => controller.ToString(CultureInfo.InvariantCulture);
 
@@ -873,14 +983,6 @@ namespace PadForge.Services.Automation
             var result = new StatusResult
             {
                 PadforgeVersion = root.TryGetProperty("version", out var v) ? v.GetString() : null,
-                AutomationLevel = (inv.Host.Level switch
-                {
-                    AutomationLevel.Read => "read",
-                    AutomationLevel.SendInputs => "send_inputs",
-                    AutomationLevel.ChangeSettings => "change_settings",
-                    _ => "commands",
-                }),
-                LevelAllows = AssistantGuidance.LevelAllows(inv.Host.Level),
                 Engine = root.TryGetProperty("engine", out var e) ? e.GetString() : null,
                 Window = root.TryGetProperty("window", out var w) ? w.GetString() : null,
                 Recording = root.TryGetProperty("recording", out var r) && r.ValueKind == JsonValueKind.True,
@@ -907,7 +1009,32 @@ namespace PadForge.Services.Automation
                 }
             }
             if (result.Engine == "stopped") result.Message = "The engine is stopped, so games see no virtual controller. set_engine starts it.";
+            // This connection's own level, the user's cap and what it asked
+            // for (#600).
+            var level = inv.Level;
+            result.AutomationLevel = AutomationLevels.Word(level).Replace('-', '_');
+            result.LevelAllows = AssistantGuidance.LevelAllows(level);
+            if (inv.Caller.Session != null && inv.Host.Sessions.ConsentWaits(inv.Caller.Session))
+                result.Message = "PadForge asks the user on its question card whether this program may work at the level it asked for. Until they answer it works at the Commands level.";
+            if (inv.Allows(AutomationLevel.Read)) result.System = inv.OnUi(inv.App.ReadSystem);
+            result.HigherLevels = HigherLevels(level);
             return Task.FromResult(result);
+        }
+
+        /// <summary>The tools each level above <paramref name="level"/> would
+        /// add, with their arguments (#600).</summary>
+        internal static List<AssistantLevelTools> HigherLevels(AutomationLevel level)
+        {
+            var list = new List<AssistantLevelTools>();
+            foreach (var above in new[] { AutomationLevel.Read, AutomationLevel.SendInputs, AutomationLevel.ChangeSettings })
+            {
+                if (above <= level) continue;
+                var tools = new AssistantLevelTools { Level = AutomationLevels.Word(above).Replace('-', '_') };
+                foreach (var tool in All.Where(t => t.Level == above))
+                    tools.Tools.Add(new AssistantToolSummary { Name = tool.Name, Title = tool.Title, Arguments = AssistantJson.ArgumentNames(tool.Arguments) });
+                list.Add(tools);
+            }
+            return list;
         }
 
         private static Task<SwitchProfileResult> SwitchProfile(AssistantInvocation inv, SwitchProfileArgs a, CancellationToken ct)
@@ -948,11 +1075,6 @@ namespace PadForge.Services.Automation
             return Task.FromResult(new DoneResult { Message = "Every virtual controller is " + onOff + "." });
         }
 
-        private static Task<FileResult> SaveSnapshot(AssistantInvocation inv, NoArguments _, CancellationToken ct)
-        {
-            string file = Command(inv, "snapshot");
-            return Task.FromResult(new FileResult { File = file, Message = "The snapshot is saved beside PadForge.exe, where the user finds it." });
-        }
 
         // ─────────────────────────────────────────────
         //  Read
@@ -998,8 +1120,21 @@ namespace PadForge.Services.Automation
                     if (a.Kind != null && !string.Equals(summary.Kind, a.Kind.Trim(), StringComparison.OrdinalIgnoreCase)) continue;
                     if (a.Assigned is bool assigned && (summary.Controllers.Count > 0) != assigned) continue;
                     if (a.Online is bool online && summary.Online != online) continue;
-                    if (!string.IsNullOrWhiteSpace(a.Words) && !Matches(summary.Name?.Text, a.Words)) continue;
+                    if (!string.IsNullOrWhiteSpace(a.Words) && !Matches(summary.Name?.Text + " " + summary.Maker?.Text, a.Words)) continue;
                     result.Devices.Add(summary);
+                }
+            }
+            // What plugins declare for each device (#600), read where the
+            // providers are read.
+            if (result.Devices.Count > 0)
+            {
+                var declared = inv.OnUi(() => PadForge.Services.Catalog.LiveCatalog.Items()
+                    .Where(i => i.Id.StartsWith("device/", StringComparison.Ordinal)).Select(i => i.Id).ToList());
+                foreach (var device in result.Devices)
+                {
+                    string prefix = "device/" + device.Id + "/";
+                    var mine = declared.Where(id => id.StartsWith(prefix, StringComparison.Ordinal)).ToList();
+                    if (mine.Count > 0) device.Settings = mine;
                 }
             }
             return result;
@@ -1048,6 +1183,7 @@ namespace PadForge.Services.Automation
                 Controllers = ControllersOf(ud.InstanceGuid),
                 Hidden = ud.HidHideEnabled,
                 FromProgram = ud.CapType == InputDeviceType.Program,
+                Maker = OutsideText.Of(AssistantDeviceMaker.Of(ud)),
             };
         }
 
@@ -1190,6 +1326,7 @@ namespace PadForge.Services.Automation
             int seconds = Math.Clamp(a.Seconds ?? 15, 1, 60);
             inv.Detail = a.Device;
             UserDevice only = a.Device == null ? null : DeviceBy(inv, a.Device);
+            if (a.Timeline) return await TimelineAsync(only, seconds, ct).ConfigureAwait(false);
             var start = new Dictionary<Guid, CustomInputState>();
             List<UserDevice> Watched()
             {
@@ -1218,6 +1355,105 @@ namespace PadForge.Services.Automation
                 await Task.Delay(WaitStepMs, ct).ConfigureAwait(false);
             }
             return new InputResult { Found = false, Message = "Nothing moved in " + seconds + " seconds. Ask the user to press the control again, then call this again." };
+        }
+
+        /// <summary>The most changes a timeline holds. The rest are
+        /// counted.</summary>
+        internal const int MostTimeline = 2000;
+
+        /// <summary>
+        /// wait_for_input with timeline (#600): every change of every
+        /// watched device for the whole time, with its milliseconds, read on
+        /// a thread of its own once a millisecond and each time a device
+        /// publishes a new state (its InputStateSeq), so a change is read
+        /// in the pass it was made. Engine passes that went by between two
+        /// reads are counted, since a change made and undone inside them is
+        /// not seen. An axis counts a change of one unit in plain units.
+        /// </summary>
+        private static async Task<InputResult> TimelineAsync(UserDevice only, int seconds, CancellationToken ct)
+        {
+            var result = new InputResult { Timeline = new List<InputChange>() };
+            await Task.Factory.StartNew(() =>
+            {
+                var last = new Dictionary<Guid, (CustomInputState State, long Seq)>();
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                while (clock.Elapsed < TimeSpan.FromSeconds(seconds) && !ct.IsCancellationRequested)
+                {
+                    List<UserDevice> watched;
+                    if (only != null) watched = new List<UserDevice> { only };
+                    else
+                    {
+                        var list = SettingsManager.UserDevices;
+                        if (list == null) watched = new List<UserDevice>();
+                        else lock (list.SyncRoot) watched = list.Items.Where(d => d != null && d.IsOnline).ToList();
+                    }
+                    foreach (var ud in watched)
+                    {
+                        long seq = System.Threading.Volatile.Read(ref ud.InputStateSeq);
+                        if (last.TryGetValue(ud.InstanceGuid, out var seen) && seen.Seq == seq && ud.Device is not ProgramDevice) continue;
+                        var now = AutomationDevices.CopyState(ud);
+                        if (now == null) continue;
+                        if (!last.TryGetValue(ud.InstanceGuid, out var before))
+                        {
+                            last[ud.InstanceGuid] = (now, seq);
+                            continue;
+                        }
+                        if (seq > before.Seq + 1) result.PassesUnread += seq - before.Seq - 1;
+                        last[ud.InstanceGuid] = (before.State, seq);
+                        foreach (var (input, value) in Changes(ud, before.State, now))
+                        {
+                            if (result.Timeline.Count >= MostTimeline) { result.Dropped++; continue; }
+                            result.Timeline.Add(new InputChange { Ms = clock.ElapsedMilliseconds, Device = AutomationDevices.IdOf(ud.InstanceGuid), Input = input, Value = value });
+                        }
+                    }
+                    Thread.Sleep(1);
+                }
+            }, ct, TaskCreationOptions.LongRunning, TaskScheduler.Default).ConfigureAwait(false);
+            result.Found = result.Timeline.Count > 0;
+            result.Message = result.Found
+                ? result.Timeline.Count + " changes in " + seconds + " seconds."
+                : "Nothing moved in " + seconds + " seconds.";
+            return result;
+        }
+
+        /// <summary>Every input that changed since it was last reported, in
+        /// plain units: a button pressed or let go, a hat that turned, an
+        /// axis or slider that moved one unit or more. What is reported is
+        /// written into <paramref name="reported"/>, so a slow axis is
+        /// reported once it has moved a unit in all.</summary>
+        internal static List<(string Input, double Value)> Changes(UserDevice ud, CustomInputState reported, CustomInputState now)
+        {
+            var changes = new List<(string, double)>();
+            int[] rests = AutomationSessions.RestsOf(ud, null);
+            for (int i = 0; i < now.Buttons.Length && i < reported.Buttons.Length; i++)
+            {
+                if (now.Buttons[i] == reported.Buttons[i]) continue;
+                reported.Buttons[i] = now.Buttons[i];
+                changes.Add(("Button " + i.ToString(CultureInfo.InvariantCulture), now.Buttons[i] ? 1 : 0));
+            }
+            for (int i = 0; i < now.Povs.Length && i < reported.Povs.Length; i++)
+            {
+                if (now.Povs[i] == reported.Povs[i]) continue;
+                reported.Povs[i] = now.Povs[i];
+                changes.Add((now.Povs[i] < 0 ? "POV " + i.ToString(CultureInfo.InvariantCulture) : "POV " + i.ToString(CultureInfo.InvariantCulture) + " " + HatWord(now.Povs[i]),
+                    PlainUnits.HatToPlain(now.Povs[i])));
+            }
+            for (int i = 0; i < now.Axis.Length && i < reported.Axis.Length; i++)
+            {
+                double a = PlainUnits.AxisToPlain(reported.Axis[i], rests[i]), b = PlainUnits.AxisToPlain(now.Axis[i], rests[i]);
+                if (Math.Abs(b - a) < 1) continue;
+                reported.Axis[i] = now.Axis[i];
+                changes.Add(("Axis " + i.ToString(CultureInfo.InvariantCulture), Plain(b)));
+            }
+            for (int i = 0; i < now.Sliders.Length && i < reported.Sliders.Length; i++)
+            {
+                int r = rests[ProgramAxis.FirstSlider + i];
+                double a = PlainUnits.AxisToPlain(reported.Sliders[i], r), b = PlainUnits.AxisToPlain(now.Sliders[i], r);
+                if (Math.Abs(b - a) < 1) continue;
+                reported.Sliders[i] = now.Sliders[i];
+                changes.Add(("Slider " + i.ToString(CultureInfo.InvariantCulture), Plain(b)));
+            }
+            return changes;
         }
 
         private static (string Kind, int Index, int Value)? FirstChange(CustomInputState before, CustomInputState now)
@@ -1294,24 +1530,126 @@ namespace PadForge.Services.Automation
         private static Task<RecordResult> RecordProblem(AssistantInvocation inv, RecordArgs a, CancellationToken ct)
             => RecordAsync(inv, a, ct);
 
+        /// <summary>record_problem (#600): a recording at Read, or with
+        /// seconds 0 a snapshot, which Commands allows as the command set
+        /// does. A program is told the file waits for the user, never
+        /// where.</summary>
         private static async Task<RecordResult> RecordAsync(AssistantInvocation inv, RecordArgs a, CancellationToken ct)
         {
-            int seconds = Math.Clamp(a.Seconds ?? 10, 3, 60);
             inv.Detail = a.Note;
+            if (a.Seconds == 0)
+            {
+                Command(inv, "snapshot");
+                return new RecordResult { Message = "The snapshot waits in PadForge for the user to look over and save for a bug report." };
+            }
+            inv.Requires(AutomationLevel.Read, "a recording");
+            int seconds = Math.Clamp(a.Seconds ?? 10, 3, 60);
             var recording = await inv.App.RecordAsync(seconds, a.Note, ct).ConfigureAwait(false);
-            return new RecordResult { File = recording.File, Summary = recording.Summary };
+            return new RecordResult
+            {
+                Summary = recording.Summary,
+                Message = "The recording waits in PadForge for the user to look over and save for a bug report.",
+            };
         }
 
-        private static AssistantShown Show(AssistantInvocation inv, ShowArgs a)
+        private static Task<ProfilesResult> ListProfiles(AssistantInvocation inv, ListProfilesArgs a, CancellationToken ct)
         {
-            int given = (a.Setting != null ? 1 : 0) + (a.Device != null ? 1 : 0) + (a.Controller != null ? 1 : 0) + (a.Profile != null ? 1 : 0);
-            if (given != 1) throw new AssistantRefusal("bad-argument", "show takes one of setting, device, controller and profile.");
-            var target = a.Setting != null ? new AssistantShowTarget { Kind = AssistantShowKind.Setting, Id = a.Setting }
-                : a.Device != null ? new AssistantShowTarget { Kind = AssistantShowKind.Device, Id = a.Device }
-                : a.Controller != null ? new AssistantShowTarget { Kind = AssistantShowKind.Controller, Id = Number(a.Controller.Value) }
-                : new AssistantShowTarget { Kind = AssistantShowKind.Profile, Id = a.Profile };
-            inv.Detail = target.Id;
-            return inv.OnUi(() => inv.Settings.Show(target));
+            inv.Detail = a.Profile;
+            return Task.FromResult(inv.OnUi(() => new ProfilesResult
+            {
+                Profiles = inv.App.ListProfiles(),
+                Profile = string.IsNullOrWhiteSpace(a.Profile) ? null : inv.App.ReadProfile(a.Profile),
+            }));
+        }
+
+        private static Task<MappingsResult> GetMappings(AssistantInvocation inv, GetMappingsArgs a, CancellationToken ct)
+        {
+            inv.Detail = Number(a.Controller);
+            return Task.FromResult(inv.OnUi(() => new MappingsResult
+            {
+                Controller = a.Controller,
+                Rows = inv.App.ReadMappings(a.Controller),
+                Macros = a.Macros ? inv.App.ReadMacros(a.Controller) : null,
+                Menus = a.Macros ? inv.App.ReadMenus(a.Controller) : null,
+            }));
+        }
+
+        /// <summary>The default seconds a step stays when it goes on after
+        /// some.</summary>
+        internal const int DefaultStepSeconds = 5;
+
+        /// <summary>
+        /// show (#600): the guided pointer. One place or several steps, each
+        /// in the program's words, or none to take the callout away. While
+        /// PadForge's window is not in front the question card asks the
+        /// user first, which program wants to show what, with Not Now and
+        /// Show, and the steps play once the user picks Show. A program never
+        /// brings the window forward. The user's click on Show does.
+        /// </summary>
+        private static async Task<AssistantShown> Show(AssistantInvocation inv, ShowArgs a, CancellationToken ct)
+        {
+            var steps = new List<AssistantShowStep>();
+            if (a.Steps != null && a.Steps.Count > 0)
+            {
+                if (a.Place != null) throw new AssistantRefusal("bad-argument", "show takes place or steps, not both.");
+                foreach (var s in a.Steps) steps.Add(StepOf(s.Place, s.Words, s.Advance, s.Seconds));
+            }
+            else if (!string.IsNullOrWhiteSpace(a.Place))
+                steps.Add(StepOf(a.Place, a.Words, a.Advance, a.Seconds));
+            if (steps.Count > 20) throw new AssistantRefusal("bad-argument", "show takes at most 20 steps.");
+            string program = inv.Caller.Program?.Name ?? "Assistant";
+            var request = new AssistantShowRequest { Program = program, Steps = steps, Walk = a.Walk, Owner = inv.Caller.Key };
+            inv.Detail = steps.Count == 0 ? null : steps[^1].Place;
+            if (steps.Count == 0) return inv.OnUi(() => inv.Catalog.Show(request));
+
+            var place = inv.OnUi(inv.App.WindowPlace);
+            if (place == AssistantWindowPlace.InFront) return inv.OnUi(() => inv.Catalog.Show(request));
+
+            // Not in front: the question card asks, at its own place.
+            var first = inv.OnUi(() => inv.Catalog.Read(steps[^1].Place).Place);
+            if (first.Reach == AutomationReadScrub.ReachWord(PadForge.Common.ReachClass.UsersOwn))
+                throw new AssistantRefusal("users-own", "A place that is the user's alone is not pointed at by a program. Tell the user where it is in words.");
+            var question = new ApprovalRequest(inv.Caller.Program, AssistantToolWords.AskShow(program, first.Name),
+                new[] { AssistantToolWords.ShowWhere(first.Where) }) { Kind = ApprovalKind.Show };
+            var answer = inv.Host.Approvals.AskAsync(question, inv.Caller.Session?.Lifetime ?? inv.Stopping);
+            if (answer.IsCompletedSuccessfully && answer.Result == ApprovalAnswer.TooMany)
+                throw new AssistantRefusal("too-many-questions", "Too many questions already wait for the user. Wait, then show again.");
+            var ui = inv.Ui;
+            var app = inv.App;
+            var catalog = inv.Catalog;
+            _ = answer.ContinueWith(done =>
+            {
+                if (!done.IsCompletedSuccessfully || done.Result != ApprovalAnswer.Allowed) return;
+                ui.Post(() =>
+                {
+                    // The user's click on Show brings the window forward.
+                    app.BringForward();
+                    try { catalog.Show(request); }
+                    catch (AssistantRefusal) { /* the place went away meanwhile */ }
+                });
+            }, TaskScheduler.Default);
+            await Task.CompletedTask.ConfigureAwait(false);
+            return new AssistantShown
+            {
+                Shown = false,
+                Asked = true,
+                Where = first.Where,
+                Window = place,
+                Steps = steps.Count,
+                Message = "PadForge's window is not in front, so its question card asks the user whether to show it. It plays once the user picks Show. Tell the user to look at the card.",
+            };
+        }
+
+        private static AssistantShowStep StepOf(string place, string words, AssistantAdvance? advance, int? seconds)
+        {
+            if (string.IsNullOrWhiteSpace(place)) throw new AssistantRefusal("bad-argument", "Each step names a place by its ID, from find.");
+            return new AssistantShowStep
+            {
+                Place = place.Trim(),
+                Words = words,
+                Advance = advance ?? AssistantAdvance.Click,
+                Seconds = Math.Clamp(seconds ?? DefaultStepSeconds, 1, 60),
+            };
         }
 
         // ─────────────────────────────────────────────
@@ -1481,19 +1819,105 @@ namespace PadForge.Services.Automation
             return result;
         }
 
-        private static async Task<SetSettingResult> SetSetting(AssistantInvocation inv, SetSettingArgs a, CancellationToken ct)
+        /// <summary>set (#600): one place or several, in order. What any of
+        /// them asks is asked once, in one question.</summary>
+        private static async Task<SetResult> Set(AssistantInvocation inv, SetArgs a, CancellationToken ct)
+        {
+            var values = new List<(string Id, JsonElement Value)>();
+            if (a.Values != null && a.Values.Count > 0)
+            {
+                if (a.Id != null || a.Value != null) throw new AssistantRefusal("bad-argument", "set takes id and value, or values, not both.");
+                foreach (var (id, value) in a.Values) values.Add((id, value.Clone()));
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(a.Id) || a.Value == null) throw new AssistantRefusal("bad-argument", "set takes id and value, or values.");
+                values.Add((a.Id, a.Value.Value.Clone()));
+            }
+            if (values.Count > 50) throw new AssistantRefusal("bad-argument", "set takes at most 50 values in one call.");
+            inv.Detail = values[0].Id;
+            var asks = new List<AssistantAsk>();
+            inv.OnUi(() =>
+            {
+                foreach (var (id, value) in values)
+                    if (inv.Catalog.AskFor(id, value) is { } ask) asks.Add(ask);
+            });
+            AssistantAsk question = asks.Count == 0 ? null : asks.Count == 1 ? asks[0]
+                : new AssistantAsk(asks[0].Title, asks.SelectMany(q => q.Detail).Distinct().ToList());
+            object result = await inv.ChangeAsync(question, () =>
+            {
+                var set = new SetResult();
+                foreach (var (id, value) in values) set.Places.Add(inv.Catalog.Set(id, value));
+                return Done(set, values.Count == 1 ? "Set. The page shows the new value." : "Set, each in turn. The page shows the new values.");
+            }).ConfigureAwait(false);
+            if (result is SetResult done && done.Places.Count > 0) inv.Detail = done.Places[0].Name;
+            return (SetResult)result;
+        }
+
+        /// <summary>How long press looks for a dialog its press opened.</summary>
+        internal static readonly TimeSpan DialogWait = TimeSpan.FromMilliseconds(1500);
+
+        /// <summary>press (#600): the press is posted to the interface's
+        /// thread, so a dialog it opens holds nothing, and a dialog that
+        /// opens is read and given back with its text and buttons. A Windows
+        /// dialog PadForge cannot read is named as waiting for the
+        /// person.</summary>
+        private static async Task<PressResult> Press(AssistantInvocation inv, IdArgs a, CancellationToken ct)
         {
             inv.Detail = a.Id;
-            var setting = inv.OnUi(() => inv.Settings.Get(a.Id));
-            inv.Detail = setting.Name;
-            var ask = inv.OnUi(() => inv.Settings.AskFor(a.Id, a.Value));
-            var value = a.Value.Clone();
-            object result = await inv.ChangeAsync(ask, () =>
+            var plan = inv.OnUi(() => inv.Catalog.PlanPress(a.Id));
+            inv.Detail = plan.Place.Name;
+            var before = inv.OnUi(() => inv.Catalog.Dialogs());
+            var ui = inv.Ui;
+            object result = await inv.ChangeAsync(plan.Ask, () =>
             {
-                var after = inv.Settings.Set(a.Id, value);
-                return Done(new SetSettingResult { Setting = after }, "Set. The page shows the new value.");
+                ui.Post(() =>
+                {
+                    try { plan.Press(); }
+                    catch (Exception error) { PadForge.Engine.SdlDiagLog.WriteLine("Automation: a press failed: " + error.Message); }
+                });
+                return Done(new PressResult { Place = plan.Place }, "Pressed.");
             }).ConfigureAwait(false);
-            return (SetSettingResult)result;
+            if (result is not PressResult pressed || !pressed.Done) return (PressResult)result;
+
+            var known = new HashSet<string>(before.Open.Select(d => d.Id), StringComparer.Ordinal);
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            while (clock.Elapsed < DialogWait)
+            {
+                await Task.Delay(100, ct).ConfigureAwait(false);
+                var now = inv.OnUi(() => inv.Catalog.Dialogs());
+                if (now.WaitingForPerson != null && before.WaitingForPerson == null)
+                {
+                    pressed.WaitingForPerson = now.WaitingForPerson;
+                    pressed.Message = "Pressed. " + now.WaitingForPerson;
+                    break;
+                }
+                var opened = now.Open.FirstOrDefault(d => !known.Contains(d.Id));
+                if (opened != null)
+                {
+                    pressed.Dialog = inv.OnUi(() => inv.Catalog.Read(opened.Id));
+                    pressed.Message = "Pressed. It opened a dialog, which waits: read it, and press one of its buttons, or ask the user.";
+                    break;
+                }
+            }
+            return pressed;
+        }
+
+        private static async Task<DoneResult> SetValue(AssistantInvocation inv, SetValueArgs a, CancellationToken ct)
+        {
+            inv.Detail = a.Name;
+            string name = (a.Name ?? string.Empty).Trim();
+            if (!PadForge.Common.Input.ScriptValues.IsName(name))
+                throw new AssistantRefusal("bad-argument", "A value's name is a letter, then up to 31 letters, digits, _ . or -.");
+            if (a.Release)
+            {
+                await Line(inv, "var " + name + "=0").ConfigureAwait(false);
+                return new DoneResult { Message = "Let go. Triggers that read " + name + " read 0." };
+            }
+            if (a.Value is not double value || double.IsNaN(value) || double.IsInfinity(value))
+                throw new AssistantRefusal("bad-argument", "Give the value as a number, or release.");
+            await Line(inv, "var " + name + "=" + value.ToString("R", CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            return new DoneResult { Message = "Set until it is released or this connection ends." };
         }
 
         private static Task<ProfileChangeResult> CreateProfile(AssistantInvocation inv, CreateProfileArgs a, CancellationToken ct)
@@ -1723,10 +2147,11 @@ namespace PadForge.Services.Automation
         private static async Task<MappingsChangeResult> SetMappings(AssistantInvocation inv, SetMappingsArgs a, CancellationToken ct)
         {
             inv.Detail = Number(a.Controller);
-            if (a.Rows == null || a.Rows.Count == 0) throw new AssistantRefusal("bad-argument", "Name at least one row.");
+            var rows = a.Rows ?? new List<MappingEditArgs>();
+            if (rows.Count == 0 && !a.ClearAll) throw new AssistantRefusal("bad-argument", "Name at least one row, or clear_all.");
             string type = inv.OnUi(() => inv.App.ControllerType(a.Controller))
                 ?? throw new AssistantRefusal("unknown-slot", "No virtual controller has that number. list_controllers gives them.");
-            var edits = a.Rows.Select(r => new AssistantMappingEdit
+            var edits = rows.Select(r => new AssistantMappingEdit
             {
                 Target = r.Target, Source = r.Source, Device = r.Device, NegativeSource = r.NegativeSource,
                 Inverted = r.Inverted, HalfAxis = r.HalfAxis, DeadZone = r.DeadZone,
@@ -1740,26 +2165,18 @@ namespace PadForge.Services.Automation
             }
             object result = await inv.ChangeAsync(ask, () =>
             {
-                inv.App.SetMappings(a.Controller, edits);
+                // Every row cleared first, as the page's Clear All does, then
+                // the rows given, as one run of changes undo takes back whole.
+                if (a.ClearAll) inv.App.ClearMappings(a.Controller, null);
+                if (edits.Count > 0) inv.App.SetMappings(a.Controller, edits);
                 var names = new HashSet<string>(edits.Select(e => e.Target), StringComparer.OrdinalIgnoreCase);
                 return Done(new MappingsChangeResult
                 {
                     Controller = a.Controller,
                     Rows = inv.App.ReadMappings(a.Controller).Where(r => names.Contains(r.Target)).ToList(),
-                }, "Written. The rows below are as they read now.");
+                }, edits.Count == 0 ? "Every row is clear." : "Written. The rows below are as they read now.");
             }).ConfigureAwait(false);
             return (MappingsChangeResult)result;
-        }
-
-        private static Task<MappingsChangeResult> ClearMappings(AssistantInvocation inv, ClearMappingsArgs a, CancellationToken ct)
-        {
-            inv.Detail = Number(a.Controller);
-            var result = (MappingsChangeResult)inv.Change(() =>
-            {
-                inv.App.ClearMappings(a.Controller, a.Targets);
-                return Done(new MappingsChangeResult { Controller = a.Controller }, a.Targets == null ? "Every row is clear." : "Cleared.");
-            });
-            return Task.FromResult(result);
         }
 
         private static async Task<MappingsChangeResult> AutoMap(AssistantInvocation inv, ControllerArgs a, CancellationToken ct)

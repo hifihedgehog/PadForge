@@ -92,6 +92,14 @@ namespace PadForge.Services
             /// <summary>Runs <c>--install</c> (#600) and gives its exit
             /// code. Its words go where the run's answers go.</summary>
             public Func<Install.InstallRequest, Action<string>, Action<string>, int> Install = PadForge.Services.Install.UserInstall.RunAsTheUser;
+
+            /// <summary>The Automation pipe <c>--call</c> opens (#600). A test
+            /// gives one of its own.</summary>
+            public string AutomationPipeName = AutomationPipe.PipeName;
+
+            /// <summary>Writes a file of <c>--describe</c> with the user's own
+            /// rights, the run's own (#600).</summary>
+            public Action<string, byte[]> WriteFile = (path, bytes) => File.WriteAllBytes(path, bytes);
         }
 
         /// <summary>
@@ -136,6 +144,12 @@ namespace PadForge.Services
                 // The assistant's side of the door. It serves whether or not
                 // PadForge runs, and says which.
                 exitCode = seams.ServeAssistant();
+                return true;
+            }
+            if (request.AssistantRun)
+            {
+                // The assistant tools and the skill on the command line (#600).
+                exitCode = AssistantCommandLine.Run(request, seams);
                 return true;
             }
 

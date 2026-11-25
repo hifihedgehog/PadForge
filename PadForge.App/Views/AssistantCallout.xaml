@@ -1,0 +1,47 @@
+<UserControl common:Reach.Class="UsersOwn" x:Class="PadForge.Views.AssistantCallout" FontFamily="{DynamicResource BodyFontFamily}"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:controls="clr-namespace:PadForge.Controls"
+             Focusable="False"
+             AutomationProperties.LiveSetting="Polite">
+
+    <!--
+        The guided pointer's callout (#600): an assistant's words beside the
+        place PadForge rings for it, headed by the assistant's name, with
+        the step and how it goes on. It is the flyouts' own surface
+        (FlyoutSurface), with the shadow on a layer of its own under it as
+        the question card draws one. It takes no focus, so a click on the
+        page goes where the user meant it. Close takes it away, and no
+        program presses it: the root is the user's alone.
+    -->
+    <Grid Margin="6,6,6,10">
+        <Border Style="{StaticResource FlyoutSurface}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" ShadowDepth="3" Direction="270" Opacity="0.30" Color="Black"/>
+            </Border.Effect>
+        </Border>
+        <Border Style="{StaticResource FlyoutSurface}" MaxWidth="344" MinWidth="200" Padding="18,12,10,14">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <ui:Button x:Name="CloseButton" DockPanel.Dock="Right" Style="{StaticResource CardCloseButton}" VerticalAlignment="Top"
+                               Focusable="False" IsTabStop="False" Click="Close_Click"
+                               ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.Name="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.AutomationId="AssistantCallout_Close">
+                        <controls:DecorativeStrokeIcon Data="{StaticResource CloseLineGeometry}" Size="14" StrokeWidth="1.8"/>
+                    </ui:Button>
+                    <TextBlock x:Name="ProgramText" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource EmberHotBrush}" Margin="0,2,8,0"/>
+                </DockPanel>
+                <TextBlock x:Name="WordsText" DockPanel.Dock="Top" FontSize="14" TextWrapping="Wrap" Margin="0,6,8,0"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                <TextBlock x:Name="StepText" FontSize="12" TextWrapping="Wrap" Margin="0,8,8,0"
+                           Typography.NumeralAlignment="Tabular"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

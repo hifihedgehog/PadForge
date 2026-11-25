@@ -29,8 +29,8 @@ namespace PadForge.Tests
         }
 
         private static AutomationHost NewHost(Func<DateTimeOffset> now)
-            => new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
-                "PadForge.Tests.Card." + Guid.NewGuid().ToString("N"), _ => AutomationProgram.Unknown, now);
+            => TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                "PadForge.Tests.Card." + Guid.NewGuid().ToString("N"), _ => AutomationProgram.Unknown, now));
 
         /// <summary>The card shows the oldest question with its place in
         /// the queue and its time left, six detail lines and the count of

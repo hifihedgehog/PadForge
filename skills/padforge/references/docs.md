@@ -1,0 +1,33 @@
+# PadForge's documentation
+
+The pages people read, by what they cover. A read names the page a place comes from, in `docs`.
+
+- Setting up a first controller: https://padforge.org/docs/start/first-controller/
+- Home: the engine, the virtual controllers and the extras that are on: https://padforge.org/docs/features/dashboard/
+- Devices: every device PadForge reads, hiding a device from games, lighting and feedback: https://padforge.org/docs/features/devices/
+- Controller slots: making, numbering and removing virtual controllers: https://padforge.org/docs/features/controller-slots/
+- Virtual controller types and presets: https://padforge.org/docs/features/virtual-controllers/
+- Button and axis mapping rows: https://padforge.org/docs/features/mappings/
+- Sticks: dead zones, curves and anti-dead zones: https://padforge.org/docs/features/stick-deadzones/
+- Triggers: dead zones and ranges: https://padforge.org/docs/features/trigger-deadzones/
+- Force feedback and rumble: https://padforge.org/docs/features/force-feedback/
+- Lighting: https://padforge.org/docs/features/lighting/
+- Motion aiming with a gyro: https://padforge.org/docs/guides/gyro/
+- Macros: https://padforge.org/docs/guides/macros/
+- Shift layers: https://padforge.org/docs/guides/shift-layers/
+- Menus: https://padforge.org/docs/guides/menus/
+- Per-game profiles: https://padforge.org/docs/guides/profiles/
+- Importing profiles from other programs: https://padforge.org/docs/guides/profile-import/
+- A phone as a controller: https://padforge.org/docs/guides/web-controller/
+- Remote Link: https://padforge.org/docs/guides/remote-link/
+- Game telemetry: https://padforge.org/docs/features/game-telemetry/
+- Game mods: https://padforge.org/docs/features/game-mods/
+- Head tracking: https://padforge.org/docs/features/head-tracking/
+- Twitch chat: https://padforge.org/docs/features/twitch-chat/
+- The screen overlay: https://padforge.org/docs/features/screen-overlay/
+- The crosshair: https://padforge.org/docs/features/crosshair/
+- The magnifier: https://padforge.org/docs/features/magnifier/
+- Touchpads: https://padforge.org/docs/features/touchpad/
+- Settings: https://padforge.org/docs/features/settings/
+- Drivers and HidHide: https://padforge.org/docs/features/driver-management/
+- When a game does not see a controller, and other problems: https://padforge.org/docs/troubleshooting/

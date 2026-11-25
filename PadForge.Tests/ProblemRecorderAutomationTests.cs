@@ -34,8 +34,8 @@ namespace PadForge.Tests
                 Recorder.Finished += path => { FinishedPath = path; _finished.Set(); };
                 // A pipe name is one for the whole PC, so the host serves a
                 // name of this test's own.
-                Host = new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
-                    "PadForge.Tests.Recorder." + Guid.NewGuid().ToString("N"));
+                Host = TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                    "PadForge.Tests.Recorder." + Guid.NewGuid().ToString("N")));
                 Host.Apply(true, AutomationLevel.Commands);
                 MainWindow.ConnectRecorder(Host, Recorder, Refused.Add);
             }

@@ -78,7 +78,7 @@ namespace PadForge.Tests
             {
                 // A pipe name is one for the whole PC, so the host serves a
                 // name of this test's own.
-                Host = new AutomationHost(Target, Ui, "PadForge.Tests.Commands." + Guid.NewGuid().ToString("N"));
+                Host = TestConsent.AllowAll(new AutomationHost(Target, Ui, "PadForge.Tests.Commands." + Guid.NewGuid().ToString("N")));
                 if (on) Host.Apply(true, level);
             }
 

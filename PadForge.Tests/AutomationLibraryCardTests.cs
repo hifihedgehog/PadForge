@@ -79,8 +79,8 @@ namespace PadForge.Tests
         {
             PageRenderDumpPages.WithApp((app, dispatcher) =>
             {
-                using var host = new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
-                    "PadForge.Tests.Libraries." + Guid.NewGuid().ToString("N"), _ => AutomationProgram.Unknown);
+                using var host = TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), new InlineAutomationUi(),
+                    "PadForge.Tests.Libraries." + Guid.NewGuid().ToString("N"), _ => AutomationProgram.Unknown));
                 var vm = new DashboardViewModel();
                 vm.AttachAutomation(host, dispatcher);
                 var page = new ExtrasPage { DataContext = vm };

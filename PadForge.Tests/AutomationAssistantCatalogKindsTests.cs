@@ -66,9 +66,9 @@ namespace PadForge.Tests
                 {
                     foreach (var kind in kinds.OrderBy(k => k))
                     {
-                        var want = (AssistantSettingKind)Enum.Parse(typeof(AssistantSettingKind), kind.ToString());
+                        string want = kind.ToString().ToLowerInvariant();
                         var ofKind = all.Where(s => s.Id.StartsWith(SearchIds.PageWord(page) + "/", StringComparison.Ordinal)
-                                                    && s.Kind == want
+                                                    && s.Takes == want
                                                     && !s.Id.Contains("/Automation/") && !s.Id.Contains("/Plugins/")).ToList();
                         var candidates = ofKind.Where(s => s.Value != null).ToList();
                         Assert.True(candidates.Count > 0, "the " + page + " page offers " + ofKind.Count + " " + kind + " settings and the fixture gives none a value");
@@ -80,9 +80,10 @@ namespace PadForge.Tests
                 foreach (string line in done) _output.WriteLine(line);
                 Assert.Equal(expected.Values.Sum(k => k.Length), done.Count);
 
-                // A setting the index reads no value of is no number, switch
-                // or choice, and it is refused for writing.
-                var none = all.Where(s => s.Kind == null).ToList();
+                // A setting whose row takes nothing a program can write (a
+                // row of buttons, a gallery, a folder's path) takes nothing,
+                // and it is refused for writing.
+                var none = all.Where(s => s.Takes == null).ToList();
                 Assert.NotEmpty(none);
                 foreach (var s in none) _output.WriteLine("no kind: " + s.Id);
                 Assert.Contains(none, s => s.Id.EndsWith("/Settings_SteamVRInstallDir", StringComparison.Ordinal));
@@ -92,13 +93,13 @@ namespace PadForge.Tests
             });
         }
 
-        private bool RoundTrips(AssistantCatalog catalog, AssistantSetting setting)
+        private bool RoundTrips(AssistantCatalog catalog, AssistantPlace setting)
         {
             JsonElement before = setting.Value.Value;
             JsonElement next;
-            switch (setting.Kind)
+            switch (setting.Takes)
             {
-                case AssistantSettingKind.Number:
+                case "number":
                 {
                     double v = before.GetDouble();
                     double min = setting.Minimum ?? v - 1, max = setting.Maximum ?? v + 1;
@@ -107,7 +108,7 @@ namespace PadForge.Tests
                     next = JsonSerializer.SerializeToElement(to);
                     break;
                 }
-                case AssistantSettingKind.Switch:
+                case "switch":
                     next = JsonSerializer.SerializeToElement(!before.GetBoolean());
                     break;
                 default:
@@ -119,14 +120,14 @@ namespace PadForge.Tests
             try
             {
                 var after = catalog.Set(setting.Id, next);
-                bool changed = setting.Kind switch
+                bool changed = setting.Takes switch
                 {
-                    AssistantSettingKind.Number => after.Value != null && Math.Abs(after.Value.Value.GetDouble() - next.GetDouble()) < 0.0001,
-                    AssistantSettingKind.Switch => after.Value != null && after.Value.Value.GetBoolean() == next.GetBoolean(),
+                    "number" => after.Value != null && Math.Abs(after.Value.Value.GetDouble() - next.GetDouble()) < 0.0001,
+                    "switch" => after.Value != null && after.Value.Value.GetBoolean() == next.GetBoolean(),
                     _ => after.Value != null && after.Value.Value.GetString() == next.GetString(),
                 };
                 catalog.Set(setting.Id, before);
-                var back = catalog.Get(setting.Id);
+                var back = catalog.Read(setting.Id).Place;
                 return changed && back.Value != null && back.Value.Value.GetRawText() == before.GetRawText();
             }
             catch (AssistantRefusal refusal)

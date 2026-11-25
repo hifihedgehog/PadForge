@@ -849,8 +849,8 @@ namespace PadForge.Tests
         {
             string pipe = "PadForge.Tests.ControlToken." + Guid.NewGuid().ToString("N");
             var target = new RecordingAutomationTarget();
-            using var host = new AutomationHost(target, new InlineAutomationUi(), pipe,
-                programOf: pid => new AutomationProgram("caller", pid, "caller.exe"));
+            using var host = TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), pipe,
+                programOf: pid => new AutomationProgram("caller", pid, "caller.exe")));
             var real = host.ControlService.ReadToken;
             host.ControlService.ReadToken = stream =>
                 real(stream) is { } t ? t with { Integrity = 0x1000 } : null;
@@ -914,7 +914,7 @@ namespace PadForge.Tests
         public void AProgramsSnapshots_AreOneAMinute_TwentyARun_AndScrubbed()
         {
             var target = new RecordingAutomationTarget();
-            using var host = new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.Snap." + Guid.NewGuid().ToString("N"));
+            using var host = TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.Snap." + Guid.NewGuid().ToString("N")));
             host.Apply(true, AutomationLevel.Commands);
             long now = 1_000_000;
             host.Commands.NowMs = () => now;
@@ -941,7 +941,7 @@ namespace PadForge.Tests
         public void AProgramsRecordingStarts_AreOneInTenSeconds_TwentyARun()
         {
             var target = new RecordingAutomationTarget();
-            using var host = new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.Rec." + Guid.NewGuid().ToString("N"));
+            using var host = TestConsent.AllowAll(new AutomationHost(target, new InlineAutomationUi(), "PadForge.Tests.Rec." + Guid.NewGuid().ToString("N")));
             host.Apply(true, AutomationLevel.Commands);
             bool recording = false;
             int made = 0;

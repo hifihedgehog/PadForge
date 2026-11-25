@@ -41,6 +41,7 @@
   "Views/AddControllerView.xaml \u003CItemsControl\u003E id:AddController_DrivenBy = Free",
   "Views/AddControllerView.xaml \u003CItemsControl\u003E id:AddController_Common = Free",
   "Views/AddControllerView.xaml \u003CItemsControl\u003E id:AddController_More = Free",
+  "Views/AssistantCallout.xaml \u003CButton\u003E id:AssistantCallout_Close = UsersOwn",
   "Views/AutomationRequestCard.xaml \u003CTextBlock\u003E name:TitleText = UsersOwn",
   "Views/AutomationRequestCard.xaml \u003CTextBlock\u003E name:FromText = UsersOwn",
   "Views/AutomationRequestCard.xaml \u003CItemsControl\u003E name:DetailList = UsersOwn",

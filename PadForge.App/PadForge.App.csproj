@@ -245,10 +245,11 @@
     <EmbeddedResource Include="Resources\Plugins\plugin.py" LogicalName="PadForge.Plugins.plugin.py" />
     <EmbeddedResource Include="Resources\Plugins\plugin.ps1" LogicalName="PadForge.Plugins.plugin.ps1" />
     <EmbeddedResource Include="Resources\Plugins\plugin.ahk" LogicalName="PadForge.Plugins.plugin.ahk" />
-    <!-- PadForge's own skill for assistants (#597): served over the Skills
+    <!-- PadForge's own skill for assistants (#597), kept at skills/padforge
+         where skill installers look (#600): served over the Skills
          extension and written by Save the Skill, so it matches the version
          in use. The path under the folder stays in the name. -->
-    <EmbeddedResource Include="Resources\Assistant\padforge\**\*.md" LogicalName="PadForge.Assistant.Skill/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\skills\padforge\**\*.md;..\skills\padforge\**\*.json" LogicalName="PadForge.Assistant.Skill/%(RecursiveDir)%(Filename)%(Extension)" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="PadForge.ThirdPartyNotices.txt" />
     <!-- The x64 HidHide setup, for x64 machines. Only the x64 build can run
          on one, so only the x64 build carries its 7.7 MB. -->

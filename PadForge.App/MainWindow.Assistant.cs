@@ -34,7 +34,26 @@ namespace PadForge
         private void StartAssistants()
         {
             var app = new WindowAssistantApp(this);
-            var catalog = new AssistantCatalog(_searchService, _searchNavigator, SearchPageOf, _viewModel, BindPadPage, app.WindowPlace);
+            _pointer = new AssistantPointer(() => this);
+            var parts = new AssistantCatalogParts
+            {
+                CatalogPageOf = page => page switch
+                {
+                    PadForge.Search.SearchPage.Home => HomePageView,
+                    PadForge.Search.SearchPage.About => AboutPageView,
+                    PadForge.Search.SearchPage.Window => this,
+                    _ => null,
+                },
+                NavItem = NavItemOf,
+                NavTag = () => _viewModel.SelectedNavTag,
+                PressTray = key =>
+                {
+                    if (key == "Exit") ExitFromTray();
+                },
+                MainWindow = () => this,
+                Pointer = _pointer,
+            };
+            var catalog = new AssistantCatalog(_searchService, _searchNavigator, SearchPageOf, _viewModel, BindPadPage, app.WindowPlace, parts);
             var undo = new AssistantUndo(app.TakeUndoState, app.RestoreUndoState);
             var ui = new DispatcherAutomationUi(Dispatcher);
             var calls = new AssistantCalls(_automation, app, catalog, ui, undo, AssistantTools.All);
@@ -43,6 +62,34 @@ namespace PadForge
             // A new run of changes, or one undone, changes which Activity
             // entries offer Undo.
             undo.Changed += (s, e) => _viewModel.Dashboard.RefreshAutomationUndoFromHost();
+            // The programs the user allowed are kept in PadForge.xml (#600).
+            AutomationConsent.Shared.Changed += (s, e) => Dispatcher.BeginInvoke(new Action(() => _settingsService?.MarkDirty()));
+            // The Automation page lists them with Remove, and its Add on an
+            // assistant's row is the consent for it.
+            ConsentForPage = new AutomationConsentForPage(AutomationConsent.Shared, _automation.Sessions, _automation.Clients);
+            _viewModel.Dashboard.AttachConsent(ConsentForPage);
+            // The question card words its two answers by the question's kind.
+            Views.AutomationRequestCard.KindOf = id => _automation.Approvals.KindOf(id);
+            // Home's cards are built in code, so they reach the catalog
+            // through the one seam for live rows.
+            PadForge.Services.Catalog.LiveCatalog.AddProvider(() => AssistantHomeCards.Items(HomePageView, _viewModel.Dashboard, _viewModel.Pads));
+        }
+
+        private AssistantPointer _pointer;
+
+        /// <summary>The consent store in the Automation page's terms, which
+        /// the page's AttachConsent takes.</summary>
+        internal AutomationConsentForPage ConsentForPage { get; private set; }
+
+        /// <summary>The sidebar's entry for a page's tag, which the guided
+        /// pointer rings on the way to a place (#600).</summary>
+        private FrameworkElement NavItemOf(string tag)
+        {
+            if (string.IsNullOrEmpty(tag)) return null;
+            foreach (var items in new System.Collections.IEnumerable[] { NavView.MenuItems, NavView.FooterMenuItems })
+                foreach (var item in items)
+                    if (item is Wpf.Ui.Controls.NavigationViewItem nvi && nvi.Tag?.ToString() == tag && nvi.IsVisible) return nvi;
+            return null;
         }
 
         [DllImport("user32.dll")]
@@ -333,6 +380,10 @@ namespace PadForge
 
             public long Revision => _w._settingsService?.AssignmentRevision ?? 0;
 
+            /// <summary>The user's click on Show of the question card brings
+            /// the window forward (#600), as the tray's Show does.</summary>
+            public void BringForward() => _w.RestoreFromTray();
+
             public AssistantWindowPlace WindowPlace()
             {
                 if (!_w.IsVisible) return AssistantWindowPlace.InTray;
@@ -511,7 +562,7 @@ namespace PadForge
             private void CheckTypeAvailable(VirtualControllerType type)
             {
                 if (type == VirtualControllerType.Midi && !Vm.Settings.IsMidiAvailable)
-                    throw new AssistantRefusal("not-available", "MIDI controllers need Windows MIDI Services, which this PC does not have. get_system says so.");
+                    throw new AssistantRefusal("not-available", "MIDI controllers need Windows MIDI Services, which this PC does not have. status says so at Read.");
                 if (type == VirtualControllerType.Vr && !HMaestroVRController.IsAvailable())
                     throw new AssistantRefusal("not-available", "VR controllers need SteamVR, which this PC does not have.");
             }
@@ -722,16 +773,16 @@ namespace PadForge
 
             public List<string> ScanMacro(JsonElement json)
             {
-                var data = ReadMacro(json) ?? throw new AssistantRefusal("bad-argument", "The macro is not in PadForge's JSON form. list_macros gives a macro's data to start from.");
+                var data = ReadMacro(json) ?? throw new AssistantRefusal("bad-argument", "The macro is not in PadForge's JSON form. get_mappings with macros gives a macro's data to start from.");
                 return AssistantScan.Macro(data);
             }
 
             public int SaveMacro(int number, int? index, JsonElement json)
             {
                 var pad = PadOf(number);
-                var data = ReadMacro(json) ?? throw new AssistantRefusal("bad-argument", "The macro is not in PadForge's JSON form. list_macros gives a macro's data to start from.");
+                var data = ReadMacro(json) ?? throw new AssistantRefusal("bad-argument", "The macro is not in PadForge's JSON form. get_mappings with macros gives a macro's data to start from.");
                 if (index != null && (index < 0 || index >= pad.Macros.Count))
-                    throw new AssistantRefusal("unknown-macro", "Controller " + number + " has no macro " + index + ". list_macros gives them.");
+                    throw new AssistantRefusal("unknown-macro", "Controller " + number + " has no macro " + index + ". get_mappings with macros gives them.");
                 // The paste's own steps (OnPasteMacro): the load, the slot,
                 // and the layer scope kept only where this slot declares it.
                 var macro = SettingsService.LoadMacroFromData(data, pad.OutputType, pad.ExtendedConfig?.ButtonCount, pad.ProfileId);
@@ -758,7 +809,7 @@ namespace PadForge
             {
                 var pad = PadOf(number);
                 if (index < 0 || index >= pad.Macros.Count)
-                    throw new AssistantRefusal("unknown-macro", "Controller " + number + " has no macro " + index + ". list_macros gives them.");
+                    throw new AssistantRefusal("unknown-macro", "Controller " + number + " has no macro " + index + ". get_mappings with macros gives them.");
                 // The Remove button's step, for the macro named.
                 var macro = pad.Macros[index];
                 pad.Macros.Remove(macro);

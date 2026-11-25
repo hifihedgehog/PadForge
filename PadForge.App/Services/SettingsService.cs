@@ -470,6 +470,10 @@ namespace PadForge.Services
                     SlotAppearancePersistence.Apply(_mainVm.Pads,
                         SlotAppearancePersistence.ResolveApp(new AppSettingsData(), _mainVm.Pads));
                 }
+                // The programs the user allowed (#600), from the file alone:
+                // an undo that puts app settings back never brings back a
+                // program the user removed.
+                Automation.AutomationConsent.Shared.Load(data.AppSettings?.AllowedPrograms);
 
                 // Publish user-imported HIDMaestro profiles to the catalog
                 // so they appear in the Extended dropdown alongside the
@@ -5246,6 +5250,7 @@ namespace PadForge.Services
                 AutomationLevel = (int)_mainVm.Dashboard.AutomationLevel,
                 EnablePlugins = _mainVm.Dashboard.EnablePlugins,
                 Plugins = _mainVm.Dashboard.PluginRecords is { Length: > 0 } plugins ? plugins : null,
+                AllowedPrograms = Automation.AutomationConsent.Shared.Save(),
                 TestControllerOn = _mainVm.Dashboard.TestControllerOn,
                 TestControllerSpeed = _mainVm.Dashboard.TestControllerSpeed,
                 ReplayOn = _mainVm.Dashboard.ReplayOn,
@@ -7584,6 +7589,14 @@ namespace PadForge.Services
         [XmlArrayItem("Plugin")]
         public PluginData[] Plugins { get; set; }
         public bool ShouldSerializePlugins() => Plugins != null && Plugins.Length > 0;
+
+        /// <summary>The programs the user allowed to work with PadForge at
+        /// Read or above (#600): each one's key, name, path, script, signer
+        /// and level. Written only when the list holds one.</summary>
+        [XmlArray("AllowedPrograms")]
+        [XmlArrayItem("Program")]
+        public Automation.AllowedProgramData[] AllowedPrograms { get; set; }
+        public bool ShouldSerializeAllowedPrograms() => AllowedPrograms != null && AllowedPrograms.Length > 0;
 
         /// <summary>The built-in Test Controller's switch (#597). Off, and
         /// left out of the file, until the user turns it on.</summary>

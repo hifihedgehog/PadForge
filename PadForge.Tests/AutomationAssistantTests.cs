@@ -72,7 +72,10 @@ namespace PadForge.Tests
         public List<AssistantMacro> ReadMacros(int number) => new();
         public List<AssistantMenu> ReadMenus(int number) => new();
         public long Revision => RevisionValue;
-        public AssistantWindowPlace WindowPlace() => AssistantWindowPlace.Behind;
+        public AssistantWindowPlace WindowPlace() => WindowIs;
+        public AssistantWindowPlace WindowIs = AssistantWindowPlace.Behind;
+        public int BroughtForward;
+        public void BringForward() => Interlocked.Increment(ref BroughtForward);
         public string ControllerType(int number) => Controllers.FirstOrDefault(c => c.Number == number)?.Type;
         public string CreateProfile(string name, string copyOf)
         {
@@ -115,53 +118,88 @@ namespace PadForge.Tests
         public PrivacyScrubber MakeScrubber() => AutomationReadScrub.Make(Environment);
     }
 
-    /// <summary>The settings catalog in these tests: three settings of the
-    /// three kinds.</summary>
-    internal sealed class FakeAssistantSettings : IAssistantSettings
+    /// <summary>The catalog in these tests: three settings of three kinds,
+    /// a button, a dialog it opens and a place that is the user's alone
+    /// (#600).</summary>
+    internal sealed class FakeAssistantCatalog : IAssistantCatalog
     {
         public double Number = 8;
         public bool Switch;
         public string Choice = "Low";
         public bool AskForSwitch;
+        public bool NumberTurnedOff;
+        public int Pressed;
+        public readonly List<AssistantShowRequest> Shows = new();
+        public int NextCalls;
 
-        private AssistantSetting Make(string id) => id switch
+        internal static readonly string[] Ids =
         {
-            "pad/Pad_Deadzone@c1" => new AssistantSetting { Id = id, Name = "Deadzone", Kind = AssistantSettingKind.Number, Minimum = 0, Maximum = 100, Value = JsonSerializer.SerializeToElement(Number), Shown = Number + " %" },
-            "settings/Settings_Switch" => new AssistantSetting { Id = id, Name = "Switch", Kind = AssistantSettingKind.Switch, Value = JsonSerializer.SerializeToElement(Switch) },
-            "settings/Settings_Choice" => new AssistantSetting { Id = id, Name = "Choice", Kind = AssistantSettingKind.Choice, Choices = new() { "Low", "High" }, Value = JsonSerializer.SerializeToElement(Choice) },
-            _ => throw new AssistantRefusal("unknown-setting", "No setting has the ID " + id + "."),
+            "pad/Pad_Deadzone@c1", "settings/Settings_Switch", "settings/Settings_Choice", "settings.action/Settings_Press",
+            "extras/Automation/Extras_Automation_Level",
         };
 
-        public List<AssistantSetting> Find(string words, int most)
-            => new[] { "pad/Pad_Deadzone@c1", "settings/Settings_Switch", "settings/Settings_Choice" }.Select(Make)
-                .Where(s => s.Name.Contains(words, StringComparison.OrdinalIgnoreCase)).Take(most).ToList();
+        private AssistantPlace Make(string id) => id switch
+        {
+            "pad/Pad_Deadzone@c1" => new AssistantPlace { Id = id, Kind = "setting", Name = "Deadzone", Takes = "number", Minimum = 0, Maximum = 100, Value = JsonSerializer.SerializeToElement(Number), ValueText = Number + " %", Enabled = !NumberTurnedOff, Reach = "free" },
+            "settings/Settings_Switch" => new AssistantPlace { Id = id, Kind = "setting", Name = "Switch", Takes = "switch", Value = JsonSerializer.SerializeToElement(Switch), Reach = "free" },
+            "settings/Settings_Choice" => new AssistantPlace { Id = id, Kind = "setting", Name = "Choice", Takes = "choice", Choices = new() { "Low", "High" }, Value = JsonSerializer.SerializeToElement(Choice), Reach = "free" },
+            "settings.action/Settings_Press" => new AssistantPlace { Id = id, Kind = "action", Name = "Press Me", Reach = "free", Opens = "dialog.dialog/TestDialog/Test_Title" },
+            "extras/Automation/Extras_Automation_Level" => new AssistantPlace { Id = id, Kind = "setting", Name = "Level", Reach = "yours-alone" },
+            _ => throw new AssistantRefusal("unknown-setting", "Nothing in PadForge has the ID " + id + ". find gives IDs."),
+        };
 
-        public AssistantSetting Get(string id) => Make(id);
+        public AssistantFound Find(string words, string kind, int most)
+        {
+            var all = Ids.Select(Make).Where(s => (words == null || s.Name.Contains(words, StringComparison.OrdinalIgnoreCase)) && (kind == null || s.Kind == kind)).ToList();
+            var picked = all.Take(most).ToList();
+            return new AssistantFound { Places = picked, LeftOut = all.Count - picked.Count };
+        }
+
+        public AssistantRead Read(string id) => new AssistantRead { Place = Make(id), Docs = id.StartsWith("settings", StringComparison.Ordinal) ? "https://padforge.org/docs/features/settings/" : null };
 
         public AssistantAsk AskFor(string id, JsonElement value)
         {
-            Make(id);
+            var place = Make(id);
+            if (place.Reach == "yours-alone") throw new AssistantRefusal("users-own", "Only the user can change this.");
             return AskForSwitch && id == "settings/Settings_Switch" ? new AssistantAsk("Change Switch", new[] { "Listens on the network." }) : null;
         }
 
-        public AssistantSetting Set(string id, JsonElement value)
+        public AssistantPlace Set(string id, JsonElement value)
         {
             var s = Make(id);
-            if (s.Kind == AssistantSettingKind.Number)
+            if (s.Reach == "yours-alone") throw new AssistantRefusal("users-own", "Only the user can change this.");
+            if (!s.Enabled) throw new AssistantRefusal("not-available", "The page has this turned off for now.");
+            if (s.Takes == "number")
             {
                 double v = value.GetDouble();
                 if (v < 0 || v > 100) throw new AssistantRefusal("out-of-range", "This setting takes 0 to 100 %.");
                 Number = v;
             }
-            else if (s.Kind == AssistantSettingKind.Switch) Switch = value.GetBoolean();
+            else if (s.Takes == "switch") Switch = value.GetBoolean();
             else Choice = value.GetString();
             return Make(id);
         }
 
-        public AssistantShown Show(AssistantShowTarget target)
-            => new AssistantShown { Shown = true, Where = target.Id, Window = AssistantWindowPlace.Behind, Message = "Behind." };
+        public AssistantPressPlan PlanPress(string id)
+        {
+            var place = Make(id);
+            if (place.Kind != "action") throw new AssistantRefusal("not-available", "This is not pressed.");
+            return new AssistantPressPlan { Place = place, Press = () => Interlocked.Increment(ref Pressed) };
+        }
 
-        public List<AssistantSetting> All() => Find(string.Empty, 50);
+        public AssistantWhere Where() => new AssistantWhere { Window = AssistantWindowPlace.Behind, Page = "page/Home" };
+
+        public AssistantDialogs Dialogs() => new AssistantDialogs();
+
+        public AssistantShown Show(AssistantShowRequest request)
+        {
+            lock (Shows) Shows.Add(request);
+            return new AssistantShown { Shown = request.Steps.Count > 0, Window = AssistantWindowPlace.InFront, Steps = request.Steps.Count };
+        }
+
+        public bool NextCall(int owner) { Interlocked.Increment(ref NextCalls); return false; }
+
+        public List<AssistantPlace> All() => Ids.Select(Make).Where(p => p.Kind == "setting").ToList();
     }
 
     /// <summary>A host on pipe names of the test's own, its assistants'
@@ -173,7 +211,7 @@ namespace PadForge.Tests
 
         public readonly string PipeName = "PadForge.Tests.Assistant." + Guid.NewGuid().ToString("N");
         public readonly FakeAssistantApp App = new();
-        public readonly FakeAssistantSettings Settings = new();
+        public readonly FakeAssistantCatalog Settings = new();
         public readonly InlineAutomationUi Ui = new();
         public readonly AutomationHost Host;
         public readonly AssistantCalls Calls;
@@ -186,8 +224,8 @@ namespace PadForge.Tests
             if (pipeName != null) PipeName = pipeName;
             SettingsManager.UserDevices = new DeviceCollection();
             SettingsManager.UserSettings = new SettingsCollection();
-            Host = new AutomationHost(new RecordingAutomationTarget(), Ui, "PadForge.Tests.AssistantControl." + Guid.NewGuid().ToString("N"),
-                approvalWait: approvalWait, automationPipeName: PipeName);
+            Host = TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), Ui, "PadForge.Tests.AssistantControl." + Guid.NewGuid().ToString("N"),
+                approvalWait: approvalWait, automationPipeName: PipeName));
             var undo = new AssistantUndo(App.TakeUndoState, App.RestoreUndoState);
             Calls = new AssistantCalls(Host, App, Settings, Ui, undo, AssistantTools.All, answerWait);
             Server = new AssistantServer(Host, Calls, Ui);
@@ -309,20 +347,22 @@ namespace PadForge.Tests
             var profiles = listed.StructuredContent.Value.GetProperty("profiles");
             Assert.Equal("Racing", profiles[1].GetProperty("name").GetProperty("outside_text").GetString());
 
-            var unknown = await client.CallToolAsync("get_profile", AssistantRig.Args(("profile", "Nope")));
+            var unknown = await client.CallToolAsync("list_profiles", AssistantRig.Args(("profile", "Nope")));
             Assert.True(unknown.IsError);
             Assert.Contains("list_profiles", AssistantRig.Text(unknown));
             Assert.Contains("(unknown-profile)", AssistantRig.Text(unknown));
 
-            var bad = await client.CallToolAsync("get_profile", AssistantRig.Args(("profiles", "Racing")));
+            var bad = await client.CallToolAsync("list_profiles", AssistantRig.Args(("profiles", "Racing")));
             Assert.True(bad.IsError);
             Assert.Contains("(bad-argument)", AssistantRig.Text(bad));
+            // The refusal names what the tool takes (#600).
+            Assert.Contains("list_profiles takes profile", AssistantRig.Text(bad));
 
             // Every call is in Activity, as the tool's own line.
             await AssistantRig.Until(() => rig.Host.Activity.Snapshot().Count(e => e.Asked.Kind == AutomationAskKind.Tool) >= 3);
             var entries = rig.Host.Activity.Snapshot().Where(e => e.Asked.Kind == AutomationAskKind.Tool).ToList();
             Assert.Contains(entries, e => e.Asked.Argument == "list_profiles" && e.Succeeded);
-            Assert.Contains(entries, e => e.Asked.Argument == "get_profile" && !e.Succeeded && e.Result.StartsWith("err unknown-profile", StringComparison.Ordinal));
+            Assert.Contains(entries, e => e.Asked.Argument == "list_profiles" && !e.Succeeded && e.Result.StartsWith("err unknown-profile", StringComparison.Ordinal));
             Assert.Contains("Test Assistant (host.exe)", entries[0].Program.Name);
         }
 
@@ -335,19 +375,19 @@ namespace PadForge.Tests
             Assert.Equal("2026-07-28", newest.NegotiatedProtocolVersion);
             int notices = 0;
             await using var reg = legacy.RegisterNotificationHandler(NotificationMethods.ToolListChangedNotification, (n, ct) => { Interlocked.Increment(ref notices); return default; });
-            Assert.Contains((await legacy.ListToolsAsync()), t => t.Name == "set_setting");
+            Assert.Contains((await legacy.ListToolsAsync()), t => t.Name == "set");
 
             rig.Host.Apply(true, AutomationLevel.Read);
             await AssistantRig.Until(() => Volatile.Read(ref notices) >= 1);
             var after = (await legacy.ListToolsAsync()).Select(t => t.Name).ToList();
-            Assert.DoesNotContain("set_setting", after);
-            Assert.Contains("find_settings", after);
+            Assert.DoesNotContain("set", after);
+            Assert.Contains("find", after);
             Assert.Equal(AssistantTools.All.Where(t => t.Level <= AutomationLevel.Read).Select(t => t.Name), after);
             var newestAfter = (await newest.ListToolsAsync()).Select(t => t.Name).ToList();
             Assert.Equal(after, newestAfter);
 
             await Assert.ThrowsAnyAsync<McpException>(async () =>
-                await legacy.CallToolAsync("set_setting", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true))));
+                await legacy.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true))));
             Assert.False(rig.Settings.Switch);
 
             // Back up, in the one order again.
@@ -366,13 +406,13 @@ namespace PadForge.Tests
             Assert.StartsWith("@1 ok {", ok);
             using (var doc = JsonDocument.Parse(ok.Substring("@1 ok ".Length)))
                 Assert.Equal(1, doc.RootElement.GetProperty("controllers")[0].GetProperty("number").GetInt32());
-            string refused = script.Final("@2 call set_setting {\"id\":\"settings/Settings_Switch\",\"value\":true}");
+            string refused = script.Final("@2 call set {\"id\":\"settings/Settings_Switch\",\"value\":true}");
             Assert.StartsWith("@2 err not-allowed ", refused);
             Assert.StartsWith("@3 err unknown-tool ", script.Final("@3 call no_such_tool {}"));
             Assert.StartsWith("@4 err bad-argument ", script.Final("@4 call list_controllers {\"outputs\":"));
             var entries = rig.Host.Activity.Snapshot().Where(e => e.Asked.Kind == AutomationAskKind.Tool).ToList();
             Assert.Contains(entries, e => e.Asked.Argument == "list_controllers" && e.Succeeded && e.Program.Name == "Caller");
-            Assert.Contains(entries, e => e.Asked.Argument == "set_setting" && !e.Succeeded);
+            Assert.Contains(entries, e => e.Asked.Argument == "set" && !e.Succeeded);
             Assert.DoesNotContain(rig.Host.Activity.Snapshot(), e => e.Asked.Kind == AutomationAskKind.Call && e.Asked.Argument == "list_controllers");
         }
 
@@ -423,7 +463,7 @@ namespace PadForge.Tests
             Assert.Contains("(no-file)", AssistantRig.Text(pending));
 
             rig.Settings.AskForSwitch = true;
-            var waiting = await client.CallToolAsync("set_setting", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
+            var waiting = await client.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
             Assert.False(waiting.IsError == true);
             var result = waiting.StructuredContent.Value;
             Assert.False(result.GetProperty("done").GetBoolean());
@@ -431,7 +471,7 @@ namespace PadForge.Tests
             Assert.False(rig.Settings.Switch);
             var check = await client.CallToolAsync("check_request", AssistantRig.Args(("request_id", id)));
             Assert.Equal("waiting", check.StructuredContent.Value.GetProperty("state").GetString());
-            Assert.Contains(rig.Host.Activity.Snapshot(), e => e.Asked.Argument == "set_setting" && e.Result.StartsWith("err waiting", StringComparison.Ordinal));
+            Assert.Contains(rig.Host.Activity.Snapshot(), e => e.Asked.Argument == "set" && e.Result.StartsWith("err waiting", StringComparison.Ordinal));
 
             Assert.True(rig.Host.Approvals.Answer(id, true));
             await AssistantRig.Until(() => rig.Settings.Switch);
@@ -444,7 +484,7 @@ namespace PadForge.Tests
             rig.Settings.AskForSwitch = true;
             var client = await rig.ConnectAsync();
             var other = await rig.ConnectAsync();
-            var waiting = await client.CallToolAsync("set_setting", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
+            var waiting = await client.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
             int id = waiting.StructuredContent.Value.GetProperty("pending_request").GetInt32();
             var theirs = await other.CallToolAsync("check_request", AssistantRig.Args(("request_id", id)));
             Assert.True(theirs.IsError);
@@ -468,10 +508,10 @@ namespace PadForge.Tests
             var client = await rig.ConnectAsync();
             for (int i = 0; i < AutomationApprovals.MostPerProgram; i++)
             {
-                var waiting = await client.CallToolAsync("set_setting", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
+                var waiting = await client.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
                 Assert.False(waiting.StructuredContent.Value.GetProperty("done").GetBoolean());
             }
-            var fourth = await client.CallToolAsync("set_setting", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
+            var fourth = await client.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
             Assert.True(fourth.IsError);
             Assert.Contains("(too-many-questions)", AssistantRig.Text(fourth));
             Assert.Equal(AutomationApprovals.MostPerProgram, rig.Host.Approvals.Pending.Count);
@@ -479,7 +519,7 @@ namespace PadForge.Tests
             Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Automation_Result_TooManyQuestions, phrase);
             // The three questions put are kept as questions, and the fourth,
             // never put, is a refusal that holds none.
-            var tools = rig.Host.Activity.Snapshot().Where(e => e.Asked.Kind == AutomationAskKind.Tool && e.Asked.Argument == "set_setting").ToList();
+            var tools = rig.Host.Activity.Snapshot().Where(e => e.Asked.Kind == AutomationAskKind.Tool && e.Asked.Argument == "set").ToList();
             Assert.Equal(AutomationApprovals.MostPerProgram, tools.Count(e => e.HoldsApproval));
             Assert.Single(tools, e => !e.HoldsApproval && e.Result.StartsWith("err too-many-questions", StringComparison.Ordinal));
         }
@@ -499,7 +539,7 @@ namespace PadForge.Tests
                 _ = rig.Host.Approvals.AskAsync(new ApprovalRequest(other, "Other", Array.Empty<string>()), stop.Token);
             }
             Assert.Equal(AutomationApprovals.MostInAll, rig.Host.Approvals.Pending.Count);
-            var refused = await client.CallToolAsync("set_setting", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
+            var refused = await client.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true)));
             Assert.True(refused.IsError);
             Assert.Contains("(too-many-questions)", AssistantRig.Text(refused));
             Assert.Equal(AutomationApprovals.MostInAll, rig.Host.Approvals.Pending.Count);
@@ -518,16 +558,16 @@ namespace PadForge.Tests
                     { Spell = spell, ReadsOnly = readsOnly };
             // Two changes of one tool, each with its own Undo, stay two
             // entries, and each keeps its Undo.
-            activity.Add(Tool("set_setting", "Polling Rate", 1, false));
-            activity.Add(Tool("set_setting", "Polling Rate", 2, false));
+            activity.Add(Tool("set", "Polling Rate", 1, false));
+            activity.Add(Tool("set", "Polling Rate", 2, false));
             Assert.Equal(new[] { 1, 2 }, activity.Snapshot().Select(e => e.Spell));
             Assert.True(activity.Snapshot().All(e => e.Keeps));
             // Reads stay one entry a call (#600): the page folds a run of
             // them into one line.
-            activity.Add(Tool("get_setting", "Polling Rate", 0, true));
-            activity.Add(Tool("get_setting", "Polling Rate", 0, true));
-            activity.Add(Tool("get_setting", "Deadzone", 0, true));
-            var reads = activity.Snapshot().Where(e => e.Asked.Argument == "get_setting").ToList();
+            activity.Add(Tool("read", "Polling Rate", 0, true));
+            activity.Add(Tool("read", "Polling Rate", 0, true));
+            activity.Add(Tool("read", "Deadzone", 0, true));
+            var reads = activity.Snapshot().Where(e => e.Asked.Argument == "read").ToList();
             Assert.Equal(new[] { 1, 1, 1 }, reads.Select(e => e.Asked.Count));
             // A read records nothing done.
             Assert.False(reads[0].Keeps);
@@ -623,12 +663,12 @@ namespace PadForge.Tests
             using var rig = new AssistantRig(AutomationLevel.Read);
             var client = await rig.ConnectAsync();
             var results = await Task.WhenAll(Enumerable.Range(0, AssistantCalls.CallsPerSecond + 15)
-                .Select(_ => client.CallToolAsync("get_system").AsTask()));
+                .Select(_ => client.CallToolAsync("status").AsTask()));
             Assert.Contains(results, r => r.IsError == true && AssistantRig.Text(r).Contains("(rate-limited)"));
             Assert.Contains(results, r => r.IsError != true);
             // Another connection has a rate of its own.
             var other = await rig.ConnectAsync();
-            Assert.False((await other.CallToolAsync("get_system")).IsError == true);
+            Assert.False((await other.CallToolAsync("status")).IsError == true);
         }
 
         [Fact]
@@ -694,7 +734,7 @@ namespace PadForge.Tests
                 Assert.True(AssistantToolWords.HasPhrase(tool.Name), tool.Name + " has no line in Activity");
         }
 
-        private static string SkillFolder => Path.Combine(OffLimitsSource.RepoRoot(), "PadForge.App", "Resources", "Assistant", "padforge");
+        private static string SkillFolder => Path.Combine(OffLimitsSource.RepoRoot(), "skills", "padforge");
 
         [Fact]
         public void TheSkillsManifest_HoldsEveryFile_WithItsDigestAndSize()
@@ -710,6 +750,8 @@ namespace PadForge.Tests
                 string uri = resource["uri"].GetValue<string>();
                 string path = uri.Substring("skill://padforge/".Length);
                 byte[] bytes = File.ReadAllBytes(Path.Combine(SkillFolder, path));
+                // SKILL.md is served with this PadForge's version in it (#600).
+                if (path == "SKILL.md") bytes = AssistantSkill.Stamped(bytes);
                 Assert.Equal("sha256:" + Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant(), resource["digest"].GetValue<string>());
                 Assert.Equal(bytes.LongLength, resource["size"].GetValue<long>());
             }
@@ -808,9 +850,10 @@ namespace PadForge.Tests
             private readonly CancellationTokenSource _stop = new();
             private Task _serving;
 
-            public Assistant(string pipeName, Func<bool> runs = null, Func<Microsoft.Win32.SafeHandles.SafePipeHandle, bool> trust = null)
+            public Assistant(string pipeName, Func<bool> runs = null, Func<Microsoft.Win32.SafeHandles.SafePipeHandle, bool> trust = null,
+                Func<AutomationFileSettings> file = null)
             {
-                Mirror = new AssistantMirror(pipeName, runs ?? (() => false), trust ?? (_ => true), "host.exe");
+                Mirror = new AssistantMirror(pipeName, runs ?? (() => false), trust ?? (_ => true), "host.exe", file ?? (() => AutomationFileSettings.None));
             }
 
             public async Task StartAsync(string version = null)
@@ -877,7 +920,7 @@ namespace PadForge.Tests
             {
                 await AssistantRig.Until(() => assistant.Mirror.State == MirrorState.Connected, 10000);
                 await AssistantRig.Until(() => Volatile.Read(ref notices) >= 1);
-                Assert.Contains((await assistant.Client.ListToolsAsync()), t => t.Name == "find_settings");
+                Assert.Contains((await assistant.Client.ListToolsAsync()), t => t.Name == "find");
             }
             // PadForge leaves: back to status alone, and still connected to
             // the assistant.
@@ -970,6 +1013,128 @@ namespace PadForge.Tests
             Assert.DoesNotContain("System.Windows", source);
             string run = File.ReadAllText(Path.Combine(OffLimitsSource.RepoRoot(), "PadForge.App", "Services", "ClientRun.cs"));
             Assert.Contains("ServeAssistant = AssistantMirror.Run;", run);
+        }
+
+        [Fact]
+        public void TheFilesAutomation_IsReadWithoutTheApp()
+        {
+            AutomationFileSettings Read(string xml) => AutomationFileSettings.Read(new MemoryStream(Encoding.UTF8.GetBytes(xml)));
+            Assert.Equal(new AutomationFileSettings(true, AutomationLevel.SendInputs),
+                Read("<?xml version=\"1.0\"?><PadForgeSettings><Devices /><AppSettings><Language>en</Language><EnableAutomation>true</EnableAutomation><AutomationLevel>2</AutomationLevel><EnablePlugins>false</EnablePlugins></AppSettings></PadForgeSettings>"));
+            Assert.Equal(new AutomationFileSettings(false, AutomationLevel.Read),
+                Read("<PadForgeSettings><AppSettings><AutomationLevel>1</AutomationLevel><EnableAutomation>false</EnableAutomation></AppSettings></PadForgeSettings>"));
+            Assert.Equal(AutomationFileSettings.None, Read("<PadForgeSettings><Devices /></PadForgeSettings>"));
+            Assert.Equal(AutomationFileSettings.None, AutomationFileSettings.Read(Path.Combine(Path.GetTempPath(), "PadForge-no-such-" + Guid.NewGuid().ToString("N") + ".xml")));
+            Assert.Equal(new AutomationFileSettings(true, AutomationLevel.Commands),
+                Read("<PadForgeSettings><AppSettings><EnableAutomation>true</EnableAutomation><AutomationLevel>9</AutomationLevel></AppSettings></PadForgeSettings>"));
+        }
+
+        [Fact]
+        public async Task PadForgeClosed_WithAutomationOnInTheFile_ACallStartsItMinimized_AndWaitsForIt()
+        {
+            string pipe = "PadForge.Tests.Assistant." + Guid.NewGuid().ToString("N");
+            AssistantRig started = null;
+            int starts = 0;
+            await using var assistant = new Assistant(pipe, file: () => new AutomationFileSettings(true, AutomationLevel.Read));
+            assistant.Mirror.StartPadForge = () =>
+            {
+                Interlocked.Increment(ref starts);
+                // The start the shell would make: PadForge comes up a moment
+                // later on its pipe.
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(300);
+                    started = new AssistantRig(AutomationLevel.Read, pipeName: pipe);
+                });
+                return true;
+            };
+            try
+            {
+                await assistant.StartAsync("2025-11-25");
+                // Closed: the tools the file's level allows are listed, and
+                // status says a call starts PadForge.
+                var listed = (await assistant.Client.ListToolsAsync()).Select(t => t.Name).ToList();
+                Assert.Equal(AssistantTools.All.Where(t => t.Level <= AutomationLevel.Read).Select(t => t.Name), listed);
+                var status = await assistant.Client.CallToolAsync("status");
+                Assert.Contains("starts PadForge", status.StructuredContent.Value.GetProperty("message").GetString());
+                Assert.Equal(0, starts);
+
+                var call = await assistant.Client.CallToolAsync("list_controllers");
+                Assert.False(call.IsError == true, AssistantRig.Text(call));
+                Assert.Equal(1, call.StructuredContent.Value.GetProperty("controllers")[0].GetProperty("number").GetInt32());
+                Assert.Equal(1, starts);
+                Assert.Equal(MirrorState.Connected, assistant.Mirror.State);
+                // The hello carried the copy's resume secret.
+                Assert.Contains(started.Host.Sessions.Snapshot(), s => s.Resume == assistant.Mirror.Resume);
+            }
+            finally
+            {
+                started?.Dispose();
+            }
+        }
+
+        [Fact]
+        public async Task PadForgeClosed_WithAutomationOffInTheFile_StartsNothing_AndStatusSaysWhatToDo()
+        {
+            string pipe = "PadForge.Tests.Assistant." + Guid.NewGuid().ToString("N");
+            int starts = 0;
+            await using var assistant = new Assistant(pipe, file: () => new AutomationFileSettings(false, AutomationLevel.ChangeSettings));
+            assistant.Mirror.StartPadForge = () => { Interlocked.Increment(ref starts); return true; };
+            await assistant.StartAsync();
+            Assert.Equal(new[] { "status" }, (await assistant.Client.ListToolsAsync()).Select(t => t.Name));
+            var status = await assistant.Client.CallToolAsync("status");
+            string message = status.StructuredContent.Value.GetProperty("message").GetString();
+            Assert.Contains("Automation is off", message);
+            Assert.Contains("Extras, Automation", message);
+            Assert.False(await assistant.Mirror.EnsurePadForgeAsync(CancellationToken.None));
+            Assert.Equal(0, starts);
+        }
+
+        [Fact]
+        public async Task ARefusedStart_IsNeverMadeAgainAtEveryCall()
+        {
+            string pipe = "PadForge.Tests.Assistant." + Guid.NewGuid().ToString("N");
+            int starts = 0;
+            await using var assistant = new Assistant(pipe, file: () => new AutomationFileSettings(true, AutomationLevel.Commands));
+            assistant.Mirror.StartPadForge = () => { Interlocked.Increment(ref starts); return false; };
+            await assistant.StartAsync();
+            var first = await assistant.Client.CallToolAsync("set_engine", AssistantRig.Args(("on", true)));
+            Assert.True(first.IsError);
+            Assert.Contains("did not start", AssistantRig.Text(first));
+            var second = await assistant.Client.CallToolAsync("set_engine", AssistantRig.Args(("on", true)));
+            Assert.True(second.IsError);
+            Assert.Equal(1, starts);
+        }
+
+        [Fact]
+        public async Task APipeDrop_KeepsTheCopysUndo_ByItsResumeSecret()
+        {
+            using var rig = new AssistantRig(AutomationLevel.ChangeSettings);
+            await using var assistant = new Assistant(rig.PipeName);
+            await assistant.StartAsync("2025-11-25");
+            await AssistantRig.Until(() => assistant.Mirror.State == MirrorState.Connected, 10000);
+            int before = rig.App.State;
+            var made = await assistant.Client.CallToolAsync("create_profile", AssistantRig.Args(("name", "Kept")));
+            Assert.False(made.IsError == true, AssistantRig.Text(made));
+            var first = rig.Host.Sessions.Snapshot().Single();
+            int key = first.CallerKey;
+            // The pipe drops: PadForge ends the session, and the copy finds
+            // PadForge again with the same secret.
+            first.Close("dropped");
+            await AssistantRig.Until(() => rig.Host.Sessions.Snapshot().Any(s => !ReferenceEquals(s, first)), 10000);
+            await AssistantRig.Until(() => assistant.Mirror.State == MirrorState.Connected, 10000);
+            var second = rig.Host.Sessions.Snapshot().Single(s => !ReferenceEquals(s, first));
+            Assert.Equal(key, second.CallerKey);
+            CallToolResult undone = null;
+            await AssistantRig.Until(() =>
+            {
+                // The copy lists PadForge's tools again a moment after it
+                // finds it.
+                try { undone = assistant.Client.CallToolAsync("undo").AsTask().GetAwaiter().GetResult(); }
+                catch (McpException) { return false; }
+                return undone.IsError != true;
+            }, 10000);
+            Assert.Equal(before, rig.App.State);
         }
     }
 }

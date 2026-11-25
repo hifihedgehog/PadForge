@@ -48,6 +48,10 @@ namespace PadForge.Services.Automation
         /// <summary>Where the window is now.</summary>
         AssistantWindowPlace WindowPlace();
 
+        /// <summary>Brings the window forward, after the user picked Show on
+        /// the question card (#600). Never at a program's word.</summary>
+        void BringForward();
+
         /// <summary>The type of a controller by number, for the scanner, or
         /// null.</summary>
         string ControllerType(int number);

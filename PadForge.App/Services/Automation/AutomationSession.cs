@@ -70,6 +70,11 @@ namespace PadForge.Services.Automation
         /// interpreter's image does not name the script it runs.</summary>
         public string ClaimedName { get; private set; } = string.Empty;
 
+        /// <summary>The name the hello gave, alone, without the host an
+        /// assistant's copy of PadForge.exe adds to <see cref="ClaimedName"/>.
+        /// Null when it gave none.</summary>
+        public string GivenName { get; private set; }
+
         /// <summary>The name a device's identity is made from: the claimed
         /// name for a script, the approved plugin's name for a
         /// plugin.</summary>
@@ -106,6 +111,32 @@ namespace PadForge.Services.Automation
 
         /// <summary>The program's entry in Clients, while it lasts.</summary>
         public AutomationClient Client { get; set; }
+
+        /// <summary>The level the program's hello asked for (#600), or null
+        /// when it named none, which asks for the user's level.</summary>
+        internal AutomationLevel? Wanted { get; private set; }
+
+        /// <summary>The level the program has been granted (#600): Commands
+        /// until the user allows more. The user's level caps it
+        /// (AutomationSessions.LevelOf).</summary>
+        internal AutomationLevel Granted { get; set; }
+
+        /// <summary>Who the program is for consent, from what Windows says
+        /// of its process (#600).</summary>
+        internal AllowedProgram Who { get; set; }
+
+        /// <summary>The user's answer to the program's first connection,
+        /// while one is asked for: true when allowed.</summary>
+        internal Task<bool> Consent { get; set; }
+
+        /// <summary>The resume secret an assistant's helper holds across a
+        /// pipe drop (#600), or null.</summary>
+        internal string Resume { get; private set; }
+
+        /// <summary>What an assistant's undo, rate and waiting requests are
+        /// kept by (#600): the first session of its resume secret, else this
+        /// session's number.</summary>
+        internal int CallerKey { get; set; }
 
         /// <summary>The program as Activity shows it.</summary>
         public AutomationProgram Program => new AutomationProgram(
@@ -381,6 +412,7 @@ namespace PadForge.Services.Automation
                     ProgramDeviceDeclaration.LongestName);
             ClaimedName = name;
             IdentityName = name;
+            GivenName = given.Length > 0 ? given : null;
 
             string lease = request.Get("lease");
             if (lease != null)
@@ -404,6 +436,32 @@ namespace PadForge.Services.Automation
                     return;
                 }
                 Outbox.Plain = units == "plain";
+            }
+
+            // The level the program asks for (#600), which the question
+            // card names.
+            string level = request.Get("level");
+            if (level != null)
+            {
+                if (!AutomationConsent.TryLevel(level, out var wanted))
+                {
+                    Answer(request.Tag, AutomationLine.Error("bad-argument", "level is commands, read, send-inputs or change-settings"));
+                    return;
+                }
+                Wanted = wanted;
+            }
+
+            // An assistant's helper keeps one secret for its whole run, so
+            // its undo, rate and waiting requests outlive a pipe drop.
+            string resume = request.Get("resume");
+            if (resume != null)
+            {
+                if (resume.Length < 16 || resume.Length > 64 || !IsSecret(resume))
+                {
+                    Answer(request.Tag, AutomationLine.Error("bad-argument", "resume is 16 to 64 letters and digits"));
+                    return;
+                }
+                Resume = resume;
             }
 
             string hwnd = request.Get("hwnd");
@@ -451,6 +509,7 @@ namespace PadForge.Services.Automation
                         CloseAfterWritten();
                         return;
                     }
+                    _hub.BeginConsent(this);
                     var peer = Peer();
                     _handOver = (stream, stopping) => bridge(peer, stream, stopping);
                     Opened = true;
@@ -495,14 +554,25 @@ namespace PadForge.Services.Automation
                 CloseAfterWritten();
                 return;
             }
+            _hub.BeginConsent(this);
             Opened = true;
             Answer(request.Tag, HelloAnswer());
         }
 
+        private static bool IsSecret(string text)
+        {
+            foreach (char c in text)
+                if (!(c is >= '0' and <= '9' or >= 'a' and <= 'z' or >= 'A' and <= 'Z' or '-' or '_')) return false;
+            return true;
+        }
+
+        /// <summary>hello's answer: the level the program works at now, and
+        /// while the user is asked, the level it asked for (#600).</summary>
         private string HelloAnswer()
             => "ok padforge=" + BuildIdentity.VersionText(BuildIdentity.Version)
                + " protocol=" + AutomationLine.Protocol
-               + " level=" + (_hub.Host.IsOn ? AutomationLevels.Word(_hub.Host.Level) : "off")
+               + " level=" + (_hub.Host.IsOn ? AutomationLevels.Word(_hub.LevelOf(this)) : "off")
+               + (_hub.ConsentWaits(this) ? " wants=" + AutomationLevels.Word(Wanted ?? _hub.Host.Level) + " consent=waiting" : string.Empty)
                + " session=" + Number
                + (Outbox.Plain ? " units=plain" : string.Empty);
 

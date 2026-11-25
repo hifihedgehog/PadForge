@@ -320,6 +320,7 @@ namespace PadForge.Tests
                      {
                          "--profile", "--default-profile", "--engine", "--controllers", "--slot", "--show", "--hide",
                          "--minimized", "--tray", "--exit", "--state", "--snapshot", "--record", "--wait", "--mcp",
+                         "--tools", "--call", "--json", "--skill", "--describe",
                          "--version", "--help",
                      })
             {

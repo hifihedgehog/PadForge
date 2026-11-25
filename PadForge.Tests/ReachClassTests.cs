@@ -147,6 +147,7 @@ namespace PadForge.Tests
         {
             var expected = new[]
             {
+                "Views/AssistantCallout.xaml <UserControl>",              // the guided pointer's callout and its Close (#600)
                 "Views/AutomationRequestCard.xaml <Window>",              // the request card
                 "Views/ExtrasPage.xaml <StackPanel AutomationPage>",      // Automation's own controls, approvals, installs, Activity
                 "Views/ExtrasPage.xaml <StackPanel PluginsPage>",         // Plugins' own controls and plugin approval

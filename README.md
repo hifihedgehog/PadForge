@@ -1229,6 +1229,8 @@ Add `-r win-arm64` for the ARM64 build. [BUILD.md](BUILD.md#arm64-since-451) lis
 
 See [BUILD.md](BUILD.md) for project structure, architecture notes, and developer reference. See the [Technical Reference](https://padforge.org/docs/reference/) for deeper dives into the input pipeline, virtual controller backends, settings file format, and visualization renderer.
 
+Reading this repository with an assistant? PadForge's own skill for assistants lives in [skills/padforge](skills/padforge) and travels inside PadForge.exe, where `PadForge.exe --skill` prints it. Its description of every page, generated from PadForge's catalog, is [skills/padforge/references/pages.md](skills/padforge/references/pages.md). The tools an assistant calls live in [PadForge.App/Services/Automation/Assistant](PadForge.App/Services/Automation/Assistant), `PadForge.exe --mcp` serves them over standard input and output, and `PadForge.exe --tools` lists them with their levels.
+
 ---
 
 ## Don't see your controller in the picker?

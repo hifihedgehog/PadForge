@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using PadForge.Resources.Strings;
+using PadForge.Services.Automation;
 using PadForge.ViewModels;
 
 namespace PadForge.Views
@@ -166,6 +167,7 @@ namespace PadForge.Views
                 if (_anchor != null && IsVisible) Hide();
                 return;
             }
+            WordAnswers(KindOf?.Invoke(item.Id) ?? ApprovalKind.Change);
             PositionText.Text = _requests.Count > 1
                 ? string.Format(CultureInfo.CurrentCulture, Strings.Instance.Automation_Request_Position_Format, 1, _requests.Count)
                 : string.Empty;
@@ -185,6 +187,23 @@ namespace PadForge.Views
                 Place();
             }
             _clock.Start();
+        }
+
+        /// <summary>The kind of a waiting question by its ID (#600), set by
+        /// the window that owns the questions. Null words every question as
+        /// a change.</summary>
+        internal static Func<int, ApprovalKind> KindOf { get; set; }
+
+        /// <summary>The two answers in the words and looks of the question's
+        /// kind (#600): a change's Don't Allow and an ember Allow; a
+        /// program's first connection with both alike, since Allow lets it
+        /// read every key; and a show's Not Now and Show, both alike.</summary>
+        internal void WordAnswers(ApprovalKind kind)
+        {
+            var s = Strings.Instance;
+            DenyButton.Content = kind == ApprovalKind.Show ? s.Automation_Request_NotNow : s.Automation_Request_Deny;
+            AllowButton.Content = kind == ApprovalKind.Show ? s.Automation_Request_Show : s.Automation_Request_Allow;
+            AllowButton.Style = (Style)FindResource(kind == ApprovalKind.Change ? "DialogPrimaryButton" : "DialogButton");
         }
 
         /// <summary>The line under the details: what no answer does, and

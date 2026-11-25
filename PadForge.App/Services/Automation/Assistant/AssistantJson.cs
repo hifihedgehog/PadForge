@@ -136,6 +136,31 @@ namespace PadForge.Services.Automation
             return path != null ? "The value of " + path + " is not of the kind the tool takes." : "The arguments do not read as JSON of the tool's kind.";
         }
 
+        /// <summary>A tool's arguments by the names a call gives them, a
+        /// required one marked with * (#600).</summary>
+        internal static List<string> ArgumentNames(Type arguments)
+        {
+            var names = new List<string>();
+            if (arguments == null) return names;
+            foreach (var property in arguments.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            {
+                if (!property.CanWrite) continue;
+                string name = JsonNamingPolicy.SnakeCaseLower.ConvertName(property.Name);
+                bool required = property.GetCustomAttributes(typeof(JsonRequiredAttribute), true).Length > 0;
+                names.Add(required ? name + "*" : name);
+            }
+            return names;
+        }
+
+        /// <summary>The sentence that names what a tool takes, for a refused
+        /// argument (#600).</summary>
+        internal static string Takes(string tool, Type arguments)
+        {
+            var names = ArgumentNames(arguments);
+            if (names.Count == 0) return tool + " takes no arguments.";
+            return tool + " takes " + string.Join(", ", names) + ", a name with * being needed.";
+        }
+
         /// <summary>Parses the arguments of a script's <c>call</c> line.</summary>
         internal static bool TryParse(string json, out JsonElement element)
         {

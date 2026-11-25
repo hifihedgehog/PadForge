@@ -93,6 +93,15 @@ namespace PadForge.Services.Automation
 
         public AutomationHost Host => _host;
         public ProgramDevices Devices { get; }
+
+        /// <summary>The programs the user allowed (#600). The app's own list
+        /// unless a test gives one.</summary>
+        internal AutomationConsent Consent { get; set; } = AutomationConsent.Shared;
+
+        /// <summary>Raised when a session's own level changes because the
+        /// user answered its first connection or removed its consent (#600),
+        /// on the thread that took the answer.</summary>
+        internal event Action<AutomationSession> SessionLevelChanged;
         public AutomationWatch Watch { get; } = new AutomationWatch();
 
         /// <summary>The sessions that said hello, now.</summary>
@@ -181,7 +190,18 @@ namespace PadForge.Services.Automation
                 EnsureClock();
             }
             error = null;
-            session.Client = _host.Clients.Add(session.ClaimedName, session.Kind, session.Process.Id, session.Process.ImageName);
+            // Who the program is, read once: the connected list carries the
+            // path of the program behind it, and consent keys by it. An
+            // allowed program's last connection is noted before the list
+            // changes, so the Automation page reads it with the change.
+            if (!session.IsPlugin)
+            {
+                var who = session.Who ??= AutomationConsent.Identify(session.Process, session.KindWord, session.ClaimedName);
+                var store = Consent ?? AutomationConsent.Shared;
+                if (store.Find(who.Key) != null) store.Used(who.Key, _host.Now());
+            }
+            session.Client = _host.Clients.Add(session.ClaimedName, session.Kind, session.Process.Id, session.Process.ImageName,
+                session.GivenName, session.Who?.Path ?? session.Process.ImagePath);
             Record(session, new AutomationAsk(AutomationAskKind.Connected, session.ClaimedName), "ok", true);
             return true;
         }
@@ -349,37 +369,244 @@ namespace PadForge.Services.Automation
         {
             var close = new List<AutomationSession>();
             var devicesGo = new List<AutomationSession>();
-            string word = on ? AutomationLevels.Word(level) : "off";
             lock (_sync)
             {
                 foreach (var session in _sessions)
                 {
                     if (!on && !(pluginsServed && session.IsPlugin)) close.Add(session);
-                    session.Outbox.Line("e level " + word);
-                    if ((!on || level < AutomationLevel.SendInputs) && !session.IsPlugin) devicesGo.Add(session);
+                    // Each session hears its own level, which the user's caps.
+                    session.Outbox.Line("e level " + (on ? AutomationLevels.Word(LevelOf(session)) : "off"));
                 }
-                if (!on || level < AutomationLevel.Read)
-                {
-                    foreach (var owned in _owned.Values)
-                    {
-                        owned.Subscriptions.Clear();
-                        owned.Devices = owned.Profile = owned.Engine = false;
-                    }
-                    PublishWatchLocked();
-                }
-                if (!on || level < AutomationLevel.SendInputs)
-                {
-                    _holds.Clear();
-                    foreach (var owned in _owned.Values) owned.Holds = 0;
-                    PublishHoldsLocked();
-                    // Under the lock a value is set in (Value), so a line
-                    // that passed the old level's check before this cannot
-                    // set its value after it.
-                    ScriptValues.ReleaseAll();
-                }
+                DropBelowLocked(session => !on || LevelOf(session) < AutomationLevel.Read,
+                    session => !on || LevelOf(session) < AutomationLevel.SendInputs, devicesGo);
+                // A value is the program's while it may set one: below Send
+                // Inputs for the user's level, every value goes at once.
+                if (!on || level < AutomationLevel.SendInputs) ScriptValues.ReleaseAll();
             }
             foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
             foreach (var session in close) session.CloseAfterWritten();
+        }
+
+        /// <summary>What a session no longer allowed lets go of: below Read
+        /// what it follows, below Send Inputs its holds, values and devices.
+        /// A plugin keeps its own while the pipe serves it. Under the lock a
+        /// value is set in (Value), so a line that passed the old level's
+        /// check before this cannot set its value after it.</summary>
+        private void DropBelowLocked(Func<AutomationSession, bool> belowRead, Func<AutomationSession, bool> belowSend, List<AutomationSession> devicesGo)
+        {
+            bool watch = false, holds = false;
+            foreach (var (session, owned) in _owned)
+            {
+                if (session.IsPlugin) continue;
+                if (belowRead(session) && (owned.Subscriptions.Count > 0 || owned.Devices || owned.Profile || owned.Engine))
+                {
+                    owned.Subscriptions.Clear();
+                    owned.Devices = owned.Profile = owned.Engine = false;
+                    watch = true;
+                }
+                if (belowSend(session))
+                {
+                    if (RemoveHoldsLocked(session)) holds = true;
+                    ScriptValues.ReleaseOwner(session.Number);
+                    devicesGo.Add(session);
+                }
+            }
+            if (watch) PublishWatchLocked();
+            if (holds) PublishHoldsLocked();
+        }
+
+        // ── Consent per program (#600) ──
+
+        /// <summary>The level a session works at now: the level it was
+        /// granted, capped by the user's. A plugin works at the user's.</summary>
+        internal AutomationLevel LevelOf(AutomationSession session)
+        {
+            var cap = _host.Level;
+            if (session == null || session.IsPlugin) return cap;
+            return (AutomationLevel)Math.Min((int)session.Granted, (int)cap);
+        }
+
+        /// <summary>Whether a session's first connection waits for the
+        /// user's answer.</summary>
+        internal bool ConsentWaits(AutomationSession session)
+            => session?.Consent != null && !session.Consent.IsCompleted;
+
+        /// <summary>Waits for the user's answer to a session's first
+        /// connection, or for <paramref name="stopping"/>.</summary>
+        internal async Task ConsentAnswered(AutomationSession session, CancellationToken stopping)
+        {
+            var consent = session?.Consent;
+            if (consent == null || consent.IsCompleted) return;
+            try { await consent.WaitAsync(stopping).ConfigureAwait(false); }
+            catch (OperationCanceledException) { }
+        }
+
+        /// <summary>The answers being asked for, by the program's key, so a
+        /// program that connects again while its card shows asks no second
+        /// time.</summary>
+        private readonly Dictionary<string, Task<bool>> _asking = new(StringComparer.Ordinal);
+
+        /// <summary>The programs declined in this run, by key, with when they
+        /// may ask again: not in this run after Don't Allow, ten minutes after
+        /// a card nobody answered.</summary>
+        private readonly Dictionary<string, DateTimeOffset> _declined = new(StringComparer.Ordinal);
+
+        /// <summary>How long a program whose card nobody answered waits
+        /// before it asks again.</summary>
+        internal static readonly TimeSpan UnansweredQuiet = TimeSpan.FromMinutes(10);
+
+        /// <summary>The resume secrets of assistants' helpers, by secret:
+        /// the program's key and the caller key of its first session.</summary>
+        private readonly Dictionary<string, (string Who, int Key)> _resumes = new(StringComparer.Ordinal);
+
+        /// <summary>
+        /// Decides a session's level as it opens (#600). A plugin works at
+        /// the user's level. A program that asks for Commands, or for a level
+        /// the user allowed it before, has it at once. Any other waits on the
+        /// question card, at Commands meanwhile, for the user's answer, which
+        /// names its path, its signer and for a script its interpreter and
+        /// script file. One card per program: a program that connects again
+        /// while it shows, or after the user declined in this run, asks no
+        /// second time.
+        /// </summary>
+        internal void BeginConsent(AutomationSession session)
+        {
+            session.CallerKey = session.Number;
+            if (session.IsPlugin) { session.Granted = _host.Level; return; }
+            var wanted = session.Wanted ?? _host.Level;
+            var who = session.Who ??= AutomationConsent.Identify(session.Process, session.KindWord, session.ClaimedName);
+            if (session.Resume != null)
+            {
+                lock (_sync)
+                {
+                    if (_resumes.TryGetValue(session.Resume, out var known)) { if (known.Who == who.Key) session.CallerKey = known.Key; }
+                    else _resumes[session.Resume] = (who.Key, session.Number);
+                }
+            }
+            if (wanted <= AutomationLevel.Commands) { session.Granted = AutomationLevel.Commands; return; }
+            var store = Consent ?? AutomationConsent.Shared;
+            var allowed = store.Find(who.Key);
+            if (allowed != null && allowed.Level >= wanted) { session.Granted = wanted; return; }
+            session.Granted = allowed?.Level ?? AutomationLevel.Commands;
+            Task<bool> answer;
+            lock (_sync)
+            {
+                if (_declined.TryGetValue(who.Key, out var until) && _host.Now() < until) return;
+                if (!_asking.TryGetValue(who.Key, out answer)) _asking[who.Key] = answer = AskConsent(session, who, wanted, store);
+            }
+            session.Consent = answer;
+        }
+
+        private async Task<bool> AskConsent(AutomationSession session, AllowedProgram who, AutomationLevel wanted, AutomationConsent store)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            string levelName = wanted switch
+            {
+                AutomationLevel.Read => s.Extras_Automation_Level_Read,
+                AutomationLevel.SendInputs => s.Extras_Automation_Level_SendInputs,
+                _ => s.Extras_Automation_Level_ChangeSettings,
+            };
+            var detail = new List<string>();
+            if (who.Kind is "assistant" or "command-line")
+                detail.Add(string.Format(culture, s.Automation_Consent_Started_Format, who.Path ?? "?"));
+            else if (who.Script != null)
+                detail.Add(string.Format(culture, s.Automation_Consent_Running_Format, System.IO.Path.GetFileName(who.Path ?? string.Empty), who.Script));
+            else if (who.Path != null)
+                detail.Add(who.Path);
+            // The card's From line names a script's interpreter and its
+            // signer. For PadForge's own helper it names PadForge.exe, so the
+            // program behind it is named with its own signer.
+            if (who.Kind is "assistant" or "command-line")
+                detail.Add(string.IsNullOrEmpty(who.Signer) ? s.Automation_Consent_NotSigned : string.Format(culture, s.Automation_Consent_Signed_Format, who.Signer));
+            detail.Add(s.Automation_Consent_ReadsKeys);
+            detail.Add(s.Automation_Consent_AsksOnce);
+            var request = new ApprovalRequest(session.Program,
+                string.Format(culture, s.Automation_Ask_Consent_Format, who.Name ?? session.ClaimedName, levelName), detail)
+            { Kind = ApprovalKind.Consent };
+            ApprovalAnswer answer;
+            try
+            {
+                // Not tied to the connection: a program that connects again
+                // while the card shows waits on the same answer.
+                answer = await _host.Approvals.AskAsync(request, CancellationToken.None).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                answer = ApprovalAnswer.TimedOut;
+            }
+            lock (_sync)
+            {
+                _asking.Remove(who.Key);
+                if (answer == ApprovalAnswer.Denied) _declined[who.Key] = DateTimeOffset.MaxValue;
+                else if (answer != ApprovalAnswer.Allowed) _declined[who.Key] = _host.Now() + UnansweredQuiet;
+            }
+            if (answer != ApprovalAnswer.Allowed) return false;
+            store.Allow(who with { Level = wanted, Allowed = _host.Now(), LastUsed = _host.Now() });
+            // Every open session of the program works at its level before
+            // the answer is out, so a line that waited for it runs at it.
+            Raise(who.Key, wanted);
+            return true;
+        }
+
+        /// <summary>Every open session of a program the user just allowed
+        /// works at what it asked for, and hears its level.</summary>
+        private void Raise(string key, AutomationLevel wanted)
+        {
+            var raised = new List<AutomationSession>();
+            lock (_sync)
+            {
+                foreach (var session in _sessions)
+                {
+                    if (session.IsPlugin || session.Who?.Key != key) continue;
+                    var level = session.Wanted ?? wanted;
+                    if (level <= session.Granted) continue;
+                    session.Granted = level;
+                    raised.Add(session);
+                }
+            }
+            foreach (var session in raised)
+            {
+                if (_host.IsOn) session.Outbox.Line("e level " + AutomationLevels.Word(LevelOf(session)));
+                try { SessionLevelChanged?.Invoke(session); } catch { /* a listener's failure is not the program's */ }
+            }
+        }
+
+        /// <summary>The consent keys of the programs connected now, plugins
+        /// left out.</summary>
+        internal HashSet<string> ConnectedKeys()
+        {
+            var keys = new HashSet<string>(StringComparer.Ordinal);
+            lock (_sync)
+                foreach (var session in _sessions)
+                    if (!session.IsPlugin && session.Who?.Key is { } key) keys.Add(key);
+            return keys;
+        }
+
+        /// <summary>Takes a program's consent away now (#600): the user
+        /// removed it from Allowed Programs. Its open sessions drop to
+        /// Commands and let go of what that level no longer allows.</summary>
+        internal void Revoke(string key)
+        {
+            (Consent ?? AutomationConsent.Shared).Remove(key);
+            var devicesGo = new List<AutomationSession>();
+            var lowered = new List<AutomationSession>();
+            lock (_sync)
+            {
+                foreach (var session in _sessions)
+                {
+                    if (session.IsPlugin || session.Who?.Key != key || session.Granted <= AutomationLevel.Commands) continue;
+                    session.Granted = AutomationLevel.Commands;
+                    lowered.Add(session);
+                }
+                if (lowered.Count > 0) DropBelowLocked(s => lowered.Contains(s), s => lowered.Contains(s), devicesGo);
+            }
+            foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
+            foreach (var session in lowered)
+            {
+                if (_host.IsOn) session.Outbox.Line("e level " + AutomationLevels.Word(LevelOf(session)));
+                try { SessionLevelChanged?.Invoke(session); } catch { /* a listener's failure is not the program's */ }
+            }
         }
 
         // ── The engine ──
@@ -400,6 +627,10 @@ namespace PadForge.Services.Automation
         /// <summary>Runs one line of an open session.</summary>
         internal async Task RunAsync(AutomationSession session, AutomationRequest r)
         {
+            // A line past Commands waits for the user's answer to the
+            // program's first connection (#600), as long as the card does.
+            if (ConsentWaits(session) && !IsCommandsLine(r.Verb))
+                await ConsentAnswered(session, session.Stopping).ConfigureAwait(false);
             switch (r.Verb)
             {
                 case "state": case "activate": case "deactivate": case "query": case "engine":
@@ -447,6 +678,12 @@ namespace PadForge.Services.Automation
             }
         }
 
+        /// <summary>A line Commands allows, which never waits for
+        /// consent.</summary>
+        private static bool IsCommandsLine(string verb) => verb is "state" or "activate" or "deactivate" or "query" or "engine"
+            or "controllers" or "slot" or "show" or "hide" or "minimize" or "snapshot" or "record" or "version" or "exit"
+            or "beat" or "bye" or "hello" or "log";
+
         /// <summary>The longest <c>log</c> line a plugin's log keeps. The
         /// rest of a longer one is cut.</summary>
         internal const int LongestLogLine = 500;
@@ -473,7 +710,7 @@ namespace PadForge.Services.Automation
         /// <paramref name="needed"/>. A plugin declares, drives and removes
         /// its own devices at any level while the pipe serves it.</summary>
         private bool Allows(AutomationSession session, AutomationLevel needed, bool pluginToo = false)
-            => (pluginToo && session.IsPlugin) || _host.Allows(needed);
+            => (pluginToo && session.IsPlugin) || (_host.IsOn && LevelOf(session) >= needed);
 
         private bool Refuse(AutomationSession session, AutomationRequest r, AutomationAskKind kind, string argument = null)
         {

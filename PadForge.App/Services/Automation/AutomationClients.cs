@@ -27,8 +27,17 @@ namespace PadForge.Services.Automation
     /// <param name="ImageName">The file name of that process's image, or
     /// null.</param>
     /// <param name="ConnectedSince">When the connection opened.</param>
+    /// <param name="ClientName">The name its hello gave, alone: for an
+    /// assistant, its MCP client's own name, such as claude-code, without the
+    /// host <paramref name="Name"/> adds. Null when the hello gave none.</param>
+    /// <param name="HostPath">The full path of the program behind the
+    /// connection: for an assistant, the program that started its copy of
+    /// PadForge.exe, else the connected process's image. Null when Windows
+    /// did not say. Two programs can share an image's name, so a program is
+    /// matched by this path.</param>
     internal sealed record AutomationClient(
-        int Id, string Name, AutomationClientKind Kind, int ProcessId, string ImageName, DateTimeOffset ConnectedSince);
+        int Id, string Name, AutomationClientKind Kind, int ProcessId, string ImageName, DateTimeOffset ConnectedSince,
+        string ClientName = null, string HostPath = null);
 
     /// <summary>
     /// The programs connected over the long-lived pipe (#597), in the order
@@ -60,12 +69,13 @@ namespace PadForge.Services.Automation
 
         /// <summary>Lists a program that connected and gives it its
         /// number.</summary>
-        public AutomationClient Add(string name, AutomationClientKind kind, int processId, string imageName)
+        public AutomationClient Add(string name, AutomationClientKind kind, int processId, string imageName,
+            string clientName = null, string hostPath = null)
         {
             AutomationClient client;
             lock (_sync)
             {
-                client = new AutomationClient(++_lastId, name, kind, processId, imageName, _now());
+                client = new AutomationClient(++_lastId, name, kind, processId, imageName, _now(), clientName, hostPath);
                 _clients.Add(client);
             }
             Changed?.Invoke(this, EventArgs.Empty);

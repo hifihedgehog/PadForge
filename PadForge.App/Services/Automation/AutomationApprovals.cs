@@ -28,7 +28,30 @@ namespace PadForge.Services.Automation
     /// <param name="Title">The change in a few words.</param>
     /// <param name="Detail">One line for each thing at stake, such as the
     /// program a macro would start.</param>
-    internal sealed record ApprovalRequest(AutomationProgram Who, string Title, IReadOnlyList<string> Detail);
+    internal sealed record ApprovalRequest(AutomationProgram Who, string Title, IReadOnlyList<string> Detail)
+    {
+        /// <summary>What the question is (#600): a change, a program's
+        /// first connection, or a show while the window is behind. The card
+        /// words its two answers by it.</summary>
+        public ApprovalKind Kind { get; init; } = ApprovalKind.Change;
+    }
+
+    /// <summary>The kinds of question the card puts (#600). Append-only.</summary>
+    internal enum ApprovalKind
+    {
+        /// <summary>A change only the user may allow: Don't Allow and Allow,
+        /// Allow in the ember look.</summary>
+        Change,
+
+        /// <summary>A program's first connection at Read or above: Don't
+        /// Allow and Allow, alike, since Allow lets it read every key.</summary>
+        Consent,
+
+        /// <summary>A program wants to show the user a place while the
+        /// window is not in front: Not Now and Show. Show brings the window
+        /// forward.</summary>
+        Show,
+    }
 
     /// <summary>A question that waits for the user.</summary>
     /// <param name="Id">What the interface answers it by.</param>
@@ -166,6 +189,17 @@ namespace PadForge.Services.Automation
                 return; // answered or canceled first
             }
             if (Take(waiting)) waiting.Done.TrySetResult(ApprovalAnswer.TimedOut);
+        }
+
+        /// <summary>The kind of a waiting question, for the card that words
+        /// its answers (#600). Change when none of that ID waits.</summary>
+        public ApprovalKind KindOf(int id)
+        {
+            lock (_sync)
+            {
+                var waiting = _waiting.Find(w => w.Pending.Id == id);
+                return waiting?.Pending.Request.Kind ?? ApprovalKind.Change;
+            }
         }
 
         /// <summary>The user's answer, from the interface. False when no

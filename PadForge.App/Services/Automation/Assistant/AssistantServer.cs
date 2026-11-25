@@ -112,6 +112,10 @@ namespace PadForge.Services.Automation
             var options = Options(tools, prompts, resources);
             EventHandler changed = (s, e) => Follow(tools, resources, caller);
             _host.Changed += changed;
+            // The user answering this program's first connection, or
+            // removing its consent, changes its own list (#600).
+            Action<AutomationSession> levelChanged = s => { if (ReferenceEquals(s, session)) Follow(tools, resources, caller); };
+            _host.Sessions.SessionLevelChanged += levelChanged;
             try
             {
                 await using var capped = new LineCappedStream(stream, LongestLine);
@@ -125,7 +129,11 @@ namespace PadForge.Services.Automation
             finally
             {
                 _host.Changed -= changed;
-                _calls.Forget(caller.Key);
+                _host.Sessions.SessionLevelChanged -= levelChanged;
+                // A helper that holds a resume secret keeps its undo, rate
+                // and waiting requests for a while, for its reconnect.
+                if (session?.Resume != null) _calls.ForgetLater(caller.Key);
+                else _calls.Forget(caller.Key);
             }
         }
 
@@ -169,7 +177,7 @@ namespace PadForge.Services.Automation
         /// order.</summary>
         private void Follow(McpServerPrimitiveCollection<McpServerTool> tools, McpServerResourceCollection resources, AssistantCaller caller)
         {
-            var allowed = _calls.Allowed().ToList();
+            var allowed = _calls.Allowed(caller).ToList();
             lock (tools)
             {
                 var now = tools.Select(t => ((AssistantMcpTool)t).Definition).ToList();
@@ -195,7 +203,7 @@ namespace PadForge.Services.Automation
 
             // The skill's files and the pages are for any level. The
             // settings catalog holds values, which Read allows.
-            bool catalog = _host.Allows(AutomationLevel.Read);
+            bool catalog = _calls.Allows(caller, AutomationLevel.Read);
             lock (resources)
             {
                 var want = new List<McpServerResource>();
@@ -229,15 +237,15 @@ namespace PadForge.Services.Automation
         /// read.</summary>
         private string CatalogText()
         {
-            var settings = _calls.Settings;
-            if (settings == null) return "[]";
-            List<AssistantSetting> all = null;
+            var catalog = _calls.Catalog;
+            if (catalog == null) return "[]";
+            List<AssistantPlace> all = null;
             _ui.Invoke(() =>
             {
-                all = settings.All();
+                all = catalog.All();
                 return string.Empty;
             }, CancellationToken.None);
-            var outcome = _calls.Success(new SettingsResult { Settings = all ?? new List<AssistantSetting>() }, typeof(SettingsResult));
+            var outcome = _calls.Success(new PlacesResult { Places = all ?? new List<AssistantPlace>() }, typeof(PlacesResult));
             return outcome.Json;
         }
     }

@@ -30,4 +30,4 @@ Assigning a known gamepad maps it at once. `auto_map` maps a controller's device
 
 ## Macros
 
-`list_macros` gives each macro's `data` in PadForge's own JSON form. To change one, change that data and pass it to `save_macro` with the macro's `index`. A new macro leaves `index` out. A macro that runs a program, opens a file or an address, or presses keys or moves the mouse asks the user first.
+`get_mappings` with `macros: true` gives each macro's `data` in PadForge's own JSON form. To change one, change that data and pass it to `save_macro` with the macro's `index`. A new macro leaves `index` out. A macro that runs a program, opens a file or an address, or presses keys or moves the mouse asks the user first.

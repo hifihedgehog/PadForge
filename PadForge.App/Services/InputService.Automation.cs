@@ -73,7 +73,7 @@ namespace PadForge.Services
         /// number.
         /// </summary>
         /// <summary>The rate the engine runs at now, or 0 while it is
-        /// stopped, for an assistant's get_system (#597).</summary>
+        /// stopped, for an assistant's status (#600).</summary>
         internal double EngineFrequency => _inputManager?.CurrentFrequency ?? 0;
 
         /// <summary>What virtual controller <paramref name="number"/> sends to

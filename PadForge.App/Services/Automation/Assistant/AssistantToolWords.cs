@@ -24,25 +24,24 @@ namespace PadForge.Services.Automation
             ["switch_profile"] = s => s.Automation_Tool_SwitchProfile,
             ["set_engine"] = s => s.Automation_Tool_SetEngine,
             ["set_controllers_power"] = s => s.Automation_Tool_SetControllersPower,
-            ["save_snapshot"] = s => s.Automation_Tool_SaveSnapshot,
-            ["get_system"] = s => s.Automation_Tool_GetSystem,
             ["list_profiles"] = s => s.Automation_Tool_ListProfiles,
-            ["get_profile"] = s => s.Automation_Tool_GetProfile,
             ["list_controllers"] = s => s.Automation_Tool_ListControllers,
             ["list_devices"] = s => s.Automation_Tool_ListDevices,
             ["get_device"] = s => s.Automation_Tool_GetDevice,
             ["wait_for_input"] = s => s.Automation_Tool_WaitForInput,
             ["get_mappings"] = s => s.Automation_Tool_GetMappings,
-            ["list_macros"] = s => s.Automation_Tool_ListMacros,
             ["record_problem"] = s => s.Automation_Tool_RecordProblem,
-            ["find_settings"] = s => s.Automation_Tool_FindSettings,
-            ["get_setting"] = s => s.Automation_Tool_GetSetting,
+            ["find"] = s => s.Automation_Tool_Find,
+            ["read"] = s => s.Automation_Tool_Read,
+            ["where"] = s => s.Automation_Tool_Where,
             ["show"] = s => s.Automation_Tool_Show,
             ["add_device"] = s => s.Automation_Tool_AddDevice,
             ["set_device_inputs"] = s => s.Automation_Tool_SetDeviceInputs,
             ["remove_device"] = s => s.Automation_Tool_RemoveDevice,
             ["hold_control"] = s => s.Automation_Tool_HoldControl,
-            ["set_setting"] = s => s.Automation_Tool_SetSetting,
+            ["set_value"] = s => s.Automation_Tool_SetValue,
+            ["set"] = s => s.Automation_Tool_SetSetting,
+            ["press"] = s => s.Automation_Tool_Press,
             ["create_profile"] = s => s.Automation_Tool_CreateProfile,
             ["rename_profile"] = s => s.Automation_Tool_RenameProfile,
             ["delete_profile"] = s => s.Automation_Tool_DeleteProfile,
@@ -53,7 +52,6 @@ namespace PadForge.Services.Automation
             ["set_controller_type"] = s => s.Automation_Tool_SetControllerType,
             ["assign_device"] = s => s.Automation_Tool_AssignDevice,
             ["set_mappings"] = s => s.Automation_Tool_SetMappings,
-            ["clear_mappings"] = s => s.Automation_Tool_ClearMappings,
             ["auto_map"] = s => s.Automation_Tool_AutoMap,
             ["save_macro"] = s => s.Automation_Tool_SaveMacro,
             ["delete_macro"] = s => s.Automation_Tool_DeleteMacro,
@@ -113,6 +111,13 @@ namespace PadForge.Services.Automation
         internal static string TurnsOn(string what) => string.Format(Strings.Instance.Automation_Ask_TurnsOn_Format, Cut(what));
 
         internal static string AskSetting(string name) => string.Format(Strings.Instance.Automation_Ask_Setting_Format, Cut(name));
+
+        internal static string AskPress(string name) => string.Format(Strings.Instance.Automation_Ask_Press_Format, Cut(name));
+
+        internal static string AskShow(string program, string place)
+            => string.Format(Strings.Instance.Automation_Ask_Show_Format, Cut(program), Cut(place));
+
+        internal static string ShowWhere(string where) => string.Format(Strings.Instance.Automation_Ask_ShowWhere_Format, Cut(where));
 
         internal static string SetsTo(string name, string value) => string.Format(Strings.Instance.Automation_Ask_SetsTo_Format, Cut(name), Cut(value));
 

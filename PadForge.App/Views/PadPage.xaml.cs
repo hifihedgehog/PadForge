@@ -1489,6 +1489,10 @@ namespace PadForge.Views
         };
 
         /// <summary>The header button of a section.</summary>
+        /// <summary>A section's header button, which the guided pointer
+        /// rings on the way to a place in it (#600).</summary>
+        internal RadioButton SectionButton(int section) => ButtonOfSection(section);
+
         private RadioButton ButtonOfSection(int section) => section switch
         {
             PadViewModel.ButtonsSection => SectionButtons,

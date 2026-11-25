@@ -49,7 +49,7 @@ namespace PadForge.Tests
         private static readonly HashSet<string> FollowsAName = new(StringComparer.OrdinalIgnoreCase)
         {
             "is", "as", "was", "has", "does", "its", "this", "ms", "needs", "reads", "sets", "reaches",
-            "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps",
+            "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps", "wants",
         };
 
         // Strings whose value before a plural is never one, with the reason.

@@ -35,12 +35,12 @@ namespace PadForge.Services.Automation
         private readonly Dictionary<int, AutomationLineRate> _rates = new();
         private readonly Dictionary<int, PendingCall> _pending = new();
 
-        public AssistantCalls(AutomationHost host, IAssistantApp app, IAssistantSettings settings, IAutomationUi ui,
+        public AssistantCalls(AutomationHost host, IAssistantApp app, IAssistantCatalog catalog, IAutomationUi ui,
             AssistantUndo undo, IReadOnlyList<AssistantToolDefinition> tools, TimeSpan? answerWait = null, Func<long> nowMs = null)
         {
             _host = host ?? throw new ArgumentNullException(nameof(host));
             App = app;
-            Settings = settings;
+            Catalog = catalog;
             _ui = ui ?? throw new ArgumentNullException(nameof(ui));
             Undo = undo;
             Tools = tools;
@@ -53,15 +53,28 @@ namespace PadForge.Services.Automation
 
         public AutomationHost Host => _host;
         public IAssistantApp App { get; }
-        public IAssistantSettings Settings { get; }
+        public IAssistantCatalog Catalog { get; }
         public AssistantUndo Undo { get; }
         public IReadOnlyList<AssistantToolDefinition> Tools { get; }
         public TimeSpan AnswerWait { get; }
 
-        /// <summary>The tools the level in force allows, in the one
+        public IAutomationUi Ui => _ui;
+
+        /// <summary>The level a caller works at now (#600): the level its
+        /// program was granted, capped by the user's level. A caller with no
+        /// session of its own works at the user's level.</summary>
+        public AutomationLevel LevelOf(AssistantCaller caller)
+            => caller?.Session != null ? _host.Sessions.LevelOf(caller.Session) : _host.Level;
+
+        /// <summary>Whether a caller may do what needs
+        /// <paramref name="needed"/>.</summary>
+        public bool Allows(AssistantCaller caller, AutomationLevel needed)
+            => _host.IsOn && LevelOf(caller) >= needed;
+
+        /// <summary>The tools a caller's level allows, in the one
         /// order.</summary>
-        public IEnumerable<AssistantToolDefinition> Allowed()
-            => _host.IsOn ? Tools.Where(t => _host.Allows(t.Level)) : Enumerable.Empty<AssistantToolDefinition>();
+        public IEnumerable<AssistantToolDefinition> Allowed(AssistantCaller caller)
+            => _host.IsOn ? Tools.Where(t => Allows(caller, t.Level)) : Enumerable.Empty<AssistantToolDefinition>();
 
         /// <summary>Runs one call to its outcome. Never throws for the
         /// program's mistakes: they come back as failures with words.</summary>
@@ -76,11 +89,15 @@ namespace PadForge.Services.Automation
 
             var invocation = new AssistantInvocation(this, caller, tool, _ui, stopping);
             AssistantOutcome outcome;
-            if (!_host.Allows(tool.Level))
+            // A program whose first connection waits for the user's answer
+            // waits for it here (#600), as long as the card does.
+            if (_host.IsOn && !Allows(caller, tool.Level) && caller.Session != null && _host.Sessions.ConsentWaits(caller.Session))
+                await _host.Sessions.ConsentAnswered(caller.Session, stopping).ConfigureAwait(false);
+            if (!Allows(caller, tool.Level))
             {
                 outcome = AssistantOutcome.Failure("not-allowed", _host.IsOn
-                    ? "The Automation level the user picked does not allow " + name + ". It needs " + LevelWords(tool.Level)
-                      + ". Only the user can raise the level, on PadForge's Automation page."
+                    ? "This program works at " + LevelWords(LevelOf(caller)) + ", which does not allow " + name + ". It needs " + LevelWords(tool.Level)
+                      + ". Only the user can raise it, on PadForge's Automation page."
                     : "Automation is off in PadForge. Only the user can turn it on, on the Automation page under Extras.");
             }
             else if (!TakeRate(caller.Key))
@@ -106,7 +123,14 @@ namespace PadForge.Services.Automation
             var tool = invocation.Tool;
             object args = AssistantJson.Read(arguments, tool.Arguments, out string problem);
             if (args == null)
-                return AssistantOutcome.Failure("bad-argument", problem + " The tool's input schema lists what it takes.");
+                return AssistantOutcome.Failure("bad-argument", problem + " " + AssistantJson.Takes(tool.Name, tool.Arguments));
+            // A step of the pointer that goes on at the program's next call
+            // goes on now (#600).
+            if (tool.Name != "show" && Catalog != null)
+            {
+                try { invocation.OnUi(() => Catalog.NextCall(invocation.Caller.Key)); }
+                catch (Exception) { /* the pointer's step is the user's to see, never the call's to fail */ }
+            }
             object result;
             try
             {
@@ -160,12 +184,15 @@ namespace PadForge.Services.Automation
         private static string Scrub(PadForge.Engine.Privacy.PrivacyScrubber scrubber, string property, string text)
         {
             if (property == FileBytes) return text;
+            // A documentation page's address is PadForge's own, never the
+            // user's, and a link cut to its host leads nowhere.
+            if (property == "docs" && AssistantDocs.IsPage(text)) return text;
             return property != null && Identifiers.Contains(property)
                 ? scrubber.SearchFinished(text, count: false)
                 : scrubber.Text(text);
         }
 
-        private static string LevelWords(AutomationLevel level) => level switch
+        internal static string LevelWords(AutomationLevel level) => level switch
         {
             AutomationLevel.Read => "the Read level",
             AutomationLevel.SendInputs => "the Send Inputs level",
@@ -181,6 +208,21 @@ namespace PadForge.Services.Automation
                     _rates[key] = rate = new AutomationLineRate(CallsPerSecond, _nowMs());
                 return rate.Take(_nowMs());
             }
+        }
+
+        /// <summary>How long an assistant's helper that dropped its pipe has
+        /// to come back before its rate and waiting requests go.</summary>
+        internal static readonly TimeSpan ResumeGrace = TimeSpan.FromMinutes(10);
+
+        /// <summary>A helper with a resume secret left: what it keeps goes
+        /// after <see cref="ResumeGrace"/>, unless it is back by then.</summary>
+        internal void ForgetLater(int key)
+        {
+            _ = Task.Delay(ResumeGrace).ContinueWith(_ =>
+            {
+                bool back = _host.Sessions.Snapshot().Any(s => s.CallerKey == key);
+                if (!back) Forget(key);
+            }, TaskScheduler.Default);
         }
 
         /// <summary>A program left: its rate and its waiting requests go.</summary>
@@ -243,7 +285,11 @@ namespace PadForge.Services.Automation
             // past either is never put: the approvals answer it TooMany at
             // once, and the call is refused in plain words.
             var request = new ApprovalRequest(who, ask.Title, ask.Detail);
-            Task<ApprovalAnswer> answer = _host.Approvals.AskAsync(request, invocation.Caller.Session?.Lifetime ?? invocation.Stopping);
+            // A helper with a resume secret keeps its question across a
+            // pipe drop. The card's own two minutes end it.
+            var session = invocation.Caller.Session;
+            var lifetime = session?.Resume != null ? CancellationToken.None : session?.Lifetime ?? invocation.Stopping;
+            Task<ApprovalAnswer> answer = _host.Approvals.AskAsync(request, lifetime);
             if (answer.IsCompletedSuccessfully && answer.Result == ApprovalAnswer.TooMany)
                 throw TooManyQuestions();
             invocation.Asked = true;
@@ -377,8 +423,25 @@ namespace PadForge.Services.Automation
         public CancellationToken Stopping { get; }
         public AssistantCalls Calls => _calls;
         public IAssistantApp App => _calls.App;
-        public IAssistantSettings Settings => _calls.Settings;
+        public IAssistantCatalog Catalog => _calls.Catalog;
         public AutomationHost Host => _calls.Host;
+        public IAutomationUi Ui => _ui;
+
+        /// <summary>The level this call's program works at now.</summary>
+        public AutomationLevel Level => _calls.LevelOf(Caller);
+
+        /// <summary>Whether this call's program may do what needs
+        /// <paramref name="needed"/>.</summary>
+        public bool Allows(AutomationLevel needed) => _calls.Allows(Caller, needed);
+
+        /// <summary>Refuses a part of a tool that needs a higher level than
+        /// the tool itself (#600): a recording through record_problem.</summary>
+        public void Requires(AutomationLevel needed, string what)
+        {
+            if (Allows(needed)) return;
+            throw new AssistantRefusal("not-allowed", "This program works at " + AssistantCalls.LevelWords(Level) + ", and " + what
+                + " needs " + AssistantCalls.LevelWords(needed) + ". Only the user can raise it, on PadForge's Automation page.");
+        }
 
         /// <summary>What Activity names beside the tool: the profile, the
         /// setting or the controller. The program's text is shown as it

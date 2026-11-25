@@ -136,6 +136,58 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task WaitForInputsTimeline_GivesEveryChangeInOrder_WithItsMilliseconds()
+        {
+            using var rig = new AssistantRig(AutomationLevel.Read);
+            var pad = AddPad("Arcade Stick");
+            var client = await rig.ConnectAsync();
+            var waiting = client.CallToolAsync("wait_for_input", new Dictionary<string, object> { ["seconds"] = 2, ["timeline"] = true }).AsTask();
+            await Task.Delay(300);
+            pad.InputState.Buttons[5] = true;
+            Interlocked.Increment(ref pad.InputStateSeq);
+            await Task.Delay(200);
+            pad.InputState.Buttons[5] = false;
+            Interlocked.Increment(ref pad.InputStateSeq);
+            await Task.Delay(200);
+            pad.InputState.Buttons[1] = true;
+            Interlocked.Increment(ref pad.InputStateSeq);
+            var r = (await waiting).StructuredContent.Value;
+            Assert.True(r.GetProperty("found").GetBoolean());
+            var changes = r.GetProperty("timeline").EnumerateArray()
+                .Select(c => (Input: c.GetProperty("input").GetString(), Value: c.GetProperty("value").GetDouble(), Ms: c.GetProperty("ms").GetInt64()))
+                .ToList();
+            Assert.Equal(new[] { ("Button 5", 1.0), ("Button 5", 0.0), ("Button 1", 1.0) }, changes.Select(c => (c.Input, c.Value)).ToArray());
+            Assert.True(changes[0].Ms < changes[1].Ms && changes[1].Ms < changes[2].Ms);
+            Assert.All(r.GetProperty("timeline").EnumerateArray(), c => Assert.Equal(AutomationDevices.IdOf(pad.InstanceGuid), c.GetProperty("device").GetString()));
+        }
+
+        [Fact]
+        public async Task ADevicesMaker_IsNamedInItsRead_AndAPathNeverRead_IsNeverOpenedInTheTestHost()
+        {
+            using var rig = new AssistantRig(AutomationLevel.Read);
+            var named = AddPad("Fighting Stick");
+            named.DevicePath = @"\\?\hid#vid_0f0d&pid_00c1#a1test0001#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+            AssistantDeviceMaker.Known[named.DevicePath] = "HORI CO.,LTD.";
+            var unread = AddPad("Other Stick");
+            unread.DevicePath = @"\\?\hid#vid_0f0d&pid_00c2#a1test0002#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+            try
+            {
+                var client = await rig.ConnectAsync();
+                var listed = (await client.CallToolAsync("list_devices")).StructuredContent.Value.GetProperty("devices").EnumerateArray().ToList();
+                var one = listed.Single(d => d.GetProperty("id").GetString() == AutomationDevices.IdOf(named.InstanceGuid));
+                Assert.Equal("HORI CO.,LTD.", one.GetProperty("maker").GetProperty("outside_text").GetString());
+                // The fence holds: a path no read kept is not opened here.
+                Assert.True(DirectDeviceAccess.Refuses(unread.DevicePath));
+                Assert.Null(AssistantDeviceMaker.Of(unread));
+                Assert.False(AssistantDeviceMaker.Known.ContainsKey(unread.DevicePath));
+            }
+            finally
+            {
+                AssistantDeviceMaker.Known.TryRemove(named.DevicePath, out _);
+            }
+        }
+
+        [Fact]
         public async Task ThroughTheMirror_AFileByPath_IsReadAndWrittenWithTheUsersRights_AndTheImportAsks()
         {
             using var rig = new AssistantRig(AutomationLevel.ChangeSettings, approvalWait: TimeSpan.FromSeconds(20), answerWait: TimeSpan.FromSeconds(10));

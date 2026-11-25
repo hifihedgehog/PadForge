@@ -138,6 +138,7 @@ namespace PadForge.Services.Automation
                 if (outcome.Structured is { ValueKind: JsonValueKind.Object } structured
                     && structured.TryGetProperty("docs", out var docs) && docs.ValueKind == JsonValueKind.String
                     && Uri.TryCreate(docs.GetString(), UriKind.Absolute, out var page) && page.Scheme == Uri.UriSchemeHttps)
+                {
                     content.Add(new ResourceLinkBlock
                     {
                         Uri = page.AbsoluteUri,
@@ -146,6 +147,20 @@ namespace PadForge.Services.Automation
                         Description = "The documentation page this comes from.",
                         MimeType = "text/html",
                     });
+                    // The same page as the skill carries it, which
+                    // resources/read serves, for an assistant that does not
+                    // read the web. An https address is one the client
+                    // fetches itself (MCP, resources, common URI schemes).
+                    if (AssistantDocs.CopyUri(page.AbsoluteUri) is { } copy)
+                        content.Add(new ResourceLinkBlock
+                        {
+                            Uri = copy,
+                            Name = "padforge-docs-copy",
+                            Title = "PadForge's documentation, in PadForge",
+                            Description = "The same page, as PadForge's skill carries it.",
+                            MimeType = "text/markdown",
+                        });
+                }
                 return new CallToolResult
                 {
                     StructuredContent = outcome.Structured,

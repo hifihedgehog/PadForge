@@ -413,6 +413,8 @@ namespace PadForge
 
             public string DeactivateProfile() => _window._inputService.ExternalDeactivate();
 
+            public ProfileStarts NetworkStarts(string nameOrId) => _window._inputService.ExternalNetworkStarts(nameOrId);
+
             public string QueryProfile() => _window._inputService.ExternalQuery();
 
             public void ShowWindow() => _window.ShowForACaller();

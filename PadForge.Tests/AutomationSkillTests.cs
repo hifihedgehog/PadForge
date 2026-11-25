@@ -70,10 +70,177 @@ namespace PadForge.Tests
         /// <summary>references/docs.md: PadForge's documentation pages.</summary>
         internal static string DocsMarkdown()
         {
-            var sb = new StringBuilder("# PadForge's documentation\n\nThe pages people read, by what they cover. A read names the page a place comes from, in `docs`.\n\n");
+            var sb = new StringBuilder("# PadForge's documentation\n\n")
+                .Append("The pages people read, by what they cover, each on the web and as this skill carries it. ")
+                .Append("A read names the page a place comes from, in `docs`, and links both. A copy's links to pages this skill does not carry, and its pictures, go to the site.\n\n");
             foreach (var (path, covers) in AssistantDocs.Pages)
-                sb.Append("- ").Append(covers).Append(": ").Append(AssistantDocs.Root).Append(path).Append('\n');
+                sb.Append("- ").Append(covers).Append(": ").Append(AssistantDocs.Root).Append(path)
+                  .Append(", `").Append(AssistantDocs.CopyPathOf(path)).Append("`\n");
             return sb.ToString();
+        }
+
+        // ─────────────────────────────────────────────
+        //  The documentation pages the skill carries
+        // ─────────────────────────────────────────────
+
+        /// <summary>The variable that names the documentation site's
+        /// Markdown folder, padforge.org's <c>wiki</c>, for writing the copies
+        /// again. Read only with <see cref="WriteVariable"/> set. Without it
+        /// the folder beside the repository's own is taken.</summary>
+        internal const string WikiVariable = "PADFORGE_DOCS_WIKI";
+
+        /// <summary>A page's path in the site's Markdown folder.</summary>
+        private static string SourceOf(string pagePath) => pagePath.TrimEnd('/') + ".md";
+
+        /// <summary>The first line of each copy: the page it is and where it
+        /// came from.</summary>
+        internal static string CopyHead(string pagePath)
+            => "<!-- " + AssistantDocs.Root + pagePath + " as PadForge's skill carries it, from padforge.org's wiki/" + SourceOf(pagePath) + ". -->\n";
+
+        private static readonly Regex MarkdownTarget = new(@"(!?\[[^\]\n]*\]\()([^)\s]+)((?:\s+""[^""]*"")?\))", RegexOptions.Compiled);
+        private static readonly Regex HtmlTarget = new(@"\b((?:src|href)="")([^""]+)("")", RegexOptions.Compiled);
+        private static readonly Regex Scheme = new(@"^[A-Za-z][A-Za-z0-9+.-]*:", RegexOptions.Compiled);
+
+        /// <summary>A link of the page at <paramref name="pagePath"/> as its
+        /// copy gives it. A link to another page the skill carries stays as
+        /// it is, since the copies keep the site's folders. A link to a page
+        /// it does not carry, a picture or another file goes to the site, and
+        /// one from the site's root to padforge.org.</summary>
+        internal static string Retarget(string pagePath, string target, ISet<string> carried)
+        {
+            if (target.StartsWith('#') || Scheme.IsMatch(target)) return target;
+            if (target.StartsWith('/')) return "https://padforge.org" + target;
+            int hash = target.IndexOf('#');
+            string path = hash < 0 ? target : target.Substring(0, hash);
+            string fragment = hash < 0 ? string.Empty : target.Substring(hash);
+            var parts = new List<string>(SourceOf(pagePath).Split('/'));
+            parts.RemoveAt(parts.Count - 1);
+            foreach (string part in path.Split('/'))
+            {
+                if (part == "..") { if (parts.Count == 0) return target; parts.RemoveAt(parts.Count - 1); }
+                else if (part != "." && part.Length > 0) parts.Add(part);
+            }
+            string resolved = string.Join("/", parts);
+            if (resolved.EndsWith(".md", StringComparison.Ordinal))
+            {
+                string page = resolved.Substring(0, resolved.Length - 3);
+                if (carried.Contains(page)) return target;
+                string web = page == "index" ? string.Empty : page.EndsWith("/index", StringComparison.Ordinal) ? page.Substring(0, page.Length - 5) : page + "/";
+                return AssistantDocs.Root + web + fragment;
+            }
+            return AssistantDocs.Root + resolved + (path.EndsWith('/') && resolved.Length > 0 ? "/" : string.Empty) + fragment;
+        }
+
+        /// <summary>A page's copy: its head line, then the site's Markdown
+        /// with each link outside a code block as <see cref="Retarget"/> gives
+        /// it, with LF line ends.</summary>
+        internal static string DocsCopy(string pagePath, string markdown, ISet<string> carried)
+        {
+            var sb = new StringBuilder(CopyHead(pagePath));
+            bool fenced = false;
+            foreach (string raw in Lf(markdown).Split('\n'))
+            {
+                string line = raw;
+                string trimmed = line.TrimStart();
+                if (trimmed.StartsWith("```", StringComparison.Ordinal) || trimmed.StartsWith("~~~", StringComparison.Ordinal)) fenced = !fenced;
+                else if (!fenced)
+                {
+                    line = MarkdownTarget.Replace(line, m => m.Groups[1].Value + Retarget(pagePath, m.Groups[2].Value, carried) + m.Groups[3].Value);
+                    line = HtmlTarget.Replace(line, m => m.Groups[1].Value + Retarget(pagePath, m.Groups[2].Value, carried) + m.Groups[3].Value);
+                }
+                sb.Append(line).Append('\n');
+            }
+            return sb.ToString().TrimEnd('\n') + "\n";
+        }
+
+        /// <summary>The pages the skill carries, by their path without the
+        /// slash: <c>features/devices</c>.</summary>
+        private static HashSet<string> Carried() => AssistantDocs.Pages.Select(p => p.Path.TrimEnd('/')).ToHashSet(StringComparer.Ordinal);
+
+        /// <summary>The copies made again from the site's Markdown folder,
+        /// with stale ones removed. Only with <see cref="WriteVariable"/>
+        /// set.</summary>
+        private static void WriteDocsCopies()
+        {
+            string wiki = Environment.GetEnvironmentVariable(WikiVariable);
+            if (string.IsNullOrWhiteSpace(wiki)) wiki = Path.Combine(OffLimitsSource.RepoRoot(), "..", "padforge.org", "wiki");
+            Assert.True(Directory.Exists(wiki), "The documentation site's Markdown folder is not at " + wiki + ". Name it with " + WikiVariable + ".");
+            var carried = Carried();
+            var written = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var (path, _) in AssistantDocs.Pages)
+            {
+                string source = Path.Combine(wiki, SourceOf(path).Replace('/', Path.DirectorySeparatorChar));
+                Assert.True(File.Exists(source), "The site has no page " + SourceOf(path) + ", which AssistantDocs links.");
+                string file = Path.Combine(SkillRoot, AssistantDocs.CopyPathOf(path).Replace('/', Path.DirectorySeparatorChar));
+                Directory.CreateDirectory(Path.GetDirectoryName(file));
+                File.WriteAllText(file, DocsCopy(path, File.ReadAllText(source), carried), new UTF8Encoding(false));
+                written.Add(Path.GetFullPath(file));
+            }
+            string folder = Path.Combine(SkillRoot, AssistantDocs.CopyFolder.TrimEnd('/').Replace('/', Path.DirectorySeparatorChar));
+            foreach (string stale in Directory.GetFiles(folder, "*", SearchOption.AllDirectories).Where(f => !written.Contains(Path.GetFullPath(f))))
+                File.Delete(stale);
+        }
+
+        /// <summary>Every page a read links is in the skill (#600 item 14,
+        /// AS-59), made from the site's own Markdown, and nothing else is:
+        /// an assistant with no web access reads the page from PadForge. A
+        /// copy's links reach other copies or the site, never a file the skill
+        /// does not hold. The site is read only to write the copies
+        /// again.</summary>
+        [Fact]
+        public void EveryLinkedDocsPage_IsInTheSkill()
+        {
+            if (Environment.GetEnvironmentVariable(WriteVariable) == "1") WriteDocsCopies();
+            var carried = Carried();
+            var files = Directory.GetFiles(SkillRoot, "*", SearchOption.AllDirectories)
+                .Select(f => Path.GetRelativePath(SkillRoot, f).Replace('\\', '/'))
+                .Where(f => f.StartsWith(AssistantDocs.CopyFolder, StringComparison.Ordinal)).OrderBy(f => f, StringComparer.Ordinal).ToList();
+            Assert.Equal(AssistantDocs.Pages.Select(p => AssistantDocs.CopyPathOf(p.Path)).OrderBy(f => f, StringComparer.Ordinal), files);
+            var broken = new List<string>();
+            foreach (var (path, _) in AssistantDocs.Pages)
+            {
+                var file = AssistantSkill.Files.SingleOrDefault(f => f.Path == AssistantDocs.CopyPathOf(path));
+                Assert.True(file != null, AssistantDocs.CopyPathOf(path) + " is not in the executable's skill.");
+                string text = Lf(file.Text);
+                Assert.StartsWith(CopyHead(path), text);
+                Assert.True(text.Split('\n').Length > 10, path + "'s copy is empty.");
+                Assert.Contains("\n# ", "\n" + text);
+                // The copy a read links is this file.
+                Assert.Equal(AssistantSkill.Root + AssistantDocs.CopyPathOf(path), AssistantDocs.CopyUri(AssistantDocs.Root + path));
+                bool fenced = false;
+                foreach (string line in text.Split('\n'))
+                {
+                    if (line.TrimStart().StartsWith("```", StringComparison.Ordinal) || line.TrimStart().StartsWith("~~~", StringComparison.Ordinal)) { fenced = !fenced; continue; }
+                    if (fenced) continue;
+                    foreach (Match m in MarkdownTarget.Matches(line).Concat(HtmlTarget.Matches(line)))
+                    {
+                        string target = m.Groups[2].Value;
+                        if (target.StartsWith('#') || Scheme.IsMatch(target)) continue;
+                        // A relative link left in a copy is a page the skill
+                        // carries.
+                        if (Retarget(path, target, carried) != target || !target.Split('#')[0].EndsWith(".md", StringComparison.Ordinal))
+                            broken.Add(path + ": " + target);
+                    }
+                }
+            }
+            Assert.True(broken.Count == 0, "links a copy cannot follow: " + string.Join("; ", broken.Take(20)));
+        }
+
+        /// <summary>The links a copy gets, one of each kind.</summary>
+        [Fact]
+        public void ACopysLinks_ReachTheOtherCopiesOrTheSite()
+        {
+            var carried = new HashSet<string>(StringComparer.Ordinal) { "features/devices", "guides/macros", "troubleshooting" };
+            Assert.Equal("../guides/macros.md#steps", Retarget("features/devices/", "../guides/macros.md#steps", carried));
+            Assert.Equal("../troubleshooting.md", Retarget("features/devices/", "../troubleshooting.md", carried));
+            Assert.Equal(AssistantDocs.Root + "features/wheel/#lock", Retarget("features/devices/", "wheel.md#lock", carried));
+            Assert.Equal(AssistantDocs.Root + "features/", Retarget("features/devices/", "index.md", carried));
+            Assert.Equal(AssistantDocs.Root + "images/devices.png", Retarget("features/devices/", "../images/devices.png", carried));
+            Assert.Equal("https://padforge.org/assets/video/x.mp4", Retarget("features/devices/", "/assets/video/x.mp4", carried));
+            Assert.Equal("#raw-input", Retarget("features/devices/", "#raw-input", carried));
+            Assert.Equal("https://github.com/x", Retarget("features/devices/", "https://github.com/x", carried));
+            string copy = DocsCopy("features/devices/", "# Devices\r\n\r\nSee [macros](../guides/macros.md), ![shot](../images/a.png) and <a href=\"/assets/t.txt\">t</a>.\r\n```\n[not](a.md)\n```\n", carried);
+            Assert.Equal(CopyHead("features/devices/") + "# Devices\n\nSee [macros](../guides/macros.md), ![shot](" + AssistantDocs.Root + "images/a.png) and <a href=\"https://padforge.org/assets/t.txt\">t</a>.\n```\n[not](a.md)\n```\n", copy);
         }
 
         private static string PageTitle(SearchPage page) => page switch
@@ -128,12 +295,12 @@ namespace PadForge.Tests
             md.Append("# PadForge's pages\n\n")
               .Append("Generated from PadForge's catalog: every setting, button, card, section, extra, dialog and menu item, by page, in English. ")
               .Append("`PadForge.exe --describe <folder>` writes this file and pages.json. Each place has its ID, which `find`, `read`, `set`, `press` and `show` take. ")
-              .Append("A place on a controller's page takes `@c` and the controller's number after its ID, a card made per item `@i` and its position, ")
+              .Append("A place on a controller's page takes `@c` and the controller's number after its ID, a card made per item, or an item of a profile card's or a layer tab's own menu, `@i` and its position, ")
               .Append("and a place of the Devices page `@d` and the device's short ID. `find` gives the full ID of what shows now.\n\n")
               .Append("Each line: the words, then the kind (number, switch, choice, setting, action, card, section, part, extra, dialog or menu item) and the reach ")
               .Append("(free, asks with its reason, or yours-alone).\n\n")
               .Append("Live places have IDs of their own: `page/Home` and the other pages, `controller/<number>`, `device/<short ID>`, `profile/<ID>`, ")
-              .Append("`macro/c<number>/<position>`, `plugin/<ID>` with what a plugin declares under `plugin/<ID>/<key>`, and Home's cards under `home/c<number>`. ")
+              .Append("`macro/c<number>/<position>`, `plugin/<ID>` with what a plugin declares under `plugin/<ID>/<key>` and what it declares for one of its devices under `device/<short ID>/<key>`, and Home's cards under `home/c<number>`. ")
               .Append("An open dialog's buttons are its ID, `#` and the button's, as `read` gives them.\n");
             var json = new JsonArray();
             foreach (var pageGroup in all.GroupBy(e => e.Page).OrderBy(g => g.Key))
@@ -287,13 +454,18 @@ namespace PadForge.Tests
             var problems = new List<string>();
             foreach (var file in AssistantSkill.Files.Where(f => f.Path.EndsWith(".md", StringComparison.Ordinal) && f.Path != "references/pages.md"))
             {
+                // A documentation page's copy is the site's text, where a
+                // word in code is a function, a switch or a language's code
+                // as often as a tool: it is held to the IDs it names and to
+                // the retired tools below, never to snake_case words.
+                bool docsCopy = file.Path.StartsWith(AssistantDocs.CopyFolder, StringComparison.Ordinal);
                 foreach (Match m in Regex.Matches(file.Text, "`([^`\\n]+)`"))
                 {
                     string token = m.Groups[1].Value.Trim();
                     string bare = token.Split(':')[0].TrimEnd('*');
                     if (snake.IsMatch(bare))
                     {
-                        if (!names.Contains(bare)) problems.Add(file.Path + ": " + token);
+                        if (!docsCopy && !names.Contains(bare)) problems.Add(file.Path + ": " + token);
                         continue;
                     }
                     if (bare.Contains('/') && !bare.Contains(' ') && pageWords.Any(w => bare.StartsWith(w + "/", StringComparison.Ordinal) || bare.StartsWith(w + ".", StringComparison.Ordinal)))

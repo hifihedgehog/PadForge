@@ -117,10 +117,60 @@ namespace PadForge.Services
             /// on the folder of PadForge.xml, through the desktop shell.</summary>
             public Func<Action<string>, int> SettingsFolder = SettingsFolderRun.Run;
 
+            /// <summary>Whether this run is a test's child (#600 item 52),
+            /// which never goes on to become the app.</summary>
+            public bool TestsChild;
+
             /// <summary>The same seams, for a run that says some things
             /// another way.</summary>
             internal Seams Copy() => (Seams)MemberwiseClone();
+
+            /// <summary>
+            /// The seams of the run <see cref="Program"/> starts (#600 item
+            /// 52). The variable that names the Automation pipe for the web
+            /// helper PadForge starts (WebHelper.PipeVariable) names
+            /// PadForge's own pipe there. A name that is not one of PadForge's
+            /// own is a test's (PipeOwner), and a run given one is that
+            /// test's child: it reaches that pipe alone, so a test that starts
+            /// PadForge.exe never reaches a PadForge that runs on the PC. Its
+            /// running copy is whatever serves that pipe, it sends no line
+            /// to a control pipe, looks up no window, lock or exit of the
+            /// PC's copy, installs nothing in the PC's folders, opens nothing
+            /// through the shell, shows no box and never becomes the app.
+            /// </summary>
+            internal static Seams ForThisRun(Func<string, string> variable)
+            {
+                var seams = new Seams();
+                string pipe = variable?.Invoke(PadForge.Services.Automation.Web.WebHelper.PipeVariable);
+                if (string.IsNullOrWhiteSpace(pipe) || PipeOwner.IsOwnName(pipe)) return seams;
+                seams.TestsChild = true;
+                seams.AutomationPipeName = pipe;
+                seams.CopyRuns = () => ControlPipeClient.Stands(pipe);
+                seams.Exchange = _ => null;
+                seams.PipeStands = () => false;
+                seams.Settle = () => RunningCopy.Settled.Gone;
+                seams.ShowWindow = () => false;
+                seams.LendForeground = () => { };
+                seams.Watch = () => null;
+                seams.Tell = seams.Say;
+                seams.TellError = seams.SayError;
+                seams.ServeAssistant = () => AssistantMirror.Run(pipe);
+                seams.Install = (request, say, sayError) =>
+                {
+                    sayError(TestsChildInstallsNothing);
+                    return PadForge.Services.Install.UserInstall.Failed;
+                };
+                seams.SettingsFolder = sayError =>
+                {
+                    sayError(TestsChildOpensNothing);
+                    return AnsweredAnError;
+                };
+                return seams;
+            }
         }
+
+        internal const string TestsChildInstallsNothing = "A test's run of PadForge installs nothing.";
+        internal const string TestsChildOpensNothing = "A test's run of PadForge opens nothing.";
 
         /// <summary>
         /// Runs the command line as a client when it is one. True when this
@@ -129,12 +179,13 @@ namespace PadForge.Services
         /// </summary>
         internal static bool TryRun(IReadOnlyList<string> args, out int exitCode, Seams seams = null)
         {
-            seams ??= new Seams();
+            seams ??= Seams.ForThisRun(Environment.GetEnvironmentVariable);
             exitCode = Done;
             var request = CommandLineSwitches.Parse(args);
 
-            // The update helper's command line is its own to read.
-            if (request.Internal) return false;
+            // The update helper's command line is its own to read. A test's
+            // child never goes on.
+            if (request.Internal) return seams.TestsChild ? NoApp(seams, out exitCode) : false;
 
             if (request.Error != null)
             {
@@ -254,8 +305,17 @@ namespace PadForge.Services
         private static bool NoCopy(CommandLineSwitches.Request request, Seams seams, out int exitCode)
         {
             exitCode = Done;
-            if (request.CanStart) return false;
+            if (request.CanStart && !seams.TestsChild) return false;
             Refuse(seams, request.Json, "not-running", NotRunningText);
+            exitCode = NotRunning;
+            return true;
+        }
+
+        /// <summary>A test's child ends here, where a run would go on to
+        /// become the app (#600 item 52): as with no copy, 4.</summary>
+        private static bool NoApp(Seams seams, out int exitCode)
+        {
+            seams.SayError(NotRunningText);
             exitCode = NotRunning;
             return true;
         }

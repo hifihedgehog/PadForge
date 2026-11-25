@@ -428,7 +428,7 @@ namespace PadForge.Services.Automation
                 // line is written into Activity as refused.
                 answer = request.Refusal != null
                     ? new ExternalControlService.Answer(ExternalControlService.Refused)
-                    : Commands.Answer(request.Line, request.Stopping);
+                    : Commands.Answer(request.Line, request.Stopping, _programOf(request.ClientProcessId));
             }
             catch (OperationCanceledException) when (request.Stopping.IsCancellationRequested)
             {

@@ -5,9 +5,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Resources.Strings;
 using PadForge.Services;
+using PadForge.Services.Catalog;
 
 namespace PadForge.Views
 {
@@ -28,6 +30,12 @@ namespace PadForge.Views
         private readonly IReadOnlyList<string> _controllers;
         private readonly bool _shortcuts;
         private List<SdlFindRow> _all = new();
+        private readonly Func<IReadOnlyList<LiveItem>> _catalog;
+
+        /// <summary>The catalog IDs of Find's search box and list: the
+        /// dialog's name, then the control's.</summary>
+        internal const string SearchBoxId = "dialog/SdlMappingDialog/SearchBox";
+        internal const string FindListId = "dialog/SdlMappingDialog/FindList";
 
         /// <summary>The row to apply to the device (Paste, Find, Guess).</summary>
         internal SdlMappingRow PickedRow { get; private set; }
@@ -72,6 +80,12 @@ namespace PadForge.Views
                     FindPart.Visibility = Visibility.Visible;
                     RowBox.Visibility = Visibility.Collapsed;
                     VerdictLine.Visibility = Visibility.Collapsed;
+                    // The list and its search box join the catalog while the
+                    // dialog is open, so a program picks a row as a person
+                    // does (#600 item 48).
+                    _catalog = CatalogItems;
+                    Loaded += (_, _) => LiveCatalog.AddProvider(_catalog);
+                    Closed += (_, _) => LiveCatalog.RemoveProvider(_catalog);
                     break;
                 case Mode.AddRows:
                     Title = s.SdlMappingDialog_AddTitle;
@@ -261,6 +275,70 @@ namespace PadForge.Views
         private void FindList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (FindList.SelectedItem is SdlFindRow) DialogResult = true;
+        }
+
+        /// <summary>
+        /// Find's search box and list as catalog items, at the class the
+        /// dialog gives them: set types the words the list is narrowed by,
+        /// or picks a row as a click picks it, by the words a screen reader
+        /// says for it (its name, then where it comes from) or by its place
+        /// from 0. Apply is the dialog's own button, pressed by its ID.
+        /// </summary>
+        private IReadOnlyList<LiveItem> CatalogItems()
+        {
+            var s = Strings.Instance;
+            var (searchClass, searchWhy) = Reach.Of(SearchBox);
+            var (listClass, listWhy) = Reach.Of(FindList);
+            return new[]
+            {
+                new LiveItem(SearchBoxId, LiveKind.Setting, s.SdlMappingDialog_Search, searchClass, searchWhy)
+                {
+                    Where = Title,
+                    Takes = "text",
+                    Element = () => SearchBox,
+                    Read = () => SearchBox.Text,
+                    Write = text => SearchBox.Text = text ?? string.Empty,
+                },
+                new LiveItem(FindListId, LiveKind.Setting, s.SdlMappingDialog_FindList, listClass, listWhy)
+                {
+                    Where = Title,
+                    Takes = "list",
+                    Element = () => FindList,
+                    Read = () => (FindList.SelectedItem as SdlFindRow)?.ReadName,
+                    Write = Pick,
+                    Choices = () => FindList.Items.OfType<SdlFindRow>().Select(r => r.ReadName).ToList(),
+                },
+            };
+        }
+
+        /// <summary>Picks a row of the list as a click does: by its words, the
+        /// screen reader's or the two lines it shows, or by its place from 0.
+        /// Words that two rows share pick neither.</summary>
+        internal void Pick(string text)
+        {
+            var rows = FindList.Items.OfType<SdlFindRow>().ToList();
+            string want = (text ?? string.Empty).Trim();
+            if (rows.Count == 0) throw new ArgumentException("The list shows no row. Empty the search box to see every row.");
+            int at = -1;
+            if (int.TryParse(want, NumberStyles.None, CultureInfo.InvariantCulture, out int place))
+            {
+                if (place >= rows.Count) throw new ArgumentException("The list holds " + rows.Count + " rows, from 0 to " + (rows.Count - 1) + ".");
+                at = place;
+            }
+            else
+            {
+                var same = new List<int>();
+                for (int i = 0; i < rows.Count; i++)
+                    if (string.Equals(rows[i].ReadName, want, StringComparison.CurrentCultureIgnoreCase)
+                        || string.Equals(rows[i].Name + " " + rows[i].Detail, want, StringComparison.CurrentCultureIgnoreCase))
+                        same.Add(i);
+                if (same.Count > 1)
+                    throw new ArgumentException("Rows " + string.Join(", ", same) + " read the same. Give the row's place from 0, or narrow the list by its ID in the search box.");
+                if (same.Count == 1) at = same[0];
+            }
+            if (at < 0) throw new ArgumentException("No row of the list reads \"" + want + "\". A read of the dialog gives its rows, and the search box narrows them.");
+            FindList.SelectedIndex = at;
+            FindList.ScrollIntoView(FindList.SelectedItem);
         }
 
         // ─────────────────────────────────────────────

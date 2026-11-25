@@ -127,8 +127,12 @@ namespace PadForge.Tests
         public bool Switch;
         public string Choice = "Low";
         public bool AskForSwitch;
+        /// <summary>The lines the switch asks with, which a test changes
+        /// while the card shows (#600).</summary>
+        public string[] SwitchAsk = { "Listens on the network." };
         public bool NumberTurnedOff;
         public int Pressed;
+        public bool PressChanged;
         public readonly List<AssistantShowRequest> Shows = new();
         public int NextCalls;
 
@@ -145,6 +149,9 @@ namespace PadForge.Tests
             "settings/Settings_Choice" => new AssistantPlace { Id = id, Kind = "setting", Name = "Choice", Takes = "choice", Choices = new() { "Low", "High" }, Value = JsonSerializer.SerializeToElement(Choice), Reach = "free" },
             "settings.action/Settings_Press" => new AssistantPlace { Id = id, Kind = "action", Name = "Press Me", Reach = "free", Opens = "dialog.dialog/TestDialog/Test_Title" },
             "extras/Automation/Extras_Automation_Level" => new AssistantPlace { Id = id, Kind = "setting", Name = "Level", Reach = "yours-alone" },
+            // A setting the page hides for that controller now: read by its
+            // ID, and never listed.
+            "pad/Pad_Hidden@c1" => new AssistantPlace { Id = id, Kind = "setting", Name = "Hidden", Takes = "switch", Showing = false, Reach = "free" },
             _ => throw new AssistantRefusal("unknown-setting", "Nothing in PadForge has the ID " + id + ". find gives IDs."),
         };
 
@@ -161,7 +168,7 @@ namespace PadForge.Tests
         {
             var place = Make(id);
             if (place.Reach == "yours-alone") throw new AssistantRefusal("users-own", "Only the user can change this.");
-            return AskForSwitch && id == "settings/Settings_Switch" ? new AssistantAsk("Change Switch", new[] { "Listens on the network." }) : null;
+            return AskForSwitch && id == "settings/Settings_Switch" ? new AssistantAsk("Change Switch", SwitchAsk) : null;
         }
 
         public AssistantPlace Set(string id, JsonElement value)
@@ -184,7 +191,15 @@ namespace PadForge.Tests
         {
             var place = Make(id);
             if (place.Kind != "action") throw new AssistantRefusal("not-available", "This is not pressed.");
-            return new AssistantPressPlan { Place = place, Press = () => Interlocked.Increment(ref Pressed) };
+            return new AssistantPressPlan
+            {
+                Place = place,
+                Press = () => Interlocked.Increment(ref Pressed),
+                Check = () =>
+                {
+                    if (PressChanged) throw new AssistantRefusal("not-available", "What the press would do changed.");
+                },
+            };
         }
 
         public AssistantWhere Where() => new AssistantWhere { Window = AssistantWindowPlace.Behind, Page = "page/Home" };
@@ -193,8 +208,21 @@ namespace PadForge.Tests
 
         public AssistantShown Show(AssistantShowRequest request)
         {
+            if (request.Steps.Count > 0) CheckShow(request);
             lock (Shows) Shows.Add(request);
             return new AssistantShown { Shown = request.Steps.Count > 0, Window = AssistantWindowPlace.InFront, Steps = request.Steps.Count };
+        }
+
+        public AssistantPlace CheckShow(AssistantShowRequest request)
+        {
+            AssistantPlace last = null;
+            foreach (var step in request.Steps)
+            {
+                last = Make(step.Place);
+                if (last.Reach == "yours-alone") throw new AssistantRefusal("users-own", "A place that is the user's alone is not pointed at by a program.");
+                if (!last.Showing) throw new AssistantRefusal("not-available", AssistantCatalog.NotShownWords);
+            }
+            return last;
         }
 
         public bool NextCall(int owner) { Interlocked.Increment(ref NextCalls); return false; }
@@ -213,6 +241,9 @@ namespace PadForge.Tests
         public readonly FakeAssistantApp App = new();
         public readonly FakeAssistantCatalog Settings = new();
         public readonly InlineAutomationUi Ui = new();
+        /// <summary>What the command set acts on, which a test can tell what
+        /// a profile switch would start (#600).</summary>
+        public readonly RecordingAutomationTarget Target = new();
         public readonly AutomationHost Host;
         public readonly AssistantCalls Calls;
         public readonly AssistantServer Server;
@@ -224,7 +255,7 @@ namespace PadForge.Tests
             if (pipeName != null) PipeName = pipeName;
             SettingsManager.UserDevices = new DeviceCollection();
             SettingsManager.UserSettings = new SettingsCollection();
-            Host = TestConsent.AllowAll(new AutomationHost(new RecordingAutomationTarget(), Ui, "PadForge.Tests.AssistantControl." + Guid.NewGuid().ToString("N"),
+            Host = TestConsent.AllowAll(new AutomationHost(Target, Ui, "PadForge.Tests.AssistantControl." + Guid.NewGuid().ToString("N"),
                 approvalWait: approvalWait, automationPipeName: PipeName));
             var undo = new AssistantUndo(App.TakeUndoState, App.RestoreUndoState);
             Calls = new AssistantCalls(Host, App, Settings, Ui, undo, AssistantTools.All, answerWait);

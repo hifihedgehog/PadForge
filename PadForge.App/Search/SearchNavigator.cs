@@ -52,8 +52,10 @@ namespace PadForge.Search
         /// assistant's show (#597), which must never activate the window,
         /// lands that way. With <paramref name="ring"/> false nothing is
         /// ringed: the guided pointer (#600) rings and holds the place
-        /// itself.</summary>
-        internal void Open(SearchResult result, bool takeFocus = true, bool ring = true)
+        /// itself. With <paramref name="openFolds"/> false no More row or
+        /// fold card is opened: a walk's last step (#600 item 7), whose
+        /// folds the user has opened.</summary>
+        internal void Open(SearchResult result, bool takeFocus = true, bool ring = true, bool openFolds = true)
         {
             if (result == null) return;
             switch (result.Target)
@@ -146,16 +148,16 @@ namespace PadForge.Search
                     break;
             }
             var page = _pageOf(entry.Page);
-            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus, ring)));
+            page?.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => Land(result, page, takeFocus, ring, openFolds)));
         }
 
         /// <summary>The page shows: find the result's element, open what
         /// folds it, then scroll, ring and focus once that is laid out.</summary>
-        private void Land(SearchResult result, FrameworkElement page, bool takeFocus, bool ring)
+        private void Land(SearchResult result, FrameworkElement page, bool takeFocus, bool ring, bool openFolds)
         {
             var entry = result.Entry;
             DependencyObject label;
-            if (entry.RowOptions) label = RowOption(entry, page);
+            if (entry.RowOptions) label = RowOption(entry, page, openFolds);
             else if (entry.Kind == SearchKind.MenuItem) label = MenuOwner(page, entry);
             else if (entry.ItemsPath != null) label = _service.Locator.FindInItem(entry, result.Payload, _service.Index);
             else
@@ -166,7 +168,7 @@ namespace PadForge.Search
             if (label == null) return;
             var target = SearchLocator.TargetOf(label, entry);
             if (target == null) return;
-            OpenFolds(target, page);
+            if (openFolds) OpenFolds(target, page);
             page.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
                 if (!target.IsVisible) return;
@@ -179,16 +181,52 @@ namespace PadForge.Search
         /// <summary>The button whose context menu holds a menu item's
         /// entry (#600): the menu's own element is not in the page until it
         /// opens, so the landing rings what opens it.</summary>
-        private static DependencyObject MenuOwner(FrameworkElement page, SearchEntry entry)
+        private static DependencyObject MenuOwner(FrameworkElement page, SearchEntry entry) => MenuItemOf(page, entry).Owner;
+
+        /// <summary>
+        /// A menu item's entry as the page shows it now: the item, and the
+        /// shown element whose menu holds it. Several menus hold items of
+        /// the same words: each Paste of the controller page, and the Paste
+        /// of a text box's own menu. An item bound to another command than
+        /// the entry's is another item. Of the rest, the first whose button
+        /// sits in the entry's scope is taken, else the first.
+        /// </summary>
+        internal static (FrameworkElement Owner, MenuItem Item) MenuItemOf(FrameworkElement root, SearchEntry entry)
+            => root == null ? (null, null) : MenuItemAmong(SearchLocator.LogicalDescendants(root).OfType<FrameworkElement>(), entry);
+
+        /// <summary>A menu item's entry among the elements given: in the
+        /// container a list drew for one item, for a menu each item has of its
+        /// own (<see cref="SearchEntry.ItemsList"/>), whose elements a
+        /// template made and the logical tree does not hold.</summary>
+        internal static (FrameworkElement Owner, MenuItem Item) MenuItemIn(DependencyObject container, SearchEntry entry)
+            => container == null ? (null, null) : MenuItemAmong(SearchLocator.VisualDescendants(container).OfType<FrameworkElement>(), entry);
+
+        private static (FrameworkElement Owner, MenuItem Item) MenuItemAmong(System.Collections.Generic.IEnumerable<FrameworkElement> elements, SearchEntry entry)
         {
             string header = SearchLocator.LabelText(entry.Label, null);
-            foreach (var element in SearchLocator.LogicalDescendants(page).OfType<FrameworkElement>())
+            (FrameworkElement Owner, MenuItem Item) first = (null, null);
+            foreach (var element in elements)
             {
                 if (element.ContextMenu is not { } menu || !element.IsVisible) continue;
                 foreach (var item in menu.Items.OfType<MenuItem>())
-                    if (string.Equals(item.Header as string, header, StringComparison.CurrentCulture)) return element;
+                {
+                    if (!string.Equals(item.Header as string, header, StringComparison.CurrentCulture)) continue;
+                    var command = System.Windows.Data.BindingOperations.GetBinding(item, MenuItem.CommandProperty);
+                    if ((command != null || item.Command != null) && command?.Path?.Path != entry.Handler) continue;
+                    if (entry.ScopeName == null || InScope(element, entry.ScopeName)) return (element, item);
+                    if (first.Item == null) first = (element, item);
+                }
             }
-            return null;
+            return first;
+        }
+
+        /// <summary>Whether an element is the one of that name, or sits in
+        /// it.</summary>
+        private static bool InScope(FrameworkElement element, string name)
+        {
+            for (DependencyObject at = element; at != null; at = SearchLocator.Up(at))
+                if (at is FrameworkElement { Name: { } own } && own == name) return true;
+            return false;
         }
 
         /// <summary>Opens every More row and fold card between an element
@@ -212,10 +250,20 @@ namespace PadForge.Search
         /// rows whose item passes the option's gates is picked and shown, and
         /// its details hold the option. A row the table does not show opens
         /// the list, which holds every row, and the list's own box and scope
-        /// empty, as the Settings page's box does for a landing there.</summary>
-        private DependencyObject RowOption(SearchEntry entry, FrameworkElement page)
+        /// empty, as the Settings page's box does for a landing there. With
+        /// <paramref name="open"/> false, as a walk's user picks the row, it
+        /// is looked for in the row picked now, and nothing is picked or
+        /// opened.</summary>
+        private DependencyObject RowOption(SearchEntry entry, FrameworkElement page, bool open = true)
         {
             if (page.FindName("MappingDataGrid") is not DataGrid grid || page.DataContext is not PadViewModel vm) return null;
+            if (!open)
+            {
+                var picked = grid.SelectedItem;
+                if (picked == null || !entry.ItemGates.All(g => BindingProbe.Passes(picked, g, k => page.TryFindResource(k)))) return null;
+                if (grid.ItemContainerGenerator.ContainerFromItem(picked) is not DataGridRow shown) return null;
+                return SearchLocator.FindAmong(RowOptionParts(shown).ToList(), entry, picked, _service.Index, e => e.RowOptions);
+            }
             var item = vm.RowsOfSlot.FirstOrDefault(i => entry.ItemGates.All(g => BindingProbe.Passes(i, g, k => page.TryFindResource(k))));
             if (item == null) return null;
             if (!grid.Items.Contains(item))

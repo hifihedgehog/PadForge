@@ -148,6 +148,192 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>What a program's Save would let the foreground watcher
+        /// turn on (#600), which the question card names. A game added while
+        /// Switch Profiles by Game is on names what the profile holds and
+        /// what the default holds, each with its profile, on or off now, and
+        /// the switch counts as on while the view model or the watcher's own
+        /// flag says so: in the Edit look what the stored profile holds, in
+        /// Save As what is on now, which the new profile holds, and in New
+        /// only the default's. A look with no window data names nothing. The
+        /// window's Edit passes the stored profile and its data. Test not
+        /// run yet for the on or off now and the default's lines.</summary>
+        [Fact]
+        public void AProgramsSave_NamesWhatAnAddedGameWouldLetTheWatcherTurnOn()
+        {
+            bool switching = SettingsManager.EnableAutoProfileSwitching;
+            string active = SettingsManager.ActiveProfileId;
+            try
+            {
+                SettingsManager.EnableAutoProfileSwitching = false;
+                SettingsManager.ActiveProfileId = null;
+                DialogTestHost.Run(() =>
+                {
+                    var now = new MainViewModel();
+                    string[] web = { PadForge.Services.Automation.AssistantToolWords.ProfileTurnsOn("Racing", Strings.Instance.Dashboard_WebController) };
+                    var racing = new ProfileData
+                    {
+                        Id = Guid.NewGuid().ToString("N"), Name = "Racing", ExecutableNames = @"C:\Games\race.exe", EnableWebController = true,
+                        PollingRateOverrideHz = 500,
+                    };
+                    var add = typeof(ProfileDialog).GetMethod("AddGame", BindingFlags.NonPublic | BindingFlags.Instance);
+                    Assert.NotNull(add);
+
+                    var dialog = new ProfileDialog();
+                    dialog.LoadForEdit(racing, now);
+                    Assert.Same(racing, dialog.EditedProfile);
+                    Assert.Equal("Racing", dialog.ProfileName);
+                    Assert.Equal(new[] { @"C:\Games\race.exe" }, dialog.ExecutablePaths);
+                    Assert.Equal(500, dialog.PollingOverrideHz);
+                    now.Settings.EnableAutoProfileSwitching = true;
+                    Assert.Empty(dialog.SaveStarts());
+                    add.Invoke(dialog, new object[] { @"C:\Games\race2.exe" });
+                    Assert.Equal(web, dialog.SaveStarts());
+                    now.Settings.EnableAutoProfileSwitching = false;
+                    Assert.Empty(dialog.SaveStarts());
+                    SettingsManager.EnableAutoProfileSwitching = true;
+                    Assert.Equal(web, dialog.SaveStarts());
+                    // On now, and still named. The default is in force and
+                    // holds the live setup.
+                    now.Dashboard.EnableWebController = true;
+                    string defaultWeb = PadForge.Services.Automation.AssistantToolWords.ProfileTurnsOn(Strings.Instance.Profile_Default, Strings.Instance.Dashboard_WebController);
+                    Assert.Equal(new[] { web[0], defaultWeb }, dialog.SaveStarts());
+                    dialog.Close();
+
+                    var bare = new ProfileDialog();
+                    bare.LoadForEdit("Racing", new[] { @"C:\Games\race.exe" });
+                    add.Invoke(bare, new object[] { @"C:\Games\race2.exe" });
+                    Assert.Empty(bare.SaveStarts());
+                    bare.Close();
+
+                    var fresh = new ProfileDialog();
+                    fresh.ForNew();
+                    add.Invoke(fresh, new object[] { @"C:\Games\race2.exe" });
+                    Assert.Empty(fresh.SaveStarts());
+                    fresh.Close();
+
+                    var saveAs = new ProfileDialog();
+                    add.Invoke(saveAs, new object[] { @"C:\Games\race2.exe" });
+                    Assert.Empty(saveAs.SaveStarts());
+                    saveAs.Close();
+
+                    // With the window's data: New names the default's alone,
+                    // and Save As what is on now, which the new profile
+                    // holds, then the default's.
+                    var made = new ProfileDialog();
+                    made.ForNew(now);
+                    add.Invoke(made, new object[] { @"C:\Games\race2.exe" });
+                    Assert.Equal(new[] { defaultWeb }, made.SaveStarts());
+                    made.Close();
+                    var copy = new ProfileDialog();
+                    copy.ForSaveAs(now);
+                    add.Invoke(copy, new object[] { @"C:\Games\race2.exe" });
+                    Assert.Equal(new[]
+                    {
+                        PadForge.Services.Automation.AssistantToolWords.ProfileTurnsOn(copy.ProfileName, Strings.Instance.Dashboard_WebController), defaultWeb,
+                    }, copy.SaveStarts());
+                    copy.Close();
+                });
+            }
+            finally
+            {
+                SettingsManager.EnableAutoProfileSwitching = switching;
+                SettingsManager.ActiveProfileId = active;
+            }
+            string main = RepoText("PadForge.App", "MainWindow.xaml.cs");
+            int at = main.IndexOf("private void OnEditProfile(", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            int end = main.IndexOf("dialog.ShowDialog()", at, StringComparison.Ordinal);
+            Assert.True(end > at);
+            Assert.Contains("dialog.LoadForEdit(profile, _viewModel);", main.Substring(at, end - at));
+        }
+
+        /// <summary>The case the last round's residual named (#600): a named
+        /// profile in force turned Web Controller off, the default holds it
+        /// on, and Switch Profiles by Game is the user's own. A program's Save
+        /// that adds a game to a profile that holds no listener names the
+        /// default's Web Controller, which the watcher turns on again when the
+        /// game leaves the front. Test not run yet.</summary>
+        [Fact]
+        public void AGameAddedToAProfileThatHoldsNoListener_NamesWhatTheDefaultHolds()
+        {
+            bool switching = SettingsManager.EnableAutoProfileSwitching;
+            string active = SettingsManager.ActiveProfileId;
+            var pending = SettingsManager.PendingDefaultSnapshot;
+            var profiles = SettingsManager.Profiles;
+            try
+            {
+                var quiet = new ProfileData { Id = Guid.NewGuid().ToString("N"), Name = "Quiet" };
+                var empty = new ProfileData { Id = Guid.NewGuid().ToString("N"), Name = "Empty" };
+                SettingsManager.Profiles = new List<ProfileData> { quiet, empty };
+                SettingsManager.ActiveProfileId = quiet.Id;
+                SettingsManager.PendingDefaultSnapshot = new ProfileData { EnableWebController = true };
+                SettingsManager.EnableAutoProfileSwitching = true;
+                DialogTestHost.Run(() =>
+                {
+                    var dialog = new ProfileDialog();
+                    dialog.LoadForEdit(empty, new MainViewModel());
+                    var add = typeof(ProfileDialog).GetMethod("AddGame", BindingFlags.NonPublic | BindingFlags.Instance);
+                    Assert.NotNull(add);
+                    add.Invoke(dialog, new object[] { @"C:\Games\race.exe" });
+                    Assert.Equal(new[]
+                    {
+                        PadForge.Services.Automation.AssistantToolWords.ProfileTurnsOn(Strings.Instance.Profile_Default, Strings.Instance.Dashboard_WebController),
+                    }, PadForge.Common.Reach.GetStarts(Part<Button>(dialog, "SaveButton"))());
+                    dialog.Close();
+                });
+            }
+            finally
+            {
+                SettingsManager.EnableAutoProfileSwitching = switching;
+                SettingsManager.ActiveProfileId = active;
+                SettingsManager.PendingDefaultSnapshot = pending;
+                SettingsManager.Profiles = profiles;
+            }
+        }
+
+        /// <summary>The dialog gives its Save the reader a program's question
+        /// card reads (#600, Reach.Starts) in each look once the window's
+        /// data is at hand: the Edit look of a stored profile, New and Save
+        /// As. A look without it, and the Edit look with no stored profile,
+        /// has none, so a program's Save asks by its reason. Test not run
+        /// yet for New and Save As.</summary>
+        [Fact]
+        public void TheSaveCarriesItsReader_InEachLook()
+        {
+            DialogTestHost.Run(() =>
+            {
+                var saveAs = new ProfileDialog();
+                var saveAsSave = Part<Button>(saveAs, "SaveButton");
+                Assert.Null(PadForge.Common.Reach.GetStarts(saveAsSave));
+                saveAs.ForSaveAs(new MainViewModel());
+                Assert.Empty(PadForge.Common.Reach.GetStarts(saveAsSave)());
+                saveAs.Close();
+
+                var fresh = new ProfileDialog();
+                fresh.ForNew();
+                Assert.Null(PadForge.Common.Reach.GetStarts(Part<Button>(fresh, "SaveButton")));
+                fresh.Close();
+                var made = new ProfileDialog();
+                made.ForNew(new MainViewModel());
+                Assert.Empty(PadForge.Common.Reach.GetStarts(Part<Button>(made, "SaveButton"))());
+                made.Close();
+
+                var bare = new ProfileDialog();
+                bare.LoadForEdit("Racing", new[] { @"C:\Games\race.exe" });
+                Assert.Null(PadForge.Common.Reach.GetStarts(Part<Button>(bare, "SaveButton")));
+                bare.Close();
+
+                var edit = new ProfileDialog();
+                edit.LoadForEdit(new ProfileData { Id = Guid.NewGuid().ToString("N"), Name = "Racing", ExecutableNames = @"C:\Games\race.exe" }, new MainViewModel());
+                var editSave = Part<Button>(edit, "SaveButton");
+                var reader = PadForge.Common.Reach.GetStarts(editSave);
+                Assert.NotNull(reader);
+                Assert.Equal(edit.SaveStarts(), reader());
+                edit.Close();
+            });
+        }
+
         /// <summary>The dialog's three looks: Save As from its constructor,
         /// New from ForNew, Edit from LoadForEdit. More stays closed on a
         /// profile with no polling rate of its own.</summary>
@@ -180,7 +366,10 @@ namespace PadForge.Tests
             string main = RepoText("PadForge.App", "MainWindow.xaml.cs");
             int at = main.IndexOf("private void OnNewProfile(", StringComparison.Ordinal);
             Assert.True(at > 0);
-            Assert.Contains("dialog.ForNew();", main.Substring(at, 300));
+            Assert.Contains("dialog.ForNew(_viewModel);", main.Substring(at, 300));
+            at = main.IndexOf("private void OnSaveAsProfile(", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            Assert.Contains("dialog.ForSaveAs(_viewModel);", main.Substring(at, 300));
         }
 
         /// <summary>The polling rate box: following the global setting first,

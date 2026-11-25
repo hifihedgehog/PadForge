@@ -2396,10 +2396,10 @@ namespace PadForge
             {
                 var capturedPad = pad;
                 pad.CopySettingsRequested += (s, e) => OnCopySettings(capturedPad);
-                pad.PasteSettingsRequested += (s, e) => OnPasteSettings(capturedPad);
+                pad.PasteSettingsRequested += (s, e) => OnPasteSettings(capturedPad, e as PasteTextEventArgs);
                 pad.CopyFromRequested += (s, e) => OnCopyFrom(capturedPad);
                 pad.CopyMacroRequested += (s, e) => OnCopyMacro(capturedPad);
-                pad.PasteMacroRequested += (s, e) => OnPasteMacro(capturedPad);
+                pad.PasteMacroRequested += (s, e) => OnPasteMacro(capturedPad, e as PasteTextEventArgs);
                 pad.CopyMacroFromRequested += (s, e) => OnCopyMacroFrom(capturedPad);
             }
 
@@ -6930,7 +6930,7 @@ namespace PadForge
         private void OnNewProfile(object sender, EventArgs e)
         {
             var dialog = new Views.ProfileDialog { Owner = this };
-            dialog.ForNew();
+            dialog.ForNew(_viewModel);
             if (dialog.ShowDialog() != true) return;
 
             string name = dialog.ProfileName;
@@ -6953,6 +6953,7 @@ namespace PadForge
         private void OnSaveAsProfile(object sender, EventArgs e)
         {
             var dialog = new Views.ProfileDialog { Owner = this };
+            dialog.ForSaveAs(_viewModel);
             if (dialog.ShowDialog() != true) return;
 
             string name = dialog.ProfileName;
@@ -6985,13 +6986,16 @@ namespace PadForge
             // The title is the question and names the profile, as the
             // board writes it. The line under it names the auto-switch rule
             // only for a profile that has games.
+            // Deleting the profile in force puts the default in force: a
+            // program's card names what that would turn on (#600).
             bool confirmed = Views.ConfirmDialog.Show(
                 this,
                 string.Format(Strings.Instance.Profiles_DeleteConfirmTitle_Format, selected.Name),
                 string.IsNullOrEmpty(selected.ExecutablePaths)
                     ? Strings.Instance.Profiles_DeleteConfirmNoGames
                     : Strings.Instance.Profiles_DeleteConfirmGames,
-                Strings.Instance.Common_Delete);
+                Strings.Instance.Common_Delete,
+                starts: () => _inputService.DeleteNetworkStarts(selected.Id).Extras.Select(Services.Automation.AssistantToolWords.TurnsOn).ToList());
             if (!confirmed) return;
             DeleteListedProfile(selected);
         }
@@ -7028,11 +7032,15 @@ namespace PadForge
             // profile. The gate stays here too so no other invoker can
             // overwrite them.
             if (selected == null || selected.IsDefault || selected.IsActive) return;
+            // The live setup's extras that listen on the network go into the
+            // profile: a program's card names each with the profile (#600).
+            var into = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
             bool confirmed = Views.ConfirmDialog.Show(
                 this,
                 Strings.Instance.Profiles_SaveHere,
                 string.Format(Strings.Instance.Profiles_SaveHereConfirm_Format, selected.Name),
-                Strings.Instance.Profiles_SaveHereConfirm_Action);
+                Strings.Instance.Profiles_SaveHereConfirm_Action,
+                starts: () => Services.Automation.AssistantScan.SaveHereLines(into, _viewModel.Dashboard));
             if (!confirmed) return;
             var stored = _inputService.SaveCurrentSetupInto(selected.Id);
             if (stored == null) return;
@@ -7125,10 +7133,24 @@ namespace PadForge
         /// community opt-in off, the Community tab opens on its cold state and
         /// its enable action flips the same persisted setting the Settings
         /// card toggles.</summary>
+        /// <summary>Whether the foreground watcher switches by game: the page's
+        /// switch, or the watcher's own flag, which follows the page at the
+        /// next save (#600).</summary>
+        private bool SwitchingByGame() => _viewModel.Settings.EnableAutoProfileSwitching || SettingsManager.EnableAutoProfileSwitching;
+
         internal void ShowGetProfiles(ViewModels.GetProfilesTab tab)
         {
             var dlg = new Views.GetProfilesDialog(_viewModel.Settings, tab) { Owner = this };
             dlg.ProfileSink = AddWorkshopProfile;
+            // The saved profile holds what its config turns on: a program's
+            // card names each listener with the profile, and with games while
+            // Switch Profiles by Game is on what the default holds, which the
+            // watcher returns to (#600). Save and Apply puts it in force too,
+            // whose card names no less.
+            Func<IReadOnlyList<string>> saves = () => Services.Automation.AssistantScan.ImportLines(
+                dlg.CommunityPanel.PendingProfile, SwitchingByGame(), _viewModel.Dashboard);
+            PadForge.Common.Reach.SetStarts(dlg.SaveApplyButton, saves);
+            PadForge.Common.Reach.SetStarts(dlg.SaveButton, saves);
             dlg.FileImporter = ImportProfileFile;
             dlg.ShowDialog();
             if (!string.IsNullOrEmpty(dlg.StatusText))
@@ -7164,6 +7186,11 @@ namespace PadForge
 
                 var dlg = new Views.ImportConfigDialog(filePath, result) { Owner = owner ?? this };
                 dlg.ImportSink = AddWorkshopProfile;
+                // The profile holds what the config turns on: a program's card
+                // names each listener with the profile, and with games while
+                // Switch Profiles by Game is on what the default holds (#600).
+                PadForge.Common.Reach.SetStarts(dlg.ImportButton,
+                    () => Services.Automation.AssistantScan.ImportLines(result.Profile, SwitchingByGame(), _viewModel.Dashboard));
                 dlg.ShowDialog();
                 return dlg.ImportedProfileName == null
                     ? new Views.ProfileFileResult(null, null)
@@ -7359,12 +7386,8 @@ namespace PadForge
             var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
             if (profile == null) return;
 
-            var exePaths = string.IsNullOrEmpty(profile.ExecutableNames)
-                ? Array.Empty<string>()
-                : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries);
-
             var dialog = new Views.ProfileDialog { Owner = this };
-            dialog.LoadForEdit(profile.Name, exePaths, profile.PollingRateOverrideHz);
+            dialog.LoadForEdit(profile, _viewModel);
             // A profile that knows its Steam game can wear the game's look
             // (#591): one imported from the Community tab, or one that
             // already wears a look.
@@ -8207,11 +8230,14 @@ namespace PadForge
             }
         }
 
-        private void OnPasteSettings(PadViewModel padVm)
+        /// <param name="given">The text a program's Paste carries, the text
+        /// its question card read (#600). A person's Paste carries none and
+        /// reads the clipboard here.</param>
+        private void OnPasteSettings(PadViewModel padVm, PasteTextEventArgs given = null)
         {
             try
             {
-                string json = Clipboard.GetText();
+                string json = given != null ? given.Text : Clipboard.GetText();
                 var ps = PadSetting.FromJson(json,
                     out VirtualControllerType srcType, out bool srcIsExtended);
                 if (ps == null)
@@ -8478,11 +8504,14 @@ namespace PadForge
             return false;
         }
 
-        private void OnPasteMacro(PadViewModel padVm)
+        /// <param name="given">The text a program's Paste carries, the text
+        /// its question card read (#600). A person's Paste carries none and
+        /// reads the clipboard here.</param>
+        private void OnPasteMacro(PadViewModel padVm, PasteTextEventArgs given = null)
         {
             try
             {
-                var env = SettingsService.TryParseMacroClipboard(Clipboard.GetText());
+                var env = SettingsService.TryParseMacroClipboard(given != null ? given.Text : Clipboard.GetText());
                 if (env == null) { _viewModel.SetStatus(Strings.Instance.Status_MacroClipboardInvalid, persist: true); return; }
                 MacroItem last = null;
                 foreach (var md in env.Macros)

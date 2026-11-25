@@ -331,8 +331,19 @@ namespace PadForge.Tests
             Assert.Throws<ArgumentException>(() => dead.Write("70"));
             items.Single(i => i.Id == id + "/cal").Press();
             Assert.Equal("e press key=cal", pressed.Last());
-            Assert.Contains(items, i => i.Id == id + "/pedals/clutch");
-            Assert.DoesNotContain(items, i => i.Id == id + "/about");
+            // A device's own setting sits under the device's own ID, the one
+            // list_devices gives, never under the plugin's.
+            string pedals = "device/" + AutomationDevices.IdOf(rig.Controller.DeviceGuid(run, "pedals"));
+            Assert.Contains(items, i => i.Id == pedals + "/clutch");
+            Assert.DoesNotContain(items, i => i.Id.StartsWith(id + "/pedals/", StringComparison.Ordinal));
+            // A help declaration is a paragraph: its words, no value and no
+            // press.
+            var about = items.Single(i => i.Id == id + "/about");
+            Assert.True(about.Paragraph);
+            Assert.Equal("words", about.Help);
+            Assert.Null(about.Read);
+            Assert.Null(about.Write);
+            Assert.Null(about.Press);
             // The Test Controller's too.
             Assert.Contains(items, i => i.Id == PluginsController.TestControllerId + "/" + TestControllerPattern.KeyHand && i.Reach == ReachClass.Free);
             // The plugin's own entry stays the catalog's object row.

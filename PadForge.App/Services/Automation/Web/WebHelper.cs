@@ -6,10 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 
 namespace PadForge.Services.Automation.Web
 {
@@ -32,7 +34,8 @@ namespace PadForge.Services.Automation.Web
     /// listener needs no URL reservation from a process without rights, and
     /// its prefix takes a request whatever Host it names (both probed on this
     /// PC on 2026-11-24), so a tunnel's Host reaches it and the front door
-    /// checks it. It ends when PadForge closes its pipe.</para>
+    /// checks it. It ends when PadForge closes its pipe, and when PadForge's
+    /// process ends however it ends (<see cref="ServerWatch"/>).</para>
     /// </summary>
     internal static class WebHelper
     {
@@ -90,6 +93,9 @@ namespace PadForge.Services.Automation.Web
             }
 
             using var stop = CancellationTokenSource.CreateLinkedTokenSource(stopping);
+            // PadForge's own process: when it ends, the run ends, should
+            // anything hold PadForge's end of the pipe open after it.
+            using var server = ServerWatch.Start(pipe.SafePipeHandle, stop);
             await using var link = new WebLink(pipe);
             var reading = link.RunAsync(stop.Token);
             // The first state says which port PadForge kept and the language.
@@ -376,7 +382,14 @@ namespace PadForge.Services.Automation.Web
             }
         }
 
-        private void Take(JsonObject message)
+        /// <summary>The sign-in pages' words, as the door's last state sent
+        /// them. A word it did not send reads as its key: the helper reads
+        /// none of PadForge's strings (WebPages).</summary>
+        private volatile IReadOnlyDictionary<string, string> _words = new Dictionary<string, string>();
+
+        public string Word(string key) => _words.TryGetValue(key, out string word) ? word : key;
+
+        internal void Take(JsonObject message)
         {
             switch (message["t"]?.GetValue<string>())
             {
@@ -398,9 +411,19 @@ namespace PadForge.Services.Automation.Web
                     if (message["port"]?.GetValue<int>() is int port) WantedPort = port;
                     if (message["language"]?.GetValue<string>() is { Length: > 0 } language)
                     {
-                        try { PadForge.Resources.Strings.Strings.ChangeCulture(CultureInfo.GetCultureInfo(language)); }
+                        // The pages' language, which their lang attribute
+                        // names. Their words come with the state.
+                        try
+                        {
+                            var culture = CultureInfo.GetCultureInfo(language);
+                            Thread.CurrentThread.CurrentUICulture = culture;
+                            CultureInfo.DefaultThreadCurrentUICulture = culture;
+                        }
                         catch (CultureNotFoundException) { }
                     }
+                    if (message["words"] is JsonObject words)
+                        _words = words.Where(w => w.Value is JsonValue v && v.GetValueKind() == System.Text.Json.JsonValueKind.String)
+                            .ToDictionary(w => w.Key, w => w.Value.GetValue<string>(), StringComparer.Ordinal);
                     _first.TrySetResult(true);
                     // PadForge hears which armed window the helper now holds.
                     Say(new JsonObject { ["t"] = "seen", ["armedUntil"] = Interlocked.Read(ref _armedUntil) });
@@ -517,6 +540,82 @@ namespace PadForge.Services.Automation.Web
             foreach (var waiting in _asking.Values) waiting.TrySetResult(null);
             return ValueTask.CompletedTask;
         }
+    }
+
+    /// <summary>
+    /// The web helper's watch on the process that serves its pipe, which is
+    /// PadForge (#600 item 11). When that process ends, however it ends, the
+    /// run is stopped, so no helper outlives PadForge. The pipe ends with
+    /// PadForge too, unless another process holds PadForge's end of it.
+    ///
+    /// <para>The process is the pipe's server as Windows records it
+    /// (GetNamedPipeServerProcessId), opened to wait on (SYNCHRONIZE), which
+    /// a process without rights may do to PadForge's with them (probed on
+    /// this PC on 2026-11-25: a process without rights opened four of the
+    /// same user's processes with administrator rights to wait on). One
+    /// Windows does not open leaves the pipe as the one watch. The wait is
+    /// the plugin launcher's (PluginLauncher.PluginProcess): a registered
+    /// wait on the process's handle, which stays open until the wait no
+    /// longer reads it.</para>
+    /// </summary>
+    internal sealed class ServerWatch : IDisposable
+    {
+        private readonly SafeProcessHandle _process;
+        private readonly ProcessWait _handle;
+        private RegisteredWaitHandle _wait;
+
+        private ServerWatch(SafeProcessHandle process, CancellationTokenSource stop)
+        {
+            _process = process;
+            _handle = new ProcessWait(process);
+            // The run's own callbacks go to the pool, so none of them runs on
+            // the wait's thread, which Dispose waits for.
+            _wait = ThreadPool.RegisterWaitForSingleObject(_handle, (_, _) =>
+            {
+                try { _ = stop.CancelAsync(); }
+                catch (ObjectDisposedException) { }
+            }, null, Timeout.Infinite, executeOnlyOnce: true);
+        }
+
+        /// <summary>Watches the process that serves <paramref name="pipe"/>
+        /// and cancels <paramref name="stop"/> when it ends. Null when
+        /// Windows names or opens no such process.</summary>
+        internal static ServerWatch Start(SafePipeHandle pipe, CancellationTokenSource stop)
+        {
+            if (!GetNamedPipeServerProcessId(pipe, out uint id) || id == 0) return null;
+            var process = OpenProcess(Synchronize, false, id);
+            if (process.IsInvalid)
+            {
+                process.Dispose();
+                return null;
+            }
+            return new ServerWatch(process, stop);
+        }
+
+        public void Dispose()
+        {
+            var wait = Interlocked.Exchange(ref _wait, null);
+            if (wait == null) return;
+            using (var done = new ManualResetEvent(false))
+                if (wait.Unregister(done)) done.WaitOne(2000);
+            _handle.Dispose();
+            _process.Dispose();
+        }
+
+        private sealed class ProcessWait : WaitHandle
+        {
+            public ProcessWait(SafeProcessHandle process)
+                => SafeWaitHandle = new SafeWaitHandle(process.DangerousGetHandle(), ownsHandle: false);
+        }
+
+        private const uint Synchronize = 0x00100000;
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetNamedPipeServerProcessId(SafePipeHandle pipe, out uint serverProcessId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern SafeProcessHandle OpenProcess(uint access, bool inherit, uint processId);
     }
 
     /// <summary>A grant as the pipe and PadForge.xml carry it.</summary>

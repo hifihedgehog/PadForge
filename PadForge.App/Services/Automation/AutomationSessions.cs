@@ -65,6 +65,11 @@ namespace PadForge.Services.Automation
         private readonly object _sync = new object();
         private readonly List<AutomationSession> _sessions = new();
         private readonly LinkedList<AutomationSession> _waiting = new();
+
+        /// <summary>The connections handed over that are no program of the
+        /// list: the web helper's own (#600 item 11). They count nowhere,
+        /// and close with the rest.</summary>
+        private readonly List<AutomationSession> _settled = new();
         private readonly Dictionary<AutomationSession, Owned> _owned = new();
         private readonly AutomationHolds _held = new();
         private readonly Timer _clock;
@@ -237,6 +242,7 @@ namespace PadForge.Services.Automation
                 if (!_owned.TryGetValue(session, out owned))
                 {
                     _sessions.Remove(session);
+                    _settled.Remove(session);
                     return;
                 }
                 // Gone from what it owns first, and from the count of
@@ -480,6 +486,9 @@ namespace PadForge.Services.Automation
             }
             foreach (var session in devicesGo) Devices.SessionEnded(session, now: true);
             foreach (var session in close) session.CloseAfterWritten();
+            // The web helper's connection carries no lines of the protocol
+            // to write first: it closes at once.
+            if (!on) foreach (var session in SettledNow()) session.Close("off");
         }
 
         /// <summary>What a session no longer allowed lets go of: below Read
@@ -618,10 +627,16 @@ namespace PadForge.Services.Automation
 
         /// <summary>A connection whose hello was taken but which is no
         /// program of the list, the web helper's own (#600 item 11): it no
-        /// longer counts among those that wait for a hello.</summary>
+        /// longer counts among those that wait for a hello, and it is closed
+        /// when Automation goes off or the host stops, so the helper's pipe
+        /// ends with PadForge's side of it.</summary>
         internal void Settled(AutomationSession session)
         {
-            lock (_sync) _waiting.Remove(session);
+            lock (_sync)
+            {
+                _waiting.Remove(session);
+                _settled.Add(session);
+            }
         }
 
         /// <summary>Closes the open sessions of a web assistant the user
@@ -888,7 +903,7 @@ namespace PadForge.Services.Automation
             ExternalControlService.Answer answer;
             try
             {
-                answer = _host.Commands.Answer(body, session.Stopping);
+                answer = _host.Commands.Answer(body, session.Stopping, session.Program);
             }
             catch (OperationCanceledException)
             {
@@ -1980,10 +1995,17 @@ namespace PadForge.Services.Automation
 
         // ── Closing ──
 
-        /// <summary>Closes every session, as the pipe stops.</summary>
+        /// <summary>Closes every session, as the pipe stops, and every
+        /// connection handed over that is no program of the list.</summary>
         internal void CloseAll()
         {
             foreach (var session in Snapshot()) session.Close("stopped");
+            foreach (var session in SettledNow()) session.Close("stopped");
+        }
+
+        private List<AutomationSession> SettledNow()
+        {
+            lock (_sync) return new List<AutomationSession>(_settled);
         }
 
         public void Dispose()

@@ -567,7 +567,7 @@
     "card": null,
     "words": "Paste Rows into Layer",
     "kind": "menu item",
-    "reach": "free",
+    "reach": "asks",
     "why": null,
     "under_more": false
   },
@@ -578,7 +578,7 @@
     "card": null,
     "words": "Clear Layer Rows",
     "kind": "menu item",
-    "reach": "free",
+    "reach": "asks",
     "why": null,
     "under_more": false
   },
@@ -622,8 +622,8 @@
     "card": null,
     "words": "Paste More",
     "kind": "menu item",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "ImportsProfile",
     "under_more": false
   },
   {
@@ -1029,8 +1029,8 @@
     "card": null,
     "words": "Paste More",
     "kind": "menu item",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "ImportsProfile",
     "under_more": false
   },
   {
@@ -4906,7 +4906,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Copy#Common_More",
+    "id": "pad.menuitem/MacroListMoreButton/Common_Copy#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -4917,7 +4917,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Paste#Common_More",
+    "id": "pad.menuitem/MacroListMoreButton/Common_Paste#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -4928,7 +4928,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Pad_CopyFrom#Common_More",
+    "id": "pad.menuitem/MacroListMoreButton/Pad_CopyFrom#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -4961,7 +4961,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Duplicate#Common_More",
+    "id": "pad.menuitem/MacroMoreButton/Common_Duplicate#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -4972,7 +4972,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Copy#Common_More~2",
+    "id": "pad.menuitem/MacroMoreButton/Common_Copy#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -4983,7 +4983,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Macro_ClearTrigger#Common_More",
+    "id": "pad.menuitem/MacroMoreButton/Macro_ClearTrigger#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -4994,7 +4994,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Remove#Common_More",
+    "id": "pad.menuitem/MacroMoreButton/Common_Remove#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -5005,7 +5005,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Duplicate#Common_More~2",
+    "id": "pad.menuitem/MenuMoreButton/Common_Duplicate#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -5016,7 +5016,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Menu_RemoveLastCell#Common_More",
+    "id": "pad.menuitem/MenuMoreButton/Menu_RemoveLastCell#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -5027,7 +5027,7 @@
     "under_more": false
   },
   {
-    "id": "pad.menuitem/Common_Remove#Common_More~2",
+    "id": "pad.menuitem/MenuMoreButton/Common_Remove#Common_More",
     "page": "A controller's page",
     "place": "Macros & Menus",
     "card": null,
@@ -5176,8 +5176,8 @@
     "card": "Window",
     "words": "Start at Login",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -5187,8 +5187,8 @@
     "card": "Window",
     "words": "Move PadForge to Its Own Folder",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -5220,8 +5220,8 @@
     "card": "Updates",
     "words": "Release Notes",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "OpensPlace",
     "under_more": false
   },
   {
@@ -5231,8 +5231,8 @@
     "card": "Updates",
     "words": "Install and Restart",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -5242,8 +5242,8 @@
     "card": "Updates",
     "words": "Check for Updates Automatically",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -5253,8 +5253,8 @@
     "card": "Updates",
     "words": "Install Updates Automatically",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -5583,8 +5583,8 @@
     "card": "Hardware Support",
     "words": "Install Visual C++ 2008 Runtime",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -5616,8 +5616,8 @@
     "card": "Hardware Support",
     "words": "Install Falcon Driver",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Drivers",
     "under_more": false
   },
   {
@@ -5627,8 +5627,8 @@
     "card": "Hardware Support",
     "words": "Get Force Dimension’s SDK",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "OpensPlace",
     "under_more": false
   },
   {
@@ -5781,8 +5781,8 @@
     "card": "Settings File",
     "words": "Reset to Defaults",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Drivers",
     "under_more": false
   },
   {
@@ -6023,8 +6023,8 @@
     "card": null,
     "words": "Head Tracking",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Network",
     "under_more": false
   },
   {
@@ -6056,8 +6056,8 @@
     "card": "Sources",
     "words": "Enable UDP Tracking Input",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Network",
     "under_more": false
   },
   {
@@ -6221,8 +6221,8 @@
     "card": null,
     "words": "Listen for Game Telemetry",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Network",
     "under_more": false
   },
   {
@@ -7783,8 +7783,8 @@
     "card": "Settings",
     "words": "Move PadForge to Its Own Folder",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {
@@ -7860,8 +7860,8 @@
     "card": "Settings",
     "words": "Restore the Windows Driver",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "UseOnly",
     "under_more": false
   },
   {
@@ -8080,8 +8080,8 @@
     "card": "Details",
     "words": "Submit Device Mapping",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "OpensPlace",
     "under_more": false
   },
   {
@@ -8190,8 +8190,8 @@
     "card": "Automatic Switching",
     "words": "Switch Profiles by Game",
     "kind": "switch",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Network",
     "under_more": false
   },
   {
@@ -9279,8 +9279,8 @@
     "card": null,
     "words": "Save",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "Network",
     "under_more": false
   },
   {
@@ -10280,8 +10280,8 @@
     "card": null,
     "words": "Move PadForge to Its Own Folder",
     "kind": "action",
-    "reach": "free",
-    "why": null,
+    "reach": "asks",
+    "why": "RunsProgram",
     "under_more": false
   },
   {

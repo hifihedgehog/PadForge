@@ -52,8 +52,16 @@ namespace PadForge.Services.Automation
         AssistantDialogs Dialogs();
 
         /// <summary>Points at places in the assistant's words, or takes the
-        /// callout away when no step is given.</summary>
+        /// callout away when no step is given. Refuses as
+        /// <see cref="CheckShow"/> does, before anything plays.</summary>
         AssistantShown Show(AssistantShowRequest request);
+
+        /// <summary>Checks every step of a show before anything plays or
+        /// asks: refuses <c>unknown-setting</c>, <c>users-own</c> for a
+        /// place that is the user's alone, and <c>not-available</c> for one
+        /// the page does not show now for the controller or device it names.
+        /// Gives the last step's place.</summary>
+        AssistantPlace CheckShow(AssistantShowRequest request);
 
         /// <summary>A program called again: its callout's step that waits
         /// for its next call goes on. True when one did.</summary>
@@ -237,6 +245,12 @@ namespace PadForge.Services.Automation
 
         /// <summary>The press, posted to the interface's thread.</summary>
         public Action Press { get; init; }
+
+        /// <summary>Run on the interface's thread once the press may go,
+        /// before it is posted: refuses it when what the card listed is no
+        /// longer what the press would do. Null when nothing can
+        /// change.</summary>
+        public Action Check { get; init; }
     }
 
     /// <summary>How a step of a show goes on to the next.</summary>

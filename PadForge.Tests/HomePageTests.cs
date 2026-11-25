@@ -635,7 +635,7 @@ namespace PadForge.Tests
                 + "<Setter Property=\"Fill\" Value=\"Transparent\"/>"), light);
             // The clear box the pointer finds is ten wider than the light,
             // and its margins give the ten back.
-            At(light, "<Border Width=\"16\" Margin=\"-5,0,-5,0\" Background=\"Transparent\">");
+            At(light, "<Border Width=\"16\" Margin=\"-5,0,-5,0\" Background=\"Transparent\"");
             // The name, quiet for a device that is not connected.
             At(row, "<TextBlock Grid.Column=\"1\" Text=\"{Binding Name}\" Margin=\"6,0,6,0\" Style=\"{StaticResource DeviceNameText}\"/>");
             string named = Block(page, "<Style x:Key=\"DeviceNameText\" TargetType=\"TextBlock\">", "</Style>");

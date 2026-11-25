@@ -45,6 +45,73 @@ namespace PadForge.Tests
             Assert.All(AssistantTools.All, t => Assert.True(AssistantToolWords.HasPhrase(t.Name), t.Name));
         }
 
+        /// <summary>switch_profile to a profile that turns on an extra that
+        /// listens on the network (#600): the card asks, naming the
+        /// assistant, and the tool says so in its own word. Allow makes the
+        /// switch. A profile that starts nothing new switches at
+        /// once.</summary>
+        [Fact]
+        public async Task SwitchProfile_ThatStartsAListener_SaysTheCardAsks_AndAllowSwitches()
+        {
+            using var rig = new AssistantRig(AutomationLevel.ChangeSettings);
+            var client = await rig.ConnectAsync();
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            rig.Target.Starts = new ProfileStarts("Racing", new[] { s.Dashboard_WebController });
+            var waiting = await client.CallToolAsync("switch_profile", AssistantRig.Args(("profile", "Racing")));
+            Assert.True(waiting.IsError);
+            Assert.Contains("(waiting)", AssistantRig.Text(waiting));
+            Assert.DoesNotContain("activate Racing", rig.Target.Calls);
+            var pending = Assert.Single(rig.Host.Approvals.Pending);
+            // The card names the assistant as the connected list does, with
+            // the host that started its copy.
+            Assert.Equal("Test Assistant (host.exe)", pending.Request.Who.Name);
+            Assert.Contains(AssistantToolWords.TurnsOn(s.Dashboard_WebController), pending.Request.Detail);
+
+            Assert.True(rig.Host.Approvals.Answer(pending.Id, allowed: true));
+            await AssistantRig.Until(() => rig.Ui.Posted.Count > 0);
+            foreach (var work in rig.Ui.Posted.ToList()) work();
+            Assert.Contains("activate Racing", rig.Target.Calls);
+
+            rig.Target.Calls.Clear();
+            rig.Target.Starts = ProfileStarts.None;
+            var switched = await client.CallToolAsync("switch_profile", AssistantRig.Args(("profile", "Racing")));
+            Assert.False(switched.IsError == true, AssistantRig.Text(switched));
+            Assert.Equal(new[] { "activate Racing" }, rig.Target.Calls);
+        }
+
+        /// <summary>A set the user allowed is made only when it would ask
+        /// about no more than the card named (#600), read again as it is
+        /// set: a line that came while the card showed, such as a profile
+        /// that came to turn on an extra that listens on the network, makes
+        /// the allowed set refuse, and nothing changes. What the card named
+        /// is set.</summary>
+        [Fact]
+        public async Task AnAllowedSet_ThatWouldByThenAskAboutMore_IsNotMade()
+        {
+            using var rig = new AssistantRig(AutomationLevel.ChangeSettings, approvalWait: TimeSpan.FromSeconds(20), answerWait: TimeSpan.FromSeconds(10));
+            var client = await rig.ConnectAsync();
+            const string named = "Listens on the network.", more = "The profile “B” turns on Web Controller";
+            async Task<CallToolResult> Allowed(Action meanwhile)
+            {
+                var call = client.CallToolAsync("set", AssistantRig.Args(("id", "settings/Settings_Switch"), ("value", true))).AsTask();
+                await AssistantRig.Until(() => rig.Host.Approvals.Pending.Count == 1 || call.IsCompleted);
+                var pending = Assert.Single(rig.Host.Approvals.Pending);
+                meanwhile();
+                Assert.True(rig.Host.Approvals.Answer(pending.Id, allowed: true));
+                return await call;
+            }
+
+            rig.Settings.AskForSwitch = true;
+            var refused = await Allowed(() => rig.Settings.SwitchAsk = new[] { named, more });
+            Assert.True(refused.IsError);
+            Assert.Contains("(not-available)", AssistantRig.Text(refused));
+            Assert.False(rig.Settings.Switch);
+
+            var made = await Allowed(() => rig.Settings.SwitchAsk = new[] { named });
+            Assert.False(made.IsError == true, AssistantRig.Text(made));
+            Assert.True(rig.Settings.Switch);
+        }
+
         [Fact]
         public async Task Status_CarriesTheSystemAtRead_AndWhatEachHigherLevelWouldAdd_WithItsArguments()
         {
@@ -130,7 +197,7 @@ namespace PadForge.Tests
             // A read that names its documentation page points at it with a
             // resource link.
             var linked = await client.CallToolAsync("read", AssistantRig.Args(("id", "settings/Settings_Switch")));
-            var link = Assert.Single(linked.Content.OfType<ResourceLinkBlock>());
+            var link = Assert.Single(linked.Content.OfType<ResourceLinkBlock>(), l => l.Uri.StartsWith("https:", StringComparison.Ordinal));
             Assert.True(link.Uri == "https://padforge.org/docs/features/settings/", "the link is " + link.Uri);
             Assert.Empty((await client.CallToolAsync("read", AssistantRig.Args(("id", "pad/Pad_Deadzone@c1")))).Content.OfType<ResourceLinkBlock>());
 
@@ -161,6 +228,14 @@ namespace PadForge.Tests
             lock (rig.Ui.Posted) run = rig.Ui.Posted.Skip(posted).ToList();
             foreach (var work in run) work();
             Assert.Equal(1, rig.Settings.Pressed);
+            // A press whose card no longer holds is refused before it is
+            // posted.
+            rig.Settings.PressChanged = true;
+            lock (rig.Ui.Posted) posted = rig.Ui.Posted.Count;
+            var changed = await client.CallToolAsync("press", AssistantRig.Args(("id", "settings.action/Settings_Press")));
+            Assert.Contains("(not-available)", AssistantRig.Text(changed));
+            lock (rig.Ui.Posted) Assert.Equal(posted, rig.Ui.Posted.Count);
+            rig.Settings.PressChanged = false;
             var notPressed = await client.CallToolAsync("press", AssistantRig.Args(("id", "settings/Settings_Switch")));
             Assert.Contains("(not-available)", AssistantRig.Text(notPressed));
 
@@ -225,6 +300,33 @@ namespace PadForge.Tests
             // Show with no place takes the callout away.
             await client.CallToolAsync("show");
             Assert.Empty(rig.Settings.Shows.Last().Steps);
+        }
+
+        [Fact]
+        public async Task Show_RefusesAPlaceThePageDoesNotShow_BeforeTheCardAsks()
+        {
+            using var rig = new AssistantRig(AutomationLevel.Read);
+            var client = await rig.ConnectAsync();
+            // The window is behind, so a shown place would ask on the card.
+            // A hidden place is refused first, alone or as any step.
+            var alone = await client.CallToolAsync("show", AssistantRig.Args(("place", "pad/Pad_Hidden@c1"), ("words", "Here.")));
+            Assert.Contains("(not-available)", AssistantRig.Text(alone));
+            Assert.Contains("The page does not show this setting now, for that controller or device.", AssistantRig.Text(alone));
+            var first = await client.CallToolAsync("show", AssistantRig.Args(("steps", new object[]
+            {
+                new Dictionary<string, object> { ["place"] = "pad/Pad_Hidden@c1", ["words"] = "One." },
+                new Dictionary<string, object> { ["place"] = "settings/Settings_Switch", ["words"] = "Two." },
+            })));
+            Assert.Contains("(not-available)", AssistantRig.Text(first));
+            var walk = await client.CallToolAsync("show", AssistantRig.Args(("place", "pad/Pad_Hidden@c1"), ("walk", true)));
+            Assert.Contains("(not-available)", AssistantRig.Text(walk));
+            Assert.Empty(rig.Host.Approvals.Pending);
+            // The positive control: a place the page shows asks on the card.
+            var asked = S(await client.CallToolAsync("show", AssistantRig.Args(("place", "settings/Settings_Switch"), ("words", "Here."))));
+            Assert.True(asked.GetProperty("asked").GetBoolean());
+            await AssistantRig.Until(() => rig.Host.Approvals.Pending.Count == 1);
+            Assert.Single(rig.Host.Approvals.Pending);
+            Assert.Empty(rig.Settings.Shows);
         }
 
         [Fact]

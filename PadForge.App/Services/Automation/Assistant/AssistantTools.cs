@@ -498,7 +498,7 @@ namespace PadForge.Services.Automation
         [Description("In place of place: several steps, shown one after another.")]
         public List<ShowStepArgs> Steps { get; set; }
 
-        [Description("True to ring each click on the way to the last place first: the sidebar entry, the section or extra, and More. The user does the clicking.")]
+        [Description("True to ring each click on the way to the last place first: the sidebar entry, the section or extra, and each closed card and More. The user does the clicking.")]
         public bool Walk { get; set; }
     }
 
@@ -958,7 +958,7 @@ namespace PadForge.Services.Automation
         /// its ok, or refuses with the error word's meaning.</summary>
         private static string Command(AssistantInvocation inv, string line)
         {
-            var answer = inv.Host.Commands.Answer(line, inv.Stopping);
+            var answer = inv.Host.Commands.Answer(line, inv.Stopping, inv.Caller.Program);
             try { answer.AfterWritten?.Invoke(); } catch { }
             string text = answer.Line ?? AutomationCommands.Internal;
             if (text == AutomationCommands.Ok) return string.Empty;
@@ -971,6 +971,11 @@ namespace PadForge.Services.Automation
                 "busy" => new AssistantRefusal(word, "PadForge is still stopping the engine. Wait a few seconds and call again."),
                 "not-available" => new AssistantRefusal(word, "PadForge cannot do this now. status says why."),
                 "not-allowed" => new AssistantRefusal(word, "The Automation level does not allow this. Only the user can change it."),
+                // A profile switch that would start an extra that listens on
+                // the network (#600): the card asks, and the switch is made
+                // when the user allows it.
+                "waiting" => new AssistantRefusal(word, "PadForge asks the user on its question card first, since the profile turns on an extra that listens on the network. It switches when the user allows it. Tell the user to look at the card, and do not ask again meanwhile. status says which profile is in force."),
+                "too-many-questions" => new AssistantRefusal(word, "Too many questions already wait for the user. Nothing changed. Wait for them to be answered, then ask again."),
                 _ => new AssistantRefusal("internal", "PadForge did not do it. The message line in its window says why."),
             };
         }
@@ -1605,12 +1610,12 @@ namespace PadForge.Services.Automation
             var place = inv.OnUi(inv.App.WindowPlace);
             if (place == AssistantWindowPlace.InFront) return inv.OnUi(() => inv.Catalog.Show(request));
 
-            // Not in front: the question card asks, at its own place.
-            var first = inv.OnUi(() => inv.Catalog.Read(steps[^1].Place).Place);
-            if (first.Reach == AutomationReadScrub.ReachWord(PadForge.Common.ReachClass.UsersOwn))
-                throw new AssistantRefusal("users-own", "A place that is the user's alone is not pointed at by a program. Tell the user where it is in words.");
-            var question = new ApprovalRequest(inv.Caller.Program, AssistantToolWords.AskShow(program, first.Name),
-                new[] { AssistantToolWords.ShowWhere(first.Where) }) { Kind = ApprovalKind.Show };
+            // Not in front: every step is checked as the show checks it, so
+            // a place the user cannot be shown never raises the card. Then
+            // the question card asks, at its own place.
+            var last = inv.OnUi(() => inv.Catalog.CheckShow(request));
+            var question = new ApprovalRequest(inv.Caller.Program, AssistantToolWords.AskShow(program, last.Name),
+                new[] { AssistantToolWords.ShowWhere(last.Where) }) { Kind = ApprovalKind.Show };
             var answer = inv.Host.Approvals.AskAsync(question, inv.Caller.Session?.Lifetime ?? inv.Stopping);
             if (answer.IsCompletedSuccessfully && answer.Result == ApprovalAnswer.TooMany)
                 throw new AssistantRefusal("too-many-questions", "Too many questions already wait for the user. Wait, then show again.");
@@ -1633,7 +1638,7 @@ namespace PadForge.Services.Automation
             {
                 Shown = false,
                 Asked = true,
-                Where = first.Where,
+                Where = last.Where,
                 Window = place,
                 Steps = steps.Count,
                 Message = "PadForge's window is not in front, so its question card asks the user whether to show it. It plays once the user picks Show. Tell the user to look at the card.",
@@ -1846,6 +1851,17 @@ namespace PadForge.Services.Automation
                 : new AssistantAsk(asks[0].Title, asks.SelectMany(q => q.Detail).Distinct().ToList());
             object result = await inv.ChangeAsync(question, () =>
             {
+                // What the values would ask, read again as they are set
+                // (#600). A set that would by then ask about a line the card
+                // did not name, a profile that came to turn on an extra that
+                // listens on the network while the card showed, or ask where
+                // nothing was asked, is not made, as a press goes only on
+                // what its card named (AssistantPressPlan.Check).
+                var now = new List<AssistantAsk>();
+                foreach (var (id, value) in values)
+                    if (inv.Catalog.AskFor(id, value) is { } again) now.Add(again);
+                if (!now.SelectMany(again => again.Detail).All(line => question != null && question.Detail.Contains(line)))
+                    throw new AssistantRefusal("not-available", "By now the change would do more than PadForge asked about. Set again to ask about what it would do now.");
                 var set = new SetResult();
                 foreach (var (id, value) in values) set.Places.Add(inv.Catalog.Set(id, value));
                 return Done(set, values.Count == 1 ? "Set. The page shows the new value." : "Set, each in turn. The page shows the new values.");
@@ -1871,6 +1887,7 @@ namespace PadForge.Services.Automation
             var ui = inv.Ui;
             object result = await inv.ChangeAsync(plan.Ask, () =>
             {
+                plan.Check?.Invoke();
                 ui.Post(() =>
                 {
                     try { plan.Press(); }

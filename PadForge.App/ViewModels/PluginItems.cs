@@ -62,6 +62,11 @@ namespace PadForge.ViewModels
             private set => SetProperty(ref _state, value);
         }
 
+        /// <summary>The identities of the devices it added that PadForge
+        /// keeps now, the ones its state line names (#600 item 18). A
+        /// program reading the plugin reaches them by these.</summary>
+        internal System.Collections.Generic.IReadOnlyList<System.Guid> Devices { get; set; } = System.Array.Empty<System.Guid>();
+
         /// <summary>The plugin's switch. The user's change goes to the
         /// plugins' part.</summary>
         public bool IsOn

@@ -43,8 +43,11 @@
                         AutomationProperties.Name="{Binding SdlMappingDialog_Search, Source={x:Static strings:Strings.Instance}}"
                         TextChanged="Search_TextChanged"/>
             <Border Style="{StaticResource DialogList}" Margin="0,12,0,0">
+                <!-- Typing a letter jumps to the first row whose name starts
+                     with it, as in every list: by the row's name, not the
+                     text of the data behind it. -->
                 <ListBox x:Name="FindList" Style="{StaticResource DialogListBox}" MaxHeight="300" SelectionMode="Single"
-                         ItemContainerStyle="{StaticResource SdlFindRowItem}"
+                         ItemContainerStyle="{StaticResource SdlFindRowItem}" TextSearch.TextPath="Name"
                          SelectionChanged="FindList_SelectionChanged" MouseDoubleClick="FindList_MouseDoubleClick"
                          AutomationProperties.Name="{Binding SdlMappingDialog_FindList, Source={x:Static strings:Strings.Instance}}">
                     <ListBox.ItemTemplate>

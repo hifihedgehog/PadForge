@@ -400,7 +400,7 @@ namespace PadForge.Services.Install
             string ours = new StreamReader(new MemoryStream(library)).ReadLine() ?? string.Empty;
             if (!string.Equals(first.Trim(), ours.Trim(), StringComparison.Ordinal))
                 throw new InvalidOperationException(file + " is not a library PadForge wrote, so PadForge leaves it as it is.");
-            File.Delete(file);
+            OwnFiles.DeleteFile(file);
             return true;
         }
 

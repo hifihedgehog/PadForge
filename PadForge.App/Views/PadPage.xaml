@@ -2559,7 +2559,7 @@
                     <ContextMenu>
                         <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
                                   ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <MenuItem Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
+                        <MenuItem common:Reach.Class="Asks" common:Reach.Why="ImportsProfile" Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
                                   ToolTip="{Binding Pad_PasteTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         <MenuItem Header="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyFromCommand}"
                                   ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -3030,10 +3030,15 @@
                                             <MenuItem Header="{Binding Pad_Shift_Copy, Source={x:Static strings:Strings.Instance}}"
                                                       Click="ShiftLayer_Copy_Click"
                                                       Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                            <!-- A program's Paste and Clear ask first, as
+                                                 the controller's Paste and its Clear All's
+                                                 confirm do (#600). -->
                                             <MenuItem Header="{Binding Pad_Shift_Paste, Source={x:Static strings:Strings.Instance}}"
+                                                      common:Reach.Class="Asks"
                                                       Click="ShiftLayer_Paste_Click"
                                                       Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             <MenuItem Header="{Binding Pad_Shift_Clear, Source={x:Static strings:Strings.Instance}}"
+                                                      common:Reach.Class="Asks"
                                                       Click="ShiftLayer_Clear_Click"
                                                       Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                                             <Separator/>
@@ -3169,7 +3174,7 @@
                                 <ContextMenu>
                                     <MenuItem Header="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopySettingsCommand}"
                                               ToolTip="{Binding Pad_CopyTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <MenuItem Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
+                                    <MenuItem common:Reach.Class="Asks" common:Reach.Why="ImportsProfile" Header="{Binding Common_Paste, Source={x:Static strings:Strings.Instance}}" Command="{Binding PasteSettingsCommand}"
                                               ToolTip="{Binding Pad_PasteTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <MenuItem Header="{Binding Pad_CopyFrom, Source={x:Static strings:Strings.Instance}}" Command="{Binding CopyFromCommand}"
                                               ToolTip="{Binding Pad_CopyFromTooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -13325,7 +13330,7 @@
                                               Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ui:Button}}}"
                                               StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                     </ui:Button>
-                                    <ui:Button TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
+                                    <ui:Button x:Name="MacroListMoreButton" TabIndex="1" DockPanel.Dock="Right" Style="{StaticResource ListHeadButton}"
                                                AutomationProperties.AutomationId="MacroListMoreButton"
                                                AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
@@ -13470,7 +13475,7 @@
                                              end, so More comes first here, then the reset, then the switch, and
                                              Tab goes the way the eye does: name, switch, reset, More. -->
                                         <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="20,14,12,14">
-                                            <ui:Button TabIndex="3" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
+                                            <ui:Button x:Name="MacroMoreButton" TabIndex="3" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
                                                        AutomationProperties.AutomationId="MacroMoreButton"
                                                        AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                        ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
@@ -14127,7 +14132,7 @@
                                          with the type picker. The Working directory label wraps to a
                                          second line rather than clip. -->
                                                         <DataTemplate x:Key="StepFieldsRunProgram">
-                                    <StackPanel common:Reach.Class="Asks" common:Reach.Why="SendsInput" Margin="0,0,0,6">
+                                    <StackPanel common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Margin="0,0,0,6">
                                         <controls:FlexLinePanel Style="{DynamicResource RowOptionLine}">
                                             <TextBlock Style="{DynamicResource RowOptionLabel}" Text="{Binding MacroAction_RunProgram_Path, Source={x:Static strings:Strings.Instance}}"/>
                                             <TextBox Text="{Binding ProgramPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -16265,7 +16270,7 @@
                                              typed over in place (the pencil puts the caret in it), then Enabled
                                              with its reset and More at the card's end, in the macro head's order. -->
                                         <DockPanel KeyboardNavigation.TabNavigation="Local" Margin="20,14,12,14">
-                                            <ui:Button TabIndex="3" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
+                                            <ui:Button x:Name="MenuMoreButton" TabIndex="3" DockPanel.Dock="Right" Style="{StaticResource CardIconButton}" Margin="8,0,0,0"
                                                        AutomationProperties.AutomationId="MenuMoreButton"
                                                        AutomationProperties.Name="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"
                                                        ToolTip="{Binding Common_More, Source={x:Static strings:Strings.Instance}}"

@@ -382,6 +382,85 @@ namespace PadForge.Tests
             Assert.Contains("public Func<int> ServeAssistant = AssistantMirror.Run;", source, StringComparison.Ordinal);
         }
 
+        // ── A test's child ──
+
+        private static Func<string, string> Variables(string pipe)
+            => name => name == PadForge.Services.Automation.Web.WebHelper.PipeVariable ? pipe : null;
+
+        /// <summary>A run whose variables name a pipe of a test's own, the
+        /// way PadForge names the pipe for the web helper it starts, is that
+        /// test's child (#600 item 52): it reaches that pipe alone and never
+        /// a PadForge that runs on the PC, opens nothing through the shell,
+        /// installs nothing and shows no box.</summary>
+        [Fact]
+        public void ARunGivenATestsOwnPipe_ReachesThatPipeAlone()
+        {
+            string pipe = OwnPipe("fence");
+            var seams = ClientRun.Seams.ForThisRun(Variables(pipe));
+            Assert.True(seams.TestsChild);
+            Assert.Equal(pipe, seams.AutomationPipeName);
+            // A copy runs when the test's pipe stands, and only then.
+            Assert.False(seams.CopyRuns());
+            using (new NamedPipeServerStream(pipe, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous))
+                Assert.True(seams.CopyRuns());
+            // The control pipe, the window, the lock and the exit of the
+            // copy on the PC are never reached.
+            Assert.Null(seams.Exchange("state"));
+            Assert.False(seams.PipeStands());
+            Assert.Equal(RunningCopy.Settled.Gone, seams.Settle());
+            Assert.False(seams.ShowWindow());
+            Assert.Null(seams.Watch());
+            var errors = new List<string>();
+            Assert.Equal(PadForge.Services.Install.UserInstall.Failed,
+                seams.Install(new PadForge.Services.Install.InstallRequest(PadForge.Services.Install.InstallWhat.Skill, @"C:\Skills"), _ => { }, errors.Add));
+            Assert.NotEqual(ClientRun.Done, seams.SettingsFolder(errors.Add));
+            Assert.Equal(2, errors.Count);
+
+            // No variable, or PadForge's own name in any case: the machine's
+            // run, as PadForge's own web helper gets it.
+            foreach (var variables in new[] { Variables(null), Variables(""), Variables(AutomationPipe.PipeName), Variables("padforge.automation"), Variables(ExternalControlService.PipeName) })
+            {
+                var own = ClientRun.Seams.ForThisRun(variables);
+                Assert.False(own.TestsChild);
+                Assert.Equal(AutomationPipe.PipeName, own.AutomationPipeName);
+            }
+        }
+
+        /// <summary>A test's child never goes on to become the app, which
+        /// would ask Windows for rights: a command line that would start
+        /// PadForge ends with 4.</summary>
+        [Theory]
+        [InlineData("")]
+        [InlineData("--minimized")]
+        [InlineData("--profile Racing")]
+        [InlineData("--show")]
+        [InlineData(UpdateService.ApplyUpdateSwitch + " C:\\PadForge\\PadForge.exe 1234")]
+        public void ATestsChild_NeverBecomesTheApp(string line)
+        {
+            var seams = ClientRun.Seams.ForThisRun(Variables(OwnPipe("child")));
+            var errors = new List<string>();
+            seams.Say = errors.Add;
+            seams.SayError = errors.Add;
+            seams.Tell = errors.Add;
+            seams.TellError = errors.Add;
+            bool done = ClientRun.TryRun(line.Split(' ', StringSplitOptions.RemoveEmptyEntries), out int code, seams);
+            Assert.True(done);
+            Assert.Equal(ClientRun.NotRunning, code);
+        }
+
+        /// <summary>The assistant's copy in a test's child: the test's pipe
+        /// stands for PadForge, PadForge.xml is not read, and a call that
+        /// needs PadForge starts nothing.</summary>
+        [Fact]
+        public async Task TheMirrorOfATestsChild_StartsNothing_AndReadsNoSettingsFile()
+        {
+            string pipe = OwnPipe("mirror");
+            await using var mirror = AssistantMirror.ForTestsOwnPipe(pipe);
+            Assert.False(mirror.StartPadForge());
+            Assert.Same(AutomationFileSettings.None, mirror.FileSettings());
+            Assert.Contains("ServeAssistant = () => AssistantMirror.Run(pipe)", OffLimitsSource.Read("PadForge.App/Services/ClientRun.cs"), StringComparison.Ordinal);
+        }
+
         [Fact]
         public void TheUpdateHelpersLine_IsNotAClientRun()
         {

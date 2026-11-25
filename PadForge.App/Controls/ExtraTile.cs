@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using PadForge.Common;
 
 namespace PadForge.Controls
 {
@@ -68,6 +69,14 @@ namespace PadForge.Controls
 
         public static readonly DependencyProperty ActionTextProperty = DependencyProperty.Register(
             nameof(ActionText), typeof(string), typeof(ExtraTile), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty SwitchReachProperty = DependencyProperty.Register(
+            nameof(SwitchReach), typeof(ReachClass), typeof(ExtraTile),
+            new PropertyMetadata(ReachClass.Unset, (d, _) => ((ExtraTile)d).ClassSwitch()));
+
+        public static readonly DependencyProperty SwitchWhyProperty = DependencyProperty.Register(
+            nameof(SwitchWhy), typeof(ReachReason), typeof(ExtraTile),
+            new PropertyMetadata(ReachReason.None, (d, _) => ((ExtraTile)d).ClassSwitch()));
 
         public static readonly RoutedEvent OpenRequestedEvent = EventManager.RegisterRoutedEvent(
             nameof(OpenRequested), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ExtraTile));
@@ -155,6 +164,25 @@ namespace PadForge.Controls
             set => SetValue(ActionTextProperty, value);
         }
 
+        /// <summary>The reach class of the tile's switch (#600): what a
+        /// program meets turning the extra on or off from here, by what the
+        /// switch starts, as its page's own switch carries it. Set on the
+        /// switch alone, where Reach.Of reads it, so the tile's own button,
+        /// which only opens the page, keeps the page's class.</summary>
+        public ReachClass SwitchReach
+        {
+            get => (ReachClass)GetValue(SwitchReachProperty);
+            set => SetValue(SwitchReachProperty, value);
+        }
+
+        /// <summary>Why the switch asks, when <see cref="SwitchReach"/> is
+        /// Asks.</summary>
+        public ReachReason SwitchWhy
+        {
+            get => (ReachReason)GetValue(SwitchWhyProperty);
+            set => SetValue(SwitchWhyProperty, value);
+        }
+
         /// <summary>Raised when the tile is clicked anywhere but its switch.</summary>
         public event RoutedEventHandler OpenRequested
         {
@@ -173,6 +201,18 @@ namespace PadForge.Controls
             if (_open != null) _open.Click += OnOpenClick;
             if (_action != null) _action.Click += OnOpenClick;
             NameParts();
+            ClassSwitch();
+        }
+
+        /// <summary>Puts <see cref="SwitchReach"/> and <see cref="SwitchWhy"/>
+        /// on the switch as its own values, which Reach.Of reads.</summary>
+        private void ClassSwitch()
+        {
+            if (_switch == null) return;
+            if (SwitchReach == ReachClass.Unset) _switch.ClearValue(Reach.ClassProperty);
+            else Reach.SetClass(_switch, SwitchReach);
+            if (SwitchReach == ReachClass.Asks) Reach.SetWhy(_switch, SwitchWhy);
+            else _switch.ClearValue(Reach.WhyProperty);
         }
 
         /// <summary>Puts keyboard focus on the tile's own button, for the

@@ -1,9 +1,11 @@
 using System;
 using System.Buffers;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using PadForge.Engine;
 
 namespace PadForge.Services.Automation
@@ -38,6 +40,15 @@ namespace PadForge.Services.Automation
     /// <c>error empty</c>, <c>error unknown-command</c>,
     /// <c>error bad-argument</c>.</para>
     ///
+    /// <para>A program's <c>activate</c> or <c>deactivate</c> that would turn
+    /// on an extra that listens on the network, off now, asks the user on
+    /// the question card first (#600) and is answered at once
+    /// <c>error waiting</c>: the switch is made when the user allows it, and
+    /// the profile stays as it was when they do not. <c>error
+    /// too-many-questions</c> says the card holds too many questions to put
+    /// this one. A switch that starts nothing new, and a starting copy's
+    /// own, run at once.</para>
+    ///
     /// <para>What a line does runs on the interface's thread, the recorder's
     /// part included. <c>version</c> touches nothing and is answered where
     /// it arrives.</para>
@@ -55,6 +66,8 @@ namespace PadForge.Services.Automation
         internal const string UnknownSlot = "error unknown-slot";
         internal const string TooSoon = "error too-soon";
         internal const string LimitReached = "error limit-reached";
+        internal const string Waiting = "error waiting";
+        internal const string TooManyQuestions = "error too-many-questions";
 
         /// <summary>How often a program may have a snapshot written, and a
         /// recording started, and how many of each one run of PadForge
@@ -110,13 +123,15 @@ namespace PadForge.Services.Automation
         /// <summary>
         /// Answers a line an outside program sent. Called on a worker thread.
         /// A line that reads is run only while Automation allows it.
+        /// <paramref name="who"/> is the program the question card names
+        /// when the line asks the user first.
         /// </summary>
-        public ExternalControlService.Answer Answer(string line, CancellationToken stopping)
+        public ExternalControlService.Answer Answer(string line, CancellationToken stopping, AutomationProgram who = null)
         {
             var command = Read(line);
             if (command.Error != null) return new ExternalControlService.Answer(command.Error);
             if (!_host.Allows(Needs)) return new ExternalControlService.Answer(NotAllowed);
-            return Run(command, stopping, fromProgram: true);
+            return Run(command, stopping, fromProgram: true, who);
         }
 
         /// <summary>
@@ -235,7 +250,7 @@ namespace PadForge.Services.Automation
 
         private static string OnOff(bool on) => on ? "on" : "off";
 
-        private ExternalControlService.Answer Run(Command command, CancellationToken stopping, bool fromProgram)
+        private ExternalControlService.Answer Run(Command command, CancellationToken stopping, bool fromProgram, AutomationProgram who = null)
         {
             switch (command.Kind)
             {
@@ -243,8 +258,11 @@ namespace PadForge.Services.Automation
                 // that carries one is scrubbed as every read is.
                 case AutomationAskKind.ActivateProfile:
                     AutomationReadScrub.Prepare();
+                    if (fromProgram)
+                        return SwitchAsked(command, who, stopping, () => ScrubbedName(_target.ActivateProfile(command.Argument), last: false));
                     return OnUi(() => ScrubbedName(_target.ActivateProfile(command.Argument), last: false), stopping);
                 case AutomationAskKind.DeactivateProfile:
+                    if (fromProgram) return SwitchAsked(command, who, stopping, _target.DeactivateProfile);
                     return OnUi(_target.DeactivateProfile, stopping);
                 case AutomationAskKind.QueryProfile:
                     AutomationReadScrub.Prepare();
@@ -343,6 +361,83 @@ namespace PadForge.Services.Automation
 
         private ExternalControlService.Answer OnUi(Func<string> work, CancellationToken stopping)
             => new ExternalControlService.Answer(_ui.Invoke(work, stopping));
+
+        /// <summary>
+        /// A program's profile switch (#600), <c>activate</c> or
+        /// <c>deactivate</c>. One that would turn on an extra that listens on
+        /// the network, off now, waits for the user: the question card asks
+        /// first, naming what would start, and the program is answered at
+        /// once, <c>error waiting</c>, since a script, the command line and a
+        /// launcher wait for an answer far less long than the card waits for
+        /// the user. Allow switches then, unless the switch would by then
+        /// start something the card did not name. Don't Allow, or no answer
+        /// in the card's time, leaves the profile as it was, the hold on it
+        /// included. A switch that starts nothing new runs at once, in the
+        /// one visit to the interface's thread that reads what it starts.
+        /// </summary>
+        private ExternalControlService.Answer SwitchAsked(Command command, AutomationProgram who, CancellationToken stopping, Func<string> doSwitch)
+        {
+            string target = command.Kind == AutomationAskKind.ActivateProfile ? command.Argument : null;
+            ProfileStarts starts = null;
+            string line = _ui.Invoke(() =>
+            {
+                starts = _target.NetworkStarts(target) ?? ProfileStarts.None;
+                return starts.Nothing ? doSwitch() : null;
+            }, stopping);
+            if (line != null) return new ExternalControlService.Answer(line);
+
+            // The card's words are the interface's (AssistantToolWords): the
+            // answer to the program stays the fixed word below.
+            string title = AssistantToolWords.AskSwitchProfile(target == null ? null : starts.Name ?? target);
+            var detail = starts.Extras.Select(AssistantToolWords.TurnsOn).Append(AssistantToolWords.ListensOnNetwork()).ToList();
+            var program = who ?? AutomationProgram.Unknown;
+            var asked = _host.Approvals.AskAsync(new ApprovalRequest(program, title, detail), CancellationToken.None);
+            if (asked.IsCompletedSuccessfully && asked.Result == ApprovalAnswer.TooMany)
+                return new ExternalControlService.Answer(TooManyQuestions);
+
+            var named = starts.Extras.ToList();
+            _ = asked.ContinueWith(done =>
+            {
+                var answer = done.Status == TaskStatus.RanToCompletion ? done.Result : ApprovalAnswer.TimedOut;
+                if (answer != ApprovalAnswer.Allowed)
+                {
+                    Note(program, command, answer == ApprovalAnswer.Denied ? "error declined" : "error timed-out");
+                    return;
+                }
+                _ui.Post(() =>
+                {
+                    // What the user allowed, and nothing more: a switch that
+                    // would now start what the card did not name waits for
+                    // a card of its own.
+                    var now = _target.NetworkStarts(target) ?? ProfileStarts.None;
+                    if (now.Extras.Any(extra => !named.Contains(extra)))
+                    {
+                        Note(program, command, NotAvailable);
+                        return;
+                    }
+                    string result;
+                    try { result = doSwitch(); }
+                    catch { result = Internal; }
+                    Note(program, command, result);
+                });
+            }, TaskScheduler.Default);
+            return new ExternalControlService.Answer(Waiting);
+        }
+
+        /// <summary>How a switch that waited for the user ended, in
+        /// Activity beside the line that asked for it.</summary>
+        private void Note(AutomationProgram who, Command command, string result)
+        {
+            try
+            {
+                _host.Activity.Add(new AutomationActivityEntry(_host.Now(), who,
+                    new AutomationAsk(command.Kind, command.Argument), result, result.StartsWith(Ok, StringComparison.Ordinal)));
+            }
+            catch
+            {
+                // A listener's failure is not the program's.
+            }
+        }
 
         /// <summary>A program's snapshot against its limits: null when it
         /// may go ahead, which starts its clock and counts it, or the

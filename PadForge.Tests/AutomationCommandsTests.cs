@@ -31,6 +31,12 @@ namespace PadForge.Tests
 
         public string ActivateProfile(string nameOrId) { Note("activate " + nameOrId); return ActivateAnswer; }
         public string DeactivateProfile() { Note("deactivate"); return "ok default"; }
+
+        /// <summary>What a switch would start that listens on the network:
+        /// nothing unless a test says so. A read, so it records no
+        /// call.</summary>
+        public ProfileStarts Starts = ProfileStarts.None;
+        public ProfileStarts NetworkStarts(string nameOrId) => Starts;
         public string QueryProfile() { Note("query"); return "ok default unpinned"; }
         public void ShowWindow() => Note("show");
         public bool HideToTray() { Note("hide"); return HasTray; }

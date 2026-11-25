@@ -19,8 +19,13 @@
         <controls:FlexLinePanel Style="{StaticResource DialogFootPanel}">
             <Button Style="{StaticResource DialogButton}" IsCancel="True"
                     Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}"/>
+            <!-- A program's Save asks when a game it adds lets the
+                 foreground watcher put the profile in force, and the
+                 default after it, and either holds an extra that
+                 listens on the network, on or off now (#600). -->
             <Button x:Name="SaveButton" Style="{StaticResource DialogPrimaryButton}" IsDefault="True"
                     Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}"
+                    common:Reach.Class="Asks" common:Reach.Why="Network"
                     Click="SaveButton_Click"/>
         </controls:FlexLinePanel>
     </views:DialogWindow.Foot>

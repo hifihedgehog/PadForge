@@ -335,7 +335,7 @@
              box around it is what the pointer finds, and its margins give
              the room back, so a row is laid out by the light alone. -->
         <DataTemplate x:Key="DeviceLight">
-            <Border Width="16" Margin="-5,0,-5,0" Background="Transparent">
+            <Border Width="16" Margin="-5,0,-5,0" Background="Transparent" common:Reach.Class="Free">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Style.Triggers>
@@ -388,7 +388,7 @@
              that is not connected is quiet, with a hollow light, and says
              so. -->
         <DataTemplate x:Key="DrivenByRow">
-            <Grid MinHeight="24" Margin="0,0,0,6">
+            <Grid common:Reach.Class="Free" MinHeight="24" Margin="0,0,0,6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -434,7 +434,7 @@
              fill. The three types can always be made, since no controller
              exists yet. -->
         <DataTemplate x:Key="FirstRunTypeTile" DataType="{x:Type vm:ControllerTypeChoice}">
-            <controls:AvailabilityButton Style="{StaticResource TypeTileButton}" Padding="20"
+            <controls:AvailabilityButton common:Reach.Class="Free" Style="{StaticResource TypeTileButton}" Padding="20"
                     IsAvailable="{Binding IsAvailable, Mode=OneTime}" ToolTip="{Binding ToolTip, Mode=OneTime}"
                     AutomationProperties.AutomationId="{Binding AutomationId, Mode=OneTime}"
                     AutomationProperties.Name="{Binding Name, Mode=OneTime, TargetNullValue='', FallbackValue=''}"
@@ -857,7 +857,7 @@
                                    VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    Text="{Binding HomeCardText, Source={x:Static services:ExeFolderState.Instance}}"/>
-                        <ui:Button x:Name="HomeSharedFolderMove" Padding="14,0" VerticalAlignment="Center"
+                        <ui:Button x:Name="HomeSharedFolderMove" common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Padding="14,0" VerticalAlignment="Center"
                                    Style="{StaticResource EmberPrimaryButton}"
                                    Click="SharedFolderMove_Click"
                                    IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
@@ -987,7 +987,7 @@
                          page, a drag reorders, and the code finds it by that
                          tag. -->
                     <DataTemplate x:Key="SlotCardDetailed">
-                        <Border Style="{StaticResource SlotCardEdge}"
+                        <Border Style="{StaticResource SlotCardEdge}" common:Reach.Class="Free"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
                             <Grid>
@@ -1247,7 +1247,7 @@
                          Add Device button and no line saying what a
                          waiting controller waits for. -->
                     <DataTemplate x:Key="SlotCardCompact">
-                        <Border Style="{StaticResource SlotCardEdge}"
+                        <Border Style="{StaticResource SlotCardEdge}" common:Reach.Class="Free"
                                 Tag="{Binding PadIndex}"
                                 Loaded="SlotCard_Loaded">
                             <Grid>

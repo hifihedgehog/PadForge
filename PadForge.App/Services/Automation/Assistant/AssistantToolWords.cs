@@ -110,6 +110,12 @@ namespace PadForge.Services.Automation
 
         internal static string TurnsOn(string what) => string.Format(Strings.Instance.Automation_Ask_TurnsOn_Format, Cut(what));
 
+        /// <summary>A profile and an extra it would turn on (#600), for a card
+        /// that names the profile the foreground watcher would put in
+        /// force.</summary>
+        internal static string ProfileTurnsOn(string profile, string what)
+            => string.Format(Strings.Instance.Automation_Ask_ProfileTurnsOn_Format, Cut(profile), Cut(what));
+
         internal static string AskSetting(string name) => string.Format(Strings.Instance.Automation_Ask_Setting_Format, Cut(name));
 
         internal static string AskPress(string name) => string.Format(Strings.Instance.Automation_Ask_Press_Format, Cut(name));
@@ -122,6 +128,13 @@ namespace PadForge.Services.Automation
         internal static string SetsTo(string name, string value) => string.Format(Strings.Instance.Automation_Ask_SetsTo_Format, Cut(name), Cut(value));
 
         internal static string ListensOnNetwork() => Strings.Instance.Automation_Ask_Network;
+
+        /// <summary>The question card's title for a program's profile switch
+        /// (#600): to the profile it names, or back to the default with
+        /// null.</summary>
+        internal static string AskSwitchProfile(string profileName)
+            => profileName == null ? Strings.Instance.Automation_Asked_Deactivate
+                : string.Format(Strings.Instance.Automation_Asked_Activate_Format, Cut(profileName));
 
         internal static string ChangesDrivers() => Strings.Instance.Automation_Ask_Drivers;
 

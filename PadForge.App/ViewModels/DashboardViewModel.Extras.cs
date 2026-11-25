@@ -81,6 +81,15 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Whether turning the Head Tracking switch on now would
+        /// start the UDP input, the one that listens on the network (#600).
+        /// The switch is off and the inputs it brings back hold UDP. With
+        /// only OpenXR among them, it opens the headset's session and listens
+        /// on nothing.</summary>
+        internal bool HeadTrackingSwitchStartsUdp
+            => HeadTrackingSourceMask == 0
+               && ((_headTrackingLastSources != 0 ? _headTrackingLastSources : HeadTrackingStartingSources) & HeadTrackingUdpBit) != 0;
+
         private RelayCommand _resetHeadTrackingSourcesCommand;
 
         /// <summary>The reset beside the Head Tracking switch: each input back

@@ -369,7 +369,19 @@ namespace PadForge.Tests
                     try { ctx = _listener.GetContext(); }
                     catch { break; }
                     string requestBody;
-                    using (var reader = new StreamReader(ctx.Request.InputStream, Encoding.UTF8)) requestBody = reader.ReadToEnd();
+                    // Dispose can close the listener while a request's body
+                    // is read: on this thread of its own, an exception there
+                    // would end the test host.
+                    try
+                    {
+                        using var reader = new StreamReader(ctx.Request.InputStream, Encoding.UTF8);
+                        requestBody = reader.ReadToEnd();
+                    }
+                    catch
+                    {
+                        if (!_running) break;
+                        continue;
+                    }
                     string path = ctx.Request.Url.AbsolutePath;
                     string method = ctx.Request.HttpMethod;
                     Requests.Enqueue((Environment.TickCount64, method, path));

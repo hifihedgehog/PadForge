@@ -6352,6 +6352,15 @@ namespace PadForge.ViewModels
                 PasteMacroRequested?.Invoke(this, EventArgs.Empty);
             });
 
+        /// <summary>A program's Paste of a macro (#600): the paste lands the
+        /// text its question card read (<see cref="PasteTextEventArgs"/>),
+        /// and the clipboard is not read again.</summary>
+        internal void PasteMacroText(string text)
+        {
+            ShowMacrosPart(MacrosTabIndex);
+            PasteMacroRequested?.Invoke(this, new PasteTextEventArgs(text));
+        }
+
         /// <summary>VC-level Copy From (#112): pull macros from another virtual
         /// controller into this one, mirroring the header More's Copy From. MainWindow
         /// shows the VC picker and does the copy.</summary>
@@ -8800,6 +8809,12 @@ namespace PadForge.ViewModels
                 () => PasteSettingsRequested?.Invoke(this, EventArgs.Empty),
                 () => HasSelectedDevice || (PadIndex >= 0
                     && PadIndex < SettingsManager.SlotCreated.Length && SettingsManager.SlotCreated[PadIndex]));
+
+        /// <summary>A program's Paste of a controller's settings (#600): the
+        /// paste lands the text its question card read
+        /// (<see cref="PasteTextEventArgs"/>), and the clipboard is not read
+        /// again.</summary>
+        internal void PasteSettingsText(string text) => PasteSettingsRequested?.Invoke(this, new PasteTextEventArgs(text));
 
         /// <summary>
         /// Raised when the user wants to copy settings from another device.

@@ -421,7 +421,7 @@
                                 <DockPanel LastChildFill="False" MinHeight="52" Margin="20,0,10,0">
                                     <TextBlock Text="{Binding Settings_Window, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"
                                                ToolTip="{Binding Settings_WindowDesc, Source={x:Static strings:Strings.Instance}}"/>
-                                    <ui:Button Style="{StaticResource ResetAllButton}" Command="{Binding ResetCardCommand}" CommandParameter="Window"
+                                    <ui:Button common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Style="{StaticResource ResetAllButton}" Command="{Binding ResetCardCommand}" CommandParameter="Window"
                                                Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}"
                                                AutomationProperties.AutomationId="Settings_ResetAll_Window">
                                         <ui:Button.ToolTip>
@@ -476,7 +476,7 @@
                                                                   AutomationProperties.AutomationId="Reset_SettingsViewModel_StartMinimized_132"/>
                                     </controls:SettingRow>
                                 </controls:SettingItem>
-                                <controls:SettingItem>
+                                <controls:SettingItem common:Reach.Class="Asks" common:Reach.Why="RunsProgram">
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
@@ -506,7 +506,8 @@
                                         <Button Content="{Binding ExeFolder_Move, Source={x:Static strings:Strings.Instance}}"
                                                 ToolTip="{Binding ExeFolder_MoveTip, Source={x:Static strings:Strings.Instance}}"
                                                 IsEnabled="{Binding CanMove, Source={x:Static services:ExeFolderState.Instance}}"
-                                                Click="MoveToOwnFolder_Click" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+                                                Click="MoveToOwnFolder_Click" HorizontalAlignment="Left" Margin="0,8,0,0"
+                                                common:Reach.Class="Asks" common:Reach.Why="RunsProgram"/>
                                         <TextBlock Text="{Binding MoveError, Source={x:Static services:ExeFolderState.Instance}}" common:LiveText.Polite="True"
                                                    FontSize="13" TextWrapping="Wrap" Margin="0,6,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Visibility="{Binding HasMoveError, Source={x:Static services:ExeFolderState.Instance}, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -603,10 +604,10 @@
                                                                 Gap="12" LineGap="8" EndsApart="True" Margin="12,0,0,0">
                                             <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_CheckNow, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding CheckForUpdatesNowCommand}" Margin="0,4,0,4"/>
-                                            <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_ReleaseNotes, Source={x:Static strings:Strings.Instance}}"
+                                            <Button common:Reach.Class="Asks" common:Reach.Why="OpensPlace" controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_ReleaseNotes, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding OpenReleaseNotesCommand}" Margin="0,4,0,4"
                                                     Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                            <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_InstallAndRestart, Source={x:Static strings:Strings.Instance}}"
+                                            <Button common:Reach.Class="Asks" common:Reach.Why="RunsProgram" controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_InstallAndRestart, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding InstallUpdateCommand}"
                                                     Style="{StaticResource EmberAccentButton}" Padding="14,0" Margin="0,4,0,4"
                                                     Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -617,7 +618,7 @@
                                                  Margin="20,0,20,12"
                                                  Visibility="{Binding IsUpdateDownloading, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 </controls:SettingItem>
-                                <controls:SettingItem>
+                                <controls:SettingItem common:Reach.Class="Asks" common:Reach.Why="RunsProgram">
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_CheckForUpdates, Source={x:Static strings:Strings.Instance}}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_CheckForUpdates, Source={x:Static strings:Strings.Instance}}"
@@ -630,7 +631,7 @@
                                 </controls:SettingItem>
                                 <!-- Installing automatically needs the automatic check, so it
                                      shows only while that is on. -->
-                                <controls:SettingItem Visibility="{Binding CheckForUpdatesAutomatically, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <controls:SettingItem common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Visibility="{Binding CheckForUpdatesAutomatically, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <controls:SettingRow MinHeight="44">
                                         <TextBlock Style="{StaticResource DzLabel}" Text="{Binding Settings_InstallUpdatesAutomatically, Source={x:Static strings:Strings.Instance}}"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_InstallUpdatesAutomatically, Source={x:Static strings:Strings.Instance}}"
@@ -1134,7 +1135,7 @@
                                                 Command="{Binding DownloadStrike7LibraryCommand}" Margin="0,0,12,8"/>
                                         <Button Content="{Binding KeyboardScreens_PickStrike7, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding PickStrike7LibraryCommand}" Margin="0,0,12,8"/>
-                                        <Button Content="{Binding KeyboardScreens_InstallVc2008, Source={x:Static strings:Strings.Instance}}"
+                                        <Button common:Reach.Class="Asks" common:Reach.Why="RunsProgram" Content="{Binding KeyboardScreens_InstallVc2008, Source={x:Static strings:Strings.Instance}}"
                                                 ToolTip="{Binding KeyboardScreens_InstallVc2008_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding InstallVc2008RuntimeCommand}" Margin="0,0,12,8"/>
                                     </WrapPanel>
@@ -1172,11 +1173,11 @@
                                         <Button Content="{Binding Falcon_PickLibrary, Source={x:Static strings:Strings.Instance}}"
                                                 ToolTip="{Binding Falcon_PickLibrary_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding PickFalconLibraryCommand}" Margin="0,0,12,8"/>
-                                        <Button Content="{Binding Falcon_InstallDriver, Source={x:Static strings:Strings.Instance}}"
+                                        <Button common:Reach.Class="Asks" common:Reach.Why="Drivers" Content="{Binding Falcon_InstallDriver, Source={x:Static strings:Strings.Instance}}"
                                                 ToolTip="{Binding Falcon_InstallDriver_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                 Visibility="{Binding FalconCanInstallDriver, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Command="{Binding InstallFalconDriverCommand}" Margin="0,0,12,8"/>
-                                        <Button Content="{Binding Falcon_OpenDownload, Source={x:Static strings:Strings.Instance}}"
+                                        <Button common:Reach.Class="Asks" common:Reach.Why="OpensPlace" Content="{Binding Falcon_OpenDownload, Source={x:Static strings:Strings.Instance}}"
                                                 ToolTip="{Binding Falcon_OpenDownload_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding OpenFalconDownloadCommand}" Margin="0,0,12,8"/>
                                     </WrapPanel>
@@ -1747,7 +1748,7 @@
                                                 Style="{StaticResource EmberAccentButton}" Padding="14,0"/>
                                         <Button Content="{Binding Settings_Reload, Source={x:Static strings:Strings.Instance}}" Command="{Binding ReloadCommand}"/>
                                         <Button common:Reach.Class="Asks" common:Reach.Why="OpensPlace" Content="{Binding Settings_OpenFolder, Source={x:Static strings:Strings.Instance}}" Command="{Binding OpenSettingsFolderCommand}"/>
-                                        <Button controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_ResetToDefaults, Source={x:Static strings:Strings.Instance}}"
+                                        <Button common:Reach.Class="Asks" common:Reach.Why="Drivers" controls:FlexLinePanel.AtEnd="True" Content="{Binding Settings_ResetToDefaults, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding ResetCommand}"
                                                 Foreground="{DynamicResource DangerInkBrush}" BorderBrush="{DynamicResource EmberEdgeBrush}"/>
                                     </controls:FlexLinePanel>

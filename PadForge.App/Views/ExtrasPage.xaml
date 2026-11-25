@@ -362,7 +362,9 @@
             <!-- ═══ The catalog ═══
                  One tile for each extra, in four groups. A tile's switch is the
                  extra's own setting, the one its page shows, so the two always
-                 agree. A click on a tile anywhere else opens the extra's page
+                 agree, and it carries the reach class of what it starts
+                 (SwitchReach, on the switch alone, #600). A click on a tile
+                 anywhere else opens the extra's page
                  (ExtraTile.OpenRequested, handled once here for every tile).
                  A group's tiles are at least 240 wide and share their row's
                  whole width, so a row of four and a row of three both end
@@ -397,24 +399,28 @@
                                         SwitchLabel="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}"
                                         ActionText="{Binding Home_ShowQr, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableWebController}"
+                                        SwitchReach="Asks" SwitchWhy="Network"
                                         Status="{Binding WebControllerStatus}"/>
                     <controls:ExtraTile x:Name="HeadTrackingTile" Key="HeadTracking" Glyph="&#xE77B;"
                                         Title="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_HeadTracking, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding HeadTrackingAnyEnabled}"
+                                        SwitchReach="Asks" SwitchWhy="Network"
                                         Status="{Binding HeadTrackingStatus}"/>
                     <controls:ExtraTile x:Name="GameTelemetryTile" Key="GameTelemetry" Glyph="&#xEC4A;"
                                         Title="{Binding Dashboard_GameTelemetry, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_GameTelemetry, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_EnableGameTelemetry, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableGameTelemetry}"
+                                        SwitchReach="Asks" SwitchWhy="Network"
                                         Status="{Binding GameTelemetryStatus}"/>
                     <controls:ExtraTile x:Name="TwitchChatTile" Key="TwitchChat" Glyph="&#xE8F2;"
                                         Title="{Binding Dashboard_TwitchChat, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_TwitchChat, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_EnableTwitchChat, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableTwitchChat}"
+                                        SwitchReach="Free"
                                         Status="{Binding TwitchChatStatus}"/>
                 </controls:TileGridPanel>
 
@@ -426,18 +432,21 @@
                                         Line="{Binding Extras_Tile_RemoteLink, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableRemoteLink}"
+                                        SwitchReach="Asks" SwitchWhy="Network"
                                         Status="{Binding RemoteLinkStatus}"/>
                     <controls:ExtraTile x:Name="MotionServerTile" Key="MotionServer" Glyph="&#xE7AD;"
                                         Title="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_MotionServer, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableDsuMotionServer}"
+                                        SwitchReach="Asks" SwitchWhy="Network"
                                         Status="{Binding DsuServerStatus}"/>
                     <controls:ExtraTile x:Name="GameModsTile" Key="GameMods" Glyph="&#xEA86;"
                                         Title="{Binding Dashboard_GameMods, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_GameMods, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_EnableGameMods, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableGameModServer}"
+                                        SwitchReach="Asks" SwitchWhy="Network"
                                         Status="{Binding GameModServerStatus}"/>
                 </controls:TileGridPanel>
 
@@ -448,28 +457,33 @@
                                         Title="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_Overlays, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_Overlays, Source={x:Static strings:Strings.Instance}}"
-                                        IsOn="{Binding OverlaysAnyEnabled}"/>
+                                        IsOn="{Binding OverlaysAnyEnabled}"
+                                        SwitchReach="Free"/>
                     <controls:ExtraTile x:Name="TouchpadOverlayTile" Key="TouchpadOverlay" Glyph="&#xEDA4;"
                                         Title="{Binding Dashboard_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_TouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableTouchpadOverlay}"
+                                        SwitchReach="Free"
                                         Status="{Binding TouchpadOverlayStatus}"/>
                     <controls:ExtraTile x:Name="ScreenOverlayTile" Key="ScreenOverlay" Glyph="&#xE7F4;"
                                         Title="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Dashboard_ScreenOverlay, Source={x:Static strings:Strings.Instance}}"
-                                        IsOn="{Binding ScreenOverlaysAnyEnabled}"/>
+                                        IsOn="{Binding ScreenOverlaysAnyEnabled}"
+                                        SwitchReach="Free"/>
                     <controls:ExtraTile x:Name="CrosshairTile" Key="Crosshair" Glyph="&#xE81D;"
                                         Title="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_Crosshair, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Extras_Crosshair_Title, Source={x:Static strings:Strings.Instance}}"
-                                        IsOn="{Binding CrosshairsAnyEnabled}"/>
+                                        IsOn="{Binding CrosshairsAnyEnabled}"
+                                        SwitchReach="Free"/>
                     <controls:ExtraTile x:Name="MagnifierTile" Key="Magnifier" Glyph="&#xE8A3;"
                                         Title="{Binding Extras_Magnifier_Title, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_Magnifier, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Extras_Magnifier_Show, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding MagnifierEnabled}"
+                                        SwitchReach="Free"
                                         Status="{Binding Magnifier.Status}"/>
                 </controls:TileGridPanel>
 
@@ -481,12 +495,14 @@
                                         Line="{Binding Extras_Tile_Automation, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Extras_Automation_Switch, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnableAutomation}"
+                                        SwitchReach="UsersOwn"
                                         Status="{Binding AutomationStatus}"/>
                     <controls:ExtraTile x:Name="PluginsTile" Key="Plugins" Glyph="&#xECF0;"
                                         Title="{Binding Extras_Plugins_Title, Source={x:Static strings:Strings.Instance}}"
                                         Line="{Binding Extras_Tile_Plugins, Source={x:Static strings:Strings.Instance}}"
                                         SwitchLabel="{Binding Extras_Plugins_Switch, Source={x:Static strings:Strings.Instance}}"
                                         IsOn="{Binding EnablePlugins}"
+                                        SwitchReach="UsersOwn"
                                         Status="{Binding PluginsStatus}"/>
                 </controls:TileGridPanel>
             </StackPanel>
@@ -793,6 +809,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
                                   AutomationProperties.AutomationId="HeadTrackingSwitch"
+                                  common:Reach.Class="Asks" common:Reach.Why="Network"
                                   Content="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding HeadTrackingAnyEnabled}"/>
                         <reset:SettingResetButton Command="{Binding ResetHeadTrackingSourcesCommand}" SettingLabel="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_HeadTrackingAnyEnabled" Margin="14,0,0,0"/>
@@ -840,6 +857,7 @@
                             <TextBlock Text="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                        ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                             <CheckBox x:Name="HeadTrackingUdpCheckBox" Style="{StaticResource SwitchCheckBox}"
+                                      common:Reach.Class="Asks" common:Reach.Why="Network"
                                       Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
                                       ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                       IsChecked="{Binding HeadTrackingEnabled}"/>
@@ -1030,6 +1048,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                         <CheckBox Style="{StaticResource SwitchCheckBox}" controls:SwitchLook.ShowState="True"
                                   x:Name="GameTelemetryCheckBox"
+                                  common:Reach.Class="Asks" common:Reach.Why="Network"
                                   Content="{Binding Dashboard_EnableGameTelemetry, Source={x:Static strings:Strings.Instance}}"
                                   IsChecked="{Binding EnableGameTelemetry}"/>
                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableGameTelemetry" SettingLabel="{Binding Dashboard_EnableGameTelemetry, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableGameTelemetry_2300" Margin="14,0,0,0"/>

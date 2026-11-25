@@ -5,6 +5,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:views="clr-namespace:PadForge.Views"
+             xmlns:common="clr-namespace:PadForge.Common"
              FontFamily="{DynamicResource BodyFontFamily}">
 
     <UserControl.Resources>
@@ -690,7 +691,8 @@
                     <TextBlock Text="{Binding Workshop_LegacyBody, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                TextWrapping="Wrap" TextAlignment="Center" MaxWidth="360" Margin="0,10,0,0"/>
-                    <Button Content="{Binding Workshop_LegacyOpenButton, Source={x:Static strings:Strings.Instance}}"
+                    <Button common:Reach.Class="Asks" common:Reach.Why="OpensPlace"
+                            Content="{Binding Workshop_LegacyOpenButton, Source={x:Static strings:Strings.Instance}}"
                             HorizontalAlignment="Center" Margin="0,12,0,0" MinWidth="90"
                             Click="OpenInSteam_Click"/>
                 </StackPanel>

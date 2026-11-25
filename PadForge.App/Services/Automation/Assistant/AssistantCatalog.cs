@@ -134,6 +134,63 @@ namespace PadForge.Services.Automation
         private object RootOf(Place p)
             => (object)p.Pad ?? _pageOf(p.Entry.Page)?.DataContext ?? p.Root?.DataContext;
 
+        /// <summary>The words a show or a press refuses an ID with that names
+        /// no item of a menu each item has of its own.</summary>
+        internal const string EachOwnWords = "Each card or tab has this item on its own menu, and this ID names none of them. find gives an ID for each one's item.";
+
+        /// <summary>
+        /// A menu each item of a list has of its own, a profile card's or a
+        /// layer tab's (<see cref="SearchEntry.ItemsList"/>): a place for
+        /// each item, its position after <c>@i</c>, and the entry's own
+        /// place, which names no item and shows nowhere. The items are the
+        /// list's data, read whether or not the list drew them. An element
+        /// the list holds as it is, Profiles' drop tile, has no menu of the
+        /// template's.
+        /// </summary>
+        private IEnumerable<Place> EachItemsMenu(Place p)
+        {
+            var page = _pageOf(p.Entry.Page);
+            string bare = _service.IdOf(p.Entry);
+            int? controller = p.Entry.Page == SearchPage.Pad ? NumberOf(p.Pad) : null;
+            yield return new Place { Entry = p.Entry, Pad = p.Pad, Section = p.Section, Id = SearchIds.With(bare, controller, null, null), Showing = false };
+            if (page?.FindName(p.Entry.ItemsList) is not ItemsControl list) yield break;
+            bool shows = p.Showing && SearchLocator.Shows(list, page);
+            int i = 0;
+            foreach (object item in list.Items)
+            {
+                if (item is UIElement) continue;
+                yield return new Place { Entry = p.Entry, Item = item, Pad = p.Pad, Section = p.Section, Id = SearchIds.With(bare, controller, i, null), Showing = shows };
+                i++;
+            }
+        }
+
+        /// <summary>Whether a place of a menu each item has of its own names
+        /// no item: its ID carries no <c>@i</c>. An ID that names an item the
+        /// page has not, past the last or on another controller, is a place
+        /// that does not show.</summary>
+        private static bool NamesNoItem(Place p)
+            => p.Entry?.ItemsList != null && p.Item == null
+               && !(SearchIds.TryRead(p.Id, out _, out _, out int? item, out _) && item != null);
+
+        /// <summary>The menu item an entry names and the shown button whose
+        /// menu holds it: for a menu each item has of its own, the one in
+        /// that item's container once the list draws it.</summary>
+        private (FrameworkElement Owner, MenuItem Item) MenuOf(Place p, FrameworkElement root)
+        {
+            if (p.Entry.ItemsList == null) return SearchNavigator.MenuItemOf(root, p.Entry);
+            if (p.Item == null || root?.FindName(p.Entry.ItemsList) is not ItemsControl list) return (null, null);
+            return SearchNavigator.MenuItemIn(list.ItemContainerGenerator.ContainerFromItem(p.Item), p.Entry);
+        }
+
+        /// <summary>The words a card or a tab is known by, for the place of
+        /// its own menu's item: a profile's name, a layer's.</summary>
+        private static string ItemName(object item) => item switch
+        {
+            ProfileListItem profile => profile.Name,
+            ShiftLayerInfo layer => layer.LayerName,
+            _ => item?.ToString(),
+        };
+
         private int? ItemIndexOf(SearchEntry entry, object item, PadViewModel pad)
         {
             if (item == null || entry.ItemsPath == null) return null;
@@ -165,12 +222,14 @@ namespace PadForge.Services.Automation
             foreach (var s in _service.AvailableNow())
             {
                 shown.Add(s.Entry);
-                list.Add(new Place
+                var place = new Place
                 {
                     Entry = s.Entry, Item = s.Item, Label = s.Label, Pad = s.Pad, Section = s.Section, ReadValue = s.Value, Showing = true,
                     Id = SearchIds.With(_service.IdOf(s.Entry), s.Entry.Page == SearchPage.Pad ? NumberOf(s.Pad) : null,
                         ItemIndexOf(s.Entry, s.Item, s.Pad), DeviceOf(s.Entry)),
-                });
+                };
+                if (s.Entry.Kind == SearchKind.MenuItem && s.Entry.ItemsList != null) list.AddRange(EachItemsMenu(place));
+                else list.Add(place);
             }
             foreach (var entry in _service.Index)
                 if (!shown.Contains(entry)) list.Add(new Place { Entry = entry, Id = _service.IdOf(entry), Showing = false });
@@ -227,7 +286,8 @@ namespace PadForge.Services.Automation
             if (found != null) return found;
             // An entry's own ID with nothing it is shown for: the first place
             // it shows, on the first controller, item or device that has it.
-            found = all.Where(p => p.Entry != null && _service.IdOf(p.Entry) == want).OrderByDescending(p => p.Showing).FirstOrDefault();
+            found = all.Where(p => p.Entry != null && _service.IdOf(p.Entry) == want && !(p.Entry.ItemsList != null && p.Item != null))
+                .OrderByDescending(p => p.Showing).FirstOrDefault();
             if (found != null) return found;
             // A five-page ID for a controller, item or device that does not
             // show it now: named, and not showing.
@@ -369,9 +429,12 @@ namespace PadForge.Services.Automation
             if (p.Entry == null) return PageName(SearchPage.Dialog);
             if (p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles)
             {
-                if (p.Showing)
-                    return _service.WhereFor(new SearchService.Shown(p.Entry, p.Item, p.Label, p.Pad, p.Section, p.ReadValue));
-                return PageName(p.Entry.Page);
+                if (!p.Showing) return PageName(p.Entry.Page);
+                string where = _service.WhereFor(new SearchService.Shown(p.Entry, p.Item, p.Label, p.Pad, p.Section, p.ReadValue));
+                // An item's own menu: the card or tab it is.
+                if (p.Entry.ItemsList != null && ItemName(p.Item) is { Length: > 0 } item)
+                    where = string.IsNullOrEmpty(where) ? item : where + PadForge.Resources.Strings.Strings.Instance.Search_WhereSeparator + item;
+                return where;
             }
             if (p.Entry.Page == SearchPage.Dialog)
             {
@@ -418,16 +481,20 @@ namespace PadForge.Services.Automation
             }
             if (p.Live?.Payload is DeviceRowViewModel deviceRow && SettingsManager.FindDeviceByInstanceGuid(deviceRow.InstanceGuid) is { } ud)
                 place.Maker = OutsideText.Of(AssistantDeviceMaker.Of(ud));
+            if (p.LiveItem?.Help is { Length: > 0 } help) place.Help = AutomationReadScrub.Text(help);
             if (cls == ReachClass.UsersOwn) return place;
 
+            // A plugin as its card's line shows it: its state, why it stopped,
+            // the devices it added and its signer (#600 item 18).
+            if (p.Live?.Kind == LiveKind.Plugin)
+            {
+                place.ValueText = AutomationReadScrub.ForReach(cls, PluginLine(p.Live.Payload));
+                return place;
+            }
             if (p.LiveItem is { } item)
             {
-                place.ValueText = AutomationReadScrub.ForReach(cls, SafeRead(item.Read));
-                if (item.Write != null)
-                {
-                    place.Takes = "text";
-                    if (place.ValueText != null) place.Value = JsonSerializer.SerializeToElement(place.ValueText);
-                }
+                if (target != null) place.Enabled = target.IsEnabled;
+                DescribeItem(item, place, cls);
                 return place;
             }
             if (p.Entry == null) return place;
@@ -452,6 +519,71 @@ namespace PadForge.Services.Automation
             try { return read?.Invoke(); }
             catch (Exception) { return null; }
         }
+
+        /// <summary>A live item's value, kind, range and choices, as its row
+        /// shows them: a switch on or off, a number with its unit, a choice
+        /// by its words.</summary>
+        private static void DescribeItem(LiveItem item, AssistantPlace place, ReachClass cls)
+        {
+            string raw = AutomationReadScrub.ForReach(cls, SafeRead(item.Read));
+            place.Takes = item.Takes ?? (item.Write != null ? "text" : null);
+            place.Minimum = item.Minimum;
+            place.Maximum = item.Maximum;
+            place.Unit = item.Unit;
+            if (item.Choices != null)
+            {
+                IReadOnlyList<string> choices;
+                try { choices = item.Choices(); }
+                catch (Exception) { choices = null; }
+                place.Choices = choices?.Take(MostChildren).Select(c => AutomationReadScrub.Text(c) ?? string.Empty).ToList();
+            }
+            place.ValueText = raw;
+            if (raw == null) return;
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            switch (place.Takes)
+            {
+                case "switch" when bool.TryParse(raw, out bool on):
+                    place.Value = JsonSerializer.SerializeToElement(on);
+                    place.ValueText = on ? s.Common_On : s.Common_Off;
+                    break;
+                case "number" when double.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out double number):
+                    place.Value = JsonSerializer.SerializeToElement(number);
+                    place.ValueText = item.Unit == null ? raw : raw + " " + item.Unit;
+                    break;
+                default:
+                    if (item.Write != null || place.Takes != null) place.Value = JsonSerializer.SerializeToElement(raw);
+                    break;
+            }
+        }
+
+        /// <summary>A plugin's line as its card shows it: a plugin's state,
+        /// the devices it added and its signer, or the Test Controller's
+        /// state.</summary>
+        private static string PluginLine(object payload) => payload switch
+        {
+            PluginRowItem row => row.State,
+            DashboardViewModel dashboard => dashboard.TestControllerLine,
+            _ => null,
+        };
+
+        /// <summary>The devices a plugin added and PadForge keeps now, by
+        /// their identities: a plugin's, as its card names them, or the Test
+        /// Controller's controllers.</summary>
+        private static HashSet<Guid> PluginDevices(object payload)
+        {
+            var guids = new HashSet<Guid>();
+            if (payload is PluginRowItem row) guids.UnionWith(row.Devices);
+            else if (payload is DashboardViewModel)
+                for (int i = 0; i < PadForge.Services.Plugins.TestControllerPattern.MostControllers; i++)
+                    guids.Add(PadForge.Services.Plugins.BuiltInPlugins.TestControllerGuidOf(i));
+            return guids;
+        }
+
+        /// <summary>The paragraphs a plugin's help declarations give an
+        /// object, in their order: the plugin's own, or a device's.</summary>
+        private static List<string> Paragraphs(IEnumerable<Place> all, string prefix)
+            => all.Select(c => c.LiveItem).Where(li => li != null && li.Paragraph && li.Help != null && li.Id.StartsWith(prefix, StringComparison.Ordinal))
+                .Select(li => AutomationReadScrub.Text(li.Help)).Where(t => !string.IsNullOrEmpty(t)).ToList();
 
         /// <summary>A setting's value, kind, range or choices and whether
         /// its input takes a change now.</summary>
@@ -635,6 +767,62 @@ namespace PadForge.Services.Automation
             return list;
         }
 
+        /// <summary>
+        /// The words of a list's row it has not drawn, as it would draw them
+        /// (#600 item 8): the member it names, else the texts its item
+        /// template shows for the item (the list's own, its selector's, or
+        /// the one its resources keep for the item's type), made apart from
+        /// the list on the item, else the item's text, which the list draws
+        /// as it is. A row the list has drawn is read from what it drew.
+        /// </summary>
+        private static string RowText(ItemsControl list, object item)
+        {
+            if (item is ContentControl || item == null || !string.IsNullOrEmpty(list.DisplayMemberPath)) return ItemText(list, item);
+            var template = list.ItemTemplate ?? list.ItemTemplateSelector?.SelectTemplate(item, list)
+                           ?? list.TryFindResource(new DataTemplateKey(item.GetType())) as DataTemplate;
+            if (template != null && TemplateText(template, item) is { } drawn) return drawn;
+            return ItemText(list, item);
+        }
+
+        /// <summary>The texts a template shows for an item, in order: the
+        /// row made apart from any window, in a presenter of its own as the
+        /// list's own row presents it, with each text's and each part's
+        /// binding read now. A text the template hides is left out. Null when
+        /// the template cannot be made.</summary>
+        private static string TemplateText(DataTemplate template, object item)
+        {
+            var presenter = new ContentPresenter { Content = item, ContentTemplate = template };
+            try
+            {
+                presenter.ApplyTemplate();
+                presenter.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            }
+            catch (Exception) { return null; }
+            var texts = new List<string>();
+            foreach (var text in SearchLocator.VisualDescendants(presenter).OfType<TextBlock>())
+            {
+                Refresh(text, TextBlock.TextProperty);
+                if (string.IsNullOrWhiteSpace(text.Text)) continue;
+                bool hidden = false;
+                for (DependencyObject at = text; at != null && !ReferenceEquals(at, presenter) && !hidden;
+                     at = at is System.Windows.Media.Visual ? System.Windows.Media.VisualTreeHelper.GetParent(at) : null)
+                {
+                    Refresh(at, UIElement.VisibilityProperty);
+                    hidden = at is UIElement { Visibility: not Visibility.Visible };
+                }
+                if (!hidden) texts.Add(text.Text);
+            }
+            return string.Join(" ", texts);
+        }
+
+        /// <summary>Reads a property's binding now, for an element no window
+        /// lays out.</summary>
+        private static void Refresh(DependencyObject element, DependencyProperty property)
+        {
+            try { BindingOperations.GetBindingExpressionBase(element, property)?.UpdateTarget(); }
+            catch (InvalidOperationException) { }
+        }
+
         private static string ItemText(ItemsControl list, object item)
         {
             if (item is ContentControl cc) return cc.Content as string ?? cc.Content?.ToString() ?? string.Empty;
@@ -730,7 +918,11 @@ namespace PadForge.Services.Automation
                         element = _pageOf(SearchPage.Extras)?.FindName(e.ExtraKey + "Page") as FrameworkElement;
                         break;
                     case SearchKind.Dialog:
-                        children = all.Where(c => c.Entry != null && c.Entry.Page == SearchPage.Dialog && c.Entry.Dialog == e.Dialog && c.Entry.Kind != SearchKind.Dialog);
+                        // Its markup's entries, and the items the dialog
+                        // gives the catalog while it is open, such as Find a
+                        // Mapping's list.
+                        children = all.Where(c => (c.Entry != null && c.Entry.Page == SearchPage.Dialog && c.Entry.Dialog == e.Dialog && c.Entry.Kind != SearchKind.Dialog)
+                                                  || (c.LiveItem is { } li && li.Id.StartsWith("dialog/" + e.Dialog + "/", StringComparison.Ordinal))).ToList();
                         element = p.Root;
                         ReadDialog(read, p);
                         break;
@@ -774,11 +966,32 @@ namespace PadForge.Services.Automation
                             try { all = Places(otherControllers: false); }
                             finally { devices.SelectedDevice = before; }
                             // The values were read while the device showed.
-                            read.Children = DeviceChildren(all, row, prefix);
-                            return Finish(read, null);
                         }
                         read.Children = DeviceChildren(all, row, prefix);
+                        // The help its plugin gives it reads with it, as its
+                        // panel shows it (#600 item 18).
+                        var paragraphs = Paragraphs(all, prefix);
+                        read.Lines.AddRange(paragraphs);
+                        if (paragraphs.Count > 0) read.Place.Help = string.Join(" ", paragraphs);
                         return Finish(read, null);
+                    }
+                    case LiveKind.Plugin:
+                    {
+                        // A plugin as its card shows it (#600 item 18): its
+                        // line, which holds its state, why it stopped, the
+                        // devices it added and its signer, why its settings
+                        // are missing, its help, then the devices by their
+                        // own IDs and what it declared.
+                        var payload = p.Live.Payload;
+                        var added = PluginDevices(payload);
+                        children = all.Where(c => (c.Live?.Kind == LiveKind.Device && c.Live.Payload is DeviceRowViewModel device && added.Contains(device.InstanceGuid))
+                                                  || (c.Live?.Payload is LiveItem li && li.Id.StartsWith(prefix, StringComparison.Ordinal)));
+                        if (read.Place.ValueText is { Length: > 0 } line) read.Lines.Add(line);
+                        if (payload is PluginRowItem { Settings: { MissingLine: { Length: > 0 } missing } }) read.Lines.Add(AutomationReadScrub.Text(missing));
+                        var paragraphs = Paragraphs(all, prefix);
+                        read.Lines.AddRange(paragraphs);
+                        if (paragraphs.Count > 0) read.Place.Help = string.Join(" ", paragraphs);
+                        break;
                     }
                     default:
                         var own = p.LiveItem;
@@ -788,8 +1001,18 @@ namespace PadForge.Services.Automation
                         break;
                 }
             }
-            read.Children = children.Take(MostChildren).Select(Describe).ToList();
-            return Finish(read, element);
+            var under = children.Take(MostChildren).ToList();
+            read.Children = under.Select(Describe).ToList();
+            // A list an item stands for reads through that item, with its
+            // rows as the item words them.
+            var standsFor = new HashSet<DependencyObject>(under.Select(c => c.LiveItem?.Element is { } find ? SafeElement(find) : null).Where(x => x != null));
+            return Finish(read, element, standsFor);
+        }
+
+        private static FrameworkElement SafeElement(Func<FrameworkElement> find)
+        {
+            try { return find(); }
+            catch (Exception) { return null; }
         }
 
         private List<AssistantPlace> DeviceChildren(List<Place> all, DeviceRowViewModel row, string prefix)
@@ -797,9 +1020,9 @@ namespace PadForge.Services.Automation
                               || (c.Live?.Payload is LiveItem li && li.Id.StartsWith(prefix, StringComparison.Ordinal)))
                 .Take(MostChildren).Select(Describe).ToList();
 
-        private AssistantRead Finish(AssistantRead read, FrameworkElement element)
+        private AssistantRead Finish(AssistantRead read, FrameworkElement element, ISet<DependencyObject> standsFor = null)
         {
-            if (element != null && element.IsVisible) ReadLines(element, read);
+            if (element != null && element.IsVisible) ReadLines(element, read, standsFor);
             if (read.WaitingForPerson == null) read.WaitingForPerson = AssistantWindowsDialogs.Waiting(_parts.MainWindow?.Invoke());
             return read;
         }
@@ -845,7 +1068,7 @@ namespace PadForge.Services.Automation
         /// <summary>Every line of text an element shows, and its lists, each
         /// scrubbed by the class of where it sits: a line in a place that is
         /// the user's alone is not read.</summary>
-        private static void ReadLines(FrameworkElement root, AssistantRead read)
+        private static void ReadLines(FrameworkElement root, AssistantRead read, ISet<DependencyObject> standsFor = null)
         {
             var listParts = new HashSet<DependencyObject>();
             foreach (var d in SearchLocator.VisualDescendants(root))
@@ -853,6 +1076,11 @@ namespace PadForge.Services.Automation
                 if (d is ItemsControl list && list is not MenuBase && list.IsVisible && list.Items.Count > 0 && !listParts.Contains(list))
                 {
                     if (Reach.Effective(list) == ReachClass.UsersOwn) continue;
+                    if (standsFor != null && standsFor.Contains(list))
+                    {
+                        foreach (var inner in SearchLocator.VisualDescendants(list)) listParts.Add(inner);
+                        continue;
+                    }
                     var rows = new AssistantListRead
                     {
                         Name = AutomationReadScrub.Text(AutomationProperties.GetName(list)),
@@ -860,10 +1088,11 @@ namespace PadForge.Services.Automation
                     };
                     foreach (object item in list.Items)
                     {
+                        if (rows.Rows.Count >= MostChildren) break;
                         string words = list.ItemContainerGenerator.ContainerFromItem(item) is DependencyObject container
                             ? string.Join(" ", SearchLocator.VisualDescendants(container).OfType<TextBlock>().Where(t => t.IsVisible && !string.IsNullOrWhiteSpace(t.Text)).Select(t => t.Text))
-                            : ItemText(list, item);
-                        if (rows.Rows.Count < MostChildren) rows.Rows.Add(AutomationReadScrub.Text(words) ?? string.Empty);
+                            : RowText(list, item);
+                        rows.Rows.Add(AutomationReadScrub.Text(words) ?? string.Empty);
                     }
                     read.Lists.Add(rows);
                     foreach (var inner in SearchLocator.VisualDescendants(list)) listParts.Add(inner);
@@ -894,8 +1123,20 @@ namespace PadForge.Services.Automation
             var (cls, why) = ClassOf(p);
             RefuseUsersOwn(cls);
             if (cls != ReachClass.Asks) return null;
-            // An extra that listens on the network asks when it is turned on.
-            if (why == ReachReason.Network && value.ValueKind != JsonValueKind.True) return null;
+            // An extra that listens on the network asks when it is turned on,
+            // and only when turning it on starts a listener (#600): the Head
+            // Tracking switch can bring back inputs that listen on nothing.
+            // A setting that lets the foreground watcher put a profile in
+            // force names each profile that would turn one on, off now, and
+            // asks nothing when none would (AssistantScan.NetworkLines).
+            IReadOnlyList<string> lines = null;
+            if (why == ReachReason.Network)
+            {
+                object data = p.Entry == null ? null : p.Item ?? RootOf(p);
+                if (value.ValueKind != JsonValueKind.True || !AssistantScan.StartsAListener(p.Entry?.Value?.Path, data)) return null;
+                lines = AssistantScan.NetworkLines(p.Entry?.Value?.Path, data, _vm);
+                if (lines is { Count: 0 }) return null;
+            }
             string name = WordsOf(p);
             string valueText = value.ValueKind switch
             {
@@ -904,7 +1145,10 @@ namespace PadForge.Services.Automation
                 JsonValueKind.String => value.GetString(),
                 _ => value.ToString(),
             };
-            return new AssistantAsk(AssistantToolWords.AskSetting(name), new[] { AssistantToolWords.SetsTo(name, valueText), AssistantToolWords.Reason(why) });
+            var detail = new List<string> { AssistantToolWords.SetsTo(name, valueText) };
+            if (lines != null) detail.AddRange(lines);
+            detail.Add(AssistantToolWords.Reason(why));
+            return new AssistantAsk(AssistantToolWords.AskSetting(name), detail);
         });
 
         public AssistantPlace Set(string id, JsonElement value) => WithDevice(id, () =>
@@ -917,7 +1161,12 @@ namespace PadForge.Services.Automation
             if (p.LiveItem is { } item)
             {
                 if (item.Write == null) throw new AssistantRefusal("not-available", "This takes no value from a program. press presses it.");
-                item.Write(TextOf(value));
+                if (Target(p) is { IsEnabled: false })
+                    throw new AssistantRefusal("not-available", "The page has this turned off for now. show takes the user to it, where the reason shows.");
+                // A value the item does not take is refused with its own
+                // words, such as a plugin setting's range.
+                try { item.Write(TextOf(value)); }
+                catch (ArgumentException refused) { throw new AssistantRefusal("out-of-range", refused.Message); }
                 return Describe(Resolve(id));
             }
             if (p.Entry == null)
@@ -1169,15 +1418,21 @@ namespace PadForge.Services.Automation
         private static bool IsDialogId(string id)
             => id.StartsWith("dialog.dialog/", StringComparison.Ordinal) || id.StartsWith("open/", StringComparison.Ordinal);
 
-        private AssistantPressPlan Plan(Place p, (ReachClass Class, ReachReason Why) reach, Action press, FrameworkElement target)
+        /// <param name="does">What the press would make PadForge do, one line
+        /// each: a press with lines asks first, whatever its class, and the
+        /// card lists them after its reason, each once.</param>
+        private AssistantPressPlan Plan(Place p, (ReachClass Class, ReachReason Why) reach, Action press, FrameworkElement target,
+            IReadOnlyList<string> does = null)
         {
             RefuseUsersOwn(reach.Class);
             if (target != null && !target.IsEnabled)
                 throw new AssistantRefusal("not-available", "The page has this turned off for now. show takes the user to it, where the reason shows.");
             var place = Describe(p);
-            AssistantAsk ask = reach.Class == ReachClass.Asks
-                ? new AssistantAsk(AssistantToolWords.AskPress(place.Name), new[] { AssistantToolWords.Reason(reach.Why) })
-                : null;
+            var detail = new List<string>();
+            if (reach.Class == ReachClass.Asks) detail.Add(AssistantToolWords.Reason(reach.Why));
+            foreach (string line in does ?? Array.Empty<string>())
+                if (!detail.Contains(line)) detail.Add(line);
+            AssistantAsk ask = detail.Count > 0 ? new AssistantAsk(AssistantToolWords.AskPress(place.Name), detail) : null;
             return new AssistantPressPlan { Place = place, Ask = ask, Press = press };
         }
 
@@ -1198,26 +1453,170 @@ namespace PadForge.Services.Automation
         {
             FrameworkElement root = p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles
                 ? _pageOf(p.Entry.Page) : p.Root ?? _parts.CatalogPageOf?.Invoke(p.Entry.Page);
-            string header = SearchLocator.LabelText(p.Entry.Label, null);
-            MenuItem found = null;
-            FrameworkElement owner = null;
-            if (root != null)
-            {
-                foreach (var element in SearchLocator.LogicalDescendants(root).OfType<FrameworkElement>())
-                {
-                    if (element.ContextMenu is not { } menu || !element.IsVisible) continue;
-                    found = menu.Items.OfType<MenuItem>().FirstOrDefault(m => string.Equals(m.Header as string, header, StringComparison.CurrentCulture));
-                    if (found != null) { owner = element; break; }
-                }
-            }
+            if (NamesNoItem(p)) throw new AssistantRefusal("not-available", EachOwnWords);
+            var (owner, found) = MenuOf(p, root);
             if (found == null) throw new AssistantRefusal("not-available", "The page does not show the button whose menu holds this now.");
+            // A controller page's menu acts on the controller the page
+            // shows, as a button's press does. A card's or a tab's own menu
+            // acts on that card or tab: its button's data, as the card's
+            // More hands it (ProfilesPage.CardMore_Click).
+            object data = null;
+            if (p.Entry.Page == SearchPage.Pad)
+            {
+                if (!p.Showing || (p.Pad != null && !ReferenceEquals(root.DataContext, p.Pad)))
+                    throw new AssistantRefusal("not-available", "The page does not show this button now, so it cannot be pressed.");
+                data = root.DataContext;
+            }
+            if (p.Entry.ItemsList != null) data = owner.DataContext;
+            if (data != null) HandOver(owner, data);
             var reach = ClassOf(p, owner);
             var (itemClass, itemWhy) = Reach.Of(found);
             if (itemClass > reach.Class) reach = (itemClass, itemWhy);
             if (!found.IsEnabled) throw new AssistantRefusal("not-available", "The menu has this item turned off for now.");
             var item = found;
-            return Plan(p, reach, () => Invoke(item), owner);
+            // A layer tab's Paste replaces the layer's rows with the rows a
+            // layer's Copy kept (#600). Its card names the keys they would
+            // press on a keyboard and mouse controller, as a controller's
+            // Paste names its own, and the press lands the rows the card
+            // read (PadPage.PasteLayer).
+            if (p.Entry.Handler == "ShiftLayer_Paste_Click" && root?.DataContext is PadViewModel layerPad && owner.Tag is string mask)
+            {
+                var rows = PadPage.LayerClipboard
+                    ?? throw new AssistantRefusal("not-available", "No layer's rows are copied. A layer tab's Copy keeps them first.");
+                var keys = layerPad.OutputType == PadForge.Engine.VirtualControllerType.KeyboardMouse ? RowKeyLines(rows, layerPad) : null;
+                return Plan(p, reach, () => PadPage.PasteLayer(layerPad, mask, rows), owner, keys);
+            }
+            // A Paste lands the text its card read: another program can
+            // change the clipboard while the card waits, so the press hands
+            // that text to the paste, which then reads the clipboard no more
+            // (MainWindow.OnPasteSettings, OnPasteMacro).
+            if (IsPaste(p.Entry.Handler) && data is PadViewModel pad)
+            {
+                string scanned = ClipboardText();
+                bool settings = p.Entry.Handler == "PasteSettingsCommand";
+                return Plan(p, reach, () =>
+                {
+                    var command = settings ? pad.PasteSettingsCommand : pad.PasteMacroCommand;
+                    if (!command.CanExecute(null)) throw new AssistantRefusal("not-available", "The menu has this item turned off for now.");
+                    if (settings) pad.PasteSettingsText(scanned);
+                    else pad.PasteMacroText(scanned);
+                }, owner, PasteLines(p.Entry.Handler, scanned, pad));
+            }
+            return Plan(p, reach, () =>
+            {
+                if (data != null) HandOver(owner, data);
+                Invoke(item);
+            }, owner);
         }
+
+        /// <summary>
+        /// Gives a button's menu what a person's opening of it gives it: the
+        /// controller page's More menus the page's controller
+        /// (PadPage.MoreMenu_Click), a card's or a tab's own menu its
+        /// button's data (ProfilesPage.CardMore_Click, and a layer tab's
+        /// right-click), and each the button as where it opens, which a
+        /// layer tab's items read their layer from. A menu no one opened has
+        /// neither, so its items' commands were unbound and a press did
+        /// nothing. One opened on another controller kept that controller.
+        /// </summary>
+        private static void HandOver(FrameworkElement owner, object data)
+        {
+            if (owner.ContextMenu is not { } menu) return;
+            if (!ReferenceEquals(menu.DataContext, data)) menu.DataContext = data;
+            if (!ReferenceEquals(menu.PlacementTarget, owner)) menu.PlacementTarget = owner;
+        }
+
+        /// <summary>What a Paste would make PadForge do, read from what the
+        /// clipboard holds (#600 item 2's indirect route). A controller's
+        /// settings are the profile import they amount to, and they carry
+        /// their macros. A macro is pasted whole. Then one line for each
+        /// program, key, text and mouse input, as save_macro's card says
+        /// them. Onto a keyboard and mouse controller, the keys after them
+        /// (<see cref="KeyLines"/>), so the card's first lines keep the
+        /// macros' whatever the table's length. Empty for any other press,
+        /// and for a clipboard the paste would turn down.</summary>
+        private static List<string> PasteLines(string handler, string text, PadViewModel target)
+        {
+            var lines = new List<string>();
+            if (!IsPaste(handler) || string.IsNullOrWhiteSpace(text)) return lines;
+            string macros = text;
+            List<string> keys = null;
+            if (handler == "PasteSettingsCommand")
+            {
+                PadForge.Engine.Data.PadSetting settings;
+                PadForge.Engine.VirtualControllerType sourceType = default;
+                bool sourceIsExtended = false;
+                try { settings = PadForge.Engine.Data.PadSetting.FromJson(text, out sourceType, out sourceIsExtended); }
+                catch (Exception) { settings = null; }
+                if (settings == null) return lines;
+                lines.Add(AssistantToolWords.Reason(ReachReason.ImportsProfile));
+                macros = settings.SlotMacrosJson;
+                if (target?.OutputType == PadForge.Engine.VirtualControllerType.KeyboardMouse)
+                    keys = KeyLines(settings, sourceType, sourceIsExtended, target);
+            }
+            if (!string.IsNullOrEmpty(macros) && PadForge.Services.SettingsService.TryParseMacroClipboard(macros) is { Macros: { } list })
+            {
+                foreach (var macro in list)
+                    foreach (string line in AssistantScan.Macro(macro))
+                        if (!lines.Contains(line)) lines.Add(line);
+            }
+            foreach (string line in keys ?? new List<string>())
+                if (!lines.Contains(line)) lines.Add(line);
+            return lines;
+        }
+
+        /// <summary>What a controller's settings pasted onto a keyboard and
+        /// mouse controller would press: the keyboard line every other tool
+        /// gives such a controller (add_controller, set_controller_type,
+        /// assign_device, auto_map), whatever the settings hold, then each
+        /// key a pasted row maps, as set_mappings' card names one, by the
+        /// key's own name on the controller's page and the row's input. The
+        /// rows are the ones the paste would land
+        /// (<see cref="InputService.PastedRows"/>).</summary>
+        private static List<string> KeyLines(PadForge.Engine.Data.PadSetting settings,
+            PadForge.Engine.VirtualControllerType sourceType, bool sourceIsExtended, PadViewModel target)
+        {
+            List<PadForge.Engine.Data.MappingRow> rows;
+            try { rows = InputService.PastedRows(settings, sourceType, sourceIsExtended, InputService.SlotLayoutOf(target), target.PadIndex); }
+            catch (Exception) { return new List<string> { AssistantToolWords.KeyboardMouseLine() }; }
+            return RowKeyLines(rows, target);
+        }
+
+        /// <summary>What rows landed on a keyboard and mouse controller would
+        /// press: the keyboard line, then each key a row with a source maps,
+        /// by the key's own name on the controller's page and the row's
+        /// input, as set_mappings' card names one.</summary>
+        private static List<string> RowKeyLines(IEnumerable<PadForge.Engine.Data.MappingRow> rows, PadViewModel target)
+        {
+            var lines = new List<string> { AssistantToolWords.KeyboardMouseLine() };
+            foreach (var row in rows)
+            {
+                if (row == null || !InputService.HasSource(row)) continue;
+                string key = target.Mappings.FirstOrDefault(m => m.TargetSettingName == row.Target)?.TargetLabel ?? row.Target;
+                string input = row.Sources.FirstOrDefault(s => !string.IsNullOrEmpty(s?.Descriptor))?.Descriptor ?? "?";
+                string line = AssistantToolWords.KeyLine(key, input);
+                if (!lines.Contains(line)) lines.Add(line);
+            }
+            return lines;
+        }
+
+        /// <summary>Whether a menu item's command is a Paste: a controller's
+        /// settings or a macro, from the clipboard.</summary>
+        private static bool IsPaste(string handler) => handler is "PasteSettingsCommand" or "PasteMacroCommand";
+
+        private static string ClipboardText()
+        {
+            try { return ReadClipboard?.Invoke(); }
+            catch (Exception) { return null; }
+        }
+
+        /// <summary>Reads the clipboard's text for a paste's question,
+        /// replaceable in tests.</summary>
+        internal static Func<string> ReadClipboard = () =>
+        {
+            try { return Clipboard.ContainsText() ? Clipboard.GetText() : null; }
+            catch (System.Runtime.InteropServices.COMException) { return null; }
+        };
 
         private AssistantPressPlan PlanDialogButton(string dialogId, string buttonKey, string full)
         {
@@ -1238,14 +1637,50 @@ namespace PadForge.Services.Automation
                 if (!button.Enabled) throw new AssistantRefusal("not-available", "The dialog has this button turned off for now.");
                 var element = button.Element;
                 var place = new AssistantPlace { Id = full, Kind = "action", Name = AutomationReadScrub.Text(button.Words), Where = dialog.Title, Reach = AutomationReadScrub.ReachWord(cls) };
+                // A button that brings a profile into force names each
+                // extra it would turn on that listens on the network, as the
+                // profile switch's card does (AutomationCommands.SwitchAsked),
+                // and goes only on what the card named. Its reader gives the
+                // card's lines (Reach.Starts). A button that asks for the
+                // network's sake asks only when its reader names something,
+                // as a setting's switch does (AskFor), and the network's line
+                // comes after what turns on.
+                var starts = element == null ? null : Reach.GetStarts(element);
+                var named = Starting(starts);
+                bool network = cls == ReachClass.Asks && button.Why == ReachReason.Network;
+                var detail = new List<string>();
+                if (cls == ReachClass.Asks && !network) detail.Add(AssistantToolWords.Reason(button.Why));
+                detail.AddRange(named);
+                if (named.Count > 0 || (network && starts == null)) detail.Add(AssistantToolWords.ListensOnNetwork());
+                Action check = starts == null ? null : () =>
+                {
+                    if (Starting(starts).Any(line => !named.Contains(line)))
+                        throw new AssistantRefusal("not-available", "By now the press would turn on more than PadForge asked about. Press again to ask about what it would turn on now.");
+                };
                 return new AssistantPressPlan
                 {
                     Place = place,
-                    Ask = cls == ReachClass.Asks ? new AssistantAsk(AssistantToolWords.AskPress(place.Name), new[] { AssistantToolWords.Reason(button.Why) }) : null,
-                    Press = () => Invoke(element),
+                    Ask = detail.Count > 0 ? new AssistantAsk(AssistantToolWords.AskPress(place.Name), detail) : null,
+                    Press = () =>
+                    {
+                        check?.Invoke();
+                        Invoke(element);
+                    },
+                    Check = check,
                 };
             }
             throw new AssistantRefusal("unknown-setting", "That dialog has no button " + buttonKey + ". read of the dialog gives its buttons.");
+        }
+
+        /// <summary>What a press would turn on that listens on the network,
+        /// as the element's <see cref="Reach.StartsProperty"/> reads it now:
+        /// each of the card's lines once, none when it names nothing or
+        /// cannot be read.</summary>
+        private static List<string> Starting(Func<IReadOnlyList<string>> starts)
+        {
+            if (starts == null) return new List<string>();
+            try { return (starts() ?? Array.Empty<string>()).Where(line => !string.IsNullOrEmpty(line)).Distinct().ToList(); }
+            catch (Exception) { return new List<string>(); }
         }
 
         /// <summary>A press through the element's own automation peer, as a
@@ -1350,6 +1785,61 @@ namespace PadForge.Services.Automation
         //  show
         // ─────────────────────────────────────────────
 
+        /// <summary>The words a show and a walk refuse a place with that the
+        /// page does not show now (#600 item 7), the first build's.</summary>
+        internal const string NotShownWords = "The page does not show this setting now, for that controller or device.";
+
+        public AssistantPlace CheckShow(AssistantShowRequest request) => CheckShow(request, out _);
+
+        /// <summary>Every step checked, read for the controller or device its
+        /// ID names as read reads it, so a place on another device's panel
+        /// is judged by that device. <paramref name="all"/> is the catalog
+        /// read for the device the page shows now, for the show to
+        /// use.</summary>
+        private AssistantPlace CheckShow(AssistantShowRequest request, out List<Place> all)
+        {
+            List<Place> shown = null;
+            AssistantPlace last = null;
+            foreach (var s in request.Steps)
+            {
+                string id = s.Place;
+                last = NamesAnotherDevice(id)
+                    ? WithDevice(id, () => Checked(id, Places()))
+                    : Checked(id, shown ??= Places());
+            }
+            all = shown ?? Places();
+            return last;
+        }
+
+        /// <summary>Whether a Devices-page ID names a device other than the
+        /// one the page shows now.</summary>
+        private bool NamesAnotherDevice(string id)
+        {
+            if (!SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device) || device == null) return false;
+            return _vm.Devices?.SelectedDevice is not { } row || AutomationDevices.IdOf(row.InstanceGuid) != device;
+        }
+
+        private AssistantPlace Checked(string id, List<Place> all)
+        {
+            var p = Resolve(id, all);
+            var (cls, _) = ClassOf(p);
+            if (cls == ReachClass.UsersOwn)
+                throw new AssistantRefusal("users-own", "A place that is the user's alone is not pointed at by a program. Tell the user where it is in words.");
+            if (NamesNoItem(p)) throw new AssistantRefusal("not-available", EachOwnWords);
+            if (!p.Showing) throw new AssistantRefusal("not-available", NotShownWords);
+            if (p.LiveItem is { Kind: LiveKind.PluginDeclaration } && HolderOf(p, all) == null)
+                throw new AssistantRefusal("not-available", NotShownWords);
+            return Describe(p);
+        }
+
+        /// <summary>The device row a Devices-page ID names after its
+        /// <c>@d</c>, or null.</summary>
+        private DeviceRowViewModel DeviceRowOf(string id)
+        {
+            if (!SearchIds.TryRead(id?.Trim(), out _, out _, out _, out string device) || device == null) return null;
+            return _vm.Devices?.Devices?.FirstOrDefault(r => AutomationDevices.IdOf(r.InstanceGuid) == device);
+        }
+
         public AssistantShown Show(AssistantShowRequest request)
         {
             var pointer = _parts.Pointer ?? throw new AssistantRefusal("not-available", "PadForge cannot point here.");
@@ -1358,18 +1848,18 @@ namespace PadForge.Services.Automation
                 bool had = pointer.Clear();
                 return new AssistantShown { Shown = false, Window = _windowPlace(), Message = had ? "The callout is gone." : "Nothing was pointed at." };
             }
-            var all = Places();
+            // Nothing plays until every step is checked.
+            CheckShow(request, out var all);
             var steps = new List<AssistantPointer.Step>();
             for (int i = 0; i < request.Steps.Count; i++)
             {
                 var s = request.Steps[i];
                 var p = Resolve(s.Place, all);
-                var (cls, _) = ClassOf(p);
-                if (cls == ReachClass.UsersOwn)
-                    throw new AssistantRefusal("users-own", "A place that is the user's alone is not pointed at by a program. Tell the user where it is in words.");
-                if (request.Walk && i == request.Steps.Count - 1)
-                    steps.AddRange(WalkTo(p));
-                steps.Add(StepOf(p, s.Words, s.Advance, s.Seconds));
+                // A walk rings each click on the way to its last place, and
+                // the user makes them: that step leaves every fold shut.
+                bool walked = request.Walk && i == request.Steps.Count - 1;
+                if (walked) steps.AddRange(WalkTo(p));
+                steps.Add(StepOf(p, s.Words, s.Advance, s.Seconds, openFolds: !walked));
             }
             pointer.Play(request.Program, steps, request.Owner);
             var first = Resolve(request.Steps[0].Place, all);
@@ -1389,7 +1879,7 @@ namespace PadForge.Services.Automation
 
         /// <summary>One step: how to bring its place up, and how to find its
         /// element once it is up.</summary>
-        private AssistantPointer.Step StepOf(Place p, string words, AssistantAdvance advance, int seconds)
+        private AssistantPointer.Step StepOf(Place p, string words, AssistantAdvance advance, int seconds, bool openFolds = true)
         {
             string id = p.Id;
             return new AssistantPointer.Step
@@ -1397,27 +1887,62 @@ namespace PadForge.Services.Automation
                 Words = words,
                 Advance = advance,
                 Seconds = seconds,
-                Open = () => OpenPlace(id),
+                Open = () => OpenPlace(id, openFolds),
                 Find = () => ElementOf(id),
             };
         }
 
         /// <summary>Takes the page to a place, as Search's landing does,
         /// without the keyboard's focus and without the ring, which the
-        /// pointer draws and holds itself.</summary>
-        private void OpenPlace(string id)
+        /// pointer draws and holds itself. With <paramref name="openFolds"/>
+        /// false it opens no More row or fold card on the way: a walk's
+        /// user opens them.</summary>
+        private void OpenPlace(string id, bool openFolds = true)
         {
+            // A place on another device's panel: that device's panel opens
+            // first, as Search's landing on a device opens it. A walk's user
+            // picks the device's row in a step of its own.
+            if (openFolds && NamesAnotherDevice(id) && DeviceRowOf(id) is { } row)
+                _navigator.Open(new SearchResult { Target = SearchTarget.Device, Payload = row }, takeFocus: false);
             Place p;
             try { p = Resolve(id); }
             catch (AssistantRefusal) { return; }
             if (p.Entry != null && p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles)
             {
-                _navigator.Open(new SearchResult { Target = SearchTarget.Entry, Entry = p.Entry, Payload = p.Item ?? p.Label, Pad = p.Pad }, takeFocus: false, ring: false);
+                _navigator.Open(new SearchResult { Target = SearchTarget.Entry, Entry = p.Entry, Payload = p.Item ?? p.Label, Pad = p.Pad }, takeFocus: false, ring: false, openFolds: openFolds);
+                return;
+            }
+            if (p.LiveItem is { Kind: LiveKind.PluginDeclaration } declared)
+            {
+                // Its plugin's card on the Plugins page, or its device's
+                // panel, then each fold on the way to it, the card's own
+                // among them, unless a walk's user opens them. A page that
+                // just came up draws its cards when it lays out, so the folds
+                // open again then, as Search's landing waits for the layout
+                // (SearchNavigator.Open posts its Land at Loaded).
+                if (HolderOf(p) is not { } holder) return;
+                OpenPlace(holder.Id, openFolds);
+                if (!openFolds) return;
+                string key = KeyOf(declared);
+                void OpenOnTheWay()
+                {
+                    if (DeclarationSpot(HolderCard(holder), key) is { } spot) SearchNavigator.OpenFolds(spot, null);
+                }
+                OpenOnTheWay();
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, new Action(OpenOnTheWay));
                 return;
             }
             if (p.Live == null) return;
             switch (p.Live.Kind)
             {
+                // Opening a device's panel opens the Not Connected card that
+                // holds an offline device's row: a walk's user opens it, so
+                // a walk only goes to the page. A row the search box or a
+                // segment hides has no list to stand in, and its panel
+                // opens, which empties them.
+                case LiveKind.Device when !openFolds && ListHolding(_pageOf(SearchPage.Devices), p.Live.Payload) != null:
+                    _navigator.Open(new SearchResult { Target = SearchTarget.Page, Payload = "Devices" }, takeFocus: false);
+                    break;
                 case LiveKind.Device:
                     _navigator.Open(new SearchResult { Target = SearchTarget.Device, Payload = p.Live.Payload }, takeFocus: false);
                     break;
@@ -1438,10 +1963,13 @@ namespace PadForge.Services.Automation
         /// sidebar entry, a dialog, or a menu item's button.</summary>
         internal FrameworkElement ElementOf(string id)
         {
+            var all = Places(otherControllers: false);
             Place p;
-            try { p = Resolve(id, Places(otherControllers: false)); }
+            try { p = Resolve(id, all); }
             catch (AssistantRefusal) { return null; }
-            if (p.LiveItem is { } item) return item.Element?.Invoke();
+            if (p.LiveItem is { } item)
+                return item.Element?.Invoke()
+                       ?? (item.Kind == LiveKind.PluginDeclaration ? DeclarationIn(HolderCard(HolderOf(p, all)), KeyOf(item)) : null);
             if (p.Entry == null && p.Live == null) return p.Root;
             if (p.Live != null)
             {
@@ -1451,6 +1979,7 @@ namespace PadForge.Services.Automation
                     case LiveKind.Controller: return _parts.NavItem?.Invoke("Pad" + ((int)p.Live.Payload + 1).ToString(CultureInfo.InvariantCulture));
                     case LiveKind.Device: return RowElement(_pageOf(SearchPage.Devices), p.Live.Payload);
                     case LiveKind.Profile: return RowElement(_pageOf(SearchPage.Profiles), p.Live.Payload);
+                    case LiveKind.Plugin: return PluginCard(p.Live.Payload);
                     default: return null;
                 }
             }
@@ -1459,12 +1988,8 @@ namespace PadForge.Services.Automation
             if (p.Entry.Kind == SearchKind.Extra && _pageOf(SearchPage.Extras) is ExtrasPage extras)
                 return extras.FindName(p.Entry.ExtraKey + "Tile") as FrameworkElement;
             if (p.Entry.Kind == SearchKind.MenuItem)
-            {
-                var root = _pageOf(p.Entry.Page) ?? p.Root;
-                string header = SearchLocator.LabelText(p.Entry.Label, null);
-                return root == null ? null : SearchLocator.LogicalDescendants(root).OfType<FrameworkElement>()
-                    .FirstOrDefault(e => e.IsVisible && e.ContextMenu is { } m && m.Items.OfType<MenuItem>().Any(i => string.Equals(i.Header as string, header, StringComparison.CurrentCulture)));
-            }
+                return MenuOf(p, _pageOf(p.Entry.Page) ?? p.Root).Owner;
+            if (p.Entry.RowOptions) return RowOptionElement(p.Entry);
             if (p.Entry.Page is SearchPage.Pad or SearchPage.Settings or SearchPage.Extras or SearchPage.Devices or SearchPage.Profiles)
             {
                 _service.Locator.Reset();
@@ -1472,6 +1997,183 @@ namespace PadForge.Services.Automation
                 return label == null ? null : SearchLocator.TargetOf(label, p.Entry);
             }
             return Target(p);
+        }
+
+        /// <summary>The automation ID of the Test Controller's card on the
+        /// Plugins page.</summary>
+        internal const string TestControllerCardId = "Plugins_TestControllerCard";
+
+        /// <summary>A plugin's card on the Plugins page, drawn now: a
+        /// plugin's own by its row and its card's ID, the Test Controller's
+        /// by its card's ID.</summary>
+        private FrameworkElement PluginCard(object payload)
+        {
+            var extras = _pageOf(SearchPage.Extras);
+            if (extras == null) return null;
+            string id = payload switch
+            {
+                PluginRowItem row => row.FoldId,
+                DashboardViewModel => TestControllerCardId,
+                _ => null,
+            };
+            if (id == null) return null;
+            return SearchLocator.VisualDescendants(extras).OfType<PadForge.Controls.FoldCard>()
+                .FirstOrDefault(card => AutomationProperties.GetAutomationId(card) == id
+                                        && (payload is not PluginRowItem || ReferenceEquals(card.DataContext, payload)));
+        }
+
+        /// <summary>The place a plugin's declaration sits under, as its ID
+        /// begins: the plugin's own, the Test Controller's, or the device's
+        /// whose row the Devices page has. Null for any other place.</summary>
+        private Place HolderOf(Place p, List<Place> all = null)
+        {
+            if (p.LiveItem is not { Kind: LiveKind.PluginDeclaration } item) return null;
+            int slash = item.Id.LastIndexOf('/');
+            if (slash <= 0) return null;
+            try
+            {
+                var holder = Resolve(item.Id.Substring(0, slash), all);
+                return holder.Live?.Kind is LiveKind.Plugin or LiveKind.Device ? holder : null;
+            }
+            catch (AssistantRefusal) { return null; }
+        }
+
+        /// <summary>A declaration's key: its ID's last part, which holds no
+        /// slash (ProgramDeviceDeclaration.IsKey).</summary>
+        private static string KeyOf(LiveItem item) => item.Id.Substring(item.Id.LastIndexOf('/') + 1);
+
+        /// <summary>The card a holder's declarations are drawn in: a plugin's
+        /// card on the Plugins page, or the plugin card of the device's
+        /// panel while the panel shows that device.</summary>
+        private FrameworkElement HolderCard(Place holder)
+        {
+            switch (holder?.Live?.Kind)
+            {
+                case LiveKind.Plugin:
+                    return PluginCard(holder.Live.Payload);
+                case LiveKind.Device:
+                    if (holder.Live.Payload is not DeviceRowViewModel row || _vm.Devices?.SelectedDevice?.InstanceGuid != row.InstanceGuid) return null;
+                    return DevicePluginCard();
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>The device panel's card for a plugin's device.</summary>
+        private FrameworkElement DevicePluginCard() => _pageOf(SearchPage.Devices)?.FindName("PluginDeviceCard") as FrameworkElement;
+
+        /// <summary>The control a plugin's settings view draws for a
+        /// declaration in a card: the element of its row that carries its
+        /// AutomationId, or the row itself for a paragraph. Found by the
+        /// row's data, so no other element of that ID is taken. Null until
+        /// the card drew its rows.</summary>
+        private static FrameworkElement DeclarationIn(FrameworkElement card, string key)
+        {
+            if (card == null) return null;
+            FrameworkElement row = null;
+            foreach (var element in SearchLocator.VisualDescendants(card).OfType<FrameworkElement>())
+            {
+                if (element.DataContext is not PluginSettingItem item || item.Key != key) continue;
+                if (AutomationProperties.GetAutomationId(element) == item.AutomationId) return element;
+                row ??= element;
+            }
+            return row;
+        }
+
+        /// <summary>Where a declaration sits in its card now, for the folds
+        /// on the way to it: its control once the card drew it, else what
+        /// the card opens, so the card's own fold is on the way.</summary>
+        private static FrameworkElement DeclarationSpot(FrameworkElement card, string key)
+            => DeclarationIn(card, key) ?? ((card as PadForge.Controls.FoldPart)?.Content as FrameworkElement) ?? card;
+
+        /// <summary>
+        /// The clicks on the way to a plugin's declaration: the way to its
+        /// plugin's card, then the card while it is shut; or the way to its
+        /// device's list, the device's row while another device's panel
+        /// shows, and each fold over the device panel's plugin card. A
+        /// plugin's card is drawn once the Plugins page shows, so its step
+        /// finds the card when the step comes.
+        /// </summary>
+        private IEnumerable<AssistantPointer.Step> WalkToDeclaration(Place p, LiveItem declared)
+        {
+            var steps = new List<AssistantPointer.Step>();
+            if (HolderOf(p) is not { } holder) return steps;
+            steps.AddRange(WalkTo(holder));
+            if (holder.Live.Payload is DeviceRowViewModel device)
+            {
+                if (_vm.Devices?.SelectedDevice?.InstanceGuid != device.InstanceGuid)
+                    steps.Add(DeviceRowStep(device));
+                var card = DevicePluginCard();
+                steps.AddRange(FoldSteps(DeclarationIn(HolderCard(holder), KeyOf(declared)) ?? card, null));
+                return steps;
+            }
+            steps.Add(new AssistantPointer.Step
+            {
+                Say = () => FoldWords(HolderCard(holder) as PadForge.Controls.FoldPart),
+                Advance = AssistantAdvance.Click,
+                Done = () => HolderCard(holder) is PadForge.Controls.FoldPart { IsExpanded: true } or PadForge.Controls.FoldCard { CanOpen: false },
+                Find = () => HolderCard(holder),
+                Stays = true,
+            });
+            return steps;
+        }
+
+        /// <summary>A walk's step to another device's row on the Devices
+        /// page. It stays until the device is picked: the user picks
+        /// it.</summary>
+        private AssistantPointer.Step DeviceRowStep(DeviceRowViewModel device) => new()
+        {
+            Words = string.Format(CultureInfo.CurrentCulture, PadForge.Resources.Strings.Strings.Instance.Automation_Pointer_Open_Format, device.DeviceName),
+            Advance = AssistantAdvance.Click,
+            Done = () => _vm.Devices?.SelectedDevice?.InstanceGuid == device.InstanceGuid,
+            Find = () => RowElement(_pageOf(SearchPage.Devices), device),
+            Stays = true,
+        };
+
+        /// <summary>The controller page's mapping list.</summary>
+        private DataGrid MappingGrid() => _pageOf(SearchPage.Pad)?.FindName("MappingDataGrid") as DataGrid;
+
+        /// <summary>Whether a mapping row's item passes an option's rules, so
+        /// its details hold the option.</summary>
+        private bool HoldsOption(SearchEntry entry, object item)
+        {
+            var page = _pageOf(SearchPage.Pad);
+            return item != null && page != null && entry.ItemGates.All(g => BindingProbe.Passes(item, g, k => page.TryFindResource(k)));
+        }
+
+        /// <summary>The row a walk to an option rings: the picked row when it
+        /// holds the option, else the first the list shows that does, else
+        /// the controller's first that does, which the list's box hides and
+        /// the step names.</summary>
+        private object RowFor(SearchEntry entry)
+        {
+            if (MappingGrid() is not { } grid) return null;
+            if (HoldsOption(entry, grid.SelectedItem)) return grid.SelectedItem;
+            return grid.Items.Cast<object>().FirstOrDefault(item => HoldsOption(entry, item))
+                   ?? (_pageOf(SearchPage.Pad)?.DataContext as PadViewModel)?.RowsOfSlot.FirstOrDefault(item => HoldsOption(entry, item));
+        }
+
+        /// <summary>A row of the mapping list, brought into the list's view
+        /// first when the list has not drawn it. None for a row the list's
+        /// box hides.</summary>
+        private DataGridRow RowContainer(object item)
+        {
+            if (item == null || MappingGrid() is not { } grid || !grid.Items.Contains(item)) return null;
+            if (grid.ItemContainerGenerator.ContainerFromItem(item) is DataGridRow drawn) return drawn;
+            grid.ScrollIntoView(item);
+            grid.UpdateLayout();
+            return grid.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+        }
+
+        /// <summary>An option's element in the picked row's details, as
+        /// Search's landing finds it there (SearchNavigator.RowOption): none
+        /// while no row that holds the option is picked.</summary>
+        private FrameworkElement RowOptionElement(SearchEntry entry)
+        {
+            if (MappingGrid() is not { } grid || !HoldsOption(entry, grid.SelectedItem)) return null;
+            if (grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) is not DataGridRow row) return null;
+            var label = SearchLocator.FindAmong(SearchNavigator.RowOptionParts(row).ToList(), entry, grid.SelectedItem, _service.Index, e => e.RowOptions);
+            return label == null ? null : SearchLocator.TargetOf(label, entry);
         }
 
         private static FrameworkElement RowElement(FrameworkElement page, object item)
@@ -1483,11 +2185,14 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>The clicks on the way to a place, outermost first: the
-        /// sidebar entry, the controller's section or the extra's tile, and
-        /// each More that folds it. A click already made is skipped when the
-        /// walk comes to it.</summary>
+        /// sidebar entry, another device's row, the controller's section and
+        /// its part, the extra's tile or the Settings group, and each closed
+        /// fold card and More that holds the place, wherever it sits. A click
+        /// already made is skipped when the walk comes to it, and a fold's
+        /// step stays until the fold is open.</summary>
         private IEnumerable<AssistantPointer.Step> WalkTo(Place p)
         {
+            if (p.LiveItem is { Kind: LiveKind.PluginDeclaration } declared) return WalkToDeclaration(p, declared);
             var s = PadForge.Resources.Strings.Strings.Instance;
             string tag = null;
             if (p.Entry != null)
@@ -1520,6 +2225,13 @@ namespace PadForge.Services.Automation
                     Find = () => _parts.NavItem?.Invoke(nav),
                 });
             }
+            // A place on another device's panel: that device's row, after
+            // the folds that hold its list.
+            if (p.Entry?.Page == SearchPage.Devices && NamesAnotherDevice(p.Id) && DeviceRowOf(p.Id) is { } device)
+            {
+                steps.AddRange(FoldSteps(ListHolding(_pageOf(SearchPage.Devices), device), null));
+                steps.Add(DeviceRowStep(device));
+            }
             if (p.Entry?.Page == SearchPage.Pad && p.Entry.Section >= 0 && p.Pad != null)
             {
                 int section = p.Entry.Section;
@@ -1532,10 +2244,40 @@ namespace PadForge.Services.Automation
                     Done = () => PadViewModel.SectionOfTab(pad.SelectedConfigTab) == section,
                     Find = () => (_pageOf(SearchPage.Pad) as PadPage)?.SectionButton(section),
                 });
+                // Buttons and Macros & Menus show one part at a time: the
+                // part's own button, unless the place is that button.
+                if (p.Entry.Kind != SearchKind.Part && PartOf(p.Entry.Tab) is { } part)
+                {
+                    steps.Add(new AssistantPointer.Step
+                    {
+                        Words = string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, PartName(part.Button)),
+                        Advance = AssistantAdvance.Click,
+                        Done = () => part.Shows(pad),
+                        Find = () => (_pageOf(SearchPage.Pad) as PadPage)?.FindName(part.Button) as FrameworkElement,
+                    });
+                }
+                // An option of a mapping row: each fold over the list, then
+                // the row the option is on, which the user picks. Its
+                // details open with the pick.
+                if (p.Entry.RowOptions && MappingGrid() is { } grid)
+                {
+                    var entry = p.Entry;
+                    steps.AddRange(FoldSteps(grid, null));
+                    steps.Add(new AssistantPointer.Step
+                    {
+                        Say = () => string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, (RowFor(entry) as MappingItem)?.TargetLabel ?? string.Empty),
+                        Advance = AssistantAdvance.Click,
+                        Done = () => HoldsOption(entry, MappingGrid()?.SelectedItem),
+                        Find = () => RowContainer(RowFor(entry)),
+                        Stays = true,
+                    });
+                }
             }
-            if (p.Entry?.Page == SearchPage.Extras && p.Entry.ExtraKey != null && p.Entry.Kind != SearchKind.Extra)
+            string extra = p.Entry?.Page == SearchPage.Extras && p.Entry.ExtraKey != null && p.Entry.Kind != SearchKind.Extra ? p.Entry.ExtraKey
+                : p.Live?.Kind == LiveKind.Plugin ? "Plugins" : null;
+            if (extra != null)
             {
-                string key = p.Entry.ExtraKey;
+                string key = extra;
                 var tile = _service.Index.FirstOrDefault(e => e.Kind == SearchKind.Extra && e.ExtraKey == key);
                 steps.Add(new AssistantPointer.Step
                 {
@@ -1562,28 +2304,128 @@ namespace PadForge.Services.Automation
                     });
                 }
             }
-            if (p.Entry != null && p.Entry.UnderMore)
+            // Each closed fold card and More that holds the place. A page's
+            // or a controller's sidebar entry sits in none. A device's row is
+            // drawn only while its list shows, so the folds over it are the
+            // ones over its list.
+            if (p.Live?.Kind == LiveKind.Device)
+            {
+                object row = p.Live.Payload;
+                steps.AddRange(FoldSteps(ListHolding(_pageOf(SearchPage.Devices), row), () => ListHolding(_pageOf(SearchPage.Devices), row)));
+            }
+            else if (p.Live?.Kind is not (LiveKind.Page or LiveKind.Controller))
             {
                 string id = p.Id;
-                steps.Add(new AssistantPointer.Step
-                {
-                    Words = s.Automation_Pointer_OpenMore,
-                    Advance = AssistantAdvance.Click,
-                    Done = () => ClosedFold(ElementOf(id)) == null,
-                    Find = () => ClosedFold(ElementOf(id)),
-                });
+                steps.AddRange(FoldSteps(ElementOf(id), () => ElementOf(id)));
             }
             return steps;
         }
 
-        /// <summary>The outermost More or fold card that folds an element
-        /// away, or null when none does.</summary>
-        private static FrameworkElement ClosedFold(FrameworkElement element)
+        /// <summary>A step for each closed fold on the way to an element,
+        /// outermost first, each ringing its own fold until the user opens
+        /// it. An element not drawn yet gets one step that rings whichever
+        /// fold holds it when the step comes, one after another, through
+        /// <paramref name="find"/>.</summary>
+        private static IEnumerable<AssistantPointer.Step> FoldSteps(FrameworkElement element, Func<FrameworkElement> find)
         {
-            FrameworkElement outer = null;
-            for (var at = element == null ? null : SearchLocator.Up(element); at != null; at = SearchLocator.Up(at))
-                if (at is PadForge.Controls.FoldPart fold && !fold.IsExpanded) outer = fold;
-            return outer;
+            if (element != null)
+            {
+                foreach (var fold in FoldsOnTheWay(element))
+                {
+                    var shut = fold;
+                    yield return new AssistantPointer.Step
+                    {
+                        Words = FoldWords(shut),
+                        Advance = AssistantAdvance.Click,
+                        Done = () => shut.IsExpanded,
+                        Find = () => shut,
+                        Stays = true,
+                    };
+                }
+                yield break;
+            }
+            if (find == null) yield break;
+            yield return new AssistantPointer.Step
+            {
+                Say = () => FoldWords(FoldsOnTheWay(find()).FirstOrDefault()),
+                Advance = AssistantAdvance.Click,
+                Done = () => FoldsOnTheWay(find()).Count == 0,
+                Find = () => FoldsOnTheWay(find()).FirstOrDefault(),
+                Stays = true,
+            };
+        }
+
+        /// <summary>The closed folds a person opens to reach an element,
+        /// outermost first: each More row and fold card that holds it in
+        /// what it opens and can open. A card's own line, its switch and its
+        /// buttons, sits outside what the card opens, so a place there needs
+        /// no click on the card.</summary>
+        internal static List<PadForge.Controls.FoldPart> FoldsOnTheWay(FrameworkElement element)
+        {
+            var folds = new List<PadForge.Controls.FoldPart>();
+            if (element == null) return folds;
+            DependencyObject below = element;
+            for (var at = SearchLocator.Up(element); at != null; below = at, at = SearchLocator.Up(at))
+            {
+                if (at is not PadForge.Controls.FoldPart fold || fold.IsExpanded || fold is PadForge.Controls.FoldCard { CanOpen: false }) continue;
+                if (Holds(fold, below, element)) folds.Insert(0, fold);
+            }
+            return folds;
+        }
+
+        /// <summary>Whether a fold holds an element in what it opens: its
+        /// content, reached by the logical tree, or its content's site in
+        /// its template, reached by the visual tree.</summary>
+        private static bool Holds(PadForge.Controls.FoldPart fold, DependencyObject below, DependencyObject element)
+        {
+            if (ReferenceEquals(below, fold.Content)) return true;
+            if (ReferenceEquals(below, fold.Header)) return false;
+            if (fold is PadForge.Controls.FoldCard card && (ReferenceEquals(below, card.HeaderAction) || ReferenceEquals(below, card.Switch))) return false;
+            return fold.Template?.FindName("ExpandSite", fold) is System.Windows.Media.Visual site
+                   && element is System.Windows.Media.Visual visual && site.IsAncestorOf(visual);
+        }
+
+        /// <summary>A fold's step in words: Open More, or Open and the
+        /// card's title.</summary>
+        private static string FoldWords(PadForge.Controls.FoldPart fold)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            if (fold == null) return string.Empty;
+            if (fold is PadForge.Controls.MoreRow) return s.Automation_Pointer_OpenMore;
+            string name = fold.Header as string;
+            if (string.IsNullOrWhiteSpace(name)) name = AutomationProperties.GetName(fold);
+            if (string.IsNullOrWhiteSpace(name) && fold.Header is DependencyObject header)
+                name = SearchLocator.LogicalDescendants(header).OfType<TextBlock>().Select(t => t.Text).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t));
+            return string.Format(CultureInfo.CurrentCulture, s.Automation_Pointer_Open_Format, name ?? string.Empty);
+        }
+
+        /// <summary>The list on a page that holds an item now, whether or not
+        /// a fold shows it.</summary>
+        private static FrameworkElement ListHolding(FrameworkElement page, object item)
+        {
+            if (page == null || item == null) return null;
+            return SearchLocator.LogicalDescendants(page).OfType<ItemsControl>().FirstOrDefault(list => list.Items.Contains(item));
+        }
+
+        /// <summary>The part button of Buttons or Macros &amp; Menus a tab
+        /// shows in, and whether that part shows for a controller.</summary>
+        private sealed record PartButton(string Button, Func<PadViewModel, bool> Shows);
+
+        private static PartButton PartOf(int tab) => tab switch
+        {
+            PadViewModel.PictureTabIndex or PadViewModel.OutputTabIndex => new PartButton("TabController", pad => pad.IsButtonsPictureView),
+            PadViewModel.MappingsTabIndex => new PartButton("TabMappings", pad => pad.IsButtonsListView),
+            PadViewModel.MacrosTabIndex => new PartButton("TabMacros", pad => pad.MacrosPartIndex == 0),
+            PadViewModel.MenusTabIndex => new PartButton("TabMenus", pad => pad.MacrosPartIndex == 1),
+            _ => null,
+        };
+
+        /// <summary>A part button's words, as its text shows them.</summary>
+        private string PartName(string button)
+        {
+            if ((_pageOf(SearchPage.Pad) as PadPage)?.FindName(button) is not FrameworkElement element) return string.Empty;
+            return SearchLocator.LogicalDescendants(element).OfType<TextBlock>().Select(t => t.Text).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t))
+                   ?? AutomationProperties.GetName(element) ?? string.Empty;
         }
     }
 }

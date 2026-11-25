@@ -538,6 +538,9 @@ namespace PadForge.Services.Automation.Web
                 ["tunnelRun"] = _tunnelRun,
                 ["port"] = _store.Port,
                 ["language"] = CultureInfo.CurrentUICulture.Name,
+                // The pages' words in that language: the helper reads none of
+                // PadForge's strings (WebPages).
+                ["words"] = new JsonObject(WebPages.WordKeys.Select(k => KeyValuePair.Create(k, (JsonNode)JsonValue.Create(PadForge.Resources.Strings.Strings.Get(k))))),
             };
         }
 

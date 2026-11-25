@@ -1,42 +1,42 @@
 # PadForge's documentation
 
-The pages people read, by what they cover. A read names the page a place comes from, in `docs`.
+The pages people read, by what they cover, each on the web and as this skill carries it. A read names the page a place comes from, in `docs`, and links both. A copy's links to pages this skill does not carry, and its pictures, go to the site.
 
-- Setting up a first controller: https://padforge.org/docs/start/first-controller/
-- Home: the engine, the virtual controllers and the extras that are on: https://padforge.org/docs/features/dashboard/
-- Devices: every device PadForge reads, hiding a device from games, lighting and feedback: https://padforge.org/docs/features/devices/
-- Controller slots: making, numbering and removing virtual controllers: https://padforge.org/docs/features/controller-slots/
-- Virtual controller types and presets: https://padforge.org/docs/features/virtual-controllers/
-- Button and axis mapping rows: https://padforge.org/docs/features/mappings/
-- Sticks: dead zones, curves and anti-dead zones: https://padforge.org/docs/features/stick-deadzones/
-- Triggers: dead zones and ranges: https://padforge.org/docs/features/trigger-deadzones/
-- Force feedback and rumble: https://padforge.org/docs/features/force-feedback/
-- Lighting: https://padforge.org/docs/features/lighting/
-- Motion aiming with a gyro: https://padforge.org/docs/guides/gyro/
-- Macros: https://padforge.org/docs/guides/macros/
-- Shift layers: https://padforge.org/docs/guides/shift-layers/
-- Menus: https://padforge.org/docs/guides/menus/
-- Per-game profiles: https://padforge.org/docs/guides/profiles/
-- Importing profiles from other programs: https://padforge.org/docs/guides/profile-import/
-- A phone as a controller: https://padforge.org/docs/guides/web-controller/
-- Remote Link: https://padforge.org/docs/guides/remote-link/
-- Game telemetry: https://padforge.org/docs/features/game-telemetry/
-- Game mods: https://padforge.org/docs/features/game-mods/
-- Head tracking: https://padforge.org/docs/features/head-tracking/
-- Twitch chat: https://padforge.org/docs/features/twitch-chat/
-- The screen overlay: https://padforge.org/docs/features/screen-overlay/
-- The crosshair: https://padforge.org/docs/features/crosshair/
-- The magnifier: https://padforge.org/docs/features/magnifier/
-- Touchpads: https://padforge.org/docs/features/touchpad/
-- Settings: https://padforge.org/docs/features/settings/
-- Drivers and HidHide: https://padforge.org/docs/features/driver-management/
-- Automation: the level, consent per program, the question card, Allowed Programs and Activity: https://padforge.org/docs/features/automation/
-- Assistants: adding one, the tools, the guided pointer and assistants on the web: https://padforge.org/docs/features/assistants/
-- Plugins: approval, the lifecycle, declared settings, the Test Controller, Replay and the plugin kit: https://padforge.org/docs/features/plugins/
-- Scripts in AutoHotkey v2, Python and PowerShell: installs, control names, holds, hotkeys and a script's own controller: https://padforge.org/docs/features/scripts/
-- Recording a problem, the review, memory dumps and sending a file privately: https://padforge.org/docs/features/problem-recorder/
-- Steering with a mouse, its scroll wheels, a trackball or a spinner: https://padforge.org/docs/features/mouse-steering/
-- Connection notes, the flyouts, and a device's connection as a value: https://padforge.org/docs/features/connection-notes/
-- How SDL reads a controller, and copying, pasting, finding and guessing its mapping: https://padforge.org/docs/features/controller-database/
-- Every command-line switch, the exit codes and the control pipe: https://padforge.org/docs/reference/command-line/
-- When a game does not see a controller, and other problems: https://padforge.org/docs/troubleshooting/
+- Setting up a first controller: https://padforge.org/docs/start/first-controller/, `references/docs/start/first-controller.md`
+- Home: the engine, the virtual controllers and the extras that are on: https://padforge.org/docs/features/dashboard/, `references/docs/features/dashboard.md`
+- Devices: every device PadForge reads, hiding a device from games, lighting and feedback: https://padforge.org/docs/features/devices/, `references/docs/features/devices.md`
+- Controller slots: making, numbering and removing virtual controllers: https://padforge.org/docs/features/controller-slots/, `references/docs/features/controller-slots.md`
+- Virtual controller types and presets: https://padforge.org/docs/features/virtual-controllers/, `references/docs/features/virtual-controllers.md`
+- Button and axis mapping rows: https://padforge.org/docs/features/mappings/, `references/docs/features/mappings.md`
+- Sticks: dead zones, curves and anti-dead zones: https://padforge.org/docs/features/stick-deadzones/, `references/docs/features/stick-deadzones.md`
+- Triggers: dead zones and ranges: https://padforge.org/docs/features/trigger-deadzones/, `references/docs/features/trigger-deadzones.md`
+- Force feedback and rumble: https://padforge.org/docs/features/force-feedback/, `references/docs/features/force-feedback.md`
+- Lighting: https://padforge.org/docs/features/lighting/, `references/docs/features/lighting.md`
+- Motion aiming with a gyro: https://padforge.org/docs/guides/gyro/, `references/docs/guides/gyro.md`
+- Macros: https://padforge.org/docs/guides/macros/, `references/docs/guides/macros.md`
+- Shift layers: https://padforge.org/docs/guides/shift-layers/, `references/docs/guides/shift-layers.md`
+- Menus: https://padforge.org/docs/guides/menus/, `references/docs/guides/menus.md`
+- Per-game profiles: https://padforge.org/docs/guides/profiles/, `references/docs/guides/profiles.md`
+- Importing profiles from other programs: https://padforge.org/docs/guides/profile-import/, `references/docs/guides/profile-import.md`
+- A phone as a controller: https://padforge.org/docs/guides/web-controller/, `references/docs/guides/web-controller.md`
+- Remote Link: https://padforge.org/docs/guides/remote-link/, `references/docs/guides/remote-link.md`
+- Game telemetry: https://padforge.org/docs/features/game-telemetry/, `references/docs/features/game-telemetry.md`
+- Game mods: https://padforge.org/docs/features/game-mods/, `references/docs/features/game-mods.md`
+- Head tracking: https://padforge.org/docs/features/head-tracking/, `references/docs/features/head-tracking.md`
+- Twitch chat: https://padforge.org/docs/features/twitch-chat/, `references/docs/features/twitch-chat.md`
+- The screen overlay: https://padforge.org/docs/features/screen-overlay/, `references/docs/features/screen-overlay.md`
+- The crosshair: https://padforge.org/docs/features/crosshair/, `references/docs/features/crosshair.md`
+- The magnifier: https://padforge.org/docs/features/magnifier/, `references/docs/features/magnifier.md`
+- Touchpads: https://padforge.org/docs/features/touchpad/, `references/docs/features/touchpad.md`
+- Settings: https://padforge.org/docs/features/settings/, `references/docs/features/settings.md`
+- Drivers and HidHide: https://padforge.org/docs/features/driver-management/, `references/docs/features/driver-management.md`
+- Automation: the level, consent per program, the question card, Allowed Programs and Activity: https://padforge.org/docs/features/automation/, `references/docs/features/automation.md`
+- Assistants: adding one, the tools, the guided pointer and assistants on the web: https://padforge.org/docs/features/assistants/, `references/docs/features/assistants.md`
+- Plugins: approval, the lifecycle, declared settings, the Test Controller, Replay and the plugin kit: https://padforge.org/docs/features/plugins/, `references/docs/features/plugins.md`
+- Scripts in AutoHotkey v2, Python and PowerShell: installs, control names, holds, hotkeys and a script's own controller: https://padforge.org/docs/features/scripts/, `references/docs/features/scripts.md`
+- Recording a problem, the review, memory dumps and sending a file privately: https://padforge.org/docs/features/problem-recorder/, `references/docs/features/problem-recorder.md`
+- Steering with a mouse, its scroll wheels, a trackball or a spinner: https://padforge.org/docs/features/mouse-steering/, `references/docs/features/mouse-steering.md`
+- Connection notes, the flyouts, and a device's connection as a value: https://padforge.org/docs/features/connection-notes/, `references/docs/features/connection-notes.md`
+- How SDL reads a controller, and copying, pasting, finding and guessing its mapping: https://padforge.org/docs/features/controller-database/, `references/docs/features/controller-database.md`
+- Every command-line switch, the exit codes and the control pipe: https://padforge.org/docs/reference/command-line/, `references/docs/reference/command-line.md`
+- When a game does not see a controller, and other problems: https://padforge.org/docs/troubleshooting/, `references/docs/troubleshooting.md`

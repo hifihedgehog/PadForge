@@ -182,10 +182,14 @@ namespace PadForge.Tests
                 },
                 new LiveItem("db/row/1", LiveKind.Setting, "Row", ReachClass.Unset),
             };
+            // Only this provider's items are looked at: tests that run beside
+            // this one register providers of their own (a plugins' part's,
+            // the database's).
+            var mine = new HashSet<string> { "plugin/0a1b2c3d/speed", "row/3/menu", "row/3/menu/test", "db/row/1" };
             LiveCatalog.AddProvider(provider);
             try
             {
-                var entries = LiveCatalog.Entries(null);
+                var entries = LiveCatalog.Entries(null).Where(e => mine.Contains(e.Id)).ToList();
                 Assert.Equal(new[] { "plugin/0a1b2c3d/speed", "row/3/menu", "row/3/menu/test" }, entries.Select(e => e.Id));
                 var speed = (LiveItem)entries[0].Payload;
                 speed.Write("55");
@@ -193,7 +197,7 @@ namespace PadForge.Tests
                 Assert.Equal("ReleaseTestDialog", ((LiveItem)entries[2].Payload).Opens);
             }
             finally { LiveCatalog.RemoveProvider(provider); }
-            Assert.Empty(LiveCatalog.Entries(null));
+            Assert.DoesNotContain(LiveCatalog.Entries(null), e => mine.Contains(e.Id));
         }
 
         [Fact]

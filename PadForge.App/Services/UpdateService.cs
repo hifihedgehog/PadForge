@@ -63,9 +63,41 @@ namespace PadForge.Services
         internal static int ParseNumber(string text) =>
             int.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out int n) ? n : 0;
 
-        private static string Read(string key) =>
-            typeof(BuildIdentity).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
-                .FirstOrDefault(a => a.Key == key)?.Value?.Trim() ?? string.Empty;
+        /// <summary>
+        /// A value the build stamped as an AssemblyMetadata attribute, read
+        /// from the assembly's own metadata. Reflection's attribute lookup
+        /// resolves the type of every attribute of the assembly to filter
+        /// them, and the app carries WPF's ThemeInfo and content-file
+        /// attributes, so it loaded PresentationFramework and PresentationCore
+        /// into the client run, which loads no WPF (#600 item 52, seen in a
+        /// child's mapped files). Here no type is resolved: the attribute is
+        /// found by its constructor's type name, and its value is the prolog
+        /// 0x0001 and two strings (ECMA-335 II.23.3).
+        /// </summary>
+        private static unsafe string Read(string key)
+        {
+            // An assembly whose metadata the runtime cannot hand over is read
+            // through reflection, so the stamp is never lost.
+            if (!System.Reflection.Metadata.AssemblyExtensions.TryGetRawMetadata(typeof(BuildIdentity).Assembly, out byte* blob, out int length))
+                return typeof(BuildIdentity).Assembly.GetCustomAttributes(typeof(AssemblyMetadataAttribute), false).Cast<AssemblyMetadataAttribute>()
+                    .FirstOrDefault(a => a.Key == key)?.Value?.Trim() ?? string.Empty;
+            var reader = new System.Reflection.Metadata.MetadataReader(blob, length);
+            foreach (var handle in reader.GetAssemblyDefinition().GetCustomAttributes())
+            {
+                var attribute = reader.GetCustomAttribute(handle);
+                if (attribute.Constructor.Kind != System.Reflection.Metadata.HandleKind.MemberReference) continue;
+                var constructor = reader.GetMemberReference((System.Reflection.Metadata.MemberReferenceHandle)attribute.Constructor);
+                if (constructor.Parent.Kind != System.Reflection.Metadata.HandleKind.TypeReference) continue;
+                var type = reader.GetTypeReference((System.Reflection.Metadata.TypeReferenceHandle)constructor.Parent);
+                if (!reader.StringComparer.Equals(type.Name, nameof(AssemblyMetadataAttribute))
+                    || !reader.StringComparer.Equals(type.Namespace, "System.Reflection")) continue;
+                var value = reader.GetBlobReader(attribute.Value);
+                if (value.ReadUInt16() != 1) continue;
+                if (value.ReadSerializedString() != key) continue;
+                return value.ReadSerializedString()?.Trim() ?? string.Empty;
+            }
+            return string.Empty;
+        }
     }
 
     internal enum UpdateCheckOutcome

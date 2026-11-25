@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Common;
 using PadForge.Services;
@@ -196,13 +197,15 @@ namespace PadForge.Tests
             File.WriteAllText(Path.Combine(Path.GetDirectoryName(stale), "PadForge.psm1"), "old");
             var request = new InstallRequest(InstallWhat.PowerShell, null);
             Assert.Equal(InstallState.NotInstalled, UserInstall.Check(request with { Target = At("Elsewhere") }));
-            Assert.Equal(UserInstall.Done, Run(request));
+            // A failed run names its reason.
+            var said = new List<string>();
+            Assert.True(Run(request, said) == UserInstall.Done, string.Join(" | ", said));
             byte[] module = AutomationLibraries.Read(AutomationLibraryKind.PowerShell);
             foreach (string modules in new[] { "PowerShell", "WindowsPowerShell" })
                 Assert.Equal(module, File.ReadAllBytes(At("OneDrive", "Documents", modules, "Modules", "PadForge", "PadForge.psm1")));
             Assert.False(File.Exists(stale));
             Assert.Equal(InstallState.Current, UserInstall.Check(request));
-            Assert.Equal(UserInstall.Done, Run(request with { Remove = true }));
+            Assert.True(Run(request with { Remove = true }, said) == UserInstall.Done, string.Join(" | ", said));
             Assert.False(Directory.Exists(At("OneDrive", "Documents", "PowerShell", "Modules", "PadForge")));
         }
 
@@ -376,6 +379,117 @@ namespace PadForge.Tests
             Assert.False(File.Exists(At("out.txt")));
         }
 
+        /// <summary>Opens <paramref name="file"/> the way a sync client or a
+        /// scanner does right after a write: without the share a swap
+        /// needs.</summary>
+        private static FileStream Hold(string file) => new(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+        /// <summary>Holds <paramref name="file"/> and lets it go after
+        /// <paramref name="ms"/>, on a thread of its own.</summary>
+        private static Thread HoldFor(string file, int ms)
+        {
+            var stream = Hold(file);
+            var thread = new Thread(() => { Thread.Sleep(ms); stream.Dispose(); }) { IsBackground = true };
+            thread.Start();
+            return thread;
+        }
+
+        /// <summary>A file another program opened a moment ago refuses the
+        /// swap (access denied or a sharing violation), as a folder OneDrive
+        /// syncs did for 46 of 18,000 swaps on the PC this was found on, the
+        /// test host's own temp folder among them. The write tries again for
+        /// a moment and lands once the file is let go.</summary>
+        [Fact]
+        public void AFileHeldForAMoment_IsWrittenOnceItIsLetGo()
+        {
+            string file = At("Profile", ".copilot", "mcp-config.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(file));
+            File.WriteAllText(file, "{}");
+            var letGo = HoldFor(file, 60);
+            Assert.True(OwnFiles.WriteIfDifferent(file, System.Text.Encoding.UTF8.GetBytes("{\"a\":1}")));
+            letGo.Join();
+            Assert.Equal("{\"a\":1}", File.ReadAllText(file));
+            Assert.False(File.Exists(file + ".padforge-new"));
+        }
+
+        /// <summary>A file held past the tries fails the write, keeps its
+        /// bytes, and gets no file left beside it.</summary>
+        [Fact]
+        public void AFileHeldPastTheTries_FailsTheWrite_AndLeavesNothingBesideIt()
+        {
+            string file = At("Profile", ".copilot", "mcp-config.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(file));
+            File.WriteAllText(file, "{}");
+            using (Hold(file))
+            {
+                var error = Assert.ThrowsAny<Exception>(() => OwnFiles.WriteIfDifferent(file, System.Text.Encoding.UTF8.GetBytes("{\"a\":1}")));
+                Assert.True(error is IOException or UnauthorizedAccessException, error.GetType().Name);
+            }
+            Assert.Equal("{}", File.ReadAllText(file));
+            Assert.False(File.Exists(file + ".padforge-new"));
+        }
+
+        /// <summary>A file a newer copy no longer has, held by another
+        /// program for a moment, refuses its delete as a held file refuses
+        /// the swap. The mirror tries again for a moment and takes it out
+        /// once it is let go.</summary>
+        [Fact]
+        public void AStaleFileHeldForAMoment_IsTakenOutOnceItIsLetGo()
+        {
+            string folder = At("OneDrive", "Documents", "PowerShell", "Modules", "PadForge");
+            string stale = Path.Combine(folder, "Old.ps1");
+            Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, "PadForge.psm1"), "old");
+            File.WriteAllText(stale, "old");
+            var letGo = HoldFor(stale, 60);
+            Assert.Equal((1, 1), OwnFiles.Mirror(folder, new[] { ("PadForge.psm1", System.Text.Encoding.UTF8.GetBytes("new")) }));
+            letGo.Join();
+            Assert.False(File.Exists(stale));
+            Assert.Equal("new", File.ReadAllText(Path.Combine(folder, "PadForge.psm1")));
+        }
+
+        /// <summary>A stale file held past the tries fails the mirror and
+        /// stays.</summary>
+        [Fact]
+        public void AStaleFileHeldPastTheTries_FailsTheMirror_AndStays()
+        {
+            string folder = At("OneDrive", "Documents", "PowerShell", "Modules", "PadForge");
+            string stale = Path.Combine(folder, "Old.ps1");
+            Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, "PadForge.psm1"), "old");
+            File.WriteAllText(stale, "old");
+            using (Hold(stale))
+            {
+                var error = Assert.ThrowsAny<Exception>(() => OwnFiles.Mirror(folder, new[] { ("PadForge.psm1", System.Text.Encoding.UTF8.GetBytes("new")) }));
+                Assert.True(error is IOException or UnauthorizedAccessException, error.GetType().Name);
+            }
+            Assert.Equal("old", File.ReadAllText(stale));
+        }
+
+        /// <summary>A removal meets the same: a library's file, and a module
+        /// folder with a file in it, each held for a moment, are taken out
+        /// once let go.</summary>
+        [Fact]
+        public void ARemovalOfAFileOrFolderHeldForAMoment_EndsOnceItIsLetGo()
+        {
+            var said = new List<string>();
+            var library = new InstallRequest(InstallWhat.AutoHotkey, null);
+            Assert.True(Run(library, said) == UserInstall.Done, string.Join(" | ", said));
+            string file = At("OneDrive", "Documents", "AutoHotkey", "Lib", "PadForge.ahk");
+            var letGo = HoldFor(file, 60);
+            Assert.True(Run(library with { Remove = true }, said) == UserInstall.Done, string.Join(" | ", said));
+            letGo.Join();
+            Assert.False(File.Exists(file));
+
+            var module = new InstallRequest(InstallWhat.PowerShell, null);
+            Assert.True(Run(module, said) == UserInstall.Done, string.Join(" | ", said));
+            string folder = At("OneDrive", "Documents", "PowerShell", "Modules", "PadForge");
+            letGo = HoldFor(Path.Combine(folder, "PadForge.psm1"), 60);
+            Assert.True(Run(module with { Remove = true }, said) == UserInstall.Done, string.Join(" | ", said));
+            letGo.Join();
+            Assert.False(Directory.Exists(folder));
+        }
+
         // ── Starting it as the user ──
 
         private sealed class FakeLauncher : IPluginLauncher
@@ -513,15 +627,17 @@ namespace PadForge.Tests
                               + "\": {\r\n        \"files\": { \"command\": \"npx\" },\r\n    },\r\n}\r\n";
             File.WriteAllText(file, original);
             var request = new InstallRequest(InstallWhat.Assistant, host);
-            Assert.Equal(UserInstall.Done, Run(request));
+            // A failed run says why in the assertion.
+            var said = new List<string>();
+            Assert.True(Run(request, said) == UserInstall.Done, string.Join(" | ", said));
             string added = File.ReadAllText(file);
             Assert.StartsWith("// The user's own settings\r\n{\r\n    \"theme\": \"One Dark\", // a note\r\n    /* kept */\r\n", added);
             Assert.Contains("\"files\": { \"command\": \"npx\" },", added);
             Assert.Equal(InstallState.Current, UserInstall.Check(request));
             Assert.DoesNotContain("\n", added.Replace("\r\n", string.Empty));
-            Assert.Equal(UserInstall.Done, Run(request));
+            Assert.True(Run(request, said) == UserInstall.Done, string.Join(" | ", said));
             Assert.Equal(added, File.ReadAllText(file));
-            Assert.Equal(UserInstall.Done, Run(request with { Remove = true }));
+            Assert.True(Run(request with { Remove = true }, said) == UserInstall.Done, string.Join(" | ", said));
             Assert.Equal(original, File.ReadAllText(file));
         }
 

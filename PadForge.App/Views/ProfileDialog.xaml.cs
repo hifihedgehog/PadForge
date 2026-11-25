@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -51,11 +52,76 @@ namespace PadForge.Views
         }
 
         /// <summary>The New Profile look: a profile that starts with no
-        /// controllers.</summary>
-        public void ForNew()
+        /// controllers. With the window's data, a program's Save names what
+        /// it would let the foreground watcher turn on (#600). Without it, a
+        /// program's Save asks by its reason.</summary>
+        public void ForNew(PadForge.ViewModels.MainViewModel now = null)
         {
             Title = Strings.Instance.ProfileDialog_NewTitle;
             Subtitle = Strings.Instance.ProfileDialog_NewDescription;
+            _new = true;
+            Reads(now);
+        }
+
+        /// <summary>The Save As look, which the constructor gives, with the
+        /// window's data a program's Save reads (#600).</summary>
+        internal void ForSaveAs(PadForge.ViewModels.MainViewModel now) => Reads(now);
+
+        /// <summary>Gives Save the reader a program's question card reads
+        /// (#600, Reach.Starts), once the window's data is at hand.</summary>
+        private void Reads(PadForge.ViewModels.MainViewModel now)
+        {
+            _now = now;
+            PadForge.Common.Reach.SetStarts(SaveButton, now == null ? null : SaveStarts);
+        }
+
+        /// <summary>Whether the dialog shows the New look.</summary>
+        private bool _new;
+
+        /// <summary>The stored profile the Edit look edits, or null for New
+        /// and Save As.</summary>
+        internal ProfileData EditedProfile { get; private set; }
+
+        /// <summary>The window's data, which a program's Save reads what is
+        /// on now from (#600).</summary>
+        private PadForge.ViewModels.MainViewModel _now;
+
+        /// <summary>The Edit look for a stored profile: its name, its games
+        /// and its polling rate.</summary>
+        internal void LoadForEdit(ProfileData profile, PadForge.ViewModels.MainViewModel now)
+        {
+            LoadForEdit(profile.Name, string.IsNullOrEmpty(profile.ExecutableNames)
+                ? Array.Empty<string>()
+                : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries), profile.PollingRateOverrideHz);
+            EditedProfile = profile;
+            Reads(now);
+        }
+
+        /// <summary>Whether the dialog shows the Edit look.</summary>
+        private bool _editing;
+
+        /// <summary>The games the Edit look opened with.</summary>
+        private string[] _gamesBefore = Array.Empty<string>();
+
+        /// <summary>What a program's Save would let the foreground watcher
+        /// turn on that listens on the network (#600), as the question card's
+        /// lines. A game added while Switch Profiles by Game is on puts the
+        /// profile in force when the game is in front, and the default when
+        /// it leaves, so the card names what each holds, on or off now
+        /// (AssistantScan.WatcherLines): in the Edit look what the stored
+        /// profile holds, in Save As what is on now, which the new profile
+        /// holds, and in New nothing of its own. The switch counts as on
+        /// while the page or the watcher's own flag, which follows the page
+        /// at the next save, says so.</summary>
+        internal IReadOnlyList<string> SaveStarts()
+        {
+            if (_now == null || (_editing && EditedProfile == null)) return Array.Empty<string>();
+            bool switching = _now.Settings.EnableAutoProfileSwitching || SettingsManager.EnableAutoProfileSwitching;
+            if (!switching || !PadForge.Services.Automation.AssistantScan.AddsAGame(_gamesBefore, ExecutablePaths)) return Array.Empty<string>();
+            var held = _editing ? PadForge.Services.Automation.AssistantScan.HeldExtras(EditedProfile, _now.Dashboard)
+                : _new ? new List<string>()
+                : PadForge.Services.Automation.AssistantScan.LiveExtras(_now.Dashboard, headTracking: false);
+            return PadForge.Services.Automation.AssistantScan.WatcherLines(_editing ? EditedProfile.Name : ProfileName, held, _now.Dashboard);
         }
 
         /// <summary>
@@ -63,10 +129,15 @@ namespace PadForge.Views
         /// </summary>
         public void LoadForEdit(string name, IEnumerable<string> exePaths, int pollingOverrideHz = 0)
         {
+            _editing = true;
+            // With no stored profile there is nothing to read, so a
+            // program's Save asks by its reason.
+            PadForge.Common.Reach.SetStarts(SaveButton, null);
             NameBox.Text = name;
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
+            _gamesBefore = ExecutablePaths.ToArray();
             // The engine holds an override to the range its loop runs in,
             // so that is what a stored one means. A rate the choices do not
             // hold (a profile from before PadForge 6 at 3 ms, a hand-edited

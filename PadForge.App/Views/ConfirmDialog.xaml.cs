@@ -50,11 +50,15 @@ namespace PadForge.Views
         /// Callers pass their own words. <paramref name="detail"/> names the
         /// thing at stake, <paramref name="kind"/> picks the
         /// action's look, and <paramref name="cancelText"/> replaces Cancel's
-        /// word.</summary>
+        /// word. <paramref name="starts"/> gives the lines a program's
+        /// question card names for what the action would turn on that
+        /// listens on the network (Reach.Starts, #600).</summary>
         public static bool Show(Window owner, string title, string message, string actionText, string detail = null,
-            ConfirmKind kind = ConfirmKind.Destructive, string cancelText = null)
+            ConfirmKind kind = ConfirmKind.Destructive, string cancelText = null,
+            System.Func<System.Collections.Generic.IReadOnlyList<string>> starts = null)
         {
             var dlg = new ConfirmDialog(title, message, actionText ?? string.Empty, detail, kind, cancelText);
+            if (starts != null) PadForge.Common.Reach.SetStarts(dlg.ActionButton, starts);
             Place(dlg, owner);
             dlg.ShowDialog();
             return dlg._confirmed;

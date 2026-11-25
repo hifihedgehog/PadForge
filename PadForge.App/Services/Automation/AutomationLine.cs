@@ -240,6 +240,8 @@ namespace PadForge.Services.Automation
             "engine-stopped" => "the engine is stopped",
             "too-soon" => "this was asked too soon after the last time",
             "limit-reached" => "PadForge takes no more of these until it starts again",
+            "waiting" => "PadForge asks the user on its question card first, and does it if they allow it",
+            "too-many-questions" => "too many questions already wait for the user",
             _ => "the request failed",
         };
 

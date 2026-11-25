@@ -461,6 +461,13 @@ namespace PadForge
             {
                 var item = ItemOf(profile);
                 if (item.IsDefault) throw new AssistantRefusal("bad-argument", "The default profile cannot be deleted.");
+                // Deleting the profile in force puts the default in force
+                // (#600). When the default would turn on an extra that
+                // listens on the network, that switch asks the user first,
+                // so the delete waits for it.
+                if (SettingsManager.ActiveProfileId == item.Id && _w._inputService.ExternalNetworkStarts(null) is { Nothing: false } starts)
+                    throw new AssistantRefusal("not-available", "Deleting the profile in force puts the default profile in force, which turns on "
+                        + string.Join(", ", starts.Extras) + ". switch_profile with no profile asks the user for that first. Delete this profile once the default is in force.");
                 _w.DeleteListedProfile(item);
             }
 
@@ -491,11 +498,19 @@ namespace PadForge
                     report = "Imported: " + foreign.Report.CleanCount + " rows came over whole, " + foreign.Report.PartialCount
                         + " in part and " + foreign.Report.SkippedCount + " not at all.";
                 }
+                // With games while Switch Profiles by Game is on, the watcher
+                // returns to the default when a game leaves the front: the
+                // card names what the default holds too (#600).
+                var asks = AssistantScan.Profile(source.Profile);
+                bool switching = Vm.Settings.EnableAutoProfileSwitching || SettingsManager.EnableAutoProfileSwitching;
+                if (switching && !string.IsNullOrWhiteSpace(source.Profile?.ExecutableNames))
+                    foreach (string line in AssistantScan.DefaultLines(Vm.Dashboard))
+                        if (!asks.Contains(line)) asks.Add(line);
                 return new AssistantImport
                 {
                     Profile = source,
                     Name = source.Profile?.Name,
-                    Asks = AssistantScan.Profile(source.Profile),
+                    Asks = asks,
                     Report = report,
                 };
             }

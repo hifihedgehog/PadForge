@@ -226,8 +226,33 @@ namespace PadForge.Services.Plugins
         {
             foreach (var run in Manager.Snapshot())
                 foreach (string key in run.Settings.Devices(withValues: true))
-                    if (ProgramDeviceDeclaration.InstanceGuid("plugin", run.Identity, key) == instanceGuid)
+                    if (DeviceGuid(run, key) == instanceGuid)
                         run.Settings.DropDevice(key);
+        }
+
+        // ── A plugin's devices ──
+
+        /// <summary>The name a plugin's session holds, which its devices'
+        /// identity is made from: its own name, cut and cleaned as the hello
+        /// cuts a program's name (AutomationSession), so a plugin whose
+        /// file's name runs past 64 characters finds its devices.</summary>
+        private static string SessionName(PluginRun run)
+            => ProgramDeviceDeclaration.Clean(run.Identity, ProgramDeviceDeclaration.LongestName);
+
+        /// <summary>Whether a device the registry keeps is one this plugin
+        /// added.</summary>
+        private static bool Added(ProgramDevices.Entry entry, PluginRun run)
+            => entry.Kind == "plugin" && (string.Equals(entry.Program, SessionName(run), StringComparison.OrdinalIgnoreCase)
+                                          || string.Equals(entry.Program, run.Identity, StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>A plugin device's identity: the registry's while it keeps
+        /// the device, else the one the plugin's session would make for the
+        /// key, as its declaration makes it.</summary>
+        internal Guid DeviceGuid(PluginRun run, string key)
+        {
+            foreach (var entry in _host.Sessions.Devices.All())
+                if (Added(entry, run) && string.Equals(entry.Key, key, StringComparison.Ordinal)) return entry.Guid;
+            return ProgramDeviceDeclaration.InstanceGuid("plugin", SessionName(run), key);
         }
 
         // ── The page ──
@@ -263,6 +288,7 @@ namespace PadForge.Services.Plugins
                 row.Show(run.ShownName, run.Path, StateLine(run), run.Enabled,
                     showStart: run.Status is PluginStatus.Failed or PluginStatus.Refused,
                     showApprove: run.Status == PluginStatus.Changed || run.FileChanged);
+                row.Devices = DeviceGuids(run);
                 row.Settings.MissingLine = MissingLine(run);
             }
             _vm.PluginRowsChanged();
@@ -345,9 +371,20 @@ namespace PadForge.Services.Plugins
         {
             var names = new List<string>();
             foreach (var entry in _host.Sessions.Devices.All())
-                if (entry.Kind == "plugin" && string.Equals(entry.Program, run.Identity, StringComparison.OrdinalIgnoreCase))
+                if (Added(entry, run))
                     names.Add(entry.Device.Name);
             return names;
+        }
+
+        /// <summary>The identities of the devices a plugin added and PadForge
+        /// keeps now, in the order its card's line names them.</summary>
+        private List<Guid> DeviceGuids(PluginRun run)
+        {
+            var guids = new List<Guid>();
+            foreach (var entry in _host.Sessions.Devices.All())
+                if (Added(entry, run))
+                    guids.Add(entry.Guid);
+            return guids;
         }
 
         /// <summary>Why a plugin's card shows no settings, or null.</summary>
@@ -476,7 +513,7 @@ namespace PadForge.Services.Plugins
             {
                 foreach (string device in DeviceKeys(run))
                 {
-                    if (ProgramDeviceDeclaration.InstanceGuid("plugin", run.Identity, device) != instanceGuid) continue;
+                    if (DeviceGuid(run, device) != instanceGuid) continue;
                     var host = new PluginSettingsHost(run.Settings, device, "Device_Plugin_" + device, _ui, instanceGuid);
                     return new PluginDeviceCard(run.ShownName, host);
                 }
@@ -487,7 +524,7 @@ namespace PadForge.Services.Plugins
             {
                 if (entry.Guid != instanceGuid || entry.Kind != "plugin") continue;
                 foreach (var run in Manager.Snapshot())
-                    if (string.Equals(run.Identity, entry.Program, StringComparison.OrdinalIgnoreCase))
+                    if (Added(entry, run))
                         return new PluginDeviceCard(run.ShownName, new PluginSettingsHost(run.Settings, entry.Key, "Device_Plugin_" + entry.Key, _ui, instanceGuid));
             }
             return null;
@@ -497,7 +534,7 @@ namespace PadForge.Services.Plugins
         {
             var keys = run.Settings.Devices();
             foreach (var entry in _host.Sessions.Devices.All())
-                if (entry.Kind == "plugin" && string.Equals(entry.Program, run.Identity, StringComparison.OrdinalIgnoreCase))
+                if (Added(entry, run))
                     keys.Add(entry.Key);
             return keys;
         }
@@ -507,36 +544,62 @@ namespace PadForge.Services.Plugins
         /// <summary>
         /// Every plugin's declarations, and the Test Controller's, as live
         /// items (#600 items 1 and 17): <c>plugin/&lt;id&gt;/&lt;key&gt;</c>
-        /// for a plugin's own and <c>plugin/&lt;id&gt;/&lt;device&gt;/&lt;key&gt;</c>
-        /// for a device's. A plugin's declarations are its own, which a
-        /// program at Change Settings sets and presses as the user does.
-        /// The plugin's switch, Remove, Start and Approve are the page's, and
-        /// the user's alone.
+        /// for a plugin's own, and <c>device/&lt;short ID&gt;/&lt;key&gt;</c>
+        /// for a device's, under the ID list_devices gives the device, so
+        /// a device's settings read, set and press where the device does. A
+        /// plugin's declarations are its own, which a program at Change
+        /// Settings sets and presses as the user does, each with its help,
+        /// and a help declaration is a paragraph. The plugin's switch,
+        /// Remove, Start and Approve are the page's, and the user's alone.
         /// </summary>
         internal IReadOnlyList<LiveItem> CatalogItems()
         {
             var items = new List<LiveItem>();
             var s = Strings.Instance;
-            AddItems(items, TestControllerId, s.Plugins_TestController, BuiltIns.TestSettings, TestHost);
+            // The Test Controller's controllers are built in and declare no
+            // settings of their own.
+            AddItems(items, TestControllerId, s.Plugins_TestController, BuiltIns.TestSettings, null);
             foreach (var run in Manager.Snapshot())
             {
-                _rows.TryGetValue(run, out var row);
-                AddItems(items, "plugin/" + LiveCatalog.ShortId(run.Path), run.ShownName, run.Settings, row?.Settings);
+                var plugin = run;
+                AddItems(items, "plugin/" + LiveCatalog.ShortId(run.Path), run.ShownName, run.Settings,
+                    key => "device/" + AutomationDevices.IdOf(DeviceGuid(plugin, key)));
             }
             return items;
         }
 
-        private static void AddItems(List<LiveItem> items, string id, string where, PluginSettingSet set, PluginSettingsHost host)
+        private static void AddItems(List<LiveItem> items, string id, string plugin, PluginSettingSet set, Func<string, string> deviceIdOf)
         {
+            var s = Strings.Instance;
             foreach (var d in set.Declarations())
             {
-                if (d.Kind == PluginSettingKind.Help) continue;
                 string device = d.Device, key = d.Key;
-                var item = new LiveItem(id + "/" + (device != null ? device + "/" : string.Empty) + key, LiveKind.PluginDeclaration,
-                    d.Name, ReachClass.Free)
+                string owner = id, where = plugin;
+                if (device != null)
+                {
+                    owner = deviceIdOf?.Invoke(device);
+                    if (owner == null) continue;
+                    where = s.Devices_Title + s.Search_WhereSeparator + string.Format(CultureInfo.CurrentCulture, s.Plugins_Device_Settings_Format, plugin);
+                }
+                bool number = d.Kind == PluginSettingKind.Number;
+                var item = new LiveItem(owner + "/" + key, LiveKind.PluginDeclaration, d.Name.Length > 0 ? d.Name : d.Help, ReachClass.Free)
                 {
                     Where = where,
-                    Read = d.Kind == PluginSettingKind.Button ? null : () => set.ValueOf(device, key),
+                    Help = d.Help.Length > 0 ? d.Help : null,
+                    Paragraph = d.Kind == PluginSettingKind.Help,
+                    Takes = d.Kind switch
+                    {
+                        PluginSettingKind.Switch => "switch",
+                        PluginSettingKind.Number => "number",
+                        PluginSettingKind.Choice => "choice",
+                        PluginSettingKind.Text or PluginSettingKind.Pad or PluginSettingKind.Input => "text",
+                        _ => null,
+                    },
+                    Minimum = number ? d.Min : null,
+                    Maximum = number ? d.Max : null,
+                    Unit = d.Unit.Length > 0 ? d.Unit : null,
+                    Choices = d.Kind == PluginSettingKind.Choice ? () => ChoiceWords(set, device, key) : null,
+                    Read = d.Kind is PluginSettingKind.Button or PluginSettingKind.Help ? null : () => Shown(set, device, key),
                     Write = d.HoldsValue ? value =>
                     {
                         string error = set.Set(device, key, value);
@@ -546,6 +609,27 @@ namespace PadForge.Services.Plugins
                 };
                 items.Add(item);
             }
+        }
+
+        /// <summary>A declared value as its row shows it: a choice by its
+        /// entry's words, every other kind in its kept form.</summary>
+        private static string Shown(PluginSettingSet set, string device, string key)
+        {
+            string value = set.ValueOf(device, key);
+            if (set.Find(device, key) is { Kind: PluginSettingKind.Choice } d)
+                foreach (var c in d.Choices)
+                    if (string.Equals(c.Value, value, StringComparison.Ordinal)) return c.Words;
+            return value;
+        }
+
+        /// <summary>A choice's entries as its list words them now: a plugin
+        /// may keep the list current.</summary>
+        private static IReadOnlyList<string> ChoiceWords(PluginSettingSet set, string device, string key)
+        {
+            var words = new List<string>();
+            if (set.Find(device, key) is { } d)
+                foreach (var c in d.Choices) words.Add(c.Words);
+            return words;
         }
 
         // ── What the page asks ──

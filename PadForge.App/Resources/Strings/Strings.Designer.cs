@@ -1038,6 +1038,8 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Consent_CommandLine => Get("Automation_Consent_CommandLine");
     public string Automation_Ask_SetsTo_Format => Get("Automation_Ask_SetsTo_Format");
     public string Automation_Ask_Network => Get("Automation_Ask_Network");
+    public string Automation_Ask_HeadTrackingUdp => Get("Automation_Ask_HeadTrackingUdp");
+    public string Automation_Ask_ProfileTurnsOn_Format => Get("Automation_Ask_ProfileTurnsOn_Format");
     public string Automation_Ask_Drivers => Get("Automation_Ask_Drivers");
     public string Automation_Ask_File_Format => Get("Automation_Ask_File_Format");
     public string Automation_Ask_UseOnly => Get("Automation_Ask_UseOnly");

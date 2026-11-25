@@ -39,7 +39,11 @@ namespace PadForge.Tests
                 ? new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous, asked)
                 : new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
             _pipe.Connect(5000);
-            _reader = Task.Run(() =>
+            // A thread of its own: the reader waits on the pipe for the
+            // client's whole life, and a test that opens 33 clients would
+            // hold the pool's threads the server's own work runs on (a
+            // late "too-many" close under a busy machine, #600).
+            _reader = Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -58,7 +62,7 @@ namespace PadForge.Tests
                     _lines.CompleteAdding();
                     _events.CompleteAdding();
                 }
-            });
+            }, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         public void Send(string line) => SendRaw(Encoding.UTF8.GetBytes(line + "\n"));

@@ -1,10 +1,10 @@
 # PadForge's pages
 
-Generated from PadForge's catalog: every setting, button, card, section, extra, dialog and menu item, by page, in English. `PadForge.exe --describe <folder>` writes this file and pages.json. Each place has its ID, which `find`, `read`, `set`, `press` and `show` take. A place on a controller's page takes `@c` and the controller's number after its ID, a card made per item `@i` and its position, and a place of the Devices page `@d` and the device's short ID. `find` gives the full ID of what shows now.
+Generated from PadForge's catalog: every setting, button, card, section, extra, dialog and menu item, by page, in English. `PadForge.exe --describe <folder>` writes this file and pages.json. Each place has its ID, which `find`, `read`, `set`, `press` and `show` take. A place on a controller's page takes `@c` and the controller's number after its ID, a card made per item, or an item of a profile card's or a layer tab's own menu, `@i` and its position, and a place of the Devices page `@d` and the device's short ID. `find` gives the full ID of what shows now.
 
 Each line: the words, then the kind (number, switch, choice, setting, action, card, section, part, extra, dialog or menu item) and the reach (free, asks with its reason, or yours-alone).
 
-Live places have IDs of their own: `page/Home` and the other pages, `controller/<number>`, `device/<short ID>`, `profile/<ID>`, `macro/c<number>/<position>`, `plugin/<ID>` with what a plugin declares under `plugin/<ID>/<key>`, and Home's cards under `home/c<number>`. An open dialog's buttons are its ID, `#` and the button's, as `read` gives them.
+Live places have IDs of their own: `page/Home` and the other pages, `controller/<number>`, `device/<short ID>`, `profile/<ID>`, `macro/c<number>/<position>`, `plugin/<ID>` with what a plugin declares under `plugin/<ID>/<key>` and what it declares for one of its devices under `device/<short ID>/<key>`, and Home's cards under `home/c<number>`. An open dialog's buttons are its ID, `#` and the button's, as `read` gives them.
 
 ## A controller's page
 
@@ -61,12 +61,12 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Configure Activator…: menu item, free. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Configure`
 - Rename Layer…: menu item, free. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Rename`
 - Copy Layer Rows: menu item, free. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Copy`
-- Paste Rows into Layer: menu item, free. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Paste`
-- Clear Layer Rows: menu item, free. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Clear`
+- Paste Rows into Layer: menu item, asks. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Paste`
+- Clear Layer Rows: menu item, asks. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Clear`
 - Delete Layer: menu item, free. `pad.menuitem/ShiftLayerTabStrip/Pad_Shift_Delete`
 - Add Layer: action, free. `pad.action/AddShiftLayerButton/Pad_Shift_AddLayer`
 - Copy More: menu item, free. `pad.menuitem/ListMoreButton/Common_Copy#Common_More`
-- Paste More: menu item, free. `pad.menuitem/ListMoreButton/Common_Paste#Common_More`
+- Paste More: menu item, asks (ImportsProfile). `pad.menuitem/ListMoreButton/Common_Paste#Common_More`
 - Copy From… More: menu item, free. `pad.menuitem/ListMoreButton/Pad_CopyFrom#Common_More`
 - Clear All More: menu item, free. `pad.menuitem/ListMoreButton/Pad_ClearAll#Common_More`
 - Keyboard: choice, free. `pad/KbmDeviceBar/DeviceType_Keyboard`
@@ -104,7 +104,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Preset: choice, free. `pad/HMaestroProfileBar/Pad_Preset`
 - Input Surfaces: choice, free. `pad/HMaestroProfileBar/ResetLabel_InputSurfaces`
 - Copy More: menu item, free. `pad.menuitem/PadMoreButton/Common_Copy#Common_More`
-- Paste More: menu item, free. `pad.menuitem/PadMoreButton/Common_Paste#Common_More`
+- Paste More: menu item, asks (ImportsProfile). `pad.menuitem/PadMoreButton/Common_Paste#Common_More`
 - Copy From… More: menu item, free. `pad.menuitem/PadMoreButton/Pad_CopyFrom#Common_More`
 - Clear All More: menu item, free. `pad.menuitem/PadMoreButton/Pad_ClearAll#Common_More`
 - Delete virtual controller More: menu item, free. `pad.menuitem/PadMoreButton/Main_DeleteVC#Common_More`
@@ -472,18 +472,18 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 ### Macros & Menus
 
 - Macros & Menus: section, free. `pad.section/Pad_Section_Macros`
-- Copy More: menu item, asks (SendsInput). `pad.menuitem/Common_Copy#Common_More`
-- Paste More: menu item, asks (SendsInput). `pad.menuitem/Common_Paste#Common_More`
-- Copy From… More: menu item, asks (SendsInput). `pad.menuitem/Pad_CopyFrom#Common_More`
+- Copy More: menu item, asks (SendsInput). `pad.menuitem/MacroListMoreButton/Common_Copy#Common_More`
+- Paste More: menu item, asks (SendsInput). `pad.menuitem/MacroListMoreButton/Common_Paste#Common_More`
+- Copy From… More: menu item, asks (SendsInput). `pad.menuitem/MacroListMoreButton/Pad_CopyFrom#Common_More`
 - Macros: part, free. `pad.part/Pad_Macros`
 - Menus: part, free. `pad.part/Pad_Menus`
-- Duplicate More: menu item, asks (SendsInput). `pad.menuitem/Common_Duplicate#Common_More`
-- Copy More: menu item, asks (SendsInput). `pad.menuitem/Common_Copy#Common_More~2`
-- Clear Trigger More: menu item, asks (SendsInput). `pad.menuitem/Macro_ClearTrigger#Common_More`
-- Remove More: menu item, asks (SendsInput). `pad.menuitem/Common_Remove#Common_More`
-- Duplicate More: menu item, asks (SendsInput). `pad.menuitem/Common_Duplicate#Common_More~2`
-- Remove Last Cell More: menu item, asks (SendsInput). `pad.menuitem/Menu_RemoveLastCell#Common_More`
-- Remove More: menu item, asks (SendsInput). `pad.menuitem/Common_Remove#Common_More~2`
+- Duplicate More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Common_Duplicate#Common_More`
+- Copy More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Common_Copy#Common_More`
+- Clear Trigger More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Macro_ClearTrigger#Common_More`
+- Remove More: menu item, asks (SendsInput). `pad.menuitem/MacroMoreButton/Common_Remove#Common_More`
+- Duplicate More: menu item, asks (SendsInput). `pad.menuitem/MenuMoreButton/Common_Duplicate#Common_More`
+- Remove Last Cell More: menu item, asks (SendsInput). `pad.menuitem/MenuMoreButton/Menu_RemoveLastCell#Common_More`
+- Remove More: menu item, asks (SendsInput). `pad.menuitem/MenuMoreButton/Common_Remove#Common_More`
 
 ## Settings
 
@@ -499,14 +499,14 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Close to System Tray (Window): switch, free. `settings/CloseToTrayReset/Settings_CloseToTray`
 - Always Show in System Tray (Window): switch, free. `settings/GeneralGroup/Settings_AlwaysShowTrayIcon`
 - Start Minimized (Window): switch, free. `settings/GeneralGroup/Settings_StartMinimized`
-- Start at Login (Window): switch, free. `settings/GeneralGroup/Settings_StartAtLogin`
-- Move PadForge to Its Own Folder (Window): action, free. `settings.action/GeneralGroup/ExeFolder_Move`
+- Start at Login (Window): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_StartAtLogin`
+- Move PadForge to Its Own Folder (Window): action, asks (RunsProgram). `settings.action/GeneralGroup/ExeFolder_Move`
 - Updates: card, free. `settings.card/GeneralGroup/Settings_Updates`
 - Check Now (Updates): action, free. `settings.action/UpdateStatusItem/Settings_CheckNow`
-- Release Notes (Updates): action, free. `settings.action/UpdateStatusItem/Settings_ReleaseNotes`
-- Install and Restart (Updates): action, free. `settings.action/UpdateStatusItem/Settings_InstallAndRestart`
-- Check for Updates Automatically (Updates): switch, free. `settings/GeneralGroup/Settings_CheckForUpdates`
-- Install Updates Automatically (Updates): switch, free. `settings/GeneralGroup/Settings_InstallUpdatesAutomatically`
+- Release Notes (Updates): action, asks (OpensPlace). `settings.action/UpdateStatusItem/Settings_ReleaseNotes`
+- Install and Restart (Updates): action, asks (RunsProgram). `settings.action/UpdateStatusItem/Settings_InstallAndRestart`
+- Check for Updates Automatically (Updates): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_CheckForUpdates`
+- Install Updates Automatically (Updates): switch, asks (RunsProgram). `settings/GeneralGroup/Settings_InstallUpdatesAutomatically`
 - Include Pre-Releases (Updates): switch, free. `settings/GeneralGroup/Settings_IncludePreReleases`
 - Update Now Controller Database (Updates): action, asks. `settings.action/GeneralGroup/Settings_ControllerDatabaseUpdateNow#Settings_ControllerDatabase`
 - Controller Database (Updates): setting, free. `settings/GeneralGroup/Settings_ControllerDatabase`
@@ -536,11 +536,11 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Drive Keyboard Screens (Hardware Support): switch, free. `settings/HardwareGroup/Settings_KeyboardScreens`
 - Download Strike7API.dll (Hardware Support): action, free. `settings.action/HardwareGroup/KeyboardScreens_DownloadStrike7`
 - Choose Strike7API.dll… (Hardware Support): action, free. `settings.action/HardwareGroup/KeyboardScreens_PickStrike7`
-- Install Visual C++ 2008 Runtime (Hardware Support): action, free. `settings.action/HardwareGroup/KeyboardScreens_InstallVc2008`
+- Install Visual C++ 2008 Runtime (Hardware Support): action, asks (RunsProgram). `settings.action/HardwareGroup/KeyboardScreens_InstallVc2008`
 - Drive Novint Falcon (Hardware Support): switch, free. `settings/HardwareGroup/Settings_Falcon`
 - Choose dhd64.dll… (Hardware Support): action, free. `settings.action/HardwareGroup/Falcon_PickLibrary`
-- Install Falcon Driver (Hardware Support): action, free. `settings.action/HardwareGroup/Falcon_InstallDriver`
-- Get Force Dimension’s SDK (Hardware Support): action, free. `settings.action/HardwareGroup/Falcon_OpenDownload`
+- Install Falcon Driver (Hardware Support): action, asks (Drivers). `settings.action/HardwareGroup/Falcon_InstallDriver`
+- Get Force Dimension’s SDK (Hardware Support): action, asks (OpensPlace). `settings.action/HardwareGroup/Falcon_OpenDownload`
 - Install Location: setting, asks (Drivers). `settings/DriversGroup/Settings_SteamVRInstallDir`
 - HidHide Options: card, asks (Drivers). `settings.card/HidHideOptions/Settings_HidHideOptions`
 - Hide Devices from Games (HidHide Options): switch, asks (Drivers). `settings/HidHideOptions/Settings_HideDevices`
@@ -554,7 +554,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Settings File: card, free. `settings.card/DataGroup/Settings_SettingsFile`
 - Reload (Settings File): action, free. `settings.action/DataGroup/Settings_Reload`
 - Open Folder (Settings File): action, asks (OpensPlace). `settings.action/DataGroup/Settings_OpenFolder`
-- Reset to Defaults (Settings File): action, free. `settings.action/DataGroup/Settings_ResetToDefaults`
+- Reset to Defaults (Settings File): action, asks (Drivers). `settings.action/DataGroup/Settings_ResetToDefaults`
 - Diagnostics: card, free. `settings.card/DataGroup/Settings_Diagnostics`
 - Start Recording (Diagnostics): action, free. `settings.action/RecordProblemButton/Settings_RecordProblem_Start`
 - Save a Snapshot… (Diagnostics): action, free. `settings.action/SaveSnapshotButton/Settings_DiagnosticsSnapshot`
@@ -584,10 +584,10 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 ### Head Tracking
 
 - Head Tracking: extra, free. `extras.extra/HeadTracking/HeadTrackingTile/Dashboard_HeadTracking`
-- Head Tracking: switch, free. `extras/HeadTracking/HeadTrackingPage/Dashboard_HeadTracking`
+- Head Tracking: switch, asks (Network). `extras/HeadTracking/HeadTrackingPage/Dashboard_HeadTracking`
 - Set Neutral: action, free. `extras.action/HeadTracking/HeadTrackingPage/Dashboard_HeadTrackingRecenter`
 - Sources: card, free. `extras.card/HeadTracking/HeadTrackingPage/Extras_HeadTracking_Sources`
-- Enable UDP Tracking Input (Sources): switch, free. `extras/HeadTracking/HeadTrackingEnabledReset/Dashboard_HeadTrackingEnable`
+- Enable UDP Tracking Input (Sources): switch, asks (Network). `extras/HeadTracking/HeadTrackingEnabledReset/Dashboard_HeadTrackingEnable`
 - Enable FreeTrack 2.0 Shared Memory Input (Sources): switch, free. `extras/HeadTracking/HeadTrackingFreeTrackReset/Dashboard_HeadTrackingFreeTrack`
 - Enable OpenXR Headset Input (Sources): switch, free. `extras/HeadTracking/HeadTrackingOpenXrReset/Dashboard_HeadTrackingOpenXr`
 - Range: card, free. `extras.card/HeadTracking/HeadTrackingPage/Extras_HeadTracking_Range`
@@ -605,7 +605,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 ### Game Telemetry
 
 - Game Telemetry: extra, free. `extras.extra/GameTelemetry/GameTelemetryTile/Dashboard_GameTelemetry`
-- Listen for Game Telemetry: switch, free. `extras/GameTelemetry/GameTelemetryPage/Dashboard_EnableGameTelemetry`
+- Listen for Game Telemetry: switch, asks (Network). `extras/GameTelemetry/GameTelemetryPage/Dashboard_EnableGameTelemetry`
 - Game: card, free. `extras.card/GameTelemetry/GameTelemetryPage/Dashboard_GameTelemetryGame`
 - Game (Game): choice, free. `extras/GameTelemetry/GameTelemetryPage/Dashboard_GameTelemetryGame`
 - Game Telemetry Port: number, free, under More. `extras/GameTelemetry/GameTelemetryMore/Dashboard_GameTelemetryPort`
@@ -783,14 +783,14 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Settings: card, free. `devices.card/SettingsCard/Devices_SettingsCard`
 - Hide from Games (HidHide) (Settings): switch, asks (Drivers). `devices/HidingRows/Devices_HideFromGames`
 - Consume Mapped Inputs (Hooks) (Settings): switch, free. `devices/HidingRows/Devices_ConsumeMapped`
-- Move PadForge to Its Own Folder (Settings): action, free. `devices.action/HidingRows/ExeFolder_Move`
+- Move PadForge to Its Own Folder (Settings): action, asks (RunsProgram). `devices.action/HidingRows/ExeFolder_Move`
 - Mouse DPI (Settings): setting, free. `devices/MouseDpiRows/Devices_MouseDpi`
 - min (Settings): setting, free. `devices/IdleRow/Common_Min`
 - Disconnect Bluetooth When Plugged In over USB (Settings): switch, free. `devices/PowerRows/Devices_QuickCharge`
 - Read Arrows One by One (Settings): switch, free. `devices/SettingsCard/Devices_NativeArrows`
 - Calibrate (Settings): action, free. `devices.action/GunRows/Devices_GunCalibrate`
 - Gun Calibration (Settings): setting, free. `devices/GunRows/Devices_GunCalibration`
-- Restore the Windows Driver (Settings): action, free. `devices.action/DeviceTools/Devices_DriverRestore`
+- Restore the Windows Driver (Settings): action, asks (UseOnly). `devices.action/DeviceTools/Devices_DriverRestore`
 - Read as iCade Controller (Settings): action, free. `devices.action/DeviceTools/Devices_ReadAsICade`
 - Read as Keyboard (Settings): action, free. `devices.action/DeviceTools/Devices_ReadAsKeyboard`
 - Read as Tekken Sticks (Settings): action, free. `devices.action/DeviceTools/Devices_UsioTekken`
@@ -810,7 +810,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Details: card, free. `devices.card/DetailsFold/Devices_Dossier`
 - Force Raw Joystick Mode (Bypass Gamepad Remapping) (Details): switch, free. `devices/DetailsFold/Devices_ForceRaw`
 - Copy Details (Details): action, free. `devices.action/DetailsFold/Devices_CopyDetails`
-- Submit Device Mapping (Details): action, free. `devices.action/DetailsFold/Devices_SubmitMapping`
+- Submit Device Mapping (Details): action, asks (OpensPlace). `devices.action/DetailsFold/Devices_SubmitMapping`
 - Remove Device (Details): action, free. `devices.action/DetailsFold/Devices_RemoveConfirmTitle`
 
 ## Profiles
@@ -823,7 +823,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Export…: menu item, free. `profiles.menuitem/ProfileListBox/Profiles_Export`
 - Delete: menu item, free. `profiles.menuitem/ProfileListBox/Common_Delete`
 - Automatic Switching: card, free. `profiles.card/AutoSwitchCard/Profiles_AutoSwitchTitle`
-- Switch Profiles by Game (Automatic Switching): switch, free. `profiles/AutoSwitchCard/Profiles_AutoSwitch`
+- Switch Profiles by Game (Automatic Switching): switch, asks (Network). `profiles/AutoSwitchCard/Profiles_AutoSwitch`
 - Shortcuts: card, free. `profiles.card/ShortcutsCard/Profiles_Shortcuts`
 - External Control: card, free. `profiles.card/ExternalControlCard/Profiles_ExternalControlTitle`
 - Open Automation (External Control): action, free. `profiles.action/AutomationStateHost/Profiles_OpenAutomation`
@@ -981,7 +981,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 
 - Save As Profile: dialog, free. `dialog.dialog/ProfileDialog/ProfileDialog_SaveAs`
 - Cancel: action, free. `dialog.action/ProfileDialog/Common_Cancel`
-- Save: action, free. `dialog.action/ProfileDialog/SaveButton/Common_Save`
+- Save: action, asks (Network). `dialog.action/ProfileDialog/SaveButton/Common_Save`
 - Add a Running Game: action, free. `dialog.action/ProfileDialog/AddRunningGameButton/ProfileDialog_AddRunningGame`
 - Browse…: action, free. `dialog.action/ProfileDialog/BrowseButton/Common_Browse`
 - Wear the Game’s Look: setting, free. `dialog/ProfileDialog/GameLookPanel/Profile_GameLook`
@@ -1120,7 +1120,7 @@ Live places have IDs of their own: `page/Home` and the other pages, `controller/
 - Input Engine: action, free. `home.action/EngineFlame/Dashboard_InputEngine`
 - Use It: action, free. `home.action/HomeOfferUse/Home_Offer_Use`
 - Not Now: action, free. `home.action/HomeOfferDismiss/Pad_AssignOffer_Dismiss`
-- Move PadForge to Its Own Folder: action, free. `home.action/HomeSharedFolderMove/ExeFolder_Move`
+- Move PadForge to Its Own Folder: action, asks (RunsProgram). `home.action/HomeSharedFolderMove/ExeFolder_Move`
 - Open Extras: action, free. `home.action/OpenExtrasButton/Home_OpenExtras`
 
 ## About

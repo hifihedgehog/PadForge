@@ -124,6 +124,10 @@ namespace PadForge.Views
         /// <summary>Whether a translated config is ready to save.</summary>
         internal bool CanSave => _outcome?.Profile != null;
 
+        /// <summary>The profile a Save would add, or null while none is
+        /// ready.</summary>
+        internal PadForge.Services.ProfileData PendingProfile => _outcome?.Profile;
+
         /// <summary>Raised when what can be saved changes.</summary>
         internal event EventHandler CanSaveChanged;
 

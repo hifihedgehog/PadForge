@@ -618,8 +618,13 @@
                             <TextBlock Text="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="14" Margin="0,0,10,0" VerticalAlignment="Center" TextWrapping="Wrap"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                            <!-- A program's turning it on asks when a profile
+                                 with a game, or the default the watcher
+                                 returns to, holds an extra that listens on
+                                 the network, on or off now (#600). -->
                             <CheckBox Grid.Column="1" Style="{StaticResource SwitchCheckBox}" IsChecked="{Binding EnableAutoProfileSwitching}" VerticalAlignment="Center"
                                       Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
+                                      common:Reach.Class="Asks" common:Reach.Why="Network"
                                       AutomationProperties.AutomationId="Profiles_AutoSwitch"/>
                             <controls:SettingResetButton Grid.Column="2" Margin="10,0,0,0" Command="{Binding ResetSettingCommand}" CommandParameter="EnableAutoProfileSwitching"
                                                          SettingLabel="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"

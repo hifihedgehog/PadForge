@@ -60,7 +60,9 @@ namespace PadForge.Tests
         }
 
         /// <summary>Both handlers use the reload rather than the old two-step
-        /// assignment, which silently did nothing on Base.</summary>
+        /// assignment, which silently did nothing on Base: the clear on the
+        /// page's controller, and the paste on the controller it lands on,
+        /// which a program's press names (#600, PadPage.PasteLayer).</summary>
         [Fact]
         public void BothLayerEditHandlersUseTheReload()
         {
@@ -68,10 +70,13 @@ namespace PadForge.Tests
                 "PadForge.App", "Views", "PadPage.xaml.cs"));
 
             int reloads = System.Text.RegularExpressions.Regex.Matches(
-                cs, @"_currentPadVm\.ReloadActiveLayerRows\(\);").Count;
+                cs, @"(_currentPadVm|\bpad)\.ReloadActiveLayerRows\(\);").Count;
             Assert.Equal(2, reloads);
+            string paste = cs.Substring(cs.IndexOf("internal static void PasteLayer(", StringComparison.Ordinal));
+            Assert.Contains("pad.ReloadActiveLayerRows();", paste.Substring(0, paste.IndexOf("private void ShiftLayer_Clear_Click(", StringComparison.Ordinal)));
 
             Assert.DoesNotContain("_currentPadVm.ActiveLayerMask = \"Base\";", cs);
+            Assert.DoesNotContain("pad.ActiveLayerMask = \"Base\";", cs);
         }
 
         /// <summary>Nothing copied and an empty layer copied are different
@@ -85,7 +90,14 @@ namespace PadForge.Tests
             string cs = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Views", "PadPage.xaml.cs"));
 
-            Assert.Contains("if (_shiftLayerClipboard == null) return;", cs);
+            // A person's Paste hands the paste what Copy kept, and the paste
+            // refuses only null.
+            Assert.Contains("=> PasteLayer(_currentPadVm, TagToLayerMask(sender), _shiftLayerClipboard);", cs);
+            int at = cs.IndexOf("internal static void PasteLayer(", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string paste = cs.Substring(at, cs.IndexOf("private void ShiftLayer_Clear_Click(", at, StringComparison.Ordinal) - at);
+            Assert.Contains("if (rows == null) return;", paste);
+            Assert.DoesNotContain("rows.Count == 0) return;", paste);
             Assert.DoesNotContain("_shiftLayerClipboard.Count == 0) return;", cs);
         }
     }

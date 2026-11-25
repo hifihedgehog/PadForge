@@ -3157,6 +3157,12 @@ namespace PadForge.Views
         /// into another. Cleared on app exit; not persisted to disk.</summary>
         private static System.Collections.Generic.List<Engine.Data.MappingRow> _shiftLayerClipboard;
 
+        /// <summary>The rows a layer's Copy kept, or null when nothing was
+        /// copied, which a program's Paste card reads (#600). Copy assigns a
+        /// fresh list each time and nothing changes one after, so the list
+        /// a card read is the list its press lands.</summary>
+        internal static System.Collections.Generic.IReadOnlyList<Engine.Data.MappingRow> LayerClipboard => _shiftLayerClipboard;
+
         private static string TagToLayerMask(object sender)
         {
             if (sender is FrameworkElement fe && fe.Tag is string s) return s;
@@ -3647,9 +3653,16 @@ namespace PadForge.Views
         }
 
         private void ShiftLayer_Paste_Click(object sender, RoutedEventArgs e)
+            => PasteLayer(_currentPadVm, TagToLayerMask(sender), _shiftLayerClipboard);
+
+        /// <summary>Replaces the rows of the layer <paramref name="mask"/>
+        /// names on <paramref name="pad"/>'s controller with copies of
+        /// <paramref name="rows"/>: a person's Paste with what Copy kept, and
+        /// a program's with the rows its card read, on the controller its
+        /// card named (#600).</summary>
+        internal static void PasteLayer(PadViewModel pad, string mask, System.Collections.Generic.IReadOnlyList<Engine.Data.MappingRow> rows)
         {
-            if (_currentPadVm == null) return;
-            string mask = TagToLayerMask(sender);
+            if (pad == null) return;
             if (string.IsNullOrEmpty(mask)) return;
             // Null is "nothing has been copied". An EMPTY list is a layer the
             // user copied that happened to have no rows, and pasting it is a
@@ -3658,9 +3671,9 @@ namespace PadForge.Views
             // the destination untouched with no sign that anything was
             // refused. Copy always assigns a fresh list, so the two states
             // never blur.
-            if (_shiftLayerClipboard == null) return;
+            if (rows == null) return;
 
-            var slotMs = GetOrCreateSlotMappingSet(_currentPadVm.PadIndex);
+            var slotMs = GetOrCreateSlotMappingSet(pad.PadIndex);
             if (slotMs.Rows == null)
                 slotMs.Rows = new System.Collections.Generic.List<Engine.Data.MappingRow>();
 
@@ -3679,7 +3692,7 @@ namespace PadForge.Views
                 pasted.Add(keep);
             }
 
-            foreach (var r in _shiftLayerClipboard)
+            foreach (var r in rows)
             {
                 if (r == null) continue;
                 var rc = CloneLayerRow(r, mask);
@@ -3693,16 +3706,16 @@ namespace PadForge.Views
 
             // Force the DataGrid to reflect the pasted rows by triggering
             // a refresh on the active layer.
-            if (string.Equals(_currentPadVm.ActiveLayerMask, mask, StringComparison.Ordinal))
+            if (string.Equals(pad.ActiveLayerMask, mask, StringComparison.Ordinal))
             {
                 // Re-read the rows without pretending the layer changed.
                 // The old two-step assignment could not raise anything when
                 // the active layer WAS Base, since the setter returns on
                 // equality, so a paste onto Base left the grid on the
                 // pre-paste rows and the next save wrote them back over it.
-                _currentPadVm.ReloadActiveLayerRows();
+                pad.ReloadActiveLayerRows();
             }
-            _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+            pad.ConfigItemDirtyCallback?.Invoke();
         }
 
         private void ShiftLayer_Clear_Click(object sender, RoutedEventArgs e)

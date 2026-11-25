@@ -56,11 +56,23 @@ namespace PadForge.Services.Automation
         internal sealed class Step
         {
             public string Words { get; init; }
+
+            /// <summary>Words read as the step lands, in place of
+            /// <see cref="Words"/>, for a step whose place is known only
+            /// then.</summary>
+            public Func<string> Say { get; init; }
+
             public AssistantAdvance Advance { get; init; }
             public int Seconds { get; init; }
             public Action Open { get; init; }
             public Func<FrameworkElement> Find { get; init; }
             public Func<bool> Done { get; init; }
+
+            /// <summary>A click on the way that leaves <see cref="Done"/>
+            /// false keeps the step and rings its place again: a fold's
+            /// switch was clicked, not its line, or another fold waits under
+            /// the one just opened.</summary>
+            public bool Stays { get; init; }
         }
 
         private readonly Func<Window> _window;
@@ -264,7 +276,10 @@ namespace PadForge.Services.Automation
             if (step.Advance == AssistantAdvance.Click && _target != null)
                 line = (line + " " + s.Automation_Pointer_ClickToGoOn).Trim();
             var callout = new AssistantCallout();
-            callout.Fill(_program, Clean(step.Words, LongestWords), line);
+            string words;
+            try { words = step.Say?.Invoke() ?? step.Words; }
+            catch (Exception) { words = step.Words; }
+            callout.Fill(_program, Clean(words, LongestWords), line);
             callout.Closed += (_, _) => Clear();
             _callout = new CalloutAdorner(root, callout, _target, () => Approvals(root));
             layer.Add(_callout);
@@ -347,7 +362,27 @@ namespace PadForge.Services.Automation
             // step's page.
             Dispatcher().BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
             {
-                if (generation == _generation) NextStep();
+                if (generation != _generation) return;
+                var step = _at >= 0 && _at < _steps.Count ? _steps[_at] : null;
+                bool done;
+                try { done = step?.Stays != true || step.Done?.Invoke() != false; }
+                catch (Exception) { done = true; }
+                if (done) NextStep();
+                else Again(step);
+            }));
+        }
+
+        /// <summary>Rings a step's place again, found anew: its click on the
+        /// way is still to make.</summary>
+        private void Again(Step step)
+        {
+            Unring();
+            _advanceTimer?.Stop();
+            _findUntil = _now() + FindFor;
+            int generation = _generation;
+            Dispatcher().BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (generation == _generation) Land(step, generation);
             }));
         }
 

@@ -76,6 +76,24 @@ namespace PadForge.Common
         public static ReachReason GetWhy(DependencyObject element) => (ReachReason)element.GetValue(WhyProperty);
         public static void SetWhy(DependencyObject element, ReachReason value) => element.SetValue(WhyProperty, value);
 
+        /// <summary>What a press of the element would turn on that listens on
+        /// the network, as the question card's lines: each extra, named with
+        /// the profile that turns it on where the press names one
+        /// (AssistantToolWords.ProfileTurnsOn, TurnsOn). Read when a
+        /// program's press is planned and again when the user allows it
+        /// (#600). Set in code on a dialog's button that brings a profile into
+        /// force or lets the foreground watcher do so: by what opens a profile
+        /// Delete's confirm and Get Profiles' Save and Apply, and by Edit
+        /// Profile for its own Save.</summary>
+        public static readonly DependencyProperty StartsProperty = DependencyProperty.RegisterAttached(
+            "Starts", typeof(System.Func<System.Collections.Generic.IReadOnlyList<string>>), typeof(Reach), new PropertyMetadata(null));
+
+        public static System.Func<System.Collections.Generic.IReadOnlyList<string>> GetStarts(DependencyObject element)
+            => element.GetValue(StartsProperty) as System.Func<System.Collections.Generic.IReadOnlyList<string>>;
+
+        public static void SetStarts(DependencyObject element, System.Func<System.Collections.Generic.IReadOnlyList<string>> value)
+            => element.SetValue(StartsProperty, value);
+
         /// <summary>The class an element ends up with, and why it asks: the
         /// strictest set on it or above it (Free, then Asks, then the user's
         /// own), so a part can only tighten what holds it, never loosen it. A

@@ -10105,6 +10105,26 @@ namespace PadForge.Services
         /// on the control that shares its index. On another layout, and
         /// between a Nintendo slot and a Valve one, its Base rows land by
         /// position or by placement (<see cref="ReplaceBaseRowsTranslated"/>).</summary>
+        /// <summary>The rows a Paste of these settings would give a slot of
+        /// that layout, as <see cref="ApplySlotRowsFromClipboard"/> lands
+        /// them, with nothing landed (#600): what a program's Paste names on
+        /// its question card. The whole table on a shared layout, the Base
+        /// rows under the target's names on another. Empty when the settings
+        /// carry no whole-slot rows. The rows a shared layout's move reads
+        /// are the settings' own, so the settings are the caller's to throw
+        /// away.</summary>
+        internal static List<MappingRow> PastedRows(PadSetting source,
+            VirtualControllerType sourceType, bool sourceIsExtended, SlotLayout target, int padIndex)
+        {
+            if (source?.SlotMultiSourceRows == null) return new List<MappingRow>();
+            var from = ClipboardSlotLayout(source, sourceType, sourceIsExtended);
+            if (!CopiesWhole(from, target)) return TranslatedBaseRows(source.SlotMultiSourceRows, from, target, padIndex);
+            IList<MappingRow> rows = WireMoveOf(from, target) is { } wire
+                ? SettingsManager.MoveRawRows(source.SlotMultiSourceRows, wire)
+                : source.SlotMultiSourceRows;
+            return rows.Where(r => r != null).ToList();
+        }
+
         internal static void ApplySlotRowsFromClipboard(int padIndex, PadSetting source,
             VirtualControllerType sourceType, bool sourceIsExtended, SlotLayout target)
         {
@@ -10199,6 +10219,24 @@ namespace PadForge.Services
                 foreach (var kept in current.Rows)
                     if (kept != null && !IsBaseRow(kept)) replaced.Add(kept);
             }
+            replaced.AddRange(TranslatedBaseRows(rows, from, to, padIndex));
+            if (current == null) sets[padIndex] = new MappingSet { Rows = replaced };
+            else current.Rows = replaced;
+
+            // The same structural change a shared-layout paste makes: steering
+            // and toggle state, the simulated pose and the Base-row index must
+            // not outlive the rows they were built on.
+            Common.Input.InputManager.ResetSourceKindRuntimeForSlot(padIndex);
+        }
+
+        /// <summary>The copied slot's Base rows under the target's names
+        /// for their controls (<see cref="TranslateRow"/>), in the order they
+        /// land. Where two land on one control, the first with a source
+        /// keeps it. New rows: the copied ones are left as they
+        /// were.</summary>
+        private static List<MappingRow> TranslatedBaseRows(IList<MappingRow> rows, SlotLayout from, SlotLayout to, int padIndex)
+        {
+            var translated = new List<MappingRow>();
             var landed = new Dictionary<string, int>(StringComparer.Ordinal);
             foreach (var r in rows)
             {
@@ -10209,18 +10247,12 @@ namespace PadForge.Services
                 if (rc == null || LostEveryMotionInput(r, rc)) continue;
                 if (!landed.TryGetValue(rc.Target, out int at))
                 {
-                    landed[rc.Target] = replaced.Count;
-                    replaced.Add(rc);
+                    landed[rc.Target] = translated.Count;
+                    translated.Add(rc);
                 }
-                else if (!HasSource(replaced[at]) && HasSource(rc)) replaced[at] = rc;
+                else if (!HasSource(translated[at]) && HasSource(rc)) translated[at] = rc;
             }
-            if (current == null) sets[padIndex] = new MappingSet { Rows = replaced };
-            else current.Rows = replaced;
-
-            // The same structural change a shared-layout paste makes: steering
-            // and toggle state, the simulated pose and the Base-row index must
-            // not outlive the rows they were built on.
-            Common.Input.InputManager.ResetSourceKindRuntimeForSlot(padIndex);
+            return translated;
         }
 
         private static bool IsBaseRow(MappingRow row)
@@ -10452,7 +10484,7 @@ namespace PadForge.Services
 
         /// <summary>True when a row has a source that reads an input, a
         /// formula's blank placeholders aside.</summary>
-        private static bool HasSource(MappingRow row)
+        internal static bool HasSource(MappingRow row)
             => row.Sources != null && row.Sources.Exists(s => s != null
                 && !PadForge.Engine.Common.Mapping.SourceEvaluator.IsUnmappedDirect(s));
 
@@ -12081,6 +12113,43 @@ namespace PadForge.Services
             }
             return "ok " + target.Name;
         }
+
+        /// <summary>What a program's <c>activate</c>, or its <c>deactivate</c>
+        /// with null, would turn on that listens on the network and is off
+        /// now (#600): the profile <see cref="ExternalActivate"/> would find,
+        /// or the default snapshot <see cref="ExternalDeactivate"/> would
+        /// apply. Nothing when that switch applies nothing: the profile is in
+        /// force already, no profile has the name, or no named profile is in
+        /// force. Runs on the UI thread.</summary>
+        internal Automation.ProfileStarts ExternalNetworkStarts(string idOrName)
+        {
+            ProfileData target;
+            string name;
+            if (idOrName == null)
+            {
+                if (SettingsManager.ActiveProfileId == null || _defaultProfileSnapshot == null) return Automation.ProfileStarts.None;
+                target = _defaultProfileSnapshot;
+                name = Strings.Instance.Profile_Default;
+            }
+            else
+            {
+                target = FindProfileById(idOrName)
+                    ?? SettingsManager.Profiles?.Find(p => string.Equals(p.Name, idOrName, StringComparison.OrdinalIgnoreCase));
+                if (target == null || SettingsManager.ActiveProfileId == target.Id) return Automation.ProfileStarts.None;
+                name = target.Name;
+            }
+            var extras = Automation.AssistantScan.NetworkStarts(target, _mainVm.Dashboard);
+            return extras.Count == 0 ? Automation.ProfileStarts.None : new Automation.ProfileStarts(name, extras);
+        }
+
+        /// <summary>What deleting a profile would turn on that listens on the
+        /// network and is off now (#600): the default's, for the profile in
+        /// force, which <see cref="DeleteProfile"/> puts the default in force
+        /// for, read as <see cref="ExternalNetworkStarts"/> reads a
+        /// deactivate. Nothing for any other profile. Runs on the UI
+        /// thread.</summary>
+        internal Automation.ProfileStarts DeleteNetworkStarts(string profileId)
+            => profileId != null && SettingsManager.ActiveProfileId == profileId ? ExternalNetworkStarts(null) : Automation.ProfileStarts.None;
 
         /// <summary><c>deactivate</c>: releases the pin and reverts to the
         /// default profile. Answers <c>ok default</c>. Runs on the UI

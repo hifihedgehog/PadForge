@@ -42,6 +42,12 @@ namespace PadForge.Services.Automation.Web
 
         /// <summary>A grant's token was used now.</summary>
         void Used(string grantId);
+
+        /// <summary>A word of the sign-in pages, by its string key, in the
+        /// interface language. PadForge's own strings by default, in
+        /// PadForge's process. The helper's link gives the words the door
+        /// sent it (WebPages).</summary>
+        string Word(string key) => PadForge.Resources.Strings.Strings.Get(key);
     }
 
     /// <summary>
@@ -235,12 +241,12 @@ namespace PadForge.Services.Automation.Web
         internal async Task<WebReply> AuthorizeAsync(string baseUrl, string query, CancellationToken cancel)
         {
             var form = WebAddress.Form(query, out bool repeated);
-            if (!Armed) return WebPages.Refused(WebPages.NotAccepting());
-            if (repeated) return WebPages.Refused(WebPages.CannotGoOn("a parameter was sent twice"));
+            if (!Armed) return WebPages.Refused(_app, WebPages.NotAccepting(_app));
+            if (repeated) return WebPages.Refused(_app, WebPages.CannotGoOn(_app, "a parameter was sent twice"));
 
             string clientId = Get(form, "client_id");
             string redirect = Get(form, "redirect_uri");
-            if (string.IsNullOrEmpty(clientId)) return WebPages.Refused(WebPages.CannotGoOn("no client_id"));
+            if (string.IsNullOrEmpty(clientId)) return WebPages.Refused(_app, WebPages.CannotGoOn(_app, "no client_id"));
 
             // Who the client is: its metadata document, or its registration.
             // Until the redirect address is checked against them, nothing is
@@ -253,7 +259,7 @@ namespace PadForge.Services.Automation.Web
                 try { text = await _fetchDocument(clientId, cancel).ConfigureAwait(false); }
                 catch (Exception error) when (error is not OperationCanceledException) { text = null; }
                 var document = ReadDocument(clientId, text);
-                if (document == null) return WebPages.Refused(WebPages.CannotGoOn("its client document could not be read"));
+                if (document == null) return WebPages.Refused(_app, WebPages.CannotGoOn(_app, "its client document could not be read"));
                 (name, redirects) = document.Value;
             }
             else
@@ -261,7 +267,7 @@ namespace PadForge.Services.Automation.Web
                 Registration registration;
                 lock (_sync) _registrations.TryGetValue(clientId, out registration);
                 var granted = registration == null ? _app.Grants.FirstOrDefault(g => g.ClientId == clientId) : null;
-                if (registration == null && granted == null) return WebPages.Refused(WebPages.CannotGoOn("its client is not registered"));
+                if (registration == null && granted == null) return WebPages.Refused(_app, WebPages.CannotGoOn(_app, "its client is not registered"));
                 name = registration?.Name ?? granted.Name;
                 redirects = registration?.RedirectUris ?? new[] { granted.RedirectUri };
             }
@@ -269,7 +275,7 @@ namespace PadForge.Services.Automation.Web
             // other must match exactly.
             if (string.IsNullOrEmpty(redirect) && redirects.Count == 1) redirect = redirects[0];
             if (string.IsNullOrEmpty(redirect) || !redirects.Contains(redirect, StringComparer.Ordinal) || !WebAddress.IsRedirect(redirect))
-                return WebPages.Refused(WebPages.CannotGoOn("its redirect address is not the one it registered"));
+                return WebPages.Refused(_app, WebPages.CannotGoOn(_app, "its redirect address is not the one it registered"));
 
             // From here a refusal goes back to the client.
             string state = Get(form, "state");
@@ -306,7 +312,7 @@ namespace PadForge.Services.Automation.Web
                 _signIns[signIn.Sid] = pending;
             }
             pending.Answer = AskAsync(signIn);
-            return WebPages.Waiting(signIn, baseUrl);
+            return WebPages.Waiting(_app, signIn, baseUrl);
         }
 
         private async Task<string> AskAsync(WebSignIn signIn)
@@ -328,10 +334,10 @@ namespace PadForge.Services.Automation.Web
             lock (_sync)
             {
                 Sweep();
-                if (sid == null || !_signIns.TryGetValue(sid, out pending)) return WebPages.Refused(WebPages.Expired());
+                if (sid == null || !_signIns.TryGetValue(sid, out pending)) return WebPages.Refused(_app, WebPages.Expired(_app));
             }
             var answer = pending.Answer;
-            if (answer == null || !answer.IsCompleted) return WebPages.Waiting(pending.SignIn, pending.Issuer);
+            if (answer == null || !answer.IsCompleted) return WebPages.Waiting(_app, pending.SignIn, pending.Issuer);
             lock (_sync) _signIns.Remove(sid);
             string grantId = answer.IsCompletedSuccessfully ? answer.Result : null;
             var s = pending.SignIn;

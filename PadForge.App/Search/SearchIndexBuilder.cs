@@ -143,6 +143,8 @@ namespace PadForge.Search
             public string ScopeName { get; init; }
             public bool InTemplate { get; init; }
             public string ItemsPath { get; init; }
+            /// <summary>The named list whose item template the walk is in.</summary>
+            public string ItemsList { get; init; }
             public SearchLabel ItemQualifier { get; init; }
             public IReadOnlyList<SearchGate> Gates { get; init; } = Array.Empty<SearchGate>();
             public CardState Card { get; init; }
@@ -263,6 +265,12 @@ namespace PadForge.Search
 
             private static string NameOf(XElement e) => (string)e.Attribute(Xaml + "Name") ?? Attr(e, "Name");
 
+            /// <summary>Whether an element is a list of items: it has an
+            /// ItemsSource, set as an attribute or as a property
+            /// element.</summary>
+            private static bool HoldsItems(XElement e)
+                => e != null && (Attr(e, "ItemsSource") != null || e.Elements().Any(c => IsProperty(c) && Local(c).EndsWith(".ItemsSource", StringComparison.Ordinal)));
+
             private static string StyleOf(XElement e)
             {
                 var m = StyleKey.Match(Attr(e, "Style") ?? string.Empty);
@@ -322,6 +330,7 @@ namespace PadForge.Search
                     Why = ReachOf(element, ctx) == PadForge.Common.ReachClass.Asks ? WhyOf(element, ctx) : PadForge.Common.ReachReason.None,
                     Dialog = _dialog,
                     Handler = element == null ? null : HandlerOf(element),
+                    ItemsList = kind == SearchKind.MenuItem ? ctx.ItemsList : null,
                 });
             }
 
@@ -434,7 +443,13 @@ namespace PadForge.Search
                             else if (Local(r) == "DataTemplate" && key != null && _rowParts.ContainsKey(key))
                                 continue; // read in its place in the open row
                             else
-                                Walk(r, ctx with { LeftOut = true });
+                            {
+                                // A typed template in a list's own resources
+                                // draws the list's items, Profiles' cards: a
+                                // menu in it is each item's own.
+                                bool items = Local(r) == "DataTemplate" && Attr(r, "DataType") != null && HoldsItems(e.Parent);
+                                Walk(r, ctx with { LeftOut = true, ItemsList = items ? NameOf(e.Parent) : ctx.ItemsList });
+                            }
                         }
                         return;
                     }
@@ -540,10 +555,12 @@ namespace PadForge.Search
                         var template = c.Elements().FirstOrDefault(t => Local(t) == "DataTemplate");
                         var root = template == null ? null : Kids(template).FirstOrDefault();
                         var source = Binding.Parse(Attr(e, "ItemsSource"));
+                        // A menu in the template is each item's own.
+                        string list = NameOf(e);
                         if (root != null && IsCard(root) && source != null && source.IsPlainPath)
-                            Walk(root, ctx with { ItemsPath = source.Path, InTemplate = true, ItemQualifier = null, Gates = Array.Empty<SearchGate>() });
+                            Walk(root, ctx with { ItemsPath = source.Path, InTemplate = true, ItemQualifier = null, Gates = Array.Empty<SearchGate>(), ItemsList = list });
                         else
-                            Walk(c, ctx with { LeftOut = true });
+                            Walk(c, ctx with { LeftOut = true, ItemsList = list });
                         continue;
                     }
                     Walk(c, ctx);
@@ -562,7 +579,10 @@ namespace PadForge.Search
                     else if (Local(e) == "RadioButton") StripEntry(e, ctx);
                     else if (IsProperty(e) && Local(e).EndsWith(".ContextMenu", StringComparison.Ordinal))
                     {
-                        var owner = asks with { MenuOwner = MenuOwnerOf(e.Parent) };
+                        // Each menu's items sit in their button's scope: the
+                        // list's More and the open macro's More both hold a
+                        // Copy of one command.
+                        var owner = asks with { MenuOwner = MenuOwnerOf(e.Parent), ScopeName = NameOf(e.Parent) ?? asks.ScopeName };
                         foreach (var item in e.Descendants().Where(d => Local(d) == "MenuItem"))
                             if (KeyIn(Attr(item, "Header")) is { } header)
                                 Add(Enter(item, owner), SearchKind.MenuItem, new SearchLabel(header, null), owner.MenuOwner, SearchLabelSource.Button, element: item);

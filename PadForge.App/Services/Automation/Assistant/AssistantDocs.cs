@@ -11,8 +11,11 @@ namespace PadForge.Services.Automation
     /// names the page it comes from, and its result carries it as a resource
     /// link, so an assistant can read how a feature works from the source
     /// people read. The pages are the documentation site's (padforge.org,
-    /// mkdocs.yml's nav), each at its directory address. No WPF: the skill's
-    /// reference list is made from the same table.
+    /// mkdocs.yml's nav), each at its directory address. The skill carries
+    /// each page's text too (<see cref="CopyFolder"/>), and a read links that
+    /// copy as well, so an assistant with no web access reads the page from
+    /// PadForge. No WPF: the skill's reference list is made from the same
+    /// table.
     /// </summary>
     internal static class AssistantDocs
     {
@@ -88,6 +91,28 @@ namespace PadForge.Services.Automation
         internal static bool IsPage(string address)
             => address != null && address.StartsWith(Root, StringComparison.Ordinal)
                 && Pages.Any(p => address.Length == Root.Length + p.Path.Length && address.EndsWith(p.Path, StringComparison.Ordinal));
+
+        /// <summary>The folder of the skill that carries each page's text
+        /// (#600 item 14), made from the documentation site's own Markdown
+        /// with every link that leaves the copies pointing at the
+        /// site.</summary>
+        internal const string CopyFolder = "references/docs/";
+
+        /// <summary>Where the skill carries a page, by its path under the
+        /// site: <c>references/docs/features/devices.md</c>.</summary>
+        internal static string CopyPathOf(string pagePath) => CopyFolder + pagePath.TrimEnd('/') + ".md";
+
+        /// <summary>The skill's copy of a page, as the URI
+        /// <c>resources/read</c> serves it, or null for an address that is
+        /// none of these pages or a page the skill does not carry. A read
+        /// links it beside the page on the web, for an assistant that does
+        /// not read the web.</summary>
+        internal static string CopyUri(string address)
+        {
+            if (!IsPage(address)) return null;
+            string path = CopyPathOf(address.Substring(Root.Length));
+            return AssistantSkill.Files.Any(f => f.Path == path) ? AssistantSkill.Root + path : null;
+        }
 
         /// <summary>The page that covers a place, as a full address, or
         /// null when none does.</summary>

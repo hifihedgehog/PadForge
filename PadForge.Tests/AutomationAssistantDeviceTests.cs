@@ -37,6 +37,36 @@ namespace PadForge.Tests
             return ud;
         }
 
+        /// <summary>A plugin's device, declared by the plugin's own session,
+        /// is listed with the IDs of its declared settings, which are the
+        /// device's own ID and the key (#600, PL-90): the one form read, set
+        /// and press take. The plugin's name is past the 64 characters a
+        /// program's name keeps, so the device's identity is made from the
+        /// cut name the session holds.</summary>
+        [Fact]
+        public async Task APluginsDevice_IsListedWithItsSettings_UnderTheDevicesOwnId()
+        {
+            using var rig = new AssistantRig(AutomationLevel.Read);
+            rig.Host.AttachEngine(new AutomationTestEngine(new InputManager()));
+            using var plugins = new PluginCatalogRig(rig.Host, rig.PipeName);
+            plugins.AddRunning(PluginCatalogRig.LongName + ".exe");
+            var session = plugins.Connect();
+            string declared = session.Final("declare key=pedals name=\"Pedal Box\" {\"buttons\":[\"A\"]}");
+            Assert.StartsWith("ok id=", declared);
+            var entry = rig.Host.Sessions.Devices.Find(declared.Substring(6));
+            Assert.StartsWith("ok key=clutch", session.Final("setting key=clutch kind=switch name=\"Clutch Inverted\" device=pedals"));
+            Assert.StartsWith("ok key=cal", session.Final("setting key=cal kind=button name=Calibrate device=pedals"));
+            await AssistantRig.Until(() => SettingsManager.FindDeviceByInstanceGuid(entry.Guid) != null);
+            Assert.NotNull(SettingsManager.FindDeviceByInstanceGuid(entry.Guid));
+
+            var client = await rig.ConnectAsync();
+            var listed = (await client.CallToolAsync("list_devices")).StructuredContent.Value.GetProperty("devices").EnumerateArray().ToList();
+            var pedals = listed.Single(d => d.GetProperty("id").GetString() == entry.Id);
+            Assert.True(pedals.GetProperty("from_program").GetBoolean());
+            Assert.Equal(new[] { "device/" + entry.Id + "/cal", "device/" + entry.Id + "/clutch" },
+                pedals.GetProperty("settings").EnumerateArray().Select(x => x.GetString()).OrderBy(x => x, StringComparer.Ordinal));
+        }
+
         [Fact]
         public async Task ADeviceOfItsOwn_IsAddedDrivenAndRemoved_ThroughTheScriptsVerbs()
         {

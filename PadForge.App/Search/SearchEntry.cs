@@ -81,5 +81,10 @@ namespace PadForge.Search
         /// <summary>The Click handler's or the Command binding's name of an
         /// action, which says what opens a dialog (DialogCatalog).</summary>
         public string Handler { get; init; }
+
+        /// <summary>For a menu item a list's item template holds, the list's
+        /// name: each item, a profile's card or a layer's tab, has the menu
+        /// of its own (#600). Null for any other entry.</summary>
+        public string ItemsList { get; init; }
     }
 }

@@ -6,6 +6,17 @@ using PadForge.Engine;
 
 namespace PadForge.Services.Automation
 {
+    /// <summary>What a program's profile switch would turn on that listens
+    /// on the network (#600): the profile's name as the user knows it, and
+    /// the extras by the names the question card gives.</summary>
+    internal sealed record ProfileStarts(string Name, IReadOnlyList<string> Extras)
+    {
+        internal static readonly ProfileStarts None = new(null, Array.Empty<string>());
+
+        /// <summary>Whether the switch starts nothing new.</summary>
+        internal bool Nothing => Extras == null || Extras.Count == 0;
+    }
+
     /// <summary>How a request to start or stop the engine ended.</summary>
     internal enum EngineChange
     {
@@ -94,6 +105,13 @@ namespace PadForge.Services.Automation
         /// <summary>Releases the hold and returns to the default profile.
         /// Answers <c>ok default</c>.</summary>
         string DeactivateProfile();
+
+        /// <summary>What switching to the profile by ID or name, or returning
+        /// to the default with null, would turn on that listens on the
+        /// network and is off now (#600). <see cref="ProfileStarts.None"/>
+        /// when the switch would start nothing new, the profile is in force
+        /// already, or no profile has that name.</summary>
+        ProfileStarts NetworkStarts(string nameOrId);
 
         /// <summary>Answers <c>ok &lt;name or default&gt; pinned</c> or
         /// <c>unpinned</c>.</summary>

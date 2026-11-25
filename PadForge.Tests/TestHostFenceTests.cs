@@ -583,6 +583,12 @@ namespace PadForge.Tests
             // The caller's console, and the box that stands in for it.
             new object[] { ClientRunFile, "private static void Write(string text, bool error, bool mustBeSeen)", "if (OffLimitsForTest) return;" },
 
+            // A PadForge.exe a test starts (#600 item 52): its run takes its
+            // seams from the variable that names the test's own pipe first,
+            // so it reaches that pipe alone (ClientRunTests holds what the
+            // seams do).
+            new object[] { ClientRunFile, "internal static bool TryRun(IReadOnlyList<string> args, out int exitCode, Seams seams = null)", "seams ??= Seams.ForThisRun(Environment.GetEnvironmentVariable);" },
+
             // The start of the exe with administrator rights.
             new object[] { StartWithRightsFile, "internal static int Run(IReadOnlyList<string> args)", "if (OffLimitsForTest) return NotStarted;" },
 

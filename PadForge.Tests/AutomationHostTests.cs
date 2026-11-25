@@ -784,14 +784,17 @@ namespace PadForge.Tests
             Assert.NotEqual(answering, resumed);
         }
 
-        /// <summary>Nothing in the command set asks a question, and no line
-        /// answers one: the answer is the user's alone.</summary>
+        /// <summary>The command set asks one question, a program's profile
+        /// switch that would turn on an extra that listens on the network
+        /// (#600, AutomationCommands.SwitchAsked), and no line answers one:
+        /// the answer is the user's alone.</summary>
         [Fact]
-        public void NoCommand_AsksOrAnswers()
+        public void NoCommand_AnswersAQuestion_AndOnlyAProfileSwitchAsksOne()
         {
             string commands = OffLimitsSource.Read("PadForge.App/Services/Automation/AutomationCommands.cs");
-            Assert.DoesNotContain("Approvals", commands, StringComparison.Ordinal);
-            Assert.DoesNotContain("AskAsync", commands, StringComparison.Ordinal);
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(commands, @"\bAskAsync\("));
+            Assert.Contains("Approvals.AskAsync(", FenceSource.Body(commands, "private ExternalControlService.Answer SwitchAsked("), StringComparison.Ordinal);
+            Assert.DoesNotContain("Approvals.Answer(", commands, StringComparison.Ordinal);
             using var host = NewHost(out _);
             Assert.Empty(host.Approvals.Pending);
         }

@@ -21,9 +21,11 @@ namespace PadForge.Services.Catalog
     /// stable and follows no interface language: <c>device/&lt;short ID&gt;</c>,
     /// <c>controller/&lt;number&gt;</c>, <c>profile/&lt;ID&gt;</c>,
     /// <c>macro/c&lt;number&gt;/&lt;position&gt;</c>,
-    /// <c>plugin/&lt;short ID&gt;</c> and
-    /// <c>plugin/&lt;short ID&gt;/&lt;key&gt;</c>. Its name is the one the
-    /// interface shows, which a program reads through the scrubber.
+    /// <c>plugin/&lt;short ID&gt;</c>, what a plugin declares
+    /// <c>plugin/&lt;short ID&gt;/&lt;key&gt;</c>, and what it declares for
+    /// one of its devices <c>device/&lt;short ID&gt;/&lt;key&gt;</c>, under
+    /// that device's own ID. Its name is the one the interface shows, which
+    /// a program reads through the scrubber.
     /// </summary>
     internal sealed record LiveEntry(string Id, LiveKind Kind, string Name, string Where, object Payload);
 
@@ -60,6 +62,32 @@ namespace PadForge.Services.Catalog
 
         /// <summary>The element to ring for it, when one is drawn now.</summary>
         public Func<System.Windows.FrameworkElement> Element { get; init; }
+
+        /// <summary>What it does, in the words the user reads beside it or on
+        /// hover: a plugin's help for a setting, or its paragraph.</summary>
+        public string Help { get; init; }
+
+        /// <summary>Words that are read as a paragraph, with no value and no
+        /// press: a plugin's help declaration. <see cref="Help"/> holds
+        /// them.</summary>
+        public bool Paragraph { get; init; }
+
+        /// <summary>What a program sets it to: number, switch, choice, text or
+        /// list, as find and read say it. Null for an item no program sets,
+        /// and text for one whose <see cref="Write"/> takes any text.</summary>
+        public string Takes { get; init; }
+
+        /// <summary>The least and the most a number takes, and its
+        /// unit.</summary>
+        public double? Minimum { get; init; }
+
+        public double? Maximum { get; init; }
+
+        public string Unit { get; init; }
+
+        /// <summary>The choices of a choice, or the rows of a list, as the
+        /// interface words them, read when asked.</summary>
+        public Func<IReadOnlyList<string>> Choices { get; init; }
     }
 
     /// <summary>The live objects of the catalog (#600), read on the interface
@@ -150,6 +178,12 @@ namespace PadForge.Services.Catalog
             if (vm.Settings?.ProfileItems != null)
                 foreach (var profile in vm.Settings.ProfileItems)
                     list.Add(new LiveEntry("profile/" + profile.Id, LiveKind.Profile, profile.Name, s.Profiles_Title, profile));
+            // The built-in Test Controller's card stands first on the Plugins
+            // page, then each plugin's, and its declarations sit under its
+            // ID as theirs do.
+            if (vm.Dashboard != null)
+                list.Add(new LiveEntry(PadForge.Services.Plugins.PluginsController.TestControllerId, LiveKind.Plugin, s.Plugins_TestController,
+                    s.Extras_Plugins_Title, vm.Dashboard));
             var plugins = vm.Dashboard?.PluginRows;
             if (plugins != null)
                 foreach (var plugin in plugins)

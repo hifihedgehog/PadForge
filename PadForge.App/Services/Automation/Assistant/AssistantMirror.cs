@@ -247,11 +247,28 @@ namespace PadForge.Services.Automation
 
         /// <summary>The whole run: the server toward the assistant over
         /// standard input and output, until it closes.</summary>
-        internal static int Run()
+        internal static int Run() => Run(() => new AssistantMirror());
+
+        /// <summary>The run of a test's child (#600 item 52), whose
+        /// variables name a pipe of the test's own (ClientRun.Seams.ForThisRun).</summary>
+        internal static int Run(string testsOwnPipe) => Run(() => ForTestsOwnPipe(testsOwnPipe));
+
+        /// <summary>The copy for a test's own pipe: that pipe stands for
+        /// PadForge, whether PadForge runs is whether it stands, PadForge.xml
+        /// is not read, and a call that needs PadForge starts nothing. So a
+        /// test that starts this copy never reaches a PadForge that runs on
+        /// the PC.</summary>
+        internal static AssistantMirror ForTestsOwnPipe(string pipe)
+            => new AssistantMirror(pipe, () => ControlPipeClient.Stands(pipe), fileSettings: () => AutomationFileSettings.None)
+            {
+                StartPadForge = () => false,
+            };
+
+        private static int Run(Func<AssistantMirror> make)
         {
             try
             {
-                RunAsync().GetAwaiter().GetResult();
+                RunAsync(make).GetAwaiter().GetResult();
                 return 0;
             }
             catch (Exception error)
@@ -262,9 +279,9 @@ namespace PadForge.Services.Automation
             }
         }
 
-        private static async Task RunAsync()
+        private static async Task RunAsync(Func<AssistantMirror> make)
         {
-            await using var mirror = new AssistantMirror();
+            await using var mirror = make();
             await using var transport = new StdioServerTransport("PadForge");
             await mirror.ServeAsync(transport, CancellationToken.None).ConfigureAwait(false);
         }

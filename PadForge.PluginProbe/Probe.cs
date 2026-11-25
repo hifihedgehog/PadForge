@@ -14,6 +14,8 @@ namespace PadForge.PluginProbe
     /// environment (which a plugin never gets), its Path and its folder,
     /// then waits a minute, so the test sees it end only when its job is
     /// closed.
+    /// <c>serve &lt;pipe&gt;</c> stands in for PadForge's side of its web
+    /// helper's pipe, under a test's own name (<see cref="Serve"/>).
     /// </summary>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     internal static class Probe
@@ -21,6 +23,7 @@ namespace PadForge.PluginProbe
         private static int Main(string[] args)
         {
             if (args.Length > 0 && args[0] == "kit") return PadForgePluginKit.Program.Main();
+            if (args.Length > 1 && args[0] == "serve") return Serve(args[1]);
             if (args.Length > 1 && args[0] == "owner")
             {
                 // The kit's check of who serves a pipe: for the pipe's own
@@ -50,6 +53,59 @@ namespace PadForge.PluginProbe
             File.Move(report + ".part", report, overwrite: true);
             Thread.Sleep(60000);
             return 0;
+        }
+
+        /// <summary>
+        /// PadForge's side of its web helper's pipe, as far as the helper
+        /// needs it to run: it serves one connection under a test's own name,
+        /// answers the helper's hello, and sends it a state. It writes
+        /// <c>serving pid=&lt;n&gt; handle=&lt;n&gt;</c>, its process and
+        /// its end of the pipe, before the helper connects, then
+        /// <c>connected</c>, then each line the helper sends, until the pipe
+        /// closes or the test ends it. It never serves a pipe of PadForge's
+        /// own names.
+        /// </summary>
+        private static int Serve(string name)
+        {
+            if (PadForge.Services.Automation.PipeOwner.IsOwnName(name)) return 2;
+            // Opened for overlapped calls, as PadForge opens its own. Windows
+            // runs the calls on a pipe opened for synchronous ones one at a
+            // time, so the read that waits for the helper would hold every
+            // other call on it, a copy of the handle in another process
+            // included, until the helper wrote.
+            using var server = new System.IO.Pipes.NamedPipeServerStream(name, System.IO.Pipes.PipeDirection.InOut, 1,
+                System.IO.Pipes.PipeTransmissionMode.Byte, System.IO.Pipes.PipeOptions.Asynchronous);
+            Console.WriteLine("serving pid=" + Environment.ProcessId + " handle=" + server.SafePipeHandle.DangerousGetHandle().ToInt64());
+            server.WaitForConnection();
+            string? hello = ReadLine(server);
+            if (hello == null || !hello.StartsWith("hello kind=web-helper ", StringComparison.Ordinal)) return 3;
+            Write(server, "ok padforge=0 protocol=1 web=helper\n");
+            Write(server, "{\"t\":\"state\",\"armedUntil\":0,\"grants\":[],\"port\":0,\"language\":\"en-US\",\"words\":{}}\n");
+            Console.WriteLine("connected");
+            string? line;
+            while ((line = ReadLine(server)) != null) Console.WriteLine(line);
+            return 0;
+        }
+
+        private static string? ReadLine(Stream stream)
+        {
+            var line = new List<byte>();
+            while (true)
+            {
+                int b;
+                try { b = stream.ReadByte(); }
+                catch (IOException) { return null; }
+                if (b < 0) return null;
+                if (b == '\n') return Encoding.UTF8.GetString(line.ToArray());
+                line.Add((byte)b);
+            }
+        }
+
+        private static void Write(Stream stream, string text)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
+            stream.Write(bytes, 0, bytes.Length);
+            stream.Flush();
         }
     }
 }

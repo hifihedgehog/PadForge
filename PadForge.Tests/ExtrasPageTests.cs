@@ -727,6 +727,47 @@ namespace PadForge.Tests
             Assert.False(vm.HeadTrackingAnyEnabled);
         });
 
+        /// <summary>Turning the switch on starts the UDP listener only when the
+        /// inputs it brings back hold UDP (#600): the first time, and after a
+        /// set with UDP in it. With only OpenXR to bring back, it listens on
+        /// nothing, and the card that names the network has nothing to
+        /// name. A switch that is on starts nothing.</summary>
+        [Fact]
+        public void TheHeadTrackingSwitch_StartsTheUdpListener_OnlyWhenItBringsUdpBack() => WithHeadTracking(vm =>
+        {
+            // Nothing remembered: the starting pair, UDP among it.
+            Assert.True(vm.HeadTrackingSwitchStartsUdp);
+            vm.HeadTrackingAnyEnabled = true;
+            Assert.True(vm.HeadTrackingEnabled);
+            Assert.False(vm.HeadTrackingSwitchStartsUdp);
+
+            // The headset alone, turned off by the switch and remembered.
+            vm.HeadTrackingEnabled = false;
+            vm.HeadTrackingFreeTrack = false;
+            vm.HeadTrackingOpenXr = true;
+            vm.HeadTrackingAnyEnabled = false;
+            Assert.Equal(DashboardViewModel.HeadTrackingOpenXrBit, vm.HeadTrackingLastSources);
+            Assert.False(vm.HeadTrackingSwitchStartsUdp);
+            // The catalog's ask reads the same: nothing to ask about here,
+            // while every other network setting starts its listener.
+            Assert.False(PadForge.Services.Automation.AssistantScan.StartsAListener(nameof(DashboardViewModel.HeadTrackingAnyEnabled), vm));
+            Assert.True(PadForge.Services.Automation.AssistantScan.StartsAListener(nameof(DashboardViewModel.EnableWebController), vm));
+            Assert.True(PadForge.Services.Automation.AssistantScan.StartsAListener(nameof(DashboardViewModel.HeadTrackingAnyEnabled), null));
+            vm.HeadTrackingAnyEnabled = true;
+            Assert.False(vm.HeadTrackingEnabled);
+
+            // FreeTrack alone listens on nothing either.
+            vm.HeadTrackingAnyEnabled = false;
+            vm.HeadTrackingLastSources = DashboardViewModel.HeadTrackingFreeTrackBit;
+            Assert.False(vm.HeadTrackingSwitchStartsUdp);
+
+            // UDP with the headset brings the listener back.
+            vm.HeadTrackingLastSources = DashboardViewModel.HeadTrackingUdpBit | DashboardViewModel.HeadTrackingOpenXrBit;
+            Assert.True(vm.HeadTrackingSwitchStartsUdp);
+            vm.HeadTrackingAnyEnabled = true;
+            Assert.True(vm.HeadTrackingEnabled);
+        });
+
         /// <summary>A profile or a settings load sets the three inputs one
         /// after another. A set remembered from the steps in between would
         /// be one nobody chose, so only the switch itself remembers.</summary>
@@ -1145,6 +1186,40 @@ namespace PadForge.Tests
             tile.Key = "RemoteLink";
             Assert.Equal("Extras_Open_RemoteLink", AutomationProperties.GetAutomationId(open));
             Assert.Equal("Extras_Switch_RemoteLink", AutomationProperties.GetAutomationId(toggle));
+        });
+
+        /// <summary>A tile's switch carries the class the tile gives it
+        /// (#600), set on the switch alone: the tile's own button, which only
+        /// opens the page, keeps the class of the page around it. The census
+        /// of what each tile's switch starts is AskFirstSweepTests'.</summary>
+        [Fact]
+        public void ATilesSwitch_CarriesItsOwnClass_AndItsButtonThePagesClass() => RunSta(() =>
+        {
+            var styles = ShippedStyles();
+            var page = new StackPanel();
+            PadForge.Common.Reach.SetClass(page, PadForge.Common.ReachClass.Free);
+            var tile = new ExtraTile
+            {
+                Key = "MotionServer",
+                SwitchReach = PadForge.Common.ReachClass.Asks,
+                SwitchWhy = PadForge.Common.ReachReason.Network,
+                Resources = styles,
+            };
+            tile.Style = (Style)styles[typeof(ExtraTile)];
+            page.Children.Add(tile);
+            Assert.True(tile.ApplyTemplate(), "the tile has no template");
+            var open = Assert.IsType<Button>(tile.Template.FindName(ExtraTile.OpenPartName, tile));
+            var toggle = Assert.IsType<CheckBox>(tile.Template.FindName(ExtraTile.SwitchPartName, tile));
+            Assert.Equal((PadForge.Common.ReachClass.Asks, PadForge.Common.ReachReason.Network), PadForge.Common.Reach.Of(toggle));
+            Assert.Equal((PadForge.Common.ReachClass.Free, PadForge.Common.ReachReason.None), PadForge.Common.Reach.Of(open));
+            Assert.Equal((PadForge.Common.ReachClass.Free, PadForge.Common.ReachReason.None), PadForge.Common.Reach.Of(tile));
+
+            // A class given after the template moves the switch alone.
+            tile.SwitchReach = PadForge.Common.ReachClass.UsersOwn;
+            Assert.Equal((PadForge.Common.ReachClass.UsersOwn, PadForge.Common.ReachReason.None), PadForge.Common.Reach.Of(toggle));
+            Assert.Equal(PadForge.Common.ReachClass.Free, PadForge.Common.Reach.Of(open).Class);
+            tile.SwitchReach = PadForge.Common.ReachClass.Free;
+            Assert.Equal((PadForge.Common.ReachClass.Free, PadForge.Common.ReachReason.None), PadForge.Common.Reach.Of(toggle));
         });
 
         /// <summary>The tile's second face, the one Home shows for an extra

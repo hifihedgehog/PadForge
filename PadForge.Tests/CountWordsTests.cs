@@ -49,7 +49,7 @@ namespace PadForge.Tests
         private static readonly HashSet<string> FollowsAName = new(StringComparer.OrdinalIgnoreCase)
         {
             "is", "as", "was", "has", "does", "its", "this", "ms", "needs", "reads", "sets", "reaches",
-            "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps", "wants",
+            "exists", "goes", "sends", "shows", "peaks", "frees", "references", "switches", "keeps", "wants", "asks",
         };
 
         // Strings whose value before a plural is never one, with the reason.
@@ -79,6 +79,7 @@ namespace PadForge.Tests
             ["Main_DevicesDisconnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
             ["Main_DevicesConnectedNamed_Format"] = "{0} is two or more: a note for one device names it (DeviceNoteDirector.Text)",
             ["ExeFolder_TargetTaken_Format"] = "{0} is a folder's path, and holds is the verb",
+            ["Plugins_Device_Settings_Format"] = "{0} is a plugin's name, and Settings is the dialog's title",
         };
 
         /// <summary>Every English string that puts a count before a plural

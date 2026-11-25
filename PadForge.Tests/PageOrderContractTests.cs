@@ -171,7 +171,13 @@ namespace PadForge.Tests
             foreach (string key in keys)
             {
                 int tile = At("x:Name=\"" + key + "Tile\" Key=\"" + key + "\"");
-                int panel = At("<StackPanel x:Name=\"" + key + "Page\" Visibility=\"Collapsed\">");
+                // The page's own tag, whatever else it carries (a reach
+                // class, AllowDrop), starts hidden.
+                var tags = System.Text.RegularExpressions.Regex.Matches(page,
+                    "<StackPanel\\s+x:Name=\"" + key + "Page\"[^>]*>");
+                Assert.True(tags.Count == 1, key + "Page is on the page " + tags.Count + " times");
+                Assert.Contains("Visibility=\"Collapsed\"", tags[0].Value);
+                int panel = tags[0].Index;
                 At("AutomationProperties.AutomationId=\"Extras_Back_" + key + "\"");
                 Assert.True(tile < panel && panel > before, key + " is out of order");
                 before = panel;

@@ -6620,7 +6620,9 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="Automation_Names_Two_Format" xml:space="preserve"><value>{0} and {1}</value></data>
   <data name="Automation_Names_List_Format" xml:space="preserve"><value>{0}, {1}</value></data>
   <data name="Automation_Export_Head_Format" xml:space="preserve"><value>PadForge Activity: {0} calls, oldest first. Calls that went before them: {1}.</value></data>
+  <data name="Automation_Export_Head_One_Format" xml:space="preserve"><value>PadForge Activity: {0} call. Calls that went before it: {1}.</value></data>
   <data name="Extras_Automation_ActivityDropped_Format" xml:space="preserve"><value>{0:N0} older calls went. Activity keeps the newest {1:N0}.</value></data>
+  <data name="Extras_Automation_ActivityDropped_One_Format" xml:space="preserve"><value>{0:N0} older call went. Activity keeps the newest {1:N0}.</value></data>
   <data name="Extras_Automation_Export" xml:space="preserve"><value>Export…</value></data>
   <data name="Extras_Automation_ExportTitle" xml:space="preserve"><value>Export Activity</value></data>
   <data name="Extras_Automation_ExportFilter" xml:space="preserve"><value>Text file</value></data>
@@ -6739,12 +6741,18 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="SdlMappingDialog_Detail_Other_Format" xml:space="preserve"><value>Windows, {0} fields, another device’s row. It is kept under this device’s own ID.</value></data>
   <data name="SdlMappingDialog_Detail_PadForge_Format" xml:space="preserve"><value>{0} fields. SDL does not read this device, so PadForge lays out its inputs by the row.</value></data>
   <data name="SdlMappingDialog_Detail_Guess_Format" xml:space="preserve"><value>{0} fields, from the device’s axes, buttons and hats. Check it in Test Inputs, then keep it or change it here.</value></data>
+  <data name="SdlMappingDialog_Detail_ItsId_One_Format" xml:space="preserve"><value>Windows, {0} field, its ID matches this device.</value></data>
+  <data name="SdlMappingDialog_Detail_SameProduct_One_Format" xml:space="preserve"><value>Windows, {0} field, from the same vendor and product on another bus or version. It is kept under this device’s own ID.</value></data>
+  <data name="SdlMappingDialog_Detail_Other_One_Format" xml:space="preserve"><value>Windows, {0} field, another device’s row. It is kept under this device’s own ID.</value></data>
+  <data name="SdlMappingDialog_Detail_PadForge_One_Format" xml:space="preserve"><value>{0} field. SDL does not read this device, so PadForge lays out its inputs by the row.</value></data>
+  <data name="SdlMappingDialog_Detail_Guess_One_Format" xml:space="preserve"><value>{0} field, from the device’s axes, buttons and hats. Check it in Test Inputs, then keep it or change it here.</value></data>
   <data name="SdlMappingDialog_Remaps_Format" xml:space="preserve"><value>This changes how {0} is read. Its rows in {1} are mapped again from the new layout.</value></data>
   <data name="SdlMappingDialog_NoController_Format" xml:space="preserve"><value>This changes how {0} is read. It is on no controller, so no rows change.</value></data>
   <data name="SdlMappingDialog_Shortcuts_Format" xml:space="preserve"><value>Profile shortcuts that read {0} keep the inputs they were set to.</value></data>
   <data name="SdlMappingDialog_Note" xml:space="preserve"><value>The row is kept as yours in PadForge.xml and wins over every other source for this device. Remove Mine puts back the old row and the old rows.</value></data>
   <data name="SdlMappingDialog_AddNote" xml:space="preserve"><value>The rows are kept as yours in PadForge.xml and win for their devices over every other source. Clear, under the Controller Database row’s More, removes them.</value></data>
   <data name="SdlMappingDialog_AddFound_Format" xml:space="preserve"><value>{0} rows for Windows. {1} for other systems are passed over.</value></data>
+  <data name="SdlMappingDialog_AddFound_One_Format" xml:space="preserve"><value>{0} row for Windows. {1} for other systems are passed over.</value></data>
   <data name="SdlMappingDialog_AddRefused_Format" xml:space="preserve"><value>{0} refused. The first: {1}</value></data>
   <data name="SdlMappingDialog_Refused_Empty" xml:space="preserve"><value>Paste a row, or the text of a gamecontrollerdb.txt file.</value></data>
   <data name="SdlMappingDialog_Refused_NotARow" xml:space="preserve"><value>The text is no row of SDL’s controller database: an ID of 32 hex digits, a name, then fields such as a:b0.</value></data>
@@ -6762,6 +6770,7 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="ControllerDatabase_YourRowsTip" xml:space="preserve"><value>Rows you add here, or paste on a device’s SDL Mapping card, win for their devices over every other source and stay through the reset.</value></data>
   <data name="ControllerDatabase_AddRows" xml:space="preserve"><value>Add Rows From a File or the Clipboard…</value></data>
   <data name="ControllerDatabase_Mine_Format" xml:space="preserve"><value>{0} rows, yours over every other source for their devices.</value></data>
+  <data name="ControllerDatabase_Mine_One_Format" xml:space="preserve"><value>{0} row, yours over every other source for its device.</value></data>
   <data name="ControllerDatabase_MineNone" xml:space="preserve"><value>None yet.</value></data>
   <data name="ControllerDatabase_InUseAtOnce" xml:space="preserve"><value>In use at once.</value></data>
   <data name="Web_Reach_Label" xml:space="preserve"><value>Reach PadForge From the Web</value></data>

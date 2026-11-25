@@ -1944,6 +1944,24 @@ namespace PadForge.Services
                 StripDeviceFromSlot(instanceGuid, slot);
         }
 
+        /// <summary>Maps a slot again for its type (#600, the assistants'
+        /// auto_map): each device of the slot gets the type's default rows
+        /// in place of the ones it has. The merge keeps every row a device
+        /// already has a source on (MergeMappingSetsFromLegacy's
+        /// device-present gate), so each device's sources leave the slot
+        /// first, as an unassign strips them. Rows that read any device
+        /// stay.</summary>
+        public static void MapSlotAgain(int slotIndex, VirtualControllerType type, string profileId, ExtendedSlotConfig extended)
+        {
+            var devices = new List<Guid>();
+            lock (SettingsManager.UserSettings.SyncRoot)
+                foreach (var us in SettingsManager.UserSettings.Items)
+                    if (us.MapTo == slotIndex && !devices.Contains(us.InstanceGuid)) devices.Add(us.InstanceGuid);
+            foreach (var device in devices) StripDeviceFromSlot(device, slotIndex);
+            SettingsManager.ReAutoMapSlot(slotIndex, type, profileId, extended);
+            RefreshMappingSetsFromLegacy();
+        }
+
         /// <summary>Clear one route without removing the device's sources from its other slots.</summary>
         public static void StripDeviceFromSlot(Guid instanceGuid, int slotIndex)
         {
@@ -7961,10 +7979,18 @@ namespace PadForge.Services
 
         /// <summary>Whether the flyout says the virtual controllers just
         /// turned on or off, from the shortcut or a macro (#600 item 42).
-        /// Default on, as the note always showed before it had a switch, so
-        /// a file from before it reads on.</summary>
+        /// Default on, as the note always showed before it had a switch. A
+        /// file from before it takes it from its Overlays switch
+        /// (<see cref="MigrateLegacySchema"/>): on only where Overlays was
+        /// on, so a user who turned Overlays off keeps it off.</summary>
         [XmlElement]
         public bool EnableControllersNote { get; set; } = true;
+
+        /// <summary>Read by XmlSerializer: set when the file holds
+        /// <see cref="EnableControllersNote"/>. Always written.</summary>
+        [XmlIgnore]
+        public bool EnableControllersNoteSpecified { get => true; set => _controllersNoteRead = value; }
+        private bool _controllersNoteRead;
 
         /// <summary>Default profile's custom touchpad gestures.
         /// Named profiles store theirs under each profile's
@@ -8240,6 +8266,13 @@ namespace PadForge.Services
             // #597 and holds no setting now, so the key a file kept for the
             // open fold names nothing and goes at the next save.
             OpenCards?.Remove(RetiredExternalControlFoldKey);
+            // A file from before the Controllers On or Off row (#600) has no
+            // value for it: the row is on only where Overlays was on, since
+            // a new note never turns itself on for a user who had them off.
+            if (!_controllersNoteRead)
+                EnableControllersNote = EnableMenuOverlay || EnableShiftLayerFlyout || EnableProfileOverlay
+                    || EnableDeviceDisconnectedNote || EnableDeviceConnectedNote;
+            _controllersNoteRead = true;
             DefaultProfileSnapshot?.MigrateLegacySchema();
         }
 
@@ -8990,6 +9023,12 @@ namespace PadForge.Services
             if (PollingRateOverrideHz <= 0 && LegacyPollingIntervalOverrideMs > 0)
                 PollingRateOverrideHz = PollingRates.FromIntervalMs(LegacyPollingIntervalOverrideMs);
             LegacyPollingIntervalOverrideMs = 0;
+            // A profile from before the Controllers On or Off row (#600):
+            // on only where its Overlays switch was on.
+            if (!_controllersNoteRead)
+                EnableControllersNote = EnableMenuOverlay || EnableShiftLayerFlyout || EnableProfileOverlay
+                    || EnableDeviceDisconnectedNote || EnableDeviceConnectedNote;
+            _controllersNoteRead = true;
         }
 
         /// <summary>
@@ -9119,9 +9158,16 @@ namespace PadForge.Services
 
         /// <summary>Whether the flyout says the virtual controllers just
         /// turned on or off (#600 item 42), the profile's own copy. Default
-        /// on, so a profile saved before it reads on.</summary>
+        /// on. A profile saved before it takes it from its own Overlays
+        /// switch (<see cref="MigrateLegacySchema"/>).</summary>
         [XmlElement]
         public bool EnableControllersNote { get; set; } = true;
+
+        /// <summary>Read by XmlSerializer: set when the profile holds
+        /// <see cref="EnableControllersNote"/>. Always written.</summary>
+        [XmlIgnore]
+        public bool EnableControllersNoteSpecified { get => true; set => _controllersNoteRead = value; }
+        private bool _controllersNoteRead;
 
         /// <summary>The profile's Razer Chroma lightbar mirror opinion (#373)
         /// as files before #494 saved it. Read once by

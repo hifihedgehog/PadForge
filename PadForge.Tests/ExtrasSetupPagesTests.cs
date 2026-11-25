@@ -75,17 +75,19 @@ namespace PadForge.Tests
                 ("{Binding ScreenOverlays}", null),
                 ("{Binding Extras_ScreenOverlay_Footer,", null),
             } },
-            // #597: the level, the assistants' block, the libraries, the
-            // questions that wait, the record, More and the note.
+            // #600, the Automation boards: the status, the level, the
+            // questions that wait, the assistants with their More, the
+            // scripts, the allowed programs, the activity and the note.
             new object[] { "Automation", new (string, string)[]
             {
                 ("x:Name=\"AutomationStatusCard\"", null),
                 ("x:Name=\"AutomationLevelCard\"", "Extras_Automation_Card_Level"),
-                ("x:Name=\"AutomationAssistantsCard\"", "Extras_Automation_Card_Assistants"),
-                ("x:Name=\"AutomationScriptsCard\"", "Extras_Automation_Card_Scripts"),
                 ("x:Name=\"AutomationWaitingCard\"", "Extras_Automation_Card_Waiting"),
-                ("x:Name=\"AutomationActivityCard\"", "Extras_Automation_Card_Activity"),
+                ("x:Name=\"AutomationAssistantsCard\"", "Extras_Automation_Card_Assistants"),
                 ("x:Name=\"AutomationMore\"", null),
+                ("x:Name=\"AutomationScriptsCard\"", "Extras_Automation_Card_Scripts"),
+                ("x:Name=\"AutomationAllowedCard\"", "Extras_Automation_Card_Allowed"),
+                ("x:Name=\"AutomationActivityCard\"", "Extras_Automation_Card_Activity"),
                 ("{Binding Extras_Automation_Note,", null),
             } },
             new object[] { "Plugins", new (string, string)[]

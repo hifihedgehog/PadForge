@@ -212,16 +212,19 @@ namespace PadForge.Services.Automation
             AutomationClientProcess process;
             try { process = ProcessOf(connected) ?? AutomationClientProcess.None; }
             catch { process = AutomationClientProcess.None; }
-            _ = Task.Run(async () =>
+            // The serve's first step runs here, in the order the pipe took the
+            // connections, so the sessions list those that wait for their
+            // hello in that order (#600). The rest runs off this loop: the
+            // serve goes on from the thread pool at its first wait.
+            Task served;
+            try { served = _serve(connected, process, CancellationToken.None) ?? Task.CompletedTask; }
+            catch (Exception ex) { served = Task.FromException(ex); }
+            _ = served.ContinueWith(done =>
             {
-                try { await _serve(connected, process, CancellationToken.None).ConfigureAwait(false); }
-                catch { /* a session's failure is its own */ }
-                finally
-                {
-                    try { connected.Dispose(); } catch { }
-                    process.Dispose();
-                }
-            });
+                _ = done.Exception; // a session's failure is its own
+                try { connected.Dispose(); } catch { }
+                process.Dispose();
+            }, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
             return true;
         }
 

@@ -10,9 +10,10 @@ namespace PadForge.Services.Automation
     /// The consent store as the Automation page sees it (#600 items 5 and 9):
     /// each allowed program in the page's terms, Remove, which also takes the
     /// level from its open sessions, and the Add and Remove on an assistant's
-    /// row, keyed by the full path of the program that starts PadForge.exe
-    /// --mcp. <see cref="Changed"/> is raised when the list changes and when
-    /// a program connects or leaves, since each row says whether its program
+    /// row, keyed by the program that starts PadForge.exe --mcp, or by the
+    /// script an interpreter runs for it (AssistantIdentity).
+    /// <see cref="Changed"/> is raised when the list changes and when a
+    /// program connects or leaves, since each row says whether its program
     /// is connected.
     /// </summary>
     internal sealed class AutomationConsentForPage : IAutomationConsent
@@ -60,7 +61,7 @@ namespace PadForge.Services.Automation
         public void ForgetAssistant(string hostKey, string program)
         {
             if (string.IsNullOrWhiteSpace(program)) return;
-            Remove(AutomationConsent.KeyOf("assistant", program, null));
+            Remove(AutomationConsent.AssistantKeyOf(program));
         }
 
         /// <summary>A program's path and signer, or a script's interpreter

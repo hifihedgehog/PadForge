@@ -395,7 +395,8 @@ namespace PadForge.Services.Automation
             }
             var s = Strings.Instance;
             var b = new StringBuilder();
-            b.Append(string.Format(CultureInfo.CurrentCulture, s.Automation_Export_Head_Format, calls.Count, dropped)).Append("\r\n");
+            b.Append(string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.Automation_Export_Head_Format), calls.Count),
+                calls.Count, dropped)).Append("\r\n");
             foreach (var e in calls)
             {
                 var who = e.Program ?? AutomationProgram.Unknown;

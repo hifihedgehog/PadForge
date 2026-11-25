@@ -502,6 +502,12 @@ namespace PadForge.Tests
             /// hold the caller inside its call.</summary>
             public Action<string> BeforeAnswer;
 
+            /// <summary>Answers each post on a thread of its own, as
+            /// GameSense's own server does, so a post a test holds in
+            /// <see cref="BeforeAnswer"/> keeps no other caller waiting.
+            /// Off: one post at a time, in the order they came.</summary>
+            public volatile bool AnswersEachOnItsOwnThread;
+
             public FakeGameSense()
             {
                 var rng = new Random();
@@ -538,18 +544,32 @@ namespace PadForge.Tests
                     }
                     catch { continue; }
                     Posts.Enqueue((ctx.Request.Url.AbsolutePath, body));
-                    try { BeforeAnswer?.Invoke(ctx.Request.Url.AbsolutePath); } catch { }
-                    try
+                    if (AnswersEachOnItsOwnThread)
                     {
-                        ctx.Response.StatusCode = StatusFor?.Invoke(ctx.Request.Url.AbsolutePath, body) ?? Status;
-                        byte[] bytes = Encoding.UTF8.GetBytes("{}");
-                        ctx.Response.ContentType = "application/json";
-                        ctx.Response.ContentLength64 = bytes.Length;
-                        ctx.Response.OutputStream.Write(bytes, 0, bytes.Length);
-                        ctx.Response.OutputStream.Close();
+                        var held = ctx;
+                        string heldBody = body;
+                        new Thread(() => Answer(held, heldBody)) { IsBackground = true }.Start();
                     }
-                    catch { }
+                    else
+                    {
+                        Answer(ctx, body);
+                    }
                 }
+            }
+
+            private void Answer(HttpListenerContext ctx, string body)
+            {
+                try { BeforeAnswer?.Invoke(ctx.Request.Url.AbsolutePath); } catch { }
+                try
+                {
+                    ctx.Response.StatusCode = StatusFor?.Invoke(ctx.Request.Url.AbsolutePath, body) ?? Status;
+                    byte[] bytes = Encoding.UTF8.GetBytes("{}");
+                    ctx.Response.ContentType = "application/json";
+                    ctx.Response.ContentLength64 = bytes.Length;
+                    ctx.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                    ctx.Response.OutputStream.Close();
+                }
+                catch { }
             }
 
             public string WriteCoreProps()

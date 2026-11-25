@@ -709,9 +709,9 @@ namespace PadForge
                 int slot = SlotOf(number);
                 var pad = Vm.Pads[slot];
                 // The type change's automap for the type the controller has,
-                // in its load-bearing order (ChangeSlotType).
-                SettingsManager.ReAutoMapSlot(slot, pad.OutputType, pad.ProfileId, pad.ExtendedConfig);
-                SettingsService.RefreshMappingSetsFromLegacy();
+                // in its load-bearing order (ChangeSlotType), with each
+                // device's own rows taken out first.
+                SettingsService.MapSlotAgain(slot, pad.OutputType, pad.ProfileId, pad.ExtendedConfig);
                 pad.MappingsViewLoaded = false;
                 _w._settingsService.MarkDirty();
                 _w._inputService.RefreshDeviceList();

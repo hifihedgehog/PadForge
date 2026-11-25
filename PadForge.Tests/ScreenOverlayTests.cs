@@ -1269,6 +1269,25 @@ namespace PadForge.Tests
         [DllImport("user32.dll")]
         private static extern IntPtr WindowFromPoint(POINT point);
 
+        /// <summary>A spot off every screen that no window holds, for the
+        /// click test's two windows. A spot is the PC's, not this test
+        /// host's: a test run beside this one put its own windows at the
+        /// same fixed spot, and Windows found one of those in place of the
+        /// window beneath (#600). Each host starts its search at a spot of
+        /// its own, by its process ID.</summary>
+        private static (double Left, double Top) FreeSpot(double side)
+        {
+            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(new System.Windows.Media.DrawingVisual());
+            for (int i = 0; i < 64; i++)
+            {
+                int k = (Environment.ProcessId + i) % 64;
+                double left = -4000 - (k % 8) * 500, top = -4000 - (k / 8) * 500;
+                var center = new POINT { X = (int)((left + side / 2) * dpi.DpiScaleX), Y = (int)((top + side / 2) * dpi.DpiScaleY) };
+                if (WindowFromPoint(center) == IntPtr.Zero) return (left, top);
+            }
+            throw new InvalidOperationException("No spot off the screens is free for the click test.");
+        }
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindow(IntPtr hWnd, uint cmd);
 
@@ -1396,7 +1415,8 @@ namespace PadForge.Tests
         public void AClick_ReachesTheWindowBeneath_UnlessArranging()
             => OnSta(() =>
             {
-                const double left = -3000, top = -3000, side = 300;
+                const double side = 300;
+                var (left, top) = FreeSpot(side);
                 var beneath = new Window
                 {
                     Left = left, Top = top, Width = side, Height = side, WindowStyle = WindowStyle.None,

@@ -282,7 +282,9 @@ namespace PadForge.Tests
                 var first = AutomationConsent.Identify(helper, "assistant", "gemini-cli (node.exe)");
                 Assert.Equal(node, first.Path);
                 Assert.Equal(gemini, first.Script);
-                Assert.Equal(AutomationConsent.KeyOf("assistant", node, gemini), first.Key);
+                // Keyed by its script alone, as its row keys the npm shim
+                // that runs it, whichever node.exe runs it (#600).
+                Assert.Equal(AutomationConsent.KeyOf("assistant", null, gemini), first.Key);
                 AutomationConsent.CommandLineSeam = _ => "\"" + node + "\" " + other;
                 var second = AutomationConsent.Identify(helper, "assistant", "other (node.exe)");
                 Assert.NotEqual(first.Key, second.Key);

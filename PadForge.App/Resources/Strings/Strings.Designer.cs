@@ -165,6 +165,15 @@ public class Strings : INotifyPropertyChanged
         [nameof(Review_ScrubValues_Format)] = nameof(Review_ScrubOneValue),
         [nameof(Review_ScrubKinds_Format)] = nameof(Review_ScrubOneKind),
         [nameof(Review_Scrub_Found_Format)] = nameof(Review_Scrub_FoundOne),
+        [nameof(Automation_Export_Head_Format)] = nameof(Automation_Export_Head_One_Format),
+        [nameof(Extras_Automation_ActivityDropped_Format)] = nameof(Extras_Automation_ActivityDropped_One_Format),
+        [nameof(SdlMappingDialog_Detail_ItsId_Format)] = nameof(SdlMappingDialog_Detail_ItsId_One_Format),
+        [nameof(SdlMappingDialog_Detail_SameProduct_Format)] = nameof(SdlMappingDialog_Detail_SameProduct_One_Format),
+        [nameof(SdlMappingDialog_Detail_Other_Format)] = nameof(SdlMappingDialog_Detail_Other_One_Format),
+        [nameof(SdlMappingDialog_Detail_PadForge_Format)] = nameof(SdlMappingDialog_Detail_PadForge_One_Format),
+        [nameof(SdlMappingDialog_Detail_Guess_Format)] = nameof(SdlMappingDialog_Detail_Guess_One_Format),
+        [nameof(SdlMappingDialog_AddFound_Format)] = nameof(SdlMappingDialog_AddFound_One_Format),
+        [nameof(ControllerDatabase_Mine_Format)] = nameof(ControllerDatabase_Mine_One_Format),
     };
 
     /// <summary>The words a count is written in: the string for a count of
@@ -6362,7 +6371,9 @@ public class Strings : INotifyPropertyChanged
     public string Automation_Names_Two_Format => Get("Automation_Names_Two_Format");
     public string Automation_Names_List_Format => Get("Automation_Names_List_Format");
     public string Automation_Export_Head_Format => Get("Automation_Export_Head_Format");
+    public string Automation_Export_Head_One_Format => Get("Automation_Export_Head_One_Format");
     public string Extras_Automation_ActivityDropped_Format => Get("Extras_Automation_ActivityDropped_Format");
+    public string Extras_Automation_ActivityDropped_One_Format => Get("Extras_Automation_ActivityDropped_One_Format");
     public string Extras_Automation_Export => Get("Extras_Automation_Export");
     public string Extras_Automation_ExportTitle => Get("Extras_Automation_ExportTitle");
     public string Extras_Automation_ExportFilter => Get("Extras_Automation_ExportFilter");
@@ -6481,12 +6492,18 @@ public class Strings : INotifyPropertyChanged
     public string SdlMappingDialog_Detail_Other_Format => Get("SdlMappingDialog_Detail_Other_Format");
     public string SdlMappingDialog_Detail_PadForge_Format => Get("SdlMappingDialog_Detail_PadForge_Format");
     public string SdlMappingDialog_Detail_Guess_Format => Get("SdlMappingDialog_Detail_Guess_Format");
+    public string SdlMappingDialog_Detail_ItsId_One_Format => Get("SdlMappingDialog_Detail_ItsId_One_Format");
+    public string SdlMappingDialog_Detail_SameProduct_One_Format => Get("SdlMappingDialog_Detail_SameProduct_One_Format");
+    public string SdlMappingDialog_Detail_Other_One_Format => Get("SdlMappingDialog_Detail_Other_One_Format");
+    public string SdlMappingDialog_Detail_PadForge_One_Format => Get("SdlMappingDialog_Detail_PadForge_One_Format");
+    public string SdlMappingDialog_Detail_Guess_One_Format => Get("SdlMappingDialog_Detail_Guess_One_Format");
     public string SdlMappingDialog_Remaps_Format => Get("SdlMappingDialog_Remaps_Format");
     public string SdlMappingDialog_NoController_Format => Get("SdlMappingDialog_NoController_Format");
     public string SdlMappingDialog_Shortcuts_Format => Get("SdlMappingDialog_Shortcuts_Format");
     public string SdlMappingDialog_Note => Get("SdlMappingDialog_Note");
     public string SdlMappingDialog_AddNote => Get("SdlMappingDialog_AddNote");
     public string SdlMappingDialog_AddFound_Format => Get("SdlMappingDialog_AddFound_Format");
+    public string SdlMappingDialog_AddFound_One_Format => Get("SdlMappingDialog_AddFound_One_Format");
     public string SdlMappingDialog_AddRefused_Format => Get("SdlMappingDialog_AddRefused_Format");
     public string SdlMappingDialog_Refused_Empty => Get("SdlMappingDialog_Refused_Empty");
     public string SdlMappingDialog_Refused_NotARow => Get("SdlMappingDialog_Refused_NotARow");
@@ -6504,6 +6521,7 @@ public class Strings : INotifyPropertyChanged
     public string ControllerDatabase_YourRowsTip => Get("ControllerDatabase_YourRowsTip");
     public string ControllerDatabase_AddRows => Get("ControllerDatabase_AddRows");
     public string ControllerDatabase_Mine_Format => Get("ControllerDatabase_Mine_Format");
+    public string ControllerDatabase_Mine_One_Format => Get("ControllerDatabase_Mine_One_Format");
     public string ControllerDatabase_MineNone => Get("ControllerDatabase_MineNone");
     public string ControllerDatabase_InUseAtOnce => Get("ControllerDatabase_InUseAtOnce");
     public string Web_Reach_Label => Get("Web_Reach_Label");

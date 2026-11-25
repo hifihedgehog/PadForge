@@ -142,8 +142,16 @@ namespace PadForge.Services
             return "PadForge Give Back " + Convert.ToHexString(hash, 0, 8);
         }
 
-        /// <summary>The name of the pipe a task's wait reads.</summary>
-        internal static string PipeName(string taskName) => taskName.Replace(' ', '_');
+        /// <summary>The name of the pipe a task's wait reads. A pipe's name is
+        /// one for the whole PC, so in a test host it carries the host's
+        /// process ID: two test runs side by side never see each other's
+        /// pipes (#600).</summary>
+        internal static string PipeName(string taskName) => PipeName(taskName, OffLimitsForTest ? Environment.ProcessId : 0);
+
+        /// <summary>The pipe's name for a test host's process ID, or for the
+        /// app with 0.</summary>
+        internal static string PipeName(string taskName, int testHost)
+            => taskName.Replace(' ', '_') + (testHost > 0 ? "_" + testHost.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty);
 
         private static string PipePath(string taskName) => @"\\.\pipe\" + PipeName(taskName);
 

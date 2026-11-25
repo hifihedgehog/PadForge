@@ -40,9 +40,12 @@ namespace PadForge.Services.Automation
     /// PadForge.exe, else the connected process's image. Null when Windows
     /// did not say. Two programs can share an image's name, so a program is
     /// matched by this path.</param>
+    /// <param name="HostScript">The script <paramref name="HostPath"/> runs
+    /// when it is an interpreter, or null. An assistant node.exe runs is
+    /// matched by its script (#600).</param>
     internal sealed record AutomationClient(
         int Id, string Name, AutomationClientKind Kind, int ProcessId, string ImageName, DateTimeOffset ConnectedSince,
-        string ClientName = null, string HostPath = null);
+        string ClientName = null, string HostPath = null, string HostScript = null);
 
     /// <summary>
     /// The programs connected over the long-lived pipe (#597), in the order
@@ -75,12 +78,12 @@ namespace PadForge.Services.Automation
         /// <summary>Lists a program that connected and gives it its
         /// number.</summary>
         public AutomationClient Add(string name, AutomationClientKind kind, int processId, string imageName,
-            string clientName = null, string hostPath = null)
+            string clientName = null, string hostPath = null, string hostScript = null)
         {
             AutomationClient client;
             lock (_sync)
             {
-                client = new AutomationClient(++_lastId, name, kind, processId, imageName, _now(), clientName, hostPath);
+                client = new AutomationClient(++_lastId, name, kind, processId, imageName, _now(), clientName, hostPath, hostScript);
                 _clients.Add(client);
             }
             Changed?.Invoke(this, EventArgs.Empty);

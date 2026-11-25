@@ -201,8 +201,9 @@ namespace PadForge.Tests
         }
 
         /// <summary>The switch round-trips for the app and a profile, and a
-        /// file or a profile from before it reads on, so the note shows as
-        /// it always did.</summary>
+        /// file or a profile from before it, with Overlays on as these are,
+        /// reads on, so the note shows as it always did. One with Overlays
+        /// off reads off (ControllersNoteOldFileTests).</summary>
         [Fact]
         public void AFileFromBeforeTheRow_ReadsTheNoteOn()
         {

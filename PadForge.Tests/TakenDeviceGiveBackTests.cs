@@ -976,7 +976,12 @@ namespace PadForge.Tests
         {
             const string exe = @"C:\PadForge\PadForge.exe";
             string name = GiveBackTask.NameOf(Touchpad);
-            string pipe = @"\\.\pipe\" + name.Replace(' ', '_');
+            // The app's pipe is the task's name with underscores. The test
+            // host's carries its process ID, so two runs side by side never
+            // see each other's pipes.
+            Assert.Equal(name.Replace(' ', '_'), GiveBackTask.PipeName(name, 0));
+            Assert.Equal(name.Replace(' ', '_') + "_" + Environment.ProcessId, GiveBackTask.PipeName(name));
+            string pipe = @"\\.\pipe\" + GiveBackTask.PipeName(name);
             string wait = @"C:\Windows\System32\find.exe /v """" < """ + pipe + @""" >nul 2>&1 "
                 + @"& C:\Windows\System32\schtasks.exe /Query /TN """ + name + @""" >nul 2>&1 && ( ";
             string run = @"""" + exe + @""" --give-back-touchpad """ + Touchpad + @""" """ + name + @"""";

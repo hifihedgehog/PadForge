@@ -138,6 +138,10 @@ namespace PadForge.Services.Automation
                 }
                 node = _waiting.AddLast(session);
             }
+            // The pipe's accept loop called this, so the list above holds the
+            // connections in the order they came. The rest runs off that
+            // loop.
+            await Task.Yield();
             dropped?.Close("too-many");
             _ = Task.Delay(HelloWithinMs, session.Stopping).ContinueWith(t =>
             {
@@ -199,12 +203,12 @@ namespace PadForge.Services.Automation
             // changes, so the Automation page reads it with the change.
             if (!session.IsPlugin)
             {
-                var who = session.Who ??= AutomationConsent.Identify(session.Process, session.KindWord, session.ClaimedName);
+                var who = session.Who ??= (Consent ?? AutomationConsent.Shared).Covering(AutomationConsent.Identify(session.Process, session.KindWord, session.ClaimedName));
                 var store = Consent ?? AutomationConsent.Shared;
                 if (store.Find(who.Key) != null) store.Used(who.Key, _host.Now());
             }
             session.Client = _host.Clients.Add(session.ClaimedName, session.Kind, session.Process.Id, session.Process.ImageName,
-                session.GivenName, session.Who?.Path ?? session.Process.ImagePath);
+                session.GivenName, session.Who?.Path ?? session.Process.ImagePath, session.Who?.Script);
             Record(session, new AutomationAsk(AutomationAskKind.Connected, session.ClaimedName), "ok", true);
             return true;
         }
@@ -477,7 +481,7 @@ namespace PadForge.Services.Automation
             session.CallerKey = session.Number;
             if (session.IsPlugin) { session.Granted = _host.Level; return; }
             var wanted = session.Wanted ?? _host.Level;
-            var who = session.Who ??= AutomationConsent.Identify(session.Process, session.KindWord, session.ClaimedName);
+            var who = session.Who ??= (Consent ?? AutomationConsent.Shared).Covering(AutomationConsent.Identify(session.Process, session.KindWord, session.ClaimedName));
             if (session.Resume != null)
             {
                 lock (_sync)

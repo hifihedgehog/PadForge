@@ -237,7 +237,9 @@ namespace PadForge.Tests
         [Fact]
         public void AWorkerAStopGaveUpOn_SaysNothingOverTheNextRun()
         {
-            using var server = new HidppHapticsTests.FakeGameSense();
+            // GameSense answers each connection on its own, so the next run's
+            // posts are answered while the first worker's is held.
+            using var server = new HidppHapticsTests.FakeGameSense { AnswersEachOnItsOwnThread = true };
             using var gate = new ManualResetEventSlim(false);
             using var entered = new ManualResetEventSlim(false);
             int held = 0;
@@ -263,6 +265,7 @@ namespace PadForge.Tests
                 next.Start();
                 Assert.True(SpinWait.SpinUntil(
                     () => PeripheralOutputs.StateOf(OutputFamily.GameSenseColor) == BackendState.Connected, 30000), "the next run connected");
+                Assert.True(first.WorkerAliveForTest, "the first worker is still inside its request");
 
                 gate.Set();
                 Assert.True(SpinWait.SpinUntil(() => !first.WorkerAliveForTest, 30000), "the first worker ended");

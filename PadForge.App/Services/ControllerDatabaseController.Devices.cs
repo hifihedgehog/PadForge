@@ -678,7 +678,7 @@ namespace PadForge.Services
             int count = ControllerDatabaseMine.Current.Count;
             return count == 0
                 ? Strings.Instance.ControllerDatabase_MineNone
-                : string.Format(CultureInfo.CurrentCulture, Strings.Instance.ControllerDatabase_Mine_Format, count);
+                : string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.ControllerDatabase_Mine_Format), count), count);
         }
 
         /// <summary>

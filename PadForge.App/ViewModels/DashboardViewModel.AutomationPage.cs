@@ -251,6 +251,7 @@ namespace PadForge.ViewModels
         private readonly Dictionary<string, DateTimeOffset> _assistantSeenAt = new(StringComparer.Ordinal);
         private readonly Dictionary<string, string> _assistantNotes = new(StringComparer.Ordinal);
         private HashSet<string> _assistantsConnected = new(StringComparer.Ordinal);
+        private readonly Dictionary<string, AssistantIdentity.Identity> _assistantIdentities = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Whether the card says PadForge found no assistant
         /// program: the check ran and found none.</summary>
@@ -334,7 +335,11 @@ namespace PadForge.ViewModels
                 row.SettingsFile = check.Settings;
                 at++;
             }
-            ShowAssistantLines();
+            // A program found again may be another file now (an npm shim
+            // installed over a link). Rows drawn after a program connected
+            // see it.
+            _assistantIdentities.Clear();
+            ShowAssistantConnections();
         }
 
         private ImageSource IconOf(string program)
@@ -357,9 +362,11 @@ namespace PadForge.ViewModels
             };
         }
 
-        /// <summary>Notes which added assistants are connected now, by the
-        /// name each gave (AssistantPrograms.KeyOfClient), and when each was
-        /// last seen.</summary>
+        /// <summary>Notes which added assistants are connected now, and when
+        /// each was last seen: a row whose program is the one behind a
+        /// connection (AssistantIdentity.Matches, by the path and script
+        /// Windows gives), or whose name the connection gave
+        /// (AssistantPrograms.KeyOfClient).</summary>
         private void ShowAssistantConnections()
         {
             var now = AutomationNow();
@@ -367,13 +374,23 @@ namespace PadForge.ViewModels
             foreach (var client in _automationHost?.Clients.Snapshot() ?? Array.Empty<AutomationClient>())
             {
                 if (client.Kind != AutomationClientKind.Assistant) continue;
-                string key = AssistantPrograms.KeyOfClient(client.Name);
-                if (key == null) continue;
-                connected.Add(key);
-                _assistantSeenAt[key] = now;
+                if (AssistantPrograms.KeyOfClient(client.Name) is { } named) connected.Add(named);
+                if (client.HostPath == null && client.HostScript == null) continue;
+                foreach (var row in AssistantRows)
+                    if (!string.IsNullOrEmpty(row.Program) && AssistantIdentity.Matches(IdentityOf(row.Program), client.HostPath, client.HostScript))
+                        connected.Add(row.Key);
             }
+            foreach (string key in connected) _assistantSeenAt[key] = now;
             _assistantsConnected = connected;
             ShowAssistantLines();
+        }
+
+        /// <summary>The program a row's file runs, read once a check.</summary>
+        private AssistantIdentity.Identity IdentityOf(string program)
+        {
+            if (!_assistantIdentities.TryGetValue(program, out var identity))
+                _assistantIdentities[program] = identity = AssistantIdentity.Of(program);
+            return identity;
         }
 
         /// <summary>Each row's line, button and menu, from its check, the
@@ -729,7 +746,7 @@ namespace PadForge.ViewModels
         /// <summary>How many of the oldest calls went past the 100,000 kept,
         /// in words, or null while none did.</summary>
         public string AutomationActivityDropped => _activityDropped <= 0 ? null
-            : string.Format(CultureInfo.CurrentCulture, Strings.Instance.Extras_Automation_ActivityDropped_Format,
+            : string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.Extras_Automation_ActivityDropped_Format), _activityDropped),
                 _activityDropped, Services.Automation.AutomationActivity.Capacity);
 
         public bool HasAutomationActivityDropped => _activityDropped > 0;

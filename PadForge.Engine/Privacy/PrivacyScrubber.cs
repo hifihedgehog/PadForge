@@ -755,26 +755,73 @@ namespace PadForge.Engine.Privacy
             if (string.IsNullOrEmpty(text)) return text;
             lock (_sync)
             {
-                try
+                return SearchLocked(() =>
                 {
                     // Device paths go first and whole: their instance part
                     // gets one stand-in, where the known-value pass would
                     // cut a serial number out of its middle. A file path
                     // written the long way is left for the path pass, which
                     // reads a folder's name across a space.
-                    text = DevicePathShape.Replace(text, m => LongFilePath(m.Value) != null ? m.Value : DevicePathLocked(m.Value));
-                    text = ReplaceRulesLocked(text, Counting.Place);
-                    text = ReplaceKnownLocked(text, Counting.Place);
-                    text = UrlOrPath.Replace(text, UrlOrPathEvaluator);
-                    return Tokens.Replace(text, TokenEvaluator);
+                    string line = DevicePathShape.Replace(text, m => LongFilePath(m.Value) != null ? m.Value : DevicePathLocked(m.Value));
+                    line = ReplaceRulesLocked(line, Counting.Place);
+                    line = ReplaceKnownLocked(line, Counting.Place);
+                    line = UrlOrPath.Replace(line, UrlOrPathEvaluator);
+                    return Tokens.Replace(line, TokenEvaluator);
+                });
+            }
+        }
+
+        /// <summary>The most times one line is searched again after a search
+        /// that ran out of time while it waited for the processor.</summary>
+        private const int MostSearchesAgain = 2;
+
+        /// <summary>
+        /// Runs one line's search under <see cref="SearchLimit"/>, which
+        /// counts time on the clock. A search that runs out of it while this
+        /// thread had the processor for less than the limit was held back by
+        /// a busy PC and not by the line (#600: a test run beside others left
+        /// a plain line out), so it runs again from the counts it started
+        /// with. A line that keeps the processor past the limit is left out.
+        /// A value learned in a search that stopped stays known and counted
+        /// once.
+        /// </summary>
+        private string SearchLocked(Func<string> search)
+        {
+            for (int again = 0; ; again++)
+            {
+                int speech = _values[(int)PrivateKind.Speech];
+                int[] places = (int[])_places.Clone(), late = (int[])_foundLate.Clone();
+                long cpu = ThreadProcessorTime();
+                try
+                {
+                    return search();
                 }
                 catch (RegexMatchTimeoutException)
                 {
-                    _linesLeftOut++;
-                    return LineLeftOut;
+                    long now = ThreadProcessorTime();
+                    if (again >= MostSearchesAgain || cpu < 0 || now < 0 || now - cpu >= SearchLimit.Ticks)
+                    {
+                        _linesLeftOut++;
+                        return LineLeftOut;
+                    }
+                    _values[(int)PrivateKind.Speech] = speech;
+                    Array.Copy(places, _places, places.Length);
+                    Array.Copy(late, _foundLate, late.Length);
                 }
             }
         }
+
+        /// <summary>The processor time this thread has used, in ticks of
+        /// 100 ns, or -1 when Windows does not say.</summary>
+        private static long ThreadProcessorTime()
+            => GetThreadTimes(GetCurrentThread(), out _, out _, out long kernel, out long user) ? kernel + user : -1;
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern IntPtr GetCurrentThread();
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        private static extern bool GetThreadTimes(IntPtr thread, out long creation, out long exit, out long kernel, out long user);
 
         private static readonly char[] UrlRestStarts = { '/', '?', '#' };
 
@@ -950,12 +997,7 @@ namespace PadForge.Engine.Privacy
             lock (_sync)
             {
                 var counting = count ? Counting.Late : Counting.None;
-                try { return ReplaceKnownLocked(ReplaceRulesLocked(text, counting), counting); }
-                catch (RegexMatchTimeoutException)
-                {
-                    _linesLeftOut++;
-                    return LineLeftOut;
-                }
+                return SearchLocked(() => ReplaceKnownLocked(ReplaceRulesLocked(text, counting), counting));
             }
         }
 

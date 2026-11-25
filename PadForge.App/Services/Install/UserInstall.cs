@@ -751,7 +751,7 @@ namespace PadForge.Services.Install
 
         /// <summary>Windows' final path of a file or folder, without the
         /// \\?\ in front, or null when it cannot be opened.</summary>
-        private static string FinalPathOf(string path, bool directory)
+        internal static string FinalPathOf(string path, bool directory)
         {
             if (string.IsNullOrEmpty(path)) return null;
             using var handle = CreateFileW(path, 0, FileShareRead | FileShareWrite | FileShareDelete, IntPtr.Zero, OpenExisting,

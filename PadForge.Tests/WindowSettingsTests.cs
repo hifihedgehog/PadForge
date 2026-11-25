@@ -147,7 +147,16 @@ public class WindowSettingsTests
         Assert.Contains("if (_shutdownStarted) return;", close[..hide]);
         Assert.Contains("!_exitRequested", close[..hide]);
         Assert.Contains("_notifyIcon?.Icon != null", close[..hide]);
-        Assert.Contains("ExitFromTray()", Between(window, "exitItem.Click +=", "menu.Items.Add(exitItem)"));
+        // The tray menu is one list (#600). It holds Exit, the menu built from
+        // it sends Exit to ExitFromTray and adds each item it shows, and a program
+        // pressing Exit takes the same path.
+        Assert.Contains(PadForge.Services.Catalog.TrayMenu.Items, item => item.Key == "Exit");
+        string trayMenu = Between(window, "private void ShowTrayContextMenu()", "private void OnStateChanged(");
+        string eachItem = Between(trayMenu, "foreach (var item in PadForge.Services.Catalog.TrayMenu.Items)", "menu.IsOpen = true;");
+        Assert.Contains("\"Exit\" => (s, e) => ExitFromTray(),", eachItem);
+        Assert.Contains("menu.Items.Add(menuItem);", eachItem);
+        string assistant = Read("PadForge.App/MainWindow.Assistant.cs");
+        Assert.Contains("if (key == \"Exit\") ExitFromTray();", Between(assistant, "PressTray = key =>", "MainWindow = () => this,"));
         Assert.Contains("PrepareForExit();", exitFromTray);
         Assert.Contains("PrepareForExit();", Between(app, "private void ShutdownAfterStartupError()", "protected override void OnSessionEnding("));
         string session = Between(app, "protected override void OnSessionEnding(", "private static bool IsGpuLostException(");

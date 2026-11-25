@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using PadForge.Engine.Common;
+using PadForge.Services.Install;
 
 namespace PadForge.Services.Automation
 {
@@ -132,18 +133,46 @@ namespace PadForge.Services.Automation
         }
 
         /// <summary>Allows an assistant the user added on its row (#600):
-        /// the program that will start PadForge's helper, by its full path,
-        /// at the level it works at, which the user's level caps.</summary>
+        /// the program that will start PadForge's helper, at the level it
+        /// works at, which the user's level caps. The file the row found is
+        /// read for the program it runs: an npm shim for its interpreter and
+        /// script, a link for its target (<see cref="AssistantIdentity"/>),
+        /// so the key is the one its connection carries.</summary>
         public void AllowAssistant(string hostPath, string name, AutomationLevel level = AutomationLevel.ChangeSettings)
         {
             if (string.IsNullOrWhiteSpace(hostPath)) return;
-            Allow(new AllowedProgram(KeyOf("assistant", hostPath, null), name, "assistant", hostPath, null,
-                AuthenticodeSigner.Of(hostPath), level));
+            var identity = AssistantIdentity.Of(hostPath);
+            string path = identity.Path ?? hostPath;
+            Allow(new AllowedProgram(AssistantIdentity.ConsentKey(identity), name, "assistant", path, identity.Script,
+                AuthenticodeSigner.Of(path), level));
         }
+
+        /// <summary>The consent key of the assistant a row found by its
+        /// file.</summary>
+        internal static string AssistantKeyOf(string hostPath) => AssistantIdentity.ConsentKey(AssistantIdentity.Of(hostPath));
 
         /// <summary>Takes an assistant's consent away when the user removes
         /// it from its row.</summary>
-        public bool RemoveAssistant(string hostPath) => Remove(KeyOf("assistant", hostPath, null));
+        public bool RemoveAssistant(string hostPath) => Remove(AssistantKeyOf(hostPath));
+
+        /// <summary>
+        /// The allowed assistant a connection belongs to (#600): itself when
+        /// it is on the list, else an assistant added through its npm
+        /// package's script whose package holds the connection's program.
+        /// Codex's and Copilot's npm launchers start a native program inside
+        /// their package (codex-cli/bin/codex.js, npm-loader.js), and that
+        /// program starts PadForge.exe. The connection then goes by the added
+        /// assistant's key.
+        /// </summary>
+        internal AllowedProgram Covering(AllowedProgram who)
+        {
+            if (who == null || who.Kind != "assistant" || who.Script != null || string.IsNullOrEmpty(who.Path) || Find(who.Key) != null)
+                return who;
+            foreach (var program in Programs)
+                if (program.Kind == "assistant" && program.Script != null && AssistantIdentity.InsidePackageOf(program.Script, who.Path))
+                    return who with { Key = program.Key };
+            return who;
+        }
 
         /// <summary>Takes a program off the list. It asks again the next time
         /// it connects.</summary>
@@ -253,7 +282,11 @@ namespace PadForge.Services.Automation
                 // not cover every program node.exe runs.
                 string parentImage = parentPath == null ? null : System.IO.Path.GetFileName(parentPath);
                 string parentScript = parentImage != null && Interpreters.Contains(parentImage.ToLowerInvariant()) ? ScriptOf(parent, parentImage) : null;
-                return new AllowedProgram(KeyOf(kind, parentPath ?? path, parentScript),
+                // An assistant goes by its script alone, as its row keys it.
+                string key = kind == "assistant"
+                    ? AssistantIdentity.ConsentKey(new AssistantIdentity.Identity(parentPath ?? path, parentScript, null))
+                    : KeyOf(kind, parentPath ?? path, parentScript);
+                return new AllowedProgram(key,
                     string.IsNullOrWhiteSpace(name) ? ShortName(parentScript ?? parentPath) : name, kind,
                     parentPath ?? path, parentScript, AuthenticodeSigner.Of(parentPath ?? path), AutomationLevel.Commands);
             }

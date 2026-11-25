@@ -168,7 +168,7 @@ namespace PadForge.Views
 
             if (mode == Mode.AddRows)
             {
-                string found = string.Format(CultureInfo.CurrentCulture, s.SdlMappingDialog_AddFound_Format, all.Count, other);
+                string found = string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(nameof(Strings.SdlMappingDialog_AddFound_Format), all.Count), all.Count, other);
                 string detail = refused == 0 ? null
                     : string.Format(CultureInfo.CurrentCulture, s.SdlMappingDialog_AddRefused_Format, refused, RefusalWords(refusal));
                 return new CheckResult(true, found, detail);
@@ -177,15 +177,16 @@ namespace PadForge.Views
             row = SdlMappingRow.PickFor(all, deviceGuid, out var fit);
             string fields = row.FieldCount.ToString(CultureInfo.CurrentCulture);
             string lead = mode == Mode.Guess ? s.SdlMappingDialog_GuessLead : s.SdlMappingDialog_ForThisDevice;
-            string detailFormat = mode == Mode.Guess ? s.SdlMappingDialog_Detail_Guess_Format
-                : string.IsNullOrEmpty(deviceGuid) ? s.SdlMappingDialog_Detail_PadForge_Format
+            string detailKey = mode == Mode.Guess ? nameof(Strings.SdlMappingDialog_Detail_Guess_Format)
+                : string.IsNullOrEmpty(deviceGuid) ? nameof(Strings.SdlMappingDialog_Detail_PadForge_Format)
                 : fit switch
                 {
-                    SdlMappingRow.Fit.ItsId => s.SdlMappingDialog_Detail_ItsId_Format,
-                    SdlMappingRow.Fit.SameProduct => s.SdlMappingDialog_Detail_SameProduct_Format,
-                    _ => s.SdlMappingDialog_Detail_Other_Format,
+                    SdlMappingRow.Fit.ItsId => nameof(Strings.SdlMappingDialog_Detail_ItsId_Format),
+                    SdlMappingRow.Fit.SameProduct => nameof(Strings.SdlMappingDialog_Detail_SameProduct_Format),
+                    _ => nameof(Strings.SdlMappingDialog_Detail_Other_Format),
                 };
-            return new CheckResult(true, lead, string.Format(CultureInfo.CurrentCulture, detailFormat, fields));
+            // A row of one field says field (Strings.OneForms).
+            return new CheckResult(true, lead, string.Format(CultureInfo.CurrentCulture, Strings.CountFormat(detailKey, row.FieldCount), fields));
         }
 
         /// <summary>Why a text was not taken, in words.</summary>

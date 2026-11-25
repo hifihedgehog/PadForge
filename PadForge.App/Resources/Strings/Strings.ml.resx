@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} അഞ്ച് പരാജയങ്ങൾക്ക് ശേഷം നിന്നു.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>നിങ്ങൾ അംഗീകരിച്ചതിന് ശേഷം {0} മാറിയിരിക്കുന്നു.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ആരംഭിക്കാനായില്ല.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} നിന്നു, ഉടൻ വീണ്ടും ആരംഭിക്കും.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ചേർത്തത്: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ഒപ്പിട്ടത്: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ഒപ്പിട്ടിട്ടില്ല.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>തുടരാൻ ഇതിൽ ക്ലിക്ക് ചെയ്യുക.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} തുറക്കുക.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>കൂടുതൽ തുറക്കുക.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} തിരഞ്ഞെടുക്കുക.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>തിരയൽ ബോക്സ് ശൂന്യമാക്കുക.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0}-ൽ നിന്ന്</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1}-ൽ നിന്ന്, അത് സ്വയം “{0}” എന്ന് വിളിക്കുന്നു</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>സ്വയം “{0}” എന്ന് വിളിക്കുന്ന ഒരു പ്രോഗ്രാമിൽ നിന്ന്</value></data>

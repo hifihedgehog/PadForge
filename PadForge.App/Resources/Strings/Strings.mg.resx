@@ -2345,6 +2345,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Najanona ny {0} taorian'ny tsy fahombiazana dimy.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Niova ny {0} hatramin'ny nankatoavanao azy.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Tsy afaka nanomboka ny {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Najanona ny {0} ary hanomboka indray tsy ho ela.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kitapo plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tehirizo ny kitapo plugin…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Torolalana momba ny baiko, ny tranga ary ny karazana fikirakirana rehetra, script fanorenana ho an'ny plugin C#, ary ilay plugin ihany ho an'ny AutoHotkey, Python ary PowerShell.</value></data>

@@ -1433,6 +1433,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} e emisitswe kamora ho hloleha makgetlo a mahlano.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} e fetohile ho tloha ha o e dumella.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ha e a kgona ho qala.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} e emile mme e tla qala hape haufinyane.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Sephutheloana sa diplagini</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Boloka sephutheloana sa diplagini…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Tataiso ya leetsi ka leng, ketsahalo le mofuta wa tlhophiso, skripte ya ho aha plagini ya C#, le plagini yona eo bakeng sa AutoHotkey, Python le PowerShell.</value></data>

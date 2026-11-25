@@ -1370,6 +1370,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Ua taofi {0} ina ua lima ona toilalo.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Ua suia {0} talu ona e faʻatagaina.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Na le mafai ona amata {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Ua taofi {0} ae o le a toe amata i se taimi puupuu.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Pusa Plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Faʻasao le Pusa Plugin…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>O se taʻiala i veape uma, mea tutupu ma ituaiga faʻatulagaga, o se script e fau ai le plugin C#, ma le plugin lava lea mo AutoHotkey, Python ma PowerShell.</value></data>

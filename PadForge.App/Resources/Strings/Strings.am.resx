@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ከአምስት ውድቀቶች በኋላ ቆሟል።</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ካጸደቁት በኋላ ተቀይሯል።</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} መጀመር አልቻለም።</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ቆሟል እና በቅርቡ እንደገና ይጀምራል።</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ያከላቸው፦ {0}።</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>የፈረመው፦ {0}።</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ያልተፈረመ።</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ለመቀጠል ጠቅ ያድርጉት።</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ይክፈቱ።</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>«ተጨማሪ»ን ይክፈቱ።</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} ይምረጡ።</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>የፍለጋ ሳጥኑን ያጽዱ።</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>ከ{0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ራሱን «{0}» ብሎ ከሚጠራው {1}</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ራሱን «{0}» ብሎ ከሚጠራ ፕሮግራም</value></data>

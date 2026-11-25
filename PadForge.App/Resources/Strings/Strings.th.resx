@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} หยุดทำงานหลังล้มเหลว 5 ครั้ง</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} เปลี่ยนไปหลังจากที่คุณอนุมัติ</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} เริ่มทำงานไม่ได้</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} หยุดทำงานและจะเริ่มใหม่ในอีกสักครู่</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>เพิ่ม {0}</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ลงนามโดย {0}</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ไม่ได้ลงนาม</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>คลิกเพื่อไปต่อ</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>เปิด {0}</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>เปิดเพิ่มเติม</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>เลือก {0}</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>ล้างช่องค้นหา</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>จาก {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>จาก {1} ซึ่งเรียกตัวเองว่า “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>จากโปรแกรมที่เรียกตัวเองว่า “{0}”</value></data>

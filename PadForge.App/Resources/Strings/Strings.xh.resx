@@ -2149,6 +2149,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} iyekile emva kokusilela kahlanu.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} itshintshile ukususela oko wayivumayo.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ayikwazanga ukuqala.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} iyekile kwaye iza kuqala kwakhona kungekudala.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Ikhithi ye-plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Gcina ikhithi ye-plugin…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Isikhokelo sazo zonke izenzi, iziganeko neentlobo zeesetingi, isikripthi sokwakha i-plugin ye-C#, kunye ne-plugin efanayo ye-AutoHotkey, Python ne-PowerShell.</value></data>

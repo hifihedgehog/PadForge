@@ -865,6 +865,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Naʻe taʻofi ʻa e {0} hili ha tōnounou ʻe nima.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Kuo liliu ʻa e {0} talu mei hoʻo fakangofua ia.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Naʻe ʻikai lava ke kamata ʻa e {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Naʻe taʻofi ʻa e {0} pea ʻe toe kamata ia ʻi ha taimi nounou.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>ʻOku fakaʻā. ʻOku ʻikai ha polokalama kuo fakafehokotaki.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Fakafehokotaki: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Polokalama taʻeʻiloa</value></data>

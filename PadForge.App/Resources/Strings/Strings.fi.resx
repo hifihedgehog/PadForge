@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} pysähtyi viiden virheen jälkeen.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} on muuttunut hyväksymisesi jälkeen.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ei käynnistynyt.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} pysähtyi ja käynnistyy pian uudelleen.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Lisäsi: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Allekirjoittaja: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ei allekirjoitettu.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Jatka napsauttamalla sitä.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Avaa {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Avaa Lisää.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Valitse {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Tyhjennä hakukenttä.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Lähde: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Lähde: {1}, joka kutsuu itseään nimellä ”{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Ohjelmasta, joka kutsuu itseään nimellä ”{0}”</value></data>

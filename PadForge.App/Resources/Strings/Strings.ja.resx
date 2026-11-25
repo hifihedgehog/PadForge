@@ -564,6 +564,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>クリックして進みます。</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} を開きます。</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>「その他」を開きます。</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} を選びます。</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>検索ボックスを空にします。</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} から</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} から。自称「{0}」</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>「{0}」と名乗るプログラムから</value></data>
@@ -4271,6 +4273,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} は 5 回失敗して停止しました。</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} は承認後に変更されました。</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} を起動できませんでした。</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} は停止しましたが、まもなく再起動します。</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} を追加しました。</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>署名者: {0}。</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>署名なし。</value></data>

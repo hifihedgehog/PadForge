@@ -2383,6 +2383,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} i stop bihain long faivpela taim em i no wok.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} i senis bihain long taim yu orait long en.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} i no inap stat.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} i stop na bai i stat gen klostu.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit bilong plagin, na log bilong plagin yu makim</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit bilong plagin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Seivim kit bilong plagin…</value></data>
@@ -2439,6 +2440,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>I ran, long han.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Opim {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Opim Moa.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Makim {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Rausim ol rait long bokis bilong painim.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Makim rekoding</value></data>
   <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Taim yu holim na i stap</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Stat long hap stia i stat</value></data>

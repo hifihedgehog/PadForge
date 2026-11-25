@@ -2354,6 +2354,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>I mutu a {0} i muri i ngā hapa e rima.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Kua huri a {0} mai i tō whakaaetanga.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Kāore i taea e {0} te tīmata.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>I mutu a {0}, ā, ka tīmata anō ākuanei.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kete monomai</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tiakina te kete monomai…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>He aratohu ki ia kupumahi, ia takahanga me ia momo tautuhinga, he hōtuhi hanga mō te monomai C#, me taua monomai anō mō AutoHotkey, Python me PowerShell.</value></data>

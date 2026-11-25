@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} đã dừng sau năm lần lỗi.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} đã thay đổi kể từ khi bạn chấp thuận.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} không khởi động được.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} đã dừng và sẽ khởi động lại ngay.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Đã thêm {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Được ký bởi {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Chưa được ký.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Bấm vào đó để tiếp tục.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Mở {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Mở Thêm.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Chọn {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Xóa ô tìm kiếm.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Từ {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Từ {1}, tự xưng là “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Từ một chương trình tự xưng là “{0}”</value></data>

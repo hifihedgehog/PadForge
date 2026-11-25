@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} پانچ ناکامیوں کے بعد رک گیا۔</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} آپ کی منظوری کے بعد بدل گیا۔</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} شروع نہیں ہو سکا۔</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} رک گیا اور تھوڑی دیر میں دوبارہ شروع ہوگا۔</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>شامل کیا: {0}۔</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>دستخط کنندہ: {0}۔</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>دستخط شدہ نہیں۔</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>آگے بڑھنے کے لیے اس پر کلک کریں۔</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} کھولیں۔</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>مزید کھولیں۔</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} چنیں۔</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>تلاش کا خانہ خالی کریں۔</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} کی طرف سے</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} کی طرف سے، جو خود کو “{0}” کہتا ہے</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ایسے پروگرام کی طرف سے جو خود کو “{0}” کہتا ہے</value></data>

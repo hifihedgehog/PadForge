@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>5 వైఫల్యాల తర్వాత {0} ఆగిపోయింది.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>మీరు ఆమోదించిన తర్వాత {0} మారింది.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ప్రారంభం కాలేకపోయింది.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ఆగిపోయింది, కొద్దిసేపటిలో మళ్లీ ప్రారంభమవుతుంది.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>జోడించినవి: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>సంతకం చేసినది: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>సంతకం లేదు.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>కొనసాగడానికి దీన్ని క్లిక్ చేయండి.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ను తెరువు.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>మరిన్ని తెరువు.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} ను ఎంచుకో.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>శోధన పెట్టెను ఖాళీ చేయి.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} నుండి</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} నుండి, అది తనను “{0}” అని పిలుచుకుంటుంది</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>తనను “{0}” అని పిలుచుకునే ప్రోగ్రామ్ నుండి</value></data>

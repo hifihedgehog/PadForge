@@ -2326,6 +2326,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} dúró lẹ́yìn ìkùnà márùn.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ti yípadà láti ìgbà tí o ti fọwọ́ sí i.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kò lè bẹ̀rẹ̀.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} dúró, yóò sì tún bẹ̀rẹ̀ láìpẹ́.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Àpò irinṣẹ́ ohun ìfikún, àti àkọsílẹ̀ ohun ìfikún tí o bá yàn</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Àpò irinṣẹ́ ohun ìfikún</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Fi àpò irinṣẹ́ ohun ìfikún pamọ́…</value></data>
@@ -2415,6 +2416,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Ó ń ṣiṣẹ́, pẹ̀lú ọwọ́.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Ṣí {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Ṣí Síi.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Yan {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Pa ọ̀rọ̀ inú àpótí ìwákiri rẹ́.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Sàmì sí gbígbàsílẹ̀ náà</value></data>
   <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Ojú ìbòjú náà ń ṣe àkójọ àwọn ẹ̀rọ tí a so pọ̀ tí kò sopọ̀, pẹ̀lú orúkọ tí ojú ìwé Àwọn ẹ̀rọ ń fi hàn, ó sì ń sọ Gbogbo wọn ti sopọ̀ nígbà tí kò sí èyí tí ó sọnù.</value></data>
   <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Ìbòrí náà ń ṣe àkójọ àwọn ẹ̀rọ tí a so pọ̀ tí kò sopọ̀, pẹ̀lú orúkọ tí ojú ìwé Àwọn ẹ̀rọ ń fi hàn, ó sì ń sọ Gbogbo wọn ti sopọ̀ nígbà tí kò sí èyí tí ó sọnù.</value></data>

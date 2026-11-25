@@ -495,6 +495,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Chofoza kuyo ukuze uqhubeke.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Vula {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Vula Okuningi.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Khetha {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Sula ibhokisi lokusesha.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kusuka ku-{0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Kusuka ku-{1}, oluzibiza ngokuthi “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Kusuka ohlelweni oluzibiza ngokuthi “{0}”</value></data>
@@ -3223,6 +3225,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} imile ngemva kokwehluleka okuhlanu.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ishintshile selokhu wayigunyaza.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ayikwazanga ukuqala.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} imile futhi izoqala kabusha maduze.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Yengeze {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Kusayinwe ngu-{0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Akusayinwe.</value></data>

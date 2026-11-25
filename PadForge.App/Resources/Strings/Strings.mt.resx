@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} waqaf wara ħames fallimenti.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} inbidel minn mindu approvajtu.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ma setax jibda.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} waqaf u jerġa' jibda dalwaqt.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Żied {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Iffirmat minn {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Mhux iffirmat.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Ikklikkja fuqu biex tkompli.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Iftaħ {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Iftaħ Aktar.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Agħżel {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Neħħi l-kliem mill-kaxxa tat-tiftix.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Minn {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Minn {1}, li jsejjaħ lilu nnifsu “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Minn programm li jsejjaħ lilu nnifsu “{0}”</value></data>

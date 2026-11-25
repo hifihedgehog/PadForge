@@ -1659,6 +1659,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} nres lawm tom qab ua tsis tau tsib zaug.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} hloov lawm txij thaum koj pom zoo rau nws.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} pib tsis tau.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} nres lawm thiab yuav rov pib dua sai sai no.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Lub plugin kit, thiab cov log ntawm ib lub plugin uas koj xaiv</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Khaws lub plugin kit…</value></data>
@@ -1907,6 +1908,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Tab tom khiav, siv tes.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Qhib {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Qhib Ntxiv.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Xaiv {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Tshem lub npov nrhiav kom khoob.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Cim rau hauv qhov kev kaw cia</value></data>
   <data name="Dashboard_ControllersNote" xml:space="preserve"><value>Controller qhib los yog kaw</value></data>
   <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>Lub screen teev cov khoom siv uas map lawm tab sis tsis txuas, raws li cov npe uas nplooj Cov khoom siv qhia, thiab hais tias Txuas tag nrho thaum tsis muaj ib lub ploj.</value></data>

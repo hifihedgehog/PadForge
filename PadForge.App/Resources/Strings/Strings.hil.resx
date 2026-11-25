@@ -1991,6 +1991,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Nag-untat ang {0} pagkatapos sang lima ka pagkapakyas.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Nagbaylo ang {0} kutob sang gin-aprobahan mo ini.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Indi makasugod ang {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Nag-untat ang {0} kag magasugod liwat sa dali lang.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Tipigi ang plugin kit…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Giya sa tagsa ka verb, event kag klase sang setting, build script para sa C# nga plugin, kag ang amo man nga plugin para sa AutoHotkey, Python kag PowerShell.</value></data>

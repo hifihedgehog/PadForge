@@ -802,6 +802,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} a úkútiw mwirin an mwáál limu fán.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} a siwil mwirin ka mwúttiri.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ese tongeni poputá.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} a úkútiw nge epwe pwal poputá mwirin ekis fansoun.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin Kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Isóni ewe Plugin Kit…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Eu kapas ren iteiten verb, event me sókkun setting, eu build script ren ewe C# plugin, me ewe chök plugin ren AutoHotkey, Python me PowerShell.</value></data>

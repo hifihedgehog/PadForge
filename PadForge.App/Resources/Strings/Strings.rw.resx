@@ -2202,6 +2202,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} yahagaze nyuma yo kunanirwa inshuro eshanu.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} yahindutse kuva wayemeza.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ntiyashoboye gutangira.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} yahagaze, kandi irongera itangire vuba.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Ibikoresho byo gukora plugin, n'inyandiko y'ibyabaye ya plugin uhisemo</value></data>
   <data name="Automation_Asked_Repeated_Format" xml:space="preserve"><value>{0}, inshuro {1}</value></data>
   <data name="Automation_Asked_RepeatedLast_Format" xml:space="preserve"><value>{0}, ubwa nyuma muri {1} nk'ubwo</value></data>
@@ -2287,6 +2288,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Irakora, n'intoki.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Fungura {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Fungura Ibindi.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Hitamo {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Siba ibiri mu gasanduku ko gushakisha.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Shyira ikimenyetso mu ifatwa</value></data>
   <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>Overlay itondeka ibikoresho bifite ihuzwa ariko bitahujwe, ku mazina urupapuro Ibikoresho rwerekana, kandi ikandika Byose bihujwe iyo nta na kimwe kibura.</value></data>
   <data name="Automation_Status_Off" xml:space="preserve"><value>Bizimye. Nta porogaramu ishobora kugera kuri PadForge.</value></data>

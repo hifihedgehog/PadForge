@@ -636,6 +636,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klike sou li pou kontinye.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Louvri {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Louvri Plis.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Chwazi {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Efase bwat rechèch la.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Soti nan {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Soti nan {1}, ki rele tèt li “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Soti nan yon pwogram ki rele tèt li “{0}”</value></data>
@@ -5126,6 +5128,7 @@ Gen yon kopi vèsyon anvan an nan dosye sa a: {1}</value></data>
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} kanpe apre senk echèk.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} chanje depi ou te apwouve l.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} pa t ka demare.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} kanpe epi l ap rekòmanse talè.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Li ajoute {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Siyen pa {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Pa siyen.</value></data>

@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Stopiodd {0} ar ôl pum methiant.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Mae {0} wedi newid ers i chi ei gymeradwyo.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Ni ellid cychwyn {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Stopiodd {0} ac mae'n cychwyn eto cyn bo hir.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ychwanegwyd {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Wedi'i lofnodi gan {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Heb ei lofnodi.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Cliciwch arno i fynd ymlaen.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Agor {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Agor Mwy.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Dewiswch {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Gwagiwch y blwch chwilio.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>O {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>O {1}, sy'n galw ei hun yn “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>O raglen sy'n galw ei hun yn “{0}”</value></data>

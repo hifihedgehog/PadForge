@@ -628,6 +628,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} imesimama baada ya kushindwa mara tano.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} imebadilika tangu uliporuhusu.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} haikuweza kuanza.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} imesimama na itaanza tena baada ya muda mfupi.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Vifaa vilivyoongezwa: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Imesainiwa na {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Haijasainiwa.</value></data>
@@ -877,6 +878,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Bofya hapo ili kuendelea.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Fungua {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Fungua Zaidi.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Chagua {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Futa kisanduku cha kutafuta.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Kutoka {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Kutoka {1}, inayojiita “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Kutoka programu inayojiita “{0}”</value></data>

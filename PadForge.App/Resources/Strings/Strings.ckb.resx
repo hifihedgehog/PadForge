@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} دوای پێنج شکست وەستا.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} لەوەتەی پەسەندت کردووە گۆڕاوە.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} نەیتوانی دەست پێبکات.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} وەستا و بەم زووانە دووبارە دەست پێدەکاتەوە.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>زیادی کرد: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>واژووکراو لەلایەن {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>واژوونەکراوە.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>کرتەی لێ بکە بۆ بەردەوامبوون.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} بکەرەوە.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>«زیاتر» بکەرەوە.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} هەڵبژێرە.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>سندوقی گەڕان بەتاڵ بکەرەوە.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>لەلایەن {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>لەلایەن {1}، کە خۆی ناو دەنێت «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>لەلایەن بەرنامەیەک کە خۆی ناو دەنێت «{0}»</value></data>

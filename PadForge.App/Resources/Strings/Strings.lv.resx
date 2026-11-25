@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} apstājās pēc piecām kļūmēm.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ir mainīts kopš apstiprināšanas.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} neizdevās startēt.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} apstājās un drīz startēs vēlreiz.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Pievienots: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Parakstījis: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nav parakstīts.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Noklikšķiniet uz tā, lai turpinātu.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Atveriet: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Atveriet Vairāk.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Izvēlieties: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Notīriet meklēšanas lodziņu.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>No {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>No {1}, kas sevi dēvē par „{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>No programmas, kas sevi dēvē par „{0}”</value></data>

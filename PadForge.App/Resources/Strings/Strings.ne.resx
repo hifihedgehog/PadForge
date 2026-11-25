@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} पाँच पटक असफल भएपछि रोकियो।</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>तपाईंले स्वीकृत गरेपछि {0} परिवर्तन भएको छ।</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} सुरु हुन सकेन।</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} रोकियो र केही बेरमा फेरि सुरु हुन्छ।</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>थपिएका: {0}।</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>हस्ताक्षरकर्ता: {0}।</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>हस्ताक्षर नगरिएको।</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>अगाडि बढ्न यसमा क्लिक गर्नुहोस्।</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} खोल्नुहोस्।</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>थप खोल्नुहोस्।</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} छान्नुहोस्।</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>खोज बाकस खाली गर्नुहोस्।</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} बाट</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} बाट, जसले आफूलाई “{0}” भन्छ</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>आफूलाई “{0}” भन्ने प्रोग्रामबाट</value></data>

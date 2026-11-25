@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>توقف {0} بعد خمس إخفاقات.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>تغيّر {0} منذ موافقتك عليه.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>تعذر بدء {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>توقف {0} وسيبدأ من جديد بعد قليل.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>أضاف: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>موقّع من {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>غير موقّع.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>انقر عليه للمتابعة.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>افتح {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>افتح المزيد.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>اختر {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>امسح مربع البحث.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>من {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>من {1}، الذي يسمي نفسه «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>من برنامج يسمي نفسه «{0}»</value></data>

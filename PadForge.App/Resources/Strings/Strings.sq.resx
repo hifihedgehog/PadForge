@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} u ndal pas pesë dështimeve.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ka ndryshuar që nga miratimi.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nuk mundi të niset.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} u ndal dhe niset përsëri së shpejti.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Shtoi {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Nënshkruar nga {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>I panënshkruar.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kliko mbi të për të vazhduar.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Hap {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Hap Më shumë.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Zgjidh {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Pastro kutinë e kërkimit.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Nga {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Nga {1}, që e quan veten „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Nga një program që e quan veten „{0}“</value></data>

@@ -1448,6 +1448,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Nagpondo an {0} pagkatapos nin limang pagsala.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Nagbago an {0} poon kan tinugotan mo ini.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Dai nakapoon an {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Nagpondo an {0} asin mapoon giraray sa dai mahahaloy.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit nin plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>I-save an kit nin plugin…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Sarong giya sa gabos na verb, event asin klase nin setting, sarong build script para sa C# na plugin, asin an parehong plugin para sa AutoHotkey, Python asin PowerShell.</value></data>

@@ -1223,6 +1223,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} paanch baar fail hoe ke ruk gais.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} badal gais jab se aap isse approve karaa.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} chalu nai hoe sakaa.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ruk gais aur thoda der me fir se chalu hoi.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Plugin kit, aur jon plugin aap chuno oke log</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Plugin kit save karo…</value></data>
@@ -1424,6 +1425,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Chale hai, haath se.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} kholo.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Aur kholo.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} chuno.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Search box khaali karo.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Recording me nisaan lagaao</value></data>
   <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Pakde rahe tak, phir rukaa rahe</value></data>
   <data name="Mapping_MousePositionAnchor" xml:space="preserve"><value>Steering jahan suru bhais, wahan se suru karo</value></data>

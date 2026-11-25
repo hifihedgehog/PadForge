@@ -2251,6 +2251,7 @@ Olingi PadForge elongola yango sikoyo? Esengeli na ba droit ya administrateur mp
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} etelemi sima ya kozanga kolonga mbala mitano.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ebongwani banda ondimaki yango.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ekokaki kobanda te.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} etelemi mpe ekobanda lisusu mosika te.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit ya ba plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Kobomba kit ya ba plugin…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Guide ya verbe nyonso, événement nyonso mpe lolenge nyonso ya paramètre, script ya kotonga mpo na plugin ya C#, mpe plugin wana moko mpo na AutoHotkey, Python mpe PowerShell.</value></data>

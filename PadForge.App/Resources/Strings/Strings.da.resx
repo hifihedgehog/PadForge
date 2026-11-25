@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} stoppede efter fem fejl.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} er ændret, siden du godkendte den.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kunne ikke starte.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} stoppede og starter igen om lidt.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Tilføjede {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Underskrevet af {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ikke underskrevet.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik på det for at gå videre.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Åbn {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Åbn Mere.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Vælg {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Ryd søgefeltet.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Fra {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Fra {1}, som kalder sig “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Fra et program, der kalder sig “{0}”</value></data>

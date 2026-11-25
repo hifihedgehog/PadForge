@@ -2070,6 +2070,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} i stop afta faef taem we i no wok.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} i jenis stat taem yu letem hem.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} i no save stat.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} i stop mo bambae i stat bakegen kwiktaem.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Kit blong plagin, mo log blong wan plagin we yu jusum</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit blong Plagin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Seivem Kit blong Plagin…</value></data>
@@ -2113,6 +2114,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>I stap ron, long han.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Openem {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Openem Moa.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Pikimap {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Klinim bokis blong lukaotem.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Makem Rekoding</value></data>
   <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>Taem DPI blong maos i set long panel blong divaes blong hem, muvmen i soem long santimita tu.</value></data>
   <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Taem yu holem mo i stap</value></data>

@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} peatus pärast viit tõrget.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} on muutunud pärast kinnitamist.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ei käivitunud.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} peatus ja käivitub varsti uuesti.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Lisas: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Allkirjastaja: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Allkirjastamata.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Jätkamiseks klõpsake sellel.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Avage {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Avage Rohkem.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Valige {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Tühjendage otsinguväli.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Pärit: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Pärit: {1}, mis nimetab end „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Pärit programmist, mis nimetab end „{0}“</value></data>

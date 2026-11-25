@@ -564,6 +564,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Haz clic para continuar.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Abre {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Abre Más.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Elige {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Vacía el cuadro de búsqueda.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De {1}, que se hace llamar “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>De un programa que se hace llamar “{0}”</value></data>
@@ -4271,6 +4273,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} se detuvo tras cinco fallos.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} cambió desde que lo aprobaste.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} no pudo iniciarse.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} se detuvo y volverá a iniciarse en breve.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Agregó {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Firmado por {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Sin firma.</value></data>

@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} पाँच विफलताओं के बाद रुक गया।</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} आपकी मंज़ूरी के बाद बदल गया।</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} शुरू नहीं हो सका।</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} रुक गया और थोड़ी देर में फिर शुरू होगा।</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>जोड़ा गया: {0}।</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>हस्ताक्षरकर्ता: {0}।</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>हस्ताक्षरित नहीं।</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>आगे बढ़ने के लिए इस पर क्लिक करें।</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} खोलें।</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>और खोलें।</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} चुनें।</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>खोज बॉक्स खाली करें।</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} की ओर से</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} की ओर से, जो खुद को “{0}” कहता है</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ऐसे प्रोग्राम की ओर से जो खुद को “{0}” कहता है</value></data>

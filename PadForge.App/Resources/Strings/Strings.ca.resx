@@ -628,6 +628,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} s'ha aturat després de cinc errors.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ha canviat des que el vas aprovar.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} no s'ha pogut iniciar.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} s'ha aturat i es tornarà a iniciar aviat.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ha afegit {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signat per {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Sense signar.</value></data>
@@ -877,6 +878,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Fes-hi clic per continuar.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Obre {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Obre Més.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Tria {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Buida el quadre de cerca.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De {1}, que es diu «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>D'un programa que es diu «{0}»</value></data>

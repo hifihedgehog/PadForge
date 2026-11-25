@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ஐந்து தோல்விகளுக்குப் பிறகு நின்றது.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} நீங்கள் அங்கீகரித்த பிறகு மாறிவிட்டது.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} தொடங்க முடியவில்லை.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} நின்றது, சிறிது நேரத்தில் மீண்டும் தொடங்கும்.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>சேர்த்தவை: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>கையொப்பமிட்டவர்: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>கையொப்பமிடப்படவில்லை.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>தொடர அதைச் சொடுக்கவும்.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ஐத் திற.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>மேலும் என்பதைத் திற.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} ஐத் தேர்ந்தெடு.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>தேடல் பெட்டியைக் காலியாக்கு.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} இலிருந்து</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} இலிருந்து, அது தன்னை “{0}” என்று அழைத்துக்கொள்கிறது</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>தன்னை “{0}” என்று அழைத்துக்கொள்ளும் ஒரு நிரலிலிருந்து</value></data>

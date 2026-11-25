@@ -564,6 +564,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>点击它以继续。</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>打开 {0}。</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>打开“更多”。</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>选择 {0}。</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>清空搜索框。</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>来自 {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>来自 {1}，它自称“{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>来自一个自称“{0}”的程序</value></data>
@@ -4271,6 +4273,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} 在连续失败五次后已停止。</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} 自你批准后已更改。</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} 无法启动。</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} 已停止，稍后将重新启动。</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>已添加 {0}。</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>签名者：{0}。</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>未签名。</value></data>

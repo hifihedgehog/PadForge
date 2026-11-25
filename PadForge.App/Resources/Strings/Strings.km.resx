@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} បានឈប់ បន្ទាប់ពីបរាជ័យប្រាំដង។</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} បានផ្លាស់ប្ដូរ តាំងពីអ្នកយល់ព្រមវា។</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} មិនអាចចាប់ផ្ដើមបានទេ។</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} បានឈប់ ហើយនឹងចាប់ផ្ដើមឡើងវិញក្នុងពេលបន្តិចទៀត។</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>បានបន្ថែម {0}។</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ចុះហត្ថលេខាដោយ {0}។</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>គ្មានហត្ថលេខា។</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ចុចវាដើម្បីបន្ត។</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>បើក {0}។</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>បើក «ច្រើនទៀត»។</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>ជ្រើសរើស {0}។</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>សម្អាតប្រអប់ស្វែងរក។</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>ពី {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ពី {1} ដែលហៅខ្លួនវាថា «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ពីកម្មវិធីដែលហៅខ្លួនវាថា «{0}»</value></data>

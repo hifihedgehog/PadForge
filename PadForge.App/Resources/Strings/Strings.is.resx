@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} stöðvaðist eftir fimm bilanir.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} breyttist eftir að þú samþykktir hana.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} gat ekki ræst.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} stöðvaðist og ræsist aftur bráðlega.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Bætti við {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Undirritað af {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Óundirritað.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Smelltu á það til að halda áfram.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Opnaðu {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Opnaðu Meira.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Veldu {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Tæmdu leitarreitinn.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Frá {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Frá {1}, sem kallar sig „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Frá forriti sem kallar sig „{0}“</value></data>

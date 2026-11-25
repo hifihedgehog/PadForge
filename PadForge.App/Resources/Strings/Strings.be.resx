@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} спынены пасля пяці збояў.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} змяніўся пасля вашага ўхвалення.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} не ўдалося запусціць.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} спыніўся і неўзабаве запусціцца зноў.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Дададзена: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Падпісана: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Без подпісу.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Націсніце на гэта, каб працягнуць.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Адкрыйце: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Адкрыйце «Больш».</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Абярыце: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Ачысціце поле пошуку.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Ад {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Ад {1}, якая называе сябе «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Ад праграмы, якая называе сябе «{0}»</value></data>

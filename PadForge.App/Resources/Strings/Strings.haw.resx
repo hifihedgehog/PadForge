@@ -1199,6 +1199,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Ua kū ʻo {0} ma hope o nā hāʻule ʻelima.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Ua loli ʻo {0} mai kou ʻae ʻana iā ia.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>ʻAʻole hiki iā {0} ke hoʻomaka.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Ua kū ʻo {0}, a e hoʻomaka hou ana ia ma hope koke iho.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Ka pūʻolo plugin, a me ka moʻolelo o kekahi plugin āu e koho ai</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Pūʻolo plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Mālama i ka pūʻolo plugin…</value></data>
@@ -1439,6 +1440,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>E holo ana, ma ka lima.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>E wehe iā {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>E wehe iā “Hou aku”.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>E koho iā {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>E holoi i ka pahu huli.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Kaha i ka hoʻopaʻa ʻana</value></data>
   <data name="KeyboardScreens_Mode_OfflineDevices" xml:space="preserve"><value>Nā hāmeʻa ʻaʻole i pili</value></data>
   <data name="KeyboardScreen_NoDeviceOffline" xml:space="preserve"><value>Pili a pau</value></data>

@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} stoppet etter fem feil.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} er endret siden du godkjente den.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kunne ikke starte.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} stoppet og starter på nytt om litt.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>La til {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signert av {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ikke signert.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klikk på det for å gå videre.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Åpne {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Åpne Mer.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Velg {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Tøm søkefeltet.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Fra {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Fra {1}, som kaller seg «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Fra et program som kaller seg «{0}»</value></data>

@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} পাঁচবার ব্যর্থ হয়ে থেমে গেছে।</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>আপনার অনুমোদনের পর {0} বদলেছে।</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} চালু হতে পারেনি।</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} থেমে গেছে এবং একটু পরে আবার চালু হবে।</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>যোগ করেছে {0}।</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>স্বাক্ষরকারী: {0}।</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>স্বাক্ষরহীন।</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>এগোতে এতে ক্লিক করুন।</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} খুলুন।</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>আরও খুলুন।</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} বেছে নিন।</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>সার্চ বক্স খালি করুন।</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} থেকে</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} থেকে, যা নিজেকে “{0}” বলে</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>নিজেকে “{0}” বলা একটি প্রোগ্রাম থেকে</value></data>

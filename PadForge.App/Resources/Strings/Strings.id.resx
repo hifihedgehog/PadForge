@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} berhenti setelah lima kegagalan.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} berubah sejak Anda menyetujuinya.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} tidak dapat dimulai.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} berhenti dan akan dimulai lagi sebentar lagi.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ditambahkan: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Ditandatangani oleh {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Tidak ditandatangani.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik untuk melanjutkan.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Buka {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Buka Lainnya.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Pilih {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Kosongkan kotak pencarian.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Dari {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Dari {1}, yang menyebut dirinya “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Dari program yang menyebut dirinya “{0}”</value></data>

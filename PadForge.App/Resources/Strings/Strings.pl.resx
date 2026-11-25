@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} zatrzymała się po pięciu niepowodzeniach.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} zmieniła się od zatwierdzenia.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nie mogła się uruchomić.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} zatrzymała się i wkrótce uruchomi się ponownie.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Dodane urządzenia: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Podpisana przez: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Bez podpisu.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kliknij to, aby iść dalej.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Otwórz: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Otwórz Więcej.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Wybierz: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Wyczyść pole wyszukiwania.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od: {1}, który nazywa siebie „{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programu, który nazywa siebie „{0}”</value></data>

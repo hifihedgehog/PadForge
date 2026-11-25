@@ -3149,6 +3149,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} a para despues di sinku falla.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} a kambia desde ku bo a aprobá e.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} no por a kuminsá.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} a para i lo kuminsá atrobe pronto.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>E kit di plugin, i e log di un plugin ku bo skohe</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kit di plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Warda e kit di plugin…</value></data>
@@ -3241,6 +3242,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Ta kore, na man.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Habri {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Habri Mas.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Skohe {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Limpia e kaha di buskeda.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Marka e grabashon</value></data>
   <data name="KeyboardScreen_Hint_OfflineDevices" xml:space="preserve"><value>E pantaya ta mustra e aparatonan asigná ku no ta konektá, ku e nòmbernan ku e página Aparatonan ta mustra, i ta bisa Tur konektá ora ningun no ta faltando.</value></data>
   <data name="KeyboardScreen_Hint_OfflineDevices_Overlay" xml:space="preserve"><value>E overlay ta mustra e aparatonan asigná ku no ta konektá, ku e nòmbernan ku e página Aparatonan ta mustra, i ta bisa Tur konektá ora ningun no ta faltando.</value></data>

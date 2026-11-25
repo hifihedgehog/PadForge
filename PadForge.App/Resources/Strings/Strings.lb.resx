@@ -628,6 +628,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ass no fënnef Feeler gestoppt.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} huet sech geännert, zënter Dir en bestätegt hutt.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} konnt net starten.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ass gestoppt a start geschwënn nees.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Huet {0} derbäigesat.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signéiert vun {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Net signéiert.</value></data>
@@ -877,6 +878,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klickt drop, fir weiderzemaachen.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Maacht {0} op.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Maacht Méi op.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Wielt {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Maacht d'Sichfeld eidel.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Vun {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Vun {1}, deen sech „{0}“ nennt</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Vun engem Programm, deen sech „{0}“ nennt</value></data>

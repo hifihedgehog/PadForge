@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} таван удаа алдаа гарсны дараа зогссон.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} таныг зөвшөөрснөөс хойш өөрчлөгдсөн.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} эхэлж чадсангүй.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} зогссон бөгөөд удахгүй дахин эхэлнэ.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Нэмсэн: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Гарын үсэг зурсан: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Гарын үсэггүй.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Үргэлжлүүлэхийн тулд түүн дээр дарна уу.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Нээнэ үү: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Бусад хэсгийг нээнэ үү.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Сонгоно уу: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Хайлтын талбарыг цэвэрлэнэ үү.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Илгээгч: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Илгээгч: {1}, өөрийгөө “{0}” гэж нэрлэдэг</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Илгээгч: өөрийгөө “{0}” гэж нэрлэдэг програм</value></data>

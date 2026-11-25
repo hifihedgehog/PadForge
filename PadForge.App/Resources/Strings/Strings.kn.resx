@@ -628,6 +628,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ಐದು ವೈಫಲ್ಯಗಳ ನಂತರ ನಿಂತಿತು.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ನೀವು ಅನುಮೋದಿಸಿದ ಮೇಲೆ ಬದಲಾಗಿದೆ.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ನಿಂತಿತು ಮತ್ತು ಸ್ವಲ್ಪ ಸಮಯದಲ್ಲಿ ಮತ್ತೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} ಸೇರಿಸಲಾಗಿದೆ.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>{0} ಸಹಿ ಮಾಡಿದ್ದಾರೆ.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ಸಹಿ ಇಲ್ಲ.</value></data>
@@ -877,6 +878,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ಮುಂದುವರಿಯಲು ಅದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ತೆರೆಯಿರಿ.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>ಇನ್ನಷ್ಟು ತೆರೆಯಿರಿ.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} ಆರಿಸಿ.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>ಹುಡುಕಾಟ ಪೆಟ್ಟಿಗೆಯನ್ನು ಖಾಲಿ ಮಾಡಿ.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} ಇಂದ</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} ಇಂದ, ಅದು ತನ್ನನ್ನು “{0}” ಎಂದು ಕರೆದುಕೊಳ್ಳುತ್ತದೆ</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ತನ್ನನ್ನು “{0}” ಎಂದು ಕರೆದುಕೊಳ್ಳುವ ಪ್ರೋಗ್ರಾಂನಿಂದ</value></data>

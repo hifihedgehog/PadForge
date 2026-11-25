@@ -860,6 +860,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} agyae adwuma bere a ɛantumi anyɛ yiye mpɛn enum akyi.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} asesa fi bere a wopenee so no.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} antumi amfi ase.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} agyae adwuma, na ɛrenkyɛ ɛbɛfi ase bio.</value></data>
   <data name="Automation_Status_NoPrograms" xml:space="preserve"><value>Abue. Program biara nni nkitahodi mu.</value></data>
   <data name="Automation_Status_Connected_Format" xml:space="preserve"><value>Wɔaka abom: {0}</value></data>
   <data name="Automation_Program_Unknown" xml:space="preserve"><value>Program a wonnim</value></data>

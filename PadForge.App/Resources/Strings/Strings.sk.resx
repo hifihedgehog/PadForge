@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Plugin {0} sa zastavil po piatich zlyhaniach.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Plugin {0} sa zmenil od vášho schválenia.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Plugin {0} sa nepodarilo spustiť.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Plugin {0} sa zastavil a o chvíľu sa znova spustí.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Pridané zariadenia: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Podpísal: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nepodpísaný.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Pokračujte kliknutím naň.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Otvorte {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Otvorte Viac.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Vyberte {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Vymažte vyhľadávacie pole.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od {1}, ktorý sa nazýva „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programu, ktorý sa nazýva „{0}“</value></data>

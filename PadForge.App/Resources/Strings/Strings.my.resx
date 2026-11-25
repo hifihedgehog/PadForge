@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} သည် ငါးကြိမ် မအောင်မြင်ပြီးနောက် ရပ်သွားသည်။</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>သင် အတည်ပြုပြီးနောက် {0} ပြောင်းလဲသွားသည်။</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ကို စတင်၍ မရပါ။</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ရပ်သွားပြီး မကြာမီ ပြန်လည်စတင်ပါမည်။</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} ကို ထည့်ထားသည်။</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>{0} က လက်မှတ်ထိုးထားသည်။</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>လက်မှတ်မထိုးထားပါ။</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ဆက်သွားရန် ၎င်းကို နှိပ်ပါ။</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ကို ဖွင့်ပါ။</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>“နောက်ထပ်” ကို ဖွင့်ပါ။</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} ကို ရွေးပါ။</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>ရှာဖွေရေးအကွက်ကို ရှင်းလင်းပါ။</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} မှ</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} မှ၊ ၎င်းကိုယ်ကို “{0}” ဟု ခေါ်သည်</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>၎င်းကိုယ်ကို “{0}” ဟု ခေါ်သော ပရိုဂရမ်မှ</value></data>

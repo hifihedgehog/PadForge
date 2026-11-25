@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} shībài wǔ cì hòu yǐ tíngzhǐ.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} zì nín pīzhǔn hòu yǐ gēnggǎi.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} wúfǎ qǐdòng.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} yǐ tíngzhǐ, jiāng hěn kuài chóngxīn qǐdòng.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Yǐ tiānjiā {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Yóu {0} qiānmíng.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Wèi qiānmíng.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Diǎnjī tā jìxù.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Dǎkāi {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Dǎkāi Gèngduō.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Xuǎnzé {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Qīngkōng sōusuǒ kuàng.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Láizì {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Láizì {1}, qí zìchēng “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Láizì zìchēng “{0}” de chéngxù</value></data>

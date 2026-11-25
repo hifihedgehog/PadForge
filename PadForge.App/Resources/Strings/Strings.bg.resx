@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} спря след пет неуспеха.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} е променена, откакто я одобрихте.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} не можа да стартира.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} спря и скоро ще стартира отново.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Добавени: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Подписан от {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Неподписан.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Щракнете върху него, за да продължите.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Отворете {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Отворете Още.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Изберете {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Изчистете полето за търсене.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>От {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>От {1}, която се нарича „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>От програма, която се нарича „{0}“</value></data>

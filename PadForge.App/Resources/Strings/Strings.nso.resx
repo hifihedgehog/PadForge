@@ -1400,6 +1400,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} e emišitšwe ka morago ga go palelwa gahlano.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} e fetogile go tloga ge o e dumeletše.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ga se ya kgona go thoma.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} e emile gomme e tla thoma gape kgauswinyane.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Sephuthelwana sa diplagini</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Boloka sephuthelwana sa diplagini…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Tlhahlo ya lediri le lengwe le le lengwe, tiragalo le mohuta wa peakanyo, sekripte sa go aga plagini ya C#, le plagini yona yeo ya AutoHotkey, Python le PowerShell.</value></data>

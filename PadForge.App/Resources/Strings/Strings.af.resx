@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} het na vyf mislukkings gestop.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} het verander sedert jy dit goedgekeur het.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kon nie begin nie.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} het gestop en begin binnekort weer.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} bygevoeg.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Onderteken deur {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nie onderteken nie.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik daarop om voort te gaan.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Maak {0} oop.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Maak Meer oop.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Kies {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Maak die soekkassie leeg.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Van {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Van {1}, wat homself “{0}” noem</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Van 'n program wat homself “{0}” noem</value></data>

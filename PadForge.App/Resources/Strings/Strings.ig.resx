@@ -1713,6 +1713,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} kwụsịrị mgbe ọ dara ugboro ise.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} agbanweela kemgbe i kwadoro ya.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} enweghị ike ịmalite.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} kwụsịrị, ọ ga-amalite ọzọ n’oge na-adịghị anya.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Ngwa plugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Chekwaa ngwa plugin ahụ…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Ntụziaka maka verb, event na ụdị ntọala ọ bụla, script iwu maka plugin C#, na otu plugin ahụ maka AutoHotkey, Python na PowerShell.</value></data>

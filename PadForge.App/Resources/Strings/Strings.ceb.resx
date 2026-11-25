@@ -449,6 +449,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>I-klik kini aron mopadayon.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Ablihi ang {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Ablihi ang Dugang pa.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Pilia ang {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Hawani ang kahon sa pagpangita.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Gikan sa {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Gikan sa {1}, nga nagtawag sa kaugalingon nga “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Gikan sa usa ka programa nga nagtawag sa kaugalingon nga “{0}”</value></data>
@@ -4476,6 +4478,7 @@ Gusto ba nimo nga i-uninstall kini sa PadForge karon? Kinahanglan kini og elevat
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Nahunong ang {0} human sa lima ka pagkapakyas.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Nausab ang {0} sukad nimo kini giaprobahan.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Wala makasugod ang {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Nahunong ang {0} ug mosugod pag-usab sa dili madugay.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Gidugang ang {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Gipirmahan sa {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Walay pirma.</value></data>

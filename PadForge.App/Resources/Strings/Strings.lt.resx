@@ -628,6 +628,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} sustojo po penkių gedimų.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} pasikeitė po jūsų patvirtinimo.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nepavyko paleisti.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} sustojo ir netrukus paleidžiamas iš naujo.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Pridėta: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Pasirašė {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nepasirašyta.</value></data>
@@ -877,6 +878,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Spustelėkite tai, kad tęstumėte.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Atidarykite: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Atidarykite Daugiau.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Pasirinkite: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Išvalykite paieškos laukelį.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Iš {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Iš {1}, kuri save vadina „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Iš programos, kuri save vadina „{0}“</value></data>

@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>අසාර්ථක වීම් පහකට පසු {0} නැවතිණි.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>ඔබ අනුමත කළ පසු {0} වෙනස් වී ඇත.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ආරම්භ කළ නොහැකි විය.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} නැවතුණු අතර ඉක්මනින් යළි ආරම්භ වේ.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} එක් කරන ලදී.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>{0} විසින් අත්සන් කර ඇත.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>අත්සන් කර නැත.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ඉදිරියට යාමට එය ක්ලික් කරන්න.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} විවෘත කරන්න.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>තවත් විවෘත කරන්න.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} තෝරන්න.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>සෙවුම් කොටුව හිස් කරන්න.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} වෙතින්</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>තමන්ව “{0}” ලෙස හඳුන්වන {1} වෙතින්</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>තමන්ව “{0}” ලෙස හඳුන්වන වැඩසටහනකින්</value></data>

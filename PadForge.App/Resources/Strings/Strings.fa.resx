@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} پس از پنج شکست متوقف شد.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} از زمان تأیید شما تغییر کرده است.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} شروع نشد.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} متوقف شد و به‌زودی دوباره شروع می‌شود.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} را اضافه کرد.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>امضاشده توسط {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>بدون امضا.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>برای ادامه روی آن کلیک کنید.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>باز کردن {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>باز کردن «بیشتر».</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>انتخاب {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>کادر جستجو را خالی کنید.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>از {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>از {1} که خود را «{0}» می‌نامد</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>از برنامه‌ای که خود را «{0}» می‌نامد</value></data>

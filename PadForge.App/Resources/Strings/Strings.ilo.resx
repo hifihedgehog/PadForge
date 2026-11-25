@@ -1602,6 +1602,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Nagsardeng ti {0} kalpasan ti lima a pannakapaay.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Nagbaliw ti {0} manipud idi impalubosmo.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Saan a makarugi ti {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Nagsardeng ti {0} ket mangrugi manen iti apagbiit.</value></data>
   <data name="Plugins_More_Hint" xml:space="preserve"><value>Ti plugin kit, ken ti log ti plugin a piliem</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Plugin kit</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Idulin ti plugin kit…</value></data>
@@ -1641,6 +1642,8 @@
   <data name="Plugins_TC_State_ByHand" xml:space="preserve"><value>Agtartaray, babaen ti ima.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Lukatan ti {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Lukatan ti Ad-adu pay.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Pilien ti {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Ikkaten dagiti sao iti kahon ti panagbiruk.</value></data>
   <data name="Tray_MarkRecording" xml:space="preserve"><value>Markaan ti recording</value></data>
   <data name="Mapping_MouseTravelCounts_Tooltip_Dpi" xml:space="preserve"><value>No naikeddeng ti DPI ti mouse iti panel ti device-na, agparang met ti travel iti sentimetro.</value></data>
   <data name="Mapping_MouseTravelSteer_HeldStay" xml:space="preserve"><value>Bayat ti panangiggaman ken agtalinaed</value></data>

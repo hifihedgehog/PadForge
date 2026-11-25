@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} s-a oprit după cinci eșecuri.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} s-a modificat după aprobare.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} nu a putut porni.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} s-a oprit și pornește din nou în scurt timp.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Adăugat: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Semnat de {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nesemnat.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Faceți clic pe el ca să continuați.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Deschideți {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Deschideți Mai multe.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Alegeți {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Goliți caseta de căutare.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>De la {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>De la {1}, care își spune „{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>De la un program care își spune „{0}”</value></data>

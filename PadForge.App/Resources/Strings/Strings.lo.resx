@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ຢຸດເຮັດວຽກຫຼັງຈາກລົ້ມເຫຼວ 5 ຄັ້ງ.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} ປ່ຽນແປງຫຼັງຈາກທ່ານອະນຸມັດ.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ບໍ່ສາມາດເລີ່ມໄດ້.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} ຢຸດເຮັດວຽກ ແລະ ຈະເລີ່ມໃໝ່ໃນອີກບໍ່ດົນ.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ເພີ່ມ {0} ແລ້ວ.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ລົງລາຍເຊັນໂດຍ {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ບໍ່ໄດ້ລົງລາຍເຊັນ.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>ຄລິກມັນເພື່ອໄປຕໍ່.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>ເປີດ {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>ເປີດ ເພີ່ມເຕີມ.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>ເລືອກ {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>ລ້າງຊ່ອງຄົ້ນຫາ.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>ຈາກ {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>ຈາກ {1}, ເຊິ່ງເອີ້ນຕົວເອງວ່າ “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>ຈາກໂປຣແກຣມທີ່ເອີ້ນຕົວເອງວ່າ “{0}”</value></data>

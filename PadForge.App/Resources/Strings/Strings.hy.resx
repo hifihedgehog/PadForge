@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0}-ը կանգնեց հինգ ձախողումից հետո։</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0}-ը փոխվել է ձեր հաստատումից հետո։</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0}-ը չկարողացավ մեկնարկել։</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0}-ը կանգնեց և շուտով նորից կմեկնարկի։</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Ավելացրել է՝ {0}։</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Ստորագրող՝ {0}։</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Չստորագրված է։</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Սեղմեք դրա վրա՝ շարունակելու համար։</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Բացեք՝ {0}։</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Բացեք «Ավելին»-ը։</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Ընտրեք՝ {0}։</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Մաքրեք որոնման դաշտը։</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Աղբյուր՝ {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Աղբյուր՝ {1}, որն իրեն անվանում է «{0}»</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Աղբյուր՝ ծրագիր, որն իրեն անվանում է «{0}»</value></data>

@@ -564,6 +564,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klik erop om verder te gaan.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} openen.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Meer openen.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Kies {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Maak het zoekvak leeg.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Van {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Van {1}, dat zichzelf “{0}” noemt</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Van een programma dat zichzelf “{0}” noemt</value></data>
@@ -4291,6 +4293,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} is gestopt na vijf mislukte pogingen.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} is gewijzigd sinds je het goedkeurde.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} kon niet starten.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} is gestopt en start zo weer op.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Toegevoegd: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Ondertekend door {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Niet ondertekend.</value></data>

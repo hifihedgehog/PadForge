@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Плагин {0} је престао са радом након пет неуспеха.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Плагин {0} је промењен од вашег одобрења.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Плагин {0} није могао да се покрене.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Плагин {0} је престао са радом и ускоро се поново покреће.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Додато: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Потписник: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Није потписан.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Кликните на њега да наставите.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Отвори: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Отвори Више.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Изабери: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Обришите поље за претрагу.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Од програма {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Од програма {1}, који себе назива „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Од програма који себе назива „{0}“</value></data>

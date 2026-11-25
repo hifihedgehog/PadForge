@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Huminto ang {0} pagkatapos ng limang pagkabigo.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Nagbago ang {0} mula nang aprubahan mo ito.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Hindi masimulan ang {0}.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Huminto ang {0} at magsisimula ulit sandali.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Idinagdag: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Nilagdaan ng {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Hindi nilagdaan.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>I-click ito para magpatuloy.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Buksan ang {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Buksan ang Higit pa.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Piliin ang {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Burahin ang laman ng search box.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Mula sa {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Mula sa {1}, na tinatawag ang sarili nitong “{0}”</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Mula sa program na tinatawag ang sarili nitong “{0}”</value></data>

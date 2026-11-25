@@ -647,6 +647,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>Vtičnik {0} se je ustavil po petih napakah.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>Vtičnik {0} je spremenjen po vaši odobritvi.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>Vtičnika {0} ni bilo mogoče zagnati.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>Vtičnik {0} se je ustavil in se bo kmalu znova zagnal.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>Dodano: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Podpisnik: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Ni podpisano.</value></data>
@@ -896,6 +897,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Kliknite, če želite nadaljevati.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>Odprite: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Odprite Več.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>Izberite: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Počistite iskalno polje.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Od {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Od {1}, ki se imenuje „{0}“</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Od programa, ki se imenuje „{0}“</value></data>

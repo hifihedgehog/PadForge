@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} પાંચ નિષ્ફળતા પછી બંધ થયું.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>તમે મંજૂર કર્યા પછી {0} બદલાઈ ગયું.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} શરૂ થઈ શક્યું નહીં.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} બંધ થયું અને થોડીવારમાં ફરી શરૂ થશે.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>ઉમેર્યા: {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>સહી કરનાર: {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>સહી વગરનું.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>આગળ વધવા તેના પર ક્લિક કરો.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} ખોલો.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>વધુ ખોલો.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} પસંદ કરો.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>શોધ બોક્સ ખાલી કરો.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>{0} તરફથી</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>{1} તરફથી, જે પોતાને “{0}” કહે છે</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>પોતાને “{0}” કહેતા પ્રોગ્રામ તરફથી</value></data>

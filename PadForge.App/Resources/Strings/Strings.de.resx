@@ -564,6 +564,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>Klicken Sie darauf, um fortzufahren.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>{0} öffnen.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>Mehr öffnen.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>{0} auswählen.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>Leeren Sie das Suchfeld.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>Von {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>Von {1}, das sich „{0}“ nennt</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>Von einem Programm, das sich „{0}“ nennt</value></data>
@@ -4271,6 +4273,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} wurde nach fünf Fehlern angehalten.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} hat sich seit der Genehmigung geändert.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} konnte nicht gestartet werden.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} wurde angehalten und startet in Kürze neu.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>{0} hinzugefügt.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>Signiert von {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>Nicht signiert.</value></data>

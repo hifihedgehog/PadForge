@@ -1545,6 +1545,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} yamira mushure mekukundikana kashanu.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} yachinja kubva pawakaibvumira.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} haina kukwanisa kutanga.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} yamira uye ichatangazve munguva pfupi.</value></data>
   <data name="Plugins_Kit" xml:space="preserve"><value>Kiti yemaplugin</value></data>
   <data name="Plugins_Kit_Save" xml:space="preserve"><value>Chengetedza kiti yemaplugin…</value></data>
   <data name="Plugins_Kit_Note" xml:space="preserve"><value>Gwaro rezviito zvese, zviitiko nemhando dzemasetingi, skripiti yekuvaka plugin ye-C#, uye plugin imwe cheteyo ye-AutoHotkey, Python ne-PowerShell.</value></data>

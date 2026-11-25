@@ -634,6 +634,7 @@
   <data name="Plugins_Problem_Failed_Format" xml:space="preserve"><value>{0} ხუთი შეცდომის შემდეგ გაჩერდა.</value></data>
   <data name="Plugins_Problem_Changed_Format" xml:space="preserve"><value>{0} შეიცვალა თქვენი დამტკიცების შემდეგ.</value></data>
   <data name="Plugins_Problem_Refused_Format" xml:space="preserve"><value>{0} ვერ ჩაირთო.</value></data>
+  <data name="Plugins_Problem_Restarting_Format" xml:space="preserve"><value>{0} გაჩერდა და მალე კვლავ ჩაირთვება.</value></data>
   <data name="Plugins_Row_Added_Format" xml:space="preserve"><value>დაემატა {0}.</value></data>
   <data name="Plugins_Row_Signed_Format" xml:space="preserve"><value>ხელს აწერს {0}.</value></data>
   <data name="Plugins_Row_NotSigned" xml:space="preserve"><value>ხელმოუწერელია.</value></data>
@@ -883,6 +884,8 @@
   <data name="Automation_Pointer_ClickToGoOn" xml:space="preserve"><value>გასაგრძელებლად დააწკაპუნეთ.</value></data>
   <data name="Automation_Pointer_Open_Format" xml:space="preserve"><value>გახსენით: {0}.</value></data>
   <data name="Automation_Pointer_OpenMore" xml:space="preserve"><value>გახსენით მეტი.</value></data>
+  <data name="Automation_Pointer_Pick_Format" xml:space="preserve"><value>აირჩიეთ: {0}.</value></data>
+  <data name="Automation_Pointer_ClearSearch" xml:space="preserve"><value>გაასუფთავეთ საძიებო ველი.</value></data>
   <data name="Automation_Request_From_Format" xml:space="preserve"><value>გამომგზავნი: {0}</value></data>
   <data name="Automation_Request_FromClaimed_Format" xml:space="preserve"><value>გამომგზავნი: {1}, რომელიც საკუთარ თავს „{0}“ უწოდებს</value></data>
   <data name="Automation_Request_FromClaimedOnly_Format" xml:space="preserve"><value>გამომგზავნი: პროგრამა, რომელიც საკუთარ თავს „{0}“ უწოდებს</value></data>

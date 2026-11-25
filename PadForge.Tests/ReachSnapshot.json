@@ -3614,7 +3614,7 @@
   "Views/SettingsPage.xaml \u003CTextBlock\u003E name:RecordProblemStatus = Free",
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_RecordProblem = Free",
   "Views/SettingsPage.xaml \u003CButton\u003E id:Settings_SaveSnapshot = Free",
-  "Views/SettingsPage.xaml \u003CButton\u003E content:Settings_DiagnosticsOpenFolder = Free",
+  "Views/SettingsPage.xaml \u003CButton\u003E content:Settings_DiagnosticsOpenFolder = Asks/OpensPlace",
   "Views/SettingsPage.xaml \u003CCheckBox\u003E content:Settings_DiagnosticsLogging = Free",
   "Views/SettingsPage.xaml \u003CSettingResetButton\u003E id:Reset_SettingsViewModel_DiagnosticsLoggingEnabled_674 = Free",
   "Views/SettingsPage.xaml \u003CCheckBox\u003E id:Settings_RecordPart_SettingsAndDevices = UsersOwn",

@@ -1850,7 +1850,7 @@
                                         <TextBlock controls:SettingRow.Fills="True" controls:SettingRow.Aside="True" Margin="0,10,12,10" VerticalAlignment="Center"
                                                    TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                    Text="{Binding Settings_DiagnosticsLogging_Hint, Source={x:Static strings:Strings.Instance}}"/>
-                                        <Button Content="{Binding Settings_DiagnosticsOpenFolder, Source={x:Static strings:Strings.Instance}}"
+                                        <Button common:Reach.Class="Asks" common:Reach.Why="OpensPlace" Content="{Binding Settings_DiagnosticsOpenFolder, Source={x:Static strings:Strings.Instance}}"
                                                 Click="OpenDiagFolder_Click" ToolTip="{Binding DiagnosticsFolderPath}" Margin="0,0,12,0"/>
                                         <CheckBox Style="{StaticResource SwitchCheckBox}" Content="{Binding Settings_DiagnosticsLogging, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Settings_DiagnosticsLoggingTooltip, Source={x:Static strings:Strings.Instance}}"

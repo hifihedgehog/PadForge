@@ -67,11 +67,14 @@ namespace PadForge.Services.Plugins
             TestSettings.ValueChanged += OnTestSettings;
         }
 
-        /// <summary>Takes the Test Controller's values PadForge.xml
-        /// holds.</summary>
+        /// <summary>Takes the Test Controller's values PadForge.xml holds,
+        /// checked as a plugin's are when it declares: one at its default is
+        /// not kept, and one its declaration does not take gives way to the
+        /// default.</summary>
         public void LoadTestValues(IEnumerable<PluginValueData> values)
         {
             TestSettings.Load(values);
+            TestControllerPattern.Declare(TestSettings);
             _testConfig = TestControllerPattern.Read(TestSettings);
             ApplyTestController();
         }

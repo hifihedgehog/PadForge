@@ -314,6 +314,33 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheTestControllersFileValues_AreCheckedAsTheSettingsLoad_AndTheCheckedListIsMarkedToBeSaved()
+        {
+            using var rig = new Rig();
+            int revision = rig.Vm.PluginValuesRevision;
+            // PadForge.xml holds Move Time at its default and a Rest Time of 3 s.
+            rig.Vm.LoadPluginSettings(null, false, new[]
+            {
+                new PadForge.Services.PluginValueData { Key = TestControllerPattern.KeyMove, Value = "4" },
+                new PadForge.Services.PluginValueData { Key = TestControllerPattern.KeyRest, Value = "3" },
+            }, false, false);
+            Pump();
+            // The value at its default is not kept: the Test Controller keeps
+            // Rest Time alone, and the list the settings save is that checked
+            // one, marked to be saved on the settings' own timer.
+            Assert.Equal(new[] { TestControllerPattern.KeyRest }, rig.Controller.BuiltIns.TestSettings.Save().Select(v => v.Key));
+            Assert.Equal(new[] { TestControllerPattern.KeyRest }, rig.Vm.TestControllerValues.Select(v => v.Key));
+            Assert.True(rig.Vm.PluginValuesRevision > revision);
+
+            // A file with nothing to check moves nothing and marks nothing.
+            revision = rig.Vm.PluginValuesRevision;
+            rig.Vm.LoadPluginSettings(null, false, rig.Vm.TestControllerValues, false, false);
+            Pump();
+            Assert.Equal(revision, rig.Vm.PluginValuesRevision);
+            Assert.Equal(new[] { TestControllerPattern.KeyRest }, rig.Controller.BuiltIns.TestSettings.Save().Select(v => v.Key));
+        }
+
+        [Fact]
         public void TheStatesInWords_NameEveryReason()
         {
             var s = Strings.Instance;

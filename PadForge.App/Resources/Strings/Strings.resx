@@ -596,7 +596,7 @@
   <data name="Extras_Plugins_Status_None" xml:space="preserve"><value>No plugin runs.</value></data>
   <data name="Plugins_Card_BuiltIn" xml:space="preserve"><value>Built In</value></data>
   <data name="Plugins_TestController" xml:space="preserve"><value>Test Controller</value></data>
-  <data name="Plugins_TestController_Note" xml:space="preserve"><value>A controller that moves by itself, one control at a time, so a mapping can be tried with no hardware in hand.</value></data>
+  <data name="Plugins_TestController_Note" xml:space="preserve"><value>A controller that moves by itself, so a mapping can be tried with no hardware in hand. Its sticks, its triggers or both move together and then rest, while the buttons it presses take turns.</value></data>
   <data name="Plugins_Replay" xml:space="preserve"><value>Replay</value></data>
   <data name="Plugins_Replay_Note" xml:space="preserve"><value>Plays a problem recording back as the devices that made it, with the timing they had. They are new devices on this PC, mapped as you or a profile map them.</value></data>
   <data name="Plugins_Replay_Recording" xml:space="preserve"><value>Recording</value></data>

@@ -204,6 +204,33 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AKeptValueADeclarationDrops_LeavesPadForgeXml()
+        {
+            // The values a file holds: Dead Zone 3, and a port its next
+            // build no longer takes.
+            var set = new PluginSettingSet();
+            set.Load(new[]
+            {
+                new PluginValueData { Key = "dead", Value = "3" },
+                new PluginValueData { Key = "port", Value = "70000" },
+            });
+            int kept = 0;
+            set.KeptChanged += () => kept++;
+            // The plugin's next build makes 3 Dead Zone's default: the kept 3
+            // is no longer kept, and PadForge.xml hears of it.
+            Answer(set, "setting key=dead kind=number min=0 max=20 default=3");
+            Assert.Equal(1, kept);
+            Assert.Equal(new[] { "port" }, set.Save().Select(v => v.Key));
+            // A value the declaration does not take goes too.
+            Answer(set, "setting key=port kind=number min=1 max=65535 default=4000");
+            Assert.Equal(2, kept);
+            Assert.Null(set.Save());
+            // Declared again with nothing to drop, nothing is heard.
+            Answer(set, "setting key=dead kind=number min=0 max=20 default=3");
+            Assert.Equal(2, kept);
+        }
+
+        [Fact]
         public void ADevicesValues_OutliveItsRunAndItsForgottenRow_AndGoWhenTheUserRemovesIt()
         {
             using var rig = new ControllerRig();

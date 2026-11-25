@@ -49,12 +49,14 @@ namespace PadForge.Tests
     }
 
     /// <summary>
-    /// The two plugins PadForge carries (#597). The Test Controller's
-    /// pattern visits every control one at a time, the same speed gives the
-    /// same sequence, and it is a gamepad that auto-maps one to one. Replay
-    /// plays a recording's frames at the file's timing, loops with Repeat,
-    /// and makes one device for each of the file's devices. A recording
-    /// kept with the tests runs through the mapping pipeline as a test.
+    /// The two plugins PadForge carries (#597). The Test Controller (#600
+    /// item 19) moves its sticks and triggers together and then rests while
+    /// its buttons take turns, works the motion out at each read, holds what
+    /// By Hand sets across a restart, and is a gamepad that auto-maps one to
+    /// one. Replay plays a recording's frames at the file's timing, loops
+    /// with Repeat, and makes one device for each of the file's devices. A
+    /// recording kept with the tests runs through the mapping pipeline as a
+    /// test.
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public sealed class PluginBuiltInTests
@@ -114,6 +116,33 @@ namespace PadForge.Tests
                 Assert.True(x.Compact);
             });
             Assert.Equal(PluginSettingKind.Status, d[TestControllerPattern.KeyRate].Kind);
+        }
+
+        [Fact]
+        public void TheTestControllersNote_SaysHowItMoves()
+        {
+            // The motion: the sticks and the triggers move together, then
+            // rest, while one button at a time is held.
+            var c = Config();
+            var moving = At(c, 1000);
+            var resting = At(c, 5000);
+            Assert.NotEqual(TestControllerPattern.Center, moving.Axis[0]);
+            Assert.Equal(moving.Axis[0], moving.Axis[3]);
+            Assert.Equal(moving.Axis[1], moving.Axis[4]);
+            Assert.True(moving.Axis[2] > 0);
+            Assert.Equal(moving.Axis[2], moving.Axis[5]);
+            Assert.Equal(1, moving.Buttons.Count(b => b));
+            Assert.Equal(TestControllerPattern.Center, resting.Axis[0]);
+            Assert.Equal(0, resting.Axis[2]);
+
+            // The card's note, in the English Strings.resx holds, says so,
+            // and no longer that it moves one control at a time.
+            var resx = System.Xml.Linq.XDocument.Parse(ExtrasPageTests.RepoText("PadForge.App", "Resources", "Strings", "Strings.resx"));
+            string note = resx.Root.Elements("data").Single(e => (string)e.Attribute("name") == "Plugins_TestController_Note").Element("value").Value;
+            Assert.DoesNotContain("one control at a time", note);
+            Assert.Contains("together", note);
+            Assert.Contains("rest", note);
+            Assert.Contains("take turns", note);
         }
 
         [Fact]
@@ -324,6 +353,81 @@ namespace PadForge.Tests
             second.LoadTestValues(saved);
             Assert.True(second.TestConfig.ByHand);
             Assert.True(second.TestConfig.Buttons[2]);
+        }
+
+        [Fact]
+        public void ByHand_ASticksPosition_HoldsWhereItWasLeft_AndReadsTheSameAfterARestart()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Commands);
+            CustomInputState before;
+            AppSettingsData file;
+            using (var first = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n))
+            {
+                // The Plugins page's own settings host, whose pads read Stay:
+                // PluginPad puts a pad back to center on release only without it.
+                var page = new PadForge.ViewModels.PluginSettingsHost(first.TestSettings, null, "Plugins_TestController",
+                    System.Windows.Threading.Dispatcher.CurrentDispatcher);
+                page.Item(TestControllerPattern.KeyHand).IsOn = true;
+                foreach (string key in new[] { TestControllerPattern.KeyLeftStick, TestControllerPattern.KeyRightStick })
+                {
+                    Assert.True(first.TestSettings.Find(null, key).Stay, key + " goes back to center when it is let go");
+                    Assert.True(page.Item(key).Stay);
+                }
+                // Each stick set by hand, as a drag of its pad sets it.
+                page.Item(TestControllerPattern.KeyLeftStick).Pad = new System.Windows.Point(40, -60);
+                page.Item(TestControllerPattern.KeyRightStick).Pad = new System.Windows.Point(-25.5, 80);
+                before = At(first.TestConfig, 0);
+                // PadForge.xml keeps the sticks with the triggers and the
+                // buttons.
+                file = new AppSettingsData { TestControllerValues = first.TestSettings.Save() };
+            }
+
+            // Written and read again by the file's own serializer.
+            var xml = new System.Xml.Serialization.XmlSerializer(typeof(AppSettingsData));
+            var text = new StringWriter();
+            xml.Serialize(text, file);
+            var read = (AppSettingsData)xml.Deserialize(new StringReader(text.ToString()));
+
+            using var second = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n);
+            second.LoadTestValues(read.TestControllerValues);
+            Assert.True(second.TestConfig.ByHand);
+            Assert.Equal((40.0, -60.0), second.TestConfig.LeftStick);
+            Assert.Equal((-25.5, 80.0), second.TestConfig.RightStick);
+            // The controller reads the same as before the restart, at any time:
+            // By Hand stops the motion.
+            foreach (long ms in new long[] { 0, 1500, 4500 })
+            {
+                var after = At(second.TestConfig, ms);
+                Assert.Equal(before.Axis, after.Axis);
+                Assert.Equal(before.Buttons, after.Buttons);
+            }
+            Assert.Equal(TestControllerPattern.Stick(40), before.Axis[0]);
+            Assert.Equal(TestControllerPattern.Stick(-60), before.Axis[1]);
+            Assert.Equal(TestControllerPattern.Stick(-25.5), before.Axis[3]);
+            Assert.Equal(TestControllerPattern.Stick(80), before.Axis[4]);
+        }
+
+        [Fact]
+        public void TheTestControllersValuesFromTheFile_AreCheckedAsAPluginsAreWhenItDeclares()
+        {
+            using var rig = new AutomationPipeRig(AutomationLevel.Commands);
+            using var builtIns = new BuiltInPlugins(rig.Host.Sessions.Devices, () => "Test Controller", n => n);
+            // A file can hold a value at its default (a default a later
+            // build moved to it, or a hand's edit) or one out of its range.
+            builtIns.LoadTestValues(new[]
+            {
+                new PluginValueData { Key = TestControllerPattern.KeyMove, Value = "4" },
+                new PluginValueData { Key = TestControllerPattern.KeyPress, Value = "10" },
+                new PluginValueData { Key = TestControllerPattern.KeyRest, Value = "3" },
+            });
+            // One at its default is not kept, so PadForge.xml loses it. One
+            // its declaration does not take gives way to the default. The
+            // rest stand, and only they are kept.
+            Assert.Equal("4", builtIns.TestSettings.ValueOf(null, TestControllerPattern.KeyMove));
+            Assert.Equal("250", builtIns.TestSettings.ValueOf(null, TestControllerPattern.KeyPress));
+            Assert.Equal(250, builtIns.TestConfig.PressMs);
+            Assert.Equal(3000, builtIns.TestConfig.RestMs);
+            Assert.Equal(new[] { TestControllerPattern.KeyRest }, builtIns.TestSettings.Save().Select(v => v.Key));
         }
 
         // ── Replay ──

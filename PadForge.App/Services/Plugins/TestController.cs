@@ -28,7 +28,7 @@ namespace PadForge.Services.Plugins
         public bool ByHand { get; init; }
 
         /// <summary>Under By Hand: each stick's position, X then Y, -100 to
-        /// 100 with Y growing downward.</summary>
+        /// 100 with Y growing downward, where the user left its pad.</summary>
         public (double X, double Y) LeftStick { get; init; }
         public (double X, double Y) RightStick { get; init; }
 
@@ -256,8 +256,12 @@ namespace PadForge.Services.Plugins
                 Choices(("1", (1).ToString(CultureInfo.CurrentCulture)), ("2", (2).ToString(CultureInfo.CurrentCulture)),
                     ("3", (3).ToString(CultureInfo.CurrentCulture)), ("4", (4).ToString(CultureInfo.CurrentCulture))));
             Add(W(("key", KeyHand), ("kind", "switch"), ("name", s.Plugins_TC_ByHand), ("help", s.Plugins_TC_ByHand_Help), ("default", "false")));
-            Add(W(("key", KeyLeftStick), ("kind", "pad"), ("name", s.Plugins_TC_LeftStick), ("look", "compact"), ("when", KeyHand)));
-            Add(W(("key", KeyRightStick), ("kind", "pad"), ("name", s.Plugins_TC_RightStick), ("look", "compact"), ("when", KeyHand)));
+            // The sticks stay where the user lets go of them, as the triggers
+            // and the buttons do, so each holds its place across a restart.
+            Add(W(("key", KeyLeftStick), ("kind", "pad"), ("name", s.Plugins_TC_LeftStick), ("look", "compact"), ("when", KeyHand),
+                ("stay", "true")));
+            Add(W(("key", KeyRightStick), ("kind", "pad"), ("name", s.Plugins_TC_RightStick), ("look", "compact"), ("when", KeyHand),
+                ("stay", "true")));
             Add(W(("key", KeyLeftTrigger), ("kind", "number"), ("name", s.Plugins_TC_LeftTrigger), ("min", "0"), ("max", "100"),
                 ("unit", "%"), ("look", "compact"), ("when", KeyHand), ("default", "0")));
             Add(W(("key", KeyRightTrigger), ("kind", "number"), ("name", s.Plugins_TC_RightTrigger), ("min", "0"), ("max", "100"),

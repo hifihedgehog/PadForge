@@ -1,0 +1,14 @@
+{
+  "new": [],
+  "changed": [
+    {
+      "key": "Plugins_TestController_Note",
+      "english": "A controller that moves by itself, so a mapping can be tried with no hardware in hand. Its sticks, its triggers or both move together and then rest, while the buttons it presses take turns.",
+      "where": "Extras, Plugins page, Built In: the Test Controller card's header, its hover help and the help a screen reader reads for it",
+      "keep": [],
+      "labels": [],
+      "may_stand": false
+    }
+  ],
+  "removed": []
+}

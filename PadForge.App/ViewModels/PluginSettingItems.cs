@@ -70,7 +70,7 @@ namespace PadForge.ViewModels
     {
         private readonly PluginSettingsHost _host;
         private string _value;
-        private bool _isKept, _isShown = true;
+        private bool _isShown = true;
         private IReadOnlyList<PluginChoiceItem> _choices;
         private bool _picking;
 
@@ -112,7 +112,9 @@ namespace PadForge.ViewModels
         /// and its key.</summary>
         public string AutomationId => _host.IdPrefix + "_" + Key;
 
-        /// <summary>Whether a reset shows: the kinds the user sets.</summary>
+        /// <summary>Whether the row shows a reset: the kinds that hold a
+        /// value the user sets, at their default too, as every setting's
+        /// reset in PadForge shows on its row.</summary>
         public bool CanReset => Declaration.HoldsValue;
 
         public IReadOnlyList<PluginChoiceItem> Choices
@@ -137,14 +139,6 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(StatusText));
                 OnPropertyChanged(nameof(InputText));
             }
-        }
-
-        /// <summary>Whether the value differs from its default, which shows
-        /// the row's reset.</summary>
-        public bool IsKept
-        {
-            get => _isKept;
-            private set => SetProperty(ref _isKept, value);
         }
 
         /// <summary>False while the switch it follows (<c>when</c>) is off.</summary>
@@ -233,7 +227,7 @@ namespace PadForge.ViewModels
             if (error != null) OnPropertyChanged(nameof(Value));
         }
 
-        /// <summary>Takes the value in force and its state from the
+        /// <summary>Takes the declaration and the value in force from the
         /// plugin's settings.</summary>
         internal void Read(PluginDeclaration declaration)
         {
@@ -245,7 +239,6 @@ namespace PadForge.ViewModels
             }
             else if (!SameChoices(_choices, declaration.Choices)) Choices = Convert(declaration.Choices);
             Value = _host.Set.ValueOf(_host.Device, Key);
-            IsKept = _host.Set.IsKept(_host.Device, Key);
         }
 
         /// <summary>A choice's list opens: the plugin is asked for the list
@@ -292,7 +285,6 @@ namespace PadForge.ViewModels
         private readonly Dictionary<string, PluginSettingItem> _items = new(StringComparer.Ordinal);
         private string _shape;
         private string _missing;
-        private bool _hasKept;
         private int _queued;
 
         internal PluginSettingsHost(PluginSettingSet set, string device, string idPrefix, Dispatcher ui, Guid deviceGuid = default)
@@ -332,13 +324,6 @@ namespace PadForge.ViewModels
         public ObservableCollection<object> Rows { get; } = new();
 
         public bool HasRows => Rows.Count > 0;
-
-        /// <summary>Whether any setting differs from its default.</summary>
-        public bool HasKept
-        {
-            get => _hasKept;
-            private set => SetProperty(ref _hasKept, value);
-        }
 
         /// <summary>Why the plugin's controls are missing, or null while it
         /// shows them.</summary>
@@ -386,19 +371,13 @@ namespace PadForge.ViewModels
                 _shape = shape;
                 Rebuild(mine);
             }
-            bool kept = false;
             foreach (var d in mine)
-            {
-                if (!_items.TryGetValue(d.Key, out var item)) continue;
-                item.Read(d);
-                kept |= item.IsKept;
-            }
+                if (_items.TryGetValue(d.Key, out var item)) item.Read(d);
             foreach (var d in mine)
                 if (d.When != null && _items.TryGetValue(d.Key, out var item))
                     item.IsShown = Set.ValueOf(Device, d.When) == "true";
             foreach (var row in Rows)
                 if (row is PluginCompactRow compactRow) compactRow.IsShown = compactRow.Items.Any(i => i.IsShown);
-            HasKept = kept;
         }
 
         private void Rebuild(List<PluginDeclaration> declarations)

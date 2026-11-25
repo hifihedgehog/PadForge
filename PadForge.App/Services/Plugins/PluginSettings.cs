@@ -115,14 +115,22 @@ namespace PadForge.Services.Plugins
                 _refused = null;
                 // A kept value the new declaration no longer takes, such as
                 // a choice it dropped or a number out of its new range, gives
-                // way to the default.
+                // way to the default. One that is the new default is no
+                // longer kept. Either way PadForge.xml loses it.
                 var k = (declaration.Device, declaration.Key);
                 if (_values.TryGetValue(k, out var kept))
                 {
                     string fits = declaration.HoldsValue ? PluginValues.Normalize(declaration, kept, out _) : null;
-                    if (fits == null || fits == declaration.Default) _values.Remove(k);
-                    else _values[k] = fits;
-                    keptMoved = fits != kept;
+                    if (fits == null || fits == declaration.Default)
+                    {
+                        _values.Remove(k);
+                        keptMoved = true;
+                    }
+                    else
+                    {
+                        _values[k] = fits;
+                        keptMoved = fits != kept;
+                    }
                 }
                 value = ValueLocked(declaration);
             }
@@ -172,12 +180,6 @@ namespace PadForge.Services.Plugins
                 return _status.TryGetValue((d.Device, d.Key), out var s) ? s : d.Default;
             if (!d.HoldsValue) return null;
             return _values.TryGetValue((d.Device, d.Key), out var v) ? v : d.Default;
-        }
-
-        /// <summary>Whether the value differs from its default.</summary>
-        public bool IsKept(string device, string key)
-        {
-            lock (_sync) return _values.ContainsKey((device, key));
         }
 
         /// <summary>

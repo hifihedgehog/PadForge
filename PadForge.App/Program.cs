@@ -24,8 +24,10 @@ namespace PadForge
     /// <item>A client: a start that hands its switches to the running PadForge
     /// or serves an assistant, with its caller's rights
     /// (<see cref="ClientRun"/>).</item>
-    /// <item>The app's start without the rights it needs, which starts it once
-    /// more with them (<see cref="StartWithRights"/>).</item>
+    /// <item>The app's start without the rights it needs, which runs the
+    /// Start at Login task while that is on (<see cref="StartByTask"/>), and
+    /// otherwise starts the exe once more with rights through Windows' prompt
+    /// (<see cref="StartWithRights"/>).</item>
     /// <item>The app. The rest is what WPF's generated entry does.</item>
     /// </list></summary>
     internal static class Program
@@ -67,6 +69,13 @@ namespace PadForge
                 // being replaced. The app's own start takes the same way out
                 // (App.OnStartup).
                 if (UpdateService.IsUpdateInProgress(Environment.ProcessPath)) return;
+                // While Start at Login is on, its task starts PadForge with
+                // rights and no prompt (#600 item 44).
+                if (StartByTask.TryRun(args, out int taskExit))
+                {
+                    Environment.ExitCode = taskExit;
+                    return;
+                }
                 Environment.ExitCode = StartWithRights.Run(args);
                 return;
             }

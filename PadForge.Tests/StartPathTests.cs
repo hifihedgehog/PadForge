@@ -20,6 +20,9 @@ namespace PadForge.Tests
     /// asks Windows for administrator rights, and the app reads the same
     /// switches its second copies send.
     /// </summary>
+    // RunningCopy.IntegritySeam is one for the process: the classes that
+    // set it share this collection, which runs them one at a time.
+    [Collection("SettingsManagerStatics")]
     public class StartPathTests
     {
         private static string RepoText(params string[] parts) => AuditDelta20261002Tests.RepoText(parts);
@@ -332,7 +335,9 @@ namespace PadForge.Tests
         });
 
         /// <summary>The running copy lets the show and exit messages through
-        /// from a process without rights, and nothing else (#600 item 44).
+        /// from a process without rights, and WM_COPYDATA, which it takes only
+        /// while it waits at its start for a start's switches, and nothing
+        /// else (#600 item 44).
         /// The app makes its signal window as soon as it holds the
         /// single-instance lock, and a copy that lost the race for the lock
         /// asks the winner for its window.</summary>
@@ -341,7 +346,8 @@ namespace PadForge.Tests
         {
             string source = RepoText("PadForge.App", "Services", "InstanceSignal.cs");
             string open = FenceSource.Body(source, "public bool Open()");
-            Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(source, @"ChangeWindowMessageFilterEx\(_").Count);
+            Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(source, @"ChangeWindowMessageFilterEx\(_").Count);
+            Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
             Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, _showMessage, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
             Assert.Contains("ChangeWindowMessageFilterEx(_signal.Handle, _exitMessage, MSGFLT_ALLOW, IntPtr.Zero);", open, StringComparison.Ordinal);
             Assert.Equal("PadForge.Exit", RunningCopy.ExitMessageName);

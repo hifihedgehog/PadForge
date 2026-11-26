@@ -200,6 +200,8 @@ Opens PadForge minimized to the taskbar. Combine with **Minimize to System Tray*
 
 Registers a logon scheduled task so PadForge runs when you log into Windows. PadForge is elevated, and Windows will not launch an elevated app from a Startup-folder shortcut, so the task runs it at highest privileges with no UAC prompt.
 
+While it is on, a start of PadForge from a shortcut, a script or another program runs the same task, with no UAC prompt. The task runs PadForge's own exe with a fixed command line and the variables it builds at logon, and the switches a start takes (`--profile`, `--minimized` and the others in [Command Line](../reference/command-line.md)) are handed to the copy it starts. With Start at Login off, Windows asks as usual.
+
 > **Hands-off setup:** turn on **Auto-Start Engine on Launch**, **Start Minimized**, **Minimize to System Tray** and **Start at Login**. PadForge launches at login, starts the engine and sits in the tray. Virtual controllers are live by the time you open a game.
 
 ---

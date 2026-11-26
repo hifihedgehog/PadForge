@@ -1061,7 +1061,7 @@
   <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>Keep PadForge running when you click Close or press Alt+F4. Use Exit in the system tray menu to quit.</value></data>
   <data name="Settings_MinimizeToTrayTip" xml:space="preserve"><value>Keep PadForge in the notification area when you minimize the window, instead of on the taskbar.</value></data>
   <data name="Settings_StartMinimizedTip" xml:space="preserve"><value>Keep the window hidden when PadForge starts. It runs and maps as usual.</value></data>
-  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatically when you sign in to Windows.</value></data>
+  <data name="Settings_StartAtLoginTip" xml:space="preserve"><value>Start PadForge automatically when you sign in to Windows. While this is on, PadForge also starts without Windows’ prompt from a shortcut, a script or another program.</value></data>
   <data name="ExeFolder_RunsFrom_Format" xml:space="preserve"><value>PadForge runs from {0}.</value></data>
   <data name="ExeFolder_NeedsOwnFolder" xml:space="preserve"><value>This needs PadForge in a folder of its own. Its folder holds other files, so PadForge cannot keep other programs from changing it.</value></data>
   <data name="ExeFolder_Move" xml:space="preserve"><value>Move PadForge to Its Own Folder</value></data>

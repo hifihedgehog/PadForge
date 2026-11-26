@@ -618,6 +618,53 @@ namespace PadForge.Common
             return kept;
         }
 
+        /// <summary>
+        /// The start set's words alone, in the order given (#600 item 44):
+        /// each switch whose step can start PadForge, which a start applies
+        /// with Automation off (<c>--minimized</c>, <c>--tray</c>,
+        /// <c>--maximized</c>, <c>--show</c>, <c>--engine</c>,
+        /// <c>--controllers</c>, <c>--slot</c>, <c>--profile</c>,
+        /// <c>--default-profile</c> and <c>--record start</c>). A copy started
+        /// through the logon task reads only these from the copy that ran
+        /// it. A line that cannot be read, or the update helper's, gives
+        /// none.
+        /// </summary>
+        internal static List<string> StartSwitchesOnly(IReadOnlyList<string> args)
+        {
+            var kept = new List<string>();
+            if (args == null) return kept;
+            var request = Parse(args);
+            if (request.Error != null || request.Internal) return kept;
+            foreach (var part in request.Parts)
+            {
+                if (!IsStartSwitch(args, part)) continue;
+                for (int i = part.Start; i < part.Start + part.Count; i++) kept.Add(args[i]);
+            }
+            return kept;
+        }
+
+        /// <summary>Whether a start without rights may run the logon task
+        /// for this command line in place of Windows' prompt (#600 item 44):
+        /// every switch on it is of the start set, or <c>--wait</c>. Any
+        /// other line keeps the prompt, which hands the whole line on.</summary>
+        internal static bool CrossesToTheTask(IReadOnlyList<string> args)
+        {
+            args ??= Array.Empty<string>();
+            var request = Parse(args);
+            if (request.Error != null || request.Internal || request.ReadTo != args.Count) return false;
+            foreach (var part in request.Parts)
+                if (part.Keep != Keep.Wait && !IsStartSwitch(args, part)) return false;
+            return true;
+        }
+
+        /// <summary>Whether one switch read is a step that can start
+        /// PadForge.</summary>
+        private static bool IsStartSwitch(IReadOnlyList<string> args, (int Start, int Count, Keep Keep) part)
+        {
+            var one = Parse(Slice(args, part.Start, part.Count));
+            return one.Error == null && one.Steps.Count > 0 && one.CanStart;
+        }
+
         /// <summary>The words <c>--help</c> prints. English and fixed: a
         /// command line is read by scripts as much as by people.</summary>
         internal const string HelpText =

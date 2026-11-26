@@ -357,6 +357,12 @@ namespace PadForge
             Services.ProtectedStart.HandOver();
 
             StartupArgs = e.Args ?? Array.Empty<string>();
+            // The logon task starts this copy with no switch. A start without
+            // rights that ran it hands its start switches over the signal
+            // window, and this copy waits for them only when that start says
+            // they are coming (#600 item 44).
+            if (StartupArgs.Length == 0)
+                StartupArgs = System.Linq.Enumerable.ToArray(InstanceSignal.TakeStartSwitches(Services.InstanceSignal.StartSwitchesWaitMs));
             StartupRequest = PadForge.Common.CommandLineSwitches.Parse(StartupArgs);
 
             // An update Install Updates Automatically downloaded last session

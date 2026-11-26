@@ -30,6 +30,12 @@ namespace PadForge.Common
     /// on battery, and priority 7. A start with rights that finds that form
     /// makes the task again in this one (<see cref="AuditTask"/>).</para>
     ///
+    /// <para>The task's access list lets that user read and run it
+    /// (<see cref="RunRight"/>, #600 item 44), so while Start at Login is on a
+    /// start of PadForge without rights runs the task instead of raising
+    /// Windows' prompt. The run starts PadForge's own exe with its fixed
+    /// command line and the variables of the allow list, as at logon.</para>
+    ///
     /// <para>schtasks output is locale-dependent, so this helper drives it by
     /// exit code only (0 = task exists / created / deleted; non-zero = not
     /// found or error). Same lesson as HM #17 / PadForge #69 — never grep
@@ -115,7 +121,10 @@ namespace PadForge.Common
             if (task.Exe != null && ExeFolder.Check(task.Exe) == ExeFolder.Standing.Own)
             {
                 string sid = task.Sid ?? CurrentUserSid();
-                if (!IsCurrent(definition, task.Exe, sid, FileLength(task.Exe), ProtectedFolder.Natives))
+                // A task made before #600 item 44 has no run right for its
+                // user, and is made again with one.
+                if (!IsCurrent(definition, task.Exe, sid, FileLength(task.Exe), ProtectedFolder.Natives)
+                    || !LetsRun(TaskDescriptor(), sid))
                     CreateScheduledTask(task.Exe, sid);
                 return false;
             }
@@ -316,7 +325,12 @@ namespace PadForge.Common
             {
                 // The encoding the definition declares, with its byte order mark.
                 File.WriteAllText(xml, definition, Encoding.Unicode);
-                return RunSchtasks($"/Create /TN \"{TaskName}\" /XML \"{xml}\" /RU SYSTEM /F") == 0;
+                if (RunSchtasks($"/Create /TN \"{TaskName}\" /XML \"{xml}\" /RU SYSTEM /F") != 0) return false;
+                // The logon start stands without the run right. A start
+                // without rights then raises Windows' prompt, and the next
+                // start with rights sets the right again (AuditTask).
+                SetTaskDescriptor(RunRight(sid));
+                return true;
             }
             catch
             {
@@ -332,6 +346,106 @@ namespace PadForge.Common
         {
             RunSchtasks($"/Delete /TN \"{TaskName}\" /F");
         }
+
+        // ── The run right (#600 item 44) ──
+
+        /// <summary>
+        /// The task's security descriptor: full control for Administrators
+        /// and SYSTEM, and read and run for the user the task starts PadForge
+        /// for, so a start of PadForge without rights runs the task in place
+        /// of Windows' prompt (<see cref="PadForge.Services.StartByTask"/>).
+        /// Task Scheduler keeps the folder's inherited entries after these.
+        /// Null for a text that is no SID.
+        /// </summary>
+        internal static string RunRight(string sid)
+            => LogonStart.LooksLikeSid(sid) ? $"D:(A;;FA;;;BA)(A;;FA;;;SY)(A;;FRFX;;;{sid})" : null;
+
+        /// <summary>FILE_GENERIC_READ | FILE_GENERIC_EXECUTE, the mask Task
+        /// Scheduler gives back for FRFX.</summary>
+        internal const int ReadAndRun = 0x1200a9;
+
+        /// <summary>Whether a descriptor lets <paramref name="sid"/> read and
+        /// run the task.</summary>
+        internal static bool LetsRun(string sddl, string sid)
+        {
+            if (string.IsNullOrEmpty(sddl) || !LogonStart.LooksLikeSid(sid)) return false;
+            try
+            {
+                var acl = new System.Security.AccessControl.RawSecurityDescriptor(sddl).DiscretionaryAcl;
+                if (acl == null) return false;
+                var user = new System.Security.Principal.SecurityIdentifier(sid);
+                foreach (var entry in acl)
+                    if (entry is System.Security.AccessControl.CommonAce ace
+                        && ace.AceType == System.Security.AccessControl.AceType.AccessAllowed
+                        && ace.SecurityIdentifier == user && (ace.AccessMask & ReadAndRun) == ReadAndRun)
+                        return true;
+            }
+            catch (ArgumentException)
+            {
+                // A descriptor or SID that cannot be read grants nothing.
+            }
+            return false;
+        }
+
+        /// <summary>Runs the task, as a start of PadForge without rights does
+        /// while Start at Login is on. False when it did not run: no task, or
+        /// one this user may not run.</summary>
+        internal static bool RunTask() => RunSchtasks($"/Run /TN \"{TaskName}\"") == 0;
+
+        /// <summary>
+        /// The task's discretionary access list, read through Task
+        /// Scheduler's own interface, or null. schtasks registers a
+        /// definition's SecurityDescriptor element as text and applies none
+        /// of it, and /Query /XML gives that text back, which is not the
+        /// task's access list (measured on this PC on 2026-11-25 with a
+        /// throwaway task). IRegisteredTask's own calls read and set the list
+        /// that counts.
+        /// </summary>
+        private static string TaskDescriptor()
+            => WithTask(task => Call(task, "GetSecurityDescriptor", DaclSecurityInformation) as string);
+
+        private static bool SetTaskDescriptor(string sddl)
+            => sddl != null && WithTask(task =>
+            {
+                Call(task, "SetSecurityDescriptor", sddl, 0);
+                return sddl;
+            }) != null;
+
+        private const int DaclSecurityInformation = 4;
+
+        /// <summary>The registered task, as a script reaches it
+        /// (Schedule.Service), given to <paramref name="use"/>. Null when the
+        /// test host runs, or the task or the interface cannot be had.</summary>
+        private static string WithTask(Func<object, string> use)
+        {
+            if (OffLimitsForTest) return null;
+            object service = null, folder = null, task = null;
+            try
+            {
+                var type = Type.GetTypeFromProgID("Schedule.Service");
+                if (type == null) return null;
+                service = Activator.CreateInstance(type);
+                Call(service, "Connect");
+                folder = Call(service, "GetFolder", "\\");
+                task = Call(folder, "GetTask", TaskName);
+                return use(task);
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                foreach (object held in new[] { task, folder, service })
+                    if (held != null && System.Runtime.InteropServices.Marshal.IsComObject(held))
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(held);
+            }
+        }
+
+        /// <summary>A call by name through the object's IDispatch, as a
+        /// script makes it (ShellLaunch's way).</summary>
+        private static object Call(object target, string name, params object[] arguments)
+            => target.GetType().InvokeMember(name, System.Reflection.BindingFlags.InvokeMethod, null, target, arguments);
 
         /// <summary>schtasks by its full path in System32.</summary>
         internal static string SchtasksPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "schtasks.exe");

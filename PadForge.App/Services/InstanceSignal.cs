@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace PadForge.Services
 {
@@ -16,7 +18,9 @@ namespace PadForge.Services
     /// item 44). That copy runs without administrator rights and this one has
     /// them, and Windows drops a message that crosses that line unless the
     /// receiving window lets it through, so the window lets those two
-    /// messages through and no other.</para>
+    /// messages through, and WM_COPYDATA, which it takes only while this copy
+    /// waits at its start for the switches of the start that ran the logon
+    /// task (<see cref="TakeStartSwitches"/>).</para>
     ///
     /// <para>The ready window stands while this copy is past its start and not
     /// yet closing. It takes no message. A second copy that finds no control
@@ -29,6 +33,13 @@ namespace PadForge.Services
     {
         private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
         private const uint MSGFLT_ALLOW = 1;
+        private const uint WM_COPYDATA = 0x004A;
+
+        /// <summary>How long a copy started through the logon task waits for
+        /// the switches of the start that ran it. That start hands them as
+        /// soon as it finds the signal window, which stands before this
+        /// wait.</summary>
+        internal const int StartSwitchesWaitMs = 5000;
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -46,6 +57,8 @@ namespace PadForge.Services
         private Action _exit;
         private bool _showOwed;
         private bool _exitOwed;
+        private DispatcherFrame _switchesWait;
+        private string[] _switches;
 
         /// <param name="signalName">The signal window's name. The app passes
         /// none and stands under the names every second copy looks for. A
@@ -104,6 +117,7 @@ namespace PadForge.Services
                 ChangeWindowMessageFilterEx(_signal.Handle, _showMessage, MSGFLT_ALLOW, IntPtr.Zero);
             if (_exitMessage != 0)
                 ChangeWindowMessageFilterEx(_signal.Handle, _exitMessage, MSGFLT_ALLOW, IntPtr.Zero);
+            ChangeWindowMessageFilterEx(_signal.Handle, WM_COPYDATA, MSGFLT_ALLOW, IntPtr.Zero);
             return true;
         }
 
@@ -124,6 +138,40 @@ namespace PadForge.Services
                 _exitOwed = false;
                 _exit();
             }
+        }
+
+        /// <summary>
+        /// The start switches of a start without rights that ran the logon
+        /// task (#600 item 44), when that start says they are coming
+        /// (<see cref="RunningCopy.MarkStartPending"/>): waited for up to
+        /// <paramref name="waitMs"/> while the thread's messages run. The
+        /// task's command line is fixed, so they come over the signal window.
+        /// Only the start set's words are kept
+        /// (<see cref="PadForge.Common.CommandLineSwitches.StartSwitchesOnly"/>),
+        /// so no other switch reaches this copy this way. They are taken once,
+        /// during this wait alone: a copy past its start takes none, and any
+        /// switch a running copy takes needs Automation.
+        /// </summary>
+        public IReadOnlyList<string> TakeStartSwitches(int waitMs)
+        {
+            if (_signal == null || _switchesWait != null || !RunningCopy.StartIsPending(_signalName)) return Array.Empty<string>();
+            var frame = new DispatcherFrame();
+            var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(Math.Max(0, waitMs)), DispatcherPriority.Send,
+                (s, e) => frame.Continue = false, Dispatcher.CurrentDispatcher);
+            _switchesWait = frame;
+            try
+            {
+                timer.Start();
+                Dispatcher.PushFrame(frame);
+            }
+            finally
+            {
+                timer.Stop();
+                _switchesWait = null;
+            }
+            string[] words = _switches;
+            _switches = null;
+            return PadForge.Common.CommandLineSwitches.StartSwitchesOnly(words ?? Array.Empty<string>());
         }
 
         /// <summary>This copy is past its start. Nothing is made before
@@ -166,6 +214,14 @@ namespace PadForge.Services
                 handled = true;
                 if (_exit != null) _exit();
                 else _exitOwed = true;
+            }
+            else if (taken == WM_COPYDATA && _switchesWait != null && _switches == null
+                && RunningCopy.ReadStartSwitches(lParam) is { } words)
+            {
+                handled = true;
+                _switches = words;
+                _switchesWait.Continue = false;
+                return new IntPtr(1);
             }
             return IntPtr.Zero;
         }

@@ -274,6 +274,14 @@ namespace PadForge.Tests
         internal static void Set() => StartWithRights.OffLimitsForTest = true;
     }
 
+    /// <summary>The Start at Login task is never run, and no start waits on
+    /// a copy it would start (#600 item 44).</summary>
+    internal static class StartByTaskOffLimits
+    {
+        [ModuleInitializer]
+        internal static void Set() => StartByTask.OffLimitsForTest = true;
+    }
+
     /// <summary>No folder is made, judged or moved in %ProgramData%, so the
     /// folder a PadForge with rights unpacks into on this PC stays as it was
     /// (#597).</summary>

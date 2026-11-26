@@ -200,6 +200,7 @@ namespace PadForge.Tests
         private const string InstanceLockFile = Services + "InstanceLock.cs";
         private const string ClientRunFile = Services + "ClientRun.cs";
         private const string StartWithRightsFile = Services + "StartWithRights.cs";
+        private const string StartByTaskFile = Services + "StartByTask.cs";
         private const string RightsVariablesStartFile = Services + "RightsVariables.Start.cs";
         private const string PluginLauncherFile = Services + "Plugins/PluginLauncher.cs";
         private const string Dsu = Services + "DsuMotionServer.cs";
@@ -260,6 +261,7 @@ namespace PadForge.Tests
             (RunningCopyFile, "RunningCopy"),
             (ClientRunFile, "CallerConsole"),
             (StartWithRightsFile, "StartWithRights"),
+            (StartByTaskFile, "StartByTask"),
             (PluginLauncherFile, "PluginLauncher"),
             (Dsu, "DsuMotionServer"),
             (GameMods, "GameModServer"),
@@ -323,6 +325,7 @@ namespace PadForge.Tests
             Assert.True(RunningCopy.OffLimitsForTest);
             Assert.True(CallerConsole.OffLimitsForTest);
             Assert.True(StartWithRights.OffLimitsForTest);
+            Assert.True(StartByTask.OffLimitsForTest);
             Assert.True(PadForge.Services.Plugins.PluginLauncher.OffLimitsForTest);
             Assert.True(DsuMotionServer.OffLimitsForTest);
             Assert.True(GameModServer.OffLimitsForTest);
@@ -598,6 +601,11 @@ namespace PadForge.Tests
 
             // The start of the exe with administrator rights.
             new object[] { StartWithRightsFile, "internal static int Run(IReadOnlyList<string> args)", "if (OffLimitsForTest) return NotStarted;" },
+            // The start through the Start at Login task, and the task's
+            // access list (#600 item 44).
+            new object[] { StartByTaskFile, "internal static bool TryRun(IReadOnlyList<string> args, out int exitCode)", "if (OffLimitsForTest)" },
+            new object[] { Startup, "private static string WithTask(Func<object, string> use)", "if (OffLimitsForTest) return null;" },
+            new object[] { RunningCopyFile, "internal static IDisposable MarkStartPending(string signalName = SignalWindowName)", "if (OffLimitsForTest && IsTheAppsOwn(signalName)) return null;" },
 
             // A plugin's start under the desktop shell (#597): only the
             // tests' own helper, from the test host's folder.

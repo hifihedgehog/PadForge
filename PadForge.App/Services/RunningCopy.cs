@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -311,6 +312,113 @@ namespace PadForge.Services
             {
                 if (process != IntPtr.Zero) CloseHandle(process);
             }
+        }
+
+        // ── The start switches of a start through the logon task (#600 item 44) ──
+
+        /// <summary>The tag of the WM_COPYDATA that carries a start's
+        /// switches to the copy the logon task started.</summary>
+        internal const long StartSwitchesTag = 0x50465353;
+
+        /// <summary>The most a start's switches may take, in bytes of
+        /// UTF-16.</summary>
+        internal const int MostStartSwitchBytes = 32 * 1024;
+
+        private const uint WM_COPYDATA = 0x004A;
+        private const uint SMTO_ABORTIFHUNG = 0x0002;
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct CopyData
+        {
+            public IntPtr Tag;
+            public int Bytes;
+            public IntPtr Data;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr SendMessageTimeoutW(IntPtr hwnd, uint msg, IntPtr wParam, ref CopyData lParam,
+            uint flags, uint timeoutMs, out IntPtr result);
+
+        /// <summary>The name of the event a start holds while the copy it
+        /// started through the logon task is to wait for its switches. It
+        /// lives in the session's namespace, beside the signal window of the
+        /// same name.</summary>
+        internal static string StartPendingName(string signalName) => @"Local\" + signalName + ".Switches";
+
+        /// <summary>Says to the copy about to start that its switches are
+        /// coming, until disposed. Null in the test host for the app's own
+        /// name, or when the event cannot be made.</summary>
+        internal static IDisposable MarkStartPending(string signalName = SignalWindowName)
+        {
+            if (OffLimitsForTest && IsTheAppsOwn(signalName)) return null;
+            try { return new EventWaitHandle(false, EventResetMode.ManualReset, StartPendingName(signalName)); }
+            catch (Exception ex) when (ex is UnauthorizedAccessException or WaitHandleCannotBeOpenedException or System.IO.IOException)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>Whether a start holds the event of
+        /// <see cref="MarkStartPending"/> for this signal window.</summary>
+        internal static bool StartIsPending(string signalName)
+        {
+            if (!EventWaitHandle.TryOpenExisting(StartPendingName(signalName), out var pending)) return false;
+            pending.Dispose();
+            return true;
+        }
+
+        /// <summary>Waits up to <paramref name="waitMs"/> for the checked
+        /// signal window of a copy that is starting, which a copy without
+        /// rights cannot see by the lock. False when none came.</summary>
+        internal static bool WaitForStartedCopy(int waitMs, string signalName = SignalWindowName)
+        {
+            var clock = Stopwatch.StartNew();
+            while (FindChecked(signalName) == IntPtr.Zero)
+            {
+                if (clock.ElapsedMilliseconds >= waitMs) return false;
+                Thread.Sleep(100);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Hands the start's switches to the copy the logon task started,
+        /// with this process's right to come to the front, over its checked
+        /// signal window (WM_COPYDATA, which the window lets through). The
+        /// words go as UTF-16 separated by NUL. True when the copy took
+        /// them.
+        /// </summary>
+        internal static bool HandStartSwitches(IReadOnlyList<string> words, int answerMs, string signalName = SignalWindowName)
+        {
+            IntPtr hwnd = FindChecked(signalName);
+            if (hwnd == IntPtr.Zero) return false;
+            GetWindowThreadProcessId(hwnd, out uint pid);
+            if (pid != 0) AllowSetForegroundWindow(pid);
+            byte[] bytes = System.Text.Encoding.Unicode.GetBytes(string.Join("\0", words ?? Array.Empty<string>()));
+            if (bytes.Length > MostStartSwitchBytes) return false;
+            var data = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            try
+            {
+                var copy = new CopyData { Tag = new IntPtr(StartSwitchesTag), Bytes = bytes.Length, Data = data.AddrOfPinnedObject() };
+                return SendMessageTimeoutW(hwnd, WM_COPYDATA, IntPtr.Zero, ref copy, SMTO_ABORTIFHUNG, (uint)Math.Max(0, answerMs), out IntPtr taken) != IntPtr.Zero
+                    && taken == new IntPtr(1);
+            }
+            finally
+            {
+                data.Free();
+            }
+        }
+
+        /// <summary>The words a WM_COPYDATA of a start carries, or null for
+        /// one that is not a start's switches or is past the size.</summary>
+        internal static string[] ReadStartSwitches(IntPtr lParam)
+        {
+            if (lParam == IntPtr.Zero) return null;
+            var copy = Marshal.PtrToStructure<CopyData>(lParam);
+            if (copy.Tag != new IntPtr(StartSwitchesTag) || copy.Bytes < 0 || copy.Bytes > MostStartSwitchBytes || copy.Bytes % 2 != 0) return null;
+            if (copy.Bytes == 0) return Array.Empty<string>();
+            if (copy.Data == IntPtr.Zero) return null;
+            return Marshal.PtrToStringUni(copy.Data, copy.Bytes / 2).Split('\0');
         }
 
         /// <summary>

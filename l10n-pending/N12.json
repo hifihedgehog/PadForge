@@ -1,0 +1,18 @@
+{
+  "new": [],
+  "changed": [
+    {
+      "key": "Settings_StartAtLoginTip",
+      "english": "Start PadForge automatically when you sign in to Windows. While this is on, PadForge also starts without Windows’ prompt from a shortcut, a script or another program.",
+      "sibling": [
+        "Settings_StartAtLogin",
+        "Settings_StartMinimizedTip"
+      ],
+      "where": "Settings, the Start at Login switch, its tooltip. The second sentence is new: while Start at Login is on, a start of PadForge without administrator rights runs the Start at Login task instead of showing the Windows administrator prompt (UAC), whoever starts it",
+      "keep": [
+        "PadForge",
+        "Windows"
+      ]
+    }
+  ]
+}

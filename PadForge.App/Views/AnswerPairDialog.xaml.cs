@@ -120,7 +120,7 @@ namespace PadForge.Views
             else if (_pairing == null) state = null;
             else if (address == null)
                 state = _answers.AddressProblem is { } problem
-                    ? string.Format(culture, s.Answer_Pair_NoPage_Format, problem)
+                    ? string.Format(culture, s.Answer_Pair_NoPage_Format, problem.TrimEnd().TrimEnd('.'))
                     : s.Answer_Pair_Starting;
             else state = null;
 

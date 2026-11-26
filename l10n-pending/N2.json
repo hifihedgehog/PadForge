@@ -155,11 +155,11 @@
     },
     {
       "key": "Answer_Pair_NoPage_Format",
-      "english": "The page cannot open: {0}",
+      "english": "The page cannot open: {0}.",
       "sibling": [
         "Answer_Pair_Starting"
       ],
-      "where": "the Pair a Device window, opened by Pair a Device… on the Answer From Another Device row under Extras, Automation, the Assistants card, More, shown in place of the code when the web controller's HTTPS address is not served. {0} is the web controller's own status line, such as Port 8080 is in use by another program.",
+      "where": "the Pair a Device window, opened by Pair a Device… on the Answer From Another Device row under Extras, Automation, the Assistants card, More, shown in place of the code when the web controller's HTTPS address is not served. {0} is the web controller's own status line without its last period, such as Port 8080 in use",
       "keep": []
     },
     {

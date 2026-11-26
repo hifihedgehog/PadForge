@@ -130,6 +130,7 @@ namespace PadForge.Tests
             Assert.Equal("Contoso", q["signer"].GetValue<string>());
             Assert.Equal("Other programs and games stop seeing this controller.", q["detail"][0].GetValue<string>());
             Assert.Equal(120, q["waits"].GetValue<int>());
+            Assert.Equal("change", q["kind"].GetValue<string>());
 
             var reply = rig.Answer(cookie, q["id"].GetValue<int>(), q["nonce"].GetValue<string>(), true);
             Assert.Equal(200, reply.Status);
@@ -185,16 +186,36 @@ namespace PadForge.Tests
         /// answers: the route reads no Authorization header, and such a key
         /// in the device cookie matches no device.</summary>
         [Fact]
-        public void AnAssistantsKey_NeverAnswers()
+        public async Task AnAssistantsKey_NeverAnswers()
         {
             var rig = new Rig();
             rig.Pair();
             var asked = rig.Approvals.AskAsync(Change());
             var p = rig.Approvals.Pending.Single();
+            // A web assistant's own token, as its grant keeps it.
+            var store = new WebAccessStore();
             string token = WebSecrets.New();
-            var withBearer = rig.Answers.Handle(new AnswerRequest("POST", "/answer/answer", Host, "https://" + Host,
-                null, JsonSerializer.Serialize(new { id = p.Id, nonce = p.Nonce, allow = true }), Phone));
-            Assert.Equal(401, withBearer.Status);
+            store.Add(new WebGrant { Id = "g1", Origin = "claude.ai", AccessHash = WebSecrets.Hash(token), Allowed = DateTimeOffset.Now });
+            Assert.True(WebSecrets.Matches(token, store.Grants.Single().AccessHash));
+            string body = JsonSerializer.Serialize(new { id = p.Id, nonce = p.Nonce, allow = true });
+
+            // On the listener: as a Bearer token, and in the device cookie.
+            using (var run = Run(rig.Answers, https: true, controls: false))
+            {
+                string host = "127.0.0.1:" + run.Port;
+                using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+                foreach (var (header, value) in new[] { ("Authorization", "Bearer " + token), ("Cookie", WebAnswer.CookieName + "=" + token) })
+                {
+                    using var request = new HttpRequestMessage(HttpMethod.Post, "http://" + host + "/answer/answer")
+                    {
+                        Content = new StringContent(body, System.Text.Encoding.UTF8, "application/json"),
+                    };
+                    request.Headers.TryAddWithoutValidation("Origin", "https://" + host);
+                    request.Headers.TryAddWithoutValidation(header, value);
+                    using var reply = await http.SendAsync(request);
+                    Assert.Equal(HttpStatusCode.Unauthorized, reply.StatusCode);
+                }
+            }
             Assert.Equal(401, rig.Answer(WebAnswer.CookieName + "=" + token, p.Id, p.Nonce, true).Status);
             Assert.False(asked.IsCompleted);
         }
@@ -285,6 +306,10 @@ namespace PadForge.Tests
                 Assert.Equal(409, rig.Answer(cookie, p.Id, p.Nonce, true).Status);
             Assert.False(signIn.IsCompleted);
             Assert.False(show.IsCompleted);
+            // A program's first connection is listed, as a consent.
+            var consent = rig.Approvals.AskAsync(Change("connect") with { Kind = ApprovalKind.Consent });
+            Assert.Equal("consent", Assert.Single(rig.Questions(cookie))["kind"].GetValue<string>());
+            Assert.False(consent.IsCompleted);
         }
 
         // ─────────────────────────────────────────────
@@ -559,6 +584,57 @@ namespace PadForge.Tests
                     service.ApplyAnswerRoute();
                     Assert.Null(Get<WebControllerServer>(service, "_webServer"));
                     Assert.Equal(3, made.Count);
+                }
+                finally
+                {
+                    Call(service, "StopWebServer");
+                    Set(service, "_inputManager", null);
+                }
+            });
+        }
+
+        /// <summary>A web assistant can ask while the engine is stopped, so
+        /// the page does not need it: with the engine stopped the listener
+        /// runs for the page alone, even with the web controller's switch on,
+        /// the engine's start hands the port to the web controller's run, and
+        /// its stop hands it back. A disposed service starts nothing.</summary>
+        [Fact]
+        public void ThePage_IsServedWithTheEngineStopped_AndTheEnginesStartAndStopTakeTheListenerOver()
+        {
+            RunSta(dispatcher =>
+            {
+                var vm = new MainViewModel();
+                using var service = new InputService(vm);
+                var answers = new WebAnswer { RowShows = () => true };
+                service.Answers = answers;
+                service.WebServerFactory = () => new WebControllerServer(_ => null, () => new IdleListener());
+                WebControllerServer Server() => Get<WebControllerServer>(service, "_webServer");
+                try
+                {
+                    vm.Dashboard.WebControllerPort = 18093;
+                    vm.Dashboard.EnableWebController = true;
+                    answers.StartPairing();
+                    // The engine is stopped: the page alone.
+                    service.ApplyAnswerRoute();
+                    PumpUntil(dispatcher, () => Server()?.IsRunning == true);
+                    Assert.False(Server().ServesControls);
+
+                    // The engine starts: the web controller's run takes over.
+                    Set(service, "_inputManager", RuntimeHelpers.GetUninitializedObject(typeof(InputManager)));
+                    Call(service, "StartWebServerIfEnabled");
+                    PumpUntil(dispatcher, () => Server()?.IsRunning == true && Server().ServesControls);
+
+                    // The engine stops: the page alone again.
+                    Call(service, "StopWebServer");
+                    Set(service, "_inputManager", null);
+                    service.ApplyAnswerRoute();
+                    PumpUntil(dispatcher, () => Server()?.IsRunning == true && !Server().ServesControls);
+
+                    // Disposed: nothing starts.
+                    Call(service, "StopWebServer");
+                    typeof(InputService).GetField("_disposed", Fields).SetValue(service, 1);
+                    service.ApplyAnswerRoute();
+                    Assert.Null(Server());
                 }
                 finally
                 {

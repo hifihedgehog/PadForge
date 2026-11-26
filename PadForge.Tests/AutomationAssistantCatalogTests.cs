@@ -1045,6 +1045,54 @@ namespace PadForge.Tests
             });
         }
 
+        /// <summary>The Pair a Device window open with its pairing (#600):
+        /// dialogs, read and where name it, and none returns its code, its
+        /// secret or the link its QR code carries. The window is the user's
+        /// alone, so read takes none of its lines.</summary>
+        [Fact]
+        public void ThePairingWindow_IsNamed_AndNoReadReturnsItsCodeOrSecret()
+        {
+            WithPages(p =>
+            {
+                var owner = new Window { Width = 400, Height = 300, Left = -10000, Top = -10000, ShowActivated = false, ShowInTaskbar = false, WindowStyle = WindowStyle.None, AllowsTransparency = true, Content = new System.Windows.Controls.Grid() };
+                owner.Show();
+                var answers = new PadForge.Services.WebAnswer { RowShows = () => true };
+                answers.SetAddress("https://192.168.1.24:8080", null);
+                var dialog = new AnswerPairDialog(answers) { Owner = owner, ShowActivated = false, ShowInTaskbar = false, WindowStartupLocation = WindowStartupLocation.Manual, Left = -20000, Top = -20000 };
+                var catalog = new AssistantCatalog(p.Service, new SearchNavigator(p.Service, p.PageOf, p.Vm, _ => { }, _ => { }, () => { }),
+                    p.PageOf, p.Vm, pad => p.Pad.DataContext = pad, () => AssistantWindowPlace.InFront, new AssistantCatalogParts { MainWindow = () => owner });
+                dialog.Show();
+                try
+                {
+                    PadForge.Services.Catalog.DialogRegistry.Register(dialog);
+                    PageRenderDump.Settle(dialog.Dispatcher);
+                    var pairing = answers.Pairing;
+                    Assert.NotNull(pairing);
+                    // The window shows the code: the description PadForge
+                    // makes of it holds the address line and each digit.
+                    var described = PadForge.Services.Catalog.DialogRegistry.Describe(dialog);
+                    Assert.Contains(described.Text, line => line.Contains("https://192.168.1.24:8080/answer", StringComparison.Ordinal));
+                    Assert.Contains(described.Text, line => line == pairing.Code.Substring(0, 1));
+
+                    var open = Assert.Single(catalog.Dialogs().Open);
+                    Assert.Equal(PadForge.Resources.Strings.Strings.Instance.Answer_Pair_Title, open.Title);
+                    var read = catalog.Read(open.Id);
+                    Assert.Empty(read.Lines);
+                    string all = JsonSerializer.Serialize(new object[] { catalog.Dialogs(), read, catalog.Where() });
+                    Assert.DoesNotContain(pairing.Secret, all);
+                    Assert.DoesNotContain(pairing.Code, all);
+                    Assert.DoesNotContain(PadForge.Services.Automation.Web.WebSecrets.Spaced(pairing.Code), all);
+                    Assert.DoesNotContain("#pair=", all);
+                }
+                finally
+                {
+                    dialog.Close();
+                    owner.Close();
+                }
+                Assert.Null(answers.Pairing);
+            });
+        }
+
         [Fact]
         public void APressOfTheUsersOwn_IsRefused_AndOneThatAsks_CarriesItsQuestion_WithNothingPressed()
         {

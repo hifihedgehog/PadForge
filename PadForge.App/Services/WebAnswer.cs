@@ -372,6 +372,9 @@ namespace PadForge.Services
                 {
                     id = p.Id,
                     nonce = p.Nonce,
+                    // The card words and draws its answers by the kind: a
+                    // first connection's two alike, a change's Allow in ember.
+                    kind = r.Kind == ApprovalKind.Consent ? "consent" : "change",
                     title = ShownText.Clean(r.Title ?? string.Empty),
                     program = named ? ShownText.Clean(r.From) : ShownText.Clean(!string.IsNullOrEmpty(who.Name) ? who.Name : who.ImageName),
                     path = named ? null : ShownText.Clean(who.ImagePath),

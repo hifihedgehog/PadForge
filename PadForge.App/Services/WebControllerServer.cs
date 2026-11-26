@@ -741,7 +741,17 @@ namespace PadForge.Services
                 // The answer page (#600) and, while the listener runs for it
                 // alone, the two files its page links. Judged before the
                 // plain address's code, which the answer page never takes.
-                if (TakeAnswerRoute(ctx, plain.Value)) continue;
+                // A request that throws here is dropped, as one Admit
+                // throws on is.
+                try
+                {
+                    if (TakeAnswerRoute(ctx, plain.Value)) continue;
+                }
+                catch
+                {
+                    try { ctx.Response.Abort(); } catch { }
+                    continue;
+                }
                 // Admission reads only the request line and headers, so it runs
                 // here. A refusal is written on the pool like any other page.
                 bool viaPlain;

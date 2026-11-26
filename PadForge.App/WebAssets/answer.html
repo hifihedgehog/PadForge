@@ -281,7 +281,9 @@
             no.addEventListener("click", function () { answer(q, false, card); });
             var yes = document.createElement("button");
             yes.type = "button";
-            yes.className = "go";
+            // A program's first connection draws its two answers alike, as
+            // PadForge's card does: Allow lets it read every key.
+            yes.className = q.kind === "consent" ? "no" : "go";
             yes.textContent = "Allow";
             yes.addEventListener("click", function () { answer(q, true, card); });
             two.appendChild(no);

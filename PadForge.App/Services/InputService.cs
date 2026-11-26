@@ -12494,27 +12494,47 @@ namespace PadForge.Services
         /// <summary>
         /// Starts or stops the listener's run for the answer page alone
         /// (#600) as the page comes to be wanted or not, while the web
-        /// controller is off. With it on, its own run serves the page. Called
-        /// on the interface's thread when the page's state changes.
+        /// controller does not run: its switch is off or the engine is
+        /// stopped. A web assistant can ask while the engine is stopped, and
+        /// the page needs nothing of the engine. While the web controller
+        /// runs, its own run serves the page. Called on the interface's
+        /// thread when the page's state changes, and never after
+        /// Dispose.
         /// </summary>
         internal void ApplyAnswerRoute()
         {
-            if (_mainVm.Dashboard.EnableWebController) return;
+            if (System.Threading.Volatile.Read(ref _disposed) != 0) return;
+            if (WebControllerWanted) return;
             bool running = _webServer != null;
             if (AnswerRouteWanted && !running) StartWebServerIfEnabled();
             else if (!AnswerRouteWanted && running) StopWebServer();
         }
 
+        /// <summary>Whether the web controller runs: its switch is on and
+        /// the engine runs.</summary>
+        private bool WebControllerWanted => _mainVm.Dashboard.EnableWebController && _inputManager != null;
+
+        /// <summary>Whether the listener running serves the web controller,
+        /// false while it runs for the answer page alone (#600). Set where
+        /// <see cref="_webServer"/> is made.</summary>
+        private bool _webServerControls;
+
         private void StartWebServerIfEnabled()
         {
-            // The web controller, or the answer page alone while it is off
-            // (#600). Either stops with the engine.
-            bool controls = _mainVm.Dashboard.EnableWebController;
-            if (!(controls || AnswerRouteWanted) || _inputManager == null)
+            // The web controller while the engine runs, or the answer page
+            // alone while the web controller does not run (#600).
+            bool controls = WebControllerWanted;
+            if (!(controls || AnswerRouteWanted))
                 return;
 
             if (_webServer != null)
-                return; // Already running.
+            {
+                // Already running, unless a run for the answer page alone
+                // gives the port to the web controller's.
+                if (_webServerControls || !controls) return;
+                StopWebServer();
+            }
+            _webServerControls = controls;
 
             _webServer = WebServerFactory?.Invoke() ?? new WebControllerServer();
             var server = _webServer;
@@ -12575,7 +12595,7 @@ namespace PadForge.Services
                 {
                     // The user may have switched the toggle off, or changed the
                     // port (which stops and restarts), while this was starting.
-                    bool wanted = (_mainVm.Dashboard.EnableWebController || AnswerRouteWanted)
+                    bool wanted = (controls ? WebControllerWanted : AnswerRouteWanted)
                                   && ReferenceEquals(_webServer, launching);
                     if (ok && wanted)
                     {
